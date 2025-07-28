@@ -1,6 +1,5 @@
 # All custom code
 src/custom
-tests/custom
 
 # Custom imports from custom code that replaces generated one
 src/index.ts
@@ -9,3 +8,7 @@ src/index.ts
 README.md
 AUTHENTICATION.md
 REFERENCE-latest.md
+
+# Integration tests
+tests/custom
+jest.config.integration.mjs
