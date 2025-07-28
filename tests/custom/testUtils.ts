@@ -5,20 +5,21 @@ import { faker } from '@faker-js/faker';
  * Creates a CortiClient instance configured for testing
  */
 export function createTestCortiClient(): CortiClient {
+  if (
+      !process.env.CORTI_ENVIRONMENT
+      || !process.env.CORTI_TENANT_NAME
+      || !process.env.CORTI_CLIENT_ID
+      || !process.env.CORTI_CLIENT_SECRET
+  ) {
+    throw new Error('Missing required environment variables for CortiClient');
+  }
+
   return new CortiClient({
-    environment: process.env.CORTI_ENVIRONMENT
-        // || 'eu'
-        || 'dev-weu',
-    tenantName: process.env.CORTI_TENANT_NAME
-        // || 'base'
-        || 'copilotdeveu',
+    environment: process.env.CORTI_ENVIRONMENT,
+    tenantName: process.env.CORTI_TENANT_NAME,
     auth: {
-      clientId: process.env.CORTI_CLIENT_ID
-          // || 'test-e10035-test'
-          || 'markitosha-580b7906-2d09-48d5-9aa3-c638b6d0d7a4-test',
-      clientSecret: process.env.CORTI_CLIENT_SECRET
-          // || 'fBEHs8Ts5GMKfawX5n2vr9m0s00KXojg'
-          || 'hqO2fiOVmHhZI6rsIFEcQKivRXiNoXae',
+      clientId: process.env.CORTI_CLIENT_ID,
+      clientSecret: process.env.CORTI_CLIENT_SECRET,
     },
   });
 }
