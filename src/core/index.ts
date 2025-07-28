@@ -7,3 +7,4 @@ export * from "./websocket/index.js";
 export * from "./base64.js";
 export * from "./utils/index.js";
 export * from "./pagination/index.js";
+export * as file from "./file/index.js";

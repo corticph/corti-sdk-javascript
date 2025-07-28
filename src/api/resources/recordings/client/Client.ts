@@ -8,8 +8,6 @@ import * as Corti from "../../../index.js";
 import { mergeHeaders, mergeOnlyDefinedHeaders } from "../../../../core/headers.js";
 import * as serializers from "../../../../serialization/index.js";
 import * as errors from "../../../../errors/index.js";
-import * as fs from "fs";
-import { Blob } from "buffer";
 
 export declare namespace Recordings {
     export interface Options {
@@ -158,7 +156,7 @@ export class Recordings {
     /**
      *  Upload a recording for a given interaction. There is a maximum limit of 60 minutes in length and 150MB in size for recordings.
      *
-     * @param {File | fs.ReadStream | Blob} bytes
+     * @param {core.file.Uploadable} uploadable
      * @param {Corti.Uuid} id
      * @param {Recordings.RequestOptions} requestOptions - Request-specific configuration.
      *
@@ -168,18 +166,19 @@ export class Recordings {
      * @throws {@link Corti.GatewayTimeoutError}
      */
     public upload(
-        bytes: File | fs.ReadStream | Blob,
+        uploadable: core.file.Uploadable,
         id: Corti.Uuid,
         requestOptions?: Recordings.RequestOptions,
     ): core.HttpResponsePromise<Corti.RecordingsCreateResponse> {
-        return core.HttpResponsePromise.fromPromise(this.__upload(bytes, id, requestOptions));
+        return core.HttpResponsePromise.fromPromise(this.__upload(uploadable, id, requestOptions));
     }
 
     private async __upload(
-        bytes: File | fs.ReadStream | Blob,
+        uploadable: core.file.Uploadable,
         id: Corti.Uuid,
         requestOptions?: Recordings.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.RecordingsCreateResponse>> {
+        const _binaryUploadRequest = await core.file.toBinaryUploadRequest(uploadable);
         const _response = await core.fetcher({
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
@@ -193,12 +192,13 @@ export class Recordings {
                     Authorization: await this._getAuthorizationHeader(),
                     "Tenant-Name": requestOptions?.tenantName,
                 }),
+                _binaryUploadRequest.headers,
                 requestOptions?.headers,
             ),
             contentType: "application/octet-stream",
             requestType: "bytes",
             duplex: "half",
-            body: bytes,
+            body: _binaryUploadRequest.body,
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
             maxRetries: requestOptions?.maxRetries,
             abortSignal: requestOptions?.abortSignal,
