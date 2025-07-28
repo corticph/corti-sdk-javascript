@@ -11,4 +11,4 @@ REFERENCE-latest.md
 
 # Integration tests
 tests/custom
-jest.config.integration.mjs
+jest.integration.config.mjs
