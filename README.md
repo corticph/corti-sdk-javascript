@@ -32,7 +32,7 @@ import { CortiEnvironment, CortiClient } from "@corti/sdk";
 
 // Using client credentials (OAuth2)
 const client = new CortiClient({
-    environment: CortiEnvironment.BetaEu,
+    environment: CortiEnvironment.Eu,
     tenantName: "YOUR_TENANT_NAME",
     auth: {
         clientId: "YOUR_CLIENT_ID",
@@ -42,7 +42,7 @@ const client = new CortiClient({
 
 // Or using a bearer token
 const client = new CortiClient({
-    environment: CortiEnvironment.BetaEu,
+    environment: CortiEnvironment.Eu,
     tenantName: "YOUR_TENANT_NAME",
     auth: {
         accessToken: "YOUR_ACCESS_TOKEN",
@@ -120,7 +120,7 @@ List endpoints are paginated. The SDK provides an iterator so that you can simpl
 import { CortiEnvironment, CortiClient } from "@corti/sdk";
 
 const client = new CortiClient({
-    environment: CortiEnvironment.BetaEu,
+    environment: CortiEnvironment.Eu,
     tenantName: "YOUR_TENANT_NAME",
     auth: {
         clientId: "YOUR_CLIENT_ID",
