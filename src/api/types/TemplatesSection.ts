@@ -20,5 +20,5 @@ export interface TemplatesSection {
     /** Type of section */
     sectionType: string;
     /** Available translations for the section */
-    translations: Corti.TemplatesTranslation[];
+    translations: Corti.TemplatesSectionTranslation[];
 }

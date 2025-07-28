@@ -56,6 +56,7 @@ export * from "./InteractionsGenderEnum.js";
 export * from "./CommonSourceEnum.js";
 export * from "./TranscriptsParticipantRoleEnum.js";
 export * from "./TemplatesWritingStyle.js";
+export * from "./TemplatesSectionTranslation.js";
 export * from "./TemplatesTranslation.js";
 export * from "./StreamConfigMessage.js";
 export * from "./StreamConfig.js";
