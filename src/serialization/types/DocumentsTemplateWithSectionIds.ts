@@ -11,7 +11,6 @@ export const DocumentsTemplateWithSectionIds: core.serialization.ObjectSchema<
     serializers.DocumentsTemplateWithSectionIds.Raw,
     Corti.DocumentsTemplateWithSectionIds
 > = core.serialization.object({
-    sectionKeys: core.serialization.list(core.serialization.string()).optional(),
     sectionIds: core.serialization.list(Uuid),
     documentName: core.serialization.string().optional(),
     additionalInstructions: core.serialization.string().optional(),
@@ -19,7 +18,6 @@ export const DocumentsTemplateWithSectionIds: core.serialization.ObjectSchema<
 
 export declare namespace DocumentsTemplateWithSectionIds {
     export interface Raw {
-        sectionKeys?: string[] | null;
         sectionIds: Uuid.Raw[];
         documentName?: string | null;
         additionalInstructions?: string | null;

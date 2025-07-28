@@ -5,8 +5,6 @@
 import * as Corti from "../index.js";
 
 export interface DocumentsTemplateWithSectionIds {
-    /** An array of section keys. */
-    sectionKeys?: string[];
     /** An array of section IDs. */
     sectionIds: Corti.Uuid[];
     /** The name of the document. */

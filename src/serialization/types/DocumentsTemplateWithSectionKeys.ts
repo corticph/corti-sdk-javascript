@@ -5,14 +5,12 @@
 import * as serializers from "../index.js";
 import * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
-import { Uuid } from "./Uuid.js";
 
 export const DocumentsTemplateWithSectionKeys: core.serialization.ObjectSchema<
     serializers.DocumentsTemplateWithSectionKeys.Raw,
     Corti.DocumentsTemplateWithSectionKeys
 > = core.serialization.object({
     sectionKeys: core.serialization.list(core.serialization.string()),
-    sectionIds: core.serialization.list(Uuid).optional(),
     documentName: core.serialization.string().optional(),
     additionalInstructions: core.serialization.string().optional(),
 });
@@ -20,7 +18,6 @@ export const DocumentsTemplateWithSectionKeys: core.serialization.ObjectSchema<
 export declare namespace DocumentsTemplateWithSectionKeys {
     export interface Raw {
         sectionKeys: string[];
-        sectionIds?: Uuid.Raw[] | null;
         documentName?: string | null;
         additionalInstructions?: string | null;
     }
