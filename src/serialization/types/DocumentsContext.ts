@@ -5,14 +5,14 @@
 import * as serializers from "../index.js";
 import * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
-import { DocumentsContextWithFact } from "./DocumentsContextWithFact.js";
+import { DocumentsContextWithFacts } from "./DocumentsContextWithFacts.js";
 import { DocumentsContextWithTranscript } from "./DocumentsContextWithTranscript.js";
 import { DocumentsContextWithString } from "./DocumentsContextWithString.js";
 
 export const DocumentsContext: core.serialization.Schema<serializers.DocumentsContext.Raw, Corti.DocumentsContext> =
     core.serialization
         .union("type", {
-            facts: DocumentsContextWithFact,
+            facts: DocumentsContextWithFacts,
             transcript: DocumentsContextWithTranscript,
             string: DocumentsContextWithString,
         })
@@ -24,7 +24,7 @@ export const DocumentsContext: core.serialization.Schema<serializers.DocumentsCo
 export declare namespace DocumentsContext {
     export type Raw = DocumentsContext.Facts | DocumentsContext.Transcript | DocumentsContext.String;
 
-    export interface Facts extends DocumentsContextWithFact.Raw {
+    export interface Facts extends DocumentsContextWithFacts.Raw {
         type: "facts";
     }
 

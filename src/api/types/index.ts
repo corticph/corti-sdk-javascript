@@ -1,5 +1,5 @@
 export * from "./DocumentsContext.js";
-export * from "./DocumentsContextWithFact.js";
+export * from "./DocumentsContextWithFacts.js";
 export * from "./DocumentsContextWithTranscript.js";
 export * from "./DocumentsContextWithString.js";
 export * from "./DocumentsSection.js";

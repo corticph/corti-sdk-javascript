@@ -4,7 +4,7 @@
 
 import * as Corti from "../index.js";
 
-export interface DocumentsContextWithFact {
+export interface DocumentsContextWithFacts {
     /** An array of facts. */
     data: Corti.FactsContext[];
 }

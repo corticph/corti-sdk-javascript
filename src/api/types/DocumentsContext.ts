@@ -10,7 +10,7 @@ export type DocumentsContext =
     | Corti.DocumentsContext.String;
 
 export namespace DocumentsContext {
-    export interface Facts extends Corti.DocumentsContextWithFact {
+    export interface Facts extends Corti.DocumentsContextWithFacts {
         type: "facts";
     }
 

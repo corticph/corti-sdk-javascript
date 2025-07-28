@@ -7,14 +7,14 @@ import * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
 import { FactsContext } from "./FactsContext.js";
 
-export const DocumentsContextWithFact: core.serialization.ObjectSchema<
-    serializers.DocumentsContextWithFact.Raw,
-    Corti.DocumentsContextWithFact
+export const DocumentsContextWithFacts: core.serialization.ObjectSchema<
+    serializers.DocumentsContextWithFacts.Raw,
+    Corti.DocumentsContextWithFacts
 > = core.serialization.object({
     data: core.serialization.list(FactsContext),
 });
 
-export declare namespace DocumentsContextWithFact {
+export declare namespace DocumentsContextWithFacts {
     export interface Raw {
         data: FactsContext.Raw[];
     }
