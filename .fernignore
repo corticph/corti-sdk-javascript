@@ -12,3 +12,5 @@ REFERENCE-latest.md
 # Integration tests
 tests/custom
 jest.integration.config.mjs
+.github/workflows/integration-tests.yml
+
