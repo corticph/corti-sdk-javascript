@@ -19,7 +19,7 @@ jobs:
       - name: Run integration tests
         run: yarn jest --config jest.integration.config.mjs
         env:
-          CORTI_ENVIRONMENT: ${{ secrets.CORTI_ENVIRONMENT }}
-          CORTI_TENANT_NAME: ${{ secrets.CORTI_TENANT_NAME }}
-          CORTI_CLIENT_ID: ${{ secrets.CORTI_CLIENT_ID }}
+          CORTI_ENVIRONMENT: ${{ vars.CORTI_ENVIRONMENT }}
+          CORTI_TENANT_NAME: ${{ vars.CORTI_TENANT_NAME }}
+          CORTI_CLIENT_ID: ${{ vars.CORTI_CLIENT_ID }}
           CORTI_CLIENT_SECRET: ${{ secrets.CORTI_CLIENT_SECRET }} 
