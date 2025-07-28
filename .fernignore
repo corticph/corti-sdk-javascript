@@ -1,5 +1,6 @@
 # All custom code
 src/custom
+tests/custom
 
 # Custom imports from custom code that replaces generated one
 src/index.ts
