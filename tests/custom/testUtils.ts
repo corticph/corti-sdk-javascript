@@ -1,5 +1,6 @@
 import { CortiClient } from '../../src';
 import { faker } from '@faker-js/faker';
+import { createReadStream } from 'fs';
 
 /**
  * Creates a CortiClient instance configured for testing
@@ -162,4 +163,27 @@ export async function createTestDocument(cortiClient: CortiClient, interactionId
   }
 
   return response.id;
+}
+
+/**
+ * Creates a test recording using the trouble-breathing.mp3 file
+ * Optionally pushes the created recordingId to the provided array
+ * Used for testing recordings functionality
+ */
+export async function createTestRecording(
+  cortiClient: CortiClient, 
+  interactionId: string, 
+  createdRecordingIds?: string[]
+): Promise<string> {
+  const uploadFile = createReadStream('tests/custom/trouble-breathing.mp3', {
+    autoClose: true
+  });
+  
+  const uploadResult = await cortiClient.recordings.upload(uploadFile, interactionId);
+
+  if (createdRecordingIds) {
+    createdRecordingIds.push(uploadResult.recordingId);
+  }
+
+  return uploadResult.recordingId;
 }
