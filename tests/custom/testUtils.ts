@@ -187,3 +187,28 @@ export async function createTestRecording(
 
   return uploadResult.recordingId;
 }
+
+/**
+ * Creates a test transcript for a given interaction and recording
+ * Used for testing transcripts functionality
+ * Note: This requires a valid language/model combination to work
+ */
+export async function createTestTranscript(
+  cortiClient: CortiClient,
+  interactionId: string,
+  recordingId: string
+): Promise<string> {
+  // Note: Using a supported language/model combination
+  // This may need to be updated based on actual supported languages
+  const transcriptResult = await cortiClient.transcripts.create(interactionId, {
+    recordingId,
+    primaryLanguage: 'en',
+    modelName: 'premier',
+  });
+
+  if (!transcriptResult.id) {
+    throw new Error("Transcript creation failed - no ID returned.");
+  }
+
+  return transcriptResult.id;
+}
