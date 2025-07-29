@@ -61,8 +61,7 @@ describe('cortiClient.interactions.list', () => {
     expect(consoleWarnSpy).not.toHaveBeenCalled();
   });
 
-  // FIXME Skipping these tests because the API 
-  describe.skip('filtering by patient', () => {
+  describe('filtering by patient', () => {
     it('should return only interactions for specified patient', async () => {
       expect.assertions(5);
 
@@ -101,7 +100,6 @@ describe('cortiClient.interactions.list', () => {
     it('should return empty result for non-existent patient', async () => {
       expect.assertions(3);
 
-      // Create some interactions with known patients
       await createTestInteraction(cortiClient, createdInteractionIds, {
         patient: { identifier: faker.string.alphanumeric(15) }
       });
@@ -110,7 +108,6 @@ describe('cortiClient.interactions.list', () => {
         patient: { identifier: faker.string.alphanumeric(15) }
       });
 
-      // Query with a patient ID that doesn't exist
       const nonExistentPatientId = faker.string.alphanumeric(15);
       const result = await cortiClient.interactions.list({ patient: nonExistentPatientId });
 
@@ -124,7 +121,6 @@ describe('cortiClient.interactions.list', () => {
     it('should filter by single encounterStatus string', async () => {
       expect.assertions(4);
 
-      // Create interactions with different statuses
       const plannedId = await createTestInteraction(cortiClient, createdInteractionIds, {
         encounter: { status: 'planned' }
       });
@@ -539,6 +535,79 @@ describe('cortiClient.interactions.list', () => {
         const expectedSecond = userA === expectedFirst ? userB : userA;
         expect(ourInteractions[0].assignedUserId).toBe(expectedFirst);
         expect(ourInteractions[1].assignedUserId).toBe(expectedSecond);
+        expect(consoleWarnSpy).not.toHaveBeenCalled();
+      });
+    });
+
+    // FIXME Should work, but return different results every time
+    describe.skip('sort by patient', () => {
+      it('should sort by patient desc', async () => {
+        expect.assertions(4);
+
+        const patientA = 'a-' + faker.string.alphanumeric(15);
+        const patientB = 'b-' + faker.string.alphanumeric(15);
+
+        const interactionA = await createTestInteraction(cortiClient, createdInteractionIds, {
+          patient: { identifier: patientA }
+        });
+
+        const interactionB = await createTestInteraction(cortiClient, createdInteractionIds, {
+          patient: { identifier: patientB }
+        });
+
+        const result = await cortiClient.interactions.list({ 
+          sort: 'patient', 
+          direction: 'desc' 
+        });
+
+        const ourInteractions = result.data.filter(interaction => 
+          [interactionA, interactionB].includes(interaction.id)
+        );
+
+        console.log(result.data, ourInteractions)
+
+        expect(ourInteractions.length).toBe(2);
+
+        const expectedFirst = patientA > patientB ? patientA : patientB;
+        const expectedSecond = patientA === expectedFirst ? patientB : patientA;
+
+        expect(ourInteractions[0].patient?.identifier).toBe(expectedFirst);
+        expect(ourInteractions[1].patient?.identifier).toBe(expectedSecond);
+        expect(consoleWarnSpy).not.toHaveBeenCalled();
+      });
+
+      it('should sort by patient asc', async () => {
+        expect.assertions(4);
+
+        const patientA = 'a-' + faker.string.alphanumeric(15);
+        const patientB = 'b-' + faker.string.alphanumeric(15);
+
+        const interactionA = await createTestInteraction(cortiClient, createdInteractionIds, {
+          patient: { identifier: patientA }
+        });
+
+        const interactionB = await createTestInteraction(cortiClient, createdInteractionIds, {
+          patient: { identifier: patientB }
+        });
+
+        const result = await cortiClient.interactions.list({ 
+          sort: 'patient', 
+          direction: 'asc' 
+        });
+
+        const ourInteractions = result.data.filter(interaction => 
+          [interactionA, interactionB].includes(interaction.id)
+        );
+
+        console.log(result.data, ourInteractions)
+
+        expect(ourInteractions.length).toBe(2);
+
+        const expectedFirst = patientA < patientB ? patientA : patientB;
+        const expectedSecond = patientA === expectedFirst ? patientB : patientA;
+
+        expect(ourInteractions[0].patient?.identifier).toBe(expectedFirst);
+        expect(ourInteractions[1].patient?.identifier).toBe(expectedSecond);
         expect(consoleWarnSpy).not.toHaveBeenCalled();
       });
     });
