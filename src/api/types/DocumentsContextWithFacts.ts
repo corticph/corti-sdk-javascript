@@ -4,4 +4,7 @@
 
 import * as Corti from "../index.js";
 
-export type DocumentsTemplate = Corti.DocumentsTemplateWithSectionKeys | Corti.DocumentsTemplateWithSectionIds;
+export interface DocumentsContextWithFacts {
+    /** An array of facts. */
+    data: Corti.FactsContext[];
+}
