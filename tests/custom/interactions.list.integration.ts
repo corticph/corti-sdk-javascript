@@ -564,8 +564,6 @@ describe('cortiClient.interactions.list', () => {
           [interactionA, interactionB].includes(interaction.id)
         );
 
-        console.log(result.data, ourInteractions)
-
         expect(ourInteractions.length).toBe(2);
 
         const expectedFirst = patientA > patientB ? patientA : patientB;
@@ -598,8 +596,6 @@ describe('cortiClient.interactions.list', () => {
         const ourInteractions = result.data.filter(interaction => 
           [interactionA, interactionB].includes(interaction.id)
         );
-
-        console.log(result.data, ourInteractions)
 
         expect(ourInteractions.length).toBe(2);
 
