@@ -43,6 +43,7 @@ import { BearerOptions, RefreshBearerProvider } from "./RefreshBearerProvider.js
  * Patch: added SDK_VERSION import
  */
 import { SDK_VERSION } from '../version.js';
+import { getEnvironment } from "./utils/getEnvironmentFromString";
 
 export declare namespace CortiClient {
     /**
@@ -145,13 +146,7 @@ export class CortiClient {
             clientId: "clientId" in _options.auth ? _options.auth.clientId : undefined,
             clientSecret: "clientSecret" in _options.auth ? _options.auth.clientSecret : undefined,
             token: "accessToken" in _options.auth ? _options.auth.accessToken : undefined,
-            environment: typeof _options.environment === "string"
-                ? {
-                    base: `https://api.${_options.environment}.corti.app/v2`,
-                    wss: `wss://api.${_options.environment}.corti.app`,
-                    login: `https://auth.${_options.environment}.corti.app/realms`,
-                }
-                : _options.environment,
+            environment: getEnvironment(_options.environment),
         };
 
         /**
