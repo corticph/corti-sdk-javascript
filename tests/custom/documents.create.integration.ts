@@ -171,8 +171,7 @@ describe('cortiClient.documents.create', () => {
       expect(consoleWarnSpy).not.toHaveBeenCalled();
     });
 
-    // FIXME Skipped, because spec is wrong in terms of typings, need to fix it first
-    it.skip('should create document with DocumentsCreateRequestWithTemplate using facts context', async () => {
+    it('should create document with DocumentsCreateRequestWithTemplate using facts context and sectionKeys', async () => {
       expect.assertions(2);
 
       const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
@@ -186,7 +185,30 @@ describe('cortiClient.documents.create', () => {
           }],
         }],
         template: {
-          // sectionKeys: ['corti-patient-summary'],
+          sectionKeys: [faker.helpers.arrayElement(validSectionKeys)]
+        },
+        outputLanguage: "en",
+      });
+
+      expect(result).toBeDefined();
+      expect(consoleWarnSpy).not.toHaveBeenCalled();
+    });
+
+    // FIXME Skipped, because we don't have sectionId in the section information
+    it.skip('should create document with DocumentsCreateRequestWithTemplate using facts context and sectionIds', async () => {
+      expect.assertions(2);
+
+      const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+      
+      const result = await cortiClient.documents.create(interactionId, {
+        context: [{
+          type: 'facts',
+          data: [{
+            text: faker.lorem.sentence(),
+            source: 'user',
+          }],
+        }],
+        template: {
           sectionIds: [faker.string.uuid()]
         },
         outputLanguage: "en",
@@ -196,8 +218,7 @@ describe('cortiClient.documents.create', () => {
       expect(consoleWarnSpy).not.toHaveBeenCalled();
     });
 
-    // FIXME Skipped, because spec is wrong in terms of typings, need to fix it first
-    it.skip('should create document with DocumentsCreateRequestWithTemplate using transcript context', async () => {
+    it('should create document with DocumentsCreateRequestWithTemplate using transcript context and sectionKeys', async () => {
       expect.assertions(2);
 
       const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
@@ -214,7 +235,9 @@ describe('cortiClient.documents.create', () => {
             speakerId: faker.number.int({ min: 1, max: 10 }),
           },
         }],
-        template: {},
+        template: {
+          sectionKeys: [faker.helpers.arrayElement(validSectionKeys)]
+        },
         outputLanguage: "en",
       });
 
@@ -222,8 +245,35 @@ describe('cortiClient.documents.create', () => {
       expect(consoleWarnSpy).not.toHaveBeenCalled();
     });
 
-    // FIXME Skipped, because spec is wrong in terms of typings, need to fix it first
-    it.skip('should create document with DocumentsCreateRequestWithTemplate using string context', async () => {
+    // FIXME Skipped, because we don't have sectionId in the section information
+    it.skip('should create document with DocumentsCreateRequestWithTemplate using transcript context and sectionIds', async () => {
+      expect.assertions(2);
+
+      const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+      
+      const result = await cortiClient.documents.create(interactionId, {
+        context: [{
+          type: 'transcript',
+          data: {
+            text: faker.lorem.paragraphs(2),
+            start: faker.number.int({ min: 0, max: 1000 }),
+            end: faker.number.int({ min: 1001, max: 5000 }),
+            channel: faker.number.int({ min: 0, max: 1 }),
+            participant: faker.number.int({ min: 0, max: 1 }),
+            speakerId: faker.number.int({ min: 1, max: 10 }),
+          },
+        }],
+        template: {
+          sectionIds: [faker.string.uuid()]
+        },
+        outputLanguage: "en",
+      });
+
+      expect(result).toBeDefined();
+      expect(consoleWarnSpy).not.toHaveBeenCalled();
+    });
+
+    it('should create document with DocumentsCreateRequestWithTemplate using string context and sectionKeys', async () => {
       expect.assertions(2);
 
       const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
@@ -233,7 +283,30 @@ describe('cortiClient.documents.create', () => {
           type: 'string',
           data: faker.lorem.paragraph(),
         }],
-        template: {},
+        template: {
+          sectionKeys: [faker.helpers.arrayElement(validSectionKeys)]
+        },
+        outputLanguage: "en",
+      });
+
+      expect(result).toBeDefined();
+      expect(consoleWarnSpy).not.toHaveBeenCalled();
+    });
+
+    // FIXME Skipped, because we don't have sectionId in the section information
+    it.skip('should create document with DocumentsCreateRequestWithTemplate using string context and sectionIds', async () => {
+      expect.assertions(2);
+
+      const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+      
+      const result = await cortiClient.documents.create(interactionId, {
+        context: [{
+          type: 'string',
+          data: faker.lorem.paragraph(),
+        }],
+        template: {
+          sectionIds: [faker.string.uuid()]
+        },
         outputLanguage: "en",
       });
 
