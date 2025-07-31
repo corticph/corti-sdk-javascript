@@ -191,13 +191,16 @@ describe('cortiClient.transcripts.create', () => {
     const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
     const recordingId = await createTestRecording(cortiClient, interactionId);
     
+    const isMultichannel = faker.datatype.boolean();
+    const diarize = isMultichannel ? faker.datatype.boolean() : false; // diarize can only be true if isMultichannel is true
+
     const result = await cortiClient.transcripts.create(interactionId, {
         recordingId,
         primaryLanguage: 'en',
         modelName: 'premier',
         isDictation: faker.datatype.boolean(),
-        isMultichannel: faker.datatype.boolean(),
-        diarize: faker.datatype.boolean(),
+        isMultichannel,
+        diarize,
         participants: [
           {
             channel: faker.number.int({ min: 0, max: 1 }),
@@ -391,6 +394,29 @@ describe('cortiClient.transcripts.create', () => {
           }],
         })
       ).rejects.toThrow('Expected enum. Received "invalid-role"');
+    });
+
+    it('should throw error when diarize is true but isMultichannel is false', async () => {
+      expect.assertions(1);
+
+      const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+      const recordingId = await createTestRecording(cortiClient, interactionId);
+
+      await expect(
+        cortiClient.transcripts.create(interactionId, {
+          recordingId,
+          primaryLanguage: 'en',
+          modelName: 'premier',
+          isMultichannel: false,
+          diarize: true,
+          participants: [
+            {
+              channel: faker.number.int({ min: 0, max: 1 }),
+              role: faker.helpers.arrayElement(['doctor', 'patient', 'multiple']),
+            },
+          ]
+        })
+      ).rejects.toThrow('BadRequestError');
     });
   });
 }); 
