@@ -4,21 +4,9 @@
 
 import * as Corti from "../index.js";
 
-export type DocumentsContext =
-    | Corti.DocumentsContext.Facts
-    | Corti.DocumentsContext.Transcript
-    | Corti.DocumentsContext.String;
-
-export namespace DocumentsContext {
-    export interface Facts extends Corti.DocumentsContextWithFacts {
-        type: "facts";
-    }
-
-    export interface Transcript extends Corti.DocumentsContextWithTranscript {
-        type: "transcript";
-    }
-
-    export interface String extends Corti.DocumentsContextWithString {
-        type: "string";
-    }
+export interface DocumentsContext {
+    /** The type of context data. */
+    type: Corti.DocumentsContextTypeEnum;
+    /** The actual data, which can be an array of facts, a transcript, or a string. */
+    data: Corti.DocumentsContextData;
 }
