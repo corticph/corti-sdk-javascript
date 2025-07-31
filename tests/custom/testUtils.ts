@@ -1,6 +1,8 @@
 import { CortiClient } from '../../src';
 import { faker } from '@faker-js/faker';
 import { createReadStream } from 'fs';
+import { StreamSocket } from '../../src/custom/CustomStreamSocket';
+import { TranscribeSocket } from '../../src/custom/CustomTranscribeSocket';
 
 /**
  * Creates a CortiClient instance configured for testing
@@ -211,4 +213,55 @@ export async function createTestTranscript(
   }
 
   return transcriptResult.id;
+}
+
+/**
+ * Creates a promise that waits for a specific WebSocket message type
+ * Used for testing WebSocket message handling in stream tests
+ */
+export function waitForWebSocketMessage(
+  streamSocket: StreamSocket | TranscribeSocket, 
+  expectedMessageType: string,
+  options: {
+    messages?: any[];
+    rejectOnWrongMessage?: boolean;
+    timeoutMs?: number;
+  } = {}
+): Promise<void> {
+  return new Promise<void>((resolve, reject) => {
+    const { messages = [], rejectOnWrongMessage = false, timeoutMs = 10000 } = options;
+    
+    const timeout = setTimeout(() => {
+      reject(new Error(`Timeout waiting for message type: ${expectedMessageType}`));
+    }, timeoutMs);
+
+    // Check if message already exists in the array
+    if (messages.some((msg: any) => msg.type === expectedMessageType)) {
+      clearTimeout(timeout);
+      resolve();
+      return;
+    }
+
+    const messageHandler = (data: any) => {
+      console.log('incoming message', data);
+      
+      // Add message to the array
+      messages.push(data);
+
+      if (data.type === expectedMessageType) {
+        clearTimeout(timeout);
+        resolve();
+      } else if (rejectOnWrongMessage) {
+        clearTimeout(timeout);
+        reject(new Error(`Unexpected message type: ${data.type}, expected: ${expectedMessageType}`));
+      }
+    };
+
+    streamSocket.on('message', messageHandler);
+
+    streamSocket.on('error', (error: any) => {
+      clearTimeout(timeout);
+      reject(new Error(`WebSocket error: ${error.message}`));
+    });
+  });
 }
