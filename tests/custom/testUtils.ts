@@ -61,6 +61,8 @@ export async function createTestInteraction(
     createdInteractionIds.push(interaction.interactionId);
   }
 
+  await pause();
+
   return interaction.interactionId;
 }
 
@@ -82,6 +84,14 @@ export async function cleanupInteractions(cortiClient: CortiClient, interactionI
  */
 export function setupConsoleWarnSpy(): jest.SpyInstance {
   return jest.spyOn(console, 'warn').mockImplementation(() => {});
+}
+
+/**
+ * Adds a pause to ensure backend processing is complete
+ * @param ms - Duration to pause in milliseconds (default: 1000ms)
+ */
+export function pause(ms: number = 1000): Promise<void> {
+  return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 /**
@@ -141,6 +151,8 @@ export async function createTestFacts(cortiClient: CortiClient, interactionId: s
     .map(fact => fact.id)
     .filter((id): id is string => id !== undefined);
 
+  await pause();
+
   return factIds;
 }
 
@@ -164,6 +176,8 @@ export async function createTestDocument(cortiClient: CortiClient, interactionId
     throw new Error("Document creation failed - no ID returned.");
   }
 
+  await pause();
+
   return response.id;
 }
 
@@ -186,6 +200,8 @@ export async function createTestRecording(
   if (createdRecordingIds) {
     createdRecordingIds.push(uploadResult.recordingId);
   }
+
+  await pause();
 
   return uploadResult.recordingId;
 }
@@ -211,6 +227,8 @@ export async function createTestTranscript(
   if (!transcriptResult.id) {
     throw new Error("Transcript creation failed - no ID returned.");
   }
+
+  await pause();
 
   return transcriptResult.id;
 }

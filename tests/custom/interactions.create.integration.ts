@@ -3,7 +3,7 @@ import { faker } from '@faker-js/faker';
 import { 
   createTestCortiClient, 
   cleanupInteractions, 
-  setupConsoleWarnSpy 
+  setupConsoleWarnSpy
 } from './testUtils';
 
 describe('cortiClient.interactions.create', () => {

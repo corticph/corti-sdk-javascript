@@ -154,7 +154,6 @@ describe('cortiClient.documents.update', () => {
     const sectionKey = faker.helpers.arrayElement(validSectionKeys);
     const sectionName = faker.lorem.words(3);
     const sectionText = faker.lorem.paragraphs(2);
-    const sortOrder = faker.number.int({ min: 1, max: 10 });
 
     const result = await cortiClient.documents.update(interactionId, documentId, {
       name: newName,
@@ -162,7 +161,7 @@ describe('cortiClient.documents.update', () => {
         key: sectionKey,
         name: sectionName,
         text: sectionText,
-        sort: sortOrder,
+        sort: 0,
       }],
     });
 

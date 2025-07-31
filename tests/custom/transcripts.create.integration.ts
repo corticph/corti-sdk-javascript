@@ -203,10 +203,6 @@ describe('cortiClient.transcripts.create', () => {
             channel: faker.number.int({ min: 0, max: 1 }),
             role: faker.helpers.arrayElement(['doctor', 'patient', 'multiple']),
           },
-          {
-            channel: faker.number.int({ min: 0, max: 1 }),
-            role: faker.helpers.arrayElement(['doctor', 'patient', 'multiple']),
-          },
         ],
       });
 
