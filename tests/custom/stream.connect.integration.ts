@@ -14,6 +14,7 @@ describe('cortiClient.stream.connect', () => {
   let cortiClient: CortiClient;
   let createdInteractionIds: string[];
   let consoleWarnSpy: jest.SpyInstance;
+  let activeSockets: any[] = [];
 
   beforeAll(async () => {
     cortiClient = createTestCortiClient();
@@ -22,9 +23,22 @@ describe('cortiClient.stream.connect', () => {
 
   beforeEach(() => {
     consoleWarnSpy = setupConsoleWarnSpy();
+    activeSockets = [];
   });
 
   afterEach(async () => {
+    // Close all active sockets to ensure cleanup
+    activeSockets.forEach(socket => {
+      if (socket && typeof socket.close === 'function') {
+        try {
+          socket.close();
+        } catch (error) {
+          // Ignore errors during cleanup
+        }
+      }
+    });
+    activeSockets = [];
+
     await cleanupInteractions(cortiClient, createdInteractionIds);
     createdInteractionIds = [];
   });
@@ -52,6 +66,7 @@ describe('cortiClient.stream.connect', () => {
           },
         },
       });
+      activeSockets.push(streamSocket);
 
       const messages: any[] = [];
       await waitForWebSocketMessage(streamSocket, 'CONFIG_ACCEPTED', { messages, rejectOnWrongMessage: true });
@@ -61,7 +76,6 @@ describe('cortiClient.stream.connect', () => {
       expect(streamSocket.socket.readyState).toBe(1); // OPEN
       expect(consoleWarnSpy).not.toHaveBeenCalled();
 
-      streamSocket.close();
     });
 
     it('should connect and send configuration manually on open event', async () => {
@@ -72,6 +86,7 @@ describe('cortiClient.stream.connect', () => {
       const streamSocket = await cortiClient.stream.connect({
         id: interactionId,
       });
+      activeSockets.push(streamSocket);
 
       streamSocket.on('open', () => {
         streamSocket.sendConfiguration({
@@ -100,7 +115,6 @@ describe('cortiClient.stream.connect', () => {
       expect(streamSocket.socket.readyState).toBe(1); // OPEN
       expect(consoleWarnSpy).not.toHaveBeenCalled();
 
-      streamSocket.close();
     });
   });
 
@@ -134,6 +148,7 @@ describe('cortiClient.stream.connect', () => {
           },
         },
       });
+      activeSockets.push(streamSocket);
 
       const messages: any[] = [];
       await waitForWebSocketMessage(streamSocket, 'CONFIG_ACCEPTED', { messages, rejectOnWrongMessage: true });
@@ -143,7 +158,6 @@ describe('cortiClient.stream.connect', () => {
       expect(streamSocket.socket.readyState).toBe(1); // OPEN
       expect(consoleWarnSpy).not.toHaveBeenCalled();
 
-      streamSocket.close();
     });
 
     it('should connect and send full configuration manually on open event', async () => {
@@ -154,6 +168,7 @@ describe('cortiClient.stream.connect', () => {
       const streamSocket = await cortiClient.stream.connect({
         id: interactionId,
       });
+      activeSockets.push(streamSocket);
 
       streamSocket.on('open', () => {
         streamSocket.sendConfiguration({
@@ -189,7 +204,6 @@ describe('cortiClient.stream.connect', () => {
       expect(streamSocket.socket.readyState).toBe(1); // OPEN
       expect(consoleWarnSpy).not.toHaveBeenCalled();
 
-      streamSocket.close();
     });
   });
 
@@ -216,6 +230,7 @@ describe('cortiClient.stream.connect', () => {
           },
         },
       });
+      activeSockets.push(streamSocket);
 
       await waitForWebSocketMessage(streamSocket, 'CONFIG_ACCEPTED', { rejectOnWrongMessage: true });
 
@@ -224,7 +239,6 @@ describe('cortiClient.stream.connect', () => {
       expect(streamSocket.socket.readyState).toBe(1); // OPEN
       expect(consoleWarnSpy).not.toHaveBeenCalled();
 
-      streamSocket.close();
     });
 
     it('should connect with patient role', async () => {
@@ -249,6 +263,7 @@ describe('cortiClient.stream.connect', () => {
           },
         },
       });
+      activeSockets.push(streamSocket);
 
       await waitForWebSocketMessage(streamSocket, 'CONFIG_ACCEPTED', { rejectOnWrongMessage: true });
 
@@ -257,7 +272,6 @@ describe('cortiClient.stream.connect', () => {
       expect(streamSocket.socket.readyState).toBe(1); // OPEN
       expect(consoleWarnSpy).not.toHaveBeenCalled();
 
-      streamSocket.close();
     });
 
     it('should connect with multiple role', async () => {
@@ -282,6 +296,7 @@ describe('cortiClient.stream.connect', () => {
           },
         },
       });
+      activeSockets.push(streamSocket);
 
       await waitForWebSocketMessage(streamSocket, 'CONFIG_ACCEPTED', { rejectOnWrongMessage: true });
 
@@ -290,7 +305,6 @@ describe('cortiClient.stream.connect', () => {
       expect(streamSocket.socket.readyState).toBe(1); // OPEN
       expect(consoleWarnSpy).not.toHaveBeenCalled();
 
-      streamSocket.close();
     });
   });
 
@@ -317,6 +331,7 @@ describe('cortiClient.stream.connect', () => {
           },
         },
       });
+      activeSockets.push(streamSocket);
 
       await waitForWebSocketMessage(streamSocket, 'CONFIG_ACCEPTED', { rejectOnWrongMessage: true });
 
@@ -325,7 +340,6 @@ describe('cortiClient.stream.connect', () => {
       expect(streamSocket.socket.readyState).toBe(1); // OPEN
       expect(consoleWarnSpy).not.toHaveBeenCalled();
 
-      streamSocket.close();
     });
 
     it('should connect with transcription mode', async () => {
@@ -350,6 +364,7 @@ describe('cortiClient.stream.connect', () => {
           },
         },
       });
+      activeSockets.push(streamSocket);
 
       await waitForWebSocketMessage(streamSocket, 'CONFIG_ACCEPTED', { rejectOnWrongMessage: true });
 
@@ -358,7 +373,6 @@ describe('cortiClient.stream.connect', () => {
       expect(streamSocket.socket.readyState).toBe(1); // OPEN
       expect(consoleWarnSpy).not.toHaveBeenCalled();
 
-      streamSocket.close();
     });
 
     it('should connect with documentation mode', async () => {
@@ -383,6 +397,7 @@ describe('cortiClient.stream.connect', () => {
           },
         },
       });
+      activeSockets.push(streamSocket);
 
       await waitForWebSocketMessage(streamSocket, 'CONFIG_ACCEPTED', { rejectOnWrongMessage: true });
 
@@ -391,7 +406,6 @@ describe('cortiClient.stream.connect', () => {
       expect(streamSocket.socket.readyState).toBe(1); // OPEN
       expect(consoleWarnSpy).not.toHaveBeenCalled();
 
-      streamSocket.close();
     });
   });
 
@@ -422,6 +436,7 @@ describe('cortiClient.stream.connect', () => {
           },
         },
       });
+      activeSockets.push(streamSocket);
 
       const messages: any[] = [];
       await waitForWebSocketMessage(streamSocket, 'CONFIG_ACCEPTED', { messages, rejectOnWrongMessage: true });
@@ -473,6 +488,7 @@ describe('cortiClient.stream.connect', () => {
           },
         },
       });
+      activeSockets.push(streamSocket);
 
       const messages: any[] = [];
       await waitForWebSocketMessage(streamSocket, 'CONFIG_ACCEPTED', { messages, rejectOnWrongMessage: true });
@@ -522,6 +538,7 @@ describe('cortiClient.stream.connect', () => {
           },
         },
       });
+      activeSockets.push(streamSocket);
 
       const messages: any[] = [];
       await waitForWebSocketMessage(streamSocket, 'CONFIG_DENIED', { messages, rejectOnWrongMessage: true });
@@ -539,6 +556,7 @@ describe('cortiClient.stream.connect', () => {
       const streamSocket = await cortiClient.stream.connect({
         id: interactionId,
       });
+      activeSockets.push(streamSocket);
 
       const messages: any[] = [];
       await waitForWebSocketMessage(streamSocket, 'CONFIG_MISSING', {
@@ -573,6 +591,7 @@ describe('cortiClient.stream.connect', () => {
           },
         },
       });
+      activeSockets.push(streamSocket);
 
       const messages: any[] = [];
       await waitForWebSocketMessage(streamSocket, 'CONFIG_DENIED', { messages, rejectOnWrongMessage: true });
