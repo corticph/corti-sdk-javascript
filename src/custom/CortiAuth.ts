@@ -18,6 +18,8 @@ import * as Corti from "../api/index.js";
 import { mergeHeaders, mergeOnlyDefinedHeaders } from "../core/headers.js";
 import * as serializers from "../serialization/index.js";
 import * as errors from "../errors/index.js";
+import * as environments from "../environments";
+import { getEnvironment } from "./utils/getEnvironmentFromString";
 
 interface AuthorizationCodeClient {
     clientId: string;
@@ -41,7 +43,21 @@ interface Options {
     skipRedirect?: boolean;
 }
 
+type AuthOptions = Omit<FernAuth.Options, 'environment'> & {
+    environment: core.Supplier<environments.CortiEnvironment | environments.CortiEnvironmentUrls> | string;
+}
+
 export class Auth extends FernAuth {
+    /**
+     * Patch: use custom AuthOptions type to support string-based environment
+     */
+    constructor(_options: AuthOptions) {
+        super({
+            ..._options,
+            environment: getEnvironment(_options.environment),
+        });
+    }
+
     /**
      * Patch: called custom implementation this.__getToken_custom instead of this.__getToken
      */

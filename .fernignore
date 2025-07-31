@@ -8,3 +8,12 @@ src/index.ts
 README.md
 AUTHENTICATION.md
 REFERENCE-latest.md
+
+# Integration tests
+tests/custom
+jest.integration.config.mjs
+.github/workflows/integration-tests.yml
+
+# Issue templates
+.github/ISSUE_TEMPLATE
+

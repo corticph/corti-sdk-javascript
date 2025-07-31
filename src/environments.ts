@@ -9,11 +9,6 @@ export interface CortiEnvironmentUrls {
 }
 
 export const CortiEnvironment = {
-    BetaEu: {
-        base: "https://api.beta-eu.corti.app/v2",
-        wss: "wss://api.beta-eu.corti.app",
-        login: "https://auth.beta-eu.corti.app/realms",
-    },
     Eu: {
         base: "https://api.eu.corti.app/v2",
         wss: "wss://api.eu.corti.app",
@@ -26,4 +21,4 @@ export const CortiEnvironment = {
     },
 } as const;
 
-export type CortiEnvironment = typeof CortiEnvironment.BetaEu | typeof CortiEnvironment.Eu | typeof CortiEnvironment.Us;
+export type CortiEnvironment = typeof CortiEnvironment.Eu | typeof CortiEnvironment.Us;

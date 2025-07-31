@@ -24,7 +24,7 @@ For detailed information about Client Credentials flow, see the [official Corti 
 import { CortiEnvironment, CortiClient } from "@corti/sdk";
 
 const client = new CortiClient({
-    environment: CortiEnvironment.BetaEu,
+    environment: CortiEnvironment.Eu,
     tenantName: "YOUR_TENANT_NAME",
     auth: {
         clientId: "YOUR_CLIENT_ID",
@@ -47,7 +47,7 @@ You can generate bearer tokens on your **backend server** using `CortiAuth`:
 import { CortiAuth, CortiEnvironment } from "@corti/sdk";
 
 const auth = new CortiAuth({
-    environment: CortiEnvironment.BetaEu,
+    environment: CortiEnvironment.Eu,
     tenantName: "YOUR_TENANT_NAME",
 });
 
@@ -72,7 +72,7 @@ interface GetTokenResponse {
 
 ```typescript
 const client = new CortiClient({
-    environment: CortiEnvironment.BetaEu,
+    environment: CortiEnvironment.Eu,
     tenantName: "YOUR_TENANT_NAME",
     auth: {
         accessToken: "YOUR_ACCESS_TOKEN",
@@ -86,7 +86,7 @@ The SDK can automatically refresh tokens when they expire:
 
 ```typescript
 const client = new CortiClient({
-    environment: CortiEnvironment.BetaEu,
+    environment: CortiEnvironment.Eu,
     tenantName: "YOUR_TENANT_NAME",
     auth: {
         accessToken: "YOUR_ACCESS_TOKEN",
@@ -138,7 +138,7 @@ For detailed information about Authorization Code Flow, see the [official Corti 
 import { CortiAuth, CortiEnvironment } from "@corti/sdk";
 
 const auth = new CortiAuth({
-    environment: CortiEnvironment.BetaEu,
+    environment: CortiEnvironment.Eu,
     tenantName: "YOUR_TENANT_NAME",
 });
 
@@ -199,7 +199,7 @@ const app = express();
 app.use(express.json());
 
 const auth = new CortiAuth({
-    environment: CortiEnvironment.BetaEu,
+    environment: CortiEnvironment.Eu,
     tenantName: "YOUR_TENANT_NAME",
 });
 
@@ -264,7 +264,7 @@ Once you have the tokens from your backend server, you can create a `CortiClient
 ```typescript
 // Frontend: Create CortiClient with tokens from server
 const client = new CortiClient({
-    environment: CortiEnvironment.BetaEu,
+    environment: CortiEnvironment.Eu,
     tenantName: "YOUR_TENANT_NAME",
     auth: {
         ...token, // Spread the token object received from /api/auth/callback
