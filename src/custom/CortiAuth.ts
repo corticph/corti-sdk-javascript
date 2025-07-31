@@ -18,8 +18,8 @@ import * as Corti from "../api/index.js";
 import { mergeHeaders, mergeOnlyDefinedHeaders } from "../core/headers.js";
 import * as serializers from "../serialization/index.js";
 import * as errors from "../errors/index.js";
-import * as environments from "../environments";
-import { getEnvironment } from "./utils/getEnvironmentFromString";
+import * as environments from "../environments.js";
+import { getEnvironment } from "./utils/getEnvironmentFromString.js";
 
 interface AuthorizationCodeClient {
     clientId: string;

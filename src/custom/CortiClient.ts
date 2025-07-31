@@ -43,7 +43,7 @@ import { BearerOptions, RefreshBearerProvider } from "./RefreshBearerProvider.js
  * Patch: added SDK_VERSION import
  */
 import { SDK_VERSION } from '../version.js';
-import { getEnvironment } from "./utils/getEnvironmentFromString";
+import { getEnvironment } from "./utils/getEnvironmentFromString.js";
 
 export declare namespace CortiClient {
     /**
