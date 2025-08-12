@@ -5,17 +5,17 @@
 import * as serializers from "../index.js";
 import * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
-import { TranscriptsParticipant } from "./TranscriptsParticipant.js";
+import { TranscriptsMetadataParticipantsRolesItem } from "./TranscriptsMetadataParticipantsRolesItem.js";
 
 export const TranscriptsMetadata: core.serialization.ObjectSchema<
     serializers.TranscriptsMetadata.Raw,
     Corti.TranscriptsMetadata
 > = core.serialization.object({
-    participantsRoles: core.serialization.list(TranscriptsParticipant).optionalNullable(),
+    participantsRoles: core.serialization.list(TranscriptsMetadataParticipantsRolesItem).optionalNullable(),
 });
 
 export declare namespace TranscriptsMetadata {
     export interface Raw {
-        participantsRoles?: (TranscriptsParticipant.Raw[] | null) | null;
+        participantsRoles?: (TranscriptsMetadataParticipantsRolesItem.Raw[] | null) | null;
     }
 }

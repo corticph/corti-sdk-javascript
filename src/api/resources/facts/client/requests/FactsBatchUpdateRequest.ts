@@ -8,11 +8,11 @@ import * as Corti from "../../../../index.js";
  * @example
  *     {
  *         facts: [{
- *                 factId: "f47ac10b-58cc-4372-a567-0e02b2c3d479"
+ *                 factId: "factId"
  *             }]
  *     }
  */
 export interface FactsBatchUpdateRequest {
     /** A list of facts to be updated. */
-    facts: Corti.FactsBatchUpdateInput[];
+    facts: Corti.FactsBatchUpdateRequestFactsItem[];
 }
