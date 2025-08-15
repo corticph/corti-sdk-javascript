@@ -19,6 +19,6 @@ export const DocumentsContext: core.serialization.ObjectSchema<
 export declare namespace DocumentsContext {
     export interface Raw {
         type: DocumentsContextTypeEnum.Raw;
-        data: DocumentsContextData.Raw;
+        data?: DocumentsContextData.Raw;
     }
 }

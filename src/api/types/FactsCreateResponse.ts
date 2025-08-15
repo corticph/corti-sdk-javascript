@@ -6,5 +6,5 @@ import * as Corti from "../index.js";
 
 export interface FactsCreateResponse {
     /** A list of successfully created facts. */
-    facts: Corti.FactsCreateItem[];
+    facts: Corti.FactsCreateResponseFactsItem[];
 }
