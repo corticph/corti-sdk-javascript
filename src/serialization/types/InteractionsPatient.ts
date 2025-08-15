@@ -5,7 +5,7 @@
 import * as serializers from "../index.js";
 import * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
-import { InteractionsGenderEnum } from "./InteractionsGenderEnum.js";
+import { GenderEnum } from "./GenderEnum.js";
 
 export const InteractionsPatient: core.serialization.ObjectSchema<
     serializers.InteractionsPatient.Raw,
@@ -13,7 +13,7 @@ export const InteractionsPatient: core.serialization.ObjectSchema<
 > = core.serialization.object({
     identifier: core.serialization.string(),
     name: core.serialization.string().optionalNullable(),
-    gender: InteractionsGenderEnum.optional(),
+    gender: GenderEnum.optional(),
     birthDate: core.serialization.date().optionalNullable(),
     pronouns: core.serialization.string().optionalNullable(),
 });
@@ -22,7 +22,7 @@ export declare namespace InteractionsPatient {
     export interface Raw {
         identifier: string;
         name?: (string | null) | null;
-        gender?: InteractionsGenderEnum.Raw | null;
+        gender?: GenderEnum.Raw | null;
         birthDate?: (string | null) | null;
         pronouns?: (string | null) | null;
     }
