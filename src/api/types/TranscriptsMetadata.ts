@@ -5,5 +5,5 @@
 import * as Corti from "../index.js";
 
 export interface TranscriptsMetadata {
-    participantsRoles?: Corti.TranscriptsParticipant[] | null;
+    participantsRoles?: Corti.TranscriptsMetadataParticipantsRolesItem[] | null;
 }
