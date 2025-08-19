@@ -6,7 +6,7 @@ import * as serializers from "../index.js";
 import * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
 import { Uuid } from "./Uuid.js";
-import { DocumentsSection } from "./DocumentsSection.js";
+import { DocumentsGetResponseSectionsItem } from "./DocumentsGetResponseSectionsItem.js";
 import { CommonUsageInfo } from "./CommonUsageInfo.js";
 
 export const DocumentsGetResponse: core.serialization.ObjectSchema<
@@ -17,7 +17,7 @@ export const DocumentsGetResponse: core.serialization.ObjectSchema<
     name: core.serialization.string(),
     templateRef: core.serialization.string(),
     isStream: core.serialization.boolean(),
-    sections: core.serialization.list(DocumentsSection),
+    sections: core.serialization.list(DocumentsGetResponseSectionsItem),
     createdAt: core.serialization.date(),
     updatedAt: core.serialization.date(),
     outputLanguage: core.serialization.string(),
@@ -30,7 +30,7 @@ export declare namespace DocumentsGetResponse {
         name: string;
         templateRef: string;
         isStream: boolean;
-        sections: DocumentsSection.Raw[];
+        sections: DocumentsGetResponseSectionsItem.Raw[];
         createdAt: string;
         updatedAt: string;
         outputLanguage: string;

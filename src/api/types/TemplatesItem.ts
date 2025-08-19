@@ -16,7 +16,7 @@ export interface TemplatesItem {
     /** Status of the template. */
     status: string;
     /** List of sections included in the template */
-    templateSections: Corti.TemplatesSectionSorted[];
+    templateSections: Corti.TemplatesItemTemplateSectionsItem[];
     /** Available translations for the template */
-    translations: Corti.TemplatesTranslation[];
+    translations: Corti.TemplatesItemTranslationsItem[];
 }

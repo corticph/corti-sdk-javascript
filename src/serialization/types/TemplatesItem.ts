@@ -5,8 +5,8 @@
 import * as serializers from "../index.js";
 import * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
-import { TemplatesSectionSorted } from "./TemplatesSectionSorted.js";
-import { TemplatesTranslation } from "./TemplatesTranslation.js";
+import { TemplatesItemTemplateSectionsItem } from "./TemplatesItemTemplateSectionsItem.js";
+import { TemplatesItemTranslationsItem } from "./TemplatesItemTranslationsItem.js";
 
 export const TemplatesItem: core.serialization.ObjectSchema<serializers.TemplatesItem.Raw, Corti.TemplatesItem> =
     core.serialization.object({
@@ -17,9 +17,9 @@ export const TemplatesItem: core.serialization.ObjectSchema<serializers.Template
         status: core.serialization.string(),
         templateSections: core.serialization.property(
             "template_sections",
-            core.serialization.list(TemplatesSectionSorted),
+            core.serialization.list(TemplatesItemTemplateSectionsItem),
         ),
-        translations: core.serialization.list(TemplatesTranslation),
+        translations: core.serialization.list(TemplatesItemTranslationsItem),
     });
 
 export declare namespace TemplatesItem {
@@ -29,7 +29,7 @@ export declare namespace TemplatesItem {
         description: string;
         key: string;
         status: string;
-        template_sections: TemplatesSectionSorted.Raw[];
-        translations: TemplatesTranslation.Raw[];
+        template_sections: TemplatesItemTemplateSectionsItem.Raw[];
+        translations: TemplatesItemTranslationsItem.Raw[];
     }
 }
