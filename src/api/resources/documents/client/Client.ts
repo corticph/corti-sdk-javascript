@@ -45,7 +45,7 @@ export class Documents {
     /**
      *  List Documents
      *
-     * @param {Corti.Uuid} id - The unique identifier of the interaction. Must be a valid UUID.
+     * @param {string} id - The interaction ID representing the context for the request. Must be a valid UUID.
      * @param {Documents.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Corti.BadRequestError}
@@ -54,24 +54,24 @@ export class Documents {
      * @throws {@link Corti.GatewayTimeoutError}
      *
      * @example
-     *     await client.documents.list("f47ac10b-58cc-4372-a567-0e02b2c3d479")
+     *     await client.documents.listDocuments("id")
      */
-    public list(
-        id: Corti.Uuid,
+    public listDocuments(
+        id: string,
         requestOptions?: Documents.RequestOptions,
     ): core.HttpResponsePromise<Corti.DocumentsListResponse> {
-        return core.HttpResponsePromise.fromPromise(this.__list(id, requestOptions));
+        return core.HttpResponsePromise.fromPromise(this.__listDocuments(id, requestOptions));
     }
 
-    private async __list(
-        id: Corti.Uuid,
+    private async __listDocuments(
+        id: string,
         requestOptions?: Documents.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.DocumentsListResponse>> {
         const _response = await core.fetcher({
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
                     (await core.Supplier.get(this._options.environment)).base,
-                `interactions/${encodeURIComponent(serializers.Uuid.jsonOrThrow(id, { omitUndefined: true }))}/documents/`,
+                `interactions/${encodeURIComponent(id)}/documents/`,
             ),
             method: "GET",
             headers: mergeHeaders(
@@ -156,7 +156,7 @@ export class Documents {
     /**
      *  Generate Document.
      *
-     * @param {Corti.Uuid} id - The unique identifier of the interaction. Must be a valid UUID.
+     * @param {string} id - The interaction ID representing the context for the request. Must be a valid UUID.
      * @param {Corti.DocumentsCreateRequest} request
      * @param {Documents.RequestOptions} requestOptions - Request-specific configuration.
      *
@@ -166,28 +166,22 @@ export class Documents {
      * @throws {@link Corti.GatewayTimeoutError}
      *
      * @example
-     *     await client.documents.create("f47ac10b-58cc-4372-a567-0e02b2c3d479", {
-     *         context: [{
-     *                 type: "facts",
-     *                 data: [{
-     *                         text: "text",
-     *                         source: "core"
-     *                     }]
-     *             }],
+     *     await client.documents.generateDocument("id", {
+     *         context: [],
      *         templateKey: "templateKey",
      *         outputLanguage: "outputLanguage"
      *     })
      */
-    public create(
-        id: Corti.Uuid,
+    public generateDocument(
+        id: string,
         request: Corti.DocumentsCreateRequest,
         requestOptions?: Documents.RequestOptions,
     ): core.HttpResponsePromise<Corti.DocumentsGetResponse> {
-        return core.HttpResponsePromise.fromPromise(this.__create(id, request, requestOptions));
+        return core.HttpResponsePromise.fromPromise(this.__generateDocument(id, request, requestOptions));
     }
 
-    private async __create(
-        id: Corti.Uuid,
+    private async __generateDocument(
+        id: string,
         request: Corti.DocumentsCreateRequest,
         requestOptions?: Documents.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.DocumentsGetResponse>> {
@@ -195,7 +189,7 @@ export class Documents {
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
                     (await core.Supplier.get(this._options.environment)).base,
-                `interactions/${encodeURIComponent(serializers.Uuid.jsonOrThrow(id, { omitUndefined: true }))}/documents/`,
+                `interactions/${encodeURIComponent(id)}/documents/`,
             ),
             method: "POST",
             headers: mergeHeaders(
@@ -286,8 +280,9 @@ export class Documents {
     /**
      *  Get Document.
      *
-     * @param {Corti.Uuid} id - The unique identifier of the interaction. Must be a valid UUID.
-     * @param {Corti.Uuid} documentId - The document ID representing the context for the request. Must be a valid UUID.
+     * @param {string} id - The interaction ID representing the context for the request. Must be a valid UUID.
+     * @param {string} documentId - The document ID representing the context for the request. Must be a valid UUID.
+     * @param {Corti.GetInteractionsIdDocumentsDocumentIdRequest} request
      * @param {Documents.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Corti.BadRequestError}
@@ -296,26 +291,34 @@ export class Documents {
      * @throws {@link Corti.GatewayTimeoutError}
      *
      * @example
-     *     await client.documents.get("f47ac10b-58cc-4372-a567-0e02b2c3d479", "f47ac10b-58cc-4372-a567-0e02b2c3d479")
+     *     await client.documents.getDocument("id", "documentId")
      */
-    public get(
-        id: Corti.Uuid,
-        documentId: Corti.Uuid,
+    public getDocument(
+        id: string,
+        documentId: string,
+        request: Corti.GetInteractionsIdDocumentsDocumentIdRequest = {},
         requestOptions?: Documents.RequestOptions,
     ): core.HttpResponsePromise<Corti.DocumentsGetResponse> {
-        return core.HttpResponsePromise.fromPromise(this.__get(id, documentId, requestOptions));
+        return core.HttpResponsePromise.fromPromise(this.__getDocument(id, documentId, request, requestOptions));
     }
 
-    private async __get(
-        id: Corti.Uuid,
-        documentId: Corti.Uuid,
+    private async __getDocument(
+        id: string,
+        documentId: string,
+        request: Corti.GetInteractionsIdDocumentsDocumentIdRequest = {},
         requestOptions?: Documents.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.DocumentsGetResponse>> {
+        const { context } = request;
+        const _queryParams: Record<string, string | string[] | object | object[] | null> = {};
+        if (context !== undefined) {
+            _queryParams["context"] = context?.toString() ?? null;
+        }
+
         const _response = await core.fetcher({
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
                     (await core.Supplier.get(this._options.environment)).base,
-                `interactions/${encodeURIComponent(serializers.Uuid.jsonOrThrow(id, { omitUndefined: true }))}/documents/${encodeURIComponent(serializers.Uuid.jsonOrThrow(documentId, { omitUndefined: true }))}`,
+                `interactions/${encodeURIComponent(id)}/documents/${encodeURIComponent(documentId)}`,
             ),
             method: "GET",
             headers: mergeHeaders(
@@ -326,6 +329,7 @@ export class Documents {
                 }),
                 requestOptions?.headers,
             ),
+            queryParameters: _queryParams,
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
             maxRetries: requestOptions?.maxRetries,
             abortSignal: requestOptions?.abortSignal,
@@ -400,8 +404,8 @@ export class Documents {
     }
 
     /**
-     * @param {Corti.Uuid} id - The unique identifier of the interaction. Must be a valid UUID.
-     * @param {Corti.Uuid} documentId - The document ID representing the context for the request. Must be a valid UUID.
+     * @param {string} id - The interaction ID representing the context for the request. Must be a valid UUID.
+     * @param {string} documentId - The document ID representing the context for the request. Must be a valid UUID.
      * @param {Documents.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Corti.ForbiddenError}
@@ -410,26 +414,26 @@ export class Documents {
      * @throws {@link Corti.GatewayTimeoutError}
      *
      * @example
-     *     await client.documents.delete("f47ac10b-58cc-4372-a567-0e02b2c3d479", "f47ac10b-58cc-4372-a567-0e02b2c3d479")
+     *     await client.documents.deleteDocument("id", "documentId")
      */
-    public delete(
-        id: Corti.Uuid,
-        documentId: Corti.Uuid,
+    public deleteDocument(
+        id: string,
+        documentId: string,
         requestOptions?: Documents.RequestOptions,
     ): core.HttpResponsePromise<void> {
-        return core.HttpResponsePromise.fromPromise(this.__delete(id, documentId, requestOptions));
+        return core.HttpResponsePromise.fromPromise(this.__deleteDocument(id, documentId, requestOptions));
     }
 
-    private async __delete(
-        id: Corti.Uuid,
-        documentId: Corti.Uuid,
+    private async __deleteDocument(
+        id: string,
+        documentId: string,
         requestOptions?: Documents.RequestOptions,
     ): Promise<core.WithRawResponse<void>> {
         const _response = await core.fetcher({
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
                     (await core.Supplier.get(this._options.environment)).base,
-                `interactions/${encodeURIComponent(serializers.Uuid.jsonOrThrow(id, { omitUndefined: true }))}/documents/${encodeURIComponent(serializers.Uuid.jsonOrThrow(documentId, { omitUndefined: true }))}`,
+                `interactions/${encodeURIComponent(id)}/documents/${encodeURIComponent(documentId)}`,
             ),
             method: "DELETE",
             headers: mergeHeaders(
@@ -514,8 +518,8 @@ export class Documents {
     }
 
     /**
-     * @param {Corti.Uuid} id - The unique identifier of the interaction. Must be a valid UUID.
-     * @param {Corti.Uuid} documentId - The document ID representing the context for the request. Must be a valid UUID.
+     * @param {string} id - The interaction ID representing the context for the request. Must be a valid UUID.
+     * @param {string} documentId - The document ID representing the context for the request. Must be a valid UUID.
      * @param {Corti.DocumentsUpdateRequest} request
      * @param {Documents.RequestOptions} requestOptions - Request-specific configuration.
      *
@@ -525,20 +529,20 @@ export class Documents {
      * @throws {@link Corti.GatewayTimeoutError}
      *
      * @example
-     *     await client.documents.update("f47ac10b-58cc-4372-a567-0e02b2c3d479", "f47ac10b-58cc-4372-a567-0e02b2c3d479")
+     *     await client.documents.updateDocument("id", "documentId")
      */
-    public update(
-        id: Corti.Uuid,
-        documentId: Corti.Uuid,
+    public updateDocument(
+        id: string,
+        documentId: string,
         request: Corti.DocumentsUpdateRequest = {},
         requestOptions?: Documents.RequestOptions,
     ): core.HttpResponsePromise<Corti.DocumentsGetResponse> {
-        return core.HttpResponsePromise.fromPromise(this.__update(id, documentId, request, requestOptions));
+        return core.HttpResponsePromise.fromPromise(this.__updateDocument(id, documentId, request, requestOptions));
     }
 
-    private async __update(
-        id: Corti.Uuid,
-        documentId: Corti.Uuid,
+    private async __updateDocument(
+        id: string,
+        documentId: string,
         request: Corti.DocumentsUpdateRequest = {},
         requestOptions?: Documents.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.DocumentsGetResponse>> {
@@ -546,7 +550,7 @@ export class Documents {
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
                     (await core.Supplier.get(this._options.environment)).base,
-                `interactions/${encodeURIComponent(serializers.Uuid.jsonOrThrow(id, { omitUndefined: true }))}/documents/${encodeURIComponent(serializers.Uuid.jsonOrThrow(documentId, { omitUndefined: true }))}`,
+                `interactions/${encodeURIComponent(id)}/documents/${encodeURIComponent(documentId)}`,
             ),
             method: "PATCH",
             headers: mergeHeaders(
