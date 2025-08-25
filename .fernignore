@@ -17,3 +17,5 @@ jest.integration.config.mjs
 # Issue templates
 .github/ISSUE_TEMPLATE
 
+# Temporary fix
+src/core/file/file.ts
