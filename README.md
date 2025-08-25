@@ -1,20 +1,19 @@
-# Corti TypeScript Library
+# Corti JavaScript Library
 
-[![fern shield](https://img.shields.io/badge/%F0%9F%8C%BF-Built%20with%20Fern-brightgreen)](https://buildwithfern.com?utm_source=github&utm_medium=github&utm_campaign=readme&utm_source=https%3A%2F%2Fgithub.com%2Fcorticph%2Fcorti-sdk-typescript)
+[![fern shield](https://img.shields.io/badge/%F0%9F%8C%BF-Built%20with%20Fern-brightgreen)](https://buildwithfern.com?utm_source=github&utm_medium=github&utm_campaign=readme&utm_source=https%3A%2F%2Fgithub.com%2Fcorticph%2Fcorti-sdk-javascript)
 [![npm shield](https://img.shields.io/npm/v/@corti/sdk)](https://www.npmjs.com/package/@corti/sdk)
 
 > [!WARNING]
-> This is an **alpha version** of the Corti TypeScript SDK library. As such, there will be breaking changes in future releases as we work toward our beta version. Additionally, types might not always match the actual API reality, and some features may be missing or incomplete. We're actively working to improve the library and would greatly appreciate any feedback if you encounter any inconsistencies or issues 💚
+> This is a **Beta version** of the Corti JavaScript SDK library. We are treating it as stable for production use, but
+> there may still be breaking changes before we reach version 1.0. We're actively working to improve the library and would greatly
+> appreciate any feedback if you encounter any inconsistencies or issues 💚
 
-The Corti TypeScript library provides convenient access to the Corti API from TypeScript.
+The Corti JavaScript library provides convenient access to the Corti API from JavaScript.
 
 ## Installation
 
-> [!NOTE]
-> You must install the alpha version as the latest version is essentially empty. Use the command below to get the functional SDK.
-
 ```sh
-npm i -s @corti/sdk@alpha
+npm i -s @corti/sdk
 ```
 
 ## Reference
