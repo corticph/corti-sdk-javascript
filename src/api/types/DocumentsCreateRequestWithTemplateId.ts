@@ -5,7 +5,7 @@
 import * as Corti from "../index.js";
 
 export interface DocumentsCreateRequestWithTemplateId {
-    /** An array of context objects. */
+    /** An array of context objects. Currently accepts exactly one context object to be used as input for document generation. */
     context: Corti.DocumentsContext[];
     /** The UUID of the template to use. */
     templateId: Corti.Uuid;
