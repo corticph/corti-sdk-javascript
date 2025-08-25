@@ -2,7 +2,7 @@
     "name": "@corti/sdk",
     "version": "0.1.5-alpha",
     "private": false,
-    "repository": "github:corticph/corti-sdk-typescript",
+    "repository": "github:corticph/corti-sdk-javascript",
     "license": "MIT",
     "type": "commonjs",
     "main": "./dist/cjs/index.js",
