@@ -19,3 +19,4 @@ jest.integration.config.mjs
 
 # Temporary fix
 src/core/file/file.ts
+tests/unit/file/file.test.ts
