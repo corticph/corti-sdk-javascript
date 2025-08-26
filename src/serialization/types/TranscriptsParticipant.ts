@@ -5,19 +5,19 @@
 import * as serializers from "../index.js";
 import * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
-import { TranscriptsParticipantRoleEnum } from "./TranscriptsParticipantRoleEnum.js";
+import { TranscriptParticipantRoleEnum } from "./TranscriptParticipantRoleEnum.js";
 
 export const TranscriptsParticipant: core.serialization.ObjectSchema<
     serializers.TranscriptsParticipant.Raw,
     Corti.TranscriptsParticipant
 > = core.serialization.object({
     channel: core.serialization.number(),
-    role: TranscriptsParticipantRoleEnum,
+    role: TranscriptParticipantRoleEnum,
 });
 
 export declare namespace TranscriptsParticipant {
     export interface Raw {
         channel: number;
-        role: TranscriptsParticipantRoleEnum.Raw;
+        role: TranscriptParticipantRoleEnum.Raw;
     }
 }

@@ -5,17 +5,17 @@
 import * as serializers from "../index.js";
 import * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
-import { FactsFactGroupsItem } from "./FactsFactGroupsItem.js";
+import { FactsFactGroupsListResponseDataItem } from "./FactsFactGroupsListResponseDataItem.js";
 
 export const FactsFactGroupsListResponse: core.serialization.ObjectSchema<
     serializers.FactsFactGroupsListResponse.Raw,
     Corti.FactsFactGroupsListResponse
 > = core.serialization.object({
-    data: core.serialization.list(FactsFactGroupsItem),
+    data: core.serialization.list(FactsFactGroupsListResponseDataItem),
 });
 
 export declare namespace FactsFactGroupsListResponse {
     export interface Raw {
-        data: FactsFactGroupsItem.Raw[];
+        data: FactsFactGroupsListResponseDataItem.Raw[];
     }
 }

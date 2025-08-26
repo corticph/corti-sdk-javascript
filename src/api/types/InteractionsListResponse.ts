@@ -5,5 +5,5 @@
 import * as Corti from "../index.js";
 
 export interface InteractionsListResponse {
-    interactions: Corti.InteractionsGetResponse[];
+    interactions: Corti.InteractionsListResponseInteractionsItem[];
 }
