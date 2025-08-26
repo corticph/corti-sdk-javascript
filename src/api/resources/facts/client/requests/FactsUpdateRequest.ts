@@ -6,15 +6,18 @@ import * as Corti from "../../../../index.js";
 
 /**
  * @example
- *     {}
+ *     {
+ *         text: "text",
+ *         source: "core"
+ *     }
  */
 export interface FactsUpdateRequest {
     /** The updated text of the fact. */
-    text?: string;
+    text: string;
     /** The updated group key for the fact. */
     group?: string;
     /** The updated origin of the fact. */
-    source?: Corti.CommonSourceEnum;
+    source: Corti.CommonSourceEnum;
     /** Indicates whether the fact should be marked as discarded. */
     isDiscarded?: boolean;
 }
