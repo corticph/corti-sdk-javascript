@@ -5,17 +5,17 @@
 import * as serializers from "../index.js";
 import * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
-import { InteractionsGetResponse } from "./InteractionsGetResponse.js";
+import { InteractionsListResponseInteractionsItem } from "./InteractionsListResponseInteractionsItem.js";
 
 export const InteractionsListResponse: core.serialization.ObjectSchema<
     serializers.InteractionsListResponse.Raw,
     Corti.InteractionsListResponse
 > = core.serialization.object({
-    interactions: core.serialization.list(InteractionsGetResponse),
+    interactions: core.serialization.list(InteractionsListResponseInteractionsItem),
 });
 
 export declare namespace InteractionsListResponse {
     export interface Raw {
-        interactions: InteractionsGetResponse.Raw[];
+        interactions: InteractionsListResponseInteractionsItem.Raw[];
     }
 }
