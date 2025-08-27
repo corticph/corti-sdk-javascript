@@ -5,19 +5,19 @@
 import * as serializers from "../../../../index.js";
 import * as Corti from "../../../../../api/index.js";
 import * as core from "../../../../../core/index.js";
-import { DocumentsSectionInput } from "../../../../types/DocumentsSectionInput.js";
+import { DocumentsUpdateRequestSectionsItem } from "../../types/DocumentsUpdateRequestSectionsItem.js";
 
 export const DocumentsUpdateRequest: core.serialization.Schema<
     serializers.DocumentsUpdateRequest.Raw,
     Corti.DocumentsUpdateRequest
 > = core.serialization.object({
     name: core.serialization.string().optional(),
-    sections: core.serialization.list(DocumentsSectionInput).optional(),
+    sections: core.serialization.list(DocumentsUpdateRequestSectionsItem).optional(),
 });
 
 export declare namespace DocumentsUpdateRequest {
     export interface Raw {
         name?: string | null;
-        sections?: DocumentsSectionInput.Raw[] | null;
+        sections?: DocumentsUpdateRequestSectionsItem.Raw[] | null;
     }
 }
