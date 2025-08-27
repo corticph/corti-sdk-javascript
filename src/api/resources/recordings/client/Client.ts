@@ -45,7 +45,7 @@ export class Recordings {
     /**
      *  Retrieve a list of recordings for a given interaction.
      *
-     * @param {Corti.Uuid} id - The unique identifier of the interaction. Must be a valid UUID.
+     * @param {string} id - The unique identifier of the interaction for which recordings should be retrieved. Must be a valid UUID.
      * @param {Recordings.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Corti.BadRequestError}
@@ -54,24 +54,24 @@ export class Recordings {
      * @throws {@link Corti.GatewayTimeoutError}
      *
      * @example
-     *     await client.recordings.list("f47ac10b-58cc-4372-a567-0e02b2c3d479")
+     *     await client.recordings.listRecordings("id")
      */
-    public list(
-        id: Corti.Uuid,
+    public listRecordings(
+        id: string,
         requestOptions?: Recordings.RequestOptions,
     ): core.HttpResponsePromise<Corti.RecordingsListResponse> {
-        return core.HttpResponsePromise.fromPromise(this.__list(id, requestOptions));
+        return core.HttpResponsePromise.fromPromise(this.__listRecordings(id, requestOptions));
     }
 
-    private async __list(
-        id: Corti.Uuid,
+    private async __listRecordings(
+        id: string,
         requestOptions?: Recordings.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.RecordingsListResponse>> {
         const _response = await core.fetcher({
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
                     (await core.Supplier.get(this._options.environment)).base,
-                `interactions/${encodeURIComponent(serializers.Uuid.jsonOrThrow(id, { omitUndefined: true }))}/recordings/`,
+                `interactions/${encodeURIComponent(id)}/recordings/`,
             ),
             method: "GET",
             headers: mergeHeaders(
@@ -157,7 +157,7 @@ export class Recordings {
      *  Upload a recording for a given interaction. There is a maximum limit of 60 minutes in length and 150MB in size for recordings.
      *
      * @param {core.file.Uploadable} uploadable
-     * @param {Corti.Uuid} id
+     * @param {string} id
      * @param {Recordings.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Corti.BadRequestError}
@@ -165,17 +165,17 @@ export class Recordings {
      * @throws {@link Corti.InternalServerError}
      * @throws {@link Corti.GatewayTimeoutError}
      */
-    public upload(
+    public uploadRecording(
         uploadable: core.file.Uploadable,
-        id: Corti.Uuid,
+        id: string,
         requestOptions?: Recordings.RequestOptions,
     ): core.HttpResponsePromise<Corti.RecordingsCreateResponse> {
-        return core.HttpResponsePromise.fromPromise(this.__upload(uploadable, id, requestOptions));
+        return core.HttpResponsePromise.fromPromise(this.__uploadRecording(uploadable, id, requestOptions));
     }
 
-    private async __upload(
+    private async __uploadRecording(
         uploadable: core.file.Uploadable,
-        id: Corti.Uuid,
+        id: string,
         requestOptions?: Recordings.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.RecordingsCreateResponse>> {
         const _binaryUploadRequest = await core.file.toBinaryUploadRequest(uploadable);
@@ -183,7 +183,7 @@ export class Recordings {
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
                     (await core.Supplier.get(this._options.environment)).base,
-                `interactions/${encodeURIComponent(serializers.Uuid.jsonOrThrow(id, { omitUndefined: true }))}/recordings/`,
+                `interactions/${encodeURIComponent(id)}/recordings/`,
             ),
             method: "POST",
             headers: mergeHeaders(
@@ -280,24 +280,24 @@ export class Recordings {
      * @throws {@link Corti.InternalServerError}
      * @throws {@link Corti.GatewayTimeoutError}
      */
-    public get(
-        id: Corti.Uuid,
-        recordingId: Corti.Uuid,
+    public getRecording(
+        id: string,
+        recordingId: string,
         requestOptions?: Recordings.RequestOptions,
     ): core.HttpResponsePromise<core.BinaryResponse> {
-        return core.HttpResponsePromise.fromPromise(this.__get(id, recordingId, requestOptions));
+        return core.HttpResponsePromise.fromPromise(this.__getRecording(id, recordingId, requestOptions));
     }
 
-    private async __get(
-        id: Corti.Uuid,
-        recordingId: Corti.Uuid,
+    private async __getRecording(
+        id: string,
+        recordingId: string,
         requestOptions?: Recordings.RequestOptions,
     ): Promise<core.WithRawResponse<core.BinaryResponse>> {
         const _response = await core.fetcher<core.BinaryResponse>({
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
                     (await core.Supplier.get(this._options.environment)).base,
-                `interactions/${encodeURIComponent(serializers.Uuid.jsonOrThrow(id, { omitUndefined: true }))}/recordings/${encodeURIComponent(serializers.Uuid.jsonOrThrow(recordingId, { omitUndefined: true }))}`,
+                `interactions/${encodeURIComponent(id)}/recordings/${encodeURIComponent(recordingId)}`,
             ),
             method: "GET",
             headers: mergeHeaders(
@@ -387,8 +387,8 @@ export class Recordings {
     /**
      *  Delete a specific recording for a given interaction.
      *
-     * @param {Corti.Uuid} id - The unique identifier of the interaction. Must be a valid UUID.
-     * @param {Corti.Uuid} recordingId - The unique identifier of the recording. Must be a valid UUID.
+     * @param {string} id - The unique identifier of the interaction for which the recording should be deleted from. Must be a valid UUID.
+     * @param {string} recordingId - The unique identifier of the recording to be deleted. Must be a valid UUID.
      * @param {Recordings.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Corti.ForbiddenError}
@@ -397,26 +397,26 @@ export class Recordings {
      * @throws {@link Corti.GatewayTimeoutError}
      *
      * @example
-     *     await client.recordings.delete("f47ac10b-58cc-4372-a567-0e02b2c3d479", "f47ac10b-58cc-4372-a567-0e02b2c3d479")
+     *     await client.recordings.deleteRecording("id", "recordingId")
      */
-    public delete(
-        id: Corti.Uuid,
-        recordingId: Corti.Uuid,
+    public deleteRecording(
+        id: string,
+        recordingId: string,
         requestOptions?: Recordings.RequestOptions,
     ): core.HttpResponsePromise<void> {
-        return core.HttpResponsePromise.fromPromise(this.__delete(id, recordingId, requestOptions));
+        return core.HttpResponsePromise.fromPromise(this.__deleteRecording(id, recordingId, requestOptions));
     }
 
-    private async __delete(
-        id: Corti.Uuid,
-        recordingId: Corti.Uuid,
+    private async __deleteRecording(
+        id: string,
+        recordingId: string,
         requestOptions?: Recordings.RequestOptions,
     ): Promise<core.WithRawResponse<void>> {
         const _response = await core.fetcher({
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
                     (await core.Supplier.get(this._options.environment)).base,
-                `interactions/${encodeURIComponent(serializers.Uuid.jsonOrThrow(id, { omitUndefined: true }))}/recordings/${encodeURIComponent(serializers.Uuid.jsonOrThrow(recordingId, { omitUndefined: true }))}`,
+                `interactions/${encodeURIComponent(id)}/recordings/${encodeURIComponent(recordingId)}`,
             ),
             method: "DELETE",
             headers: mergeHeaders(

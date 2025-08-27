@@ -4,4 +4,13 @@
 
 import * as Corti from "../index.js";
 
-export type DocumentsTemplate = Corti.DocumentsTemplateWithSectionKeys | Corti.DocumentsTemplateWithSectionIds;
+export interface DocumentsTemplate {
+    /** An array of section IDs. */
+    sectionIds?: Corti.Uuid[];
+    /** An array of section keys. */
+    sectionKeys?: string[];
+    /** The name of the document. */
+    documentName?: string;
+    /** Any additional instructions to be considered during document generation. */
+    additionalInstructions?: string;
+}

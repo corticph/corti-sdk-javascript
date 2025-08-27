@@ -13,7 +13,7 @@ export interface DocumentsGetResponse {
     templateRef: string;
     isStream: boolean;
     /** Individual document sections */
-    sections: Corti.DocumentsSection[];
+    sections: Corti.DocumentsGetResponseSectionsItem[];
     /** The original timestamp when the document was created. */
     createdAt: Date;
     /** The timestamp when the document was last updated. */
