@@ -3,7 +3,6 @@
 [![fern shield](https://img.shields.io/badge/%F0%9F%8C%BF-Built%20with%20Fern-brightgreen)](https://buildwithfern.com?utm_source=github&utm_medium=github&utm_campaign=readme&utm_source=https%3A%2F%2Fgithub.com%2Fcorticph%2Fcorti-sdk-javascript)
 [![npm shield](https://img.shields.io/npm/v/@corti/sdk)](https://www.npmjs.com/package/@corti/sdk)
 
-> [!WARNING]
 > This is a **Beta version** of the Corti JavaScript SDK. We are treating it as stable for production use, but
 > there may still be breaking changes before we reach version 1.0. We're actively working to improve the SDK and would greatly
 > appreciate any feedback if you encounter any inconsistencies or issues 💚
