@@ -8,21 +8,15 @@ export async function toBinaryUploadRequest(
         body: data,
         headers: {} as Record<string, string>,
     };
-    /**
-     * Patch: temporarily disable Content-Disposition header to avoid issues with CORS
-     */
-    // if (filename) {
-    //     request.headers["Content-Disposition"] = `attachment; filename="${filename}"`;
-    // }
+    if (filename) {
+        request.headers["Content-Disposition"] = `attachment; filename="${filename}"`;
+    }
     if (contentType) {
         request.headers["Content-Type"] = contentType;
     }
-    /**
-     * Patch: temporarily disable Content-Disposition header to avoid issues with CORS
-     */
-    // if (contentLength != null) {
-    //     request.headers["Content-Length"] = contentLength.toString();
-    // }
+    if (contentLength != null) {
+        request.headers["Content-Length"] = contentLength.toString();
+    }
     return request;
 }
 
