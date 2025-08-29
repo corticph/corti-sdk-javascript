@@ -5,14 +5,14 @@
 import * as Corti from "../index.js";
 
 export interface InteractionsEncounterUpdateRequest {
-    /** A unique identifier for the encounter, essential for tracking and referencing specific patient interactions. */
+    /** A unique identifier for the encounter. */
     identifier?: string;
-    /** Indicates the current state of the encounter, crucial for understanding the progression and current state of care. */
+    /** The current status of the encounter. */
     status?: Corti.InteractionsEncounterStatusEnum;
-    /** The specific type of encounter, providing context about the nature and setting of the patient interaction. */
+    /** The type of encounter. */
     type?: Corti.InteractionsEncounterTypeEnum;
-    /** The time period during which the encounter takes place. */
+    /** Details of when the encounter took place, including start and optional end timestamps with timezone offsets. */
     period?: Corti.InteractionsEncounterPeriod;
-    /** A readable name for the interaction */
+    /** A title providing context about the encounter. */
     title?: string | null;
 }
