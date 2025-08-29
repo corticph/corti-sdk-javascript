@@ -1,14 +1,13 @@
-# Corti JavaScript Library
+# Corti JavaScript SDK
 
 [![fern shield](https://img.shields.io/badge/%F0%9F%8C%BF-Built%20with%20Fern-brightgreen)](https://buildwithfern.com?utm_source=github&utm_medium=github&utm_campaign=readme&utm_source=https%3A%2F%2Fgithub.com%2Fcorticph%2Fcorti-sdk-javascript)
 [![npm shield](https://img.shields.io/npm/v/@corti/sdk)](https://www.npmjs.com/package/@corti/sdk)
 
-> [!WARNING]
-> This is a **Beta version** of the Corti JavaScript SDK library. We are treating it as stable for production use, but
-> there may still be breaking changes before we reach version 1.0. We're actively working to improve the library and would greatly
+> This is a **Beta version** of the Corti JavaScript SDK. We are treating it as stable for production use, but
+> there may still be breaking changes before we reach version 1.0. We're actively working to improve the SDK and would greatly
 > appreciate any feedback if you encounter any inconsistencies or issues 💚
 
-The Corti JavaScript library provides convenient access to the Corti API from JavaScript.
+The Corti JavaScript SDK provides convenient access to the Corti API from JavaScript.
 
 ## Installation
 
@@ -18,7 +17,7 @@ npm i -s @corti/sdk
 
 ## Reference
 
-A full reference for this library is available [here](REFERENCE-latest.md).
+A full reference for this SDK is available [here](REFERENCE-latest.md).
 
 For detailed authentication instructions, see the [Authentication Guide](./AUTHENTICATION.md).
 
@@ -235,8 +234,8 @@ const client = new CortiClient({
 
 ## Contributing
 
-While we value open-source contributions to this SDK, this library is generated programmatically.
-Additions made directly to this library would have to be moved over to our generation code,
+While we value open-source contributions to this SDK, this repo is (mostly) generated programmatically.
+Additions made directly to this code would have to be moved over to our generation code,
 otherwise they would be overwritten upon the next generated release. Feel free to open a PR as
 a proof of concept, but know that we will not be able to merge it as-is. We suggest opening
 an issue first to discuss with us!

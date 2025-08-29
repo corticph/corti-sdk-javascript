@@ -3,7 +3,7 @@ import { join } from "path";
 import { Readable } from "stream";
 import { toBinaryUploadRequest, Uploadable } from "../../../src/core/file/index";
 
-describe.skip("toBinaryUploadRequest", () => {
+describe("toBinaryUploadRequest", () => {
     const TEST_FILE_PATH = join(__dirname, "test-file.txt");
 
     beforeEach(() => {
