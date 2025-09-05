@@ -6,19 +6,19 @@ import * as Corti from "../index.js";
 
 export interface FactsUpdateResponse {
     /** The unique identifier of the fact. */
-    id: Corti.Uuid;
+    id?: Corti.Uuid;
     /** The updated text content of the fact. */
-    text: string;
+    text?: string;
     /** The updated group key to which the fact belongs. */
-    group: string;
+    group?: string;
     /** The unique identifier of the associated group. */
-    groupId: Corti.Uuid;
+    groupId?: Corti.Uuid;
     /** The updated origin of the fact. */
-    source: Corti.CommonSourceEnum;
+    source?: Corti.CommonSourceEnum;
     /** Indicates whether the fact is marked as discarded. */
-    isDiscarded: boolean;
+    isDiscarded?: boolean;
     /** The original timestamp when the fact was created. */
-    createdAt: Date;
+    createdAt?: Date;
     /** The timestamp when the fact was last updated. */
-    updatedAt: Date;
+    updatedAt?: Date;
 }
