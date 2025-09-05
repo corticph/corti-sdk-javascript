@@ -14,5 +14,5 @@ export interface InteractionsUpdateRequest {
     /** Details of the encounter being updated. */
     encounter?: Corti.InteractionsEncounterUpdateRequest;
     /** Patient-related updates. */
-    patient?: Corti.InteractionsPatient;
+    patient?: Corti.RequestPatientUpdate;
 }

@@ -7,7 +7,7 @@ import * as Corti from "../../../../../api/index.js";
 import * as core from "../../../../../core/index.js";
 import { Uuid } from "../../../../types/Uuid.js";
 import { InteractionsEncounterUpdateRequest } from "../../../../types/InteractionsEncounterUpdateRequest.js";
-import { InteractionsPatient } from "../../../../types/InteractionsPatient.js";
+import { RequestPatientUpdate } from "../../../../types/RequestPatientUpdate.js";
 
 export const InteractionsUpdateRequest: core.serialization.Schema<
     serializers.InteractionsUpdateRequest.Raw,
@@ -15,13 +15,13 @@ export const InteractionsUpdateRequest: core.serialization.Schema<
 > = core.serialization.object({
     assignedUserId: Uuid.optional(),
     encounter: InteractionsEncounterUpdateRequest.optional(),
-    patient: InteractionsPatient.optional(),
+    patient: RequestPatientUpdate.optional(),
 });
 
 export declare namespace InteractionsUpdateRequest {
     export interface Raw {
         assignedUserId?: Uuid.Raw | null;
         encounter?: InteractionsEncounterUpdateRequest.Raw | null;
-        patient?: InteractionsPatient.Raw | null;
+        patient?: RequestPatientUpdate.Raw | null;
     }
 }
