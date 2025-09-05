@@ -6,5 +6,5 @@ import * as Corti from "../index.js";
 
 export interface FactsListResponse {
     /** A list of facts associated with the interaction. */
-    facts: Corti.FactsListItem[];
+    facts: Corti.FactsListResponseFactsItem[];
 }

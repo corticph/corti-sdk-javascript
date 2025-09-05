@@ -6,5 +6,5 @@ import * as Corti from "../index.js";
 
 export interface FactsBatchUpdateResponse {
     /** A list of updated facts. */
-    facts: Corti.FactsBatchUpdateItem[];
+    facts: Corti.FactsBatchUpdateResponseFactsItem[];
 }

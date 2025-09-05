@@ -12,4 +12,6 @@ export interface TranscriptsResponse {
     /** An array of transcripts. */
     transcripts: Corti.CommonTranscript[];
     usageInfo: Corti.CommonUsageInfo;
+    /** The unique identifier of the related recording. */
+    recordingId?: Corti.Uuid;
 }
