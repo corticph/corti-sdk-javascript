@@ -7,10 +7,13 @@ import * as api from "../api/index.js";
 
 type RefreshAccessTokenFunction = (refreshToken?: string) => Promise<api.GetTokenResponse> | api.GetTokenResponse;
 
-export type BearerOptions = Partial<Omit<api.GetTokenResponse, 'accessToken'>> & {
+export type BearerOptions = Partial<Omit<api.GetTokenResponse, 'accessToken'>> & ({
     refreshAccessToken?: RefreshAccessTokenFunction;
     accessToken: core.Supplier<string>;
-}
+} | {
+    refreshAccessToken: RefreshAccessTokenFunction;
+    accessToken?: core.Supplier<string>;
+});
 
 export class RefreshBearerProvider {
     private readonly BUFFER_IN_MINUTES = 2;
@@ -33,7 +36,7 @@ export class RefreshBearerProvider {
         this._expiresAt = this.getExpiresAt(expiresIn, this.BUFFER_IN_MINUTES);
         this._refreshExpiresAt = this.getExpiresAt(refreshExpiresIn, 0);
 
-        this._accessToken = accessToken;
+        this._accessToken = accessToken || 'no_token';
         this._refreshToken = refreshToken;
 
         this._refreshAccessToken = refreshAccessToken;
