@@ -5,8 +5,8 @@
 import * as Corti from "../index.js";
 
 export interface TranscriptsParticipant {
-    /** The audio channel to associate with a participant role. */
+    /** The audio channel associated with the participant. */
     channel: number;
-    /** The role of the participant (e.g., 'doctor', 'patient', use 'multiple' for single channel). */
-    role: Corti.TranscriptsParticipantRoleEnum;
+    /** The role of the participant. */
+    role: Corti.TranscriptParticipantRoleEnum;
 }
