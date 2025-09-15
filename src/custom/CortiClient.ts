@@ -150,9 +150,9 @@ export class CortiClient {
         };
 
         /**
-         * Patch: if `accessToken` is provided, use BearerProvider, otherwise use OAuthTokenProvider
+         * Patch: if `clientId` is provided, use OAuthTokenProvider, otherwise use BearerProvider
          */
-        this._oauthTokenProvider = "clientSecret" in _options.auth ?
+        this._oauthTokenProvider = "clientId" in _options.auth ?
             new core.OAuthTokenProvider({
                 clientId: _options.auth.clientId,
                 clientSecret: _options.auth.clientSecret,
