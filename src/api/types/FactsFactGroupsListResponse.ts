@@ -5,5 +5,5 @@
 import * as Corti from "../index.js";
 
 export interface FactsFactGroupsListResponse {
-    data: Corti.FactsFactGroupsItem[];
+    data: Corti.FactsFactGroupsListResponseDataItem[];
 }
