@@ -3,7 +3,7 @@
  */
 
 /**
- * The model name for transcription. By default, only the highest tier is accessible. Check https://docs.corti.ai/about/languages for more.
+ * The model name parameter for transcription is being deprecated. It is not required for use because, by default, only the highest tier is accessible. Check https://docs.corti.ai/about/languages for more information.
  */
 export type TranscriptsCreateRequestModelName = "base" | "enhanced" | "premier";
 export const TranscriptsCreateRequestModelName = {

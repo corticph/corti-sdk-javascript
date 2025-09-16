@@ -19,7 +19,7 @@ export const TranscriptsCreateRequest: core.serialization.Schema<
     isMultichannel: core.serialization.boolean().optional(),
     diarize: core.serialization.boolean().optional(),
     participants: core.serialization.list(TranscriptsParticipant).optional(),
-    modelName: TranscriptsCreateRequestModelName,
+    modelName: TranscriptsCreateRequestModelName.optional(),
 });
 
 export declare namespace TranscriptsCreateRequest {
@@ -30,6 +30,6 @@ export declare namespace TranscriptsCreateRequest {
         isMultichannel?: boolean | null;
         diarize?: boolean | null;
         participants?: TranscriptsParticipant.Raw[] | null;
-        modelName: TranscriptsCreateRequestModelName.Raw;
+        modelName?: TranscriptsCreateRequestModelName.Raw | null;
     }
 }
