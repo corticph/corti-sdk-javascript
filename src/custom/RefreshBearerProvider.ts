@@ -10,16 +10,16 @@ type RefreshAccessTokenFunction = (refreshToken?: string) => Promise<ExpectedTok
 
 export type BearerOptions = Partial<Omit<api.GetTokenResponse, 'accessToken'>> & ({
     refreshAccessToken?: RefreshAccessTokenFunction;
-    accessToken: core.Supplier<string>;
+    accessToken: string;
 } | {
     refreshAccessToken: RefreshAccessTokenFunction;
-    accessToken?: core.Supplier<string>;
+    accessToken?: string;
 });
 
 export class RefreshBearerProvider {
     private readonly BUFFER_IN_MINUTES = 2;
 
-    private _accessToken: core.Supplier<string>;
+    private _accessToken: string;
     private _refreshToken: string | undefined;
 
     private _refreshAccessToken: RefreshAccessTokenFunction | undefined;
