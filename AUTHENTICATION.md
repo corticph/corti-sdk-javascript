@@ -60,7 +60,7 @@ const tokenResponse = await auth.getToken({
 /**
 interface GetTokenResponse {
     accessToken: string;
-    tokenType: string;
+    tokenType?: string;        // Optional: Token type (defaults to "Bearer")
     expiresIn: number;
     refreshToken?: string;
     refreshExpiresIn?: number;
@@ -76,6 +76,37 @@ const client = new CortiClient({
     tenantName: "YOUR_TENANT_NAME",
     auth: {
         accessToken: "YOUR_ACCESS_TOKEN",
+    },
+});
+```
+
+### Bearer Token with Refresh Function Only
+
+You can also use bearer token authentication with just a refresh function, without providing an initial access token:
+
+```typescript
+const client = new CortiClient({
+    environment: CortiEnvironment.Eu,
+    tenantName: "YOUR_TENANT_NAME",
+    auth: {
+        refreshAccessToken: async (refreshToken?: string) => {
+            // Your custom logic to get a new access token
+            const response = await fetch("https://your-auth-server/refresh", {
+                method: "POST", 
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ refreshToken: refreshToken }),
+            });
+            
+            // Response must return a valid token object:
+            // {
+            //   accessToken: string;      // Required: The new access token
+            //   expiresIn?: number;       // Optional: Seconds until token expires
+            //   refreshToken?: string;    // Optional: New refresh token if rotated
+            //   refreshExpiresIn?: number; // Optional: Seconds until refresh token expires
+            //   tokenType?: string;       // Optional: Token type (defaults to "Bearer")
+            // }
+            return response.json();
+        },
     },
 });
 ```
@@ -103,12 +134,13 @@ const client = new CortiClient({
                 body: JSON.stringify({ refreshToken: refreshToken }),
             });
             
-            // Response must return a valid token object containing GetTokenResponse:
+            // Response must return a valid token object:
             // {
             //   accessToken: string;      // Required: The new access token
             //   expiresIn?: number;       // Optional: Seconds until token expires
             //   refreshToken?: string;    // Optional: New refresh token if rotated
             //   refreshExpiresIn?: number; // Optional: Seconds until refresh token expires
+            //   tokenType?: string;       // Optional: Token type (defaults to "Bearer")
             // }
             return response.json();
         },

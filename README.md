@@ -51,6 +51,23 @@ const client = new CortiClient({
     },
 });
 
+// Or using just a refresh function (no initial access token needed)
+const client = new CortiClient({
+    environment: CortiEnvironment.Eu,
+    tenantName: "YOUR_TENANT_NAME",
+    auth: {
+        refreshAccessToken: async (refreshToken?: string) => {
+            // Your custom logic to get a new access token
+            const response = await fetch("https://your-auth-server/refresh", {
+                method: "POST", 
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ refreshToken: refreshToken }),
+            });
+            return response.json();
+        },
+    },
+});
+
 // For user authentication, you can also use Authorization Code Flow
 // See the Authentication Guide for detailed instructions
 
