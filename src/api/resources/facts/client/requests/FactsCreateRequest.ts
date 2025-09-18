@@ -15,5 +15,5 @@ import * as Corti from "../../../../index.js";
  */
 export interface FactsCreateRequest {
     /** A list of facts to be created. */
-    facts: Corti.FactsCreateInput[];
+    facts: Corti.FactsCreateRequestFactsItem[];
 }
