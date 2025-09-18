@@ -7,9 +7,8 @@ import * as Corti from "../../../../index.js";
 /**
  * @example
  *     {
- *         recordingId: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
- *         primaryLanguage: "en",
- *         modelName: "base"
+ *         recordingId: "recordingId",
+ *         primaryLanguage: "primaryLanguage"
  *     }
  */
 export interface TranscriptsCreateRequest {
@@ -25,6 +24,6 @@ export interface TranscriptsCreateRequest {
     diarize?: boolean;
     /** An array of participants, each specifying a role and an assigned audio channel in the recording. Leave empty when shouldDiarize: true */
     participants?: Corti.TranscriptsParticipant[];
-    /** The model name for transcription. By default, only the highest tier is accessible. Check https://docs.corti.ai/about/languages for more. */
-    modelName: Corti.TranscriptsCreateRequestModelName;
+    /** An optional model name. If specified, can be "base", "enhanced", "premier". Check https://docs.corti.ai/about/languages for more. */
+    modelName?: string;
 }

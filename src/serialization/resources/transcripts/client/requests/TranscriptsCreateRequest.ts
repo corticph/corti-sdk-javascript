@@ -7,7 +7,6 @@ import * as Corti from "../../../../../api/index.js";
 import * as core from "../../../../../core/index.js";
 import { Uuid } from "../../../../types/Uuid.js";
 import { TranscriptsParticipant } from "../../../../types/TranscriptsParticipant.js";
-import { TranscriptsCreateRequestModelName } from "../../types/TranscriptsCreateRequestModelName.js";
 
 export const TranscriptsCreateRequest: core.serialization.Schema<
     serializers.TranscriptsCreateRequest.Raw,
@@ -19,7 +18,7 @@ export const TranscriptsCreateRequest: core.serialization.Schema<
     isMultichannel: core.serialization.boolean().optional(),
     diarize: core.serialization.boolean().optional(),
     participants: core.serialization.list(TranscriptsParticipant).optional(),
-    modelName: TranscriptsCreateRequestModelName,
+    modelName: core.serialization.string().optional(),
 });
 
 export declare namespace TranscriptsCreateRequest {
@@ -30,6 +29,6 @@ export declare namespace TranscriptsCreateRequest {
         isMultichannel?: boolean | null;
         diarize?: boolean | null;
         participants?: TranscriptsParticipant.Raw[] | null;
-        modelName: TranscriptsCreateRequestModelName.Raw;
+        modelName?: string | null;
     }
 }

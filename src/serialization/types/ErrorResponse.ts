@@ -9,7 +9,7 @@ import * as core from "../../core/index.js";
 export const ErrorResponse: core.serialization.ObjectSchema<serializers.ErrorResponse.Raw, Corti.ErrorResponse> =
     core.serialization.object({
         requestid: core.serialization.string().optional(),
-        type: core.serialization.string(),
+        type: core.serialization.string().optional(),
         status: core.serialization.number().optional(),
         title: core.serialization.string().optional(),
         details: core.serialization.string().optional(),
@@ -19,7 +19,7 @@ export const ErrorResponse: core.serialization.ObjectSchema<serializers.ErrorRes
 export declare namespace ErrorResponse {
     export interface Raw {
         requestid?: string | null;
-        type: string;
+        type?: string | null;
         status?: number | null;
         title?: string | null;
         details?: string | null;
