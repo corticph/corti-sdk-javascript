@@ -11,6 +11,6 @@ export interface DocumentsCreateRequestWithTemplateKey {
     templateKey: string;
     /** An optional name for the document. */
     name?: string;
-    /** The language in which the document will be generated. Check https://docs.corti.ai/about/languages for more. */
+    /** The language in which the document will be generated. Check [languages page](/about/languages) for more. */
     outputLanguage: string;
 }

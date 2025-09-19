@@ -16,7 +16,6 @@ export * from "./FactsFactGroupsItemTranslationsItem.js";
 export * from "./FactsFactGroupsItem.js";
 export * from "./InteractionsPatient.js";
 export * from "./DocumentsCreateRequest.js";
-export * from "./DocumentsCreateRequestWithTemplateId.js";
 export * from "./DocumentsCreateRequestWithTemplateKey.js";
 export * from "./DocumentsCreateRequestWithTemplate.js";
 export * from "./DocumentsSectionInput.js";
