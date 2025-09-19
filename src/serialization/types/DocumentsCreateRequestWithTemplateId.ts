@@ -15,7 +15,6 @@ export const DocumentsCreateRequestWithTemplateId: core.serialization.ObjectSche
     context: core.serialization.list(DocumentsContext),
     templateId: Uuid,
     name: core.serialization.string().optional(),
-    modelName: core.serialization.string().optional(),
     outputLanguage: core.serialization.string(),
 });
 
@@ -24,7 +23,6 @@ export declare namespace DocumentsCreateRequestWithTemplateId {
         context: DocumentsContext.Raw[];
         templateId: Uuid.Raw;
         name?: string | null;
-        modelName?: string | null;
         outputLanguage: string;
     }
 }
