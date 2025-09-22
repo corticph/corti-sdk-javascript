@@ -3,6 +3,7 @@ src/custom
 
 # Custom imports from custom code that replaces generated one
 src/index.ts
+src/api/index.ts
 
 # Documentation
 README.md

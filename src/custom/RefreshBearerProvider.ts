@@ -5,17 +5,21 @@
 import * as core from "../core/index.js";
 import * as api from "../api/index.js";
 
-type RefreshAccessTokenFunction = (refreshToken?: string) => Promise<api.GetTokenResponse> | api.GetTokenResponse;
+type ExpectedTokenResponse = Omit<api.GetTokenResponse, 'tokenType'> & { tokenType?: string };
+type RefreshAccessTokenFunction = (refreshToken?: string) => Promise<ExpectedTokenResponse> | ExpectedTokenResponse;
 
-export type BearerOptions = Partial<Omit<api.GetTokenResponse, 'accessToken'>> & {
+export type BearerOptions = Partial<Omit<api.GetTokenResponse, 'accessToken'>> & ({
     refreshAccessToken?: RefreshAccessTokenFunction;
-    accessToken: core.Supplier<string>;
-}
+    accessToken: string;
+} | {
+    refreshAccessToken: RefreshAccessTokenFunction;
+    accessToken?: string;
+});
 
 export class RefreshBearerProvider {
     private readonly BUFFER_IN_MINUTES = 2;
 
-    private _accessToken: core.Supplier<string>;
+    private _accessToken: string;
     private _refreshToken: string | undefined;
 
     private _refreshAccessToken: RefreshAccessTokenFunction | undefined;
@@ -33,7 +37,7 @@ export class RefreshBearerProvider {
         this._expiresAt = this.getExpiresAt(expiresIn, this.BUFFER_IN_MINUTES);
         this._refreshExpiresAt = this.getExpiresAt(refreshExpiresIn, 0);
 
-        this._accessToken = accessToken;
+        this._accessToken = accessToken || 'no_token';
         this._refreshToken = refreshToken;
 
         this._refreshAccessToken = refreshAccessToken;
