@@ -5,7 +5,6 @@ export * from "./DocumentsContextWithString.js";
 export * from "./DocumentsSection.js";
 export * from "./DocumentsTemplate.js";
 export * from "./DocumentsTemplateWithSectionKeys.js";
-export * from "./DocumentsTemplateWithSectionIds.js";
 export * from "./InteractionsEncounterCreateRequest.js";
 export * from "./InteractionsEncounterUpdateRequest.js";
 export * from "./InteractionsEncounterResponse.js";
