@@ -22,7 +22,7 @@ export const TranscribeCommandData: core.serialization.ObjectSchema<
 export declare namespace TranscribeCommandData {
     export interface Raw {
         id: string;
-        variables?: (Record<string, (string | null) | null | undefined> | null) | null;
+        variables?: (Record<string, (string | null | undefined) | null | undefined> | null | undefined) | null;
         rawTranscriptText: string;
         start: number;
         end: number;

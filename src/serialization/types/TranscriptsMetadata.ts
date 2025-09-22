@@ -16,6 +16,6 @@ export const TranscriptsMetadata: core.serialization.ObjectSchema<
 
 export declare namespace TranscriptsMetadata {
     export interface Raw {
-        participantsRoles?: (TranscriptsParticipant.Raw[] | null) | null;
+        participantsRoles?: (TranscriptsParticipant.Raw[] | null | undefined) | null;
     }
 }

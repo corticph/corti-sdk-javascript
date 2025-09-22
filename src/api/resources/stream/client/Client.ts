@@ -4,6 +4,7 @@
 
 import * as environments from "../../../../environments.js";
 import * as core from "../../../../core/index.js";
+import { mergeOnlyDefinedHeaders, mergeHeaders } from "../../../../core/headers.js";
 import { StreamSocket } from "./Socket.js";
 
 export declare namespace Stream {
@@ -15,7 +16,7 @@ export declare namespace Stream {
         /** Override the Tenant-Name header */
         tenantName: core.Supplier<string>;
         /** Additional headers to include in requests. */
-        headers?: Record<string, string | core.Supplier<string | undefined> | undefined>;
+        headers?: Record<string, string | core.Supplier<string | null | undefined> | null | undefined>;
     }
 
     export interface ConnectArgs {
@@ -43,9 +44,10 @@ export class Stream {
         const _queryParams: Record<string, string | string[] | object | object[] | null> = {};
         _queryParams["tenant-name"] = tenantName;
         _queryParams["token"] = token;
-        let _headers: Record<string, string> = {
-            ...headers,
-        };
+        let _headers: Record<string, unknown> = mergeHeaders(
+            mergeOnlyDefinedHeaders({ Authorization: await this._getAuthorizationHeader() }),
+            headers,
+        );
         const socket = new core.ReconnectingWebSocket({
             url: core.url.join(
                 (await core.Supplier.get(this._options["baseUrl"])) ??

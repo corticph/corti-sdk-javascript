@@ -30,7 +30,7 @@ export declare namespace InteractionsGetResponse {
         assignedUserId: Uuid.Raw;
         encounter: InteractionsEncounterResponse.Raw;
         patient: InteractionsPatient.Raw;
-        endedAt?: (string | null) | null;
+        endedAt?: (string | null | undefined) | null;
         createdAt: string;
         updatedAt: string;
         websocketUrl: string;

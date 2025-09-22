@@ -27,9 +27,9 @@ export const TemplatesSection: core.serialization.ObjectSchema<
 
 export declare namespace TemplatesSection {
     export interface Raw {
-        date_updated?: (string | null) | null;
+        date_updated?: (string | null | undefined) | null;
         name: string;
-        alternate_names?: (string[] | null) | null;
+        alternate_names?: (string[] | null | undefined) | null;
         key: string;
         description: string;
         default_writing_style: TemplatesWritingStyle.Raw;

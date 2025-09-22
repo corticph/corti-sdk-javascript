@@ -21,9 +21,9 @@ export const InteractionsPatient: core.serialization.ObjectSchema<
 export declare namespace InteractionsPatient {
     export interface Raw {
         identifier: string;
-        name?: (string | null) | null;
+        name?: (string | null | undefined) | null;
         gender?: InteractionsGenderEnum.Raw | null;
-        birthDate?: (string | null) | null;
-        pronouns?: (string | null) | null;
+        birthDate?: (string | null | undefined) | null;
+        pronouns?: (string | null | undefined) | null;
     }
 }

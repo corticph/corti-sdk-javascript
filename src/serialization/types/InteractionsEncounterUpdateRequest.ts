@@ -26,6 +26,6 @@ export declare namespace InteractionsEncounterUpdateRequest {
         status?: InteractionsEncounterStatusEnum.Raw | null;
         type?: InteractionsEncounterTypeEnum.Raw | null;
         period?: InteractionsEncounterPeriod.Raw | null;
-        title?: (string | null) | null;
+        title?: (string | null | undefined) | null;
     }
 }

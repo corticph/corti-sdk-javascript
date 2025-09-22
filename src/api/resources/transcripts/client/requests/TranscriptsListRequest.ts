@@ -7,8 +7,6 @@
  *     {}
  */
 export interface TranscriptsListRequest {
-    /**
-     * Display full transcripts in listing
-     */
+    /** Display full transcripts in listing */
     full?: boolean | null;
 }

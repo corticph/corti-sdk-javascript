@@ -18,7 +18,7 @@ export declare namespace Facts {
         /** Override the Tenant-Name header */
         tenantName: core.Supplier<string>;
         /** Additional headers to include in requests. */
-        headers?: Record<string, string | core.Supplier<string | undefined> | undefined>;
+        headers?: Record<string, string | core.Supplier<string | null | undefined> | null | undefined>;
     }
 
     export interface RequestOptions {
@@ -30,8 +30,10 @@ export declare namespace Facts {
         abortSignal?: AbortSignal;
         /** Override the Tenant-Name header */
         tenantName?: string;
+        /** Additional query string parameters to include in the request. */
+        queryParams?: Record<string, unknown>;
         /** Additional headers to include in the request. */
-        headers?: Record<string, string | core.Supplier<string | undefined> | undefined>;
+        headers?: Record<string, string | core.Supplier<string | null | undefined> | null | undefined>;
     }
 }
 
@@ -59,6 +61,14 @@ export class Facts {
     private async __factGroupsList(
         requestOptions?: Facts.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.FactsFactGroupsListResponse>> {
+        let _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+            this._options?.headers,
+            mergeOnlyDefinedHeaders({
+                Authorization: await this._getAuthorizationHeader(),
+                "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName,
+            }),
+            requestOptions?.headers,
+        );
         const _response = await core.fetcher({
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
@@ -66,14 +76,8 @@ export class Facts {
                 "factgroups/",
             ),
             method: "GET",
-            headers: mergeHeaders(
-                this._options?.headers,
-                mergeOnlyDefinedHeaders({
-                    Authorization: await this._getAuthorizationHeader(),
-                    "Tenant-Name": requestOptions?.tenantName,
-                }),
-                requestOptions?.headers,
-            ),
+            headers: _headers,
+            queryParameters: requestOptions?.queryParams,
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
             maxRetries: requestOptions?.maxRetries,
             abortSignal: requestOptions?.abortSignal,
@@ -143,6 +147,14 @@ export class Facts {
         id: Corti.Uuid,
         requestOptions?: Facts.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.FactsListResponse>> {
+        let _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+            this._options?.headers,
+            mergeOnlyDefinedHeaders({
+                Authorization: await this._getAuthorizationHeader(),
+                "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName,
+            }),
+            requestOptions?.headers,
+        );
         const _response = await core.fetcher({
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
@@ -150,14 +162,8 @@ export class Facts {
                 `interactions/${encodeURIComponent(serializers.Uuid.jsonOrThrow(id, { omitUndefined: true }))}/facts/`,
             ),
             method: "GET",
-            headers: mergeHeaders(
-                this._options?.headers,
-                mergeOnlyDefinedHeaders({
-                    Authorization: await this._getAuthorizationHeader(),
-                    "Tenant-Name": requestOptions?.tenantName,
-                }),
-                requestOptions?.headers,
-            ),
+            headers: _headers,
+            queryParameters: requestOptions?.queryParams,
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
             maxRetries: requestOptions?.maxRetries,
             abortSignal: requestOptions?.abortSignal,
@@ -244,6 +250,14 @@ export class Facts {
         request: Corti.FactsCreateRequest,
         requestOptions?: Facts.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.FactsCreateResponse>> {
+        let _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+            this._options?.headers,
+            mergeOnlyDefinedHeaders({
+                Authorization: await this._getAuthorizationHeader(),
+                "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName,
+            }),
+            requestOptions?.headers,
+        );
         const _response = await core.fetcher({
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
@@ -251,15 +265,9 @@ export class Facts {
                 `interactions/${encodeURIComponent(serializers.Uuid.jsonOrThrow(id, { omitUndefined: true }))}/facts/`,
             ),
             method: "POST",
-            headers: mergeHeaders(
-                this._options?.headers,
-                mergeOnlyDefinedHeaders({
-                    Authorization: await this._getAuthorizationHeader(),
-                    "Tenant-Name": requestOptions?.tenantName,
-                }),
-                requestOptions?.headers,
-            ),
+            headers: _headers,
             contentType: "application/json",
+            queryParameters: requestOptions?.queryParams,
             requestType: "json",
             body: serializers.FactsCreateRequest.jsonOrThrow(request, {
                 unrecognizedObjectKeys: "strip",
@@ -350,6 +358,14 @@ export class Facts {
         request: Corti.FactsBatchUpdateRequest,
         requestOptions?: Facts.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.FactsBatchUpdateResponse>> {
+        let _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+            this._options?.headers,
+            mergeOnlyDefinedHeaders({
+                Authorization: await this._getAuthorizationHeader(),
+                "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName,
+            }),
+            requestOptions?.headers,
+        );
         const _response = await core.fetcher({
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
@@ -357,15 +373,9 @@ export class Facts {
                 `interactions/${encodeURIComponent(serializers.Uuid.jsonOrThrow(id, { omitUndefined: true }))}/facts/`,
             ),
             method: "PATCH",
-            headers: mergeHeaders(
-                this._options?.headers,
-                mergeOnlyDefinedHeaders({
-                    Authorization: await this._getAuthorizationHeader(),
-                    "Tenant-Name": requestOptions?.tenantName,
-                }),
-                requestOptions?.headers,
-            ),
+            headers: _headers,
             contentType: "application/json",
+            queryParameters: requestOptions?.queryParams,
             requestType: "json",
             body: serializers.FactsBatchUpdateRequest.jsonOrThrow(request, {
                 unrecognizedObjectKeys: "strip",
@@ -455,6 +465,14 @@ export class Facts {
         request: Corti.FactsUpdateRequest = {},
         requestOptions?: Facts.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.FactsUpdateResponse>> {
+        let _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+            this._options?.headers,
+            mergeOnlyDefinedHeaders({
+                Authorization: await this._getAuthorizationHeader(),
+                "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName,
+            }),
+            requestOptions?.headers,
+        );
         const _response = await core.fetcher({
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
@@ -462,15 +480,9 @@ export class Facts {
                 `interactions/${encodeURIComponent(serializers.Uuid.jsonOrThrow(id, { omitUndefined: true }))}/facts/${encodeURIComponent(serializers.Uuid.jsonOrThrow(factId, { omitUndefined: true }))}`,
             ),
             method: "PATCH",
-            headers: mergeHeaders(
-                this._options?.headers,
-                mergeOnlyDefinedHeaders({
-                    Authorization: await this._getAuthorizationHeader(),
-                    "Tenant-Name": requestOptions?.tenantName,
-                }),
-                requestOptions?.headers,
-            ),
+            headers: _headers,
             contentType: "application/json",
+            queryParameters: requestOptions?.queryParams,
             requestType: "json",
             body: serializers.FactsUpdateRequest.jsonOrThrow(request, {
                 unrecognizedObjectKeys: "strip",

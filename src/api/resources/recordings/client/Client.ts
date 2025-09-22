@@ -18,7 +18,7 @@ export declare namespace Recordings {
         /** Override the Tenant-Name header */
         tenantName: core.Supplier<string>;
         /** Additional headers to include in requests. */
-        headers?: Record<string, string | core.Supplier<string | undefined> | undefined>;
+        headers?: Record<string, string | core.Supplier<string | null | undefined> | null | undefined>;
     }
 
     export interface RequestOptions {
@@ -30,8 +30,10 @@ export declare namespace Recordings {
         abortSignal?: AbortSignal;
         /** Override the Tenant-Name header */
         tenantName?: string;
+        /** Additional query string parameters to include in the request. */
+        queryParams?: Record<string, unknown>;
         /** Additional headers to include in the request. */
-        headers?: Record<string, string | core.Supplier<string | undefined> | undefined>;
+        headers?: Record<string, string | core.Supplier<string | null | undefined> | null | undefined>;
     }
 }
 
@@ -67,6 +69,14 @@ export class Recordings {
         id: Corti.Uuid,
         requestOptions?: Recordings.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.RecordingsListResponse>> {
+        let _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+            this._options?.headers,
+            mergeOnlyDefinedHeaders({
+                Authorization: await this._getAuthorizationHeader(),
+                "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName,
+            }),
+            requestOptions?.headers,
+        );
         const _response = await core.fetcher({
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
@@ -74,14 +84,8 @@ export class Recordings {
                 `interactions/${encodeURIComponent(serializers.Uuid.jsonOrThrow(id, { omitUndefined: true }))}/recordings/`,
             ),
             method: "GET",
-            headers: mergeHeaders(
-                this._options?.headers,
-                mergeOnlyDefinedHeaders({
-                    Authorization: await this._getAuthorizationHeader(),
-                    "Tenant-Name": requestOptions?.tenantName,
-                }),
-                requestOptions?.headers,
-            ),
+            headers: _headers,
+            queryParameters: requestOptions?.queryParams,
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
             maxRetries: requestOptions?.maxRetries,
             abortSignal: requestOptions?.abortSignal,
@@ -179,6 +183,15 @@ export class Recordings {
         requestOptions?: Recordings.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.RecordingsCreateResponse>> {
         const _binaryUploadRequest = await core.file.toBinaryUploadRequest(uploadable);
+        let _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+            this._options?.headers,
+            mergeOnlyDefinedHeaders({
+                Authorization: await this._getAuthorizationHeader(),
+                "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName,
+            }),
+            _binaryUploadRequest.headers,
+            requestOptions?.headers,
+        );
         const _response = await core.fetcher({
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
@@ -186,16 +199,9 @@ export class Recordings {
                 `interactions/${encodeURIComponent(serializers.Uuid.jsonOrThrow(id, { omitUndefined: true }))}/recordings/`,
             ),
             method: "POST",
-            headers: mergeHeaders(
-                this._options?.headers,
-                mergeOnlyDefinedHeaders({
-                    Authorization: await this._getAuthorizationHeader(),
-                    "Tenant-Name": requestOptions?.tenantName,
-                }),
-                _binaryUploadRequest.headers,
-                requestOptions?.headers,
-            ),
+            headers: _headers,
             contentType: "application/octet-stream",
+            queryParameters: requestOptions?.queryParams,
             requestType: "bytes",
             duplex: "half",
             body: _binaryUploadRequest.body,
@@ -293,6 +299,14 @@ export class Recordings {
         recordingId: Corti.Uuid,
         requestOptions?: Recordings.RequestOptions,
     ): Promise<core.WithRawResponse<core.BinaryResponse>> {
+        let _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+            this._options?.headers,
+            mergeOnlyDefinedHeaders({
+                Authorization: await this._getAuthorizationHeader(),
+                "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName,
+            }),
+            requestOptions?.headers,
+        );
         const _response = await core.fetcher<core.BinaryResponse>({
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
@@ -300,14 +314,8 @@ export class Recordings {
                 `interactions/${encodeURIComponent(serializers.Uuid.jsonOrThrow(id, { omitUndefined: true }))}/recordings/${encodeURIComponent(serializers.Uuid.jsonOrThrow(recordingId, { omitUndefined: true }))}`,
             ),
             method: "GET",
-            headers: mergeHeaders(
-                this._options?.headers,
-                mergeOnlyDefinedHeaders({
-                    Authorization: await this._getAuthorizationHeader(),
-                    "Tenant-Name": requestOptions?.tenantName,
-                }),
-                requestOptions?.headers,
-            ),
+            headers: _headers,
+            queryParameters: requestOptions?.queryParams,
             responseType: "binary-response",
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
             maxRetries: requestOptions?.maxRetries,
@@ -412,6 +420,14 @@ export class Recordings {
         recordingId: Corti.Uuid,
         requestOptions?: Recordings.RequestOptions,
     ): Promise<core.WithRawResponse<void>> {
+        let _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+            this._options?.headers,
+            mergeOnlyDefinedHeaders({
+                Authorization: await this._getAuthorizationHeader(),
+                "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName,
+            }),
+            requestOptions?.headers,
+        );
         const _response = await core.fetcher({
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
@@ -419,14 +435,8 @@ export class Recordings {
                 `interactions/${encodeURIComponent(serializers.Uuid.jsonOrThrow(id, { omitUndefined: true }))}/recordings/${encodeURIComponent(serializers.Uuid.jsonOrThrow(recordingId, { omitUndefined: true }))}`,
             ),
             method: "DELETE",
-            headers: mergeHeaders(
-                this._options?.headers,
-                mergeOnlyDefinedHeaders({
-                    Authorization: await this._getAuthorizationHeader(),
-                    "Tenant-Name": requestOptions?.tenantName,
-                }),
-                requestOptions?.headers,
-            ),
+            headers: _headers,
+            queryParameters: requestOptions?.queryParams,
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
             maxRetries: requestOptions?.maxRetries,
             abortSignal: requestOptions?.abortSignal,
