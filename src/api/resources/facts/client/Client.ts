@@ -43,6 +43,8 @@ export class Facts {
     }
 
     /**
+     * Returns a list of available fact groups, used to categorize facts associated with an interaction.
+     *
      * @param {Facts.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Corti.InternalServerError}
@@ -122,7 +124,7 @@ export class Facts {
     }
 
     /**
-     *  Retrieves a list of facts for a given interaction.
+     * Retrieves a list of facts for a given interaction.
      *
      * @param {Corti.Uuid} id - The unique identifier of the interaction. Must be a valid UUID.
      * @param {Facts.RequestOptions} requestOptions - Request-specific configuration.
@@ -215,7 +217,7 @@ export class Facts {
     }
 
     /**
-     *  Adds new facts to an interaction.
+     * Adds new facts to an interaction.
      *
      * @param {Corti.Uuid} id - The unique identifier of the interaction. Must be a valid UUID.
      * @param {Corti.FactsCreateRequest} request
@@ -322,7 +324,7 @@ export class Facts {
     }
 
     /**
-     *  Updates multiple facts associated with an interaction. If the interaction `status = "in progress"`, the updated facts will be sent to the client over WebSocket.
+     * Updates multiple facts associated with an interaction. If the interaction `status = "in progress"`, the updated facts will be sent to the client over WebSocket. To discard a fact (e.g., so that it is not used in document generation requests), simply set `discarded = true`.
      *
      * @param {Corti.Uuid} id - The unique identifier of the interaction. Must be a valid UUID.
      * @param {Corti.FactsBatchUpdateRequest} request
@@ -428,7 +430,7 @@ export class Facts {
     }
 
     /**
-     *  Updates an existing fact within a specific interaction. If the interaction `status = "in progress"`, the updated fact will be sent to the client via WebSocket. To discard a fact, simply set `discarded = true`.
+     * Updates an existing fact associated with a specific interaction. If the interaction `status = "in progress"`, the updated fact will be sent to the client via WebSocket. To discard a fact (e.g., so that it is not used in document generation requests), simply set `discarded = true`.
      *
      * @param {Corti.Uuid} id - The unique identifier of the interaction. Must be a valid UUID.
      * @param {Corti.Uuid} factId - The unique identifier of the fact to update. Must be a valid UUID.

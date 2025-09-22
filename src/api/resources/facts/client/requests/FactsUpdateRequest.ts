@@ -15,6 +15,6 @@ export interface FactsUpdateRequest {
     group?: string;
     /** The updated origin of the fact. */
     source?: Corti.CommonSourceEnum;
-    /** Indicates whether the fact should be marked as discarded. */
+    /** Set to true for facts that are should not be used in document generation requests. */
     isDiscarded?: boolean;
 }
