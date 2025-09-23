@@ -6,7 +6,6 @@ import * as serializers from "../index.js";
 import * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
 import { DocumentsCreateRequestWithTemplateKey } from "./DocumentsCreateRequestWithTemplateKey.js";
-import { DocumentsCreateRequestWithTemplateId } from "./DocumentsCreateRequestWithTemplateId.js";
 import { DocumentsCreateRequestWithTemplate } from "./DocumentsCreateRequestWithTemplate.js";
 
 export const DocumentsCreateRequest: core.serialization.Schema<
@@ -14,13 +13,9 @@ export const DocumentsCreateRequest: core.serialization.Schema<
     Corti.DocumentsCreateRequest
 > = core.serialization.undiscriminatedUnion([
     DocumentsCreateRequestWithTemplateKey,
-    DocumentsCreateRequestWithTemplateId,
     DocumentsCreateRequestWithTemplate,
 ]);
 
 export declare namespace DocumentsCreateRequest {
-    export type Raw =
-        | DocumentsCreateRequestWithTemplateKey.Raw
-        | DocumentsCreateRequestWithTemplateId.Raw
-        | DocumentsCreateRequestWithTemplate.Raw;
+    export type Raw = DocumentsCreateRequestWithTemplateKey.Raw | DocumentsCreateRequestWithTemplate.Raw;
 }

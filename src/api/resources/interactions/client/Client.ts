@@ -43,7 +43,7 @@ export class Interactions {
     }
 
     /**
-     *  Lists all existing interactions. Results can be filtered by encounter status and patient identifier.
+     * Lists all existing interactions. Results can be filtered by encounter status and patient identifier.
      *
      * @param {Corti.InteractionsListRequest} request
      * @param {Interactions.RequestOptions} requestOptions - Request-specific configuration.
@@ -197,7 +197,7 @@ export class Interactions {
     }
 
     /**
-     *  Creates a new interaction.
+     * Creates a new interaction.
      *
      * @param {Corti.InteractionsCreateRequest} request
      * @param {Interactions.RequestOptions} requestOptions - Request-specific configuration.
@@ -320,7 +320,7 @@ export class Interactions {
     }
 
     /**
-     *  Retrieves a previously recorded interaction by its unique identifier (interaction ID).
+     * Retrieves a previously recorded interaction by its unique identifier (interaction ID).
      *
      * @param {Corti.Uuid} id - The unique identifier of the interaction. Must be a valid UUID.
      * @param {Interactions.RequestOptions} requestOptions - Request-specific configuration.
@@ -425,7 +425,7 @@ export class Interactions {
     }
 
     /**
-     *  Deletes an existing interaction.
+     * Deletes an existing interaction.
      *
      * @param {Corti.Uuid} id - The unique identifier of the interaction. Must be a valid UUID.
      * @param {Interactions.RequestOptions} requestOptions - Request-specific configuration.
@@ -518,7 +518,7 @@ export class Interactions {
     }
 
     /**
-     *  Modifies an existing interaction by updating specific fields without overwriting the entire record.
+     * Modifies an existing interaction by updating specific fields without overwriting the entire record.
      *
      * @param {Corti.Uuid} id - The unique identifier of the interaction. Must be a valid UUID.
      * @param {Corti.InteractionsUpdateRequest} request

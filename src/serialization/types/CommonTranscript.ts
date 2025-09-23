@@ -10,21 +10,21 @@ export const CommonTranscript: core.serialization.ObjectSchema<
     serializers.CommonTranscript.Raw,
     Corti.CommonTranscript
 > = core.serialization.object({
-    channel: core.serialization.number(),
-    participant: core.serialization.number(),
-    speakerId: core.serialization.number(),
+    channel: core.serialization.number().optional(),
+    participant: core.serialization.number().optional(),
+    speakerId: core.serialization.number().optional(),
     text: core.serialization.string(),
-    start: core.serialization.number(),
-    end: core.serialization.number(),
+    start: core.serialization.number().optional(),
+    end: core.serialization.number().optional(),
 });
 
 export declare namespace CommonTranscript {
     export interface Raw {
-        channel: number;
-        participant: number;
-        speakerId: number;
+        channel?: number | null;
+        participant?: number | null;
+        speakerId?: number | null;
         text: string;
-        start: number;
-        end: number;
+        start?: number | null;
+        end?: number | null;
     }
 }

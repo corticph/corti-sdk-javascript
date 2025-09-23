@@ -43,7 +43,7 @@ export class Recordings {
     }
 
     /**
-     *  Retrieve a list of recordings for a given interaction.
+     * Retrieve a list of recordings for a given interaction.
      *
      * @param {Corti.Uuid} id - The unique identifier of the interaction. Must be a valid UUID.
      * @param {Recordings.RequestOptions} requestOptions - Request-specific configuration.
@@ -154,7 +154,7 @@ export class Recordings {
     }
 
     /**
-     *  Upload a recording for a given interaction. There is a maximum limit of 60 minutes in length and 150MB in size for recordings.
+     * Upload a recording for a given interaction. There is a maximum limit of 60 minutes in length and 150MB in size for recordings.
      *
      * @param {core.file.Uploadable} uploadable
      * @param {Corti.Uuid} id
@@ -273,7 +273,7 @@ export class Recordings {
     }
 
     /**
-     *  Retrieve a specific recording for a given interaction.
+     * Retrieve a specific recording for a given interaction.
      * @throws {@link Corti.BadRequestError}
      * @throws {@link Corti.ForbiddenError}
      * @throws {@link Corti.NotFoundError}
@@ -385,7 +385,7 @@ export class Recordings {
     }
 
     /**
-     *  Delete a specific recording for a given interaction.
+     * Delete a specific recording for a given interaction.
      *
      * @param {Corti.Uuid} id - The unique identifier of the interaction. Must be a valid UUID.
      * @param {Corti.Uuid} recordingId - The unique identifier of the recording. Must be a valid UUID.
