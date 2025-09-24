@@ -17,3 +17,6 @@ jest.integration.config.mjs
 
 # Issue templates
 .github/ISSUE_TEMPLATE
+
+# Updated release workflow
+.github/workflows/ci.yml
