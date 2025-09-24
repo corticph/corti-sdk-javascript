@@ -4,18 +4,4 @@
 
 import * as Corti from "../index.js";
 
-export type AgentsPart = Corti.AgentsPart.Text | Corti.AgentsPart.File_ | Corti.AgentsPart.Data;
-
-export namespace AgentsPart {
-    export interface Text extends Corti.AgentsTextPart {
-        kind: "text";
-    }
-
-    export interface File_ extends Corti.AgentsFilePart {
-        kind: "file";
-    }
-
-    export interface Data extends Corti.AgentsDataPart {
-        kind: "data";
-    }
-}
+export type AgentsPart = Corti.AgentsTextPart | Corti.AgentsFilePart | Corti.AgentsDataPart;

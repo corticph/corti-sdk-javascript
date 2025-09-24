@@ -11,24 +11,8 @@ import { AgentsExpertReference } from "../../../types/AgentsExpertReference.js";
 export const AgentsCreateAgentExpertsItem: core.serialization.Schema<
     serializers.AgentsCreateAgentExpertsItem.Raw,
     Corti.AgentsCreateAgentExpertsItem
-> = core.serialization
-    .union("type", {
-        new: AgentsCreateExpert,
-        reference: AgentsExpertReference,
-    })
-    .transform<Corti.AgentsCreateAgentExpertsItem>({
-        transform: (value) => value,
-        untransform: (value) => value,
-    });
+> = core.serialization.undiscriminatedUnion([AgentsCreateExpert, AgentsExpertReference]);
 
 export declare namespace AgentsCreateAgentExpertsItem {
-    export type Raw = AgentsCreateAgentExpertsItem.New | AgentsCreateAgentExpertsItem.Reference;
-
-    export interface New extends AgentsCreateExpert.Raw {
-        type: "new";
-    }
-
-    export interface Reference extends AgentsExpertReference.Raw {
-        type: "reference";
-    }
+    export type Raw = AgentsCreateExpert.Raw | AgentsExpertReference.Raw;
 }

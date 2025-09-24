@@ -5,6 +5,8 @@
 import * as Corti from "../index.js";
 
 export interface AgentsFilePart {
+    /** The kind of the part, always "file". */
+    kind: "file";
     file?: Corti.AgentsFilePartFile;
     /** Additional metadata for the file part. */
     metadata?: Record<string, unknown>;

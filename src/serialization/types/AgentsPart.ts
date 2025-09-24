@@ -9,29 +9,9 @@ import { AgentsTextPart } from "./AgentsTextPart.js";
 import { AgentsFilePart } from "./AgentsFilePart.js";
 import { AgentsDataPart } from "./AgentsDataPart.js";
 
-export const AgentsPart: core.serialization.Schema<serializers.AgentsPart.Raw, Corti.AgentsPart> = core.serialization
-    .union("kind", {
-        text: AgentsTextPart,
-        file: AgentsFilePart,
-        data: AgentsDataPart,
-    })
-    .transform<Corti.AgentsPart>({
-        transform: (value) => value,
-        untransform: (value) => value,
-    });
+export const AgentsPart: core.serialization.Schema<serializers.AgentsPart.Raw, Corti.AgentsPart> =
+    core.serialization.undiscriminatedUnion([AgentsTextPart, AgentsFilePart, AgentsDataPart]);
 
 export declare namespace AgentsPart {
-    export type Raw = AgentsPart.Text | AgentsPart.File | AgentsPart.Data;
-
-    export interface Text extends AgentsTextPart.Raw {
-        kind: "text";
-    }
-
-    export interface File extends AgentsFilePart.Raw {
-        kind: "file";
-    }
-
-    export interface Data extends AgentsDataPart.Raw {
-        kind: "data";
-    }
+    export type Raw = AgentsTextPart.Raw | AgentsFilePart.Raw | AgentsDataPart.Raw;
 }
