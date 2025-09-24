@@ -4,28 +4,16 @@
 
 import * as environments from "./environments.js";
 import * as core from "./core/index.js";
-import { Auth } from "./api/resources/auth/client/Client.js";
 import { mergeHeaders } from "./core/headers.js";
-import { Interactions } from "./api/resources/interactions/client/Client.js";
-import { Recordings } from "./api/resources/recordings/client/Client.js";
-import { Transcripts } from "./api/resources/transcripts/client/Client.js";
-import { Facts } from "./api/resources/facts/client/Client.js";
-import { Documents } from "./api/resources/documents/client/Client.js";
-import { Templates } from "./api/resources/templates/client/Client.js";
-import { Stream } from "./api/resources/stream/client/Client.js";
-import { Transcribe } from "./api/resources/transcribe/client/Client.js";
+import { Agents } from "./api/resources/agents/client/Client.js";
 
 export declare namespace CortiClient {
     export interface Options {
         environment: core.Supplier<environments.CortiEnvironment | environments.CortiEnvironmentUrls>;
         /** Specify a custom URL to connect the client to. */
         baseUrl?: core.Supplier<string>;
-        clientId: core.Supplier<string>;
-        clientSecret: core.Supplier<string>;
-        /** Override the Tenant-Name header */
-        tenantName: core.Supplier<string>;
         /** Additional headers to include in requests. */
-        headers?: Record<string, string | core.Supplier<string | undefined> | undefined>;
+        headers?: Record<string, string | core.Supplier<string | null | undefined> | null | undefined>;
     }
 
     export interface RequestOptions {
@@ -35,113 +23,35 @@ export declare namespace CortiClient {
         maxRetries?: number;
         /** A hook to abort the request. */
         abortSignal?: AbortSignal;
-        /** Override the Tenant-Name header */
-        tenantName?: string;
+        /** Additional query string parameters to include in the request. */
+        queryParams?: Record<string, unknown>;
         /** Additional headers to include in the request. */
-        headers?: Record<string, string | core.Supplier<string | undefined> | undefined>;
+        headers?: Record<string, string | core.Supplier<string | null | undefined> | null | undefined>;
     }
 }
 
 export class CortiClient {
     protected readonly _options: CortiClient.Options;
-    private readonly _oauthTokenProvider: core.OAuthTokenProvider;
-    protected _interactions: Interactions | undefined;
-    protected _recordings: Recordings | undefined;
-    protected _transcripts: Transcripts | undefined;
-    protected _facts: Facts | undefined;
-    protected _documents: Documents | undefined;
-    protected _templates: Templates | undefined;
-    protected _auth: Auth | undefined;
-    protected _stream: Stream | undefined;
-    protected _transcribe: Transcribe | undefined;
+    protected _agents: Agents | undefined;
 
     constructor(_options: CortiClient.Options) {
         this._options = {
             ..._options,
             headers: mergeHeaders(
                 {
-                    "Tenant-Name": _options?.tenantName,
                     "X-Fern-Language": "JavaScript",
                     "X-Fern-SDK-Name": "@corti/sdk",
-                    "X-Fern-SDK-Version": "0.1.2",
-                    "User-Agent": "@corti/sdk/0.1.2",
+                    "X-Fern-SDK-Version": "0.1.2-agents",
+                    "User-Agent": "@corti/sdk/0.1.2-agents",
                     "X-Fern-Runtime": core.RUNTIME.type,
                     "X-Fern-Runtime-Version": core.RUNTIME.version,
                 },
                 _options?.headers,
             ),
         };
-
-        this._oauthTokenProvider = new core.OAuthTokenProvider({
-            clientId: this._options.clientId,
-            clientSecret: this._options.clientSecret,
-            authClient: new Auth({
-                ...this._options,
-                environment: this._options.environment,
-            }),
-        });
     }
 
-    public get interactions(): Interactions {
-        return (this._interactions ??= new Interactions({
-            ...this._options,
-            token: async () => await this._oauthTokenProvider.getToken(),
-        }));
-    }
-
-    public get recordings(): Recordings {
-        return (this._recordings ??= new Recordings({
-            ...this._options,
-            token: async () => await this._oauthTokenProvider.getToken(),
-        }));
-    }
-
-    public get transcripts(): Transcripts {
-        return (this._transcripts ??= new Transcripts({
-            ...this._options,
-            token: async () => await this._oauthTokenProvider.getToken(),
-        }));
-    }
-
-    public get facts(): Facts {
-        return (this._facts ??= new Facts({
-            ...this._options,
-            token: async () => await this._oauthTokenProvider.getToken(),
-        }));
-    }
-
-    public get documents(): Documents {
-        return (this._documents ??= new Documents({
-            ...this._options,
-            token: async () => await this._oauthTokenProvider.getToken(),
-        }));
-    }
-
-    public get templates(): Templates {
-        return (this._templates ??= new Templates({
-            ...this._options,
-            token: async () => await this._oauthTokenProvider.getToken(),
-        }));
-    }
-
-    public get auth(): Auth {
-        return (this._auth ??= new Auth({
-            ...this._options,
-            token: async () => await this._oauthTokenProvider.getToken(),
-        }));
-    }
-
-    public get stream(): Stream {
-        return (this._stream ??= new Stream({
-            ...this._options,
-            token: async () => await this._oauthTokenProvider.getToken(),
-        }));
-    }
-
-    public get transcribe(): Transcribe {
-        return (this._transcribe ??= new Transcribe({
-            ...this._options,
-            token: async () => await this._oauthTokenProvider.getToken(),
-        }));
+    public get agents(): Agents {
+        return (this._agents ??= new Agents(this._options));
     }
 }

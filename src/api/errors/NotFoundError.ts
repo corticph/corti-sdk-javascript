@@ -7,7 +7,7 @@ import * as Corti from "../index.js";
 import * as core from "../../core/index.js";
 
 export class NotFoundError extends errors.CortiError {
-    constructor(body: Corti.ErrorResponse, rawResponse?: core.RawResponse) {
+    constructor(body: Corti.AgentsErrorResponse, rawResponse?: core.RawResponse) {
         super({
             message: "NotFoundError",
             statusCode: 404,
