@@ -50,6 +50,10 @@ jobs:
             npm publish --access public --tag alpha
           elif [[ ${GITHUB_REF} == *beta* ]]; then
             npm publish --access public --tag beta
+          elif [[ ${GITHUB_REF} == *rc* && ${GITHUB_REF} == *agents* ]]; then
+            npm publish --tag agents-rc
+          elif [[ ${GITHUB_REF} == *rc* ]]; then
+            npm publish --tag rc
           elif [[ ${GITHUB_REF} == *agents* ]]; then
             npm publish --tag agents
           else
