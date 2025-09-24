@@ -5,7 +5,7 @@
 import * as environments from "../../../../environments.js";
 import * as core from "../../../../core/index.js";
 import * as Corti from "../../../index.js";
-import { mergeHeaders } from "../../../../core/headers.js";
+import { mergeHeaders, mergeOnlyDefinedHeaders } from "../../../../core/headers.js";
 import * as serializers from "../../../../serialization/index.js";
 import * as errors from "../../../../errors/index.js";
 
@@ -14,6 +14,9 @@ export declare namespace Agents {
         environment: core.Supplier<environments.CortiEnvironment | environments.CortiEnvironmentUrls>;
         /** Specify a custom URL to connect the client to. */
         baseUrl?: core.Supplier<string>;
+        token?: core.Supplier<core.BearerToken | undefined>;
+        /** Override the Tenant-Name header */
+        tenantName?: core.Supplier<string | undefined>;
         /** Additional headers to include in requests. */
         headers?: Record<string, string | core.Supplier<string | null | undefined> | null | undefined>;
     }
@@ -25,6 +28,8 @@ export declare namespace Agents {
         maxRetries?: number;
         /** A hook to abort the request. */
         abortSignal?: AbortSignal;
+        /** Override the Tenant-Name header */
+        tenantName?: string | undefined;
         /** Additional query string parameters to include in the request. */
         queryParams?: Record<string, unknown>;
         /** Additional headers to include in the request. */
@@ -72,7 +77,14 @@ export class Agents {
             _queryParams["offset"] = offset?.toString() ?? null;
         }
 
-        let _headers: core.Fetcher.Args["headers"] = mergeHeaders(this._options?.headers, requestOptions?.headers);
+        let _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+            this._options?.headers,
+            mergeOnlyDefinedHeaders({
+                Authorization: await this._getAuthorizationHeader(),
+                "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName,
+            }),
+            requestOptions?.headers,
+        );
         const _response = await core.fetcher({
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
@@ -102,27 +114,9 @@ export class Agents {
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 400:
-                    throw new Corti.BadRequestError(
-                        serializers.AgentsErrorResponse.parseOrThrow(_response.error.body, {
-                            unrecognizedObjectKeys: "passthrough",
-                            allowUnrecognizedUnionMembers: true,
-                            allowUnrecognizedEnumValues: true,
-                            skipValidation: true,
-                            breadcrumbsPrefix: ["response"],
-                        }),
-                        _response.rawResponse,
-                    );
+                    throw new Corti.BadRequestError(_response.error.body, _response.rawResponse);
                 case 401:
-                    throw new Corti.UnauthorizedError(
-                        serializers.AgentsErrorResponse.parseOrThrow(_response.error.body, {
-                            unrecognizedObjectKeys: "passthrough",
-                            allowUnrecognizedUnionMembers: true,
-                            allowUnrecognizedEnumValues: true,
-                            skipValidation: true,
-                            breadcrumbsPrefix: ["response"],
-                        }),
-                        _response.rawResponse,
-                    );
+                    throw new Corti.UnauthorizedError(_response.error.body, _response.rawResponse);
                 default:
                     throw new errors.CortiError({
                         statusCode: _response.error.statusCode,
@@ -175,7 +169,14 @@ export class Agents {
         request: Corti.AgentsCreateAgent,
         requestOptions?: Agents.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.AgentsAgent>> {
-        let _headers: core.Fetcher.Args["headers"] = mergeHeaders(this._options?.headers, requestOptions?.headers);
+        let _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+            this._options?.headers,
+            mergeOnlyDefinedHeaders({
+                Authorization: await this._getAuthorizationHeader(),
+                "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName,
+            }),
+            requestOptions?.headers,
+        );
         const _response = await core.fetcher({
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
@@ -211,27 +212,9 @@ export class Agents {
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 400:
-                    throw new Corti.BadRequestError(
-                        serializers.AgentsErrorResponse.parseOrThrow(_response.error.body, {
-                            unrecognizedObjectKeys: "passthrough",
-                            allowUnrecognizedUnionMembers: true,
-                            allowUnrecognizedEnumValues: true,
-                            skipValidation: true,
-                            breadcrumbsPrefix: ["response"],
-                        }),
-                        _response.rawResponse,
-                    );
+                    throw new Corti.BadRequestError(_response.error.body, _response.rawResponse);
                 case 401:
-                    throw new Corti.UnauthorizedError(
-                        serializers.AgentsErrorResponse.parseOrThrow(_response.error.body, {
-                            unrecognizedObjectKeys: "passthrough",
-                            allowUnrecognizedUnionMembers: true,
-                            allowUnrecognizedEnumValues: true,
-                            skipValidation: true,
-                            breadcrumbsPrefix: ["response"],
-                        }),
-                        _response.rawResponse,
-                    );
+                    throw new Corti.UnauthorizedError(_response.error.body, _response.rawResponse);
                 default:
                     throw new errors.CortiError({
                         statusCode: _response.error.statusCode,
@@ -282,7 +265,14 @@ export class Agents {
         id: string,
         requestOptions?: Agents.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.AgentsAgentResponse>> {
-        let _headers: core.Fetcher.Args["headers"] = mergeHeaders(this._options?.headers, requestOptions?.headers);
+        let _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+            this._options?.headers,
+            mergeOnlyDefinedHeaders({
+                Authorization: await this._getAuthorizationHeader(),
+                "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName,
+            }),
+            requestOptions?.headers,
+        );
         const _response = await core.fetcher({
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
@@ -312,38 +302,11 @@ export class Agents {
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 400:
-                    throw new Corti.BadRequestError(
-                        serializers.AgentsErrorResponse.parseOrThrow(_response.error.body, {
-                            unrecognizedObjectKeys: "passthrough",
-                            allowUnrecognizedUnionMembers: true,
-                            allowUnrecognizedEnumValues: true,
-                            skipValidation: true,
-                            breadcrumbsPrefix: ["response"],
-                        }),
-                        _response.rawResponse,
-                    );
+                    throw new Corti.BadRequestError(_response.error.body, _response.rawResponse);
                 case 401:
-                    throw new Corti.UnauthorizedError(
-                        serializers.AgentsErrorResponse.parseOrThrow(_response.error.body, {
-                            unrecognizedObjectKeys: "passthrough",
-                            allowUnrecognizedUnionMembers: true,
-                            allowUnrecognizedEnumValues: true,
-                            skipValidation: true,
-                            breadcrumbsPrefix: ["response"],
-                        }),
-                        _response.rawResponse,
-                    );
+                    throw new Corti.UnauthorizedError(_response.error.body, _response.rawResponse);
                 case 404:
-                    throw new Corti.NotFoundError(
-                        serializers.AgentsErrorResponse.parseOrThrow(_response.error.body, {
-                            unrecognizedObjectKeys: "passthrough",
-                            allowUnrecognizedUnionMembers: true,
-                            allowUnrecognizedEnumValues: true,
-                            skipValidation: true,
-                            breadcrumbsPrefix: ["response"],
-                        }),
-                        _response.rawResponse,
-                    );
+                    throw new Corti.NotFoundError(_response.error.body, _response.rawResponse);
                 default:
                     throw new errors.CortiError({
                         statusCode: _response.error.statusCode,
@@ -388,7 +351,14 @@ export class Agents {
     }
 
     private async __delete(id: string, requestOptions?: Agents.RequestOptions): Promise<core.WithRawResponse<void>> {
-        let _headers: core.Fetcher.Args["headers"] = mergeHeaders(this._options?.headers, requestOptions?.headers);
+        let _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+            this._options?.headers,
+            mergeOnlyDefinedHeaders({
+                Authorization: await this._getAuthorizationHeader(),
+                "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName,
+            }),
+            requestOptions?.headers,
+        );
         const _response = await core.fetcher({
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
@@ -409,38 +379,11 @@ export class Agents {
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 400:
-                    throw new Corti.BadRequestError(
-                        serializers.AgentsErrorResponse.parseOrThrow(_response.error.body, {
-                            unrecognizedObjectKeys: "passthrough",
-                            allowUnrecognizedUnionMembers: true,
-                            allowUnrecognizedEnumValues: true,
-                            skipValidation: true,
-                            breadcrumbsPrefix: ["response"],
-                        }),
-                        _response.rawResponse,
-                    );
+                    throw new Corti.BadRequestError(_response.error.body, _response.rawResponse);
                 case 401:
-                    throw new Corti.UnauthorizedError(
-                        serializers.AgentsErrorResponse.parseOrThrow(_response.error.body, {
-                            unrecognizedObjectKeys: "passthrough",
-                            allowUnrecognizedUnionMembers: true,
-                            allowUnrecognizedEnumValues: true,
-                            skipValidation: true,
-                            breadcrumbsPrefix: ["response"],
-                        }),
-                        _response.rawResponse,
-                    );
+                    throw new Corti.UnauthorizedError(_response.error.body, _response.rawResponse);
                 case 404:
-                    throw new Corti.NotFoundError(
-                        serializers.AgentsErrorResponse.parseOrThrow(_response.error.body, {
-                            unrecognizedObjectKeys: "passthrough",
-                            allowUnrecognizedUnionMembers: true,
-                            allowUnrecognizedEnumValues: true,
-                            skipValidation: true,
-                            breadcrumbsPrefix: ["response"],
-                        }),
-                        _response.rawResponse,
-                    );
+                    throw new Corti.NotFoundError(_response.error.body, _response.rawResponse);
                 default:
                     throw new errors.CortiError({
                         statusCode: _response.error.statusCode,
@@ -498,7 +441,14 @@ export class Agents {
         request: Corti.AgentsAgent,
         requestOptions?: Agents.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.AgentsAgent>> {
-        let _headers: core.Fetcher.Args["headers"] = mergeHeaders(this._options?.headers, requestOptions?.headers);
+        let _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+            this._options?.headers,
+            mergeOnlyDefinedHeaders({
+                Authorization: await this._getAuthorizationHeader(),
+                "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName,
+            }),
+            requestOptions?.headers,
+        );
         const _response = await core.fetcher({
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
@@ -534,38 +484,11 @@ export class Agents {
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 400:
-                    throw new Corti.BadRequestError(
-                        serializers.AgentsErrorResponse.parseOrThrow(_response.error.body, {
-                            unrecognizedObjectKeys: "passthrough",
-                            allowUnrecognizedUnionMembers: true,
-                            allowUnrecognizedEnumValues: true,
-                            skipValidation: true,
-                            breadcrumbsPrefix: ["response"],
-                        }),
-                        _response.rawResponse,
-                    );
+                    throw new Corti.BadRequestError(_response.error.body, _response.rawResponse);
                 case 401:
-                    throw new Corti.UnauthorizedError(
-                        serializers.AgentsErrorResponse.parseOrThrow(_response.error.body, {
-                            unrecognizedObjectKeys: "passthrough",
-                            allowUnrecognizedUnionMembers: true,
-                            allowUnrecognizedEnumValues: true,
-                            skipValidation: true,
-                            breadcrumbsPrefix: ["response"],
-                        }),
-                        _response.rawResponse,
-                    );
+                    throw new Corti.UnauthorizedError(_response.error.body, _response.rawResponse);
                 case 404:
-                    throw new Corti.NotFoundError(
-                        serializers.AgentsErrorResponse.parseOrThrow(_response.error.body, {
-                            unrecognizedObjectKeys: "passthrough",
-                            allowUnrecognizedUnionMembers: true,
-                            allowUnrecognizedEnumValues: true,
-                            skipValidation: true,
-                            breadcrumbsPrefix: ["response"],
-                        }),
-                        _response.rawResponse,
-                    );
+                    throw new Corti.NotFoundError(_response.error.body, _response.rawResponse);
                 default:
                     throw new errors.CortiError({
                         statusCode: _response.error.statusCode,
@@ -616,7 +539,14 @@ export class Agents {
         id: string,
         requestOptions?: Agents.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.AgentsAgentCard>> {
-        let _headers: core.Fetcher.Args["headers"] = mergeHeaders(this._options?.headers, requestOptions?.headers);
+        let _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+            this._options?.headers,
+            mergeOnlyDefinedHeaders({
+                Authorization: await this._getAuthorizationHeader(),
+                "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName,
+            }),
+            requestOptions?.headers,
+        );
         const _response = await core.fetcher({
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
@@ -646,38 +576,11 @@ export class Agents {
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 400:
-                    throw new Corti.BadRequestError(
-                        serializers.AgentsErrorResponse.parseOrThrow(_response.error.body, {
-                            unrecognizedObjectKeys: "passthrough",
-                            allowUnrecognizedUnionMembers: true,
-                            allowUnrecognizedEnumValues: true,
-                            skipValidation: true,
-                            breadcrumbsPrefix: ["response"],
-                        }),
-                        _response.rawResponse,
-                    );
+                    throw new Corti.BadRequestError(_response.error.body, _response.rawResponse);
                 case 401:
-                    throw new Corti.UnauthorizedError(
-                        serializers.AgentsErrorResponse.parseOrThrow(_response.error.body, {
-                            unrecognizedObjectKeys: "passthrough",
-                            allowUnrecognizedUnionMembers: true,
-                            allowUnrecognizedEnumValues: true,
-                            skipValidation: true,
-                            breadcrumbsPrefix: ["response"],
-                        }),
-                        _response.rawResponse,
-                    );
+                    throw new Corti.UnauthorizedError(_response.error.body, _response.rawResponse);
                 case 404:
-                    throw new Corti.NotFoundError(
-                        serializers.AgentsErrorResponse.parseOrThrow(_response.error.body, {
-                            unrecognizedObjectKeys: "passthrough",
-                            allowUnrecognizedUnionMembers: true,
-                            allowUnrecognizedEnumValues: true,
-                            skipValidation: true,
-                            breadcrumbsPrefix: ["response"],
-                        }),
-                        _response.rawResponse,
-                    );
+                    throw new Corti.NotFoundError(_response.error.body, _response.rawResponse);
                 default:
                     throw new errors.CortiError({
                         statusCode: _response.error.statusCode,
@@ -740,7 +643,14 @@ export class Agents {
         request: Corti.AgentsMessageSendParams,
         requestOptions?: Agents.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.AgentsMessageSendResponse>> {
-        let _headers: core.Fetcher.Args["headers"] = mergeHeaders(this._options?.headers, requestOptions?.headers);
+        let _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+            this._options?.headers,
+            mergeOnlyDefinedHeaders({
+                Authorization: await this._getAuthorizationHeader(),
+                "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName,
+            }),
+            requestOptions?.headers,
+        );
         const _response = await core.fetcher({
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
@@ -776,38 +686,11 @@ export class Agents {
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 400:
-                    throw new Corti.BadRequestError(
-                        serializers.AgentsErrorResponse.parseOrThrow(_response.error.body, {
-                            unrecognizedObjectKeys: "passthrough",
-                            allowUnrecognizedUnionMembers: true,
-                            allowUnrecognizedEnumValues: true,
-                            skipValidation: true,
-                            breadcrumbsPrefix: ["response"],
-                        }),
-                        _response.rawResponse,
-                    );
+                    throw new Corti.BadRequestError(_response.error.body, _response.rawResponse);
                 case 401:
-                    throw new Corti.UnauthorizedError(
-                        serializers.AgentsErrorResponse.parseOrThrow(_response.error.body, {
-                            unrecognizedObjectKeys: "passthrough",
-                            allowUnrecognizedUnionMembers: true,
-                            allowUnrecognizedEnumValues: true,
-                            skipValidation: true,
-                            breadcrumbsPrefix: ["response"],
-                        }),
-                        _response.rawResponse,
-                    );
+                    throw new Corti.UnauthorizedError(_response.error.body, _response.rawResponse);
                 case 404:
-                    throw new Corti.NotFoundError(
-                        serializers.AgentsErrorResponse.parseOrThrow(_response.error.body, {
-                            unrecognizedObjectKeys: "passthrough",
-                            allowUnrecognizedUnionMembers: true,
-                            allowUnrecognizedEnumValues: true,
-                            skipValidation: true,
-                            breadcrumbsPrefix: ["response"],
-                        }),
-                        _response.rawResponse,
-                    );
+                    throw new Corti.NotFoundError(_response.error.body, _response.rawResponse);
                 default:
                     throw new errors.CortiError({
                         statusCode: _response.error.statusCode,
@@ -850,7 +733,14 @@ export class Agents {
         request: Corti.AgentsMessageSendParams,
         requestOptions?: Agents.RequestOptions,
     ): Promise<core.WithRawResponse<core.Stream<Corti.AgentsMessageStreamResponse>>> {
-        let _headers: core.Fetcher.Args["headers"] = mergeHeaders(this._options?.headers, requestOptions?.headers);
+        let _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+            this._options?.headers,
+            mergeOnlyDefinedHeaders({
+                Authorization: await this._getAuthorizationHeader(),
+                "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName,
+            }),
+            requestOptions?.headers,
+        );
         const _response = await core.fetcher<ReadableStream>({
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
@@ -897,38 +787,11 @@ export class Agents {
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 400:
-                    throw new Corti.BadRequestError(
-                        serializers.AgentsErrorResponse.parseOrThrow(_response.error.body, {
-                            unrecognizedObjectKeys: "passthrough",
-                            allowUnrecognizedUnionMembers: true,
-                            allowUnrecognizedEnumValues: true,
-                            skipValidation: true,
-                            breadcrumbsPrefix: ["response"],
-                        }),
-                        _response.rawResponse,
-                    );
+                    throw new Corti.BadRequestError(_response.error.body, _response.rawResponse);
                 case 401:
-                    throw new Corti.UnauthorizedError(
-                        serializers.AgentsErrorResponse.parseOrThrow(_response.error.body, {
-                            unrecognizedObjectKeys: "passthrough",
-                            allowUnrecognizedUnionMembers: true,
-                            allowUnrecognizedEnumValues: true,
-                            skipValidation: true,
-                            breadcrumbsPrefix: ["response"],
-                        }),
-                        _response.rawResponse,
-                    );
+                    throw new Corti.UnauthorizedError(_response.error.body, _response.rawResponse);
                 case 404:
-                    throw new Corti.NotFoundError(
-                        serializers.AgentsErrorResponse.parseOrThrow(_response.error.body, {
-                            unrecognizedObjectKeys: "passthrough",
-                            allowUnrecognizedUnionMembers: true,
-                            allowUnrecognizedEnumValues: true,
-                            skipValidation: true,
-                            breadcrumbsPrefix: ["response"],
-                        }),
-                        _response.rawResponse,
-                    );
+                    throw new Corti.NotFoundError(_response.error.body, _response.rawResponse);
                 default:
                     throw new errors.CortiError({
                         statusCode: _response.error.statusCode,
@@ -993,7 +856,14 @@ export class Agents {
             _queryParams["historyLength"] = historyLength?.toString() ?? null;
         }
 
-        let _headers: core.Fetcher.Args["headers"] = mergeHeaders(this._options?.headers, requestOptions?.headers);
+        let _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+            this._options?.headers,
+            mergeOnlyDefinedHeaders({
+                Authorization: await this._getAuthorizationHeader(),
+                "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName,
+            }),
+            requestOptions?.headers,
+        );
         const _response = await core.fetcher({
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
@@ -1023,38 +893,11 @@ export class Agents {
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 400:
-                    throw new Corti.BadRequestError(
-                        serializers.AgentsErrorResponse.parseOrThrow(_response.error.body, {
-                            unrecognizedObjectKeys: "passthrough",
-                            allowUnrecognizedUnionMembers: true,
-                            allowUnrecognizedEnumValues: true,
-                            skipValidation: true,
-                            breadcrumbsPrefix: ["response"],
-                        }),
-                        _response.rawResponse,
-                    );
+                    throw new Corti.BadRequestError(_response.error.body, _response.rawResponse);
                 case 401:
-                    throw new Corti.UnauthorizedError(
-                        serializers.AgentsErrorResponse.parseOrThrow(_response.error.body, {
-                            unrecognizedObjectKeys: "passthrough",
-                            allowUnrecognizedUnionMembers: true,
-                            allowUnrecognizedEnumValues: true,
-                            skipValidation: true,
-                            breadcrumbsPrefix: ["response"],
-                        }),
-                        _response.rawResponse,
-                    );
+                    throw new Corti.UnauthorizedError(_response.error.body, _response.rawResponse);
                 case 404:
-                    throw new Corti.NotFoundError(
-                        serializers.AgentsErrorResponse.parseOrThrow(_response.error.body, {
-                            unrecognizedObjectKeys: "passthrough",
-                            allowUnrecognizedUnionMembers: true,
-                            allowUnrecognizedEnumValues: true,
-                            skipValidation: true,
-                            breadcrumbsPrefix: ["response"],
-                        }),
-                        _response.rawResponse,
-                    );
+                    throw new Corti.NotFoundError(_response.error.body, _response.rawResponse);
                 default:
                     throw new errors.CortiError({
                         statusCode: _response.error.statusCode,
@@ -1121,7 +964,14 @@ export class Agents {
             _queryParams["offset"] = offset?.toString() ?? null;
         }
 
-        let _headers: core.Fetcher.Args["headers"] = mergeHeaders(this._options?.headers, requestOptions?.headers);
+        let _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+            this._options?.headers,
+            mergeOnlyDefinedHeaders({
+                Authorization: await this._getAuthorizationHeader(),
+                "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName,
+            }),
+            requestOptions?.headers,
+        );
         const _response = await core.fetcher({
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
@@ -1151,38 +1001,11 @@ export class Agents {
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 400:
-                    throw new Corti.BadRequestError(
-                        serializers.AgentsErrorResponse.parseOrThrow(_response.error.body, {
-                            unrecognizedObjectKeys: "passthrough",
-                            allowUnrecognizedUnionMembers: true,
-                            allowUnrecognizedEnumValues: true,
-                            skipValidation: true,
-                            breadcrumbsPrefix: ["response"],
-                        }),
-                        _response.rawResponse,
-                    );
+                    throw new Corti.BadRequestError(_response.error.body, _response.rawResponse);
                 case 401:
-                    throw new Corti.UnauthorizedError(
-                        serializers.AgentsErrorResponse.parseOrThrow(_response.error.body, {
-                            unrecognizedObjectKeys: "passthrough",
-                            allowUnrecognizedUnionMembers: true,
-                            allowUnrecognizedEnumValues: true,
-                            skipValidation: true,
-                            breadcrumbsPrefix: ["response"],
-                        }),
-                        _response.rawResponse,
-                    );
+                    throw new Corti.UnauthorizedError(_response.error.body, _response.rawResponse);
                 case 404:
-                    throw new Corti.NotFoundError(
-                        serializers.AgentsErrorResponse.parseOrThrow(_response.error.body, {
-                            unrecognizedObjectKeys: "passthrough",
-                            allowUnrecognizedUnionMembers: true,
-                            allowUnrecognizedEnumValues: true,
-                            skipValidation: true,
-                            breadcrumbsPrefix: ["response"],
-                        }),
-                        _response.rawResponse,
-                    );
+                    throw new Corti.NotFoundError(_response.error.body, _response.rawResponse);
                 default:
                     throw new errors.CortiError({
                         statusCode: _response.error.statusCode,
@@ -1209,5 +1032,14 @@ export class Agents {
                     rawResponse: _response.rawResponse,
                 });
         }
+    }
+
+    protected async _getAuthorizationHeader(): Promise<string | undefined> {
+        const bearer = await core.Supplier.get(this._options.token);
+        if (bearer != null) {
+            return `Bearer ${bearer}`;
+        }
+
+        return undefined;
     }
 }
