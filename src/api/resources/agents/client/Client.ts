@@ -78,7 +78,7 @@ export class Agents {
         const _response = await core.fetcher({
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
-                    (await core.Supplier.get(this._options.environment)).base,
+                    (await core.Supplier.get(this._options.environment)).agents,
                 "agents",
             ),
             method: "GET",
@@ -169,7 +169,7 @@ export class Agents {
         const _response = await core.fetcher({
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
-                    (await core.Supplier.get(this._options.environment)).base,
+                    (await core.Supplier.get(this._options.environment)).agents,
                 "agents",
             ),
             method: "POST",
@@ -263,7 +263,7 @@ export class Agents {
         const _response = await core.fetcher({
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
-                    (await core.Supplier.get(this._options.environment)).base,
+                    (await core.Supplier.get(this._options.environment)).agents,
                 `agents/${encodeURIComponent(id)}`,
             ),
             method: "GET",
@@ -347,7 +347,7 @@ export class Agents {
         const _response = await core.fetcher({
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
-                    (await core.Supplier.get(this._options.environment)).base,
+                    (await core.Supplier.get(this._options.environment)).agents,
                 `agents/${encodeURIComponent(id)}`,
             ),
             method: "DELETE",
@@ -435,7 +435,7 @@ export class Agents {
         const _response = await core.fetcher({
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
-                    (await core.Supplier.get(this._options.environment)).base,
+                    (await core.Supplier.get(this._options.environment)).agents,
                 `agents/${encodeURIComponent(id)}`,
             ),
             method: "PATCH",
@@ -531,7 +531,7 @@ export class Agents {
         const _response = await core.fetcher({
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
-                    (await core.Supplier.get(this._options.environment)).base,
+                    (await core.Supplier.get(this._options.environment)).agents,
                 `agents/${encodeURIComponent(id)}/agent-card.json`,
             ),
             method: "GET",
@@ -633,7 +633,7 @@ export class Agents {
         const _response = await core.fetcher({
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
-                    (await core.Supplier.get(this._options.environment)).base,
+                    (await core.Supplier.get(this._options.environment)).agents,
                 `agents/${encodeURIComponent(id)}/v1/message:send`,
             ),
             method: "POST",
@@ -721,7 +721,7 @@ export class Agents {
         const _response = await core.fetcher<ReadableStream>({
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
-                    (await core.Supplier.get(this._options.environment)).base,
+                    (await core.Supplier.get(this._options.environment)).agents,
                 `agents/${encodeURIComponent(id)}/v1/message:stream`,
             ),
             method: "POST",
@@ -842,7 +842,7 @@ export class Agents {
         const _response = await core.fetcher({
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
-                    (await core.Supplier.get(this._options.environment)).base,
+                    (await core.Supplier.get(this._options.environment)).agents,
                 `agents/${encodeURIComponent(id)}/v1/tasks/${encodeURIComponent(taskId)}`,
             ),
             method: "GET",
@@ -949,7 +949,7 @@ export class Agents {
         const _response = await core.fetcher({
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
-                    (await core.Supplier.get(this._options.environment)).base,
+                    (await core.Supplier.get(this._options.environment)).agents,
                 `agents/${encodeURIComponent(id)}/v1/contexts/${encodeURIComponent(contextId)}`,
             ),
             method: "GET",
