@@ -3,10 +3,11 @@
  */
 
 import * as errors from "../../errors/index.js";
+import * as Corti from "../index.js";
 import * as core from "../../core/index.js";
 
 export class BadRequestError extends errors.CortiError {
-    constructor(body?: unknown, rawResponse?: core.RawResponse) {
+    constructor(body: Corti.AgentsErrorResponse, rawResponse?: core.RawResponse) {
         super({
             message: "BadRequestError",
             statusCode: 400,
