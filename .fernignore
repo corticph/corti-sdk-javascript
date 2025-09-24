@@ -8,7 +8,7 @@ src/api/index.ts
 # Documentation
 README.md
 AUTHENTICATION.md
-REFERENCE-latest.md
+reference.md
 
 # Integration tests
 tests/custom
