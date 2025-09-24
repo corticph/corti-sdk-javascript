@@ -4,14 +4,4 @@
 
 import * as Corti from "../index.js";
 
-export type AgentsContextItemsItem = Corti.AgentsContextItemsItem.Task | Corti.AgentsContextItemsItem.Message;
-
-export namespace AgentsContextItemsItem {
-    export interface Task extends Corti.AgentsTask {
-        kind: "task";
-    }
-
-    export interface Message extends Corti.AgentsMessage {
-        kind: "message";
-    }
-}
+export type AgentsContextItemsItem = Corti.AgentsTask | Corti.AgentsMessage;

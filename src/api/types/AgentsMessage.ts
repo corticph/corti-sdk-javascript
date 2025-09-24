@@ -21,4 +21,6 @@ export interface AgentsMessage {
     taskId?: string;
     /** Identifier for the context (thread) in which the message is sent. */
     contextId?: string;
+    /** The kind of the object, always "message". */
+    kind: "message";
 }

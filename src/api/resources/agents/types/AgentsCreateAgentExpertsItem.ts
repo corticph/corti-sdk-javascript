@@ -4,16 +4,4 @@
 
 import * as Corti from "../../../index.js";
 
-export type AgentsCreateAgentExpertsItem =
-    | Corti.AgentsCreateAgentExpertsItem.New
-    | Corti.AgentsCreateAgentExpertsItem.Reference;
-
-export namespace AgentsCreateAgentExpertsItem {
-    export interface New extends Corti.AgentsCreateExpert {
-        type: "new";
-    }
-
-    export interface Reference extends Corti.AgentsExpertReference {
-        type: "reference";
-    }
-}
+export type AgentsCreateAgentExpertsItem = Corti.AgentsCreateExpert | Corti.AgentsExpertReference;

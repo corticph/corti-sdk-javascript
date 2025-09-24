@@ -9,12 +9,14 @@ import { AgentsFilePartFile } from "./AgentsFilePartFile.js";
 
 export const AgentsFilePart: core.serialization.ObjectSchema<serializers.AgentsFilePart.Raw, Corti.AgentsFilePart> =
     core.serialization.object({
+        kind: core.serialization.stringLiteral("file"),
         file: AgentsFilePartFile.optional(),
         metadata: core.serialization.record(core.serialization.string(), core.serialization.unknown()).optional(),
     });
 
 export declare namespace AgentsFilePart {
     export interface Raw {
+        kind: "file";
         file?: AgentsFilePartFile.Raw | null;
         metadata?: Record<string, unknown> | null;
     }

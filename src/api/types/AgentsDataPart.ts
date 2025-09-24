@@ -3,6 +3,8 @@
  */
 
 export interface AgentsDataPart {
+    /** The kind of the part, always "data". */
+    kind: "data";
     /** JSON data payload. */
     data: Record<string, unknown>;
     /** Additional metadata for the data part. */

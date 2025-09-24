@@ -6,6 +6,7 @@
  * A reference to an expert, either id or name must be provided. If both are passed, the id will be used.
  */
 export interface AgentsExpertReference {
+    type: "reference";
     /** The unique identifier of the expert. */
     id?: string;
     /** The name of the expert. */

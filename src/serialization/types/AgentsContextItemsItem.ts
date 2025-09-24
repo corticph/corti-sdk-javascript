@@ -11,24 +11,8 @@ import { AgentsMessage } from "./AgentsMessage.js";
 export const AgentsContextItemsItem: core.serialization.Schema<
     serializers.AgentsContextItemsItem.Raw,
     Corti.AgentsContextItemsItem
-> = core.serialization
-    .union("kind", {
-        task: AgentsTask,
-        message: AgentsMessage,
-    })
-    .transform<Corti.AgentsContextItemsItem>({
-        transform: (value) => value,
-        untransform: (value) => value,
-    });
+> = core.serialization.undiscriminatedUnion([AgentsTask, AgentsMessage]);
 
 export declare namespace AgentsContextItemsItem {
-    export type Raw = AgentsContextItemsItem.Task | AgentsContextItemsItem.Message;
-
-    export interface Task extends AgentsTask.Raw {
-        kind: "task";
-    }
-
-    export interface Message extends AgentsMessage.Raw {
-        kind: "message";
-    }
+    export type Raw = AgentsTask.Raw | AgentsMessage.Raw;
 }

@@ -3,6 +3,8 @@
  */
 
 export interface AgentsTextPart {
+    /** The kind of the part, always "text". */
+    kind: "text";
     /** The text content of the part. */
     text: string;
     /** Additional metadata for the text part. */

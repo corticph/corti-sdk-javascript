@@ -613,7 +613,8 @@ export class Agents {
      *                     kind: "text",
      *                     text: "text"
      *                 }],
-     *             messageId: "messageId"
+     *             messageId: "messageId",
+     *             kind: "message"
      *         }
      *     })
      */

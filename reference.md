@@ -2138,6 +2138,7 @@ await client.agents.messageSend("id", {
             },
         ],
         messageId: "messageId",
+        kind: "message",
     },
 });
 ```
@@ -2220,6 +2221,7 @@ const response = await client.agents.messageStream("id", {
             },
         ],
         messageId: "messageId",
+        kind: "message",
     },
 });
 for await (const item of response) {

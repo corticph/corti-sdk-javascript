@@ -18,6 +18,7 @@ export const AgentsMessage: core.serialization.ObjectSchema<serializers.AgentsMe
         messageId: core.serialization.string(),
         taskId: core.serialization.string().optional(),
         contextId: core.serialization.string().optional(),
+        kind: core.serialization.stringLiteral("message"),
     });
 
 export declare namespace AgentsMessage {
@@ -30,5 +31,6 @@ export declare namespace AgentsMessage {
         messageId: string;
         taskId?: string | null;
         contextId?: string | null;
+        kind: "message";
     }
 }

@@ -8,12 +8,14 @@ import * as core from "../../core/index.js";
 
 export const AgentsTextPart: core.serialization.ObjectSchema<serializers.AgentsTextPart.Raw, Corti.AgentsTextPart> =
     core.serialization.object({
+        kind: core.serialization.stringLiteral("text"),
         text: core.serialization.string(),
         metadata: core.serialization.record(core.serialization.string(), core.serialization.unknown()).optional(),
     });
 
 export declare namespace AgentsTextPart {
     export interface Raw {
+        kind: "text";
         text: string;
         metadata?: Record<string, unknown> | null;
     }
