@@ -10,6 +10,7 @@ export function getEnvironment(environment: Environment): CortiEnvironment {
             base: `https://api.${environment}.corti.app/v2`,
             wss: `wss://api.${environment}.corti.app`,
             login: `https://auth.${environment}.corti.app/realms`,
+            agents: `https://agents.${environment}.corti.app/agents`,
         }
         : environment;
 }
