@@ -25,6 +25,6 @@ export declare namespace AgentsMcpServer {
         transportType: AgentsMcpServerTransportType.Raw;
         authorizationType: AgentsMcpServerAuthorizationType.Raw;
         url: string;
-        redirectUrl?: (string | null | undefined) | null;
+        redirectUrl?: (string | null) | null;
     }
 }

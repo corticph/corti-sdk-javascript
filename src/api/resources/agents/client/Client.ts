@@ -18,7 +18,7 @@ export declare namespace Agents {
         /** Override the Tenant-Name header */
         tenantName?: core.Supplier<string | undefined>;
         /** Additional headers to include in requests. */
-        headers?: Record<string, string | core.Supplier<string | null | undefined> | null | undefined>;
+        headers?: Record<string, string | core.Supplier<string | undefined> | undefined>;
     }
 
     export interface RequestOptions {
@@ -30,10 +30,8 @@ export declare namespace Agents {
         abortSignal?: AbortSignal;
         /** Override the Tenant-Name header */
         tenantName?: string | undefined;
-        /** Additional query string parameters to include in the request. */
-        queryParams?: Record<string, unknown>;
         /** Additional headers to include in the request. */
-        headers?: Record<string, string | core.Supplier<string | null | undefined> | null | undefined>;
+        headers?: Record<string, string | core.Supplier<string | undefined> | undefined>;
     }
 }
 
@@ -77,14 +75,6 @@ export class Agents {
             _queryParams["offset"] = offset?.toString() ?? null;
         }
 
-        let _headers: core.Fetcher.Args["headers"] = mergeHeaders(
-            this._options?.headers,
-            mergeOnlyDefinedHeaders({
-                Authorization: await this._getAuthorizationHeader(),
-                "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName,
-            }),
-            requestOptions?.headers,
-        );
         const _response = await core.fetcher({
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
@@ -92,8 +82,15 @@ export class Agents {
                 "agents",
             ),
             method: "GET",
-            headers: _headers,
-            queryParameters: { ..._queryParams, ...requestOptions?.queryParams },
+            headers: mergeHeaders(
+                this._options?.headers,
+                mergeOnlyDefinedHeaders({
+                    Authorization: await this._getAuthorizationHeader(),
+                    "Tenant-Name": requestOptions?.tenantName,
+                }),
+                requestOptions?.headers,
+            ),
+            queryParameters: _queryParams,
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
             maxRetries: requestOptions?.maxRetries,
             abortSignal: requestOptions?.abortSignal,
@@ -169,14 +166,6 @@ export class Agents {
         request: Corti.AgentsCreateAgent,
         requestOptions?: Agents.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.AgentsAgent>> {
-        let _headers: core.Fetcher.Args["headers"] = mergeHeaders(
-            this._options?.headers,
-            mergeOnlyDefinedHeaders({
-                Authorization: await this._getAuthorizationHeader(),
-                "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName,
-            }),
-            requestOptions?.headers,
-        );
         const _response = await core.fetcher({
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
@@ -184,9 +173,15 @@ export class Agents {
                 "agents",
             ),
             method: "POST",
-            headers: _headers,
+            headers: mergeHeaders(
+                this._options?.headers,
+                mergeOnlyDefinedHeaders({
+                    Authorization: await this._getAuthorizationHeader(),
+                    "Tenant-Name": requestOptions?.tenantName,
+                }),
+                requestOptions?.headers,
+            ),
             contentType: "application/json",
-            queryParameters: requestOptions?.queryParams,
             requestType: "json",
             body: serializers.AgentsCreateAgent.jsonOrThrow(request, {
                 unrecognizedObjectKeys: "strip",
@@ -265,14 +260,6 @@ export class Agents {
         id: string,
         requestOptions?: Agents.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.AgentsAgentResponse>> {
-        let _headers: core.Fetcher.Args["headers"] = mergeHeaders(
-            this._options?.headers,
-            mergeOnlyDefinedHeaders({
-                Authorization: await this._getAuthorizationHeader(),
-                "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName,
-            }),
-            requestOptions?.headers,
-        );
         const _response = await core.fetcher({
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
@@ -280,8 +267,14 @@ export class Agents {
                 `agents/${encodeURIComponent(id)}`,
             ),
             method: "GET",
-            headers: _headers,
-            queryParameters: requestOptions?.queryParams,
+            headers: mergeHeaders(
+                this._options?.headers,
+                mergeOnlyDefinedHeaders({
+                    Authorization: await this._getAuthorizationHeader(),
+                    "Tenant-Name": requestOptions?.tenantName,
+                }),
+                requestOptions?.headers,
+            ),
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
             maxRetries: requestOptions?.maxRetries,
             abortSignal: requestOptions?.abortSignal,
@@ -351,14 +344,6 @@ export class Agents {
     }
 
     private async __delete(id: string, requestOptions?: Agents.RequestOptions): Promise<core.WithRawResponse<void>> {
-        let _headers: core.Fetcher.Args["headers"] = mergeHeaders(
-            this._options?.headers,
-            mergeOnlyDefinedHeaders({
-                Authorization: await this._getAuthorizationHeader(),
-                "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName,
-            }),
-            requestOptions?.headers,
-        );
         const _response = await core.fetcher({
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
@@ -366,8 +351,14 @@ export class Agents {
                 `agents/${encodeURIComponent(id)}`,
             ),
             method: "DELETE",
-            headers: _headers,
-            queryParameters: requestOptions?.queryParams,
+            headers: mergeHeaders(
+                this._options?.headers,
+                mergeOnlyDefinedHeaders({
+                    Authorization: await this._getAuthorizationHeader(),
+                    "Tenant-Name": requestOptions?.tenantName,
+                }),
+                requestOptions?.headers,
+            ),
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
             maxRetries: requestOptions?.maxRetries,
             abortSignal: requestOptions?.abortSignal,
@@ -441,14 +432,6 @@ export class Agents {
         request: Corti.AgentsAgent,
         requestOptions?: Agents.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.AgentsAgent>> {
-        let _headers: core.Fetcher.Args["headers"] = mergeHeaders(
-            this._options?.headers,
-            mergeOnlyDefinedHeaders({
-                Authorization: await this._getAuthorizationHeader(),
-                "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName,
-            }),
-            requestOptions?.headers,
-        );
         const _response = await core.fetcher({
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
@@ -456,9 +439,15 @@ export class Agents {
                 `agents/${encodeURIComponent(id)}`,
             ),
             method: "PATCH",
-            headers: _headers,
+            headers: mergeHeaders(
+                this._options?.headers,
+                mergeOnlyDefinedHeaders({
+                    Authorization: await this._getAuthorizationHeader(),
+                    "Tenant-Name": requestOptions?.tenantName,
+                }),
+                requestOptions?.headers,
+            ),
             contentType: "application/json",
-            queryParameters: requestOptions?.queryParams,
             requestType: "json",
             body: serializers.AgentsAgent.jsonOrThrow(request, {
                 unrecognizedObjectKeys: "strip",
@@ -539,14 +528,6 @@ export class Agents {
         id: string,
         requestOptions?: Agents.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.AgentsAgentCard>> {
-        let _headers: core.Fetcher.Args["headers"] = mergeHeaders(
-            this._options?.headers,
-            mergeOnlyDefinedHeaders({
-                Authorization: await this._getAuthorizationHeader(),
-                "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName,
-            }),
-            requestOptions?.headers,
-        );
         const _response = await core.fetcher({
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
@@ -554,8 +535,14 @@ export class Agents {
                 `agents/${encodeURIComponent(id)}/agent-card.json`,
             ),
             method: "GET",
-            headers: _headers,
-            queryParameters: requestOptions?.queryParams,
+            headers: mergeHeaders(
+                this._options?.headers,
+                mergeOnlyDefinedHeaders({
+                    Authorization: await this._getAuthorizationHeader(),
+                    "Tenant-Name": requestOptions?.tenantName,
+                }),
+                requestOptions?.headers,
+            ),
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
             maxRetries: requestOptions?.maxRetries,
             abortSignal: requestOptions?.abortSignal,
@@ -643,14 +630,6 @@ export class Agents {
         request: Corti.AgentsMessageSendParams,
         requestOptions?: Agents.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.AgentsMessageSendResponse>> {
-        let _headers: core.Fetcher.Args["headers"] = mergeHeaders(
-            this._options?.headers,
-            mergeOnlyDefinedHeaders({
-                Authorization: await this._getAuthorizationHeader(),
-                "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName,
-            }),
-            requestOptions?.headers,
-        );
         const _response = await core.fetcher({
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
@@ -658,9 +637,15 @@ export class Agents {
                 `agents/${encodeURIComponent(id)}/v1/message:send`,
             ),
             method: "POST",
-            headers: _headers,
+            headers: mergeHeaders(
+                this._options?.headers,
+                mergeOnlyDefinedHeaders({
+                    Authorization: await this._getAuthorizationHeader(),
+                    "Tenant-Name": requestOptions?.tenantName,
+                }),
+                requestOptions?.headers,
+            ),
             contentType: "application/json",
-            queryParameters: requestOptions?.queryParams,
             requestType: "json",
             body: serializers.AgentsMessageSendParams.jsonOrThrow(request, {
                 unrecognizedObjectKeys: "strip",
@@ -733,14 +718,6 @@ export class Agents {
         request: Corti.AgentsMessageSendParams,
         requestOptions?: Agents.RequestOptions,
     ): Promise<core.WithRawResponse<core.Stream<Corti.AgentsMessageStreamResponse>>> {
-        let _headers: core.Fetcher.Args["headers"] = mergeHeaders(
-            this._options?.headers,
-            mergeOnlyDefinedHeaders({
-                Authorization: await this._getAuthorizationHeader(),
-                "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName,
-            }),
-            requestOptions?.headers,
-        );
         const _response = await core.fetcher<ReadableStream>({
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
@@ -748,9 +725,15 @@ export class Agents {
                 `agents/${encodeURIComponent(id)}/v1/message:stream`,
             ),
             method: "POST",
-            headers: _headers,
+            headers: mergeHeaders(
+                this._options?.headers,
+                mergeOnlyDefinedHeaders({
+                    Authorization: await this._getAuthorizationHeader(),
+                    "Tenant-Name": requestOptions?.tenantName,
+                }),
+                requestOptions?.headers,
+            ),
             contentType: "application/json",
-            queryParameters: requestOptions?.queryParams,
             requestType: "json",
             body: serializers.AgentsMessageSendParams.jsonOrThrow(request, {
                 unrecognizedObjectKeys: "strip",
@@ -856,14 +839,6 @@ export class Agents {
             _queryParams["historyLength"] = historyLength?.toString() ?? null;
         }
 
-        let _headers: core.Fetcher.Args["headers"] = mergeHeaders(
-            this._options?.headers,
-            mergeOnlyDefinedHeaders({
-                Authorization: await this._getAuthorizationHeader(),
-                "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName,
-            }),
-            requestOptions?.headers,
-        );
         const _response = await core.fetcher({
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
@@ -871,8 +846,15 @@ export class Agents {
                 `agents/${encodeURIComponent(id)}/v1/tasks/${encodeURIComponent(taskId)}`,
             ),
             method: "GET",
-            headers: _headers,
-            queryParameters: { ..._queryParams, ...requestOptions?.queryParams },
+            headers: mergeHeaders(
+                this._options?.headers,
+                mergeOnlyDefinedHeaders({
+                    Authorization: await this._getAuthorizationHeader(),
+                    "Tenant-Name": requestOptions?.tenantName,
+                }),
+                requestOptions?.headers,
+            ),
+            queryParameters: _queryParams,
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
             maxRetries: requestOptions?.maxRetries,
             abortSignal: requestOptions?.abortSignal,
@@ -964,14 +946,6 @@ export class Agents {
             _queryParams["offset"] = offset?.toString() ?? null;
         }
 
-        let _headers: core.Fetcher.Args["headers"] = mergeHeaders(
-            this._options?.headers,
-            mergeOnlyDefinedHeaders({
-                Authorization: await this._getAuthorizationHeader(),
-                "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName,
-            }),
-            requestOptions?.headers,
-        );
         const _response = await core.fetcher({
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
@@ -979,8 +953,15 @@ export class Agents {
                 `agents/${encodeURIComponent(id)}/v1/contexts/${encodeURIComponent(contextId)}`,
             ),
             method: "GET",
-            headers: _headers,
-            queryParameters: { ..._queryParams, ...requestOptions?.queryParams },
+            headers: mergeHeaders(
+                this._options?.headers,
+                mergeOnlyDefinedHeaders({
+                    Authorization: await this._getAuthorizationHeader(),
+                    "Tenant-Name": requestOptions?.tenantName,
+                }),
+                requestOptions?.headers,
+            ),
+            queryParameters: _queryParams,
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
             maxRetries: requestOptions?.maxRetries,
             abortSignal: requestOptions?.abortSignal,

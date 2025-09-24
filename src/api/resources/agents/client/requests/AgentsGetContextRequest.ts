@@ -7,8 +7,12 @@
  *     {}
  */
 export interface AgentsGetContextRequest {
-    /** The maximum number of tasks and messages to return. If not specified all history is returned. */
+    /**
+     * The maximum number of tasks and messages to return. If not specified all history is returned.
+     */
     limit?: number | null;
-    /** The number of tasks and messages to skip before starting to collect the result set. Default is 0. */
+    /**
+     * The number of tasks and messages to skip before starting to collect the result set. Default is 0.
+     */
     offset?: number | null;
 }

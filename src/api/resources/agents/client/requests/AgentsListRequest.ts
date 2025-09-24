@@ -7,8 +7,12 @@
  *     {}
  */
 export interface AgentsListRequest {
-    /** The maximum number of agents to return. If not specified, all agents will be returned. */
+    /**
+     * The maximum number of agents to return. If not specified, all agents will be returned.
+     */
     limit?: number | null;
-    /** The number of agents to skip before starting to collect the result set. Default is 0. */
+    /**
+     * The number of agents to skip before starting to collect the result set. Default is 0.
+     */
     offset?: number | null;
 }

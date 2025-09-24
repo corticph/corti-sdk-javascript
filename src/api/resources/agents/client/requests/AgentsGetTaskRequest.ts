@@ -7,6 +7,8 @@
  *     {}
  */
 export interface AgentsGetTaskRequest {
-    /** The number of previous messages to include in the context for the agent when retrieving this task. Default is all messages. */
+    /**
+     * The number of previous messages to include in the context for the agent when retrieving this task. Default is all messages.
+     */
     historyLength?: number | null;
 }

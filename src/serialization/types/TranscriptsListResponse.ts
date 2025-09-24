@@ -16,6 +16,6 @@ export const TranscriptsListResponse: core.serialization.ObjectSchema<
 
 export declare namespace TranscriptsListResponse {
     export interface Raw {
-        transcripts?: (TranscriptsListItem.Raw[] | null | undefined) | null;
+        transcripts?: (TranscriptsListItem.Raw[] | null) | null;
     }
 }

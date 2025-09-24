@@ -18,7 +18,7 @@ export declare namespace Documents {
         /** Override the Tenant-Name header */
         tenantName?: core.Supplier<string | undefined>;
         /** Additional headers to include in requests. */
-        headers?: Record<string, string | core.Supplier<string | null | undefined> | null | undefined>;
+        headers?: Record<string, string | core.Supplier<string | undefined> | undefined>;
     }
 
     export interface RequestOptions {
@@ -30,10 +30,8 @@ export declare namespace Documents {
         abortSignal?: AbortSignal;
         /** Override the Tenant-Name header */
         tenantName?: string | undefined;
-        /** Additional query string parameters to include in the request. */
-        queryParams?: Record<string, unknown>;
         /** Additional headers to include in the request. */
-        headers?: Record<string, string | core.Supplier<string | null | undefined> | null | undefined>;
+        headers?: Record<string, string | core.Supplier<string | undefined> | undefined>;
     }
 }
 
@@ -69,14 +67,6 @@ export class Documents {
         id: Corti.Uuid,
         requestOptions?: Documents.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.DocumentsListResponse>> {
-        let _headers: core.Fetcher.Args["headers"] = mergeHeaders(
-            this._options?.headers,
-            mergeOnlyDefinedHeaders({
-                Authorization: await this._getAuthorizationHeader(),
-                "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName,
-            }),
-            requestOptions?.headers,
-        );
         const _response = await core.fetcher({
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
@@ -84,8 +74,14 @@ export class Documents {
                 `interactions/${encodeURIComponent(serializers.Uuid.jsonOrThrow(id, { omitUndefined: true }))}/documents/`,
             ),
             method: "GET",
-            headers: _headers,
-            queryParameters: requestOptions?.queryParams,
+            headers: mergeHeaders(
+                this._options?.headers,
+                mergeOnlyDefinedHeaders({
+                    Authorization: await this._getAuthorizationHeader(),
+                    "Tenant-Name": requestOptions?.tenantName,
+                }),
+                requestOptions?.headers,
+            ),
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
             maxRetries: requestOptions?.maxRetries,
             abortSignal: requestOptions?.abortSignal,
@@ -195,14 +191,6 @@ export class Documents {
         request: Corti.DocumentsCreateRequest,
         requestOptions?: Documents.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.DocumentsGetResponse>> {
-        let _headers: core.Fetcher.Args["headers"] = mergeHeaders(
-            this._options?.headers,
-            mergeOnlyDefinedHeaders({
-                Authorization: await this._getAuthorizationHeader(),
-                "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName,
-            }),
-            requestOptions?.headers,
-        );
         const _response = await core.fetcher({
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
@@ -210,9 +198,15 @@ export class Documents {
                 `interactions/${encodeURIComponent(serializers.Uuid.jsonOrThrow(id, { omitUndefined: true }))}/documents/`,
             ),
             method: "POST",
-            headers: _headers,
+            headers: mergeHeaders(
+                this._options?.headers,
+                mergeOnlyDefinedHeaders({
+                    Authorization: await this._getAuthorizationHeader(),
+                    "Tenant-Name": requestOptions?.tenantName,
+                }),
+                requestOptions?.headers,
+            ),
             contentType: "application/json",
-            queryParameters: requestOptions?.queryParams,
             requestType: "json",
             body: serializers.DocumentsCreateRequest.jsonOrThrow(request, {
                 unrecognizedObjectKeys: "strip",
@@ -317,14 +311,6 @@ export class Documents {
         documentId: Corti.Uuid,
         requestOptions?: Documents.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.DocumentsGetResponse>> {
-        let _headers: core.Fetcher.Args["headers"] = mergeHeaders(
-            this._options?.headers,
-            mergeOnlyDefinedHeaders({
-                Authorization: await this._getAuthorizationHeader(),
-                "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName,
-            }),
-            requestOptions?.headers,
-        );
         const _response = await core.fetcher({
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
@@ -332,8 +318,14 @@ export class Documents {
                 `interactions/${encodeURIComponent(serializers.Uuid.jsonOrThrow(id, { omitUndefined: true }))}/documents/${encodeURIComponent(serializers.Uuid.jsonOrThrow(documentId, { omitUndefined: true }))}`,
             ),
             method: "GET",
-            headers: _headers,
-            queryParameters: requestOptions?.queryParams,
+            headers: mergeHeaders(
+                this._options?.headers,
+                mergeOnlyDefinedHeaders({
+                    Authorization: await this._getAuthorizationHeader(),
+                    "Tenant-Name": requestOptions?.tenantName,
+                }),
+                requestOptions?.headers,
+            ),
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
             maxRetries: requestOptions?.maxRetries,
             abortSignal: requestOptions?.abortSignal,
@@ -433,14 +425,6 @@ export class Documents {
         documentId: Corti.Uuid,
         requestOptions?: Documents.RequestOptions,
     ): Promise<core.WithRawResponse<void>> {
-        let _headers: core.Fetcher.Args["headers"] = mergeHeaders(
-            this._options?.headers,
-            mergeOnlyDefinedHeaders({
-                Authorization: await this._getAuthorizationHeader(),
-                "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName,
-            }),
-            requestOptions?.headers,
-        );
         const _response = await core.fetcher({
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
@@ -448,8 +432,14 @@ export class Documents {
                 `interactions/${encodeURIComponent(serializers.Uuid.jsonOrThrow(id, { omitUndefined: true }))}/documents/${encodeURIComponent(serializers.Uuid.jsonOrThrow(documentId, { omitUndefined: true }))}`,
             ),
             method: "DELETE",
-            headers: _headers,
-            queryParameters: requestOptions?.queryParams,
+            headers: mergeHeaders(
+                this._options?.headers,
+                mergeOnlyDefinedHeaders({
+                    Authorization: await this._getAuthorizationHeader(),
+                    "Tenant-Name": requestOptions?.tenantName,
+                }),
+                requestOptions?.headers,
+            ),
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
             maxRetries: requestOptions?.maxRetries,
             abortSignal: requestOptions?.abortSignal,
@@ -543,14 +533,6 @@ export class Documents {
         request: Corti.DocumentsUpdateRequest = {},
         requestOptions?: Documents.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.DocumentsGetResponse>> {
-        let _headers: core.Fetcher.Args["headers"] = mergeHeaders(
-            this._options?.headers,
-            mergeOnlyDefinedHeaders({
-                Authorization: await this._getAuthorizationHeader(),
-                "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName,
-            }),
-            requestOptions?.headers,
-        );
         const _response = await core.fetcher({
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
@@ -558,9 +540,15 @@ export class Documents {
                 `interactions/${encodeURIComponent(serializers.Uuid.jsonOrThrow(id, { omitUndefined: true }))}/documents/${encodeURIComponent(serializers.Uuid.jsonOrThrow(documentId, { omitUndefined: true }))}`,
             ),
             method: "PATCH",
-            headers: _headers,
+            headers: mergeHeaders(
+                this._options?.headers,
+                mergeOnlyDefinedHeaders({
+                    Authorization: await this._getAuthorizationHeader(),
+                    "Tenant-Name": requestOptions?.tenantName,
+                }),
+                requestOptions?.headers,
+            ),
             contentType: "application/json",
-            queryParameters: requestOptions?.queryParams,
             requestType: "json",
             body: serializers.DocumentsUpdateRequest.jsonOrThrow(request, {
                 unrecognizedObjectKeys: "strip",
