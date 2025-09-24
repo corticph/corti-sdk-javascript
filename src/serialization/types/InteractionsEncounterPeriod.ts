@@ -17,6 +17,6 @@ export const InteractionsEncounterPeriod: core.serialization.ObjectSchema<
 export declare namespace InteractionsEncounterPeriod {
     export interface Raw {
         startedAt: string;
-        endedAt?: (string | null | undefined) | null;
+        endedAt?: (string | null) | null;
     }
 }

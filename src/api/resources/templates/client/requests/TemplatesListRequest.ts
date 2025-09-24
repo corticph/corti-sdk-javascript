@@ -7,10 +7,16 @@
  *     {}
  */
 export interface TemplatesListRequest {
-    /** Filter templates by organization. */
+    /**
+     * Filter templates by organization.
+     */
     org?: string | string[];
-    /** Filter templates by language. */
+    /**
+     * Filter templates by language.
+     */
     lang?: string | string[];
-    /** Filter templates by their status. */
+    /**
+     * Filter templates by their status.
+     */
     status?: string | string[];
 }

@@ -24,7 +24,7 @@ export const TemplatesItem: core.serialization.ObjectSchema<serializers.Template
 
 export declare namespace TemplatesItem {
     export interface Raw {
-        date_updated?: (string | null | undefined) | null;
+        date_updated?: (string | null) | null;
         name: string;
         description: string;
         key: string;

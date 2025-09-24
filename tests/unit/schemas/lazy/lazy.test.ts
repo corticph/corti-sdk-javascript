@@ -1,5 +1,5 @@
-import { lazy, list, object, string } from "../../../../src/core/schemas/builders";
 import { Schema } from "../../../../src/core/schemas/Schema";
+import { lazy, list, object, string } from "../../../../src/core/schemas/builders";
 import { itSchemaIdentity } from "../utils/itSchema";
 
 describe("lazy", () => {

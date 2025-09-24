@@ -18,7 +18,7 @@ export declare namespace Templates {
         /** Override the Tenant-Name header */
         tenantName?: core.Supplier<string | undefined>;
         /** Additional headers to include in requests. */
-        headers?: Record<string, string | core.Supplier<string | null | undefined> | null | undefined>;
+        headers?: Record<string, string | core.Supplier<string | undefined> | undefined>;
     }
 
     export interface RequestOptions {
@@ -30,10 +30,8 @@ export declare namespace Templates {
         abortSignal?: AbortSignal;
         /** Override the Tenant-Name header */
         tenantName?: string | undefined;
-        /** Additional query string parameters to include in the request. */
-        queryParams?: Record<string, unknown>;
         /** Additional headers to include in the request. */
-        headers?: Record<string, string | core.Supplier<string | null | undefined> | null | undefined>;
+        headers?: Record<string, string | core.Supplier<string | undefined> | undefined>;
     }
 }
 
@@ -85,14 +83,6 @@ export class Templates {
             }
         }
 
-        let _headers: core.Fetcher.Args["headers"] = mergeHeaders(
-            this._options?.headers,
-            mergeOnlyDefinedHeaders({
-                Authorization: await this._getAuthorizationHeader(),
-                "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName,
-            }),
-            requestOptions?.headers,
-        );
         const _response = await core.fetcher({
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
@@ -100,8 +90,15 @@ export class Templates {
                 "templateSections/",
             ),
             method: "GET",
-            headers: _headers,
-            queryParameters: { ..._queryParams, ...requestOptions?.queryParams },
+            headers: mergeHeaders(
+                this._options?.headers,
+                mergeOnlyDefinedHeaders({
+                    Authorization: await this._getAuthorizationHeader(),
+                    "Tenant-Name": requestOptions?.tenantName,
+                }),
+                requestOptions?.headers,
+            ),
+            queryParameters: _queryParams,
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
             maxRetries: requestOptions?.maxRetries,
             abortSignal: requestOptions?.abortSignal,
@@ -200,14 +197,6 @@ export class Templates {
             }
         }
 
-        let _headers: core.Fetcher.Args["headers"] = mergeHeaders(
-            this._options?.headers,
-            mergeOnlyDefinedHeaders({
-                Authorization: await this._getAuthorizationHeader(),
-                "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName,
-            }),
-            requestOptions?.headers,
-        );
         const _response = await core.fetcher({
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
@@ -215,8 +204,15 @@ export class Templates {
                 "templates/",
             ),
             method: "GET",
-            headers: _headers,
-            queryParameters: { ..._queryParams, ...requestOptions?.queryParams },
+            headers: mergeHeaders(
+                this._options?.headers,
+                mergeOnlyDefinedHeaders({
+                    Authorization: await this._getAuthorizationHeader(),
+                    "Tenant-Name": requestOptions?.tenantName,
+                }),
+                requestOptions?.headers,
+            ),
+            queryParameters: _queryParams,
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
             maxRetries: requestOptions?.maxRetries,
             abortSignal: requestOptions?.abortSignal,
@@ -286,14 +282,6 @@ export class Templates {
         key: string,
         requestOptions?: Templates.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.TemplatesItem>> {
-        let _headers: core.Fetcher.Args["headers"] = mergeHeaders(
-            this._options?.headers,
-            mergeOnlyDefinedHeaders({
-                Authorization: await this._getAuthorizationHeader(),
-                "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName,
-            }),
-            requestOptions?.headers,
-        );
         const _response = await core.fetcher({
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
@@ -301,8 +289,14 @@ export class Templates {
                 `templates/${encodeURIComponent(key)}`,
             ),
             method: "GET",
-            headers: _headers,
-            queryParameters: requestOptions?.queryParams,
+            headers: mergeHeaders(
+                this._options?.headers,
+                mergeOnlyDefinedHeaders({
+                    Authorization: await this._getAuthorizationHeader(),
+                    "Tenant-Name": requestOptions?.tenantName,
+                }),
+                requestOptions?.headers,
+            ),
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
             maxRetries: requestOptions?.maxRetries,
             abortSignal: requestOptions?.abortSignal,

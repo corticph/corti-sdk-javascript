@@ -4,7 +4,6 @@
 
 import * as environments from "../../../../environments.js";
 import * as core from "../../../../core/index.js";
-import { mergeOnlyDefinedHeaders, mergeHeaders } from "../../../../core/headers.js";
 import { TranscribeSocket } from "./Socket.js";
 
 export declare namespace Transcribe {
@@ -16,7 +15,7 @@ export declare namespace Transcribe {
         /** Override the Tenant-Name header */
         tenantName?: core.Supplier<string | undefined>;
         /** Additional headers to include in requests. */
-        headers?: Record<string, string | core.Supplier<string | null | undefined> | null | undefined>;
+        headers?: Record<string, string | core.Supplier<string | undefined> | undefined>;
     }
 
     export interface ConnectArgs {
@@ -43,10 +42,9 @@ export class Transcribe {
         const _queryParams: Record<string, string | string[] | object | object[] | null> = {};
         _queryParams["tenant-name"] = tenantName;
         _queryParams["token"] = token;
-        let _headers: Record<string, unknown> = mergeHeaders(
-            mergeOnlyDefinedHeaders({ Authorization: await this._getAuthorizationHeader() }),
-            headers,
-        );
+        let _headers: Record<string, string> = {
+            ...headers,
+        };
         const socket = new core.ReconnectingWebSocket({
             url: core.url.join(
                 (await core.Supplier.get(this._options["baseUrl"])) ??

@@ -7,8 +7,12 @@
  *     {}
  */
 export interface TemplatesSectionListRequest {
-    /** Filter template sections by organization. */
+    /**
+     * Filter template sections by organization.
+     */
     org?: string | string[];
-    /** Filter template sections by language. */
+    /**
+     * Filter template sections by language.
+     */
     lang?: string | string[];
 }

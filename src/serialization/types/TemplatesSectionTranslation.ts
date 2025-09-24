@@ -18,7 +18,7 @@ export const TemplatesSectionTranslation: core.serialization.ObjectSchema<
 export declare namespace TemplatesSectionTranslation {
     export interface Raw {
         languages_id: string;
-        name?: (string | null | undefined) | null;
-        description?: (string | null | undefined) | null;
+        name?: (string | null) | null;
+        description?: (string | null) | null;
     }
 }
