@@ -5,6 +5,6 @@
 import * as Corti from "../index.js";
 
 export interface DocumentsContextWithTranscript {
-    /** Transcript data. */
+    /** Transcript object can accept the full transcript in one string, or individual transcript segments. */
     data: Corti.CommonTranscript;
 }

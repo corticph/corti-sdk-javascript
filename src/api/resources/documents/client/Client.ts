@@ -43,7 +43,7 @@ export class Documents {
     }
 
     /**
-     *  List Documents
+     * List Documents
      *
      * @param {Corti.Uuid} id - The unique identifier of the interaction. Must be a valid UUID.
      * @param {Documents.RequestOptions} requestOptions - Request-specific configuration.
@@ -154,7 +154,7 @@ export class Documents {
     }
 
     /**
-     *  Generate Document.
+     * Generate Document.
      *
      * @param {Corti.Uuid} id - The unique identifier of the interaction. Must be a valid UUID.
      * @param {Corti.DocumentsCreateRequest} request
@@ -284,7 +284,7 @@ export class Documents {
     }
 
     /**
-     *  Get Document.
+     * Get Document.
      *
      * @param {Corti.Uuid} id - The unique identifier of the interaction. Must be a valid UUID.
      * @param {Corti.Uuid} documentId - The document ID representing the context for the request. Must be a valid UUID.

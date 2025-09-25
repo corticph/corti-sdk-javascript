@@ -43,7 +43,7 @@ export class Templates {
     }
 
     /**
-     *  Retrieves a list of template sections with optional filters for organization and language.
+     * Retrieves a list of template sections with optional filters for organization and language.
      *
      * @param {Corti.TemplatesSectionListRequest} request
      * @param {Templates.RequestOptions} requestOptions - Request-specific configuration.
@@ -149,7 +149,7 @@ export class Templates {
     }
 
     /**
-     *  Retrieves a list of templates with optional filters for organization, language, and status.
+     * Retrieves a list of templates with optional filters for organization, language, and status.
      *
      * @param {Corti.TemplatesListRequest} request
      * @param {Templates.RequestOptions} requestOptions - Request-specific configuration.
