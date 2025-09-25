@@ -15,7 +15,7 @@ export interface FactsCreateItem {
     groupId?: Corti.Uuid;
     /** The origin of the fact, such as 'USER' or 'SYSTEM'. */
     source?: Corti.CommonSourceEnum;
-    /** Indicates whether the fact has been marked as discarded. */
+    /** Indicates whether the fact has been marked as discarded by an end-user. */
     isDiscarded?: boolean;
     /** The timestamp when the fact was last updated. */
     updatedAt?: Date;

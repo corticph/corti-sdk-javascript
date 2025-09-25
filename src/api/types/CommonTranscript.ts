@@ -4,15 +4,15 @@
 
 export interface CommonTranscript {
     /** The channel associated with this phrase/utterance. */
-    channel: number;
+    channel?: number;
     /** The identifier of the participant. */
-    participant: number;
+    participant?: number;
     /** Id to tag an identified speaker. Auto-increments. */
-    speakerId: number;
+    speakerId?: number;
     /** The spoken phrase or utterance extracted from the audio. */
     text: string;
     /** Start time in milliseconds for phrase/utterance. */
-    start: number;
+    start?: number;
     /** End time in milliseconds for phrase/utterance. */
-    end: number;
+    end?: number;
 }
