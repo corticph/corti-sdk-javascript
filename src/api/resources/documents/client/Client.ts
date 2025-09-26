@@ -43,7 +43,7 @@ export class Documents {
     }
 
     /**
-     *  List Documents
+     * List Documents
      *
      * @param {Corti.Uuid} id - The unique identifier of the interaction. Must be a valid UUID.
      * @param {Documents.RequestOptions} requestOptions - Request-specific configuration.
@@ -154,7 +154,7 @@ export class Documents {
     }
 
     /**
-     *  Generate Document.
+     * Generate Document.
      *
      * @param {Corti.Uuid} id - The unique identifier of the interaction. Must be a valid UUID.
      * @param {Corti.DocumentsCreateRequest} request
@@ -284,7 +284,7 @@ export class Documents {
     }
 
     /**
-     *  Get Document.
+     * Get Document.
      *
      * @param {Corti.Uuid} id - The unique identifier of the interaction. Must be a valid UUID.
      * @param {Corti.Uuid} documentId - The document ID representing the context for the request. Must be a valid UUID.
@@ -462,16 +462,7 @@ export class Documents {
                         _response.rawResponse,
                     );
                 case 404:
-                    throw new Corti.NotFoundError(
-                        serializers.ErrorResponse.parseOrThrow(_response.error.body, {
-                            unrecognizedObjectKeys: "passthrough",
-                            allowUnrecognizedUnionMembers: true,
-                            allowUnrecognizedEnumValues: true,
-                            skipValidation: true,
-                            breadcrumbsPrefix: ["response"],
-                        }),
-                        _response.rawResponse,
-                    );
+                    throw new Corti.NotFoundError(_response.error.body, _response.rawResponse);
                 case 500:
                     throw new Corti.InternalServerError(_response.error.body, _response.rawResponse);
                 case 504:
