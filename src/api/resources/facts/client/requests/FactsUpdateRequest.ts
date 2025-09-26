@@ -13,8 +13,8 @@ export interface FactsUpdateRequest {
     text?: string;
     /** The updated group key for the fact. */
     group?: string;
-    /** The updated origin of the fact. */
+    /** The updated origin of the fact. Set to 'USER' to indicate a change by an end-user. */
     source?: Corti.CommonSourceEnum;
-    /** Indicates whether the fact should be marked as discarded. */
+    /** Set this to true if discarded by an end-user, then filter out from the document generation request. */
     isDiscarded?: boolean;
 }
