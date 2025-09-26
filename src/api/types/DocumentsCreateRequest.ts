@@ -5,6 +5,9 @@
 import * as Corti from "../index.js";
 
 export type DocumentsCreateRequest =
+    /**
+     * Standard method for document generation: Use template key to generate document based on pre-defined template. */
     | Corti.DocumentsCreateRequestWithTemplateKey
-    | Corti.DocumentsCreateRequestWithTemplateId
+    /**
+     * Advanced method for document generation: Define sectionKeys in the request to build a template dynamically. See a detailed example [here](/templates/documents-advanced#assemble-a-template-with-extra-instructions). */
     | Corti.DocumentsCreateRequestWithTemplate;

@@ -7,7 +7,7 @@ import * as Corti from "../index.js";
 export interface FactsBatchUpdateInput {
     /** The unique identifier of the fact to be updated. */
     factId: Corti.Uuid;
-    /** Indicates whether the fact should be discarded. */
+    /** Set this to true for facts discarded by an end-user, then filter those out from the document generation request. */
     isDiscarded?: boolean;
     /** The updated text content of the fact. */
     text?: string;

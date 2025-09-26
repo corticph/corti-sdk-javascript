@@ -6,17 +6,17 @@ import * as serializers from "../index.js";
 import * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
 import { TranscriptsMetadata } from "./TranscriptsMetadata.js";
-import { CommonTranscript } from "./CommonTranscript.js";
+import { CommonTranscriptResponse } from "./CommonTranscriptResponse.js";
 
 export const TranscriptsData: core.serialization.ObjectSchema<serializers.TranscriptsData.Raw, Corti.TranscriptsData> =
     core.serialization.object({
         metadata: TranscriptsMetadata,
-        transcripts: core.serialization.list(CommonTranscript),
+        transcripts: core.serialization.list(CommonTranscriptResponse),
     });
 
 export declare namespace TranscriptsData {
     export interface Raw {
         metadata: TranscriptsMetadata.Raw;
-        transcripts: CommonTranscript.Raw[];
+        transcripts: CommonTranscriptResponse.Raw[];
     }
 }
