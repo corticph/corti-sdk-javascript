@@ -5,13 +5,26 @@
 import * as serializers from "../index.js";
 import * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
-import { CommonTranscriptBase } from "./CommonTranscriptBase.js";
 
 export const CommonTranscriptRequest: core.serialization.ObjectSchema<
     serializers.CommonTranscriptRequest.Raw,
     Corti.CommonTranscriptRequest
-> = CommonTranscriptBase;
+> = core.serialization.object({
+    channel: core.serialization.number().optional(),
+    participant: core.serialization.number().optional(),
+    speakerId: core.serialization.number().optional(),
+    text: core.serialization.string(),
+    start: core.serialization.number().optional(),
+    end: core.serialization.number().optional(),
+});
 
 export declare namespace CommonTranscriptRequest {
-    export type Raw = CommonTranscriptBase.Raw;
+    export interface Raw {
+        channel?: number | null;
+        participant?: number | null;
+        speakerId?: number | null;
+        text: string;
+        start?: number | null;
+        end?: number | null;
+    }
 }
