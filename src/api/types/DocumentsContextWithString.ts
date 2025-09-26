@@ -3,6 +3,6 @@
  */
 
 export interface DocumentsContextWithString {
-    /** String data. */
+    /** String data can include any text to be reasoned over for document generation: Transcript text, facts, or other narrative information. */
     data: string;
 }
