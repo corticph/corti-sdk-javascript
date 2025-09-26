@@ -13,7 +13,7 @@ export interface FactsListItem {
     group?: string;
     /** The unique identifier of the group to which the fact belongs. */
     groupId?: Corti.Uuid;
-    /** Indicates whether the fact has been marked as discarded. */
+    /** Indicates whether the fact has been marked as discarded by an end-user. */
     isDiscarded?: boolean;
     /** The origin of the fact. */
     source?: Corti.CommonSourceEnum;
