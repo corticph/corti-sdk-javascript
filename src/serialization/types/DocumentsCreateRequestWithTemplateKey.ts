@@ -14,7 +14,6 @@ export const DocumentsCreateRequestWithTemplateKey: core.serialization.ObjectSch
     context: core.serialization.list(DocumentsContext),
     templateKey: core.serialization.string(),
     name: core.serialization.string().optional(),
-    modelName: core.serialization.string().optional(),
     outputLanguage: core.serialization.string(),
 });
 
@@ -23,7 +22,6 @@ export declare namespace DocumentsCreateRequestWithTemplateKey {
         context: DocumentsContext.Raw[];
         templateKey: string;
         name?: string | null;
-        modelName?: string | null;
         outputLanguage: string;
     }
 }

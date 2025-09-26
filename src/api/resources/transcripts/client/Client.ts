@@ -43,7 +43,7 @@ export class Transcripts {
     }
 
     /**
-     *  Retrieves a list of transcripts for a given interaction.
+     * Retrieves a list of transcripts for a given interaction.
      *
      * @param {Corti.Uuid} id - The unique identifier of the interaction. Must be a valid UUID.
      * @param {Corti.TranscriptsListRequest} request
@@ -169,7 +169,7 @@ export class Transcripts {
     }
 
     /**
-     *  Creates a new transcript for an interaction.
+     * Creates a new transcript for an interaction.
      *
      * @param {Corti.Uuid} id - The unique identifier of the interaction. Must be a valid UUID.
      * @param {Corti.TranscriptsCreateRequest} request
@@ -184,8 +184,7 @@ export class Transcripts {
      * @example
      *     await client.transcripts.create("f47ac10b-58cc-4372-a567-0e02b2c3d479", {
      *         recordingId: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
-     *         primaryLanguage: "en",
-     *         modelName: "base"
+     *         primaryLanguage: "en"
      *     })
      */
     public create(
@@ -298,7 +297,7 @@ export class Transcripts {
     }
 
     /**
-     *  Retrieves the transcript for a specific interaction.
+     * Retrieves the transcript for a specific interaction.
      *
      * @param {Corti.Uuid} id - The unique identifier of the interaction. Must be a valid UUID.
      * @param {Corti.Uuid} transcriptId - The unique identifier of the transcript. Must be a valid UUID.
@@ -417,7 +416,7 @@ export class Transcripts {
     }
 
     /**
-     *  Deletes a specific transcript associated with an interaction.
+     * Deletes a specific transcript associated with an interaction.
      *
      * @param {Corti.Uuid} id - The unique identifier of the interaction. Must be a valid UUID.
      * @param {Corti.Uuid} transcriptId - The unique identifier of the transcript. Must be a valid UUID.
