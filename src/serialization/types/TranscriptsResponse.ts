@@ -7,7 +7,7 @@ import * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
 import { Uuid } from "./Uuid.js";
 import { TranscriptsMetadata } from "./TranscriptsMetadata.js";
-import { CommonTranscript } from "./CommonTranscript.js";
+import { CommonTranscriptResponse } from "./CommonTranscriptResponse.js";
 import { CommonUsageInfo } from "./CommonUsageInfo.js";
 
 export const TranscriptsResponse: core.serialization.ObjectSchema<
@@ -16,7 +16,7 @@ export const TranscriptsResponse: core.serialization.ObjectSchema<
 > = core.serialization.object({
     id: Uuid,
     metadata: TranscriptsMetadata,
-    transcripts: core.serialization.list(CommonTranscript),
+    transcripts: core.serialization.list(CommonTranscriptResponse),
     usageInfo: CommonUsageInfo,
 });
 
@@ -24,7 +24,7 @@ export declare namespace TranscriptsResponse {
     export interface Raw {
         id: Uuid.Raw;
         metadata: TranscriptsMetadata.Raw;
-        transcripts: CommonTranscript.Raw[];
+        transcripts: CommonTranscriptResponse.Raw[];
         usageInfo: CommonUsageInfo.Raw;
     }
 }

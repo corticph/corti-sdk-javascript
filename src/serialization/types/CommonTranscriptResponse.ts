@@ -6,9 +6,9 @@ import * as serializers from "../index.js";
 import * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
 
-export const CommonTranscript: core.serialization.ObjectSchema<
-    serializers.CommonTranscript.Raw,
-    Corti.CommonTranscript
+export const CommonTranscriptResponse: core.serialization.ObjectSchema<
+    serializers.CommonTranscriptResponse.Raw,
+    Corti.CommonTranscriptResponse
 > = core.serialization.object({
     channel: core.serialization.number(),
     participant: core.serialization.number(),
@@ -18,7 +18,7 @@ export const CommonTranscript: core.serialization.ObjectSchema<
     end: core.serialization.number(),
 });
 
-export declare namespace CommonTranscript {
+export declare namespace CommonTranscriptResponse {
     export interface Raw {
         channel: number;
         participant: number;
