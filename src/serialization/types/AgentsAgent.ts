@@ -12,6 +12,7 @@ export const AgentsAgent: core.serialization.ObjectSchema<serializers.AgentsAgen
         id: core.serialization.string(),
         name: core.serialization.string(),
         description: core.serialization.string(),
+        systemPrompt: core.serialization.string(),
         experts: core.serialization.list(AgentsAgentExpertsItem).optional(),
     });
 
@@ -20,6 +21,7 @@ export declare namespace AgentsAgent {
         id: string;
         name: string;
         description: string;
+        systemPrompt: string;
         experts?: AgentsAgentExpertsItem.Raw[] | null;
     }
 }

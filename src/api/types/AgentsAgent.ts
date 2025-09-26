@@ -11,5 +11,7 @@ export interface AgentsAgent {
     name: string;
     /** A brief description of the agent's capabilities. */
     description: string;
+    /** The system prompt that defines the overall agents behavior and expectations. */
+    systemPrompt: string;
     experts?: Corti.AgentsAgentExpertsItem[];
 }

@@ -9,8 +9,8 @@ import * as core from "../../core/index.js";
 export const AgentsCreateMcpServerAuthorizationType: core.serialization.Schema<
     serializers.AgentsCreateMcpServerAuthorizationType.Raw,
     Corti.AgentsCreateMcpServerAuthorizationType
-> = core.serialization.enum_(["none", "oauth2.0", "oauth2.1"]);
+> = core.serialization.enum_(["none", "bearer", "inherit", "oauth2.0"]);
 
 export declare namespace AgentsCreateMcpServerAuthorizationType {
-    export type Raw = "none" | "oauth2.0" | "oauth2.1";
+    export type Raw = "none" | "bearer" | "inherit" | "oauth2.0";
 }
