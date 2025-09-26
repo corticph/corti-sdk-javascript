@@ -28,6 +28,7 @@ import { Transcripts } from "../api/resources/transcripts/client/Client.js";
 import { Facts } from "../api/resources/facts/client/Client.js";
 import { Documents  } from "../api/resources/documents/client/Client.js";
 import { Templates } from "../api/resources/templates/client/Client.js";
+import { Agents } from "../api/resources/agents/client/Client.js";
 
 /**
  * Patch: changed import to custom Stream and Transcribe implementations
@@ -116,6 +117,7 @@ export class CortiClient {
     protected _facts: Facts | undefined;
     protected _templates: Templates | undefined;
     protected _documents: Documents | undefined;
+    protected _agents: Agents | undefined;
     /**
      * Patch: removed `auth` field
      * `_oauthTokenProvider` uses Auth module directly to get the token,
@@ -201,6 +203,13 @@ export class CortiClient {
 
     public get templates(): Templates {
         return (this._templates ??= new Templates({
+            ...this._options,
+            token: async () => await this._oauthTokenProvider.getToken(),
+        }));
+    }
+
+    public get agents(): Agents {
+        return (this._agents ??= new Agents({
             ...this._options,
             token: async () => await this._oauthTokenProvider.getToken(),
         }));
