@@ -48,7 +48,6 @@ export * from "./TemplatesSection.js";
 export * from "./CommonSortingDirectionEnum.js";
 export * from "./TemplatesItem.js";
 export * from "./TemplatesSectionSorted.js";
-export * from "./CommonTranscriptBase.js";
 export * from "./CommonTranscriptRequest.js";
 export * from "./CommonTranscriptResponse.js";
 export * from "./Uuid.js";
