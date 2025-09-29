@@ -16,7 +16,7 @@ export declare namespace Facts {
         baseUrl?: core.Supplier<string>;
         token?: core.Supplier<core.BearerToken | undefined>;
         /** Override the Tenant-Name header */
-        tenantName: core.Supplier<string>;
+        tenantName?: core.Supplier<string | undefined>;
         /** Additional headers to include in requests. */
         headers?: Record<string, string | core.Supplier<string | undefined> | undefined>;
     }
@@ -29,7 +29,7 @@ export declare namespace Facts {
         /** A hook to abort the request. */
         abortSignal?: AbortSignal;
         /** Override the Tenant-Name header */
-        tenantName?: string;
+        tenantName?: string | undefined;
         /** Additional headers to include in the request. */
         headers?: Record<string, string | core.Supplier<string | undefined> | undefined>;
     }
@@ -528,6 +528,105 @@ export class Facts {
                 throw new errors.CortiTimeoutError(
                     "Timeout exceeded when calling PATCH /interactions/{id}/facts/{factId}.",
                 );
+            case "unknown":
+                throw new errors.CortiError({
+                    message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
+                });
+        }
+    }
+
+    /**
+     * Generates facts based on a provided transcript without storing them.
+     *
+     * @param {Corti.FactsGenerateRequest} request
+     * @param {Facts.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link Corti.GatewayTimeoutError}
+     *
+     * @example
+     *     await client.facts.generateFacts()
+     */
+    public generateFacts(
+        request: Corti.FactsGenerateRequest = {},
+        requestOptions?: Facts.RequestOptions,
+    ): core.HttpResponsePromise<Corti.FactsGenerateResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__generateFacts(request, requestOptions));
+    }
+
+    private async __generateFacts(
+        request: Corti.FactsGenerateRequest = {},
+        requestOptions?: Facts.RequestOptions,
+    ): Promise<core.WithRawResponse<Corti.FactsGenerateResponse>> {
+        const _response = await core.fetcher({
+            url: core.url.join(
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)).base,
+                "tools/v1/generate-facts",
+            ),
+            method: "POST",
+            headers: mergeHeaders(
+                this._options?.headers,
+                mergeOnlyDefinedHeaders({
+                    Authorization: await this._getAuthorizationHeader(),
+                    "Tenant-Name": requestOptions?.tenantName,
+                }),
+                requestOptions?.headers,
+            ),
+            contentType: "application/json",
+            requestType: "json",
+            body: serializers.FactsGenerateRequest.jsonOrThrow(request, {
+                unrecognizedObjectKeys: "strip",
+                omitUndefined: true,
+            }),
+            timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
+            maxRetries: requestOptions?.maxRetries,
+            abortSignal: requestOptions?.abortSignal,
+        });
+        if (_response.ok) {
+            return {
+                data: serializers.FactsGenerateResponse.parseOrThrow(_response.body, {
+                    unrecognizedObjectKeys: "passthrough",
+                    allowUnrecognizedUnionMembers: true,
+                    allowUnrecognizedEnumValues: true,
+                    skipValidation: true,
+                    breadcrumbsPrefix: ["response"],
+                }),
+                rawResponse: _response.rawResponse,
+            };
+        }
+
+        if (_response.error.reason === "status-code") {
+            switch (_response.error.statusCode) {
+                case 504:
+                    throw new Corti.GatewayTimeoutError(
+                        serializers.ErrorResponse.parseOrThrow(_response.error.body, {
+                            unrecognizedObjectKeys: "passthrough",
+                            allowUnrecognizedUnionMembers: true,
+                            allowUnrecognizedEnumValues: true,
+                            skipValidation: true,
+                            breadcrumbsPrefix: ["response"],
+                        }),
+                        _response.rawResponse,
+                    );
+                default:
+                    throw new errors.CortiError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                        rawResponse: _response.rawResponse,
+                    });
+            }
+        }
+
+        switch (_response.error.reason) {
+            case "non-json":
+                throw new errors.CortiError({
+                    statusCode: _response.error.statusCode,
+                    body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
+                });
+            case "timeout":
+                throw new errors.CortiTimeoutError("Timeout exceeded when calling POST /tools/v1/generate-facts.");
             case "unknown":
                 throw new errors.CortiError({
                     message: _response.error.errorMessage,
