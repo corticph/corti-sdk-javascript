@@ -1,0 +1,17 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="templates.list.integration.ts" type="JavaScriptTestRunnerJest" nameIsGenerated="true">
+    <config-file value="$PROJECT_DIR$/jest.integration.config.mjs" />
+    <node-interpreter value="project" />
+    <jest-package value="$PROJECT_DIR$/node_modules/jest" />
+    <working-dir value="$PROJECT_DIR$" />
+    <envs>
+      <env name="CORTI_ENVIRONMENT" value="dev-weu" />
+      <env name="CORTI_TENANT_NAME" value="copilotdeveu" />
+      <env name="CORTI_CLIENT_ID" value="markitosha-580b7906-2d09-48d5-9aa3-c638b6d0d7a4-test" />
+      <env name="CORTI_CLIENT_SECRET" value="hqO2fiOVmHhZI6rsIFEcQKivRXiNoXae" />
+    </envs>
+    <scope-kind value="TEST_FILE" />
+    <test-file value="$PROJECT_DIR$/tests/custom/templates.list.integration.ts" />
+    <method v="2" />
+  </configuration>
+</component>

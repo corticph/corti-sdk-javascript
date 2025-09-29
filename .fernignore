@@ -18,5 +18,5 @@ jest.integration.config.mjs
 # Issue templates
 .github/ISSUE_TEMPLATE
 
-# Releasing custom Agents version
+# Updated release workflow
 .github/workflows/ci.yml
