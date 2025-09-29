@@ -169,7 +169,7 @@ export class Transcripts {
     }
 
     /**
-     * Creates a new transcript for an interaction.
+     * Create a transcript from audio files uploaded, via `/recordings` endpoint, to the interaction.<br/><Note>If the asynchronous transcript processing does not complete before the request times out, a location header will be included in the response.<br/><br/>The client can poll the Get Transcript endpoint (`GET /interactions/{id}/transcripts/{transcriptId}`) to receive the final transcript.</Note>
      *
      * @param {Corti.Uuid} id - The unique identifier of the interaction. Must be a valid UUID.
      * @param {Corti.TranscriptsCreateRequest} request
