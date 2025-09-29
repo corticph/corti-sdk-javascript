@@ -221,7 +221,6 @@ export async function createTestTranscript(
   const transcriptResult = await cortiClient.transcripts.create(interactionId, {
     recordingId,
     primaryLanguage: 'en',
-    modelName: 'premier',
   });
 
   if (!transcriptResult.id) {
