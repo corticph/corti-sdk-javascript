@@ -13,7 +13,7 @@ export declare namespace Stream {
         baseUrl?: core.Supplier<string>;
         token?: core.Supplier<core.BearerToken | undefined>;
         /** Override the Tenant-Name header */
-        tenantName?: core.Supplier<string | undefined>;
+        tenantName: core.Supplier<string>;
         /** Additional headers to include in requests. */
         headers?: Record<string, string | core.Supplier<string | undefined> | undefined>;
     }
