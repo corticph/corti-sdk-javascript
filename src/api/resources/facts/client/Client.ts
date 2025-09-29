@@ -545,16 +545,16 @@ export class Facts {
      * @throws {@link Corti.GatewayTimeoutError}
      *
      * @example
-     *     await client.facts.generateFacts()
+     *     await client.facts.generate()
      */
-    public generateFacts(
+    public generate(
         request: Corti.FactsGenerateRequest = {},
         requestOptions?: Facts.RequestOptions,
     ): core.HttpResponsePromise<Corti.FactsGenerateResponse> {
-        return core.HttpResponsePromise.fromPromise(this.__generateFacts(request, requestOptions));
+        return core.HttpResponsePromise.fromPromise(this.__generate(request, requestOptions));
     }
 
-    private async __generateFacts(
+    private async __generate(
         request: Corti.FactsGenerateRequest = {},
         requestOptions?: Facts.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.FactsGenerateResponse>> {
