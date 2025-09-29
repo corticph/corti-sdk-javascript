@@ -104,73 +104,6 @@ describe('cortiClient.documents.create', () => {
       expect(consoleWarnSpy).not.toHaveBeenCalled();
     });
 
-    // FIXME Skipped, because we don't have templateId in the template information
-    it.skip('should create document with DocumentsCreateRequestWithTemplateId using facts context', async () => {
-      expect.assertions(2);
-
-      const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
-      
-      const result = await cortiClient.documents.create(interactionId, {
-        context: [{
-          type: 'facts',
-          data: [{
-            text: faker.lorem.sentence(),
-            source: 'user',
-          }],
-        }],
-        templateId: faker.string.uuid(),
-        outputLanguage: "en",
-      });
-
-      expect(result).toBeDefined();
-      expect(consoleWarnSpy).not.toHaveBeenCalled();
-    });
-
-    // FIXME Skipped, because we don't have templateId in the template information
-    it.skip('should create document with DocumentsConsumeRequestWithTemplateId using transcript context', async () => {
-      expect.assertions(2);
-
-      const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
-      
-      const result = await cortiClient.documents.create(interactionId, {
-        context: [{
-          type: 'transcript',
-          data: {
-            text: faker.lorem.paragraphs(2),
-            start: faker.number.int({ min: 0, max: 1000 }),
-            end: faker.number.int({ min: 1001, max: 5000 }),
-            channel: faker.number.int({ min: 0, max: 1 }),
-            participant: faker.number.int({ min: 0, max: 1 }),
-            speakerId: faker.number.int({ min: 1, max: 10 }),
-          },
-        }],
-        templateId: faker.string.uuid(),
-        outputLanguage: "en",
-      });
-
-      expect(result).toBeDefined();
-      expect(consoleWarnSpy).not.toHaveBeenCalled();
-    });
-
-    // FIXME Skipped, because we don't have templateId in the template information
-    it.skip('should create document with DocumentsCreateRequestWithTemplateId using string context', async () => {
-      expect.assertions(2);
-
-      const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
-      
-      const result = await cortiClient.documents.create(interactionId, {
-        context: [{
-          type: 'string',
-          data: faker.lorem.paragraph(),
-        }],
-        templateId: faker.string.uuid(),
-        outputLanguage: "en",
-      });
-
-      expect(result).toBeDefined();
-      expect(consoleWarnSpy).not.toHaveBeenCalled();
-    });
-
     it('should create document with DocumentsCreateRequestWithTemplate using facts context and sectionKeys', async () => {
       expect.assertions(2);
 
@@ -186,30 +119,6 @@ describe('cortiClient.documents.create', () => {
         }],
         template: {
           sectionKeys: [faker.helpers.arrayElement(validSectionKeys)]
-        },
-        outputLanguage: "en",
-      });
-
-      expect(result).toBeDefined();
-      expect(consoleWarnSpy).not.toHaveBeenCalled();
-    });
-
-    // FIXME Skipped, because we don't have sectionId in the section information
-    it.skip('should create document with DocumentsCreateRequestWithTemplate using facts context and sectionIds', async () => {
-      expect.assertions(2);
-
-      const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
-      
-      const result = await cortiClient.documents.create(interactionId, {
-        context: [{
-          type: 'facts',
-          data: [{
-            text: faker.lorem.sentence(),
-            source: 'user',
-          }],
-        }],
-        template: {
-          sectionIds: [faker.string.uuid()]
         },
         outputLanguage: "en",
       });
@@ -245,34 +154,6 @@ describe('cortiClient.documents.create', () => {
       expect(consoleWarnSpy).not.toHaveBeenCalled();
     });
 
-    // FIXME Skipped, because we don't have sectionId in the section information
-    it.skip('should create document with DocumentsCreateRequestWithTemplate using transcript context and sectionIds', async () => {
-      expect.assertions(2);
-
-      const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
-      
-      const result = await cortiClient.documents.create(interactionId, {
-        context: [{
-          type: 'transcript',
-          data: {
-            text: faker.lorem.paragraphs(2),
-            start: faker.number.int({ min: 0, max: 1000 }),
-            end: faker.number.int({ min: 1001, max: 5000 }),
-            channel: faker.number.int({ min: 0, max: 1 }),
-            participant: faker.number.int({ min: 0, max: 1 }),
-            speakerId: faker.number.int({ min: 1, max: 10 }),
-          },
-        }],
-        template: {
-          sectionIds: [faker.string.uuid()]
-        },
-        outputLanguage: "en",
-      });
-
-      expect(result).toBeDefined();
-      expect(consoleWarnSpy).not.toHaveBeenCalled();
-    });
-
     it('should create document with DocumentsCreateRequestWithTemplate using string context and sectionKeys', async () => {
       expect.assertions(2);
 
@@ -292,28 +173,7 @@ describe('cortiClient.documents.create', () => {
       expect(result).toBeDefined();
       expect(consoleWarnSpy).not.toHaveBeenCalled();
     });
-
-    // FIXME Skipped, because we don't have sectionId in the section information
-    it.skip('should create document with DocumentsCreateRequestWithTemplate using string context and sectionIds', async () => {
-      expect.assertions(2);
-
-      const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
-      
-      const result = await cortiClient.documents.create(interactionId, {
-        context: [{
-          type: 'string',
-          data: faker.lorem.paragraph(),
-        }],
-        template: {
-          sectionIds: [faker.string.uuid()]
-        },
-        outputLanguage: "en",
-      });
-
-      expect(result).toBeDefined();
-      expect(consoleWarnSpy).not.toHaveBeenCalled();
-    });
-  });
+});
 
   describe('should create document with all optional values', () => {
     it('should create document with DocumentsCreateRequestWithTemplateKey using facts context', async () => {
@@ -332,7 +192,6 @@ describe('cortiClient.documents.create', () => {
         }],
         templateKey,
         name: faker.lorem.words(3),
-        modelName: 'doc-gen-default',
         outputLanguage: "en",
       });
 
@@ -359,7 +218,6 @@ describe('cortiClient.documents.create', () => {
         }],
         templateKey,
         name: faker.lorem.words(3),
-        modelName: 'doc-gen-default',
         outputLanguage: "en",
       });
 
@@ -379,81 +237,6 @@ describe('cortiClient.documents.create', () => {
         }],
         templateKey,
         name: faker.lorem.words(3),
-        modelName: 'doc-gen-default',
-        outputLanguage: "en",
-      });
-
-      expect(result).toBeDefined();
-      expect(consoleWarnSpy).not.toHaveBeenCalled();
-    });
-
-    // FIXME Skipped, because we don't have templateId in the template information
-    it.skip('should create document with DocumentsCreateRequestWithTemplateId using facts context', async () => {
-      expect.assertions(2);
-
-      const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
-      
-      const result = await cortiClient.documents.create(interactionId, {
-        context: [{
-          type: 'facts',
-          data: [{
-            text: faker.lorem.sentence(),
-            group: faker.helpers.arrayElement(validFactGroups),
-            source: 'user',
-          }],
-        }],
-        templateId: faker.string.uuid(),
-        name: faker.lorem.words(3),
-        modelName: 'doc-gen-default',
-        outputLanguage: "en",
-      });
-
-      expect(result).toBeDefined();
-      expect(consoleWarnSpy).not.toHaveBeenCalled();
-    });
-
-    // FIXME Skipped, because we don't have templateId in the template information
-    it.skip('should create document with DocumentsCreateRequestWithTemplateId using transcript context', async () => {
-      expect.assertions(2);
-
-      const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
-      
-      const result = await cortiClient.documents.create(interactionId, {
-        context: [{
-          type: 'transcript',
-          data: {
-            text: faker.lorem.paragraphs(2),
-            start: faker.number.int({ min: 0, max: 1000 }),
-            end: faker.number.int({ min: 1001, max: 5000 }),
-            channel: faker.number.int({ min: 0, max: 1 }),
-            participant: faker.number.int({ min: 0, max: 1 }),
-            speakerId: faker.number.int({ min: 1, max: 10 }),
-          },
-        }],
-        templateId: faker.string.uuid(),
-        name: faker.lorem.words(3),
-        modelName: 'doc-gen-default',
-        outputLanguage: "en",
-      });
-
-      expect(result).toBeDefined();
-      expect(consoleWarnSpy).not.toHaveBeenCalled();
-    });
-
-    // FIXME Skipped, because we don't have templateId in the template information
-    it.skip('should create document with DocumentsCreateRequestWithTemplateId using string context', async () => {
-      expect.assertions(2);
-
-      const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
-      
-      const result = await cortiClient.documents.create(interactionId, {
-        context: [{
-          type: 'string',
-          data: faker.lorem.paragraph(),
-        }],
-        templateId: faker.string.uuid(),
-        name: faker.lorem.words(3),
-        modelName: 'doc-gen-default',
         outputLanguage: "en",
       });
 
@@ -484,7 +267,6 @@ describe('cortiClient.documents.create', () => {
           ],
         },
         name: faker.lorem.words(3),
-        modelName: 'doc-gen-default',
         outputLanguage: "en",
       });
 
@@ -518,7 +300,6 @@ describe('cortiClient.documents.create', () => {
           ],
         },
         name: faker.lorem.words(3),
-        modelName: 'doc-gen-default',
         outputLanguage: "en",
       });
 
@@ -545,7 +326,6 @@ describe('cortiClient.documents.create', () => {
           ],
         },
         name: faker.lorem.words(3),
-        modelName: 'doc-gen-default',
         outputLanguage: "en",
       });
 
@@ -616,78 +396,6 @@ describe('cortiClient.documents.create', () => {
           }],
         }],
         templateKey,
-        name: faker.lorem.words(3),
-        outputLanguage: "en",
-      });
-
-      expect(result).toBeDefined();
-      expect(consoleWarnSpy).not.toHaveBeenCalled();
-    });
-
-    // FIXME Skipped, because we don't have templateId in the template information
-    it.skip('should create document with DocumentsCreateRequestWithTemplateId using source: core', async () => {
-      expect.assertions(2);
-
-      const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
-      
-      const result = await cortiClient.documents.create(interactionId, {
-        context: [{
-          type: 'facts',
-          data: [{
-            text: faker.lorem.sentence(),
-            group: faker.helpers.arrayElement(validFactGroups),
-            source: 'core',
-          }],
-        }],
-        templateId: faker.string.uuid(),
-        name: faker.lorem.words(3),
-        outputLanguage: "en",
-      });
-
-      expect(result).toBeDefined();
-      expect(consoleWarnSpy).not.toHaveBeenCalled();
-    });
-
-    // FIXME Skipped, because we don't have templateId in the template information
-    it.skip('should create document with DocumentsCreateRequestWithTemplateId using source: system', async () => {
-      expect.assertions(2);
-
-      const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
-      
-      const result = await cortiClient.documents.create(interactionId, {
-        context: [{
-          type: 'facts',
-          data: [{
-            text: faker.lorem.sentence(),
-            group: faker.helpers.arrayElement(validFactGroups),
-            source: 'system',
-          }],
-        }],
-        templateId: faker.string.uuid(),
-        name: faker.lorem.words(3),
-        outputLanguage: "en",
-      });
-
-      expect(result).toBeDefined();
-      expect(consoleWarnSpy).not.toHaveBeenCalled();
-    });
-
-    // FIXME Skipped, because we don't have templateId in the template information
-    it.skip('should create document with DocumentsCreateRequestWithTemplateId using source: user', async () => {
-      expect.assertions(2);
-
-      const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
-      
-      const result = await cortiClient.documents.create(interactionId, {
-        context: [{
-          type: 'facts',
-          data: [{
-            text: faker.lorem.sentence(),
-            group: faker.helpers.arrayElement(validFactGroups),
-            source: 'user',
-          }],
-        }],
-        templateId: faker.string.uuid(),
         name: faker.lorem.words(3),
         outputLanguage: "en",
       });
@@ -916,121 +624,6 @@ describe('cortiClient.documents.create', () => {
           outputLanguage: "en",
         } as any)
       ).rejects.toThrow('Missing required key "text"');
-    });
-
-    it('should throw error when transcript channel is missing in transcript context', async () => {
-      expect.assertions(1);
-
-      const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
-      
-      await expect(
-        cortiClient.documents.create(interactionId, {
-          context: [{
-            type: 'transcript',
-            data: {
-              text: faker.lorem.paragraphs(2),
-              start: faker.number.int({ min: 0, max: 1000 }),
-              end: faker.number.int({ min: 1001, max: 5000 }),
-              participant: faker.number.int({ min: 0, max: 1 }),
-              speakerId: faker.number.int({ min: 1, max: 10 }),
-            },
-          }],
-          templateKey,
-          outputLanguage: "en",
-        } as any)
-      ).rejects.toThrow('Missing required key "channel"');
-    });
-
-    it('should throw error when transcript participant is missing in transcript context', async () => {
-      expect.assertions(1);
-
-      const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
-      
-      await expect(
-        cortiClient.documents.create(interactionId, {
-          context: [{
-            type: 'transcript',
-            data: {
-              text: faker.lorem.paragraphs(2),
-              start: faker.number.int({ min: 0, max: 1000 }),
-              end: faker.number.int({ min: 1001, max: 5000 }),
-              channel: faker.number.int({ min: 0, max: 1 }),
-              speakerId: faker.number.int({ min: 1, max: 10 }),
-            },
-          }],
-          templateKey,
-          outputLanguage: "en",
-        } as any)
-      ).rejects.toThrow('Missing required key "participant"');
-    });
-
-    it('should throw error when transcript speakerId is missing in transcript context', async () => {
-      expect.assertions(1);
-
-      const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
-      
-      await expect(
-        cortiClient.documents.create(interactionId, {
-          context: [{
-            type: 'transcript',
-            data: {
-              text: faker.lorem.paragraphs(2),
-              start: faker.number.int({ min: 0, max: 1000 }),
-              end: faker.number.int({ min: 1001, max: 5000 }),
-              channel: faker.number.int({ min: 0, max: 1 }),
-              participant: faker.number.int({ min: 0, max: 1 }),
-            },
-          }],
-          templateKey,
-          outputLanguage: "en",
-        } as any)
-      ).rejects.toThrow('Missing required key "speakerId"');
-    });
-
-    it('should throw error when transcript start is missing in transcript context', async () => {
-      expect.assertions(1);
-
-      const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
-      
-      await expect(
-        cortiClient.documents.create(interactionId, {
-          context: [{
-            type: 'transcript',
-            data: {
-              text: faker.lorem.paragraphs(2),
-              end: faker.number.int({ min: 1001, max: 5000 }),
-              channel: faker.number.int({ min: 0, max: 1 }),
-              participant: faker.number.int({ min: 0, max: 1 }),
-              speakerId: faker.number.int({ min: 1, max: 10 }),
-            },
-          }],
-          templateKey,
-          outputLanguage: "en",
-        } as any)
-      ).rejects.toThrow('Missing required key "start"');
-    });
-
-    it('should throw error when transcript end is missing in transcript context', async () => {
-      expect.assertions(1);
-
-      const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
-      
-      await expect(
-        cortiClient.documents.create(interactionId, {
-          context: [{
-            type: 'transcript',
-            data: {
-              text: faker.lorem.paragraphs(2),
-              start: faker.number.int({ min: 0, max: 1000 }),
-              channel: faker.number.int({ min: 0, max: 1 }),
-              participant: faker.number.int({ min: 0, max: 1 }),
-              speakerId: faker.number.int({ min: 1, max: 10 }),
-            },
-          }],
-          templateKey,
-          outputLanguage: "en",
-        } as any)
-      ).rejects.toThrow('Missing required key "end"');
     });
 
     it('should throw error when string data is missing in string context', async () => {

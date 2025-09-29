@@ -6,11 +6,12 @@ import * as serializers from "../index.js";
 import * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
 import { DocumentsTemplateWithSectionKeys } from "./DocumentsTemplateWithSectionKeys.js";
-import { DocumentsTemplateWithSectionIds } from "./DocumentsTemplateWithSectionIds.js";
 
-export const DocumentsTemplate: core.serialization.Schema<serializers.DocumentsTemplate.Raw, Corti.DocumentsTemplate> =
-    core.serialization.undiscriminatedUnion([DocumentsTemplateWithSectionKeys, DocumentsTemplateWithSectionIds]);
+export const DocumentsTemplate: core.serialization.ObjectSchema<
+    serializers.DocumentsTemplate.Raw,
+    Corti.DocumentsTemplate
+> = DocumentsTemplateWithSectionKeys;
 
 export declare namespace DocumentsTemplate {
-    export type Raw = DocumentsTemplateWithSectionKeys.Raw | DocumentsTemplateWithSectionIds.Raw;
+    export type Raw = DocumentsTemplateWithSectionKeys.Raw;
 }

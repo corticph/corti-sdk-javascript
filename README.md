@@ -17,8 +17,6 @@ npm i -s @corti/sdk
 
 ## Reference
 
-A full reference for this SDK is available [here](REFERENCE-latest.md).
-
 For detailed authentication instructions, see the [Authentication Guide](./AUTHENTICATION.md).
 
 ## Usage

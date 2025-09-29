@@ -22,4 +22,4 @@ jobs:
           CORTI_ENVIRONMENT: ${{ vars.CORTI_ENVIRONMENT }}
           CORTI_TENANT_NAME: ${{ vars.CORTI_TENANT_NAME }}
           CORTI_CLIENT_ID: ${{ vars.CORTI_CLIENT_ID }}
-          CORTI_CLIENT_SECRET: ${{ secrets.CORTI_CLIENT_SECRET }} 
+          CORTI_CLIENT_SECRET: ${{ secrets.CORTI_CLIENT_SECRET }}
