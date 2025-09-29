@@ -1,12 +1,13 @@
 export * as interactions from "./interactions/index.js";
 export * from "./interactions/types/index.js";
+export * as facts from "./facts/index.js";
+export * from "./facts/types/index.js";
 export * as auth from "./auth/index.js";
 export * from "./auth/types/index.js";
 export * as stream from "./stream/index.js";
 export * as transcribe from "./transcribe/index.js";
 export * as recordings from "./recordings/index.js";
 export * as transcripts from "./transcripts/index.js";
-export * as facts from "./facts/index.js";
 export * as documents from "./documents/index.js";
 export * as templates from "./templates/index.js";
 export * from "./interactions/client/requests/index.js";

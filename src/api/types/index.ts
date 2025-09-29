@@ -34,6 +34,7 @@ export * from "./FactsCreateResponse.js";
 export * from "./FactsListResponse.js";
 export * from "./FactsBatchUpdateResponse.js";
 export * from "./FactsBatchUpdateItem.js";
+export * from "./FactsGenerateResponse.js";
 export * from "./InteractionsGetResponse.js";
 export * from "./InteractionsCreateResponse.js";
 export * from "./InteractionsListResponse.js";
