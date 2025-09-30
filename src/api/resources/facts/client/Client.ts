@@ -545,17 +545,25 @@ export class Facts {
      * @throws {@link Corti.GatewayTimeoutError}
      *
      * @example
-     *     await client.facts.generate()
+     *     await client.facts.generate({
+     *         context: [{
+     *                 data: {
+     *                     "key": "value"
+     *                 },
+     *                 type: "string"
+     *             }],
+     *         outputLanguage: "outputLanguage"
+     *     })
      */
     public generate(
-        request: Corti.FactsGenerateRequest = {},
+        request: Corti.FactsGenerateRequest,
         requestOptions?: Facts.RequestOptions,
     ): core.HttpResponsePromise<Corti.FactsGenerateResponse> {
         return core.HttpResponsePromise.fromPromise(this.__generate(request, requestOptions));
     }
 
     private async __generate(
-        request: Corti.FactsGenerateRequest = {},
+        request: Corti.FactsGenerateRequest,
         requestOptions?: Facts.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.FactsGenerateResponse>> {
         const _response = await core.fetcher({
