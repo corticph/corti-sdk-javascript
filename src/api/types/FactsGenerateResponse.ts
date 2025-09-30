@@ -5,9 +5,10 @@
 import * as Corti from "../index.js";
 
 export interface FactsGenerateResponse {
-    facts?: unknown;
+    /** List of generated facts based on the provided transcript. */
+    facts: Corti.Fact;
     /** The language used in the output. */
-    outputLanguage?: string;
+    outputLanguage: string;
     /** Information about resource usage for this request. */
-    usageInfo?: Corti.CommonUsageInfo;
+    usageInfo: Corti.CommonUsageInfo;
 }

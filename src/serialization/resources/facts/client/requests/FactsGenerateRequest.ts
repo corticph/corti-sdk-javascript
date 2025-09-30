@@ -11,15 +11,13 @@ export const FactsGenerateRequest: core.serialization.Schema<
     serializers.FactsGenerateRequest.Raw,
     Corti.FactsGenerateRequest
 > = core.serialization.object({
-    context: core.serialization.list(FactsGenerateRequestContextItem).optional(),
-    outputLanguage: core.serialization.string().optional(),
-    primaryLanguage: core.serialization.string().optional(),
+    context: core.serialization.list(FactsGenerateRequestContextItem),
+    outputLanguage: core.serialization.string(),
 });
 
 export declare namespace FactsGenerateRequest {
     export interface Raw {
-        context?: FactsGenerateRequestContextItem.Raw[] | null;
-        outputLanguage?: string | null;
-        primaryLanguage?: string | null;
+        context: FactsGenerateRequestContextItem.Raw[];
+        outputLanguage: string;
     }
 }

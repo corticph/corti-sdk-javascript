@@ -4,7 +4,7 @@
 
 export interface FactsGenerateRequestContextItem {
     /** The data associated with the input context */
-    data?: Record<string, unknown>;
+    data: Record<string, unknown>;
     /** The type of the input context */
-    type?: string;
+    type: "string";
 }

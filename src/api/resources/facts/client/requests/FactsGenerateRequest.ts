@@ -6,12 +6,18 @@ import * as Corti from "../../../../index.js";
 
 /**
  * @example
- *     {}
+ *     {
+ *         context: [{
+ *                 data: {
+ *                     "key": "value"
+ *                 },
+ *                 type: "string"
+ *             }],
+ *         outputLanguage: "outputLanguage"
+ *     }
  */
 export interface FactsGenerateRequest {
-    context?: Corti.FactsGenerateRequestContextItem[];
+    context: Corti.FactsGenerateRequestContextItem[];
     /** The desired language for generated facts. */
-    outputLanguage?: string;
-    /** The primary language of the input, needed for verification before generation. */
-    primaryLanguage?: string;
+    outputLanguage: string;
 }

@@ -5,21 +5,22 @@
 import * as serializers from "../index.js";
 import * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
+import { Fact } from "./Fact.js";
 import { CommonUsageInfo } from "./CommonUsageInfo.js";
 
 export const FactsGenerateResponse: core.serialization.ObjectSchema<
     serializers.FactsGenerateResponse.Raw,
     Corti.FactsGenerateResponse
 > = core.serialization.object({
-    facts: core.serialization.unknown().optional(),
-    outputLanguage: core.serialization.string().optional(),
-    usageInfo: CommonUsageInfo.optional(),
+    facts: Fact,
+    outputLanguage: core.serialization.string(),
+    usageInfo: CommonUsageInfo,
 });
 
 export declare namespace FactsGenerateResponse {
     export interface Raw {
-        facts?: unknown | null;
-        outputLanguage?: string | null;
-        usageInfo?: CommonUsageInfo.Raw | null;
+        facts: Fact.Raw;
+        outputLanguage: string;
+        usageInfo: CommonUsageInfo.Raw;
     }
 }
