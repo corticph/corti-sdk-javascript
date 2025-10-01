@@ -8,9 +8,7 @@ import * as Corti from "../../../../index.js";
  * @example
  *     {
  *         context: [{
- *                 data: {
- *                     "key": "value"
- *                 },
+ *                 data: "data",
  *                 type: "string"
  *             }],
  *         outputLanguage: "outputLanguage"

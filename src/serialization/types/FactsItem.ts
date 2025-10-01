@@ -6,12 +6,13 @@ import * as serializers from "../index.js";
 import * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
 
-export const Fact: core.serialization.ObjectSchema<serializers.Fact.Raw, Corti.Fact> = core.serialization.object({
-    group: core.serialization.string(),
-    value: core.serialization.string(),
-});
+export const FactsItem: core.serialization.ObjectSchema<serializers.FactsItem.Raw, Corti.FactsItem> =
+    core.serialization.object({
+        group: core.serialization.string(),
+        value: core.serialization.string(),
+    });
 
-export declare namespace Fact {
+export declare namespace FactsItem {
     export interface Raw {
         group: string;
         value: string;

@@ -10,13 +10,13 @@ export const FactsGenerateRequestContextItem: core.serialization.ObjectSchema<
     serializers.FactsGenerateRequestContextItem.Raw,
     Corti.FactsGenerateRequestContextItem
 > = core.serialization.object({
-    data: core.serialization.record(core.serialization.string(), core.serialization.unknown()),
+    data: core.serialization.string(),
     type: core.serialization.stringLiteral("string"),
 });
 
 export declare namespace FactsGenerateRequestContextItem {
     export interface Raw {
-        data: Record<string, unknown>;
+        data: string;
         type: "string";
     }
 }
