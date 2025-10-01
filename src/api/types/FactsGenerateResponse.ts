@@ -6,7 +6,7 @@ import * as Corti from "../index.js";
 
 export interface FactsGenerateResponse {
     /** List of generated facts based on the provided transcript. */
-    facts: Corti.Fact;
+    facts: Corti.FactsItem;
     /** The language used in the output. */
     outputLanguage: string;
     /** Information about resource usage for this request. */

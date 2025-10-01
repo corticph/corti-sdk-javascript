@@ -13,7 +13,7 @@ export * from "./ErrorResponse.js";
 export * from "./FactsContext.js";
 export * from "./FactsFactGroupsItemTranslationsItem.js";
 export * from "./FactsFactGroupsItem.js";
-export * from "./Fact.js";
+export * from "./FactsItem.js";
 export * from "./InteractionsPatient.js";
 export * from "./DocumentsCreateRequest.js";
 export * from "./DocumentsCreateRequestWithTemplateKey.js";

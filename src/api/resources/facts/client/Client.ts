@@ -547,9 +547,7 @@ export class Facts {
      * @example
      *     await client.facts.generate({
      *         context: [{
-     *                 data: {
-     *                     "key": "value"
-     *                 },
+     *                 data: "data",
      *                 type: "string"
      *             }],
      *         outputLanguage: "outputLanguage"
