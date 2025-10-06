@@ -14,7 +14,7 @@ export const AgentsAgentCapabilities: core.serialization.ObjectSchema<
     streaming: core.serialization.boolean().optional(),
     pushNotifications: core.serialization.boolean().optional(),
     stateTransitionHistory: core.serialization.boolean().optional(),
-    extensions: core.serialization.list(AgentsAgentExtension).optional(),
+    extensions: core.serialization.list(AgentsAgentExtension).optionalNullable(),
 });
 
 export declare namespace AgentsAgentCapabilities {
@@ -22,6 +22,6 @@ export declare namespace AgentsAgentCapabilities {
         streaming?: boolean | null;
         pushNotifications?: boolean | null;
         stateTransitionHistory?: boolean | null;
-        extensions?: AgentsAgentExtension.Raw[] | null;
+        extensions?: (AgentsAgentExtension.Raw[] | null) | null;
     }
 }
