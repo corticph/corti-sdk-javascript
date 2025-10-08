@@ -167,15 +167,17 @@ export class Documents {
      *
      * @example
      *     await client.documents.create("f47ac10b-58cc-4372-a567-0e02b2c3d479", {
-     *         context: [{
-     *                 type: "facts",
-     *                 data: [{
-     *                         text: "text",
-     *                         source: "core"
-     *                     }]
-     *             }],
-     *         templateKey: "templateKey",
-     *         outputLanguage: "outputLanguage"
+     *         body: {
+     *             context: [{
+     *                     type: "facts",
+     *                     data: [{
+     *                             text: "text",
+     *                             source: "core"
+     *                         }]
+     *                 }],
+     *             templateKey: "templateKey",
+     *             outputLanguage: "outputLanguage"
+     *         }
      *     })
      */
     public create(
@@ -191,6 +193,7 @@ export class Documents {
         request: Corti.DocumentsCreateRequest,
         requestOptions?: Documents.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.DocumentsGetResponse>> {
+        const { cortiRetentionPolicy, body: _body } = request;
         const _response = await core.fetcher({
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
@@ -202,13 +205,14 @@ export class Documents {
                 this._options?.headers,
                 mergeOnlyDefinedHeaders({
                     Authorization: await this._getAuthorizationHeader(),
+                    "X-Corti-Retention-Policy": cortiRetentionPolicy !== undefined ? cortiRetentionPolicy : undefined,
                     "Tenant-Name": requestOptions?.tenantName,
                 }),
                 requestOptions?.headers,
             ),
             contentType: "application/json",
             requestType: "json",
-            body: serializers.DocumentsCreateRequest.jsonOrThrow(request, {
+            body: serializers.DocumentsCreateBodyRequest.jsonOrThrow(_body, {
                 unrecognizedObjectKeys: "strip",
                 omitUndefined: true,
             }),
