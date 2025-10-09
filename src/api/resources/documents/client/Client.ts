@@ -157,7 +157,7 @@ export class Documents {
      * Generate Document.
      *
      * @param {Corti.Uuid} id - The unique identifier of the interaction. Must be a valid UUID.
-     * @param {Corti.DocumentsCreateRequest} request
+     * @param {Corti.DocumentsCreateBodyRequest} request
      * @param {Documents.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Corti.BadRequestError}
@@ -167,22 +167,20 @@ export class Documents {
      *
      * @example
      *     await client.documents.create("f47ac10b-58cc-4372-a567-0e02b2c3d479", {
-     *         body: {
-     *             context: [{
-     *                     type: "facts",
-     *                     data: [{
-     *                             text: "text",
-     *                             source: "core"
-     *                         }]
-     *                 }],
-     *             templateKey: "templateKey",
-     *             outputLanguage: "outputLanguage"
-     *         }
+     *         context: [{
+     *                 type: "facts",
+     *                 data: [{
+     *                         text: "text",
+     *                         source: "core"
+     *                     }]
+     *             }],
+     *         templateKey: "templateKey",
+     *         outputLanguage: "outputLanguage"
      *     })
      */
     public create(
         id: Corti.Uuid,
-        request: Corti.DocumentsCreateRequest,
+        request: Corti.DocumentsCreateBodyRequest,
         requestOptions?: Documents.RequestOptions,
     ): core.HttpResponsePromise<Corti.DocumentsGetResponse> {
         return core.HttpResponsePromise.fromPromise(this.__create(id, request, requestOptions));
@@ -190,10 +188,9 @@ export class Documents {
 
     private async __create(
         id: Corti.Uuid,
-        request: Corti.DocumentsCreateRequest,
+        request: Corti.DocumentsCreateBodyRequest,
         requestOptions?: Documents.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.DocumentsGetResponse>> {
-        const { cortiRetentionPolicy, body: _body } = request;
         const _response = await core.fetcher({
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
@@ -205,14 +202,13 @@ export class Documents {
                 this._options?.headers,
                 mergeOnlyDefinedHeaders({
                     Authorization: await this._getAuthorizationHeader(),
-                    "X-Corti-Retention-Policy": cortiRetentionPolicy !== undefined ? cortiRetentionPolicy : undefined,
                     "Tenant-Name": requestOptions?.tenantName,
                 }),
                 requestOptions?.headers,
             ),
             contentType: "application/json",
             requestType: "json",
-            body: serializers.DocumentsCreateBodyRequest.jsonOrThrow(_body, {
+            body: serializers.DocumentsCreateBodyRequest.jsonOrThrow(request, {
                 unrecognizedObjectKeys: "strip",
                 omitUndefined: true,
             }),
