@@ -19,7 +19,7 @@ export * from "./DocumentsCreateBodyRequest.js";
 export * from "./DocumentsCreateRequestWithTemplateKey.js";
 export * from "./DocumentsCreateRequestWithTemplate.js";
 export * from "./DocumentsSectionInput.js";
-export * from "./Text.js";
+export * from "./CommonTextContext.js";
 export * from "./FactsCreateInput.js";
 export * from "./FactsBatchUpdateInput.js";
 export * from "./TranscriptsParticipant.js";

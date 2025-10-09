@@ -8,13 +8,14 @@ import * as Corti from "../../../../index.js";
  * @example
  *     {
  *         context: [{
+ *                 type: "text",
  *                 text: "text"
  *             }],
  *         outputLanguage: "outputLanguage"
  *     }
  */
 export interface FactsExtractRequest {
-    context: Corti.Text[];
+    context: Corti.CommonTextContext[];
     /** The desired output language code for extracted facts. Check [languages page](/about/languages) for more. */
     outputLanguage: string;
 }
