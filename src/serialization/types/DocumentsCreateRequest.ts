@@ -8,14 +8,14 @@ import * as core from "../../core/index.js";
 import { DocumentsCreateRequestWithTemplateKey } from "./DocumentsCreateRequestWithTemplateKey.js";
 import { DocumentsCreateRequestWithTemplate } from "./DocumentsCreateRequestWithTemplate.js";
 
-export const DocumentsCreateBodyRequest: core.serialization.Schema<
-    serializers.DocumentsCreateBodyRequest.Raw,
-    Corti.DocumentsCreateBodyRequest
+export const DocumentsCreateRequest: core.serialization.Schema<
+    serializers.DocumentsCreateRequest.Raw,
+    Corti.DocumentsCreateRequest
 > = core.serialization.undiscriminatedUnion([
     DocumentsCreateRequestWithTemplateKey,
     DocumentsCreateRequestWithTemplate,
 ]);
 
-export declare namespace DocumentsCreateBodyRequest {
+export declare namespace DocumentsCreateRequest {
     export type Raw = DocumentsCreateRequestWithTemplateKey.Raw | DocumentsCreateRequestWithTemplate.Raw;
 }
