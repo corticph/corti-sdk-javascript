@@ -547,6 +547,7 @@ export class Facts {
      * @example
      *     await client.facts.extract({
      *         context: [{
+     *                 type: "text",
      *                 text: "text"
      *             }],
      *         outputLanguage: "outputLanguage"

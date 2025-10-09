@@ -6,12 +6,17 @@ import * as serializers from "../index.js";
 import * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
 
-export const Text: core.serialization.ObjectSchema<serializers.Text.Raw, Corti.Text> = core.serialization.object({
+export const CommonTextContext: core.serialization.ObjectSchema<
+    serializers.CommonTextContext.Raw,
+    Corti.CommonTextContext
+> = core.serialization.object({
+    type: core.serialization.stringLiteral("text"),
     text: core.serialization.string(),
 });
 
-export declare namespace Text {
+export declare namespace CommonTextContext {
     export interface Raw {
+        type: "text";
         text: string;
     }
 }

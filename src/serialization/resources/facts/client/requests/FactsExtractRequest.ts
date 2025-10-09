@@ -5,19 +5,19 @@
 import * as serializers from "../../../../index.js";
 import * as Corti from "../../../../../api/index.js";
 import * as core from "../../../../../core/index.js";
-import { Text } from "../../../../types/Text.js";
+import { CommonTextContext } from "../../../../types/CommonTextContext.js";
 
 export const FactsExtractRequest: core.serialization.Schema<
     serializers.FactsExtractRequest.Raw,
     Corti.FactsExtractRequest
 > = core.serialization.object({
-    context: core.serialization.list(Text),
+    context: core.serialization.list(CommonTextContext),
     outputLanguage: core.serialization.string(),
 });
 
 export declare namespace FactsExtractRequest {
     export interface Raw {
-        context: Text.Raw[];
+        context: CommonTextContext.Raw[];
         outputLanguage: string;
     }
 }
