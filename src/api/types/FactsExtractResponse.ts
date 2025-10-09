@@ -5,9 +5,9 @@
 import * as Corti from "../index.js";
 
 export interface FactsExtractResponse {
-    /** List of extracted facts based on the provided transcript. */
+    /** List of extracted facts based on the provided input text. */
     facts: Corti.FactsItem;
-    /** The language used in the output. */
+    /** The language locale of the output. */
     outputLanguage: string;
     /** Information about resource usage for this request. */
     usageInfo: Corti.CommonUsageInfo;
