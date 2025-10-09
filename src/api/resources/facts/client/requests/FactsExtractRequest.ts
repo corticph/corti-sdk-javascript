@@ -15,6 +15,6 @@ import * as Corti from "../../../../index.js";
  */
 export interface FactsExtractRequest {
     context: Corti.Text[];
-    /** The desired language for extracted facts. */
+    /** The desired output language code for extracted facts. Check [languages page](/about/languages) for more. */
     outputLanguage: string;
 }
