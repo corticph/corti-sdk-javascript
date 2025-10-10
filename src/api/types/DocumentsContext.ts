@@ -5,20 +5,6 @@
 import * as Corti from "../index.js";
 
 export type DocumentsContext =
-    | Corti.DocumentsContext.Facts
-    | Corti.DocumentsContext.Transcript
-    | Corti.DocumentsContext.String;
-
-export namespace DocumentsContext {
-    export interface Facts extends Corti.DocumentsContextWithFacts {
-        type: "facts";
-    }
-
-    export interface Transcript extends Corti.DocumentsContextWithTranscript {
-        type: "transcript";
-    }
-
-    export interface String extends Corti.DocumentsContextWithString {
-        type: "string";
-    }
-}
+    | Corti.DocumentsContextWithFacts
+    | Corti.DocumentsContextWithTranscript
+    | Corti.DocumentsContextWithString;
