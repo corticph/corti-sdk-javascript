@@ -3,7 +3,7 @@
  */
 
 /**
- * Information about resource usage for this request.
+ * Credits consumed for this request.
  */
 export interface CommonUsageInfo {
     creditsConsumed: number;
