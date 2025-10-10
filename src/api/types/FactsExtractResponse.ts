@@ -9,6 +9,5 @@ export interface FactsExtractResponse {
     facts: Corti.FactsExtractResponseFactsItem[];
     /** The language locale of the output. */
     outputLanguage: string;
-    /** Information about resource usage for this request. */
     usageInfo: Corti.CommonUsageInfo;
 }
