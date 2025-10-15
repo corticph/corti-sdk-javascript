@@ -5,8 +5,8 @@
 import * as serializers from "../index.js";
 import * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
-import { AgentsAgentCardPreferredTransport } from "./AgentsAgentCardPreferredTransport.js";
 import { AgentsAgentInterface } from "./AgentsAgentInterface.js";
+import { AgentsAgentProvider } from "./AgentsAgentProvider.js";
 import { AgentsAgentCapabilities } from "./AgentsAgentCapabilities.js";
 import { AgentsAgentSkill } from "./AgentsAgentSkill.js";
 import { AgentsAgentCardSignature } from "./AgentsAgentCardSignature.js";
@@ -17,20 +17,24 @@ export const AgentsAgentCard: core.serialization.ObjectSchema<serializers.Agents
         name: core.serialization.string(),
         description: core.serialization.string(),
         url: core.serialization.string(),
-        preferredTransport: AgentsAgentCardPreferredTransport.optional(),
-        additionalInterfaces: core.serialization.list(AgentsAgentInterface).optional(),
-        iconUrl: core.serialization.string().optional(),
+        preferredTransport: core.serialization.string().optionalNullable(),
+        additionalInterfaces: core.serialization.list(AgentsAgentInterface).optionalNullable(),
+        iconUrl: core.serialization.string().optionalNullable(),
+        documentationUrl: core.serialization.string().optionalNullable(),
+        provider: AgentsAgentProvider.optional(),
         version: core.serialization.string(),
         capabilities: AgentsAgentCapabilities,
         securitySchemes: core.serialization
             .record(core.serialization.string(), core.serialization.unknown())
-            .optional(),
-        security: core.serialization.record(core.serialization.string(), core.serialization.unknown()).optional(),
+            .optionalNullable(),
+        security: core.serialization
+            .record(core.serialization.string(), core.serialization.unknown())
+            .optionalNullable(),
         defaultInputModes: core.serialization.list(core.serialization.string()),
         defaultOutputModes: core.serialization.list(core.serialization.string()),
         skills: core.serialization.list(AgentsAgentSkill),
-        supportsAuthenticatedExtendedCard: core.serialization.boolean().optional(),
-        signatures: core.serialization.list(AgentsAgentCardSignature).optional(),
+        supportsAuthenticatedExtendedCard: core.serialization.boolean().optionalNullable(),
+        signatures: core.serialization.list(AgentsAgentCardSignature).optionalNullable(),
     });
 
 export declare namespace AgentsAgentCard {
@@ -39,17 +43,19 @@ export declare namespace AgentsAgentCard {
         name: string;
         description: string;
         url: string;
-        preferredTransport?: AgentsAgentCardPreferredTransport.Raw | null;
-        additionalInterfaces?: AgentsAgentInterface.Raw[] | null;
-        iconUrl?: string | null;
+        preferredTransport?: (string | null) | null;
+        additionalInterfaces?: (AgentsAgentInterface.Raw[] | null) | null;
+        iconUrl?: (string | null) | null;
+        documentationUrl?: (string | null) | null;
+        provider?: AgentsAgentProvider.Raw | null;
         version: string;
         capabilities: AgentsAgentCapabilities.Raw;
-        securitySchemes?: Record<string, unknown> | null;
-        security?: Record<string, unknown> | null;
+        securitySchemes?: (Record<string, unknown> | null) | null;
+        security?: (Record<string, unknown> | null) | null;
         defaultInputModes: string[];
         defaultOutputModes: string[];
         skills: AgentsAgentSkill.Raw[];
-        supportsAuthenticatedExtendedCard?: boolean | null;
-        signatures?: AgentsAgentCardSignature.Raw[] | null;
+        supportsAuthenticatedExtendedCard?: (boolean | null) | null;
+        signatures?: (AgentsAgentCardSignature.Raw[] | null) | null;
     }
 }

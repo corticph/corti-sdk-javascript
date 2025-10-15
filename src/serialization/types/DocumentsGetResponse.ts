@@ -7,7 +7,7 @@ import * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
 import { Uuid } from "./Uuid.js";
 import { DocumentsSection } from "./DocumentsSection.js";
-import { CommonUsageInfo } from "./CommonUsageInfo.js";
+import { CommonUsage } from "./CommonUsage.js";
 
 export const DocumentsGetResponse: core.serialization.ObjectSchema<
     serializers.DocumentsGetResponse.Raw,
@@ -21,7 +21,7 @@ export const DocumentsGetResponse: core.serialization.ObjectSchema<
     createdAt: core.serialization.date(),
     updatedAt: core.serialization.date(),
     outputLanguage: core.serialization.string(),
-    usageInfo: CommonUsageInfo,
+    usage: CommonUsage.optional(),
 });
 
 export declare namespace DocumentsGetResponse {
@@ -34,6 +34,6 @@ export declare namespace DocumentsGetResponse {
         createdAt: string;
         updatedAt: string;
         outputLanguage: string;
-        usageInfo: CommonUsageInfo.Raw;
+        usage?: CommonUsage.Raw | null;
     }
 }

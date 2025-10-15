@@ -7,13 +7,15 @@ import * as Corti from "../../../../../api/index.js";
 import * as core from "../../../../../core/index.js";
 import { AgentsCreateAgentExpertsItem } from "../../types/AgentsCreateAgentExpertsItem.js";
 
-export const AgentsCreateAgent: core.serialization.Schema<serializers.AgentsCreateAgent.Raw, Corti.AgentsCreateAgent> =
-    core.serialization.object({
-        name: core.serialization.string(),
-        systemPrompt: core.serialization.string().optional(),
-        description: core.serialization.string(),
-        experts: core.serialization.list(AgentsCreateAgentExpertsItem).optional(),
-    });
+export const AgentsCreateAgent: core.serialization.Schema<
+    serializers.AgentsCreateAgent.Raw,
+    Omit<Corti.AgentsCreateAgent, "ephemeral">
+> = core.serialization.object({
+    name: core.serialization.string(),
+    systemPrompt: core.serialization.string().optional(),
+    description: core.serialization.string(),
+    experts: core.serialization.list(AgentsCreateAgentExpertsItem).optional(),
+});
 
 export declare namespace AgentsCreateAgent {
     export interface Raw {

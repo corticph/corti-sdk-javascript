@@ -11,11 +11,13 @@ export const DocumentsContextWithFacts: core.serialization.ObjectSchema<
     serializers.DocumentsContextWithFacts.Raw,
     Corti.DocumentsContextWithFacts
 > = core.serialization.object({
+    type: core.serialization.stringLiteral("facts"),
     data: core.serialization.list(FactsContext),
 });
 
 export declare namespace DocumentsContextWithFacts {
     export interface Raw {
+        type: "facts";
         data: FactsContext.Raw[];
     }
 }
