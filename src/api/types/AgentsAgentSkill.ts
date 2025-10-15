@@ -14,11 +14,11 @@ export interface AgentsAgentSkill {
     /** A list of tags or keywords associated with the skill, useful for categorization and search. */
     tags: string[];
     /** A list of example messages that demonstrate how to use this skill. */
-    examples?: Corti.AgentsMessage[];
+    examples?: Corti.AgentsMessage[] | null;
     /** A list of supported input MIME types for this skill. If omitted, the agent's default input modes apply. */
-    inputModes?: string[];
+    inputModes?: string[] | null;
     /** A list of supported output MIME types for this skill. If omitted, the agent's default output modes apply. */
-    outputModes?: string[];
+    outputModes?: string[] | null;
     /** Security schemes necessary for the agent to leverage this skill. As in the overall AgentCard.security, this list represents a logical OR of security requirement objects. Each object is a set of security schemes that must be used together (a logical AND). */
-    security?: Record<string, unknown>;
+    security?: Record<string, unknown> | null;
 }
