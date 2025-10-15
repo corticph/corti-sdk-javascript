@@ -65,7 +65,7 @@ export class Agents {
         request: Corti.AgentsListRequest = {},
         requestOptions?: Agents.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.AgentsAgentResponse[]>> {
-        const { limit, offset } = request;
+        const { limit, offset, ephemeral } = request;
         const _queryParams: Record<string, string | string[] | object | object[] | null> = {};
         if (limit !== undefined) {
             _queryParams["limit"] = limit?.toString() ?? null;
@@ -73,6 +73,10 @@ export class Agents {
 
         if (offset !== undefined) {
             _queryParams["offset"] = offset?.toString() ?? null;
+        }
+
+        if (ephemeral !== undefined) {
+            _queryParams["ephemeral"] = ephemeral?.toString() ?? null;
         }
 
         const _response = await core.fetcher({
@@ -166,6 +170,12 @@ export class Agents {
         request: Corti.AgentsCreateAgent,
         requestOptions?: Agents.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.AgentsAgent>> {
+        const { ephemeral, ..._body } = request;
+        const _queryParams: Record<string, string | string[] | object | object[] | null> = {};
+        if (ephemeral !== undefined) {
+            _queryParams["ephemeral"] = ephemeral?.toString() ?? null;
+        }
+
         const _response = await core.fetcher({
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
@@ -182,8 +192,9 @@ export class Agents {
                 requestOptions?.headers,
             ),
             contentType: "application/json",
+            queryParameters: _queryParams,
             requestType: "json",
-            body: serializers.AgentsCreateAgent.jsonOrThrow(request, {
+            body: serializers.AgentsCreateAgent.jsonOrThrow(_body, {
                 unrecognizedObjectKeys: "strip",
                 omitUndefined: true,
             }),
@@ -239,7 +250,7 @@ export class Agents {
     /**
      * This endpoint retrieves an agent by its identifier. The agent contains information about its capabilities and the experts it can call.
      *
-     * @param {string} id - The identifier of the agent to retrieve.
+     * @param {string} id - The identifier of the agent associated with the context.
      * @param {Agents.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Corti.BadRequestError}
@@ -247,7 +258,7 @@ export class Agents {
      * @throws {@link Corti.NotFoundError}
      *
      * @example
-     *     await client.agents.get("id")
+     *     await client.agents.get("12345678-90ab-cdef-gh12-34567890abc")
      */
     public get(
         id: string,
@@ -329,7 +340,7 @@ export class Agents {
     /**
      * This endpoint deletes an agent by its identifier. Once deleted, the agent can no longer be used in threads.
      *
-     * @param {string} id - The identifier of the agent to delete.
+     * @param {string} id - The identifier of the agent associated with the context.
      * @param {Agents.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Corti.BadRequestError}
@@ -337,7 +348,7 @@ export class Agents {
      * @throws {@link Corti.NotFoundError}
      *
      * @example
-     *     await client.agents.delete("id")
+     *     await client.agents.delete("12345678-90ab-cdef-gh12-34567890abc")
      */
     public delete(id: string, requestOptions?: Agents.RequestOptions): core.HttpResponsePromise<void> {
         return core.HttpResponsePromise.fromPromise(this.__delete(id, requestOptions));
@@ -404,7 +415,7 @@ export class Agents {
     /**
      * This endpoint updates an existing agent. Only the fields provided in the request body will be updated; other fields will remain unchanged.
      *
-     * @param {string} id - The identifier of the agent to update.
+     * @param {string} id - The identifier of the agent associated with the context.
      * @param {Corti.AgentsAgent} request
      * @param {Agents.RequestOptions} requestOptions - Request-specific configuration.
      *
@@ -413,7 +424,7 @@ export class Agents {
      * @throws {@link Corti.NotFoundError}
      *
      * @example
-     *     await client.agents.update("id", {
+     *     await client.agents.update("12345678-90ab-cdef-gh12-34567890abc", {
      *         id: "id",
      *         name: "name",
      *         description: "description",
@@ -508,7 +519,7 @@ export class Agents {
     /**
      * This endpoint retrieves the agent card in JSON format, which provides metadata about the agent, including its name, description, and the experts it can call.
      *
-     * @param {string} id - The identifier of the agent to retrieve the agent card for.
+     * @param {string} id - The identifier of the agent associated with the context.
      * @param {Agents.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Corti.BadRequestError}
@@ -516,7 +527,7 @@ export class Agents {
      * @throws {@link Corti.NotFoundError}
      *
      * @example
-     *     await client.agents.getCard("id")
+     *     await client.agents.getCard("12345678-90ab-cdef-gh12-34567890abc")
      */
     public getCard(
         id: string,
@@ -598,7 +609,7 @@ export class Agents {
     /**
      * This endpoint sends a message to the specified agent to start or continue a task. The agent processes the message and returns a response. If the message contains a task ID that matches an ongoing task, the agent will continue that task; otherwise, it will start a new task.
      *
-     * @param {string} id - The identifier of the agent to send the message to.
+     * @param {string} id - The identifier of the agent associated with the context.
      * @param {Corti.AgentsMessageSendParams} request
      * @param {Agents.RequestOptions} requestOptions - Request-specific configuration.
      *
@@ -607,7 +618,7 @@ export class Agents {
      * @throws {@link Corti.NotFoundError}
      *
      * @example
-     *     await client.agents.messageSend("id", {
+     *     await client.agents.messageSend("12345678-90ab-cdef-gh12-34567890abc", {
      *         message: {
      *             role: "user",
      *             parts: [{
@@ -808,7 +819,7 @@ export class Agents {
     /**
      * This endpoint retrieves the status and details of a specific task associated with the given agent. It provides information about the task's current state, history, and any artifacts produced during its execution.
      *
-     * @param {string} id - The identifier of the agent associated with the task.
+     * @param {string} id - The identifier of the agent associated with the context.
      * @param {string} taskId - The identifier of the task to retrieve.
      * @param {Corti.AgentsGetTaskRequest} request
      * @param {Agents.RequestOptions} requestOptions - Request-specific configuration.
@@ -818,7 +829,7 @@ export class Agents {
      * @throws {@link Corti.NotFoundError}
      *
      * @example
-     *     await client.agents.getTask("id", "taskId")
+     *     await client.agents.getTask("12345678-90ab-cdef-gh12-34567890abc", "taskId")
      */
     public getTask(
         id: string,
@@ -921,7 +932,7 @@ export class Agents {
      * @throws {@link Corti.NotFoundError}
      *
      * @example
-     *     await client.agents.getContext("id", "contextId")
+     *     await client.agents.getContext("12345678-90ab-cdef-gh12-34567890abc", "contextId")
      */
     public getContext(
         id: string,

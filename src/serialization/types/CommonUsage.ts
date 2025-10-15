@@ -6,13 +6,13 @@ import * as serializers from "../index.js";
 import * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
 
-export const CommonUsageInfo: core.serialization.ObjectSchema<serializers.CommonUsageInfo.Raw, Corti.CommonUsageInfo> =
+export const CommonUsage: core.serialization.ObjectSchema<serializers.CommonUsage.Raw, Corti.CommonUsage> =
     core.serialization.object({
-        creditsConsumed: core.serialization.number(),
+        credits: core.serialization.number(),
     });
 
-export declare namespace CommonUsageInfo {
+export declare namespace CommonUsage {
     export interface Raw {
-        creditsConsumed: number;
+        credits: number;
     }
 }

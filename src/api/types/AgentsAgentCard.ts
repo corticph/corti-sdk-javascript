@@ -13,18 +13,21 @@ export interface AgentsAgentCard {
     description: string;
     /** The URL where the agent can be reached to process messages. */
     url: string;
-    preferredTransport?: Corti.AgentsAgentCardPreferredTransport;
+    preferredTransport?: string | null;
     /** A list of additional transport protocols and URL combinations  the agent supports. */
-    additionalInterfaces?: Corti.AgentsAgentInterface[];
+    additionalInterfaces?: Corti.AgentsAgentInterface[] | null;
     /** A URL to an icon representing the agent. */
-    iconUrl?: string;
+    iconUrl?: string | null;
+    /** A URL to documentation describing how to interact with the agent. */
+    documentationUrl?: string | null;
+    provider?: Corti.AgentsAgentProvider;
     /** The version of the agent. */
     version: string;
     capabilities: Corti.AgentsAgentCapabilities;
     /** A declaration of the security schemes available to authorize requests. The key is the scheme name. Follows the OpenAPI 3.0 Security Scheme Object. */
-    securitySchemes?: Record<string, unknown>;
+    securitySchemes?: Record<string, unknown> | null;
     /** A list of security requirement objects that apply to all agent interactions. Each object lists security schemes that can be used. Follows the OpenAPI 3.0 Security Requirement Object. This list can be seen as an OR of ANDs. Each object in the list describes one possible set of security requirements that must be present on a request. This allows specifying, for example, "callers must either use OAuth OR an API Key AND mTLS." */
-    security?: Record<string, unknown>;
+    security?: Record<string, unknown> | null;
     /** Default set of supported input MIME types for all skills, which can be overridden on a per-skill basis. */
     defaultInputModes: string[];
     /** Default set of supported output MIME types for all skills, which can be overridden on a per-skill basis. */
@@ -32,7 +35,7 @@ export interface AgentsAgentCard {
     /** The set of skills, or distinct capabilities, that the agent can perform. */
     skills: Corti.AgentsAgentSkill[];
     /** Indicates whether the agent supports returning an extended agent card when called with authentication. */
-    supportsAuthenticatedExtendedCard?: boolean;
+    supportsAuthenticatedExtendedCard?: boolean | null;
     /** JSON Web Signatures computed for this AgentCard. */
-    signatures?: Corti.AgentsAgentCardSignature[];
+    signatures?: Corti.AgentsAgentCardSignature[] | null;
 }
