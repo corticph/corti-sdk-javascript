@@ -11,5 +11,5 @@ export interface TranscriptsResponse {
     metadata: Corti.TranscriptsMetadata;
     /** An array of transcripts. */
     transcripts?: Corti.CommonTranscriptResponse[] | null;
-    usageInfo: Corti.CommonUsageInfo;
+    usage?: Corti.CommonUsage;
 }
