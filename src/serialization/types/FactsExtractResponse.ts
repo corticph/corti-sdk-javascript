@@ -5,21 +5,21 @@
 import * as serializers from "../index.js";
 import * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
-import { FactsItem } from "./FactsItem.js";
+import { FactsExtractResponseFactsItem } from "./FactsExtractResponseFactsItem.js";
 import { CommonUsageInfo } from "./CommonUsageInfo.js";
 
-export const FactsGenerateResponse: core.serialization.ObjectSchema<
-    serializers.FactsGenerateResponse.Raw,
-    Corti.FactsGenerateResponse
+export const FactsExtractResponse: core.serialization.ObjectSchema<
+    serializers.FactsExtractResponse.Raw,
+    Corti.FactsExtractResponse
 > = core.serialization.object({
-    facts: FactsItem,
+    facts: core.serialization.list(FactsExtractResponseFactsItem),
     outputLanguage: core.serialization.string(),
     usageInfo: CommonUsageInfo,
 });
 
-export declare namespace FactsGenerateResponse {
+export declare namespace FactsExtractResponse {
     export interface Raw {
-        facts: FactsItem.Raw;
+        facts: FactsExtractResponseFactsItem.Raw[];
         outputLanguage: string;
         usageInfo: CommonUsageInfo.Raw;
     }

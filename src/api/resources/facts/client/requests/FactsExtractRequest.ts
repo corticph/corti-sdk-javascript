@@ -8,14 +8,14 @@ import * as Corti from "../../../../index.js";
  * @example
  *     {
  *         context: [{
- *                 data: "data",
- *                 type: "string"
+ *                 type: "text",
+ *                 text: "text"
  *             }],
  *         outputLanguage: "outputLanguage"
  *     }
  */
-export interface FactsGenerateRequest {
-    context: Corti.FactsGenerateRequestContextItem[];
-    /** The desired language for generated facts. */
+export interface FactsExtractRequest {
+    context: Corti.CommonTextContext[];
+    /** The desired output language code for extracted facts. Check [languages page](/about/languages) for more. */
     outputLanguage: string;
 }

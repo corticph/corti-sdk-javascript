@@ -537,38 +537,38 @@ export class Facts {
     }
 
     /**
-     * Generates facts based on a provided transcript without storing them.
+     * Extract facts from provided text, without storing them.
      *
-     * @param {Corti.FactsGenerateRequest} request
+     * @param {Corti.FactsExtractRequest} request
      * @param {Facts.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Corti.GatewayTimeoutError}
      *
      * @example
-     *     await client.facts.generate({
+     *     await client.facts.extract({
      *         context: [{
-     *                 data: "data",
-     *                 type: "string"
+     *                 type: "text",
+     *                 text: "text"
      *             }],
      *         outputLanguage: "outputLanguage"
      *     })
      */
-    public generate(
-        request: Corti.FactsGenerateRequest,
+    public extract(
+        request: Corti.FactsExtractRequest,
         requestOptions?: Facts.RequestOptions,
-    ): core.HttpResponsePromise<Corti.FactsGenerateResponse> {
-        return core.HttpResponsePromise.fromPromise(this.__generate(request, requestOptions));
+    ): core.HttpResponsePromise<Corti.FactsExtractResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__extract(request, requestOptions));
     }
 
-    private async __generate(
-        request: Corti.FactsGenerateRequest,
+    private async __extract(
+        request: Corti.FactsExtractRequest,
         requestOptions?: Facts.RequestOptions,
-    ): Promise<core.WithRawResponse<Corti.FactsGenerateResponse>> {
+    ): Promise<core.WithRawResponse<Corti.FactsExtractResponse>> {
         const _response = await core.fetcher({
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
                     (await core.Supplier.get(this._options.environment)).base,
-                "tools/v1/generate-facts",
+                "tools/extract-facts",
             ),
             method: "POST",
             headers: mergeHeaders(
@@ -581,7 +581,7 @@ export class Facts {
             ),
             contentType: "application/json",
             requestType: "json",
-            body: serializers.FactsGenerateRequest.jsonOrThrow(request, {
+            body: serializers.FactsExtractRequest.jsonOrThrow(request, {
                 unrecognizedObjectKeys: "strip",
                 omitUndefined: true,
             }),
@@ -591,7 +591,7 @@ export class Facts {
         });
         if (_response.ok) {
             return {
-                data: serializers.FactsGenerateResponse.parseOrThrow(_response.body, {
+                data: serializers.FactsExtractResponse.parseOrThrow(_response.body, {
                     unrecognizedObjectKeys: "passthrough",
                     allowUnrecognizedUnionMembers: true,
                     allowUnrecognizedEnumValues: true,
@@ -632,7 +632,7 @@ export class Facts {
                     rawResponse: _response.rawResponse,
                 });
             case "timeout":
-                throw new errors.CortiTimeoutError("Timeout exceeded when calling POST /tools/v1/generate-facts.");
+                throw new errors.CortiTimeoutError("Timeout exceeded when calling POST /tools/extract-facts.");
             case "unknown":
                 throw new errors.CortiError({
                     message: _response.error.errorMessage,
