@@ -5,6 +5,8 @@
 import * as Corti from "../index.js";
 
 export interface DocumentsContextWithTranscript {
+    /** The type of context data that will be used in the request: `Facts`, `Transcript`, or `String`. */
+    type: "transcript";
     /** Transcript object can accept the full transcript in one string, or individual transcript segments. */
     data: Corti.CommonTranscriptRequest;
 }
