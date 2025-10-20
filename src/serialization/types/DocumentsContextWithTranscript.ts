@@ -11,11 +11,13 @@ export const DocumentsContextWithTranscript: core.serialization.ObjectSchema<
     serializers.DocumentsContextWithTranscript.Raw,
     Corti.DocumentsContextWithTranscript
 > = core.serialization.object({
+    type: core.serialization.stringLiteral("transcript"),
     data: CommonTranscriptRequest,
 });
 
 export declare namespace DocumentsContextWithTranscript {
     export interface Raw {
+        type: "transcript";
         data: CommonTranscriptRequest.Raw;
     }
 }

@@ -10,29 +10,15 @@ import { DocumentsContextWithTranscript } from "./DocumentsContextWithTranscript
 import { DocumentsContextWithString } from "./DocumentsContextWithString.js";
 
 export const DocumentsContext: core.serialization.Schema<serializers.DocumentsContext.Raw, Corti.DocumentsContext> =
-    core.serialization
-        .union("type", {
-            facts: DocumentsContextWithFacts,
-            transcript: DocumentsContextWithTranscript,
-            string: DocumentsContextWithString,
-        })
-        .transform<Corti.DocumentsContext>({
-            transform: (value) => value,
-            untransform: (value) => value,
-        });
+    core.serialization.undiscriminatedUnion([
+        DocumentsContextWithFacts,
+        DocumentsContextWithTranscript,
+        DocumentsContextWithString,
+    ]);
 
 export declare namespace DocumentsContext {
-    export type Raw = DocumentsContext.Facts | DocumentsContext.Transcript | DocumentsContext.String;
-
-    export interface Facts extends DocumentsContextWithFacts.Raw {
-        type: "facts";
-    }
-
-    export interface Transcript extends DocumentsContextWithTranscript.Raw {
-        type: "transcript";
-    }
-
-    export interface String extends DocumentsContextWithString.Raw {
-        type: "string";
-    }
+    export type Raw =
+        | DocumentsContextWithFacts.Raw
+        | DocumentsContextWithTranscript.Raw
+        | DocumentsContextWithString.Raw;
 }

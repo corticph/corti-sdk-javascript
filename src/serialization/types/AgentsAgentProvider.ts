@@ -6,17 +6,17 @@ import * as serializers from "../index.js";
 import * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
 
-export const AgentsAgentInterface: core.serialization.ObjectSchema<
-    serializers.AgentsAgentInterface.Raw,
-    Corti.AgentsAgentInterface
+export const AgentsAgentProvider: core.serialization.ObjectSchema<
+    serializers.AgentsAgentProvider.Raw,
+    Corti.AgentsAgentProvider
 > = core.serialization.object({
+    organization: core.serialization.string(),
     url: core.serialization.string(),
-    transport: core.serialization.string(),
 });
 
-export declare namespace AgentsAgentInterface {
+export declare namespace AgentsAgentProvider {
     export interface Raw {
+        organization: string;
         url: string;
-        transport: string;
     }
 }

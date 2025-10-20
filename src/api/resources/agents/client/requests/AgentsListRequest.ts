@@ -15,4 +15,8 @@ export interface AgentsListRequest {
      * The number of agents to skip before starting to collect the result set. Default is 0.
      */
     offset?: number | null;
+    /**
+     * If set to true, ephemeral agents will be included in the response. Default is false.
+     */
+    ephemeral?: boolean | null;
 }

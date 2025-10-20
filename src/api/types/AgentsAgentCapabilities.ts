@@ -12,5 +12,5 @@ export interface AgentsAgentCapabilities {
     /** Indicates whether the agent maintains a history of state transitions for tasks. */
     stateTransitionHistory?: boolean;
     /** A list of protocol extensions supported by the agent. */
-    extensions?: Corti.AgentsAgentExtension[];
+    extensions?: Corti.AgentsAgentExtension[] | null;
 }
