@@ -15,10 +15,10 @@ export const AgentsAgentSkill: core.serialization.ObjectSchema<
     name: core.serialization.string(),
     description: core.serialization.string(),
     tags: core.serialization.list(core.serialization.string()),
-    examples: core.serialization.list(AgentsMessage).optional(),
-    inputModes: core.serialization.list(core.serialization.string()).optional(),
-    outputModes: core.serialization.list(core.serialization.string()).optional(),
-    security: core.serialization.record(core.serialization.string(), core.serialization.unknown()).optional(),
+    examples: core.serialization.list(AgentsMessage).optionalNullable(),
+    inputModes: core.serialization.list(core.serialization.string()).optionalNullable(),
+    outputModes: core.serialization.list(core.serialization.string()).optionalNullable(),
+    security: core.serialization.record(core.serialization.string(), core.serialization.unknown()).optionalNullable(),
 });
 
 export declare namespace AgentsAgentSkill {
@@ -27,9 +27,9 @@ export declare namespace AgentsAgentSkill {
         name: string;
         description: string;
         tags: string[];
-        examples?: AgentsMessage.Raw[] | null;
-        inputModes?: string[] | null;
-        outputModes?: string[] | null;
-        security?: Record<string, unknown> | null;
+        examples?: (AgentsMessage.Raw[] | null) | null;
+        inputModes?: (string[] | null) | null;
+        outputModes?: (string[] | null) | null;
+        security?: (Record<string, unknown> | null) | null;
     }
 }
