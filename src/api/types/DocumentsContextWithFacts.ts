@@ -5,6 +5,8 @@
 import * as Corti from "../index.js";
 
 export interface DocumentsContextWithFacts {
+    /** The type of context data that will be used in the request: `Facts`, `Transcript`, or `String`. */
+    type: "facts";
     /** An array of facts. */
     data: Corti.FactsContext[];
 }

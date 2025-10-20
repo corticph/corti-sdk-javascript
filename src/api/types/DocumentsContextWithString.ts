@@ -3,6 +3,8 @@
  */
 
 export interface DocumentsContextWithString {
+    /** The type of context data that will be used in the request: `Facts`, `Transcript`, or `String`. */
+    type: "string";
     /** String data can include any text to be reasoned over for document generation: Transcript text, facts, or other narrative information. */
     data: string;
 }

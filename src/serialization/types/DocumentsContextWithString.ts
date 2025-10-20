@@ -10,11 +10,13 @@ export const DocumentsContextWithString: core.serialization.ObjectSchema<
     serializers.DocumentsContextWithString.Raw,
     Corti.DocumentsContextWithString
 > = core.serialization.object({
+    type: core.serialization.stringLiteral("string"),
     data: core.serialization.string(),
 });
 
 export declare namespace DocumentsContextWithString {
     export interface Raw {
+        type: "string";
         data: string;
     }
 }
