@@ -12,7 +12,11 @@ import * as Corti from "../../../../index.js";
  *     }
  */
 export interface AgentsCreateAgent {
-    /** The name of the agent. */
+    /**
+     * If set to true, the agent will be created as ephemeral, it won't be listed in the agents_list but can still be fetched by ID. Ephemeral agents will be deleted periodically.
+     */
+    ephemeral?: boolean | null;
+    /** The name of the agent. Can only contain alphanumeric characters and underscores. */
     name: string;
     /** The system prompt that defines the overall agents behavior and expectations. This field is optional as there is a default system orchestrator. */
     systemPrompt?: string;
