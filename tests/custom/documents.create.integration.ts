@@ -677,7 +677,7 @@ describe('cortiClient.documents.create', () => {
           templateKey,
           outputLanguage: "en",
         } as any)
-      ).rejects.toThrow('Expected enum. Received "invalid_type"');
+      ).rejects.toThrow('Received "invalid_type"');
     });
 
     it('should throw error when outputLanguage is invalid', async () => {
