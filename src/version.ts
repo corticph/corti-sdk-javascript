@@ -1,1 +1,1 @@
-export const SDK_VERSION = "0.3.0-agents";
+export const SDK_VERSION = "0.3.0-agents-rc";

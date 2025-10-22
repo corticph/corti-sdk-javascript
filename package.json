@@ -1,6 +1,6 @@
 {
     "name": "@corti/sdk",
-    "version": "0.3.0-agents",
+    "version": "0.3.0-agents-rc",
     "private": false,
     "repository": "github:corticph/corti-sdk-javascript",
     "license": "MIT",
