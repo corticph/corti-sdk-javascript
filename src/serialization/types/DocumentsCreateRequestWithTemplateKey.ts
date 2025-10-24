@@ -15,6 +15,7 @@ export const DocumentsCreateRequestWithTemplateKey: core.serialization.ObjectSch
     templateKey: core.serialization.string(),
     name: core.serialization.string().optional(),
     outputLanguage: core.serialization.string(),
+    disableGuardrails: core.serialization.boolean().optional(),
 });
 
 export declare namespace DocumentsCreateRequestWithTemplateKey {
@@ -23,5 +24,6 @@ export declare namespace DocumentsCreateRequestWithTemplateKey {
         templateKey: string;
         name?: string | null;
         outputLanguage: string;
+        disableGuardrails?: boolean | null;
     }
 }
