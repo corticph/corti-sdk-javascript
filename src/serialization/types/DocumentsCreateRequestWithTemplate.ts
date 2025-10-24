@@ -16,6 +16,7 @@ export const DocumentsCreateRequestWithTemplate: core.serialization.ObjectSchema
     template: DocumentsTemplate,
     name: core.serialization.string().optional(),
     outputLanguage: core.serialization.string(),
+    disableGuardrails: core.serialization.boolean().optional(),
 });
 
 export declare namespace DocumentsCreateRequestWithTemplate {
@@ -24,5 +25,6 @@ export declare namespace DocumentsCreateRequestWithTemplate {
         template: DocumentsTemplate.Raw;
         name?: string | null;
         outputLanguage: string;
+        disableGuardrails?: boolean | null;
     }
 }
