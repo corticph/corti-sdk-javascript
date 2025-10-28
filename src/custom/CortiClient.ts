@@ -26,7 +26,7 @@ import { Interactions } from "../api/resources/interactions/client/Client.js";
 import { Recordings } from "../api/resources/recordings/client/Client.js";
 import { Transcripts } from "../api/resources/transcripts/client/Client.js";
 import { Facts } from "../api/resources/facts/client/Client.js";
-import { Documents  } from "../api/resources/documents/client/Client.js";
+import { Documents } from "../api/resources/documents/client/Client.js";
 import { Templates } from "../api/resources/templates/client/Client.js";
 
 /**
@@ -42,8 +42,9 @@ import { BearerOptions, RefreshBearerProvider } from "./RefreshBearerProvider.js
 /**
  * Patch: added SDK_VERSION import
  */
-import { SDK_VERSION } from '../version.js';
-import { getEnvironment } from "./utils/getEnvironmentFromString.js";
+import { SDK_VERSION } from "../version.js";
+import { getEnvironment, Environment, CortiInternalEnvironment } from "./utils/getEnvironmentFromString.js";
+import { resolveClientOptions } from "./utils/resolveClientOptions.js";
 
 export declare namespace CortiClient {
     /**
@@ -55,18 +56,36 @@ export declare namespace CortiClient {
         clientSecret: core.Supplier<string>;
     }
 
-    export interface Options {
+    interface BaseOptions {
+        /** Additional headers to include in requests. */
+        headers?: Record<string, string | core.Supplier<string | undefined> | undefined>;
+    }
+
+    /**
+     * Options when using Client Credentials authentication
+     * tenantName and environment are required
+     */
+    interface OptionsWithClientCredentials extends BaseOptions {
         /**
          * Patch: allow to pass a custom string-based environment
          * */
-        environment: core.Supplier<environments.CortiEnvironment | environments.CortiEnvironmentUrls> | string;
+        environment: Environment;
         /** Override the Tenant-Name header */
         tenantName: core.Supplier<string>;
-        /** Additional headers to include in requests. */
-        headers?: Record<string, string | core.Supplier<string | undefined> | undefined>;
-
-        auth: ClientCredentials | BearerOptions;
+        auth: ClientCredentials;
     }
+
+    /**
+     * Options when using Bearer token authentication
+     * tenantName and environment are optional (extracted from token if not provided)
+     */
+    interface OptionsWithBearerToken extends BaseOptions {
+        environment?: Environment;
+        tenantName?: core.Supplier<string>;
+        auth: BearerOptions;
+    }
+
+    export type Options = OptionsWithClientCredentials | OptionsWithBearerToken;
 
     /**
      * Patch:
@@ -75,7 +94,7 @@ export declare namespace CortiClient {
      *  - made clientId and clientSecret optional
      */
     interface InternalOptions {
-        environment: core.Supplier<environments.CortiEnvironment | environments.CortiEnvironmentUrls>;
+        environment: CortiInternalEnvironment;
         /** Specify a custom URL to connect the client to. */
         baseUrl?: core.Supplier<string>;
         clientId?: core.Supplier<string>;
@@ -126,11 +145,16 @@ export class CortiClient {
     protected _transcribe: Transcribe | undefined;
 
     constructor(_options: CortiClient.Options) {
+        /**
+         * Patch: resolve tenantName and environment from options or token
+         */
+        const { tenantName, environment } = resolveClientOptions(_options);
+
         this._options = {
             ..._options,
             headers: mergeHeaders(
                 {
-                    "Tenant-Name": _options?.tenantName,
+                    "Tenant-Name": tenantName,
                     "X-Fern-Language": "JavaScript",
                     "X-Fern-SDK-Name": "@corti/sdk",
                     /**
@@ -146,22 +170,24 @@ export class CortiClient {
             clientId: "clientId" in _options.auth ? _options.auth.clientId : undefined,
             clientSecret: "clientSecret" in _options.auth ? _options.auth.clientSecret : undefined,
             token: "accessToken" in _options.auth ? _options.auth.accessToken : undefined,
-            environment: getEnvironment(_options.environment),
+            tenantName,
+            environment: getEnvironment(environment),
         };
 
         /**
          * Patch: if `clientId` is provided, use OAuthTokenProvider, otherwise use BearerProvider
          */
-        this._oauthTokenProvider = "clientId" in _options.auth ?
-            new core.OAuthTokenProvider({
-                clientId: _options.auth.clientId,
-                clientSecret: _options.auth.clientSecret,
-                /**
-                 * Patch: provide whole `options` object to the Auth client, since it depends on both tenantName and environment
-                 */
-                authClient: new Auth(this._options),
-            }) :
-            new RefreshBearerProvider(_options.auth);
+        this._oauthTokenProvider =
+            "clientId" in _options.auth
+                ? new core.OAuthTokenProvider({
+                      clientId: _options.auth.clientId,
+                      clientSecret: _options.auth.clientSecret,
+                      /**
+                       * Patch: provide whole `options` object to the Auth client, since it depends on both tenantName and environment
+                       */
+                      authClient: new Auth(this._options),
+                  })
+                : new RefreshBearerProvider(_options.auth);
     }
 
     public get interactions(): Interactions {

@@ -14,7 +14,10 @@ export type BearerOptions = Partial<Omit<api.GetTokenResponse, 'accessToken'>> &
 } | {
     refreshAccessToken: RefreshAccessTokenFunction;
     accessToken?: string;
-});
+}) & {
+    expiresAt?: number;
+    refreshExpiresAt?: number;
+};
 
 export class RefreshBearerProvider {
     private readonly BUFFER_IN_MINUTES = 2;
@@ -33,6 +36,8 @@ export class RefreshBearerProvider {
         refreshToken,
         refreshExpiresIn,
         expiresIn,
+        expiresAt,
+        refreshExpiresAt
     }: BearerOptions) {
         this._expiresAt = this.getExpiresAt(expiresIn, this.BUFFER_IN_MINUTES);
         this._refreshExpiresAt = this.getExpiresAt(refreshExpiresIn, 0);
