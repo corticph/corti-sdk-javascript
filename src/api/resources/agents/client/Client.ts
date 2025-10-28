@@ -16,7 +16,7 @@ export declare namespace Agents {
         baseUrl?: core.Supplier<string>;
         token?: core.Supplier<core.BearerToken | undefined>;
         /** Override the Tenant-Name header */
-        tenantName: core.Supplier<string>;
+        tenantName?: core.Supplier<string | undefined>;
         /** Additional headers to include in requests. */
         headers?: Record<string, string | core.Supplier<string | undefined> | undefined>;
     }
@@ -29,7 +29,7 @@ export declare namespace Agents {
         /** A hook to abort the request. */
         abortSignal?: AbortSignal;
         /** Override the Tenant-Name header */
-        tenantName?: string;
+        tenantName?: string | undefined;
         /** Additional headers to include in the request. */
         headers?: Record<string, string | core.Supplier<string | undefined> | undefined>;
     }
@@ -145,7 +145,7 @@ export class Agents {
     }
 
     /**
-     * This endpoint allows the creation of a new agent that can be utilized in the `POST /threads` endpoint.
+     * This endpoint allows the creation of a new agent that can be utilized in the `POST /agents/{id}/v1/message:send` endpoint.
      *
      * @param {Corti.AgentsCreateAgent} request
      * @param {Agents.RequestOptions} requestOptions - Request-specific configuration.
@@ -707,107 +707,6 @@ export class Agents {
                 });
             case "timeout":
                 throw new errors.CortiTimeoutError("Timeout exceeded when calling POST /agents/{id}/v1/message:send.");
-            case "unknown":
-                throw new errors.CortiError({
-                    message: _response.error.errorMessage,
-                    rawResponse: _response.rawResponse,
-                });
-        }
-    }
-
-    /**
-     * Sends a message to the specified agent and streams the response as it is generated. This method requires the server to have support for streaming.
-     */
-    public messageStream(
-        id: string,
-        request: Corti.AgentsMessageSendParams,
-        requestOptions?: Agents.RequestOptions,
-    ): core.HttpResponsePromise<core.Stream<Corti.AgentsMessageStreamResponse>> {
-        return core.HttpResponsePromise.fromPromise(this.__messageStream(id, request, requestOptions));
-    }
-
-    private async __messageStream(
-        id: string,
-        request: Corti.AgentsMessageSendParams,
-        requestOptions?: Agents.RequestOptions,
-    ): Promise<core.WithRawResponse<core.Stream<Corti.AgentsMessageStreamResponse>>> {
-        const _response = await core.fetcher<ReadableStream>({
-            url: core.url.join(
-                (await core.Supplier.get(this._options.baseUrl)) ??
-                    (await core.Supplier.get(this._options.environment)).agents,
-                `agents/${encodeURIComponent(id)}/v1/message:stream`,
-            ),
-            method: "POST",
-            headers: mergeHeaders(
-                this._options?.headers,
-                mergeOnlyDefinedHeaders({
-                    Authorization: await this._getAuthorizationHeader(),
-                    "Tenant-Name": requestOptions?.tenantName,
-                }),
-                requestOptions?.headers,
-            ),
-            contentType: "application/json",
-            requestType: "json",
-            body: serializers.AgentsMessageSendParams.jsonOrThrow(request, {
-                unrecognizedObjectKeys: "strip",
-                omitUndefined: true,
-            }),
-            responseType: "sse",
-            timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
-            maxRetries: requestOptions?.maxRetries,
-            abortSignal: requestOptions?.abortSignal,
-        });
-        if (_response.ok) {
-            return {
-                data: new core.Stream({
-                    stream: _response.body,
-                    parse: async (data) => {
-                        return serializers.AgentsMessageStreamResponse.parseOrThrow(data, {
-                            unrecognizedObjectKeys: "passthrough",
-                            allowUnrecognizedUnionMembers: true,
-                            allowUnrecognizedEnumValues: true,
-                            skipValidation: true,
-                            breadcrumbsPrefix: ["response"],
-                        });
-                    },
-                    signal: requestOptions?.abortSignal,
-                    eventShape: {
-                        type: "sse",
-                        streamTerminator: "[DONE]",
-                    },
-                }),
-                rawResponse: _response.rawResponse,
-            };
-        }
-
-        if (_response.error.reason === "status-code") {
-            switch (_response.error.statusCode) {
-                case 400:
-                    throw new Corti.BadRequestError(_response.error.body, _response.rawResponse);
-                case 401:
-                    throw new Corti.UnauthorizedError(_response.error.body, _response.rawResponse);
-                case 404:
-                    throw new Corti.NotFoundError(_response.error.body, _response.rawResponse);
-                default:
-                    throw new errors.CortiError({
-                        statusCode: _response.error.statusCode,
-                        body: _response.error.body,
-                        rawResponse: _response.rawResponse,
-                    });
-            }
-        }
-
-        switch (_response.error.reason) {
-            case "non-json":
-                throw new errors.CortiError({
-                    statusCode: _response.error.statusCode,
-                    body: _response.error.rawBody,
-                    rawResponse: _response.rawResponse,
-                });
-            case "timeout":
-                throw new errors.CortiTimeoutError(
-                    "Timeout exceeded when calling POST /agents/{id}/v1/message:stream.",
-                );
             case "unknown":
                 throw new errors.CortiError({
                     message: _response.error.errorMessage,
