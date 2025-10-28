@@ -6,8 +6,10 @@ import * as Corti from "../index.js";
 
 export interface AgentsCreateExpert {
     type: "new";
-    /** The name of the expert. Must be unique. */
+    /** The name of the expert. Must be unique and contain only alphanumeric characters, hyphens, and underscores. */
     name: string;
+    /** The title of the expert. Should be used for display purpose only. */
+    title?: string;
     /** A brief description of the expert's capabilities. */
     description: string;
     /** Optional system prompt that defines the expert's behavior and expectations. */

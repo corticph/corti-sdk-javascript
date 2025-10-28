@@ -12,6 +12,7 @@ export const AgentsCreateAgent: core.serialization.Schema<
     Omit<Corti.AgentsCreateAgent, "ephemeral">
 > = core.serialization.object({
     name: core.serialization.string(),
+    title: core.serialization.string().optional(),
     systemPrompt: core.serialization.string().optional(),
     description: core.serialization.string(),
     experts: core.serialization.list(AgentsCreateAgentExpertsItem).optional(),
@@ -20,6 +21,7 @@ export const AgentsCreateAgent: core.serialization.Schema<
 export declare namespace AgentsCreateAgent {
     export interface Raw {
         name: string;
+        title?: string | null;
         systemPrompt?: string | null;
         description: string;
         experts?: AgentsCreateAgentExpertsItem.Raw[] | null;

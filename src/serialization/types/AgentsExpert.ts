@@ -12,6 +12,7 @@ export const AgentsExpert: core.serialization.ObjectSchema<serializers.AgentsExp
         type: core.serialization.stringLiteral("expert"),
         id: core.serialization.string(),
         name: core.serialization.string(),
+        title: core.serialization.string(),
         description: core.serialization.string(),
         systemPrompt: core.serialization.string(),
         mcpServers: core.serialization.list(AgentsMcpServer).optional(),
@@ -22,6 +23,7 @@ export declare namespace AgentsExpert {
         type: "expert";
         id: string;
         name: string;
+        title: string;
         description: string;
         systemPrompt: string;
         mcpServers?: AgentsMcpServer.Raw[] | null;

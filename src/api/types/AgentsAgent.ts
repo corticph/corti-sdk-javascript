@@ -9,6 +9,8 @@ export interface AgentsAgent {
     id: string;
     /** The name of the agent. */
     name: string;
+    /** The title of the agent. Should be used for display purpose only. */
+    title: string;
     /** A brief description of the agent's capabilities. */
     description: string;
     /** The system prompt that defines the overall agents behavior and expectations. */

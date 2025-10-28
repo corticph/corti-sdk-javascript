@@ -16,8 +16,10 @@ export interface AgentsCreateAgent {
      * If set to true, the agent will be created as ephemeral, it won't be listed in the agents_list but can still be fetched by ID. Ephemeral agents will be deleted periodically.
      */
     ephemeral?: boolean | null;
-    /** The name of the agent. */
+    /** The name of the expert. Must be unique and contain only alphanumeric characters, hyphens, and underscores. */
     name: string;
+    /** The title of the expert. Should be used for display purpose only. */
+    title?: string;
     /** The system prompt that defines the overall agents behavior and expectations. This field is optional as there is a default system orchestrator. */
     systemPrompt?: string;
     /** A brief description of the agent's capabilities. */

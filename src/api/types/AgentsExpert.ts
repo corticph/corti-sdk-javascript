@@ -10,6 +10,8 @@ export interface AgentsExpert {
     id: string;
     /** The name of the expert. Must be unique. */
     name: string;
+    /** The title of the expert. Should be used for display purpose only. */
+    title: string;
     /** A brief description of the expert's capabilities. */
     description: string;
     /** The system prompt that defines the expert's behavior and expectations. */

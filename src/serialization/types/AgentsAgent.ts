@@ -11,6 +11,7 @@ export const AgentsAgent: core.serialization.ObjectSchema<serializers.AgentsAgen
     core.serialization.object({
         id: core.serialization.string(),
         name: core.serialization.string(),
+        title: core.serialization.string(),
         description: core.serialization.string(),
         systemPrompt: core.serialization.string(),
         experts: core.serialization.list(AgentsAgentExpertsItem).optional(),
@@ -20,6 +21,7 @@ export declare namespace AgentsAgent {
     export interface Raw {
         id: string;
         name: string;
+        title: string;
         description: string;
         systemPrompt: string;
         experts?: AgentsAgentExpertsItem.Raw[] | null;

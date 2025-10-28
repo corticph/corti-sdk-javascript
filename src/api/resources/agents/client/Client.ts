@@ -427,6 +427,7 @@ export class Agents {
      *     await client.agents.update("12345678-90ab-cdef-gh12-34567890abc", {
      *         id: "id",
      *         name: "name",
+     *         title: "title",
      *         description: "description",
      *         systemPrompt: "systemPrompt"
      *     })

@@ -13,6 +13,7 @@ export const AgentsCreateExpert: core.serialization.ObjectSchema<
 > = core.serialization.object({
     type: core.serialization.stringLiteral("new"),
     name: core.serialization.string(),
+    title: core.serialization.string().optional(),
     description: core.serialization.string(),
     systemPrompt: core.serialization.string().optional(),
     mcpServers: core.serialization.list(AgentsCreateMcpServer).optional(),
@@ -22,6 +23,7 @@ export declare namespace AgentsCreateExpert {
     export interface Raw {
         type: "new";
         name: string;
+        title?: string | null;
         description: string;
         systemPrompt?: string | null;
         mcpServers?: AgentsCreateMcpServer.Raw[] | null;
