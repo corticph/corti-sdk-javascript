@@ -145,7 +145,7 @@ export class Agents {
     }
 
     /**
-     * This endpoint allows the creation of a new agent that can be utilized in the `POST /threads` endpoint.
+     * This endpoint allows the creation of a new agent that can be utilized in the `POST /agents/{id}/v1/message:send` endpoint.
      *
      * @param {Corti.AgentsCreateAgent} request
      * @param {Agents.RequestOptions} requestOptions - Request-specific configuration.
@@ -716,107 +716,6 @@ export class Agents {
     }
 
     /**
-     * Sends a message to the specified agent and streams the response as it is generated. This method requires the server to have support for streaming.
-     */
-    public messageStream(
-        id: string,
-        request: Corti.AgentsMessageSendParams,
-        requestOptions?: Agents.RequestOptions,
-    ): core.HttpResponsePromise<core.Stream<Corti.AgentsMessageStreamResponse>> {
-        return core.HttpResponsePromise.fromPromise(this.__messageStream(id, request, requestOptions));
-    }
-
-    private async __messageStream(
-        id: string,
-        request: Corti.AgentsMessageSendParams,
-        requestOptions?: Agents.RequestOptions,
-    ): Promise<core.WithRawResponse<core.Stream<Corti.AgentsMessageStreamResponse>>> {
-        const _response = await core.fetcher<ReadableStream>({
-            url: core.url.join(
-                (await core.Supplier.get(this._options.baseUrl)) ??
-                    (await core.Supplier.get(this._options.environment)).agents,
-                `agents/${encodeURIComponent(id)}/v1/message:stream`,
-            ),
-            method: "POST",
-            headers: mergeHeaders(
-                this._options?.headers,
-                mergeOnlyDefinedHeaders({
-                    Authorization: await this._getAuthorizationHeader(),
-                    "Tenant-Name": requestOptions?.tenantName,
-                }),
-                requestOptions?.headers,
-            ),
-            contentType: "application/json",
-            requestType: "json",
-            body: serializers.AgentsMessageSendParams.jsonOrThrow(request, {
-                unrecognizedObjectKeys: "strip",
-                omitUndefined: true,
-            }),
-            responseType: "sse",
-            timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
-            maxRetries: requestOptions?.maxRetries,
-            abortSignal: requestOptions?.abortSignal,
-        });
-        if (_response.ok) {
-            return {
-                data: new core.Stream({
-                    stream: _response.body,
-                    parse: async (data) => {
-                        return serializers.AgentsMessageStreamResponse.parseOrThrow(data, {
-                            unrecognizedObjectKeys: "passthrough",
-                            allowUnrecognizedUnionMembers: true,
-                            allowUnrecognizedEnumValues: true,
-                            skipValidation: true,
-                            breadcrumbsPrefix: ["response"],
-                        });
-                    },
-                    signal: requestOptions?.abortSignal,
-                    eventShape: {
-                        type: "sse",
-                        streamTerminator: "[DONE]",
-                    },
-                }),
-                rawResponse: _response.rawResponse,
-            };
-        }
-
-        if (_response.error.reason === "status-code") {
-            switch (_response.error.statusCode) {
-                case 400:
-                    throw new Corti.BadRequestError(_response.error.body, _response.rawResponse);
-                case 401:
-                    throw new Corti.UnauthorizedError(_response.error.body, _response.rawResponse);
-                case 404:
-                    throw new Corti.NotFoundError(_response.error.body, _response.rawResponse);
-                default:
-                    throw new errors.CortiError({
-                        statusCode: _response.error.statusCode,
-                        body: _response.error.body,
-                        rawResponse: _response.rawResponse,
-                    });
-            }
-        }
-
-        switch (_response.error.reason) {
-            case "non-json":
-                throw new errors.CortiError({
-                    statusCode: _response.error.statusCode,
-                    body: _response.error.rawBody,
-                    rawResponse: _response.rawResponse,
-                });
-            case "timeout":
-                throw new errors.CortiTimeoutError(
-                    "Timeout exceeded when calling POST /agents/{id}/v1/message:stream.",
-                );
-            case "unknown":
-                throw new errors.CortiError({
-                    message: _response.error.errorMessage,
-                    rawResponse: _response.rawResponse,
-                });
-        }
-    }
-
-    /**
      * This endpoint retrieves the status and details of a specific task associated with the given agent. It provides information about the task's current state, history, and any artifacts produced during its execution.
      *
      * @param {string} id - The identifier of the agent associated with the context.
@@ -1020,6 +919,107 @@ export class Agents {
                 throw new errors.CortiTimeoutError(
                     "Timeout exceeded when calling GET /agents/{id}/v1/contexts/{contextId}.",
                 );
+            case "unknown":
+                throw new errors.CortiError({
+                    message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
+                });
+        }
+    }
+
+    /**
+     * This endpoint retrieves the experts registry, which contains information about all available experts that can be referenced when creating agents through the AgentsExpertReference schema.
+     *
+     * @param {Corti.AgentsGetRegistryExpertsRequest} request
+     * @param {Agents.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link Corti.BadRequestError}
+     * @throws {@link Corti.UnauthorizedError}
+     *
+     * @example
+     *     await client.agents.getRegistryExperts({
+     *         limit: 100,
+     *         offset: 0
+     *     })
+     */
+    public getRegistryExperts(
+        request: Corti.AgentsGetRegistryExpertsRequest = {},
+        requestOptions?: Agents.RequestOptions,
+    ): core.HttpResponsePromise<Corti.AgentsRegistryExpertsResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__getRegistryExperts(request, requestOptions));
+    }
+
+    private async __getRegistryExperts(
+        request: Corti.AgentsGetRegistryExpertsRequest = {},
+        requestOptions?: Agents.RequestOptions,
+    ): Promise<core.WithRawResponse<Corti.AgentsRegistryExpertsResponse>> {
+        const { limit, offset } = request;
+        const _queryParams: Record<string, string | string[] | object | object[] | null> = {};
+        if (limit !== undefined) {
+            _queryParams["limit"] = limit?.toString() ?? null;
+        }
+
+        if (offset !== undefined) {
+            _queryParams["offset"] = offset?.toString() ?? null;
+        }
+
+        const _response = await core.fetcher({
+            url: core.url.join(
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)).agents,
+                "agents/registry/experts",
+            ),
+            method: "GET",
+            headers: mergeHeaders(
+                this._options?.headers,
+                mergeOnlyDefinedHeaders({
+                    Authorization: await this._getAuthorizationHeader(),
+                    "Tenant-Name": requestOptions?.tenantName,
+                }),
+                requestOptions?.headers,
+            ),
+            queryParameters: _queryParams,
+            timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
+            maxRetries: requestOptions?.maxRetries,
+            abortSignal: requestOptions?.abortSignal,
+        });
+        if (_response.ok) {
+            return {
+                data: serializers.AgentsRegistryExpertsResponse.parseOrThrow(_response.body, {
+                    unrecognizedObjectKeys: "passthrough",
+                    allowUnrecognizedUnionMembers: true,
+                    allowUnrecognizedEnumValues: true,
+                    skipValidation: true,
+                    breadcrumbsPrefix: ["response"],
+                }),
+                rawResponse: _response.rawResponse,
+            };
+        }
+
+        if (_response.error.reason === "status-code") {
+            switch (_response.error.statusCode) {
+                case 400:
+                    throw new Corti.BadRequestError(_response.error.body, _response.rawResponse);
+                case 401:
+                    throw new Corti.UnauthorizedError(_response.error.body, _response.rawResponse);
+                default:
+                    throw new errors.CortiError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                        rawResponse: _response.rawResponse,
+                    });
+            }
+        }
+
+        switch (_response.error.reason) {
+            case "non-json":
+                throw new errors.CortiError({
+                    statusCode: _response.error.statusCode,
+                    body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
+                });
+            case "timeout":
+                throw new errors.CortiTimeoutError("Timeout exceeded when calling GET /agents/registry/experts.");
             case "unknown":
                 throw new errors.CortiError({
                     message: _response.error.errorMessage,
