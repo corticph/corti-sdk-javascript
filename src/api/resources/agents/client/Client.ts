@@ -16,7 +16,7 @@ export declare namespace Agents {
         baseUrl?: core.Supplier<string>;
         token?: core.Supplier<core.BearerToken | undefined>;
         /** Override the Tenant-Name header */
-        tenantName?: core.Supplier<string | undefined>;
+        tenantName: core.Supplier<string>;
         /** Additional headers to include in requests. */
         headers?: Record<string, string | core.Supplier<string | undefined> | undefined>;
     }
@@ -29,7 +29,7 @@ export declare namespace Agents {
         /** A hook to abort the request. */
         abortSignal?: AbortSignal;
         /** Override the Tenant-Name header */
-        tenantName?: string | undefined;
+        tenantName?: string;
         /** Additional headers to include in the request. */
         headers?: Record<string, string | core.Supplier<string | undefined> | undefined>;
     }
@@ -919,6 +919,107 @@ export class Agents {
                 throw new errors.CortiTimeoutError(
                     "Timeout exceeded when calling GET /agents/{id}/v1/contexts/{contextId}.",
                 );
+            case "unknown":
+                throw new errors.CortiError({
+                    message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
+                });
+        }
+    }
+
+    /**
+     * This endpoint retrieves the experts registry, which contains information about all available experts that can be referenced when creating agents through the AgentsExpertReference schema.
+     *
+     * @param {Corti.AgentsGetRegistryExpertsRequest} request
+     * @param {Agents.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link Corti.BadRequestError}
+     * @throws {@link Corti.UnauthorizedError}
+     *
+     * @example
+     *     await client.agents.getRegistryExperts({
+     *         limit: 100,
+     *         offset: 0
+     *     })
+     */
+    public getRegistryExperts(
+        request: Corti.AgentsGetRegistryExpertsRequest = {},
+        requestOptions?: Agents.RequestOptions,
+    ): core.HttpResponsePromise<Corti.AgentsRegistryExpertsResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__getRegistryExperts(request, requestOptions));
+    }
+
+    private async __getRegistryExperts(
+        request: Corti.AgentsGetRegistryExpertsRequest = {},
+        requestOptions?: Agents.RequestOptions,
+    ): Promise<core.WithRawResponse<Corti.AgentsRegistryExpertsResponse>> {
+        const { limit, offset } = request;
+        const _queryParams: Record<string, string | string[] | object | object[] | null> = {};
+        if (limit !== undefined) {
+            _queryParams["limit"] = limit?.toString() ?? null;
+        }
+
+        if (offset !== undefined) {
+            _queryParams["offset"] = offset?.toString() ?? null;
+        }
+
+        const _response = await core.fetcher({
+            url: core.url.join(
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)).agents,
+                "agents/registry/experts",
+            ),
+            method: "GET",
+            headers: mergeHeaders(
+                this._options?.headers,
+                mergeOnlyDefinedHeaders({
+                    Authorization: await this._getAuthorizationHeader(),
+                    "Tenant-Name": requestOptions?.tenantName,
+                }),
+                requestOptions?.headers,
+            ),
+            queryParameters: _queryParams,
+            timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
+            maxRetries: requestOptions?.maxRetries,
+            abortSignal: requestOptions?.abortSignal,
+        });
+        if (_response.ok) {
+            return {
+                data: serializers.AgentsRegistryExpertsResponse.parseOrThrow(_response.body, {
+                    unrecognizedObjectKeys: "passthrough",
+                    allowUnrecognizedUnionMembers: true,
+                    allowUnrecognizedEnumValues: true,
+                    skipValidation: true,
+                    breadcrumbsPrefix: ["response"],
+                }),
+                rawResponse: _response.rawResponse,
+            };
+        }
+
+        if (_response.error.reason === "status-code") {
+            switch (_response.error.statusCode) {
+                case 400:
+                    throw new Corti.BadRequestError(_response.error.body, _response.rawResponse);
+                case 401:
+                    throw new Corti.UnauthorizedError(_response.error.body, _response.rawResponse);
+                default:
+                    throw new errors.CortiError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                        rawResponse: _response.rawResponse,
+                    });
+            }
+        }
+
+        switch (_response.error.reason) {
+            case "non-json":
+                throw new errors.CortiError({
+                    statusCode: _response.error.statusCode,
+                    body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
+                });
+            case "timeout":
+                throw new errors.CortiTimeoutError("Timeout exceeded when calling GET /agents/registry/experts.");
             case "unknown":
                 throw new errors.CortiError({
                     message: _response.error.errorMessage,

@@ -138,3 +138,5 @@ export * from "./AgentsAgentCardSignature.js";
 export * from "./AgentsAgentCard.js";
 export * from "./AgentsContextItemsItem.js";
 export * from "./AgentsContext.js";
+export * from "./AgentsRegistryExpert.js";
+export * from "./AgentsRegistryExpertsResponse.js";
