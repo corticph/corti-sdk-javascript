@@ -24,6 +24,8 @@ import { getEnvironment } from "./utils/getEnvironmentFromString.js";
 interface AuthorizationCodeClient {
     clientId: string;
     redirectUri: string;
+    codeChallenge?: string;
+    codeChallengeMethod?: string;
 }
 
 interface AuthorizationCodeServer {
@@ -31,6 +33,13 @@ interface AuthorizationCodeServer {
     clientSecret: string;
     redirectUri: string;
     code: string;
+}
+
+interface AuthorizationCodePkceServer {
+    clientId: string;
+    redirectUri: string;
+    code: string;
+    codeVerifier: string;
 }
 
 interface AuthorizationRefreshServer {
@@ -74,6 +83,8 @@ export class Auth extends FernAuth {
     public async authorizeURL({
         clientId,
         redirectUri,
+        codeChallenge,
+        codeChallengeMethod,
     }: AuthorizationCodeClient, options?: Options): Promise<string> {
         const authUrl = new URL(core.url.join(
             (await core.Supplier.get(this._options.baseUrl)) ??
@@ -91,6 +102,14 @@ export class Auth extends FernAuth {
 
         if (redirectUri !== undefined) {
             authUrl.searchParams.set('redirect_uri', redirectUri);
+        }
+
+        if (codeChallenge !== undefined) {
+            authUrl.searchParams.set('code_challenge', codeChallenge);
+        }
+
+        if (codeChallengeMethod !== undefined) {
+            authUrl.searchParams.set('code_challenge_method', codeChallengeMethod);
         }
 
         const authUrlString = authUrl.toString();
@@ -117,20 +136,45 @@ export class Auth extends FernAuth {
     }
 
     /**
+     * Patch: PKCE-specific method for Authorization code flow
+     */
+    public getCodePkceFlowToken(
+        request: AuthorizationCodePkceServer,
+        requestOptions?: FernAuth.RequestOptions,
+    ): core.HttpResponsePromise<Corti.GetTokenResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__getToken_custom({
+            ...request,
+            grantType: "authorization_code",
+        }, requestOptions));
+    }
+
+    /**
      * Patch: copy of this.__getToken with patches
      */
     private async __getToken_custom(
         /**
          * Patch: added additional fields to request to support Authorization code flow
          */
-        request: Corti.AuthGetTokenRequest & Partial<{
+        request: (Corti.AuthGetTokenRequest | AuthorizationCodeServer | AuthorizationCodePkceServer | AuthorizationRefreshServer) & Partial<{
             grantType: "client_credentials" | "authorization_code" | "refresh_token";
             code: string;
             redirectUri: string;
+            codeVerifier: string;
             refreshToken: string;
         }>,
         requestOptions?: FernAuth.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.GetTokenResponse>> {
+        const grantType = (request as any).grantType || "client_credentials";
+        const isPkce = grantType === "authorization_code" && (request as any).codeVerifier && !(request as any).clientSecret;
+        
+        const validatedRequest = serializers.AuthGetTokenRequest.jsonOrThrow({
+            clientId: (request as any).clientId,
+            clientSecret: (request as any).clientSecret || "",
+        }, {
+            unrecognizedObjectKeys: "strip",
+            omitUndefined: true,
+        });
+
         const _response = await core.fetcher({
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
@@ -158,28 +202,31 @@ export class Auth extends FernAuth {
              * Patch: removed `requestType: "json"`, made body a URLSearchParams object
              */
             body: new URLSearchParams({
-                ...serializers.AuthGetTokenRequest.jsonOrThrow(request, {
-                    unrecognizedObjectKeys: "strip",
-                    omitUndefined: true,
-                }),
+                // Filter out empty client_secret for PKCE flow
+                ...Object.fromEntries(
+                    Object.entries(validatedRequest).filter(([key, value]) => 
+                        !(isPkce && key === "client_secret" && !value)
+                    )
+                ),
                 scope: "openid",
                 /**
                  * Patch: `grant_type` uses values from request or defaults to "client_credentials"
                  */
-                grant_type: request.grantType || "client_credentials",
+                grant_type: grantType,
                 /**
                  * Patch: added `code` and `redirect_uri` fields for Authorization code flow
                  * Patch: added `refresh_token` field for Refresh token flow
                  */
-                ...(request.grantType === "authorization_code"
+                ...(grantType === "authorization_code"
                     ? {
-                        code: request.code,
-                        redirect_uri: request.redirectUri
+                        code: (request as any).code,
+                        redirect_uri: (request as any).redirectUri,
+                        ...((request as any).codeVerifier ? { code_verifier: (request as any).codeVerifier } : {})
                     }
                     : {}),
-                ...(request.grantType === "refresh_token"
+                ...(grantType === "refresh_token"
                         ? {
-                            refresh_token: request.refreshToken,
+                            refresh_token: (request as any).refreshToken,
                         }
                         : {}
                 ),
@@ -240,4 +287,5 @@ export class Auth extends FernAuth {
             grantType: "refresh_token",
         }, requestOptions));
     }
+
 }

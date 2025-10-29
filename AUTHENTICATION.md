@@ -4,11 +4,12 @@ The Corti TypeScript SDK supports multiple authentication methods to provide fle
 
 ## Overview
 
-The SDK supports three main authentication methods:
+The SDK supports four main authentication methods:
 
 1. **Client Credentials (OAuth2)** - Traditional OAuth2 client credentials flow (Backend only)
 2. **Bearer Token** - Direct token usage with optional refresh capability (Frontend & Backend)
 3. **Authorization Code Flow without PKCE (OAuth2)** - Full OAuth2 authorization code flow for user authentication (Frontend & Backend)
+4. **Authorization Code Flow with PKCE (OAuth2)** - OAuth2 authorization code flow with PKCE for enhanced security (Frontend & Backend)
 
 ## Client Credentials Authentication
 
@@ -300,6 +301,221 @@ const client = new CortiClient({
     tenantName: "YOUR_TENANT_NAME",
     auth: {
         ...token, // Spread the token object received from /api/auth/callback
+        refreshAccessToken: async (refreshToken: string) => {
+            // Make API call to your backend to refresh the token
+            const response = await fetch('/api/auth/refresh', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ refreshToken: refreshToken }),
+            });
+            
+            if (!response.ok) {
+                throw new Error('Token refresh failed');
+            }
+            
+            return response.json();
+        },
+    },
+});
+
+// Now you can use the client for API calls
+try {
+    const interactions = await client.interactions.list();
+    console.log('Interactions:', interactions);
+} catch (error) {
+    console.error('API call failed:', error);
+}
+```
+
+## Authorization Code Flow with PKCE
+
+**✅ Frontend & Backend Required** - This method requires both frontend and backend components. This flow is secure, interactive, and doesn’t require a client secret (ideal for public clients). Proof Key for Code Exchange (PKCE) protects against code interception attacks.
+
+The Authorization Code Flow with PKCE is ideal for:
+- Native apps
+- Single Page Applications (SPAs)
+- Browser-based integration where a user is present
+
+For detailed information about PKCE flow, see the [official Corti documentation](https://docs.corti.ai/api-reference/oauth#1-authorization-code-flow-with-pkce-recommended-for-corti-assistant).
+
+### Basic Flow Overview
+
+1. **Generate code verifier and challenge** - Create a code verifier and compute its challenge
+2. **Redirect user to authorization URL** - User is redirected to Corti's login page with code challenge
+3. **User authenticates** - User logs in and authorizes your application
+4. **Receive authorization code** - User is redirected back with an authorization code
+5. **Exchange code for tokens with code verifier** - Exchange the authorization code for access and refresh tokens using the code verifier
+6. **Use tokens** - Pass the tokens to a new `CortiClient` instance to make authenticated API calls
+
+### Step 1: Generate Code Verifier and Challenge (Frontend)
+
+```typescript
+import { CortiAuth, CortiEnvironment } from "@corti/sdk";
+
+// Generate code verifier (store this securely for later use)
+function generateCodeVerifier() {
+    const array = new Uint8Array(32);
+    crypto.getRandomValues(array);
+    return base64URLEncode(array);
+}
+
+// Generate code challenge from verifier
+async function generateCodeChallenge(verifier) {
+    const encoder = new TextEncoder();
+    const data = encoder.encode(verifier);
+    const hash = await crypto.subtle.digest('SHA-256', data);
+    return base64URLEncode(new Uint8Array(hash));
+}
+
+function base64URLEncode(buffer) {
+    const base64 = btoa(String.fromCharCode(...buffer));
+    return base64
+        .replace(/\+/g, '-')
+        .replace(/\//g, '_')
+        .replace(/=/g, '');
+}
+
+const codeVerifier = generateCodeVerifier();
+// Store codeVerifier securely (e.g., in localStorage for web apps)
+localStorage.setItem('pkce_verifier', codeVerifier);
+
+const auth = new CortiAuth({
+    environment: CortiEnvironment.Eu,
+    tenantName: "YOUR_TENANT_NAME",
+});
+
+// Generate code challenge
+const codeChallenge = await generateCodeChallenge(codeVerifier);
+
+// To prevent automatic redirect and get URL only:
+const authUrl = await auth.authorizeURL({
+    clientId: "YOUR_CLIENT_ID",
+    redirectUri: "https://your-app.com/callback",
+    codeChallenge,
+    codeChallengeMethod: 'S256',
+}, { skipRedirect: true });
+```
+
+### Step 2: Handle the Callback (Frontend)
+
+```typescript
+// Extract the authorization code from URL parameters
+const urlParams = new URLSearchParams(window.location.search);
+const code = urlParams.get('code');
+const error = urlParams.get('error');
+
+if (error) {
+    console.error('Authorization failed:', error);
+    return;
+}
+
+if (code) {
+    // Retrieve the stored code verifier
+    const codeVerifier = localStorage.getItem('pkce_verifier');
+    
+    // Send the code and code verifier to your backend server
+    const response = await fetch('/api/auth/pkce-callback', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ code, codeVerifier }),
+    });
+    
+    if (response.ok) {
+        const token = await response.json();
+        // Store tokens securely
+        localStorage.removeItem('pkce_verifier'); // Clean up
+        console.log('Authentication successful');
+    } else {
+        console.error('Authentication failed');
+    }
+}
+```
+
+### Step 3: Exchange Code for Tokens (Backend)
+
+```typescript
+// Backend: Handle the callback and exchange code for tokens using CortiAuth
+import { CortiAuth, CortiEnvironment } from "@corti/sdk";
+import express from 'express';
+
+const app = express();
+app.use(express.json());
+
+const auth = new CortiAuth({
+    environment: CortiEnvironment.Eu,
+    tenantName: "YOUR_TENANT_NAME",
+});
+
+app.post('/api/auth/pkce-callback', async (req, res) => {
+    try {
+        const { code, codeVerifier } = req.body;
+        
+        if (!code || !codeVerifier) {
+            return res.status(400).json({ error: 'Authorization code and code verifier are required' });
+        }
+
+        // Exchange the authorization code for tokens using PKCE flow (no client secret needed!)
+        const tokenResponse = await auth.getCodePkceFlowToken({
+            clientId: "YOUR_CLIENT_ID",
+            redirectUri: "https://your-app.com/callback",
+            code: code,
+            codeVerifier: codeVerifier,
+        });
+
+        // Return tokens to frontend (consider using httpOnly cookies for security)
+        res.json(tokenResponse);
+
+    } catch (error) {
+        console.error('Failed to exchange code for tokens:', error);
+        res.status(500).json({ error: 'Authentication failed' });
+    }
+});
+
+// Optional: Endpoint to refresh tokens
+app.post('/api/auth/refresh', async (req, res) => {
+    try {
+        const { refreshToken } = req.body;
+        
+        if (!refreshToken) {
+            return res.status(400).json({ error: 'Refresh token is required' });
+        }
+
+        // Refresh tokens using CortiAuth
+        // Note: For PKCE flow, you may need to store clientId on the server
+        const refreshResponse = await auth.refreshToken({
+            clientId: "YOUR_CLIENT_ID",
+            clientSecret: "YOUR_CLIENT_SECRET", // Needed for refresh
+            refreshToken: refreshToken,
+        });
+
+        res.json(refreshResponse);
+
+    } catch (error) {
+        console.error('Failed to refresh tokens:', error);
+        res.status(500).json({ error: 'Token refresh failed' });
+    }
+});
+
+app.listen(3000, () => {
+    console.log('Server running on port 3000');
+});
+```
+
+### Step 4: Use the Tokens
+
+Once you have the tokens from your backend server, you can create a `CortiClient` instance:
+
+```typescript
+// Frontend: Create CortiClient with tokens from server
+const client = new CortiClient({
+    environment: CortiEnvironment.Eu,
+    tenantName: "YOUR_TENANT_NAME",
+    auth: {
+        ...token, // Spread the token object received from /api/auth/pkce-callback
         refreshAccessToken: async (refreshToken: string) => {
             // Make API call to your backend to refresh the token
             const response = await fetch('/api/auth/refresh', {
