@@ -282,3 +282,70 @@ export function waitForWebSocketMessage(
     });
   });
 }
+
+/**
+ * Creates a test agent using faker data and returns its ID
+ * Optionally pushes the created agentId to the provided array
+ * Used for testing agents functionality
+ */
+export async function createTestAgent(
+  cortiClient: CortiClient,
+  createdAgentIds?: string[]
+): Promise<any> {
+  const agent = await cortiClient.agents.create({
+    name: faker.lorem.words(3),
+    description: faker.lorem.sentence(),
+  });
+
+  if (!agent.id) {
+    throw new Error("Agent creation failed - no ID returned.");
+  }
+
+  if (createdAgentIds) {
+    createdAgentIds.push(agent.id);
+  }
+
+  await pause();
+
+  return agent;
+}
+
+/**
+ * Cleans up agents by deleting them
+ */
+export async function cleanupAgents(cortiClient: CortiClient, agentIds: string[]): Promise<void> {
+  for (const agentId of agentIds) {
+    try {
+      console.log(`Cleanup agent ${agentId}`);
+      await cortiClient.agents.delete(agentId);
+    } catch (error) {
+      console.warn(`Failed to clean up agent ${agentId}:`, error);
+    }
+  }
+}
+
+/**
+ * Sends a test message to an agent and returns the response
+ * Used for testing agents.messageSend functionality
+ */
+export async function sendTestMessage(
+  cortiClient: CortiClient,
+  agentId: string,
+  messageText?: string
+) {
+  const message = await cortiClient.agents.messageSend(agentId, {
+    message: {
+      role: 'user',
+      parts: [{
+        kind: 'text',
+        text: messageText || faker.lorem.sentence(),
+      }],
+      messageId: faker.string.uuid(),
+      kind: 'message',
+    },
+  });
+
+  await pause();
+
+  return message;
+}
