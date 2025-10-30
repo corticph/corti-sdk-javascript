@@ -12,6 +12,7 @@ import { Transcripts } from "./api/resources/transcripts/client/Client.js";
 import { Facts } from "./api/resources/facts/client/Client.js";
 import { Documents } from "./api/resources/documents/client/Client.js";
 import { Templates } from "./api/resources/templates/client/Client.js";
+import { Agents } from "./api/resources/agents/client/Client.js";
 import { Stream } from "./api/resources/stream/client/Client.js";
 import { Transcribe } from "./api/resources/transcribe/client/Client.js";
 
@@ -52,6 +53,7 @@ export class CortiClient {
     protected _documents: Documents | undefined;
     protected _templates: Templates | undefined;
     protected _auth: Auth | undefined;
+    protected _agents: Agents | undefined;
     protected _stream: Stream | undefined;
     protected _transcribe: Transcribe | undefined;
 
@@ -63,8 +65,8 @@ export class CortiClient {
                     "Tenant-Name": _options?.tenantName,
                     "X-Fern-Language": "JavaScript",
                     "X-Fern-SDK-Name": "@corti/sdk",
-                    "X-Fern-SDK-Version": "0.2.0",
-                    "User-Agent": "@corti/sdk/0.2.0",
+                    "X-Fern-SDK-Version": "0.4.0",
+                    "User-Agent": "@corti/sdk/0.4.0",
                     "X-Fern-Runtime": core.RUNTIME.type,
                     "X-Fern-Runtime-Version": core.RUNTIME.version,
                 },
@@ -126,6 +128,13 @@ export class CortiClient {
 
     public get auth(): Auth {
         return (this._auth ??= new Auth({
+            ...this._options,
+            token: async () => await this._oauthTokenProvider.getToken(),
+        }));
+    }
+
+    public get agents(): Agents {
+        return (this._agents ??= new Agents({
             ...this._options,
             token: async () => await this._oauthTokenProvider.getToken(),
         }));
