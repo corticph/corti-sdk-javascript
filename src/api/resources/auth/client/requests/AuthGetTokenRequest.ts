@@ -11,5 +11,5 @@
  */
 export interface AuthGetTokenRequest {
     clientId: string;
-    clientSecret: string;
+    clientSecret?: string;
 }

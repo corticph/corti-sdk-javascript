@@ -11,7 +11,7 @@ export const AuthGetTokenRequest: core.serialization.Schema<
     Corti.AuthGetTokenRequest
 > = core.serialization.object({
     clientId: core.serialization.property("client_id", core.serialization.string()),
-    clientSecret: core.serialization.property("client_secret", core.serialization.string()),
+    clientSecret: core.serialization.property("client_secret", core.serialization.optional(core.serialization.string())),
 });
 
 export declare namespace AuthGetTokenRequest {

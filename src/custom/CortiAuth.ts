@@ -35,7 +35,7 @@ interface AuthorizationCodeServer {
     code: string;
 }
 
-interface AuthorizationCodePkceServer {
+interface AuthorizationPkceServer {
     clientId: string;
     redirectUri: string;
     code: string;
@@ -138,8 +138,8 @@ export class Auth extends FernAuth {
     /**
      * Patch: PKCE-specific method for Authorization code flow
      */
-    public getCodePkceFlowToken(
-        request: AuthorizationCodePkceServer,
+    public getPkceFlowToken(
+        request: AuthorizationPkceServer,
         requestOptions?: FernAuth.RequestOptions,
     ): core.HttpResponsePromise<Corti.GetTokenResponse> {
         return core.HttpResponsePromise.fromPromise(this.__getToken_custom({
@@ -153,28 +153,17 @@ export class Auth extends FernAuth {
      */
     private async __getToken_custom(
         /**
-         * Patch: added additional fields to request to support Authorization code flow
+         * Patch: added additional fields to request to support Authorization PKCE flow
          */
-        request: (Corti.AuthGetTokenRequest | AuthorizationCodeServer | AuthorizationCodePkceServer | AuthorizationRefreshServer) & Partial<{
+        request: Corti.AuthGetTokenRequest & Partial<{
             grantType: "client_credentials" | "authorization_code" | "refresh_token";
             code: string;
             redirectUri: string;
-            codeVerifier: string;
             refreshToken: string;
+            codeVerifier: string;
         }>,
         requestOptions?: FernAuth.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.GetTokenResponse>> {
-        const grantType = (request as any).grantType || "client_credentials";
-        const isPkce = grantType === "authorization_code" && (request as any).codeVerifier && !(request as any).clientSecret;
-        
-        const validatedRequest = serializers.AuthGetTokenRequest.jsonOrThrow({
-            clientId: (request as any).clientId,
-            clientSecret: (request as any).clientSecret || "",
-        }, {
-            unrecognizedObjectKeys: "strip",
-            omitUndefined: true,
-        });
-
         const _response = await core.fetcher({
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
@@ -202,31 +191,29 @@ export class Auth extends FernAuth {
              * Patch: removed `requestType: "json"`, made body a URLSearchParams object
              */
             body: new URLSearchParams({
-                // Filter out empty client_secret for PKCE flow
-                ...Object.fromEntries(
-                    Object.entries(validatedRequest).filter(([key, value]) => 
-                        !(isPkce && key === "client_secret" && !value)
-                    )
-                ),
+                ...serializers.AuthGetTokenRequest.jsonOrThrow(request, {
+                    unrecognizedObjectKeys: "strip",
+                    omitUndefined: true,
+                }),
                 scope: "openid",
                 /**
                  * Patch: `grant_type` uses values from request or defaults to "client_credentials"
                  */
-                grant_type: grantType,
+                grant_type: request.grantType || "client_credentials",
                 /**
                  * Patch: added `code` and `redirect_uri` fields for Authorization code flow
                  * Patch: added `refresh_token` field for Refresh token flow
                  */
-                ...(grantType === "authorization_code"
+                ...(request.grantType === "authorization_code"
                     ? {
-                        code: (request as any).code,
-                        redirect_uri: (request as any).redirectUri,
-                        ...((request as any).codeVerifier ? { code_verifier: (request as any).codeVerifier } : {})
+                        code: request.code,
+                        redirect_uri: request.redirectUri,
+                        ...(request.codeVerifier ? { code_verifier: request.codeVerifier } : {})
                     }
                     : {}),
-                ...(grantType === "refresh_token"
+                ...(request.grantType === "refresh_token"
                         ? {
-                            refresh_token: (request as any).refreshToken,
+                            refresh_token: request.refreshToken,
                         }
                         : {}
                 ),
