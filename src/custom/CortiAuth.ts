@@ -24,6 +24,8 @@ import { getEnvironment } from "./utils/getEnvironmentFromString.js";
 interface AuthorizationCodeClient {
     clientId: string;
     redirectUri: string;
+    codeChallenge?: string;
+    codeChallengeMethod?: string;
 }
 
 interface AuthorizationCodeServer {
@@ -31,6 +33,13 @@ interface AuthorizationCodeServer {
     clientSecret: string;
     redirectUri: string;
     code: string;
+}
+
+interface AuthorizationPkceServer {
+    clientId: string;
+    redirectUri: string;
+    code: string;
+    codeVerifier?: string;
 }
 
 interface AuthorizationRefreshServer {
@@ -59,6 +68,71 @@ export class Auth extends FernAuth {
     }
 
     /**
+     * Generate PKCE authorization URL with automatic code verifier generation
+     */
+    public async authorizePkceUrl({
+        clientId,
+        redirectUri,
+    }: AuthorizationCodeClient, options?: Options
+    ): Promise<string> {
+        const codeVerifier = this.generateCodeVerifier();
+
+        if (typeof window !== "undefined" && window.localStorage) {
+            window.localStorage.setItem('code_verifier', codeVerifier);
+        }
+
+        const codeChallenge = await this.generateCodeChallenge(codeVerifier);
+
+        return this.authorizeURL({
+            clientId,
+            redirectUri,
+            codeChallenge,
+            codeChallengeMethod: 'S256',
+        }, options);
+    }
+
+    /**
+     * Get the stored PKCE code verifier
+     */
+    public getCodeVerifier(): string | null {
+        if (typeof window !== "undefined" && window.localStorage) {
+            return window.localStorage.getItem('code_verifier');
+        }
+
+        return null;
+    }
+
+    /**
+     * Generate a random code verifier
+     */
+    private generateCodeVerifier(): string {
+        const array = new Uint8Array(32);
+        crypto.getRandomValues(array);
+        return this.base64URLEncode(array);
+    }
+
+    /**
+     * Generate code challenge from verifier
+     */
+    private async generateCodeChallenge(verifier: string): Promise<string> {
+        const encoder = new TextEncoder();
+        const data = encoder.encode(verifier);
+        const hash = await crypto.subtle.digest('SHA-256', data);
+        return this.base64URLEncode(new Uint8Array(hash));
+    }
+
+    /**
+     * Base64 URL encode
+     */
+    private base64URLEncode(buffer: Uint8Array): string {
+        const base64 = btoa(String.fromCharCode(...buffer));
+        return base64
+            .replace(/\+/g, '-')
+            .replace(/\//g, '_')
+            .replace(/=/g, '');
+    }
+
+    /**
      * Patch: called custom implementation this.__getToken_custom instead of this.__getToken
      */
     public getToken(
@@ -74,6 +148,8 @@ export class Auth extends FernAuth {
     public async authorizeURL({
         clientId,
         redirectUri,
+        codeChallenge,
+        codeChallengeMethod,
     }: AuthorizationCodeClient, options?: Options): Promise<string> {
         const authUrl = new URL(core.url.join(
             (await core.Supplier.get(this._options.baseUrl)) ??
@@ -91,6 +167,14 @@ export class Auth extends FernAuth {
 
         if (redirectUri !== undefined) {
             authUrl.searchParams.set('redirect_uri', redirectUri);
+        }
+
+        if (codeChallenge !== undefined) {
+            authUrl.searchParams.set('code_challenge', codeChallenge);
+        }
+
+        if (codeChallengeMethod !== undefined) {
+            authUrl.searchParams.set('code_challenge_method', codeChallengeMethod);
         }
 
         const authUrlString = authUrl.toString();
@@ -117,20 +201,44 @@ export class Auth extends FernAuth {
     }
 
     /**
+     * Patch: PKCE-specific method for Authorization code flow
+     */
+    public getPkceFlowToken(
+        request: AuthorizationPkceServer,
+        requestOptions?: FernAuth.RequestOptions,
+    ): core.HttpResponsePromise<Corti.GetTokenResponse> {
+        const codeVerifier = request.codeVerifier || this.getCodeVerifier();
+        
+        if (!codeVerifier) {
+            throw new errors.CortiError({
+                message: "codeVerifier is required. Call authorizePkceUrl() first or provide it as parameter.",
+            });
+        }
+        
+        return core.HttpResponsePromise.fromPromise(this.__getToken_custom({
+            ...request,
+            codeVerifier,
+            grantType: "authorization_code",
+        }, requestOptions));
+    }
+
+    /**
      * Patch: copy of this.__getToken with patches
      */
     private async __getToken_custom(
         /**
-         * Patch: added additional fields to request to support Authorization code flow
+         * Patch: added additional fields to request to support Authorization PKCE flow
          */
         request: Corti.AuthGetTokenRequest & Partial<{
             grantType: "client_credentials" | "authorization_code" | "refresh_token";
             code: string;
             redirectUri: string;
             refreshToken: string;
+            codeVerifier: string;
         }>,
         requestOptions?: FernAuth.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.GetTokenResponse>> {
+        type TokenRequestBody = Record<string, string>;
         const _response = await core.fetcher({
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
@@ -174,7 +282,8 @@ export class Auth extends FernAuth {
                 ...(request.grantType === "authorization_code"
                     ? {
                         code: request.code,
-                        redirect_uri: request.redirectUri
+                        redirect_uri: request.redirectUri,
+                        ...(request.codeVerifier ? { code_verifier: request.codeVerifier } : {})
                     }
                     : {}),
                 ...(request.grantType === "refresh_token"
@@ -183,7 +292,7 @@ export class Auth extends FernAuth {
                         }
                         : {}
                 ),
-            }),
+            } as TokenRequestBody),
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
             maxRetries: requestOptions?.maxRetries,
             abortSignal: requestOptions?.abortSignal,
@@ -240,4 +349,5 @@ export class Auth extends FernAuth {
             grantType: "refresh_token",
         }, requestOptions));
     }
+
 }
