@@ -349,48 +349,76 @@ For detailed information about PKCE flow, see the [official Corti documentation]
 5. **Exchange code for tokens with code verifier** - Exchange the authorization code for access and refresh tokens using the code verifier
 6. **Use tokens** - Pass the tokens to a new `CortiClient` instance to make authenticated API calls
 
-### Step 1: Generate Code Verifier and Challenge (Frontend)
+### Step 1: Generate Authorization URL (Frontend)
+
+**Recommended: Use `authorizePkceUrl()`** - The SDK handles code verifier generation and storage automatically:
 
 ```typescript
 import { CortiAuth, CortiEnvironment } from "@corti/sdk";
-
-// Generate code verifier (store this securely for later use)
-function generateCodeVerifier() {
-    const array = new Uint8Array(32);
-    crypto.getRandomValues(array);
-    return base64URLEncode(array);
-}
-
-// Generate code challenge from verifier
-async function generateCodeChallenge(verifier) {
-    const encoder = new TextEncoder();
-    const data = encoder.encode(verifier);
-    const hash = await crypto.subtle.digest('SHA-256', data);
-    return base64URLEncode(new Uint8Array(hash));
-}
-
-function base64URLEncode(buffer) {
-    const base64 = btoa(String.fromCharCode(...buffer));
-    return base64
-        .replace(/\+/g, '-')
-        .replace(/\//g, '_')
-        .replace(/=/g, '');
-}
-
-const codeVerifier = generateCodeVerifier();
-// Store codeVerifier securely (e.g., in localStorage for web apps)
-localStorage.setItem('pkce_verifier', codeVerifier);
 
 const auth = new CortiAuth({
     environment: CortiEnvironment.Eu,
     tenantName: "YOUR_TENANT_NAME",
 });
 
-// Generate code challenge
-const codeChallenge = await generateCodeChallenge(codeVerifier);
+// SDK automatically generates code verifier and stores it in localStorage
+const authUrl = await auth.authorizePkceUrl({
+    clientId: "YOUR_CLIENT_ID",
+    redirectUri: "https://your-app.com/callback"
+});
 
 // To prevent automatic redirect and get URL only:
-const authUrl = await auth.authorizeURL({
+const authUrlNoRedirect = await auth.authorizePkceUrl({
+    clientId: "YOUR_CLIENT_ID", 
+    redirectUri: "https://your-app.com/callback",
+}, { skipRedirect: true });
+```
+
+**Alternative: Manual Generation** - If you need more control over the process:
+
+```typescript
+import { CortiAuth, CortiEnvironment } from "@corti/sdk";
+
+function generateCodeVerifier() {
+  const array = new Uint8Array(32);
+  crypto.getRandomValues(array);
+  return base64URLEncode(array);
+}
+
+async function generateCodeChallenge(verifier) {
+  const encoder = new TextEncoder();
+  const data = encoder.encode(verifier);
+  const hash = await crypto.subtle.digest('SHA-256', data);
+  return base64URLEncode(new Uint8Array(hash));
+}
+
+function base64URLEncode(buffer) {
+  const base64 = btoa(String.fromCharCode(...buffer));
+  return base64
+    .replace(/\+/g, '-')
+    .replace(/\//g, '_')
+    .replace(/=/g, '');
+}
+
+const codeVerifier = generateCodeVerifier();
+localStorage.setItem('pkce_verifier', codeVerifier);
+const codeChallenge = await generateCodeChallenge(codeVerifier);
+
+const auth = new CortiAuth({
+    environment: CortiEnvironment.Eu,
+    tenantName: "YOUR_TENANT_NAME",
+});
+
+// Generate authorization URL
+const authUrl = await const authUrlNoRedirect = await auth.authorizeURL({
+    clientId: "YOUR_CLIENT_ID",
+    redirectUri: "https://your-app.com/callback",
+    codeChallenge,
+    codeChallengeMethod: 'S256',
+});
+
+// To prevent automatic redirect and get URL only:
+const authUrlNoRedirect = await auth.authorizeURL({
     clientId: "YOUR_CLIENT_ID",
     redirectUri: "https://your-app.com/callback",
     codeChallenge,
@@ -412,8 +440,13 @@ if (error) {
 }
 
 if (code) {
-    // Retrieve the stored code verifier
-    const codeVerifier = localStorage.getItem('pkce_verifier');
+    // Retrive codeVerifier from SDK if you used authorizePkceUrl on previous step or use localStorage.getItem('pkce_verifier')
+    const codeVerifier = auth.getCodeVerifier()
+    
+    if (!codeVerifier) {
+        console.error('Code verifier not found');
+        return;
+    }
     
     // Send the code and code verifier to your backend server
     const response = await fetch('/api/auth/pkce-callback', {
@@ -427,7 +460,6 @@ if (code) {
     if (response.ok) {
         const token = await response.json();
         // Store tokens securely
-        localStorage.removeItem('pkce_verifier'); // Clean up
         console.log('Authentication successful');
     } else {
         console.error('Authentication failed');
@@ -458,8 +490,8 @@ app.post('/api/auth/pkce-callback', async (req, res) => {
             return res.status(400).json({ error: 'Authorization code and code verifier are required' });
         }
 
-        // Exchange the authorization code for tokens using PKCE flow (no client secret needed!)
-        const tokenResponse = await auth.getCodePkceFlowToken({
+        // Exchange the authorization code for tokens using PKCE flow
+        const response = await auth.getPkceFlowToken({
             clientId: "YOUR_CLIENT_ID",
             redirectUri: "https://your-app.com/callback",
             code: code,
@@ -468,14 +500,13 @@ app.post('/api/auth/pkce-callback', async (req, res) => {
 
         // Return tokens to frontend (consider using httpOnly cookies for security)
         res.json(tokenResponse);
-
     } catch (error) {
         console.error('Failed to exchange code for tokens:', error);
         res.status(500).json({ error: 'Authentication failed' });
     }
 });
 
-// Optional: Endpoint to refresh tokens
+// Endpoint to refresh tokens
 app.post('/api/auth/refresh', async (req, res) => {
     try {
         const { refreshToken } = req.body;
@@ -485,15 +516,12 @@ app.post('/api/auth/refresh', async (req, res) => {
         }
 
         // Refresh tokens using CortiAuth
-        // Note: For PKCE flow, you may need to store clientId on the server
         const refreshResponse = await auth.refreshToken({
             clientId: "YOUR_CLIENT_ID",
-            clientSecret: "YOUR_CLIENT_SECRET", // Needed for refresh
             refreshToken: refreshToken,
         });
 
         res.json(refreshResponse);
-
     } catch (error) {
         console.error('Failed to refresh tokens:', error);
         res.status(500).json({ error: 'Token refresh failed' });
