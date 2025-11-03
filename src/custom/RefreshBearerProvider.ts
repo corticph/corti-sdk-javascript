@@ -6,7 +6,7 @@ import * as core from "../core/index.js";
 import * as api from "../api/index.js";
 import { decodeToken } from "./utils/decodeToken.js";
 
-type ExpectedTokenResponse = Omit<api.GetTokenResponse, 'tokenType'> & { tokenType?: string };
+type ExpectedTokenResponse = Omit<api.GetTokenResponse, 'tokenType' | 'expiresIn'> & { tokenType?: string, expiresIn?: string };
 type RefreshAccessTokenFunction = (refreshToken?: string) => Promise<ExpectedTokenResponse> | ExpectedTokenResponse;
 
 export type BearerOptions = Partial<Omit<api.GetTokenResponse, 'accessToken'>> & ({
