@@ -3,10 +3,12 @@ import { decodeToken } from "./decodeToken.js";
 import { CortiClient } from "../CortiClient.js";
 import { ParseError } from "../../core/schemas/index.js";
 import { Environment, getEnvironment } from "./getEnvironmentFromString.js";
+import { ExpectedTokenResponse } from "../RefreshBearerProvider.js";
 
 type ResolvedClientOptions = {
     environment: Environment;
     tenantName: core.Supplier<string>;
+    initialTokenResponse?: Promise<ExpectedTokenResponse>;
 };
 
 function isClientCredentialsOptions(options: CortiClient.Options): options is CortiClient.OptionsWithClientCredentials {
@@ -64,6 +66,7 @@ export function resolveClientOptions(options: CortiClient.Options): ResolvedClie
         }
 
         return {
+            tokenResponse,
             tenantName: decoded.tenantName,
             environment: decoded.environment,
         };
@@ -80,5 +83,6 @@ export function resolveClientOptions(options: CortiClient.Options): ResolvedClie
 
             return core.Supplier.get(environment);
         },
+        initialTokenResponse: tokenResponsePromise.then(result => result.tokenResponse),
     };
 }

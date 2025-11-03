@@ -150,7 +150,7 @@ export class CortiClient {
         /**
          * Patch: resolve tenantName and environment from options or token
          */
-        const { tenantName, environment } = resolveClientOptions(_options);
+        const { tenantName, environment, initialTokenResponse } = resolveClientOptions(_options);
 
         this._options = {
             ..._options,
@@ -189,7 +189,10 @@ export class CortiClient {
                        */
                       authClient: new Auth(this._options),
                   })
-                : new RefreshBearerProvider(_options.auth);
+                : new RefreshBearerProvider({
+                      ..._options.auth,
+                      initialTokenResponse,
+                  });
     }
 
     public get interactions(): Interactions {
