@@ -21,9 +21,10 @@
  */
 export function decodeToken(token: string) {
     // Validate the token structure (should contain at least header and payload parts)
-    const parts = token.split('.');
+    const parts = token ? token.split('.') : '';
+
     if (parts.length < 2) {
-        throw new Error('Invalid token format');
+        return null;
     }
 
     // Retrieve the payload (second part) of the JWT token
@@ -42,7 +43,7 @@ export function decodeToken(token: string) {
                 .join(''),
         );
     } catch (error) {
-        throw new Error('Failed to decode token payload');
+        return null;
     }
 
     // Parse the JSON string to obtain token details
@@ -50,13 +51,14 @@ export function decodeToken(token: string) {
     try {
         tokenDetails = JSON.parse(jsonPayload);
     } catch (error) {
-        throw new Error('Invalid JSON payload in token');
+        return null;
     }
 
     // Extract the issuer URL from the token details
     const issuerUrl: string = tokenDetails.iss;
+
     if (!issuerUrl) {
-        throw new Error('Token payload does not contain an issuer (iss) field');
+        return null;
     }
 
     // Regex to extract environment and tenant from issuer URL:
