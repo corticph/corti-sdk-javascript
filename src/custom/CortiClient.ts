@@ -37,19 +37,16 @@ import { Stream } from "./CustomStream.js";
 import { Transcribe } from "./CustomTranscribe.js";
 
 /**
- * Patch: added custom RefreshBearerProvider
- */
-import { BearerOptions, RefreshBearerProvider } from "./RefreshBearerProvider.js";
-/**
- * Patch: added SDK_VERSION import
+ * Patch: added SDK_VERSION import and custom code imports
  */
 import { SDK_VERSION } from "../version.js";
 import { getEnvironment, Environment, CortiInternalEnvironment } from "./utils/getEnvironmentFromString.js";
 import { resolveClientOptions } from "./utils/resolveClientOptions.js";
+import { BearerOptions, RefreshBearerProvider } from "./RefreshBearerProvider.js";
 
 export declare namespace CortiClient {
     /**
-     * Patch: added new public interface for `Options` (+ `ClientCredentials` interface)
+     * Patch: added new public type for `Options` + internal interfaces to create it
      */
 
     interface ClientCredentials {
@@ -62,10 +59,6 @@ export declare namespace CortiClient {
         headers?: Record<string, string | core.Supplier<string | undefined> | undefined>;
     }
 
-    /**
-     * Options when using Client Credentials authentication
-     * tenantName and environment are required
-     */
     interface OptionsWithClientCredentials extends BaseOptions {
         /**
          * Patch: allow to pass a custom string-based environment
@@ -76,12 +69,12 @@ export declare namespace CortiClient {
         auth: ClientCredentials;
     }
 
-    /**
-     * Options when using Bearer token authentication
-     * tenantName and environment are optional (extracted from token if not provided)
-     */
     interface OptionsWithBearerToken extends BaseOptions {
+        /**
+         * Patch: allow to pass a custom string-based environment
+         * */
         environment?: Environment;
+        /** Override the Tenant-Name header */
         tenantName?: core.Supplier<string>;
         auth: BearerOptions;
     }
@@ -93,6 +86,7 @@ export declare namespace CortiClient {
      *  - renamed `Options` to `InternalOptions`
      *  - added `token` field to support BearerProvider
      *  - made clientId and clientSecret optional
+     *  - updated environment type to CortiInternalEnvironment
      */
     interface InternalOptions {
         environment: CortiInternalEnvironment;
@@ -152,6 +146,9 @@ export class CortiClient {
          */
         const { tenantName, environment, initialTokenResponse } = resolveClientOptions(_options);
 
+        /**
+         * Patch: redefining options based on new schema
+         */
         this._options = {
             ..._options,
             headers: mergeHeaders(
@@ -179,20 +176,19 @@ export class CortiClient {
         /**
          * Patch: if `clientId` is provided, use OAuthTokenProvider, otherwise use BearerProvider
          */
-        this._oauthTokenProvider =
-            "clientId" in _options.auth
-                ? new core.OAuthTokenProvider({
-                      clientId: _options.auth.clientId,
-                      clientSecret: _options.auth.clientSecret,
-                      /**
-                       * Patch: provide whole `options` object to the Auth client, since it depends on both tenantName and environment
-                       */
-                      authClient: new Auth(this._options),
-                  })
-                : new RefreshBearerProvider({
-                      ..._options.auth,
-                      initialTokenResponse,
-                  });
+        this._oauthTokenProvider = "clientId" in _options.auth ?
+            new core.OAuthTokenProvider({
+                clientId: _options.auth.clientId,
+                clientSecret: _options.auth.clientSecret,
+                /**
+                 * Patch: provide whole `options` object to the Auth client, since it depends on both tenantName and environment
+                 */
+                authClient: new Auth(this._options),
+            }) :
+            new RefreshBearerProvider({
+                ..._options.auth,
+                initialTokenResponse
+            });
     }
 
     public get interactions(): Interactions {
