@@ -6,7 +6,10 @@ import * as core from "../core/index.js";
 import * as api from "../api/index.js";
 import { decodeToken } from "./utils/decodeToken.js";
 
-export type ExpectedTokenResponse = Omit<api.GetTokenResponse, 'tokenType' | 'expiresIn'> & { tokenType?: string, expiresIn?: number };
+export type ExpectedTokenResponse = Omit<api.GetTokenResponse, "tokenType" | "expiresIn"> & {
+    tokenType?: string;
+    expiresIn?: number;
+};
 type RefreshAccessTokenFunction = (refreshToken?: string) => Promise<ExpectedTokenResponse> | ExpectedTokenResponse;
 
 export type BearerOptions = Partial<Omit<api.GetTokenResponse, 'accessToken'>> & ({
@@ -15,9 +18,7 @@ export type BearerOptions = Partial<Omit<api.GetTokenResponse, 'accessToken'>> &
 } | {
     refreshAccessToken: RefreshAccessTokenFunction;
     accessToken?: string;
-}) & {
-    initialTokenResponse?: Promise<ExpectedTokenResponse>;
-};
+});
 
 export class RefreshBearerProvider {
     private readonly BUFFER_IN_MINUTES = 2;
@@ -38,8 +39,10 @@ export class RefreshBearerProvider {
         refreshExpiresIn,
         expiresIn,
         initialTokenResponse,
-    }: BearerOptions) {
-        this._accessToken = accessToken || 'no_token';
+    }: BearerOptions & {
+        initialTokenResponse?: Promise<ExpectedTokenResponse>;
+    }) {
+        this._accessToken = accessToken || "no_token";
         this._refreshToken = refreshToken;
         this._initialTokenResponse = initialTokenResponse;
 
@@ -50,7 +53,7 @@ export class RefreshBearerProvider {
     }
 
     public async getToken(): Promise<string> {
-        if (this._accessToken && this._accessToken !== 'no_token' && this._expiresAt > new Date()) {
+        if (this._accessToken && this._accessToken !== "no_token" && this._expiresAt > new Date()) {
             return core.Supplier.get(this._accessToken);
         }
 
@@ -59,7 +62,11 @@ export class RefreshBearerProvider {
             this._initialTokenResponse = undefined;
 
             this._accessToken = tokenResponse.accessToken;
-            this._expiresAt = this.getExpiresAt(tokenResponse.expiresIn, tokenResponse.accessToken, this.BUFFER_IN_MINUTES);
+            this._expiresAt = this.getExpiresAt(
+                tokenResponse.expiresIn,
+                tokenResponse.accessToken,
+                this.BUFFER_IN_MINUTES,
+            );
 
             this._refreshToken = tokenResponse.refreshToken;
             this._refreshExpiresAt = this.getExpiresAt(tokenResponse.refreshExpiresIn, this._refreshToken, 0);
@@ -71,7 +78,7 @@ export class RefreshBearerProvider {
     }
 
     private async refresh(): Promise<string> {
-        if (!this._refreshAccessToken || this._refreshToken && this._refreshExpiresAt < new Date()) {
+        if (!this._refreshAccessToken || (this._refreshToken && this._refreshExpiresAt < new Date())) {
             return core.Supplier.get(this._accessToken);
         }
 
@@ -86,7 +93,11 @@ export class RefreshBearerProvider {
         return this._accessToken;
     }
 
-    private getExpiresAt(expiresIn: number | undefined, token: string | undefined, bufferInMinutes: number = this.BUFFER_IN_MINUTES): Date {
+    private getExpiresAt(
+        expiresIn: number | undefined,
+        token: string | undefined,
+        bufferInMinutes: number = this.BUFFER_IN_MINUTES,
+    ): Date {
         if (typeof expiresIn === "number") {
             const now = new Date();
 
@@ -97,14 +108,14 @@ export class RefreshBearerProvider {
     }
 
     private parseTokenExpiry(token: string | undefined, bufferInMinutes: number): Date | undefined {
-        if (!token || token === 'no_token') {
+        if (!token || token === "no_token") {
             return;
         }
 
         try {
             const decoded = decodeToken(token);
 
-            if (decoded && typeof decoded.expiresAt === 'number') {
+            if (decoded && typeof decoded.expiresAt === "number") {
                 const ms = decoded.expiresAt * 1000 - bufferInMinutes * 60 * 1000;
 
                 return new Date(ms);
