@@ -81,4 +81,6 @@ export function decodeToken(token: string) {
             expiresAt,
         };
     }
+
+    return null;
 }
