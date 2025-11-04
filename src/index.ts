@@ -16,3 +16,7 @@ export { Auth as CortiAuth } from "./custom/CortiAuth.js";
  */
 export { JsonError } from "./core/schemas/builders/schema-utils/JsonError.js";
 export { ParseError } from "./core/schemas/builders/schema-utils/ParseError.js";
+/**
+ * Patch: added new export to provide localStorage error handling.
+ */
+export { CortiLocalStorageError } from "./custom/CortiLocalStorageError.js";

@@ -20,26 +20,47 @@ import * as serializers from "../serialization/index.js";
 import * as errors from "../errors/index.js";
 import * as environments from "../environments.js";
 import { getEnvironment } from "./utils/getEnvironmentFromString.js";
+import { CortiLocalStorageError } from "./CortiLocalStorageError.js";
+import { ParseError } from "../core/schemas/builders/schema-utils/ParseError.js";
 
+const CODE_VERIFIER_KEY = "corti_js_sdk_code_verifier";
+
+/**
+ * Patch: added codeChallenge to the AuthorizationCodeClient interface to support PKCE flow
+ */
 interface AuthorizationCodeClient {
     clientId: string;
     redirectUri: string;
     codeChallenge?: string;
-    codeChallengeMethod?: string;
 }
 
-interface AuthorizationCodeServer {
+/**
+ * Patch: renamed AuthorizationCodeClient to AuthorizationCode as it can be used for both(server and client) flows
+ */
+interface AuthorizationCode {
     clientId: string;
     clientSecret: string;
     redirectUri: string;
     code: string;
 }
 
-interface AuthorizationPkceServer {
+/**
+ * Patch: added type for AuthorizationPkce request
+ */
+interface AuthorizationPkce {
     clientId: string;
     redirectUri: string;
     code: string;
-    codeVerifier?: string;
+    codeVerifier: string;
+}
+
+/**
+ * Patch: added type for AuthorizationRopc request
+ */
+interface AuthorizationRopcServer {
+    clientId: string;
+    username: string;
+    password: string;
 }
 
 interface AuthorizationRefreshServer {
@@ -68,7 +89,7 @@ export class Auth extends FernAuth {
     }
 
     /**
-     * Generate PKCE authorization URL with automatic code verifier generation
+     * Patch: Generate PKCE authorization URL with automatic code verifier generation
      */
     public async authorizePkceUrl({
         clientId,
@@ -78,7 +99,11 @@ export class Auth extends FernAuth {
         const codeVerifier = this.generateCodeVerifier();
 
         if (typeof window !== "undefined" && window.localStorage) {
-            window.localStorage.setItem('code_verifier', codeVerifier);
+            try {
+                window.localStorage.setItem(CODE_VERIFIER_KEY, codeVerifier);
+            } catch (error) {
+                throw new CortiLocalStorageError('set', error);
+            }
         }
 
         const codeChallenge = await this.generateCodeChallenge(codeVerifier);
@@ -87,23 +112,26 @@ export class Auth extends FernAuth {
             clientId,
             redirectUri,
             codeChallenge,
-            codeChallengeMethod: 'S256',
         }, options);
     }
 
     /**
-     * Get the stored PKCE code verifier
+     * Patch: Get the stored PKCE code verifier
      */
     public getCodeVerifier(): string | null {
         if (typeof window !== "undefined" && window.localStorage) {
-            return window.localStorage.getItem('code_verifier');
+            try {
+                return window.localStorage.getItem(CODE_VERIFIER_KEY);
+            } catch (error) {
+                throw new CortiLocalStorageError('get', error);
+            }
         }
 
         return null;
     }
 
     /**
-     * Generate a random code verifier
+     * Patch: Generate a random code verifier
      */
     private generateCodeVerifier(): string {
         const array = new Uint8Array(32);
@@ -112,7 +140,7 @@ export class Auth extends FernAuth {
     }
 
     /**
-     * Generate code challenge from verifier
+     * Patch: Generate code challenge from verifier
      */
     private async generateCodeChallenge(verifier: string): Promise<string> {
         const encoder = new TextEncoder();
@@ -122,7 +150,7 @@ export class Auth extends FernAuth {
     }
 
     /**
-     * Base64 URL encode
+     * Patch: Base64 URL encode
      */
     private base64URLEncode(buffer: Uint8Array): string {
         const base64 = btoa(String.fromCharCode(...buffer));
@@ -143,13 +171,12 @@ export class Auth extends FernAuth {
     }
 
     /**
-     * Patch: added method to get Authorization URL for Authorization code flow
+     * Patch: added method to get Authorization URL for Authorization code flow and PKCE flow
      */
     public async authorizeURL({
         clientId,
         redirectUri,
         codeChallenge,
-        codeChallengeMethod,
     }: AuthorizationCodeClient, options?: Options): Promise<string> {
         const authUrl = new URL(core.url.join(
             (await core.Supplier.get(this._options.baseUrl)) ??
@@ -171,10 +198,7 @@ export class Auth extends FernAuth {
 
         if (codeChallenge !== undefined) {
             authUrl.searchParams.set('code_challenge', codeChallenge);
-        }
-
-        if (codeChallengeMethod !== undefined) {
-            authUrl.searchParams.set('code_challenge_method', codeChallengeMethod);
+            authUrl.searchParams.set('code_challenge_method', 'S256');
         }
 
         const authUrlString = authUrl.toString();
@@ -191,7 +215,7 @@ export class Auth extends FernAuth {
      * Patch: calls __getToken_custom with additional fields to support Authorization code flow
      */
     public getCodeFlowToken(
-        request: AuthorizationCodeServer,
+        request: AuthorizationCode,
         requestOptions?: FernAuth.RequestOptions,
     ): core.HttpResponsePromise<Corti.GetTokenResponse> {
         return core.HttpResponsePromise.fromPromise(this.__getToken_custom({
@@ -201,24 +225,40 @@ export class Auth extends FernAuth {
     }
 
     /**
-     * Patch: PKCE-specific method for Authorization code flow
+     * Patch: PKCE-specific method
      */
     public getPkceFlowToken(
-        request: AuthorizationPkceServer,
+        request: AuthorizationPkce,
         requestOptions?: FernAuth.RequestOptions,
     ): core.HttpResponsePromise<Corti.GetTokenResponse> {
         const codeVerifier = request.codeVerifier || this.getCodeVerifier();
-        
+
         if (!codeVerifier) {
-            throw new errors.CortiError({
-                message: "codeVerifier is required. Call authorizePkceUrl() first or provide it as parameter.",
-            });
+            throw new ParseError([
+                {
+                    path: ['codeVerifier'],
+                    message: 'Code verifier was not provided and not found in localStorage.',
+                },
+            ]);
         }
-        
+
         return core.HttpResponsePromise.fromPromise(this.__getToken_custom({
             ...request,
-            codeVerifier,
+            codeVerifier: codeVerifier,
             grantType: "authorization_code",
+        }, requestOptions));
+    }
+
+    /**
+     * Patch: ROPC-specific method
+     */
+    public getRopcFlowToken(
+        request: AuthorizationRopcServer,
+        requestOptions?: FernAuth.RequestOptions,
+    ): core.HttpResponsePromise<Corti.GetTokenResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__getToken_custom({
+            ...request,
+            grantType: "password",
         }, requestOptions));
     }
 
@@ -227,14 +267,16 @@ export class Auth extends FernAuth {
      */
     private async __getToken_custom(
         /**
-         * Patch: added additional fields to request to support Authorization PKCE flow
+         * Patch: added additional fields to request to support Authorization PKCE and ROPC flow
          */
         request: Corti.AuthGetTokenRequest & Partial<{
-            grantType: "client_credentials" | "authorization_code" | "refresh_token";
+            grantType: "client_credentials" | "authorization_code" | "refresh_token" | "password";
             code: string;
             redirectUri: string;
             refreshToken: string;
             codeVerifier: string;
+            username: string;
+            password: string;
         }>,
         requestOptions?: FernAuth.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.GetTokenResponse>> {
@@ -292,7 +334,20 @@ export class Auth extends FernAuth {
                         }
                         : {}
                 ),
+                /**
+                 * Patch: added `username` and `password` fields for ROPC flow
+                 */
+                ...(request.grantType === "password"
+                        ? {
+                            username: request.username,
+                            password: request.password,
+                        }
+                        : {}
+                ),
             } as TokenRequestBody),
+            /**
+             * Patch: added timeoutMs and maxRetries to requestOptions
+             */
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
             maxRetries: requestOptions?.maxRetries,
             abortSignal: requestOptions?.abortSignal,
