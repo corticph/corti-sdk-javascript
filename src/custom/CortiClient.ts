@@ -26,7 +26,7 @@ import { Interactions } from "../api/resources/interactions/client/Client.js";
 import { Recordings } from "../api/resources/recordings/client/Client.js";
 import { Transcripts } from "../api/resources/transcripts/client/Client.js";
 import { Facts } from "../api/resources/facts/client/Client.js";
-import { Documents  } from "../api/resources/documents/client/Client.js";
+import { Documents } from "../api/resources/documents/client/Client.js";
 import { Templates } from "../api/resources/templates/client/Client.js";
 import { Agents } from "../api/resources/agents/client/Client.js";
 
@@ -37,18 +37,16 @@ import { Stream } from "./CustomStream.js";
 import { Transcribe } from "./CustomTranscribe.js";
 
 /**
- * Patch: added custom RefreshBearerProvider
+ * Patch: added SDK_VERSION import and custom code imports
  */
+import { SDK_VERSION } from "../version.js";
+import { getEnvironment, Environment, CortiInternalEnvironment } from "./utils/getEnvironmentFromString.js";
+import { resolveClientOptions } from "./utils/resolveClientOptions.js";
 import { BearerOptions, RefreshBearerProvider } from "./RefreshBearerProvider.js";
-/**
- * Patch: added SDK_VERSION import
- */
-import { SDK_VERSION } from '../version.js';
-import { getEnvironment } from "./utils/getEnvironmentFromString.js";
 
 export declare namespace CortiClient {
     /**
-     * Patch: added new public interface for `Options` (+ `ClientCredentials` interface)
+     * Patch: added new public type for `Options` + internal interfaces to create it
      */
 
     interface ClientCredentials {
@@ -56,27 +54,42 @@ export declare namespace CortiClient {
         clientSecret: core.Supplier<string>;
     }
 
-    export interface Options {
+    interface BaseOptions {
+        /** Additional headers to include in requests. */
+        headers?: Record<string, string | core.Supplier<string | undefined> | undefined>;
+    }
+
+    interface OptionsWithClientCredentials extends BaseOptions {
         /**
          * Patch: allow to pass a custom string-based environment
          * */
-        environment: core.Supplier<environments.CortiEnvironment | environments.CortiEnvironmentUrls> | string;
+        environment: Environment;
         /** Override the Tenant-Name header */
         tenantName: core.Supplier<string>;
-        /** Additional headers to include in requests. */
-        headers?: Record<string, string | core.Supplier<string | undefined> | undefined>;
-
-        auth: ClientCredentials | BearerOptions;
+        auth: ClientCredentials;
     }
+
+    interface OptionsWithBearerToken extends BaseOptions {
+        /**
+         * Patch: allow to pass a custom string-based environment
+         * */
+        environment?: Environment;
+        /** Override the Tenant-Name header */
+        tenantName?: core.Supplier<string>;
+        auth: BearerOptions;
+    }
+
+    export type Options = OptionsWithClientCredentials | OptionsWithBearerToken;
 
     /**
      * Patch:
      *  - renamed `Options` to `InternalOptions`
      *  - added `token` field to support BearerProvider
      *  - made clientId and clientSecret optional
+     *  - updated environment type to CortiInternalEnvironment
      */
     interface InternalOptions {
-        environment: core.Supplier<environments.CortiEnvironment | environments.CortiEnvironmentUrls>;
+        environment: CortiInternalEnvironment;
         /** Specify a custom URL to connect the client to. */
         baseUrl?: core.Supplier<string>;
         clientId?: core.Supplier<string>;
@@ -128,11 +141,19 @@ export class CortiClient {
     protected _transcribe: Transcribe | undefined;
 
     constructor(_options: CortiClient.Options) {
+        /**
+         * Patch: resolve tenantName and environment from options or token
+         */
+        const { tenantName, environment, initialTokenResponse } = resolveClientOptions(_options);
+
+        /**
+         * Patch: redefining options based on new schema
+         */
         this._options = {
             ..._options,
             headers: mergeHeaders(
                 {
-                    "Tenant-Name": _options?.tenantName,
+                    "Tenant-Name": tenantName,
                     "X-Fern-Language": "JavaScript",
                     "X-Fern-SDK-Name": "@corti/sdk",
                     /**
@@ -148,7 +169,8 @@ export class CortiClient {
             clientId: "clientId" in _options.auth ? _options.auth.clientId : undefined,
             clientSecret: "clientSecret" in _options.auth ? _options.auth.clientSecret : undefined,
             token: "accessToken" in _options.auth ? _options.auth.accessToken : undefined,
-            environment: getEnvironment(_options.environment),
+            tenantName,
+            environment: getEnvironment(environment),
         };
 
         /**
@@ -163,7 +185,10 @@ export class CortiClient {
                  */
                 authClient: new Auth(this._options),
             }) :
-            new RefreshBearerProvider(_options.auth);
+            new RefreshBearerProvider({
+                ..._options.auth,
+                initialTokenResponse
+            });
     }
 
     public get interactions(): Interactions {

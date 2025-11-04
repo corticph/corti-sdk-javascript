@@ -70,31 +70,45 @@ interface GetTokenResponse {
 
 ### Basic Bearer Token
 
+Use the token data received from your backend server (from the `getToken` call above) to initialize the client:
+
 ```typescript
 const client = new CortiClient({
-    environment: CortiEnvironment.Eu,
-    tenantName: "YOUR_TENANT_NAME",
     auth: {
         accessToken: "YOUR_ACCESS_TOKEN",
+        // Optional: expiration can be extracted from token. Provide only when straight from server
+        expiresIn: 3600,
     },
 });
 ```
 
-### Bearer Token with Refresh Function Only
-
-You can also use bearer token authentication with just a refresh function, without providing an initial access token:
+You can spread the token response directly from your backend:
 
 ```typescript
 const client = new CortiClient({
-    environment: CortiEnvironment.Eu,
-    tenantName: "YOUR_TENANT_NAME",
     auth: {
+        ...tokenResponse, // Spread the token object received from your backend
+    },
+});
+```
+
+### Bearer Token With Refresh Token Support
+
+You can use a refresh function to automatically refresh tokens when they expire. You can provide an initial access token or start with just the refresh function:
+
+**With initial access and refresh tokens:**
+
+```typescript
+const client = new CortiClient({
+    auth: {
+        accessToken: "YOUR_ACCESS_TOKEN",
+        refreshToken: "YOUR_REFRESH_TOKEN",
         refreshAccessToken: async (refreshToken?: string) => {
             // Your custom logic to get a new access token
             const response = await fetch("https://your-auth-server/refresh", {
                 method: "POST", 
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ refreshToken: refreshToken }),
+                body: JSON.stringify({ refreshToken }),
             });
             
             // Response must return a valid token object:
@@ -111,27 +125,18 @@ const client = new CortiClient({
 });
 ```
 
-### With Refresh Token Support
-
-The SDK can automatically refresh tokens when they expire:
+**Without initial access token (refreshToken will be undefined for the first call):**
 
 ```typescript
 const client = new CortiClient({
-    environment: CortiEnvironment.Eu,
-    tenantName: "YOUR_TENANT_NAME",
     auth: {
-        accessToken: "YOUR_ACCESS_TOKEN",
-        refreshToken: "YOUR_REFRESH_TOKEN",
-        expiresIn: 3600, // Access token expires in 1 hour
-        refreshExpiresIn: 86400, // Refresh token expires in 24 hours
-
-        // This function runs before any API call when the access_token is near expiration
-        refreshAccessToken: async (refreshToken: string) => {
-            // Custom refresh logic -- get new access_token from server
-            const response = await fetch("https://your-auth-server/refresh", {
+        // refreshToken will be undefined for the first call, then it will be the refreshToken returned from the previous token request
+        refreshAccessToken: async (refreshToken?: string) => {
+            // Your custom logic to get a new access token
+            const response = await fetch("https://your-auth-server/token", {
                 method: "POST", 
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ refreshToken: refreshToken }),
+                body: JSON.stringify({ refreshToken }),
             });
             
             // Response must return a valid token object:
@@ -296,8 +301,6 @@ Once you have the tokens from your backend server, you can create a `CortiClient
 ```typescript
 // Frontend: Create CortiClient with tokens from server
 const client = new CortiClient({
-    environment: CortiEnvironment.Eu,
-    tenantName: "YOUR_TENANT_NAME",
     auth: {
         ...token, // Spread the token object received from /api/auth/callback
         refreshAccessToken: async (refreshToken: string) => {
