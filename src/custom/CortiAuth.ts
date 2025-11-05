@@ -12,13 +12,10 @@
  *  and to maybe remove some of the re-implementations in the future when `x-www-form-urlencoded` is supported
  */
 
+import type * as Corti from "../api/index.js";
 import { Auth as FernAuth } from "../api/resources/auth/client/Client.js";
 import * as core from "../core/index.js";
-import * as Corti from "../api/index.js";
-import { mergeHeaders, mergeOnlyDefinedHeaders } from "../core/headers.js";
-import * as serializers from "../serialization/index.js";
-import * as errors from "../errors/index.js";
-import * as environments from "../environments.js";
+import type * as environments from "../environments.js";
 import { getEnvironment } from "./utils/getEnvironmentFromString.js";
 
 interface AuthorizationCodeClient {
@@ -43,18 +40,26 @@ interface Options {
     skipRedirect?: boolean;
 }
 
-type AuthOptions = Omit<FernAuth.Options, 'environment'> & {
+type AuthOptions = Omit<FernAuth.Options, "environment"> & {
     environment: core.Supplier<environments.CortiEnvironment | environments.CortiEnvironmentUrls> | string;
-}
+};
 
 export class Auth extends FernAuth {
     /**
      * Patch: use custom AuthOptions type to support string-based environment
      */
     constructor(_options: AuthOptions) {
+        const environment = getEnvironment(_options.environment);
+        const loginUrl = core.Supplier.get(environment).then(async (env) => {
+            const tenantName = await core.Supplier.get(_options.tenantName);
+
+            return core.url.join(env.login, tenantName);
+        });
+
         super({
             ..._options,
-            environment: getEnvironment(_options.environment),
+            environment,
+            baseUrl: loginUrl,
         });
     }
 
@@ -65,32 +70,36 @@ export class Auth extends FernAuth {
         request: Corti.AuthGetTokenRequest,
         requestOptions?: FernAuth.RequestOptions,
     ): core.HttpResponsePromise<Corti.GetTokenResponse> {
-        return core.HttpResponsePromise.fromPromise(this.__getToken_custom(request, requestOptions));
+        return super.getToken(
+            {
+                grantType: "client_credentials",
+                ...request,
+            },
+            requestOptions,
+        );
     }
 
     /**
      * Patch: added method to get Authorization URL for Authorization code flow
      */
-    public async authorizeURL({
-        clientId,
-        redirectUri,
-    }: AuthorizationCodeClient, options?: Options): Promise<string> {
-        const authUrl = new URL(core.url.join(
-            (await core.Supplier.get(this._options.baseUrl)) ??
-            (await core.Supplier.get(this._options.environment)).login,
-            await core.Supplier.get(this._options.tenantName),
-            "protocol/openid-connect/auth",
-        ));
+    public async authorizeURL({ clientId, redirectUri }: AuthorizationCodeClient, options?: Options): Promise<string> {
+        const authUrl = new URL(
+            core.url.join(
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)).login,
+                "protocol/openid-connect/auth",
+            ),
+        );
 
-        authUrl.searchParams.set('response_type', 'code');
-        authUrl.searchParams.set('scope', 'openid profile');
+        authUrl.searchParams.set("response_type", "code");
+        authUrl.searchParams.set("scope", "openid profile");
 
         if (clientId !== undefined) {
-            authUrl.searchParams.set('client_id', clientId);
+            authUrl.searchParams.set("client_id", clientId);
         }
 
         if (redirectUri !== undefined) {
-            authUrl.searchParams.set('redirect_uri', redirectUri);
+            authUrl.searchParams.set("redirect_uri", redirectUri);
         }
 
         const authUrlString = authUrl.toString();
@@ -110,122 +119,13 @@ export class Auth extends FernAuth {
         request: AuthorizationCodeServer,
         requestOptions?: FernAuth.RequestOptions,
     ): core.HttpResponsePromise<Corti.GetTokenResponse> {
-        return core.HttpResponsePromise.fromPromise(this.__getToken_custom({
-            ...request,
-            grantType: "authorization_code",
-        }, requestOptions));
-    }
-
-    /**
-     * Patch: copy of this.__getToken with patches
-     */
-    private async __getToken_custom(
-        /**
-         * Patch: added additional fields to request to support Authorization code flow
-         */
-        request: Corti.AuthGetTokenRequest & Partial<{
-            grantType: "client_credentials" | "authorization_code" | "refresh_token";
-            code: string;
-            redirectUri: string;
-            refreshToken: string;
-        }>,
-        requestOptions?: FernAuth.RequestOptions,
-    ): Promise<core.WithRawResponse<Corti.GetTokenResponse>> {
-        const _response = await core.fetcher({
-            url: core.url.join(
-                (await core.Supplier.get(this._options.baseUrl)) ??
-                (await core.Supplier.get(this._options.environment)).login,
-                /**
-                 * Patch: use tenantName as path parameter
-                 *  (consider to be generated from the spec in the future)
-                 */
-                await core.Supplier.get(this._options.tenantName),
-                "protocol/openid-connect/token",
-            ),
-            method: "POST",
-            headers: mergeHeaders(
-                this._options?.headers,
-                mergeOnlyDefinedHeaders({
-                    /**
-                     * Patch: Removed `Authorization` header, as it is not needed for getting the token
-                     */
-                    "Tenant-Name": requestOptions?.tenantName,
-                }),
-                requestOptions?.headers,
-            ),
-            contentType: "application/x-www-form-urlencoded",
-            /**
-             * Patch: removed `requestType: "json"`, made body a URLSearchParams object
-             */
-            body: new URLSearchParams({
-                ...serializers.AuthGetTokenRequest.jsonOrThrow(request, {
-                    unrecognizedObjectKeys: "strip",
-                    omitUndefined: true,
-                }),
-                scope: "openid",
-                /**
-                 * Patch: `grant_type` uses values from request or defaults to "client_credentials"
-                 */
-                grant_type: request.grantType || "client_credentials",
-                /**
-                 * Patch: added `code` and `redirect_uri` fields for Authorization code flow
-                 * Patch: added `refresh_token` field for Refresh token flow
-                 */
-                ...(request.grantType === "authorization_code"
-                    ? {
-                        code: request.code,
-                        redirect_uri: request.redirectUri
-                    }
-                    : {}),
-                ...(request.grantType === "refresh_token"
-                        ? {
-                            refresh_token: request.refreshToken,
-                        }
-                        : {}
-                ),
-            }),
-            timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
-            maxRetries: requestOptions?.maxRetries,
-            abortSignal: requestOptions?.abortSignal,
-        });
-        if (_response.ok) {
-            return {
-                data: serializers.GetTokenResponse.parseOrThrow(_response.body, {
-                    unrecognizedObjectKeys: "passthrough",
-                    allowUnrecognizedUnionMembers: true,
-                    allowUnrecognizedEnumValues: true,
-                    skipValidation: true,
-                    breadcrumbsPrefix: ["response"],
-                }),
-                rawResponse: _response.rawResponse,
-            };
-        }
-
-        if (_response.error.reason === "status-code") {
-            throw new errors.CortiError({
-                statusCode: _response.error.statusCode,
-                body: _response.error.body,
-                rawResponse: _response.rawResponse,
-            });
-        }
-
-        switch (_response.error.reason) {
-            case "non-json":
-                throw new errors.CortiError({
-                    statusCode: _response.error.statusCode,
-                    body: _response.error.rawBody,
-                    rawResponse: _response.rawResponse,
-                });
-            case "timeout":
-                throw new errors.CortiTimeoutError(
-                    "Timeout exceeded when calling POST /protocol/openid-connect/token.",
-                );
-            case "unknown":
-                throw new errors.CortiError({
-                    message: _response.error.errorMessage,
-                    rawResponse: _response.rawResponse,
-                });
-        }
+        return this.getToken(
+            {
+                ...request,
+                grantType: "authorization_code",
+            },
+            requestOptions,
+        );
     }
 
     /**
@@ -235,9 +135,12 @@ export class Auth extends FernAuth {
         request: AuthorizationRefreshServer,
         requestOptions?: FernAuth.RequestOptions,
     ): core.HttpResponsePromise<Corti.GetTokenResponse> {
-        return core.HttpResponsePromise.fromPromise(this.__getToken_custom({
-            ...request,
-            grantType: "refresh_token",
-        }, requestOptions));
+        return this.getToken(
+            {
+                ...request,
+                grantType: "refresh_token",
+            },
+            requestOptions,
+        );
     }
 }

@@ -1,17 +1,16 @@
 /**
  * Patch: use custom Transcribe implementation to support passing _options parameters to connection function
  */
-import { Transcribe as FernTranscribe } from "../api/resources/transcribe/client/Client.js";
-
-import * as core from "../core/index.js";
 
 /**
  * Patch: added import for types and message parsing logic
  */
-import * as api from "../api/index.js";
+import type * as api from "../api/index.js";
+import { Transcribe as FernTranscribe } from "../api/resources/transcribe/client/Client.js";
+import * as core from "../core/index.js";
 import { fromJson } from "../core/json.js";
-import * as serializers from "../serialization/index.js";
 import { ErrorEvent } from "../core/websocket/events.js";
+import * as serializers from "../serialization/index.js";
 
 /**
  * Patch: changed import to custom TranscribeSocket implementation
@@ -22,14 +21,15 @@ export class Transcribe extends FernTranscribe {
     /**
      * Patch: use custom connect method to support passing _options parameters
      */
-    public async connect(
-        { configuration, ...args }: Omit<FernTranscribe.ConnectArgs, 'token' | 'tenantName'> & {
-            configuration?: api.TranscribeConfig;
-        } = {}
-    ): Promise<TranscribeSocket> {
+    public async connect({
+        configuration,
+        ...args
+    }: Omit<FernTranscribe.ConnectArgs, "token" | "tenantName"> & {
+        configuration?: api.TranscribeConfig;
+    } = {}): Promise<TranscribeSocket> {
         const fernWs = await super.connect({
             ...args,
-            token: await this._getAuthorizationHeader() || '',
+            token: (await this._getAuthorizationHeader()) || "",
             tenantName: await core.Supplier.get(this._options.tenantName),
         });
         const ws = new TranscribeSocket({ socket: fernWs.socket });
@@ -38,14 +38,14 @@ export class Transcribe extends FernTranscribe {
             return ws;
         }
 
-        ws.socket.addEventListener('open', () => {
+        ws.socket.addEventListener("open", () => {
             ws.sendConfiguration({
-                type: 'config',
+                type: "config",
                 configuration,
             });
         });
 
-        ws.socket.addEventListener('message', (event) => {
+        ws.socket.addEventListener("message", (event) => {
             const data = fromJson(event.data);
 
             const parsedResponse = serializers.TranscribeSocketResponse.parse(data, {
@@ -56,34 +56,44 @@ export class Transcribe extends FernTranscribe {
                 omitUndefined: true,
             });
 
-            if (parsedResponse.ok && parsedResponse.value.type === 'CONFIG_ACCEPTED') {
+            if (parsedResponse.ok && parsedResponse.value.type === "CONFIG_ACCEPTED") {
                 return;
             }
 
-            if (parsedResponse.ok && (
-                parsedResponse.value.type === 'CONFIG_DENIED'
-                || parsedResponse.value.type === 'CONFIG_TIMEOUT'
-            )) {
-                ws.socket.dispatchEvent(new ErrorEvent({
-                    name: parsedResponse.value.type,
-                    message: JSON.stringify(parsedResponse.value),
-                }, ''));
+            if (
+                parsedResponse.ok &&
+                (parsedResponse.value.type === "CONFIG_DENIED" || parsedResponse.value.type === "CONFIG_TIMEOUT")
+            ) {
+                ws.socket.dispatchEvent(
+                    new ErrorEvent(
+                        {
+                            name: parsedResponse.value.type,
+                            message: JSON.stringify(parsedResponse.value),
+                        },
+                        "",
+                    ),
+                );
 
                 ws.close();
                 return;
             }
 
-            if (parsedResponse.ok && parsedResponse.value.type === 'error') {
-                ws.socket.dispatchEvent(new ErrorEvent({
-                    name: 'error',
-                    message: JSON.stringify(parsedResponse.value),
-                }, ''));
+            if (parsedResponse.ok && parsedResponse.value.type === "error") {
+                ws.socket.dispatchEvent(
+                    new ErrorEvent(
+                        {
+                            name: "error",
+                            message: JSON.stringify(parsedResponse.value),
+                        },
+                        "",
+                    ),
+                );
 
                 ws.close();
                 return;
             }
 
-            if (parsedResponse.ok && parsedResponse.value.type === 'ended') {
+            if (parsedResponse.ok && parsedResponse.value.type === "ended") {
                 ws.close();
                 return;
             }

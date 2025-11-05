@@ -1,12 +1,12 @@
 /**
  * Patch: file patches disability of auto-generating binary data methods for sending data to the socket
  */
-import { StreamSocket as FernStreamSocket } from '../api/resources/stream/client/Socket.js';
+import { StreamSocket as FernStreamSocket } from "../api/resources/stream/client/Socket.js";
 import * as core from "../core/index.js";
 
 export class StreamSocket extends FernStreamSocket {
-    public sendAudio(message:  ArrayBufferLike | Blob | ArrayBufferView | string): void {
-        if (typeof message === 'string') {
+    public sendAudio(message: ArrayBufferLike | Blob | ArrayBufferView | string): void {
+        if (typeof message === "string") {
             return super.sendAudio(message);
         }
 
@@ -30,7 +30,10 @@ export class StreamSocket extends FernStreamSocket {
     /**
      * Patch: added ability to remove event handlers
      */
-    public off<T extends keyof FernStreamSocket.EventHandlers>(event: T, callback?: FernStreamSocket.EventHandlers[T]) {
+    public off<T extends keyof FernStreamSocket.EventHandlers>(
+        event: T,
+        callback?: FernStreamSocket.EventHandlers[T],
+    ): void {
         if (!callback || callback === this.eventHandlers[event]) {
             delete this.eventHandlers[event];
         }

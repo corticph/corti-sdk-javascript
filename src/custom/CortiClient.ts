@@ -15,34 +15,32 @@
  * All the patches marked with `// Patch: ...` comments.
  */
 
-import * as environments from "../environments.js";
+import { Agents } from "../api/resources/agents/client/Client.js";
+import { Documents } from "../api/resources/documents/client/Client.js";
+import { Facts } from "../api/resources/facts/client/Client.js";
+import { Interactions } from "../api/resources/interactions/client/Client.js";
+import { Recordings } from "../api/resources/recordings/client/Client.js";
+import { Templates } from "../api/resources/templates/client/Client.js";
+import { Transcripts } from "../api/resources/transcripts/client/Client.js";
+import { mergeHeaders } from "../core/headers.js";
 import * as core from "../core/index.js";
+import * as environments from "../environments.js";
+/**
+ * Patch: added SDK_VERSION import and custom code imports
+ */
+import { SDK_VERSION } from "../version.js";
 /**
  * Patch: changed import to custom Auth implementation
  */
 import { Auth } from "./CortiAuth.js";
-import { mergeHeaders } from "../core/headers.js";
-import { Interactions } from "../api/resources/interactions/client/Client.js";
-import { Recordings } from "../api/resources/recordings/client/Client.js";
-import { Transcripts } from "../api/resources/transcripts/client/Client.js";
-import { Facts } from "../api/resources/facts/client/Client.js";
-import { Documents } from "../api/resources/documents/client/Client.js";
-import { Templates } from "../api/resources/templates/client/Client.js";
-import { Agents } from "../api/resources/agents/client/Client.js";
-
 /**
  * Patch: changed import to custom Stream and Transcribe implementations
  */
 import { Stream } from "./CustomStream.js";
 import { Transcribe } from "./CustomTranscribe.js";
-
-/**
- * Patch: added SDK_VERSION import and custom code imports
- */
-import { SDK_VERSION } from "../version.js";
-import { getEnvironment, Environment, CortiInternalEnvironment } from "./utils/getEnvironmentFromString.js";
+import { type BearerOptions, RefreshBearerProvider } from "./RefreshBearerProvider.js";
+import { type CortiInternalEnvironment, type Environment, getEnvironment } from "./utils/getEnvironmentFromString.js";
 import { resolveClientOptions } from "./utils/resolveClientOptions.js";
-import { BearerOptions, RefreshBearerProvider } from "./RefreshBearerProvider.js";
 
 export declare namespace CortiClient {
     /**
@@ -176,19 +174,20 @@ export class CortiClient {
         /**
          * Patch: if `clientId` is provided, use OAuthTokenProvider, otherwise use BearerProvider
          */
-        this._oauthTokenProvider = "clientId" in _options.auth ?
-            new core.OAuthTokenProvider({
-                clientId: _options.auth.clientId,
-                clientSecret: _options.auth.clientSecret,
-                /**
-                 * Patch: provide whole `options` object to the Auth client, since it depends on both tenantName and environment
-                 */
-                authClient: new Auth(this._options),
-            }) :
-            new RefreshBearerProvider({
-                ..._options.auth,
-                initialTokenResponse
-            });
+        this._oauthTokenProvider =
+            "clientId" in _options.auth
+                ? new core.OAuthTokenProvider({
+                      clientId: _options.auth.clientId,
+                      clientSecret: _options.auth.clientSecret,
+                      /**
+                       * Patch: provide whole `options` object to the Auth client, since it depends on both tenantName and environment
+                       */
+                      authClient: new Auth(this._options),
+                  })
+                : new RefreshBearerProvider({
+                      ..._options.auth,
+                      initialTokenResponse,
+                  });
     }
 
     public get interactions(): Interactions {

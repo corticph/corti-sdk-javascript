@@ -2,8 +2,8 @@
  * RefreshBearerProvider used as a replacement of OAuthTokenProvider, in case when accessToken from outside of library was used instead of Client credentials.
  */
 
+import type * as api from "../api/index.js";
 import * as core from "../core/index.js";
-import * as api from "../api/index.js";
 import { decodeToken } from "./utils/decodeToken.js";
 
 export type ExpectedTokenResponse = Omit<api.GetTokenResponse, "tokenType" | "expiresIn"> & {
@@ -12,13 +12,17 @@ export type ExpectedTokenResponse = Omit<api.GetTokenResponse, "tokenType" | "ex
 };
 type RefreshAccessTokenFunction = (refreshToken?: string) => Promise<ExpectedTokenResponse> | ExpectedTokenResponse;
 
-export type BearerOptions = Partial<Omit<api.GetTokenResponse, 'accessToken'>> & ({
-    refreshAccessToken?: RefreshAccessTokenFunction;
-    accessToken: string;
-} | {
-    refreshAccessToken: RefreshAccessTokenFunction;
-    accessToken?: string;
-});
+export type BearerOptions = Partial<Omit<api.GetTokenResponse, "accessToken">> &
+    (
+        | {
+              refreshAccessToken?: RefreshAccessTokenFunction;
+              accessToken: string;
+          }
+        | {
+              refreshAccessToken: RefreshAccessTokenFunction;
+              accessToken?: string;
+          }
+    );
 
 export class RefreshBearerProvider {
     private readonly BUFFER_IN_MINUTES = 2;

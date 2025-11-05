@@ -1,9 +1,9 @@
 import * as core from "../../core/index.js";
-import { decodeToken } from "./decodeToken.js";
-import { CortiClient } from "../CortiClient.js";
 import { ParseError } from "../../core/schemas/index.js";
-import { Environment, getEnvironment } from "./getEnvironmentFromString.js";
-import { ExpectedTokenResponse } from "../RefreshBearerProvider.js";
+import type { CortiClient } from "../CortiClient.js";
+import type { ExpectedTokenResponse } from "../RefreshBearerProvider.js";
+import { decodeToken } from "./decodeToken.js";
+import { type Environment, getEnvironment } from "./getEnvironmentFromString.js";
 
 type ResolvedClientOptions = {
     environment: Environment;
@@ -73,16 +73,10 @@ export function resolveClientOptions(options: CortiClient.Options): ResolvedClie
     })();
 
     return {
-        tenantName:
-            options.tenantName ||
-            tokenResponsePromise.then(({ tenantName }) => tenantName),
+        tenantName: options.tenantName || tokenResponsePromise.then(({ tenantName }) => tenantName),
         environment:
             options.environment ||
-            tokenResponsePromise.then(({ environment }) =>
-                core.Supplier.get(getEnvironment(environment))
-            ),
-        initialTokenResponse: tokenResponsePromise.then(
-            (result) => result.tokenResponse
-        ),
+            tokenResponsePromise.then(({ environment }) => core.Supplier.get(getEnvironment(environment))),
+        initialTokenResponse: tokenResponsePromise.then((result) => result.tokenResponse),
     };
 }
