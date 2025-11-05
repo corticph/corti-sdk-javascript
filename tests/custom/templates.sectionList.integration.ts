@@ -21,7 +21,7 @@ describe('cortiClient.templates.sectionList', () => {
     consoleWarnSpy.mockRestore();
   });
 
-  it('should retrieve template sections without parameters', async () => {
+  it.concurrent('should retrieve template sections without parameters', async () => {
     expect.assertions(2);
 
     const result = await cortiClient.templates.sectionList();
@@ -31,7 +31,7 @@ describe('cortiClient.templates.sectionList', () => {
   });
 
   describe('language filtering (lang parameter)', () => {
-    it('should filter template sections by single language (lang: "en")', async () => {
+    it.concurrent('should filter template sections by single language (lang: "en")', async () => {
       expect.assertions(4);
 
       const unfilteredResult = await cortiClient.templates.sectionList();
@@ -46,7 +46,7 @@ describe('cortiClient.templates.sectionList', () => {
       expect(consoleWarnSpy).not.toHaveBeenCalled();
     });
 
-    it('should filter template sections by multiple languages (lang: ["da", "en"])', async () => {
+    it.concurrent('should filter template sections by multiple languages (lang: ["da", "en"])', async () => {
       expect.assertions(5);
 
       const unfilteredResult = await cortiClient.templates.sectionList();
@@ -64,7 +64,7 @@ describe('cortiClient.templates.sectionList', () => {
   });
 
   describe('organization filtering (org parameter)', () => {
-    it('should filter template sections by single organization (org: "corti")', async () => {
+    it.concurrent('should filter template sections by single organization (org: "corti")', async () => {
       expect.assertions(3);
 
       const unfilteredResult = await cortiClient.templates.sectionList();
@@ -77,7 +77,7 @@ describe('cortiClient.templates.sectionList', () => {
       expect(consoleWarnSpy).not.toHaveBeenCalled();
     });
 
-    it('should filter template sections by multiple organizations (org: ["corti", "another-org"])', async () => {
+    it.concurrent('should filter template sections by multiple organizations (org: ["corti", "another-org"])', async () => {
       expect.assertions(3);
 
       const unfilteredResult = await cortiClient.templates.sectionList();
@@ -89,7 +89,7 @@ describe('cortiClient.templates.sectionList', () => {
       expect(consoleWarnSpy).not.toHaveBeenCalled();
     });
 
-    it('should return empty results for non-existent organization', async () => {
+    it.concurrent('should return empty results for non-existent organization', async () => {
       expect.assertions(2);
 
       const filteredResult = await cortiClient.templates.sectionList({ org: "nonexistent-org" });
@@ -100,7 +100,7 @@ describe('cortiClient.templates.sectionList', () => {
   });
 
   describe('combined filtering (lang and org parameters)', () => {
-    it('should filter template sections using both language and organization parameters', async () => {
+    it.concurrent('should filter template sections using both language and organization parameters', async () => {
       expect.assertions(4);
 
       const unfilteredResult = await cortiClient.templates.sectionList();

@@ -29,7 +29,7 @@ describe('cortiClient.transcripts.list', () => {
     createdInteractionIds.length = 0;
   });
 
-  it('should return empty list when interaction has no transcripts', async () => {
+  it.concurrent('should return empty list when interaction has no transcripts', async () => {
     expect.assertions(2);
 
     const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
@@ -40,7 +40,7 @@ describe('cortiClient.transcripts.list', () => {
     expect(consoleWarnSpy).not.toHaveBeenCalled();
   });
 
-  it('should return transcripts when interaction has transcripts', async () => {
+  it.concurrent('should return transcripts when interaction has transcripts', async () => {
     expect.assertions(3);
 
     const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
@@ -54,7 +54,7 @@ describe('cortiClient.transcripts.list', () => {
     expect(consoleWarnSpy).not.toHaveBeenCalled();
   });
 
-  it('should return multiple transcripts when interaction has multiple transcripts', async () => {
+  it.concurrent('should return multiple transcripts when interaction has multiple transcripts', async () => {
     expect.assertions(4);
 
     const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
@@ -72,7 +72,7 @@ describe('cortiClient.transcripts.list', () => {
   });
 
   describe('full parameter tests', () => {
-    it('should return transcripts with full parameter set to true', async () => {
+    it.concurrent('should return transcripts with full parameter set to true', async () => {
       expect.assertions(3);
 
       const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
@@ -86,7 +86,7 @@ describe('cortiClient.transcripts.list', () => {
       expect(consoleWarnSpy).not.toHaveBeenCalled();
     });
 
-    it('should return transcripts with full parameter set to false', async () => {
+    it.concurrent('should return transcripts with full parameter set to false', async () => {
       expect.assertions(3);
 
       const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
@@ -100,7 +100,7 @@ describe('cortiClient.transcripts.list', () => {
       expect(consoleWarnSpy).not.toHaveBeenCalled();
     });
 
-    it('should return different responses when full parameter is true vs false', async () => {
+    it.concurrent('should return different responses when full parameter is true vs false', async () => {
       expect.assertions(4);
 
       const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
@@ -119,7 +119,7 @@ describe('cortiClient.transcripts.list', () => {
   });
 
   describe('should throw error when invalid parameters are provided', () => {
-    it('should throw error when interaction ID is invalid format', async () => {
+    it.concurrent('should throw error when interaction ID is invalid format', async () => {
       expect.assertions(1);
 
       await expect(
@@ -127,7 +127,7 @@ describe('cortiClient.transcripts.list', () => {
       ).rejects.toThrow('Status code: 400');
     });
 
-    it('should throw error when interaction ID does not exist', async () => {
+    it.concurrent('should throw error when interaction ID does not exist', async () => {
       expect.assertions(1);
 
       await expect(
@@ -135,7 +135,7 @@ describe('cortiClient.transcripts.list', () => {
       ).rejects.toThrow('Status code: 404');
     });
 
-    it('should throw error when interaction ID is null', async () => {
+    it.concurrent('should throw error when interaction ID is null', async () => {
       expect.assertions(1);
 
       await expect(
@@ -143,7 +143,7 @@ describe('cortiClient.transcripts.list', () => {
       ).rejects.toThrow('Expected string. Received null.');
     });
 
-    it('should throw error when interaction ID is undefined', async () => {
+    it.concurrent('should throw error when interaction ID is undefined', async () => {
       expect.assertions(1);
 
       await expect(

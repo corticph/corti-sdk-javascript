@@ -41,7 +41,7 @@ describe('cortiClient.documents.create', () => {
   });
 
   describe('should create document with only required values', () => {
-    it('should create document with DocumentsCreateRequestWithTemplateKey using facts context', async () => {
+    it.concurrent('should create document with DocumentsCreateRequestWithTemplateKey using facts context', async () => {
       expect.assertions(2);
 
       const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
@@ -62,7 +62,7 @@ describe('cortiClient.documents.create', () => {
       expect(consoleWarnSpy).not.toHaveBeenCalled();
     });
 
-    it('should create document with DocumentsCreateRequestWithTemplateKey using transcript context', async () => {
+    it.concurrent('should create document with DocumentsCreateRequestWithTemplateKey using transcript context', async () => {
       expect.assertions(2);
 
       const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
@@ -87,7 +87,7 @@ describe('cortiClient.documents.create', () => {
       expect(consoleWarnSpy).not.toHaveBeenCalled();
     });
 
-    it('should create document with DocumentsCreateRequestWithTemplateKey using string context', async () => {
+    it.concurrent('should create document with DocumentsCreateRequestWithTemplateKey using string context', async () => {
       expect.assertions(2);
 
       const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
@@ -105,7 +105,7 @@ describe('cortiClient.documents.create', () => {
       expect(consoleWarnSpy).not.toHaveBeenCalled();
     });
 
-    it('should create document with DocumentsCreateRequestWithTemplate using facts context and sectionKeys', async () => {
+    it.concurrent('should create document with DocumentsCreateRequestWithTemplate using facts context and sectionKeys', async () => {
       expect.assertions(2);
 
       const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
@@ -128,7 +128,7 @@ describe('cortiClient.documents.create', () => {
       expect(consoleWarnSpy).not.toHaveBeenCalled();
     });
 
-    it('should create document with DocumentsCreateRequestWithTemplate using transcript context and sectionKeys', async () => {
+    it.concurrent('should create document with DocumentsCreateRequestWithTemplate using transcript context and sectionKeys', async () => {
       expect.assertions(2);
 
       const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
@@ -155,7 +155,7 @@ describe('cortiClient.documents.create', () => {
       expect(consoleWarnSpy).not.toHaveBeenCalled();
     });
 
-    it('should create document with DocumentsCreateRequestWithTemplate using string context and sectionKeys', async () => {
+    it.concurrent('should create document with DocumentsCreateRequestWithTemplate using string context and sectionKeys', async () => {
       expect.assertions(2);
 
       const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
@@ -177,7 +177,7 @@ describe('cortiClient.documents.create', () => {
 });
 
   describe('should create document with all optional values', () => {
-    it('should create document with DocumentsCreateRequestWithTemplateKey using facts context', async () => {
+    it.concurrent('should create document with DocumentsCreateRequestWithTemplateKey using facts context', async () => {
       expect.assertions(2);
 
       const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
@@ -200,7 +200,7 @@ describe('cortiClient.documents.create', () => {
       expect(consoleWarnSpy).not.toHaveBeenCalled();
     });
 
-    it('should create document with DocumentsCreateRequestWithTemplateKey using transcript context', async () => {
+    it.concurrent('should create document with DocumentsCreateRequestWithTemplateKey using transcript context', async () => {
       expect.assertions(2);
 
       const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
@@ -226,7 +226,7 @@ describe('cortiClient.documents.create', () => {
       expect(consoleWarnSpy).not.toHaveBeenCalled();
     });
 
-    it('should create document with DocumentsCreateRequestWithTemplateKey using string context', async () => {
+    it.concurrent('should create document with DocumentsCreateRequestWithTemplateKey using string context', async () => {
       expect.assertions(2);
 
       const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
@@ -245,7 +245,7 @@ describe('cortiClient.documents.create', () => {
       expect(consoleWarnSpy).not.toHaveBeenCalled();
     });
 
-    it('should create document with DocumentsCreateRequestWithTemplate using facts context', async () => {
+    it.concurrent('should create document with DocumentsCreateRequestWithTemplate using facts context', async () => {
       expect.assertions(2);
 
       const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
@@ -275,7 +275,7 @@ describe('cortiClient.documents.create', () => {
       expect(consoleWarnSpy).not.toHaveBeenCalled();
     });
 
-    it('should create document with DocumentsCreateRequestWithTemplate using transcript context', async () => {
+    it.concurrent('should create document with DocumentsCreateRequestWithTemplate using transcript context', async () => {
       expect.assertions(2);
 
       const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
@@ -308,7 +308,7 @@ describe('cortiClient.documents.create', () => {
       expect(consoleWarnSpy).not.toHaveBeenCalled();
     });
 
-    it('should create document with DocumentsCreateRequestWithTemplate using string context', async () => {
+    it.concurrent('should create document with DocumentsCreateRequestWithTemplate using string context', async () => {
       expect.assertions(2);
 
       const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
@@ -336,7 +336,7 @@ describe('cortiClient.documents.create', () => {
   });
 
   describe('should create document with all source enum values in facts context', () => {
-    it('should create document with DocumentsCreateRequestWithTemplateKey using source: core', async () => {
+    it.concurrent('should create document with DocumentsCreateRequestWithTemplateKey using source: core', async () => {
       expect.assertions(2);
 
       const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
@@ -359,7 +359,7 @@ describe('cortiClient.documents.create', () => {
       expect(consoleWarnSpy).not.toHaveBeenCalled();
     });
 
-    it('should create document with DocumentsCreateRequestWithTemplateKey using source: system', async () => {
+    it.concurrent('should create document with DocumentsCreateRequestWithTemplateKey using source: system', async () => {
       expect.assertions(2);
 
       const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
@@ -382,7 +382,7 @@ describe('cortiClient.documents.create', () => {
       expect(consoleWarnSpy).not.toHaveBeenCalled();
     });
 
-    it('should create document with DocumentsCreateRequestWithTemplateKey using source: user', async () => {
+    it.concurrent('should create document with DocumentsCreateRequestWithTemplateKey using source: user', async () => {
       expect.assertions(2);
 
       const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
@@ -405,7 +405,7 @@ describe('cortiClient.documents.create', () => {
       expect(consoleWarnSpy).not.toHaveBeenCalled();
     });
 
-    it('should create document with DocumentsCreateRequestWithTemplate using source: core', async () => {
+    it.concurrent('should create document with DocumentsCreateRequestWithTemplate using source: core', async () => {
       expect.assertions(2);
 
       const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
@@ -435,7 +435,7 @@ describe('cortiClient.documents.create', () => {
       expect(consoleWarnSpy).not.toHaveBeenCalled();
     });
 
-    it('should create document with DocumentsCreateRequestWithTemplate using source: system', async () => {
+    it.concurrent('should create document with DocumentsCreateRequestWithTemplate using source: system', async () => {
       expect.assertions(2);
 
       const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
@@ -465,7 +465,7 @@ describe('cortiClient.documents.create', () => {
       expect(consoleWarnSpy).not.toHaveBeenCalled();
     });
 
-    it('should create document with DocumentsCreateRequestWithTemplate using source: user', async () => {
+    it.concurrent('should create document with DocumentsCreateRequestWithTemplate using source: user', async () => {
       expect.assertions(2);
 
       const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
@@ -497,7 +497,7 @@ describe('cortiClient.documents.create', () => {
   });
 
   describe('should handle errors when required parameters are missing', () => {
-    it('should throw error when context is missing', async () => {
+    it.concurrent('should throw error when context is missing', async () => {
       expect.assertions(1);
 
       const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
@@ -510,7 +510,7 @@ describe('cortiClient.documents.create', () => {
       ).rejects.toThrow('Missing required key "context"');
     });
 
-    it('should throw error when context is empty array', async () => {
+    it.concurrent('should throw error when context is empty array', async () => {
       expect.assertions(1);
 
       const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
@@ -524,7 +524,7 @@ describe('cortiClient.documents.create', () => {
       ).rejects.toThrow('BadRequestError');
     });
 
-    it('should throw error when outputLanguage is missing', async () => {
+    it.concurrent('should throw error when outputLanguage is missing', async () => {
       expect.assertions(1);
 
       const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
@@ -544,7 +544,7 @@ describe('cortiClient.documents.create', () => {
       ).rejects.toThrow('Missing required key "outputLanguage"');
     });
 
-    it('should throw error when templateKey is missing for DocumentsCreateRequestWithTemplateKey', async () => {
+    it.concurrent('should throw error when templateKey is missing for DocumentsCreateRequestWithTemplateKey', async () => {
       expect.assertions(1);
 
       const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
@@ -564,7 +564,7 @@ describe('cortiClient.documents.create', () => {
       ).rejects.toThrow('Missing required key "templateKey"');
     });
 
-    it('should throw error when text is missing in facts context', async () => {
+    it.concurrent('should throw error when text is missing in facts context', async () => {
       expect.assertions(1);
 
       const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
@@ -584,7 +584,7 @@ describe('cortiClient.documents.create', () => {
       ).rejects.toThrow('Missing required key "text"');
     });
 
-    it('should throw error when source is missing in facts context', async () => {
+    it.concurrent('should throw error when source is missing in facts context', async () => {
       expect.assertions(1);
 
       const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
@@ -604,7 +604,7 @@ describe('cortiClient.documents.create', () => {
       ).rejects.toThrow('Missing required key "source"');
     });
 
-    it('should throw error when transcript text is missing in transcript context', async () => {
+    it.concurrent('should throw error when transcript text is missing in transcript context', async () => {
       expect.assertions(1);
 
       const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
@@ -627,7 +627,7 @@ describe('cortiClient.documents.create', () => {
       ).rejects.toThrow('Missing required key "text"');
     });
 
-    it('should throw error when string data is missing in string context', async () => {
+    it.concurrent('should throw error when string data is missing in string context', async () => {
       expect.assertions(1);
 
       const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
@@ -644,7 +644,7 @@ describe('cortiClient.documents.create', () => {
       ).rejects.toThrow('Expected string. Received undefined.');
     });
 
-    it('should throw error when template is missing for DocumentsCreateRequestWithTemplate', async () => {
+    it.concurrent('should throw error when template is missing for DocumentsCreateRequestWithTemplate', async () => {
       expect.assertions(1);
 
       const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
@@ -664,7 +664,7 @@ describe('cortiClient.documents.create', () => {
       ).rejects.toThrow('Missing required key "template"');
     });
 
-    it('should throw error when context type is invalid', async () => {
+    it.concurrent('should throw error when context type is invalid', async () => {
       expect.assertions(1);
 
       const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
@@ -681,7 +681,7 @@ describe('cortiClient.documents.create', () => {
       ).rejects.toThrow('Received "invalid_type"');
     });
 
-    it('should throw error when outputLanguage is invalid', async () => {
+    it.concurrent('should throw error when outputLanguage is invalid', async () => {
       expect.assertions(1);
 
       const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);

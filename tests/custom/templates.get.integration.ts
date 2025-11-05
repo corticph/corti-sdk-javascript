@@ -23,7 +23,7 @@ describe('cortiClient.templates.get', () => {
     consoleWarnSpy.mockRestore();
   });
 
-  it('should successfully retrieve an existing template without errors or warnings', async () => {
+  it.concurrent('should successfully retrieve an existing template without errors or warnings', async () => {
     expect.assertions(2);
 
     const templateData = await getValidTemplateKeyAndLanguage(cortiClient);
@@ -35,7 +35,7 @@ describe('cortiClient.templates.get', () => {
   });
 
   describe('should throw error when invalid parameters are provided', () => {
-    it('should throw error when template key does not exist', async () => {
+    it.concurrent('should throw error when template key does not exist', async () => {
       expect.assertions(1);
 
       await expect(

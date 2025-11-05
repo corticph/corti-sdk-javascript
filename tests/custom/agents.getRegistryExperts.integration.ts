@@ -23,7 +23,7 @@ describe.skip('cortiClient.agents.getRegistryExperts', () => {
     consoleWarnSpy.mockRestore();
   });
 
-  it('should return registry experts without errors or warnings', async () => {
+  it.concurrent('should return registry experts without errors or warnings', async () => {
     expect.assertions(2);
 
     const result = await cortiClient.agents.getRegistryExperts();
@@ -32,7 +32,7 @@ describe.skip('cortiClient.agents.getRegistryExperts', () => {
     expect(consoleWarnSpy).not.toHaveBeenCalled();
   });
 
-  it('should return registry experts with limit parameter without errors or warnings', async () => {
+  it.concurrent('should return registry experts with limit parameter without errors or warnings', async () => {
     expect.assertions(2);
 
     const result = await cortiClient.agents.getRegistryExperts({
@@ -43,7 +43,7 @@ describe.skip('cortiClient.agents.getRegistryExperts', () => {
     expect(consoleWarnSpy).not.toHaveBeenCalled();
   });
 
-  it('should return registry experts with offset parameter without errors or warnings', async () => {
+  it.concurrent('should return registry experts with offset parameter without errors or warnings', async () => {
     expect.assertions(2);
 
     const result = await cortiClient.agents.getRegistryExperts({
@@ -54,7 +54,7 @@ describe.skip('cortiClient.agents.getRegistryExperts', () => {
     expect(consoleWarnSpy).not.toHaveBeenCalled();
   });
 
-  it('should return registry experts with all optional parameters without errors or warnings', async () => {
+  it.concurrent('should return registry experts with all optional parameters without errors or warnings', async () => {
     expect.assertions(2);
 
     const result = await cortiClient.agents.getRegistryExperts({

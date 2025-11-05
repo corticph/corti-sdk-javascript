@@ -38,7 +38,7 @@ describe('cortiClient.transcribe.connect', () => {
   });
 
   describe('should connect with minimal configuration', () => {
-    it('should connect with minimal configuration passed to connect', async () => {
+    it.concurrent('should connect with minimal configuration passed to connect', async () => {
       expect.assertions(4);
 
       const transcribeSocket = await cortiClient.transcribe.connect({
@@ -57,7 +57,7 @@ describe('cortiClient.transcribe.connect', () => {
       expect(consoleWarnSpy).not.toHaveBeenCalled();
     });
 
-    it('should connect and send configuration manually on open event', async () => {
+    it.concurrent('should connect and send configuration manually on open event', async () => {
       expect.assertions(4);
 
       const transcribeSocket = await cortiClient.transcribe.connect();
@@ -83,7 +83,7 @@ describe('cortiClient.transcribe.connect', () => {
   });
 
   describe('should connect with full configuration', () => {
-    it('should connect with full configuration passed to connect', async () => {
+    it.concurrent('should connect with full configuration passed to connect', async () => {
       expect.assertions(4);
 
       const transcribeSocket = await cortiClient.transcribe.connect({
@@ -112,7 +112,7 @@ describe('cortiClient.transcribe.connect', () => {
 
     });
 
-    it('should connect and send full configuration manually on open event', async () => {
+    it.concurrent('should connect and send full configuration manually on open event', async () => {
       expect.assertions(4);
 
       
@@ -146,7 +146,7 @@ describe('cortiClient.transcribe.connect', () => {
 
     });
 
-    it('should connect with full configuration including command variables', async () => {
+    it.concurrent('should connect with full configuration including command variables', async () => {
       expect.assertions(4);
 
       const transcribeSocket = await cortiClient.transcribe.connect({
@@ -184,7 +184,7 @@ describe('cortiClient.transcribe.connect', () => {
   });
 
   describe('should handle transcription scenario with audio', () => {
-    it('should process audio and receive transcription messages', async () => {
+    it.concurrent('should process audio and receive transcription messages', async () => {
       expect.assertions(1);
       
       const transcribeSocket = await cortiClient.transcribe.connect({
@@ -221,7 +221,7 @@ describe('cortiClient.transcribe.connect', () => {
   });
 
   describe('should handle configuration errors', () => {
-    it('should reject invalid configuration', async () => {
+    it.concurrent('should reject invalid configuration', async () => {
       expect.assertions(2);
 
       
@@ -240,7 +240,7 @@ describe('cortiClient.transcribe.connect', () => {
 
     });
 
-    it('should reject missing configuration', async () => {
+    it.concurrent('should reject missing configuration', async () => {
       expect.assertions(1);
       
       const transcribeSocket = await cortiClient.transcribe.connect();
@@ -257,7 +257,7 @@ describe('cortiClient.transcribe.connect', () => {
 
     });
 
-    it('should reject configuration with invalid command', async () => {
+    it.concurrent('should reject configuration with invalid command', async () => {
       expect.assertions(2);
       
       const transcribeSocket = await cortiClient.transcribe.connect({

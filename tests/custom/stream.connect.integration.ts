@@ -45,7 +45,7 @@ describe('cortiClient.stream.connect', () => {
   });
 
   describe('should connect with minimal configuration', () => {
-    it('should connect with minimal configuration passed to connect', async () => {
+    it.concurrent('should connect with minimal configuration passed to connect', async () => {
       expect.assertions(4);
 
       const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
@@ -79,7 +79,7 @@ describe('cortiClient.stream.connect', () => {
 
     });
 
-    it('should connect and send configuration manually on open event', async () => {
+    it.concurrent('should connect and send configuration manually on open event', async () => {
       expect.assertions(4);
 
       const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
@@ -120,7 +120,7 @@ describe('cortiClient.stream.connect', () => {
   });
 
   describe('should connect with full configuration', () => {
-    it('should connect with full configuration passed to connect', async () => {
+    it.concurrent('should connect with full configuration passed to connect', async () => {
       expect.assertions(4);
 
       const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
@@ -161,7 +161,7 @@ describe('cortiClient.stream.connect', () => {
 
     });
 
-    it('should connect and send full configuration manually on open event', async () => {
+    it.concurrent('should connect and send full configuration manually on open event', async () => {
       expect.assertions(4);
 
       const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
@@ -209,7 +209,7 @@ describe('cortiClient.stream.connect', () => {
   });
 
   describe('should connect with different participant roles', () => {
-    it('should connect with doctor role', async () => {
+    it.concurrent('should connect with doctor role', async () => {
       expect.assertions(4);
 
       const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
@@ -242,7 +242,7 @@ describe('cortiClient.stream.connect', () => {
 
     });
 
-    it('should connect with patient role', async () => {
+    it.concurrent('should connect with patient role', async () => {
       expect.assertions(4);
 
       const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
@@ -275,7 +275,7 @@ describe('cortiClient.stream.connect', () => {
 
     });
 
-    it('should connect with multiple role', async () => {
+    it.concurrent('should connect with multiple role', async () => {
       expect.assertions(4);
 
       const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
@@ -310,7 +310,7 @@ describe('cortiClient.stream.connect', () => {
   });
 
   describe('should connect with different mode types', () => {
-    it('should connect with facts mode', async () => {
+    it.concurrent('should connect with facts mode', async () => {
       expect.assertions(4);
 
       const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
@@ -343,7 +343,7 @@ describe('cortiClient.stream.connect', () => {
 
     });
 
-    it('should connect with transcription mode', async () => {
+    it.concurrent('should connect with transcription mode', async () => {
       expect.assertions(4);
 
       const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
@@ -376,7 +376,7 @@ describe('cortiClient.stream.connect', () => {
 
     });
 
-    it('should connect with documentation mode', async () => {
+    it.concurrent('should connect with documentation mode', async () => {
       expect.assertions(4);
 
       const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
@@ -411,7 +411,7 @@ describe('cortiClient.stream.connect', () => {
   });
 
   describe('should handle transcription scenario with audio', () => {
-    it('should process audio and receive transcription messages', async () => {
+    it.concurrent('should process audio and receive transcription messages', async () => {
       expect.assertions(2);
 
       const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
@@ -517,7 +517,7 @@ describe('cortiClient.stream.connect', () => {
   });
 
   describe('should handle configuration errors', () => {
-    it('should reject invalid configuration', async () => {
+    it.concurrent('should reject invalid configuration', async () => {
       expect.assertions(2);
 
       const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
@@ -570,7 +570,7 @@ describe('cortiClient.stream.connect', () => {
       expect(consoleWarnSpy).not.toHaveBeenCalled();
     });
 
-    it('should reject configuration with invalid participant role', async () => {
+    it.concurrent('should reject configuration with invalid participant role', async () => {
       expect.assertions(2);
 
       const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);

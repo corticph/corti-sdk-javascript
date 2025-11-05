@@ -28,7 +28,7 @@ describe('cortiClient.recordings.delete', () => {
     createdInteractionIds.length = 0;
   });
 
-  it('should successfully delete an existing recording without errors or warnings', async () => {
+  it.concurrent('should successfully delete an existing recording without errors or warnings', async () => {
     expect.assertions(2);
 
     const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
@@ -40,7 +40,7 @@ describe('cortiClient.recordings.delete', () => {
     expect(consoleWarnSpy).not.toHaveBeenCalled();
   });
 
-  it('should not throw error when recording ID does not exist', async () => {
+  it.concurrent('should not throw error when recording ID does not exist', async () => {
     expect.assertions(1);
 
     const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
@@ -51,7 +51,7 @@ describe('cortiClient.recordings.delete', () => {
   });
 
   describe('should throw error when invalid parameters are provided', () => {
-    it('should throw error when interaction ID is invalid format', async () => {
+    it.concurrent('should throw error when interaction ID is invalid format', async () => {
       expect.assertions(1);
 
       await expect(
@@ -59,7 +59,7 @@ describe('cortiClient.recordings.delete', () => {
       ).rejects.toThrow('Status code: 400');
     });
 
-    it('should throw error when recording ID is invalid format', async () => {
+    it.concurrent('should throw error when recording ID is invalid format', async () => {
       expect.assertions(1);
 
       const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
@@ -69,7 +69,7 @@ describe('cortiClient.recordings.delete', () => {
       ).rejects.toThrow('Status code: 400');
     });
 
-    it('should throw error when interaction ID does not exist', async () => {
+    it.concurrent('should throw error when interaction ID does not exist', async () => {
       expect.assertions(1);
 
       await expect(
@@ -77,7 +77,7 @@ describe('cortiClient.recordings.delete', () => {
       ).rejects.toThrow('Status code: 404');
     });
 
-    it('should throw error when interaction ID is null', async () => {
+    it.concurrent('should throw error when interaction ID is null', async () => {
       expect.assertions(1);
 
       await expect(
@@ -85,7 +85,7 @@ describe('cortiClient.recordings.delete', () => {
       ).rejects.toThrow('Expected string. Received null.');
     });
 
-    it('should throw error when recording ID is null', async () => {
+    it.concurrent('should throw error when recording ID is null', async () => {
       expect.assertions(1);
 
       const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
@@ -95,7 +95,7 @@ describe('cortiClient.recordings.delete', () => {
       ).rejects.toThrow('Expected string. Received null.');
     });
 
-    it('should throw error when interaction ID is undefined', async () => {
+    it.concurrent('should throw error when interaction ID is undefined', async () => {
       expect.assertions(1);
 
       await expect(
@@ -103,7 +103,7 @@ describe('cortiClient.recordings.delete', () => {
       ).rejects.toThrow('Expected string. Received undefined.');
     });
 
-    it('should throw error when recording ID is undefined', async () => {
+    it.concurrent('should throw error when recording ID is undefined', async () => {
       expect.assertions(1);
 
       const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);

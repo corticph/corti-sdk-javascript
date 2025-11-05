@@ -29,7 +29,7 @@ describe('cortiClient.interactions.update', () => {
   });
 
   describe('should update interaction with minimal fields', () => {
-    it('should update interaction with empty request (no changes) without errors or warnings', async () => {
+    it.concurrent('should update interaction with empty request (no changes) without errors or warnings', async () => {
       expect.assertions(2);
 
       const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
@@ -40,7 +40,7 @@ describe('cortiClient.interactions.update', () => {
       expect(consoleWarnSpy).not.toHaveBeenCalled();
     });
 
-    it('should update interaction with only assignedUserId without errors or warnings', async () => {
+    it.concurrent('should update interaction with only assignedUserId without errors or warnings', async () => {
       expect.assertions(2);
 
       const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
@@ -53,7 +53,7 @@ describe('cortiClient.interactions.update', () => {
       expect(consoleWarnSpy).not.toHaveBeenCalled();
     });
 
-    it('should update interaction with only encounter identifier without errors or warnings', async () => {
+    it.concurrent('should update interaction with only encounter identifier without errors or warnings', async () => {
       expect.assertions(2);
 
       const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
@@ -68,7 +68,7 @@ describe('cortiClient.interactions.update', () => {
       expect(consoleWarnSpy).not.toHaveBeenCalled();
     });
 
-    it('should update interaction with only patient identifier without errors or warnings', async () => {
+    it.concurrent('should update interaction with only patient identifier without errors or warnings', async () => {
       expect.assertions(2);
 
       const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
@@ -85,7 +85,7 @@ describe('cortiClient.interactions.update', () => {
   });
 
   describe('should update interaction with all status enum values', () => {
-    it('should update interaction with status "planned"', async () => {
+    it.concurrent('should update interaction with status "planned"', async () => {
       expect.assertions(2);
 
       const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
@@ -100,7 +100,7 @@ describe('cortiClient.interactions.update', () => {
       expect(consoleWarnSpy).not.toHaveBeenCalled();
     });
 
-    it('should update interaction with status "in-progress"', async () => {
+    it.concurrent('should update interaction with status "in-progress"', async () => {
       expect.assertions(2);
 
       const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
@@ -115,7 +115,7 @@ describe('cortiClient.interactions.update', () => {
       expect(consoleWarnSpy).not.toHaveBeenCalled();
     });
 
-    it('should update interaction with status "on-hold"', async () => {
+    it.concurrent('should update interaction with status "on-hold"', async () => {
       expect.assertions(2);
 
       const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
@@ -130,7 +130,7 @@ describe('cortiClient.interactions.update', () => {
       expect(consoleWarnSpy).not.toHaveBeenCalled();
     });
 
-    it('should update interaction with status "completed"', async () => {
+    it.concurrent('should update interaction with status "completed"', async () => {
       expect.assertions(2);
 
       const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
@@ -145,7 +145,7 @@ describe('cortiClient.interactions.update', () => {
       expect(consoleWarnSpy).not.toHaveBeenCalled();
     });
 
-    it('should update interaction with status "cancelled"', async () => {
+    it.concurrent('should update interaction with status "cancelled"', async () => {
       expect.assertions(2);
 
       const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
@@ -160,7 +160,7 @@ describe('cortiClient.interactions.update', () => {
       expect(consoleWarnSpy).not.toHaveBeenCalled();
     });
 
-    it('should update interaction with status "deleted"', async () => {
+    it.concurrent('should update interaction with status "deleted"', async () => {
       expect.assertions(2);
 
       const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
@@ -177,7 +177,7 @@ describe('cortiClient.interactions.update', () => {
   });
 
   describe('should update interaction with all type enum values', () => {
-    it('should update interaction with type "first_consultation"', async () => {
+    it.concurrent('should update interaction with type "first_consultation"', async () => {
       expect.assertions(2);
 
       const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
@@ -192,7 +192,7 @@ describe('cortiClient.interactions.update', () => {
       expect(consoleWarnSpy).not.toHaveBeenCalled();
     });
 
-    it('should update interaction with type "consultation"', async () => {
+    it.concurrent('should update interaction with type "consultation"', async () => {
       expect.assertions(2);
 
       const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
@@ -207,7 +207,7 @@ describe('cortiClient.interactions.update', () => {
       expect(consoleWarnSpy).not.toHaveBeenCalled();
     });
 
-    it('should update interaction with type "emergency"', async () => {
+    it.concurrent('should update interaction with type "emergency"', async () => {
       expect.assertions(2);
 
       const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
@@ -222,7 +222,7 @@ describe('cortiClient.interactions.update', () => {
       expect(consoleWarnSpy).not.toHaveBeenCalled();
     });
 
-    it('should update interaction with type "inpatient"', async () => {
+    it.concurrent('should update interaction with type "inpatient"', async () => {
       expect.assertions(2);
 
       const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
@@ -237,7 +237,7 @@ describe('cortiClient.interactions.update', () => {
       expect(consoleWarnSpy).not.toHaveBeenCalled();
     });
 
-    it('should update interaction with type "outpatient"', async () => {
+    it.concurrent('should update interaction with type "outpatient"', async () => {
       expect.assertions(2);
 
       const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
@@ -254,7 +254,7 @@ describe('cortiClient.interactions.update', () => {
   });
 
   describe('should update interaction with all gender enum values', () => {
-    it('should update interaction with gender "male"', async () => {
+    it.concurrent('should update interaction with gender "male"', async () => {
       expect.assertions(2);
 
       const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
@@ -270,7 +270,7 @@ describe('cortiClient.interactions.update', () => {
       expect(consoleWarnSpy).not.toHaveBeenCalled();
     });
 
-    it('should update interaction with gender "female"', async () => {
+    it.concurrent('should update interaction with gender "female"', async () => {
       expect.assertions(2);
 
       const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
@@ -286,7 +286,7 @@ describe('cortiClient.interactions.update', () => {
       expect(consoleWarnSpy).not.toHaveBeenCalled();
     });
 
-    it('should update interaction with gender "unknown"', async () => {
+    it.concurrent('should update interaction with gender "unknown"', async () => {
       expect.assertions(2);
 
       const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
@@ -302,7 +302,7 @@ describe('cortiClient.interactions.update', () => {
       expect(consoleWarnSpy).not.toHaveBeenCalled();
     });
 
-    it('should update interaction with gender "other"', async () => {
+    it.concurrent('should update interaction with gender "other"', async () => {
       expect.assertions(2);
 
       const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
@@ -319,7 +319,7 @@ describe('cortiClient.interactions.update', () => {
     });
   });
 
-  it('should update interaction with all optional parameters without errors or warnings', async () => {
+  it.concurrent('should update interaction with all optional parameters without errors or warnings', async () => {
     expect.assertions(2);
 
     const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
@@ -353,7 +353,7 @@ describe('cortiClient.interactions.update', () => {
   });
 
   describe('should throw error when invalid parameters are provided', () => {
-    it('should throw error when interaction ID is invalid', async () => {
+    it.concurrent('should throw error when interaction ID is invalid', async () => {
       expect.assertions(1);
 
       await expect(
@@ -363,7 +363,7 @@ describe('cortiClient.interactions.update', () => {
       ).rejects.toThrow('Status code: 400');
     });
 
-    it('should throw error when interaction ID does not exist', async () => {
+    it.concurrent('should throw error when interaction ID does not exist', async () => {
       expect.assertions(1);
 
       await expect(

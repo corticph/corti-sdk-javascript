@@ -29,7 +29,7 @@ describe('cortiClient.agents.messageSend', () => {
   });
 
   describe('should send message with minimal fields', () => {
-    it('should send message with only required fields without errors or warnings', async () => {
+    it.concurrent('should send message with only required fields without errors or warnings', async () => {
       expect.assertions(2);
 
       const agent = await createTestAgent(cortiClient, createdAgentIds);
@@ -50,7 +50,7 @@ describe('cortiClient.agents.messageSend', () => {
       expect(consoleWarnSpy).not.toHaveBeenCalled();
     });
 
-    it('should send message with agent role without errors or warnings', async () => {
+    it.concurrent('should send message with agent role without errors or warnings', async () => {
       expect.assertions(2);
 
       const agent = await createTestAgent(cortiClient, createdAgentIds);
@@ -73,7 +73,7 @@ describe('cortiClient.agents.messageSend', () => {
   });
 
   describe('should send message with all optional fields', () => {
-    it('should send message with metadata without errors or warnings', async () => {
+    it.concurrent('should send message with metadata without errors or warnings', async () => {
       expect.assertions(2);
 
       const agent = await createTestAgent(cortiClient, createdAgentIds);
@@ -97,7 +97,7 @@ describe('cortiClient.agents.messageSend', () => {
       expect(consoleWarnSpy).not.toHaveBeenCalled();
     });
 
-    it('should send message with extensions without errors or warnings', async () => {
+    it.concurrent('should send message with extensions without errors or warnings', async () => {
       expect.assertions(2);
 
       const agent = await createTestAgent(cortiClient, createdAgentIds);
@@ -119,7 +119,7 @@ describe('cortiClient.agents.messageSend', () => {
       expect(consoleWarnSpy).not.toHaveBeenCalled();
     });
 
-    it('should send message with taskId and contextId without errors or warnings', async () => {
+    it.concurrent('should send message with taskId and contextId without errors or warnings', async () => {
       expect.assertions(2);
 
       const agent = await createTestAgent(cortiClient, createdAgentIds);
@@ -157,7 +157,7 @@ describe('cortiClient.agents.messageSend', () => {
       expect(consoleWarnSpy).not.toHaveBeenCalled();
     });
 
-    it('should send message with referenceTaskIds without errors or warnings', async () => {
+    it.concurrent('should send message with referenceTaskIds without errors or warnings', async () => {
       expect.assertions(2);
 
       const agent = await createTestAgent(cortiClient, createdAgentIds);
@@ -179,7 +179,7 @@ describe('cortiClient.agents.messageSend', () => {
       expect(consoleWarnSpy).not.toHaveBeenCalled();
     });
 
-    it('should send message with all optional parameters without errors or warnings', async () => {
+    it.concurrent('should send message with all optional parameters without errors or warnings', async () => {
       expect.assertions(2);
 
       const agent = await createTestAgent(cortiClient, createdAgentIds);
@@ -230,7 +230,7 @@ describe('cortiClient.agents.messageSend', () => {
   });
 
   describe('should handle errors when required parameters are missing', () => {
-    it('should throw error when message is missing', async () => {
+    it.concurrent('should throw error when message is missing', async () => {
       expect.assertions(1);
 
       const agent = await createTestAgent(cortiClient, createdAgentIds);
@@ -240,7 +240,7 @@ describe('cortiClient.agents.messageSend', () => {
       ).rejects.toThrow('Missing required key "message"');
     });
 
-    it('should throw error when role is missing', async () => {
+    it.concurrent('should throw error when role is missing', async () => {
       expect.assertions(1);
 
       const agent = await createTestAgent(cortiClient, createdAgentIds);
@@ -259,7 +259,7 @@ describe('cortiClient.agents.messageSend', () => {
       ).rejects.toThrow('Missing required key "role"');
     });
 
-    it('should throw error when parts is missing', async () => {
+    it.concurrent('should throw error when parts is missing', async () => {
       expect.assertions(1);
 
       const agent = await createTestAgent(cortiClient, createdAgentIds);
@@ -275,7 +275,7 @@ describe('cortiClient.agents.messageSend', () => {
       ).rejects.toThrow('Missing required key "parts"');
     });
 
-    it('should throw error when messageId is missing', async () => {
+    it.concurrent('should throw error when messageId is missing', async () => {
       expect.assertions(1);
 
       const agent = await createTestAgent(cortiClient, createdAgentIds);
@@ -294,7 +294,7 @@ describe('cortiClient.agents.messageSend', () => {
       ).rejects.toThrow('Missing required key "messageId"');
     });
 
-    it('should throw error when kind is missing', async () => {
+    it.concurrent('should throw error when kind is missing', async () => {
       expect.assertions(1);
 
       const agent = await createTestAgent(cortiClient, createdAgentIds);
@@ -313,7 +313,7 @@ describe('cortiClient.agents.messageSend', () => {
       ).rejects.toThrow('Missing required key "kind"');
     });
 
-    it('should throw error when text is missing in text part', async () => {
+    it.concurrent('should throw error when text is missing in text part', async () => {
       expect.assertions(1);
 
       const agent = await createTestAgent(cortiClient, createdAgentIds);
@@ -334,7 +334,7 @@ describe('cortiClient.agents.messageSend', () => {
   });
 
   describe('should throw error when invalid parameters are provided', () => {
-    it('should throw error when agent ID is invalid format', async () => {
+    it.concurrent('should throw error when agent ID is invalid format', async () => {
       expect.assertions(1);
 
       await expect(
@@ -352,7 +352,7 @@ describe('cortiClient.agents.messageSend', () => {
       ).rejects.toThrow('Status code: 400');
     });
 
-    it('should throw error when agent ID does not exist', async () => {
+    it.concurrent('should throw error when agent ID does not exist', async () => {
       expect.assertions(1);
 
       await expect(

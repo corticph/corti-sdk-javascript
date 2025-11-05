@@ -28,7 +28,7 @@ describe('cortiClient.recordings.list', () => {
     createdInteractionIds.length = 0;
   });
 
-  it('should return empty list when interaction has no recordings', async () => {
+  it.concurrent('should return empty list when interaction has no recordings', async () => {
     expect.assertions(2);
 
     const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
@@ -39,7 +39,7 @@ describe('cortiClient.recordings.list', () => {
     expect(consoleWarnSpy).not.toHaveBeenCalled();
   });
 
-  it('should return recordings when interaction has recordings', async () => {
+  it.concurrent('should return recordings when interaction has recordings', async () => {
     expect.assertions(3);
 
     const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
@@ -52,7 +52,7 @@ describe('cortiClient.recordings.list', () => {
     expect(consoleWarnSpy).not.toHaveBeenCalled();
   });
 
-  it('should return multiple recordings when interaction has multiple recordings', async () => {
+  it.concurrent('should return multiple recordings when interaction has multiple recordings', async () => {
     expect.assertions(4);
 
     const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
@@ -68,7 +68,7 @@ describe('cortiClient.recordings.list', () => {
   });
 
   describe('should throw error when invalid parameters are provided', () => {
-    it('should throw error when interaction ID is invalid format', async () => {
+    it.concurrent('should throw error when interaction ID is invalid format', async () => {
       expect.assertions(1);
 
       await expect(
@@ -76,7 +76,7 @@ describe('cortiClient.recordings.list', () => {
       ).rejects.toThrow('Status code: 400');
     });
 
-    it('should throw error when interaction ID does not exist', async () => {
+    it.concurrent('should throw error when interaction ID does not exist', async () => {
       expect.assertions(1);
 
       await expect(
@@ -84,7 +84,7 @@ describe('cortiClient.recordings.list', () => {
       ).rejects.toThrow('Status code: 404');
     });
 
-    it('should throw error when interaction ID is null', async () => {
+    it.concurrent('should throw error when interaction ID is null', async () => {
       expect.assertions(1);
 
       await expect(
@@ -92,7 +92,7 @@ describe('cortiClient.recordings.list', () => {
       ).rejects.toThrow('Expected string. Received null.');
     });
 
-    it('should throw error when interaction ID is undefined', async () => {
+    it.concurrent('should throw error when interaction ID is undefined', async () => {
       expect.assertions(1);
 
       await expect(

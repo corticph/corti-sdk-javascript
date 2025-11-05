@@ -28,7 +28,7 @@ describe('cortiClient.agents.getCard', () => {
     createdAgentIds = [];
   });
 
-  it('should successfully retrieve an agent card without errors or warnings', async () => {
+  it.concurrent('should successfully retrieve an agent card without errors or warnings', async () => {
     expect.assertions(3);
 
     const agent = await createTestAgent(cortiClient, createdAgentIds);
@@ -41,7 +41,7 @@ describe('cortiClient.agents.getCard', () => {
   });
 
   describe('should throw error when invalid parameters are provided', () => {
-    it('should throw error when agent ID is invalid format', async () => {
+    it.concurrent('should throw error when agent ID is invalid format', async () => {
       expect.assertions(1);
 
       await expect(
@@ -49,7 +49,7 @@ describe('cortiClient.agents.getCard', () => {
       ).rejects.toThrow('Status code: 400');
     });
 
-    it('should throw error when agent ID does not exist', async () => {
+    it.concurrent('should throw error when agent ID does not exist', async () => {
       expect.assertions(1);
 
       await expect(

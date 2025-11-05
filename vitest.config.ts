@@ -28,14 +28,9 @@ export default defineConfig({
                     environment: "node",
                     root: "./tests",
                     include: ["**/*.integration.ts"],
-                    testTimeout: 120000, // 2 minute TTL
-                    maxConcurrency: 1, // Run tests one by one (no concurrent execution)
-                    pool: "forks",
-                    poolOptions: {
-                        forks: {
-                            singleFork: true, // Ensures all tests run in a single process
-                        },
-                    },
+                    testTimeout: 120000, // 2 minute TTL,
+                    fileParallelism: false,
+                    maxConcurrency: 1,
                 },
             },
         ],

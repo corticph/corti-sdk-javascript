@@ -25,7 +25,7 @@ describe('cortiClient.documents.list', () => {
     consoleWarnSpy.mockRestore();
   });
 
-  it('should return empty list when interaction has no documents', async () => {
+  it.concurrent('should return empty list when interaction has no documents', async () => {
     expect.assertions(2);
 
     const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
@@ -36,7 +36,7 @@ describe('cortiClient.documents.list', () => {
     expect(consoleWarnSpy).not.toHaveBeenCalled();
   });
 
-  it('should return documents when interaction has documents', async () => {
+  it.concurrent('should return documents when interaction has documents', async () => {
     expect.assertions(3);
 
     const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
@@ -50,7 +50,7 @@ describe('cortiClient.documents.list', () => {
   });
 
   describe('should throw error when invalid parameters are provided', () => {
-    it('should throw error when interaction ID is invalid format', async () => {
+    it.concurrent('should throw error when interaction ID is invalid format', async () => {
       expect.assertions(1);
 
       await expect(
@@ -58,7 +58,7 @@ describe('cortiClient.documents.list', () => {
       ).rejects.toThrow('Status code: 400');
     });
 
-    it('should throw error when interaction ID does not exist', async () => {
+    it.concurrent('should throw error when interaction ID does not exist', async () => {
       expect.assertions(1);
 
       await expect(

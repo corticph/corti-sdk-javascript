@@ -24,7 +24,7 @@ describe('cortiClient.interactions.get', () => {
     consoleWarnSpy.mockRestore();
   });
 
-  it('should successfully retrieve an existing interaction without errors or warnings', async () => {
+  it.concurrent('should successfully retrieve an existing interaction without errors or warnings', async () => {
     expect.assertions(2);
 
     const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
@@ -36,7 +36,7 @@ describe('cortiClient.interactions.get', () => {
   });
 
   describe('should throw error when invalid parameters are provided', () => {
-    it('should throw error when interaction ID is invalid format', async () => {
+    it.concurrent('should throw error when interaction ID is invalid format', async () => {
       expect.assertions(1);
 
       await expect(
@@ -44,7 +44,7 @@ describe('cortiClient.interactions.get', () => {
       ).rejects.toThrow('Status code: 400');
     });
 
-    it('should throw error when interaction ID does not exist', async () => {
+    it.concurrent('should throw error when interaction ID does not exist', async () => {
       expect.assertions(1);
 
       await expect(

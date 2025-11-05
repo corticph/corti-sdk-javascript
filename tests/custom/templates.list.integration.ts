@@ -21,7 +21,7 @@ describe('cortiClient.templates.list', () => {
     consoleWarnSpy.mockRestore();
   });
 
-  it('should retrieve templates without parameters', async () => {
+  it.concurrent('should retrieve templates without parameters', async () => {
     expect.assertions(2);
 
     const result = await cortiClient.templates.list();
@@ -93,7 +93,7 @@ describe('cortiClient.templates.list', () => {
       expect(consoleWarnSpy).not.toHaveBeenCalled();
     });
 
-    it('should return empty or filtered results for non-existent organization', async () => {
+    it.concurrent('should return empty or filtered results for non-existent organization', async () => {
       expect.assertions(2);
 
       const filteredResult = await cortiClient.templates.list({ org: "nonexistent-org" });
@@ -133,7 +133,7 @@ describe('cortiClient.templates.list', () => {
       expect(consoleWarnSpy).not.toHaveBeenCalled();
     });
 
-    it('should return empty or filtered results for non-existent status', async () => {
+    it.concurrent('should return empty or filtered results for non-existent status', async () => {
       expect.assertions(2);
 
       const filteredResult = await cortiClient.templates.list({ status: "nonexistent-status" });
@@ -145,7 +145,7 @@ describe('cortiClient.templates.list', () => {
 
   // FIXME Skipped because of https://linear.app/corti/issue/TGT-383/get-templates-endpoint-returns-inconsistent-results
   describe.skip('combined filtering (lang, org, and status parameters)', () => {
-    it('should filter templates using all parameters together', async () => {
+    it.concurrent('should filter templates using all parameters together', async () => {
       expect.assertions(4);
 
       const unfilteredResult = await cortiClient.templates.list();

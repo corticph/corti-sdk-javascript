@@ -51,7 +51,7 @@ describe('cortiClient.agents.list', () => {
     expect(consoleWarnSpy).not.toHaveBeenCalled();
   });
 
-  it('should return created agent in list', async () => {
+  it.concurrent('should return created agent in list', async () => {
     expect.assertions(3);
 
     const agent = await createTestAgent(cortiClient, createdAgentIds);
@@ -64,7 +64,7 @@ describe('cortiClient.agents.list', () => {
   });
 
   describe('should return list with optional parameters', () => {
-    it('should return list with limit parameter without errors or warnings', async () => {
+    it.concurrent('should return list with limit parameter without errors or warnings', async () => {
       expect.assertions(2);
 
       const result = await cortiClient.agents.list({
@@ -75,7 +75,7 @@ describe('cortiClient.agents.list', () => {
       expect(consoleWarnSpy).not.toHaveBeenCalled();
     });
 
-    it('should return list with offset parameter without errors or warnings', async () => {
+    it.concurrent('should return list with offset parameter without errors or warnings', async () => {
       expect.assertions(2);
 
       const result = await cortiClient.agents.list({
@@ -86,7 +86,7 @@ describe('cortiClient.agents.list', () => {
       expect(consoleWarnSpy).not.toHaveBeenCalled();
     });
 
-    it('should return list with ephemeral parameter without errors or warnings', async () => {
+    it.concurrent('should return list with ephemeral parameter without errors or warnings', async () => {
       expect.assertions(2);
 
       const result = await cortiClient.agents.list({
@@ -97,7 +97,7 @@ describe('cortiClient.agents.list', () => {
       expect(consoleWarnSpy).not.toHaveBeenCalled();
     });
 
-    it('should return list with all optional parameters without errors or warnings', async () => {
+    it.concurrent('should return list with all optional parameters without errors or warnings', async () => {
       expect.assertions(2);
 
       const result = await cortiClient.agents.list({

@@ -32,7 +32,7 @@ describe('cortiClient.recordings.get', () => {
   });
 
   describe('should get recording from server-side', () => {
-    it('should get recording using stream() method without errors or warnings', async () => {
+    it.concurrent('should get recording using stream() method without errors or warnings', async () => {
       expect.assertions(4);
 
       const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
@@ -48,7 +48,7 @@ describe('cortiClient.recordings.get', () => {
       expect(webStream).toBeInstanceOf(ReadableStream);
     });
 
-    it('should get recording using blob() method without errors or warnings', async () => {
+    it.concurrent('should get recording using blob() method without errors or warnings', async () => {
       expect.assertions(4);
 
       const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
@@ -64,7 +64,7 @@ describe('cortiClient.recordings.get', () => {
       expect(blob).toBeInstanceOf(Blob);
     });
 
-    it('should get recording using arrayBuffer() method without errors or warnings', async () => {
+    it.concurrent('should get recording using arrayBuffer() method without errors or warnings', async () => {
       expect.assertions(4);
 
       const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
@@ -80,7 +80,7 @@ describe('cortiClient.recordings.get', () => {
       expect(arrayBuffer).toBeInstanceOf(ArrayBuffer);
     });
 
-    it('should verify downloaded file is not corrupted', async () => {
+    it.concurrent('should verify downloaded file is not corrupted', async () => {
       expect.assertions(4);
 
       const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
@@ -102,7 +102,7 @@ describe('cortiClient.recordings.get', () => {
   });
 
   describe('should handle get errors', () => {
-    it('should throw error when interaction ID is invalid format', async () => {
+    it.concurrent('should throw error when interaction ID is invalid format', async () => {
       expect.assertions(1);
 
       await expect(
@@ -110,7 +110,7 @@ describe('cortiClient.recordings.get', () => {
       ).rejects.toThrow('Status code: 400');
     });
 
-    it('should throw error when recording ID is invalid format', async () => {
+    it.concurrent('should throw error when recording ID is invalid format', async () => {
       expect.assertions(1);
 
       const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
@@ -120,7 +120,7 @@ describe('cortiClient.recordings.get', () => {
       ).rejects.toThrow('Status code: 400');
     });
 
-    it('should throw error when interaction ID does not exist', async () => {
+    it.concurrent('should throw error when interaction ID does not exist', async () => {
       expect.assertions(1);
 
       await expect(
@@ -128,7 +128,7 @@ describe('cortiClient.recordings.get', () => {
       ).rejects.toThrow('Status code: 404');
     });
 
-    it('should throw error when recording ID does not exist', async () => {
+    it.concurrent('should throw error when recording ID does not exist', async () => {
       expect.assertions(1);
 
       const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
@@ -138,7 +138,7 @@ describe('cortiClient.recordings.get', () => {
       ).rejects.toThrow('Status code: 404');
     });
 
-    it('should throw error when interaction ID is null', async () => {
+    it.concurrent('should throw error when interaction ID is null', async () => {
       expect.assertions(1);
 
       await expect(
@@ -146,7 +146,7 @@ describe('cortiClient.recordings.get', () => {
       ).rejects.toThrow('Expected string. Received null.');
     });
 
-    it('should throw error when recording ID is null', async () => {
+    it.concurrent('should throw error when recording ID is null', async () => {
       expect.assertions(1);
 
       const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
@@ -156,7 +156,7 @@ describe('cortiClient.recordings.get', () => {
       ).rejects.toThrow('Expected string. Received null.');
     });
 
-    it('should throw error when interaction ID is undefined', async () => {
+    it.concurrent('should throw error when interaction ID is undefined', async () => {
       expect.assertions(1);
 
       await expect(
@@ -164,7 +164,7 @@ describe('cortiClient.recordings.get', () => {
       ).rejects.toThrow('Expected string. Received undefined.');
     });
 
-    it('should throw error when recording ID is undefined', async () => {
+    it.concurrent('should throw error when recording ID is undefined', async () => {
       expect.assertions(1);
 
       const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);

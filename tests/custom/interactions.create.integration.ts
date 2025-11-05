@@ -28,7 +28,7 @@ describe('cortiClient.interactions.create', () => {
   });
 
   describe('should create interaction with only required values', () => {
-    it('should create interaction with only encounter required fields without errors or warnings', async () => {
+    it.concurrent('should create interaction with only encounter required fields without errors or warnings', async () => {
       expect.assertions(2);
 
       const result = await cortiClient.interactions.create({
@@ -45,7 +45,7 @@ describe('cortiClient.interactions.create', () => {
       expect(consoleWarnSpy).not.toHaveBeenCalled();
     });
 
-    it('should create interaction with patient having only required identifier without errors or warnings', async () => {
+    it.concurrent('should create interaction with patient having only required identifier without errors or warnings', async () => {
       expect.assertions(2);
 
       const result = await cortiClient.interactions.create({
@@ -67,7 +67,7 @@ describe('cortiClient.interactions.create', () => {
   });
 
   describe('should create interaction with all status enum values', () => {
-    it('should create interaction with status "planned"', async () => {
+    it.concurrent('should create interaction with status "planned"', async () => {
       expect.assertions(2);
 
       const result = await cortiClient.interactions.create({
@@ -84,7 +84,7 @@ describe('cortiClient.interactions.create', () => {
       expect(consoleWarnSpy).not.toHaveBeenCalled();
     });
 
-    it('should create interaction with status "in-progress"', async () => {
+    it.concurrent('should create interaction with status "in-progress"', async () => {
       expect.assertions(2);
 
       const result = await cortiClient.interactions.create({
@@ -101,7 +101,7 @@ describe('cortiClient.interactions.create', () => {
       expect(consoleWarnSpy).not.toHaveBeenCalled();
     });
 
-    it('should create interaction with status "on-hold"', async () => {
+    it.concurrent('should create interaction with status "on-hold"', async () => {
       expect.assertions(2);
 
       const result = await cortiClient.interactions.create({
@@ -118,7 +118,7 @@ describe('cortiClient.interactions.create', () => {
       expect(consoleWarnSpy).not.toHaveBeenCalled();
     });
 
-    it('should create interaction with status "completed"', async () => {
+    it.concurrent('should create interaction with status "completed"', async () => {
       expect.assertions(2);
 
       const result = await cortiClient.interactions.create({
@@ -135,7 +135,7 @@ describe('cortiClient.interactions.create', () => {
       expect(consoleWarnSpy).not.toHaveBeenCalled();
     });
 
-    it('should create interaction with status "cancelled"', async () => {
+    it.concurrent('should create interaction with status "cancelled"', async () => {
       expect.assertions(2);
 
       const result = await cortiClient.interactions.create({
@@ -152,7 +152,7 @@ describe('cortiClient.interactions.create', () => {
       expect(consoleWarnSpy).not.toHaveBeenCalled();
     });
 
-    it('should create interaction with status "deleted"', async () => {
+    it.concurrent('should create interaction with status "deleted"', async () => {
       expect.assertions(2);
 
       const result = await cortiClient.interactions.create({
@@ -171,7 +171,7 @@ describe('cortiClient.interactions.create', () => {
   });
 
   describe('should create interaction with all type enum values', () => {
-    it('should create interaction with type "first_consultation"', async () => {
+    it.concurrent('should create interaction with type "first_consultation"', async () => {
       expect.assertions(2);
 
       const result = await cortiClient.interactions.create({
@@ -188,7 +188,7 @@ describe('cortiClient.interactions.create', () => {
       expect(consoleWarnSpy).not.toHaveBeenCalled();
     });
 
-    it('should create interaction with type "consultation"', async () => {
+    it.concurrent('should create interaction with type "consultation"', async () => {
       expect.assertions(2);
 
       const result = await cortiClient.interactions.create({
@@ -205,7 +205,7 @@ describe('cortiClient.interactions.create', () => {
       expect(consoleWarnSpy).not.toHaveBeenCalled();
     });
 
-    it('should create interaction with type "emergency"', async () => {
+    it.concurrent('should create interaction with type "emergency"', async () => {
       expect.assertions(2);
 
       const result = await cortiClient.interactions.create({
@@ -222,7 +222,7 @@ describe('cortiClient.interactions.create', () => {
       expect(consoleWarnSpy).not.toHaveBeenCalled();
     });
 
-    it('should create interaction with type "inpatient"', async () => {
+    it.concurrent('should create interaction with type "inpatient"', async () => {
       expect.assertions(2);
 
       const result = await cortiClient.interactions.create({
@@ -239,7 +239,7 @@ describe('cortiClient.interactions.create', () => {
       expect(consoleWarnSpy).not.toHaveBeenCalled();
     });
 
-    it('should create interaction with type "outpatient"', async () => {
+    it.concurrent('should create interaction with type "outpatient"', async () => {
       expect.assertions(2);
 
       const result = await cortiClient.interactions.create({
@@ -258,7 +258,7 @@ describe('cortiClient.interactions.create', () => {
   });
 
   describe('should create interaction with all gender enum values', () => {
-    it('should create interaction with gender "male"', async () => {
+    it.concurrent('should create interaction with gender "male"', async () => {
       expect.assertions(2);
 
       const result = await cortiClient.interactions.create({
@@ -279,7 +279,7 @@ describe('cortiClient.interactions.create', () => {
       expect(consoleWarnSpy).not.toHaveBeenCalled();
     });
 
-    it('should create interaction with gender "female"', async () => {
+    it.concurrent('should create interaction with gender "female"', async () => {
       expect.assertions(2);
 
       const result = await cortiClient.interactions.create({
@@ -300,7 +300,7 @@ describe('cortiClient.interactions.create', () => {
       expect(consoleWarnSpy).not.toHaveBeenCalled();
     });
 
-    it('should create interaction with gender "unknown"', async () => {
+    it.concurrent('should create interaction with gender "unknown"', async () => {
       expect.assertions(2);
 
       const result = await cortiClient.interactions.create({
@@ -321,7 +321,7 @@ describe('cortiClient.interactions.create', () => {
       expect(consoleWarnSpy).not.toHaveBeenCalled();
     });
 
-    it('should create interaction with gender "other"', async () => {
+    it.concurrent('should create interaction with gender "other"', async () => {
       expect.assertions(2);
 
       const result = await cortiClient.interactions.create({
@@ -343,7 +343,7 @@ describe('cortiClient.interactions.create', () => {
     });
   });
 
-  it('should create interaction with all optional parameters without errors or warnings', async () => {
+  it.concurrent('should create interaction with all optional parameters without errors or warnings', async () => {
     expect.assertions(2);
 
     const startDate = faker.date.recent();
@@ -378,7 +378,7 @@ describe('cortiClient.interactions.create', () => {
   });
 
   describe('should throw error when required fields are missing', () => {
-    it('should throw error when encounter is missing', async () => {
+    it.concurrent('should throw error when encounter is missing', async () => {
       expect.assertions(1);
 
       await expect(
@@ -386,7 +386,7 @@ describe('cortiClient.interactions.create', () => {
       ).rejects.toThrow('Missing required key "encounter"');
     });
 
-    it('should throw error when encounter.identifier is missing', async () => {
+    it.concurrent('should throw error when encounter.identifier is missing', async () => {
       expect.assertions(1);
 
       await expect(
@@ -399,7 +399,7 @@ describe('cortiClient.interactions.create', () => {
       ).rejects.toThrow('Missing required key "identifier"');
     });
 
-    it('should throw error when encounter.status is missing', async () => {
+    it.concurrent('should throw error when encounter.status is missing', async () => {
       expect.assertions(1);
 
       await expect(
@@ -412,7 +412,7 @@ describe('cortiClient.interactions.create', () => {
       ).rejects.toThrow('Missing required key "status"');
     });
 
-    it('should throw error when encounter.type is missing', async () => {
+    it.concurrent('should throw error when encounter.type is missing', async () => {
       expect.assertions(1);
 
       await expect(
@@ -425,7 +425,7 @@ describe('cortiClient.interactions.create', () => {
       ).rejects.toThrow('Missing required key "type"');
     });
 
-    it('should throw error when patient.identifier is missing', async () => {
+    it.concurrent('should throw error when patient.identifier is missing', async () => {
       expect.assertions(1);
 
       await expect(

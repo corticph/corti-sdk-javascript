@@ -29,7 +29,7 @@ describe('cortiClient.agents.getTask', () => {
     createdAgentIds = [];
   });
 
-  it('should successfully retrieve a task without errors or warnings', async () => {
+  it.concurrent('should successfully retrieve a task without errors or warnings', async () => {
     expect.assertions(2);
 
     const agent = await createTestAgent(cortiClient, createdAgentIds);
@@ -47,7 +47,7 @@ describe('cortiClient.agents.getTask', () => {
     expect(consoleWarnSpy).not.toHaveBeenCalled();
   });
 
-  it('should retrieve task with historyLength parameter without errors or warnings', async () => {
+  it.concurrent('should retrieve task with historyLength parameter without errors or warnings', async () => {
     expect.assertions(2);
 
     const agent = await createTestAgent(cortiClient, createdAgentIds);
@@ -84,7 +84,7 @@ describe('cortiClient.agents.getTask', () => {
       ).rejects.toThrow('Status code: 400');
     });
 
-    it('should throw error when task ID is invalid format', async () => {
+    it.concurrent('should throw error when task ID is invalid format', async () => {
       expect.assertions(1);
 
       const agent = await createTestAgent(cortiClient, createdAgentIds);
@@ -111,7 +111,7 @@ describe('cortiClient.agents.getTask', () => {
       ).rejects.toThrow('Status code: 404');
     });
 
-    it('should throw error when task ID does not exist', async () => {
+    it.concurrent('should throw error when task ID does not exist', async () => {
       expect.assertions(1);
 
       const agent = await createTestAgent(cortiClient, createdAgentIds);

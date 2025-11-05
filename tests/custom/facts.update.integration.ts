@@ -37,7 +37,7 @@ describe('cortiClient.facts.update', () => {
   };
 
   describe('should update fact with minimal fields', () => {
-    it('should update fact with empty request (no changes) without errors or warnings', async () => {
+    it.concurrent('should update fact with empty request (no changes) without errors or warnings', async () => {
       expect.assertions(2);
 
       const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
@@ -50,7 +50,7 @@ describe('cortiClient.facts.update', () => {
       expect(consoleWarnSpy).not.toHaveBeenCalled();
     });
 
-    it('should update fact with only text without errors or warnings', async () => {
+    it.concurrent('should update fact with only text without errors or warnings', async () => {
       expect.assertions(2);
 
       const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
@@ -65,7 +65,7 @@ describe('cortiClient.facts.update', () => {
       expect(consoleWarnSpy).not.toHaveBeenCalled();
     });
 
-    it('should update fact with only group without errors or warnings', async () => {
+    it.concurrent('should update fact with only group without errors or warnings', async () => {
       expect.assertions(2);
 
       const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
@@ -80,7 +80,7 @@ describe('cortiClient.facts.update', () => {
       expect(consoleWarnSpy).not.toHaveBeenCalled();
     });
 
-    it('should update fact with only isDiscarded without errors or warnings', async () => {
+    it.concurrent('should update fact with only isDiscarded without errors or warnings', async () => {
       expect.assertions(2);
 
       const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
@@ -97,7 +97,7 @@ describe('cortiClient.facts.update', () => {
   });
 
   describe('should update fact with all source enum values', () => {
-    it('should update fact with source "core"', async () => {
+    it.concurrent('should update fact with source "core"', async () => {
       expect.assertions(2);
 
       const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
@@ -112,7 +112,7 @@ describe('cortiClient.facts.update', () => {
       expect(consoleWarnSpy).not.toHaveBeenCalled();
     });
 
-    it('should update fact with source "system"', async () => {
+    it.concurrent('should update fact with source "system"', async () => {
       expect.assertions(2);
 
       const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
@@ -127,7 +127,7 @@ describe('cortiClient.facts.update', () => {
       expect(consoleWarnSpy).not.toHaveBeenCalled();
     });
 
-    it('should update fact with source "user"', async () => {
+    it.concurrent('should update fact with source "user"', async () => {
       expect.assertions(2);
 
       const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
@@ -144,7 +144,7 @@ describe('cortiClient.facts.update', () => {
   });
 
   describe('should update fact with isDiscarded boolean values', () => {
-    it('should update fact with isDiscarded set to true without errors or warnings', async () => {
+    it.concurrent('should update fact with isDiscarded set to true without errors or warnings', async () => {
       expect.assertions(2);
 
       const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
@@ -159,7 +159,7 @@ describe('cortiClient.facts.update', () => {
       expect(consoleWarnSpy).not.toHaveBeenCalled();
     });
 
-    it('should update fact with isDiscarded set to false without errors or warnings', async () => {
+    it.concurrent('should update fact with isDiscarded set to false without errors or warnings', async () => {
       expect.assertions(2);
 
       const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
@@ -175,7 +175,7 @@ describe('cortiClient.facts.update', () => {
     });
   });
 
-  it('should update fact with all optional parameters without errors or warnings', async () => {
+  it.concurrent('should update fact with all optional parameters without errors or warnings', async () => {
     expect.assertions(2);
 
     const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
@@ -194,7 +194,7 @@ describe('cortiClient.facts.update', () => {
   });
 
   describe('should throw error when invalid parameters are provided', () => {
-    it('should throw error when interaction ID is invalid', async () => {
+    it.concurrent('should throw error when interaction ID is invalid', async () => {
       expect.assertions(1);
 
       const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
@@ -208,7 +208,7 @@ describe('cortiClient.facts.update', () => {
       ).rejects.toThrow('Status code: 400');
     });
 
-    it('should throw error when fact ID is invalid', async () => {
+    it.concurrent('should throw error when fact ID is invalid', async () => {
       expect.assertions(1);
 
       const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
@@ -220,7 +220,7 @@ describe('cortiClient.facts.update', () => {
       ).rejects.toThrow('Status code: 400');
     });
 
-    it('should throw error when interaction ID does not exist', async () => {
+    it.concurrent('should throw error when interaction ID does not exist', async () => {
       expect.assertions(1);
 
       const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
@@ -234,7 +234,7 @@ describe('cortiClient.facts.update', () => {
       ).rejects.toThrow('Status code: 404');
     });
 
-    it('should throw error when fact ID does not exist', async () => {
+    it.concurrent('should throw error when fact ID does not exist', async () => {
       expect.assertions(1);
 
       const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);

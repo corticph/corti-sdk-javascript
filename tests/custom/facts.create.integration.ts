@@ -38,7 +38,7 @@ describe('cortiClient.facts.create', () => {
   };
 
   describe('should create facts with only required values', () => {
-    it('should create single fact with only required fields without errors or warnings', async () => {
+    it.concurrent('should create single fact with only required fields without errors or warnings', async () => {
       expect.assertions(2);
 
       const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
@@ -54,7 +54,7 @@ describe('cortiClient.facts.create', () => {
       expect(consoleWarnSpy).not.toHaveBeenCalled();
     });
 
-    it('should create multiple facts with only required fields without errors or warnings', async () => {
+    it.concurrent('should create multiple facts with only required fields without errors or warnings', async () => {
       expect.assertions(2);
 
       const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
@@ -82,7 +82,7 @@ describe('cortiClient.facts.create', () => {
   });
 
   describe('should create facts with all source enum values', () => {
-    it('should create fact with source "core"', async () => {
+    it.concurrent('should create fact with source "core"', async () => {
       expect.assertions(2);
 
       const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
@@ -99,7 +99,7 @@ describe('cortiClient.facts.create', () => {
       expect(consoleWarnSpy).not.toHaveBeenCalled();
     });
 
-    it('should create fact with source "system"', async () => {
+    it.concurrent('should create fact with source "system"', async () => {
       expect.assertions(2);
 
       const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
@@ -116,7 +116,7 @@ describe('cortiClient.facts.create', () => {
       expect(consoleWarnSpy).not.toHaveBeenCalled();
     });
 
-    it('should create fact with source "user"', async () => {
+    it.concurrent('should create fact with source "user"', async () => {
       expect.assertions(2);
 
       const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
@@ -134,7 +134,7 @@ describe('cortiClient.facts.create', () => {
     });
   });
 
-  it('should create facts with all optional parameters without errors or warnings', async () => {
+  it.concurrent('should create facts with all optional parameters without errors or warnings', async () => {
     expect.assertions(2);
 
     const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
@@ -159,7 +159,7 @@ describe('cortiClient.facts.create', () => {
   });
 
   describe('should throw error when required fields are missing', () => {
-    it('should throw error when facts array is missing', async () => {
+    it.concurrent('should throw error when facts array is missing', async () => {
       expect.assertions(1);
 
       const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
@@ -169,7 +169,7 @@ describe('cortiClient.facts.create', () => {
       ).rejects.toThrow('Missing required key "facts"');
     });
 
-    it('should throw error when facts array is empty', async () => {
+    it.concurrent('should throw error when facts array is empty', async () => {
       expect.assertions(1);
 
       const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
@@ -179,7 +179,7 @@ describe('cortiClient.facts.create', () => {
       ).rejects.toThrow();
     });
 
-    it('should throw error when fact text is missing', async () => {
+    it.concurrent('should throw error when fact text is missing', async () => {
       expect.assertions(1);
 
       const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
@@ -193,7 +193,7 @@ describe('cortiClient.facts.create', () => {
       ).rejects.toThrow('Missing required key "text"');
     });
 
-    it('should throw error when fact group is missing', async () => {
+    it.concurrent('should throw error when fact group is missing', async () => {
       expect.assertions(1);
 
       const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
@@ -207,7 +207,7 @@ describe('cortiClient.facts.create', () => {
       ).rejects.toThrow('Missing required key "group"');
     });
 
-    it('should throw error when interaction ID is invalid', async () => {
+    it.concurrent('should throw error when interaction ID is invalid', async () => {
       expect.assertions(1);
 
       await expect(
@@ -220,7 +220,7 @@ describe('cortiClient.facts.create', () => {
       ).rejects.toThrow('Status code: 400');
     });
 
-    it('should throw error when interaction ID does not exist', async () => {
+    it.concurrent('should throw error when interaction ID does not exist', async () => {
       expect.assertions(1);
 
       await expect(

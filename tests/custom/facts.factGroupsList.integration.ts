@@ -21,7 +21,7 @@ describe('cortiClient.facts.factGroupsList', () => {
     consoleWarnSpy.mockRestore();
   });
 
-  it('should successfully retrieve fact groups list without errors or warnings', async () => {
+  it.concurrent('should successfully retrieve fact groups list without errors or warnings', async () => {
     expect.assertions(2);
 
     const result = await cortiClient.facts.factGroupsList();

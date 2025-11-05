@@ -33,7 +33,7 @@ describe('cortiClient.facts.batchUpdate', () => {
   });
 
   describe('should batch update facts with minimal fields', () => {
-    it('should batch update single fact with empty request (no changes) without errors or warnings', async () => {
+    it.concurrent('should batch update single fact with empty request (no changes) without errors or warnings', async () => {
       expect.assertions(3);
 
       const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
@@ -50,7 +50,7 @@ describe('cortiClient.facts.batchUpdate', () => {
       expect(consoleWarnSpy).not.toHaveBeenCalled();
     });
 
-    it('should batch update single fact with only text without errors or warnings', async () => {
+    it.concurrent('should batch update single fact with only text without errors or warnings', async () => {
       expect.assertions(4);
 
       const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
@@ -70,7 +70,7 @@ describe('cortiClient.facts.batchUpdate', () => {
       expect(consoleWarnSpy).not.toHaveBeenCalled();
     });
 
-    it('should batch update single fact with only group without errors or warnings', async () => {
+    it.concurrent('should batch update single fact with only group without errors or warnings', async () => {
       expect.assertions(4);
 
       const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
@@ -90,7 +90,7 @@ describe('cortiClient.facts.batchUpdate', () => {
       expect(consoleWarnSpy).not.toHaveBeenCalled();
     });
 
-    it('should batch update single fact with only isDiscarded without errors or warnings', async () => {
+    it.concurrent('should batch update single fact with only isDiscarded without errors or warnings', async () => {
       expect.assertions(4);
 
       const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
@@ -111,7 +111,7 @@ describe('cortiClient.facts.batchUpdate', () => {
   });
 
   describe('should batch update multiple facts', () => {
-    it('should batch update multiple facts with different fields without errors or warnings', async () => {
+    it.concurrent('should batch update multiple facts with different fields without errors or warnings', async () => {
       expect.assertions(6);
 
       const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
@@ -144,7 +144,7 @@ describe('cortiClient.facts.batchUpdate', () => {
       expect(consoleWarnSpy).not.toHaveBeenCalled();
     });
 
-    it('should batch update multiple facts with all fields without errors or warnings', async () => {
+    it.concurrent('should batch update multiple facts with all fields without errors or warnings', async () => {
       expect.assertions(9);
 
       const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
@@ -184,7 +184,7 @@ describe('cortiClient.facts.batchUpdate', () => {
   });
 
   describe('should batch update facts with isDiscarded boolean values', () => {
-    it('should batch update fact with isDiscarded set to true without errors or warnings', async () => {
+    it.concurrent('should batch update fact with isDiscarded set to true without errors or warnings', async () => {
       expect.assertions(4);
 
       const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
@@ -203,7 +203,7 @@ describe('cortiClient.facts.batchUpdate', () => {
       expect(consoleWarnSpy).not.toHaveBeenCalled();
     });
 
-    it('should batch update fact with isDiscarded set to false without errors or warnings', async () => {
+    it.concurrent('should batch update fact with isDiscarded set to false without errors or warnings', async () => {
       expect.assertions(4);
 
       const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
@@ -223,7 +223,7 @@ describe('cortiClient.facts.batchUpdate', () => {
     });
   });
 
-  it('should batch update facts with all optional parameters without errors or warnings', async () => {
+  it.concurrent('should batch update facts with all optional parameters without errors or warnings', async () => {
     expect.assertions(7);
 
     const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
@@ -260,7 +260,7 @@ describe('cortiClient.facts.batchUpdate', () => {
   });
 
   describe('should throw error when invalid parameters are provided', () => {
-    it('should throw error when interaction ID is invalid', async () => {
+    it.concurrent('should throw error when interaction ID is invalid', async () => {
       expect.assertions(1);
 
       const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
@@ -276,7 +276,7 @@ describe('cortiClient.facts.batchUpdate', () => {
       ).rejects.toThrow('Status code: 400');
     });
 
-    it('should throw error when fact ID is invalid', async () => {
+    it.concurrent('should throw error when fact ID is invalid', async () => {
       expect.assertions(1);
 
       const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
@@ -291,7 +291,7 @@ describe('cortiClient.facts.batchUpdate', () => {
       ).rejects.toThrow('Status code: 400');
     });
 
-    it('should throw error when interaction ID does not exist', async () => {
+    it.concurrent('should throw error when interaction ID does not exist', async () => {
       expect.assertions(1);
 
       const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
@@ -307,7 +307,7 @@ describe('cortiClient.facts.batchUpdate', () => {
       ).rejects.toThrow('Status code: 404');
     });
 
-    it('should throw error when fact ID does not exist', async () => {
+    it.concurrent('should throw error when fact ID does not exist', async () => {
       expect.assertions(1);
 
       const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
@@ -322,7 +322,7 @@ describe('cortiClient.facts.batchUpdate', () => {
       ).rejects.toThrow('Status code: 404');
     });
 
-    it('should throw error when facts array is empty', async () => {
+    it.concurrent('should throw error when facts array is empty', async () => {
       expect.assertions(1);
 
       const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
@@ -334,7 +334,7 @@ describe('cortiClient.facts.batchUpdate', () => {
       ).rejects.toThrow();
     });
 
-    it('should throw error when factId is missing', async () => {
+    it.concurrent('should throw error when factId is missing', async () => {
       expect.assertions(1);
 
       const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);

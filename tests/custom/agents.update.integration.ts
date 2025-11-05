@@ -30,7 +30,7 @@ describe.skip('cortiClient.agents.update', () => {
   });
 
   describe('should update agent with minimal fields', () => {
-    it('should update agent with only name without errors or warnings', async () => {
+    it.concurrent('should update agent with only name without errors or warnings', async () => {
       expect.assertions(4);
 
       const agent = await createTestAgent(cortiClient, createdAgentIds);
@@ -50,7 +50,7 @@ describe.skip('cortiClient.agents.update', () => {
       expect(consoleWarnSpy).not.toHaveBeenCalled();
     });
 
-    it('should update agent with only description without errors or warnings', async () => {
+    it.concurrent('should update agent with only description without errors or warnings', async () => {
       expect.assertions(4);
 
       const agent = await createTestAgent(cortiClient, createdAgentIds);
@@ -70,7 +70,7 @@ describe.skip('cortiClient.agents.update', () => {
       expect(consoleWarnSpy).not.toHaveBeenCalled();
     });
 
-    it('should update agent with only systemPrompt without errors or warnings', async () => {
+    it.concurrent('should update agent with only systemPrompt without errors or warnings', async () => {
       expect.assertions(3);
 
       const agent = await createTestAgent(cortiClient, createdAgentIds);
@@ -90,7 +90,7 @@ describe.skip('cortiClient.agents.update', () => {
     });
   });
 
-  it('should update agent with all possible parameters without errors or warnings', async () => {
+  it.concurrent('should update agent with all possible parameters without errors or warnings', async () => {
     expect.assertions(6);
 
     const agent = await createTestAgent(cortiClient, createdAgentIds);
@@ -115,7 +115,7 @@ describe.skip('cortiClient.agents.update', () => {
   });
 
   describe('should throw error when invalid parameters are provided', () => {
-    it('should throw error when agent ID is invalid', async () => {
+    it.concurrent('should throw error when agent ID is invalid', async () => {
       expect.assertions(1);
 
       const agent = await createTestAgent(cortiClient, createdAgentIds);
@@ -130,7 +130,7 @@ describe.skip('cortiClient.agents.update', () => {
       ).rejects.toThrow('Status code: 400');
     });
 
-    it('should throw error when agent ID does not exist', async () => {
+    it.concurrent('should throw error when agent ID does not exist', async () => {
       expect.assertions(1);
 
       const agent = await createTestAgent(cortiClient, createdAgentIds);
@@ -145,7 +145,7 @@ describe.skip('cortiClient.agents.update', () => {
       ).rejects.toThrow('Status code: 404');
     });
 
-    it('should throw error when id is missing', async () => {
+    it.concurrent('should throw error when id is missing', async () => {
       expect.assertions(1);
 
       const agent = await createTestAgent(cortiClient, createdAgentIds);
@@ -159,7 +159,7 @@ describe.skip('cortiClient.agents.update', () => {
       ).rejects.toThrow('Missing required key "id"');
     });
 
-    it('should throw error when name is missing', async () => {
+    it.concurrent('should throw error when name is missing', async () => {
       expect.assertions(1);
 
       const agent = await createTestAgent(cortiClient, createdAgentIds);
@@ -173,7 +173,7 @@ describe.skip('cortiClient.agents.update', () => {
       ).rejects.toThrow('Missing required key "name"');
     });
 
-    it('should throw error when description is missing', async () => {
+    it.concurrent('should throw error when description is missing', async () => {
       expect.assertions(1);
 
       const agent = await createTestAgent(cortiClient, createdAgentIds);
@@ -187,7 +187,7 @@ describe.skip('cortiClient.agents.update', () => {
       ).rejects.toThrow('Missing required key "description"');
     });
 
-    it('should throw error when systemPrompt is missing', async () => {
+    it.concurrent('should throw error when systemPrompt is missing', async () => {
       expect.assertions(1);
 
       const agent = await createTestAgent(cortiClient, createdAgentIds);

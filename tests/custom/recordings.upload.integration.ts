@@ -30,7 +30,7 @@ describe('cortiClient.recordings.upload', () => {
   });
 
   describe('should upload recording from server-side file stream', () => {
-    it('should upload trouble-breathing.mp3 using createReadStream without errors or warnings', async () => {
+    it.concurrent('should upload trouble-breathing.mp3 using createReadStream without errors or warnings', async () => {
       expect.assertions(2);
 
       const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
@@ -45,7 +45,7 @@ describe('cortiClient.recordings.upload', () => {
       expect(consoleWarnSpy).not.toHaveBeenCalled();
     });
 
-    it('should upload trouble-breathing.mp3 using File object without errors or warnings', async () => {
+    it.concurrent('should upload trouble-breathing.mp3 using File object without errors or warnings', async () => {
         expect.assertions(2);
   
         const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
@@ -65,7 +65,7 @@ describe('cortiClient.recordings.upload', () => {
   });
 
   describe('should handle upload errors', () => {
-    it('should throw error when uploading to non-existent interaction', async () => {
+    it.concurrent('should throw error when uploading to non-existent interaction', async () => {
       expect.assertions(1);
 
       const nonExistentInteractionId = faker.string.uuid();
@@ -78,7 +78,7 @@ describe('cortiClient.recordings.upload', () => {
       ).rejects.toThrow('Status code: 404');
     });
 
-    it('should throw error when uploading with invalid interaction ID format', async () => {
+    it.concurrent('should throw error when uploading with invalid interaction ID format', async () => {
       expect.assertions(1);
 
       const invalidInteractionId = 'invalid-uuid-format';
@@ -91,7 +91,7 @@ describe('cortiClient.recordings.upload', () => {
       ).rejects.toThrow('Status code: 400');
     });
 
-    it('should throw error when uploading with null interaction ID', async () => {
+    it.concurrent('should throw error when uploading with null interaction ID', async () => {
       expect.assertions(1);
 
       const file = createReadStream('tests/custom/trouble-breathing.mp3', {
@@ -103,7 +103,7 @@ describe('cortiClient.recordings.upload', () => {
       ).rejects.toThrow('Expected string. Received null.');
     });
 
-    it('should throw error when uploading with undefined interaction ID', async () => {
+    it.concurrent('should throw error when uploading with undefined interaction ID', async () => {
       expect.assertions(1);
 
       const file = createReadStream('tests/custom/trouble-breathing.mp3', {
