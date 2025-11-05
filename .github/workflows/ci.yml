@@ -71,6 +71,8 @@ jobs:
             publish --access public --tag alpha
           elif [[ ${GITHUB_REF} == *beta* ]]; then
             publish --access public --tag beta
+          elif [[ ${GITHUB_REF} == *rc* ]]; then
+            npm publish --tag rc
           else
             publish --access public
           fi
