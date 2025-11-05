@@ -12,7 +12,7 @@ reference.md
 
 # Integration tests
 tests/custom
-jest.integration.config.mjs
+vitest.config.ts
 .github/workflows/integration-tests.yml
 
 # Issue templates
