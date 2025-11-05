@@ -63,14 +63,10 @@ export class Auth {
             contentType: "application/x-www-form-urlencoded",
             queryParameters: requestOptions?.queryParams,
             requestType: "form",
-            body: {
-                ...serializers.AuthGetTokenRequest.jsonOrThrow(request, {
-                    unrecognizedObjectKeys: "strip",
-                    omitUndefined: true,
-                }),
-                scope: "openid",
-                grant_type: "client_credentials",
-            },
+            body: serializers.AuthGetTokenRequest.jsonOrThrow(request, {
+                unrecognizedObjectKeys: "strip",
+                omitUndefined: true,
+            }),
             timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
             maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
             abortSignal: requestOptions?.abortSignal,

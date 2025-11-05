@@ -3,18 +3,31 @@
 import type * as Corti from "../../../../../api/index.js";
 import * as core from "../../../../../core/index.js";
 import type * as serializers from "../../../../index.js";
+import { AuthGetTokenRequestGrantType } from "../../types/AuthGetTokenRequestGrantType.js";
 
 export const AuthGetTokenRequest: core.serialization.Schema<
     serializers.AuthGetTokenRequest.Raw,
     Corti.AuthGetTokenRequest
 > = core.serialization.object({
+    grantType: core.serialization.property("grant_type", AuthGetTokenRequestGrantType.optional()),
     clientId: core.serialization.property("client_id", core.serialization.string()),
     clientSecret: core.serialization.property("client_secret", core.serialization.string().optional()),
+    scope: core.serialization.stringLiteral("openid").optional(),
+    code: core.serialization.string().optional(),
+    redirectUri: core.serialization.property("redirect_uri", core.serialization.string().optional()),
+    codeVerifier: core.serialization.property("code_verifier", core.serialization.string().optional()),
+    refreshToken: core.serialization.property("refresh_token", core.serialization.string().optional()),
 });
 
 export declare namespace AuthGetTokenRequest {
     export interface Raw {
+        grant_type?: AuthGetTokenRequestGrantType.Raw | null;
         client_id: string;
         client_secret?: string | null;
+        scope?: "openid" | null;
+        code?: string | null;
+        redirect_uri?: string | null;
+        code_verifier?: string | null;
+        refresh_token?: string | null;
     }
 }
