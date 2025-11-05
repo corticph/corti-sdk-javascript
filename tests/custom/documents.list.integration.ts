@@ -1,5 +1,6 @@
 import { CortiClient } from '../../src';
 import { faker } from '@faker-js/faker';
+import type { MockInstance } from 'vitest';
 import { 
   createTestCortiClient, 
   createTestInteraction,
@@ -9,7 +10,7 @@ import {
 
 describe('cortiClient.documents.list', () => {
   let cortiClient: CortiClient;
-  let consoleWarnSpy: jest.SpyInstance;
+  let consoleWarnSpy: MockInstance;
   const createdInteractionIds: string[] = [];
 
   beforeAll(() => {

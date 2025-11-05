@@ -3,6 +3,7 @@ import { faker } from '@faker-js/faker';
 import { createReadStream } from 'fs';
 import { StreamSocket } from '../../src/custom/CustomStreamSocket';
 import { TranscribeSocket } from '../../src/custom/CustomTranscribeSocket';
+import { vi, type MockInstance } from 'vitest';
 
 /**
  * Creates a CortiClient instance configured for testing
@@ -82,8 +83,8 @@ export async function cleanupInteractions(cortiClient: CortiClient, interactionI
 /**
  * Sets up console.warn spy for tests
  */
-export function setupConsoleWarnSpy(): jest.SpyInstance {
-  return jest.spyOn(console, 'warn').mockImplementation(() => {});
+export function setupConsoleWarnSpy(): MockInstance {
+  return vi.spyOn(console, 'warn').mockImplementation(() => {});
 }
 
 /**

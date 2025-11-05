@@ -1,5 +1,6 @@
 import { CortiClient } from '../../src';
 import { faker } from '@faker-js/faker';
+import type { MockInstance } from 'vitest';
 import { 
   createTestCortiClient, 
   createTestAgent,
@@ -11,7 +12,7 @@ import {
 // FIXME : Skipping until get context functionality is restored
 describe.skip('cortiClient.agents.getContext', () => {
   let cortiClient: CortiClient;
-  let consoleWarnSpy: jest.SpyInstance;
+  let consoleWarnSpy: MockInstance;
   let createdAgentIds: string[] = [];
 
   beforeAll(() => {

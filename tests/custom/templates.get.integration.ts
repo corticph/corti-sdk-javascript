@@ -1,5 +1,6 @@
 import { CortiClient } from '../../src';
 import { faker } from '@faker-js/faker';
+import type { MockInstance } from 'vitest';
 import { 
   createTestCortiClient, 
   getValidTemplateKeyAndLanguage,
@@ -8,7 +9,7 @@ import {
 
 describe('cortiClient.templates.get', () => {
   let cortiClient: CortiClient;
-  let consoleWarnSpy: jest.SpyInstance;
+  let consoleWarnSpy: MockInstance;
 
   beforeAll(() => {
     cortiClient = createTestCortiClient();

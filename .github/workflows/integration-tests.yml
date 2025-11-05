@@ -15,13 +15,16 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Set up node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
+                
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
 
       - name: Install dependencies
-        run: yarn
+        run: pnpm install
 
       - name: Run integration tests
-        run: yarn jest --config jest.integration.config.mjs
+        run: pnpm vitest --project integration --run
         env:
           CORTI_ENVIRONMENT: ${{ vars.CORTI_ENVIRONMENT }}
           CORTI_TENANT_NAME: ${{ vars.CORTI_TENANT_NAME }}

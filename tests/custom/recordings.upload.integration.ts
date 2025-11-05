@@ -1,5 +1,6 @@
 import { CortiClient } from '../../src';
 import { faker } from '@faker-js/faker';
+import type { MockInstance } from 'vitest';
 import { createReadStream, readFileSync } from 'fs';
 import { 
   createTestCortiClient, 
@@ -10,7 +11,7 @@ import {
 
 describe('cortiClient.recordings.upload', () => {
   let cortiClient: CortiClient;
-  let consoleWarnSpy: jest.SpyInstance;
+  let consoleWarnSpy: MockInstance;
   let createdInteractionIds: string[] = [];
 
   beforeAll(() => {

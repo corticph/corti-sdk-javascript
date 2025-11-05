@@ -1,5 +1,6 @@
 import { CortiClient } from '../../src/custom/CortiClient';
 import { faker } from '@faker-js/faker';
+import type { MockInstance } from 'vitest';
 import fs from 'fs';
 import path from 'path';
 import { 
@@ -13,7 +14,7 @@ import {
 describe('cortiClient.stream.connect', () => {
   let cortiClient: CortiClient;
   let createdInteractionIds: string[];
-  let consoleWarnSpy: jest.SpyInstance;
+  let consoleWarnSpy: MockInstance;
   let activeSockets: any[] = [];
 
   beforeAll(async () => {

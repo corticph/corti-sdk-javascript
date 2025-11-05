@@ -1,4 +1,5 @@
 import { CortiClient } from '../../src';
+import type { MockInstance } from 'vitest';
 import { 
   createTestCortiClient, 
   setupConsoleWarnSpy 
@@ -6,7 +7,7 @@ import {
 
 describe('cortiClient.templates.list', () => {
   let cortiClient: CortiClient;
-  let consoleWarnSpy: jest.SpyInstance;
+  let consoleWarnSpy: MockInstance;
 
   beforeAll(() => {
     cortiClient = createTestCortiClient();
