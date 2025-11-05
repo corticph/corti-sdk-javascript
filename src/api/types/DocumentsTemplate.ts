@@ -4,4 +4,4 @@
 
 import * as Corti from "../index.js";
 
-export type DocumentsTemplate = Corti.DocumentsTemplateWithSectionKeys;
+export type DocumentsTemplate = Corti.DocumentsTemplateWithSectionKeys | Corti.DocumentsTemplateWithSections;
