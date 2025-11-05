@@ -39,7 +39,7 @@ jobs:
         run: pnpm install
 
       - name: Test
-        run: pnpm test
+        run: pnpm vitest --project unit --project wire --run
 
   publish:
     needs: [ compile, test ]
