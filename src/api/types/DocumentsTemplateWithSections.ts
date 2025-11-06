@@ -6,8 +6,8 @@ import * as Corti from "../index.js";
 
 export interface DocumentsTemplateWithSections {
     sections?: Corti.DocumentsSectionOverride[];
-    /** The name of the document. */
-    documentName?: string;
+    /** A brief description of the document. */
+    description?: string;
     /** Override to use for the template-level additional instructions. */
     additionalInstructionsOverride?: string;
 }
