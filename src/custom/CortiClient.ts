@@ -176,19 +176,20 @@ export class CortiClient {
         /**
          * Patch: if `clientId` is provided, use OAuthTokenProvider, otherwise use BearerProvider
          */
-        this._oauthTokenProvider = "clientId" in _options.auth ?
-            new core.OAuthTokenProvider({
-                clientId: _options.auth.clientId,
-                clientSecret: _options.auth.clientSecret,
-                /**
-                 * Patch: provide whole `options` object to the Auth client, since it depends on both tenantName and environment
-                 */
-                authClient: new Auth(this._options),
-            }) :
-            new RefreshBearerProvider({
-                ..._options.auth,
-                initialTokenResponse
-            });
+        this._oauthTokenProvider =
+            "clientId" in _options.auth
+                ? new core.OAuthTokenProvider({
+                      clientId: _options.auth.clientId,
+                      clientSecret: _options.auth.clientSecret,
+                      /**
+                       * Patch: provide whole `options` object to the Auth client, since it depends on both tenantName and environment
+                       */
+                      authClient: new Auth(this._options),
+                  })
+                : new RefreshBearerProvider({
+                      ..._options.auth,
+                      initialTokenResponse,
+                  });
     }
 
     public get interactions(): Interactions {
