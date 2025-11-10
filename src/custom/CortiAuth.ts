@@ -69,7 +69,7 @@ export class Auth extends FernAuth {
         const authUrl = new URL(
             core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
-                    (await core.Supplier.get(this._options.environment)).login,
+                (await core.Supplier.get(this._options.environment)).login,
                 await core.Supplier.get(this._options.tenantName),
                 "protocol/openid-connect/auth",
             ),
@@ -127,7 +127,7 @@ export class Auth extends FernAuth {
         const _response = await core.fetcher({
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
-                    (await core.Supplier.get(this._options.environment)).login,
+                (await core.Supplier.get(this._options.environment)).login,
                 /**
                  * Patch: use tenantName as path parameter
                  *  (consider to be generated from the spec in the future)
