@@ -1,0 +1,32 @@
+import * as serializers from "../../../serialization/index.js";
+import * as core from "../../../core/index.js";
+
+export const AuthGetTokenRequestWithClientCredentials: core.serialization.Schema<
+    AuthGetTokenRequestWithClientCredentials.Raw,
+    AuthGetTokenRequestWithClientCredentials
+> = core.serialization.object({
+    clientId: core.serialization.property(
+        "client_id",
+        core.serialization.string(),
+    ),
+    clientSecret: core.serialization.property(
+        "client_secret",
+        core.serialization.string(),
+    ),
+    grantType: core.serialization.property(
+        "grant_type",
+        core.serialization.stringLiteral("client_credentials"),
+    ),
+});
+
+export declare namespace AuthGetTokenRequestWithClientCredentials {
+    export interface Raw extends serializers.AuthGetTokenRequest.Raw {
+        grant_type: "client_credentials";
+    }
+}
+
+export type AuthGetTokenRequestWithClientCredentials = {
+    clientId: string;
+    clientSecret: string;
+    grantType: "client_credentials";
+};
