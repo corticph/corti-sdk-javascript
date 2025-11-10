@@ -20,8 +20,9 @@ import * as serializers from "../serialization/index.js";
 import * as errors from "../errors/index.js";
 import * as environments from "../environments.js";
 import { getEnvironment } from "./utils/getEnvironmentFromString.js";
-import { CortiLocalStorageError } from "./CortiLocalStorageError.js";
 import { ParseError } from "../core/schemas/builders/schema-utils/ParseError.js";
+import { getLocalStorageItem, setLocalStorageItem } from "./utils/localStorage.js";
+import { generateCodeChallenge, generateCodeVerifier } from "./utils/pkce.js";
 
 const CODE_VERIFIER_KEY = "corti_js_sdk_code_verifier";
 
@@ -51,7 +52,7 @@ interface AuthorizationPkce {
     clientId: string;
     redirectUri: string;
     code: string;
-    codeVerifier: string;
+    codeVerifier?: string;
 }
 
 /**
@@ -96,17 +97,10 @@ export class Auth extends FernAuth {
         redirectUri,
     }: AuthorizationCodeClient, options?: Options
     ): Promise<string> {
-        const codeVerifier = this.generateCodeVerifier();
+        const codeVerifier = generateCodeVerifier();
+        setLocalStorageItem(CODE_VERIFIER_KEY, codeVerifier);
 
-        if (typeof window !== "undefined" && window.localStorage) {
-            try {
-                window.localStorage.setItem(CODE_VERIFIER_KEY, codeVerifier);
-            } catch (error) {
-                throw new CortiLocalStorageError('set', error);
-            }
-        }
-
-        const codeChallenge = await this.generateCodeChallenge(codeVerifier);
+        const codeChallenge = await generateCodeChallenge(codeVerifier);
 
         return this.authorizeURL({
             clientId,
@@ -119,45 +113,7 @@ export class Auth extends FernAuth {
      * Patch: Get the stored PKCE code verifier
      */
     public getCodeVerifier(): string | null {
-        if (typeof window !== "undefined" && window.localStorage) {
-            try {
-                return window.localStorage.getItem(CODE_VERIFIER_KEY);
-            } catch (error) {
-                throw new CortiLocalStorageError('get', error);
-            }
-        }
-
-        return null;
-    }
-
-    /**
-     * Patch: Generate a random code verifier
-     */
-    private generateCodeVerifier(): string {
-        const array = new Uint8Array(32);
-        crypto.getRandomValues(array);
-        return this.base64URLEncode(array);
-    }
-
-    /**
-     * Patch: Generate code challenge from verifier
-     */
-    private async generateCodeChallenge(verifier: string): Promise<string> {
-        const encoder = new TextEncoder();
-        const data = encoder.encode(verifier);
-        const hash = await crypto.subtle.digest('SHA-256', data);
-        return this.base64URLEncode(new Uint8Array(hash));
-    }
-
-    /**
-     * Patch: Base64 URL encode
-     */
-    private base64URLEncode(buffer: Uint8Array): string {
-        const base64 = btoa(String.fromCharCode(...buffer));
-        return base64
-            .replace(/\+/g, '-')
-            .replace(/\//g, '_')
-            .replace(/=/g, '');
+        return getLocalStorageItem(CODE_VERIFIER_KEY);
     }
 
     /**
@@ -280,7 +236,6 @@ export class Auth extends FernAuth {
         }>,
         requestOptions?: FernAuth.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.GetTokenResponse>> {
-        type TokenRequestBody = Record<string, string>;
         const _response = await core.fetcher({
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
@@ -307,44 +262,7 @@ export class Auth extends FernAuth {
             /**
              * Patch: removed `requestType: "json"`, made body a URLSearchParams object
              */
-            body: new URLSearchParams({
-                ...serializers.AuthGetTokenRequest.jsonOrThrow(request, {
-                    unrecognizedObjectKeys: "strip",
-                    omitUndefined: true,
-                }),
-                scope: "openid",
-                /**
-                 * Patch: `grant_type` uses values from request or defaults to "client_credentials"
-                 */
-                grant_type: request.grantType || "client_credentials",
-                /**
-                 * Patch: added `code` and `redirect_uri` fields for Authorization code flow
-                 * Patch: added `refresh_token` field for Refresh token flow
-                 */
-                ...(request.grantType === "authorization_code"
-                    ? {
-                        code: request.code,
-                        redirect_uri: request.redirectUri,
-                        ...(request.codeVerifier ? { code_verifier: request.codeVerifier } : {})
-                    }
-                    : {}),
-                ...(request.grantType === "refresh_token"
-                        ? {
-                            refresh_token: request.refreshToken,
-                        }
-                        : {}
-                ),
-                /**
-                 * Patch: added `username` and `password` fields for ROPC flow
-                 */
-                ...(request.grantType === "password"
-                        ? {
-                            username: request.username,
-                            password: request.password,
-                        }
-                        : {}
-                ),
-            } as TokenRequestBody),
+            body: this.buildTokenRequestBody(request),
             /**
              * Patch: added timeoutMs and maxRetries to requestOptions
              */
@@ -390,6 +308,62 @@ export class Auth extends FernAuth {
                     rawResponse: _response.rawResponse,
                 });
         }
+    }
+
+    private buildTokenRequestBody(
+        request: Corti.AuthGetTokenRequest & Partial<{
+            grantType: "client_credentials" | "authorization_code" | "refresh_token" | "password";
+            code: string;
+            redirectUri: string;
+            refreshToken: string;
+            codeVerifier: string;
+            username: string;
+            password: string;
+        }>,
+    ): URLSearchParams {
+        type TokenRequestBody = Record<string, string>;
+        const serializedRequest = serializers.AuthGetTokenRequest.jsonOrThrow(request, {
+            unrecognizedObjectKeys: "strip",
+            omitUndefined: true,
+        });
+
+        const tokenRequestBody: TokenRequestBody = {
+            scope: "openid",
+            grant_type: request.grantType || "client_credentials",
+        };
+
+        Object.entries(serializedRequest).forEach(([key, value]) => {
+            if (value != null) {
+                tokenRequestBody[key] = String(value);
+            }
+        });
+
+        if (request.grantType === "authorization_code") {
+            if (request.code != null) {
+                tokenRequestBody.code = request.code;
+            }
+            if (request.redirectUri != null) {
+                tokenRequestBody.redirect_uri = request.redirectUri;
+            }
+            if (request.codeVerifier != null) {
+                tokenRequestBody.code_verifier = request.codeVerifier;
+            }
+        }
+
+        if (request.grantType === "refresh_token" && request.refreshToken != null) {
+            tokenRequestBody.refresh_token = request.refreshToken;
+        }
+
+        if (request.grantType === "password") {
+            if (request.username != null) {
+                tokenRequestBody.username = request.username;
+            }
+            if (request.password != null) {
+                tokenRequestBody.password = request.password;
+            }
+        }
+
+        return new URLSearchParams(tokenRequestBody);
     }
 
     /**

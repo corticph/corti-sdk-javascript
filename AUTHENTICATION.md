@@ -232,18 +232,22 @@ const client = new CortiClient({
         accessToken: accessToken,
         refreshToken: refreshToken,
         refreshAccessToken: async (refreshToken: string) => {
-            // Refresh tokens using SDK directly (client-side)
-            const refreshResponse = await auth.refreshToken({
-                clientId: "YOUR_CLIENT_ID",
-                clientSecret: "YOUR_CLIENT_SECRET",
-                refreshToken: refreshToken,
+            // Custom refresh logic -- get new access_token from server
+            const response = await fetch("https://your-auth-server/refresh", {
+                method: "POST", 
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ refreshToken: refreshToken }),
             });
             
-            return {
-                access_token: refreshedTokens.accessToken,
-                refresh_token: refreshedTokens.refreshToken,
-                expires_in: refreshedTokens.expiresIn,
-            };
+            // Response must return a valid token object:
+            // {
+            //   accessToken: string;      // Required: The new access token
+            //   expiresIn?: number;       // Optional: Seconds until token expires
+            //   refreshToken?: string;    // Optional: New refresh token if rotated
+            //   refreshExpiresIn?: number; // Optional: Seconds until refresh token expires
+            //   tokenType?: string;       // Optional: Token type (defaults to "Bearer")
+            // }
+            return response.json();
         },
     },
 });
@@ -403,18 +407,22 @@ const client = new CortiClient({
         accessToken: accessToken,
         refreshToken: refreshToken,
         refreshAccessToken: async (refreshToken: string) => {
-            // Refresh tokens using SDK directly (client-side)
-            const refreshResponse = await auth.refreshToken({
-                clientId: "YOUR_CLIENT_ID",
-                clientSecret: '', // PKCE flow doesn't require client secret
-                refreshToken: refreshToken,
+            // Custom refresh logic -- get new access_token from server
+            const response = await fetch("https://your-auth-server/refresh", {
+                method: "POST", 
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ refreshToken: refreshToken }),
             });
             
-            return {
-                access_token: refreshResponse.accessToken,
-                refresh_token: refreshResponse.refreshToken,
-                expires_in: refreshedTokens.expiresIn,
-            };
+            // Response must return a valid token object:
+            // {
+            //   accessToken: string;      // Required: The new access token
+            //   expiresIn?: number;       // Optional: Seconds until token expires
+            //   refreshToken?: string;    // Optional: New refresh token if rotated
+            //   refreshExpiresIn?: number; // Optional: Seconds until refresh token expires
+            //   tokenType?: string;       // Optional: Token type (defaults to "Bearer")
+            // }
+            return response.json();
         },
     },
 });
@@ -444,23 +452,59 @@ For detailed information about ROPC flow, see the [official Corti documentation]
 ### Basic Usage
 
 ```typescript
-import { CortiAuth, CortiEnvironment } from "@corti/sdk";
+import { CortiAuth, CortiClient, CortiEnvironment } from "@corti/sdk";
 
 const CLIENT_ID = "YOUR_CLIENT_ID";
 const USERNAME = "user@example.com";
 const PASSWORD = "your-password";
 
+// Step 1: Exchange credentials for tokens using ROPC flow
 const auth = new CortiAuth({
     environment: CortiEnvironment.Eu,
     tenantName: "YOUR_TENANT_NAME",
 });
 
-// Exchange credentials for tokens using ROPC flow
 const tokenResponse = await auth.getRopcFlowToken({
     clientId: CLIENT_ID,
     username: USERNAME,
     password: PASSWORD,
 });
 
-console.log("Token Response: ", tokenResponse)
+const { accessToken, refreshToken } = tokenResponse;
+
+// Step 2: Create CortiClient with  tokens
+const client = new CortiClient({
+    environment: CortiEnvironment.Eu,
+    tenantName: "YOUR_TENANT_NAME",
+    auth: {
+        accessToken: accessToken,
+        refreshToken: refreshToken,
+        refreshAccessToken: async (refreshToken: string) => {
+            // Custom refresh logic -- get new access_token from server
+            const response = await fetch("https://your-auth-server/refresh", {
+                method: "POST", 
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ refreshToken: refreshToken }),
+            });
+            
+            // Response must return a valid token object:
+            // {
+            //   accessToken: string;      // Required: The new access token
+            //   expiresIn?: number;       // Optional: Seconds until token expires
+            //   refreshToken?: string;    // Optional: New refresh token if rotated
+            //   refreshExpiresIn?: number; // Optional: Seconds until refresh token expires
+            //   tokenType?: string;       // Optional: Token type (defaults to "Bearer")
+            // }
+            return response.json();
+        },
+    },
+});
+
+// Step 3: Make API calls
+try {
+    const interactions = await client.interactions.list();
+    console.log("Interactions:", interactions);
+} catch (error) {
+    console.error("API call failed:", error);
+}
 ```
