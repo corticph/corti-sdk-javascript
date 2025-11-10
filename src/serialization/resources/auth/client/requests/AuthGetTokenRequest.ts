@@ -11,12 +11,12 @@ export const AuthGetTokenRequest: core.serialization.Schema<
     Corti.AuthGetTokenRequest
 > = core.serialization.object({
     clientId: core.serialization.property("client_id", core.serialization.string()),
-    clientSecret: core.serialization.property("client_secret", core.serialization.string().optional()),
+    clientSecret: core.serialization.property("client_secret", core.serialization.string()),
 });
 
 export declare namespace AuthGetTokenRequest {
     export interface Raw {
         client_id: string;
-        client_secret?: string | null;
+        client_secret: string;
     }
 }
