@@ -5,12 +5,11 @@
 /**
  * @example
  *     {
- *         clientId: "client_id_123",
- *         clientSecret: "my_secret_value"
+ *         clientId: "client_id_123"
  *     }
  */
 export interface AuthGetTokenRequest {
     clientId: string;
-    /** Optional secret for confidential clients */
-    clientSecret: string;
+    /** Optional secret for confidential clients and Authorization code flow */
+    clientSecret?: string;
 }

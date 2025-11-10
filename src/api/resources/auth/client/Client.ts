@@ -50,8 +50,7 @@ export class Auth {
      *
      * @example
      *     await client.auth.getToken({
-     *         clientId: "client_id_123",
-     *         clientSecret: "my_secret_value"
+     *         clientId: "client_id_123"
      *     })
      */
     public getToken(
