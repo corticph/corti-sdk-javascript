@@ -5,7 +5,8 @@
 /**
  * @example
  *     {
- *         clientId: "client_id_123"
+ *         clientId: "client_id_123",
+ *         clientSecret: "my_secret_value"
  *     }
  */
 export interface AuthGetTokenRequest {
