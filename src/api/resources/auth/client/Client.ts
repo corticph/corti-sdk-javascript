@@ -43,15 +43,7 @@ export class Auth {
     }
 
     /**
-     * Obtain an OAuth2 access token using client credentials.
-     *
-     * **Example**
-     * ```ts
-     * await client.auth.getToken({
-     *   clientId: "client_id_123",
-     *   clientSecret: "my_secret_value" // optional
-     * })
-     * ```
+     * Obtain an OAuth2 access token using client credentials
      *
      * @param {Corti.AuthGetTokenRequest} request
      * @param {Auth.RequestOptions} requestOptions - Request-specific configuration.
