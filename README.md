@@ -101,7 +101,7 @@ Depending on the type of error, the SDK will throw one of the following:
 - **CortiError**: Thrown when the API returns a non-success status code (4xx or 5xx response). This is the base error for API-related issues.
 - **ParseError**: Thrown when parsing input data fails schema validation. This typically occurs when the data you provide does not match the expected schema.
 - **JsonError**: Thrown when serializing data to JSON fails schema validation. This typically occurs when converting parsed data to JSON for transmission or storage fails validation.
-- **CortiSDKError**: Base class for SDK-specific runtime issues (e.g., internal helpers, environment detection). Provides an optional `code` and `cause` for debugging. Supported codes: ['local_storage_error']
+- **CortiSDKError**: Base class for SDK-specific runtime issues (e.g., internal helpers, environment detection). Provides an optional `code` and `cause` for debugging.
 
 Example usage:
 

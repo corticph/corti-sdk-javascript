@@ -23,6 +23,7 @@ import { getEnvironment } from "./utils/getEnvironmentFromString.js";
 import { ParseError } from "../core/schemas/builders/schema-utils/ParseError.js";
 import { getLocalStorageItem, setLocalStorageItem } from "./utils/localStorage.js";
 import { generateCodeChallenge, generateCodeVerifier } from "./utils/pkce.js";
+import { buildTokenRequestBody } from "./utils/tokenRequest.js";
 
 const CODE_VERIFIER_KEY = "corti_js_sdk_code_verifier";
 
@@ -262,10 +263,7 @@ export class Auth extends FernAuth {
             /**
              * Patch: removed `requestType: "json"`, made body a URLSearchParams object
              */
-            body: this.buildTokenRequestBody(request),
-            /**
-             * Patch: added timeoutMs and maxRetries to requestOptions
-             */
+            body: buildTokenRequestBody(request),
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
             maxRetries: requestOptions?.maxRetries,
             abortSignal: requestOptions?.abortSignal,
@@ -308,62 +306,6 @@ export class Auth extends FernAuth {
                     rawResponse: _response.rawResponse,
                 });
         }
-    }
-
-    private buildTokenRequestBody(
-        request: Corti.AuthGetTokenRequest & Partial<{
-            grantType: "client_credentials" | "authorization_code" | "refresh_token" | "password";
-            code: string;
-            redirectUri: string;
-            refreshToken: string;
-            codeVerifier: string;
-            username: string;
-            password: string;
-        }>,
-    ): URLSearchParams {
-        type TokenRequestBody = Record<string, string>;
-        const serializedRequest = serializers.AuthGetTokenRequest.jsonOrThrow(request, {
-            unrecognizedObjectKeys: "strip",
-            omitUndefined: true,
-        });
-
-        const tokenRequestBody: TokenRequestBody = {
-            scope: "openid",
-            grant_type: request.grantType || "client_credentials",
-        };
-
-        Object.entries(serializedRequest).forEach(([key, value]) => {
-            if (value != null) {
-                tokenRequestBody[key] = String(value);
-            }
-        });
-
-        if (request.grantType === "authorization_code") {
-            if (request.code != null) {
-                tokenRequestBody.code = request.code;
-            }
-            if (request.redirectUri != null) {
-                tokenRequestBody.redirect_uri = request.redirectUri;
-            }
-            if (request.codeVerifier != null) {
-                tokenRequestBody.code_verifier = request.codeVerifier;
-            }
-        }
-
-        if (request.grantType === "refresh_token" && request.refreshToken != null) {
-            tokenRequestBody.refresh_token = request.refreshToken;
-        }
-
-        if (request.grantType === "password") {
-            if (request.username != null) {
-                tokenRequestBody.username = request.username;
-            }
-            if (request.password != null) {
-                tokenRequestBody.password = request.password;
-            }
-        }
-
-        return new URLSearchParams(tokenRequestBody);
     }
 
     /**
