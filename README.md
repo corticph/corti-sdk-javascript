@@ -38,29 +38,23 @@ const client = new CortiClient({
 
 // Or using a bearer token
 const client = new CortiClient({
-    environment: CortiEnvironment.Eu,
-    tenantName: "YOUR_TENANT_NAME",
     auth: {
-        accessToken: "YOUR_ACCESS_TOKEN",
-        // Optional: refresh token for automatic token refresh
-        refreshToken: "YOUR_REFRESH_TOKEN",
-        expiresIn: 3600,
-        refreshExpiresIn: 86400,
+        accessToken: "YOUR_ACCESS_TOKEN"
     },
 });
 
 // Or using just a refresh function (no initial access token needed)
 const client = new CortiClient({
-    environment: CortiEnvironment.Eu,
-    tenantName: "YOUR_TENANT_NAME",
     auth: {
+        // refreshToken will be undefined for the first call, then it will be the refreshToken returned from the previous token request
         refreshAccessToken: async (refreshToken?: string) => {
             // Your custom logic to get a new access token
-            const response = await fetch("https://your-auth-server/refresh", {
+            const response = await fetch("https://your-auth-server/token", {
                 method: "POST", 
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ refreshToken: refreshToken }),
+                body: JSON.stringify({ refreshToken }),
             });
+
             return response.json();
         },
     },
