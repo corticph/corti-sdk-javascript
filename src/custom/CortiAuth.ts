@@ -96,8 +96,7 @@ export class Auth extends FernAuth {
     public async authorizePkceUrl({
         clientId,
         redirectUri,
-    }: AuthorizationCodeClient, options?: Options
-    ): Promise<string> {
+    }: AuthorizationCodeClient, options?: Options): Promise<string> {
         const codeVerifier = generateCodeVerifier();
         setLocalStorageItem(CODE_VERIFIER_KEY, codeVerifier);
 
