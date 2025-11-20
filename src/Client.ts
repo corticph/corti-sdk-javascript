@@ -22,7 +22,7 @@ export declare namespace CortiClient {
         /** Specify a custom URL to connect the client to. */
         baseUrl?: core.Supplier<string>;
         clientId: core.Supplier<string>;
-        clientSecret: core.Supplier<string>;
+        clientSecret: core.Supplier<string | undefined>;
         /** Override the Tenant-Name header */
         tenantName: core.Supplier<string>;
         /** Additional headers to include in requests. */

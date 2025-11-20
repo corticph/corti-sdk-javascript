@@ -60,7 +60,10 @@ const client = new CortiClient({
     },
 });
 
-// For user authentication, you can also use Authorization Code Flow
+// For user authentication, you can use:
+// - Authorization Code Flow
+// - Authorization Code Flow with PKCE
+// - Resource Owner Password Credentials (ROPC) flow
 // See the Authentication Guide for detailed instructions
 
 await client.interactions.create({
@@ -92,11 +95,12 @@ Depending on the type of error, the SDK will throw one of the following:
 - **CortiError**: Thrown when the API returns a non-success status code (4xx or 5xx response). This is the base error for API-related issues.
 - **ParseError**: Thrown when parsing input data fails schema validation. This typically occurs when the data you provide does not match the expected schema.
 - **JsonError**: Thrown when serializing data to JSON fails schema validation. This typically occurs when converting parsed data to JSON for transmission or storage fails validation.
+- **CortiSDKError**: Base class for SDK-specific runtime issues (e.g., internal helpers, environment detection). Provides an optional `code` and `cause` for debugging.
 
 Example usage:
 
 ```typescript
-import { CortiError, ParseError, JsonError } from "@corti/sdk";
+import { CortiError, ParseError, JsonError, CortiSDKError } from "@corti/sdk";
 
 try {
     await client.interactions.create(...);
@@ -115,6 +119,14 @@ try {
     if (err instanceof JsonError) {
         // Handle schema validation errors during serialization
         console.error("JSON validation error details:", err.errors);
+    }
+    if (err instanceof CortiSDKError) {
+        // Handle other SDK-level errors that expose extra context
+        console.error("SDK error code:", err.code);
+        console.error("SDK error cause:", err.cause);
+        if (err.code === "local_storage_error") {
+            console.error("LocalStorage operation failed:", err.message);
+        }
     }
 }
 ```

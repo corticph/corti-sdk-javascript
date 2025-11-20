@@ -20,17 +20,49 @@ import * as serializers from "../serialization/index.js";
 import * as errors from "../errors/index.js";
 import * as environments from "../environments.js";
 import { getEnvironment } from "./utils/getEnvironmentFromString.js";
+import { ParseError } from "../core/schemas/builders/schema-utils/ParseError.js";
+import { getLocalStorageItem, setLocalStorageItem } from "./utils/localStorage.js";
+import { generateCodeChallenge, generateCodeVerifier } from "./utils/pkce.js";
+import { buildTokenRequestBody } from "./utils/tokenRequest.js";
 
+const CODE_VERIFIER_KEY = "corti_js_sdk_code_verifier";
+
+/**
+ * Patch: added codeChallenge to the AuthorizationCodeClient interface to support PKCE flow
+ */
 interface AuthorizationCodeClient {
     clientId: string;
     redirectUri: string;
+    codeChallenge?: string;
 }
 
-interface AuthorizationCodeServer {
+/**
+ * Patch: renamed AuthorizationCodeClient to AuthorizationCode as it can be used for both(server and client) flows
+ */
+interface AuthorizationCode {
     clientId: string;
     clientSecret: string;
     redirectUri: string;
     code: string;
+}
+
+/**
+ * Patch: added type for AuthorizationPkce request
+ */
+interface AuthorizationPkce {
+    clientId: string;
+    redirectUri: string;
+    code: string;
+    codeVerifier?: string;
+}
+
+/**
+ * Patch: added type for AuthorizationRopc request
+ */
+interface AuthorizationRopcServer {
+    clientId: string;
+    username: string;
+    password: string;
 }
 
 interface AuthorizationRefreshServer {
@@ -59,6 +91,32 @@ export class Auth extends FernAuth {
     }
 
     /**
+     * Patch: Generate PKCE authorization URL with automatic code verifier generation
+     */
+    public async authorizePkceUrl({
+        clientId,
+        redirectUri,
+    }: AuthorizationCodeClient, options?: Options): Promise<string> {
+        const codeVerifier = generateCodeVerifier();
+        setLocalStorageItem(CODE_VERIFIER_KEY, codeVerifier);
+
+        const codeChallenge = await generateCodeChallenge(codeVerifier);
+
+        return this.authorizeURL({
+            clientId,
+            redirectUri,
+            codeChallenge,
+        }, options);
+    }
+
+    /**
+     * Patch: Get the stored PKCE code verifier
+     */
+    public getCodeVerifier(): string | null {
+        return getLocalStorageItem(CODE_VERIFIER_KEY);
+    }
+
+    /**
      * Patch: called custom implementation this.__getToken_custom instead of this.__getToken
      */
     public getToken(
@@ -69,11 +127,12 @@ export class Auth extends FernAuth {
     }
 
     /**
-     * Patch: added method to get Authorization URL for Authorization code flow
+     * Patch: added method to get Authorization URL for Authorization code flow and PKCE flow
      */
     public async authorizeURL({
         clientId,
         redirectUri,
+        codeChallenge,
     }: AuthorizationCodeClient, options?: Options): Promise<string> {
         const authUrl = new URL(core.url.join(
             (await core.Supplier.get(this._options.baseUrl)) ??
@@ -93,6 +152,11 @@ export class Auth extends FernAuth {
             authUrl.searchParams.set('redirect_uri', redirectUri);
         }
 
+        if (codeChallenge !== undefined) {
+            authUrl.searchParams.set('code_challenge', codeChallenge);
+            authUrl.searchParams.set('code_challenge_method', 'S256');
+        }
+
         const authUrlString = authUrl.toString();
 
         if (typeof window !== "undefined" && !options?.skipRedirect) {
@@ -107,7 +171,7 @@ export class Auth extends FernAuth {
      * Patch: calls __getToken_custom with additional fields to support Authorization code flow
      */
     public getCodeFlowToken(
-        request: AuthorizationCodeServer,
+        request: AuthorizationCode,
         requestOptions?: FernAuth.RequestOptions,
     ): core.HttpResponsePromise<Corti.GetTokenResponse> {
         return core.HttpResponsePromise.fromPromise(this.__getToken_custom({
@@ -117,17 +181,58 @@ export class Auth extends FernAuth {
     }
 
     /**
+     * Patch: PKCE-specific method
+     */
+    public getPkceFlowToken(
+        request: AuthorizationPkce,
+        requestOptions?: FernAuth.RequestOptions,
+    ): core.HttpResponsePromise<Corti.GetTokenResponse> {
+        const codeVerifier = request.codeVerifier || this.getCodeVerifier();
+
+        if (!codeVerifier) {
+            throw new ParseError([
+                {
+                    path: ['codeVerifier'],
+                    message: 'Code verifier was not provided and not found in localStorage.',
+                },
+            ]);
+        }
+
+        return core.HttpResponsePromise.fromPromise(this.__getToken_custom({
+            ...request,
+            codeVerifier: codeVerifier,
+            grantType: "authorization_code",
+        }, requestOptions));
+    }
+
+    /**
+     * Patch: ROPC-specific method
+     */
+    public getRopcFlowToken(
+        request: AuthorizationRopcServer,
+        requestOptions?: FernAuth.RequestOptions,
+    ): core.HttpResponsePromise<Corti.GetTokenResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__getToken_custom({
+            ...request,
+            grantType: "password",
+        }, requestOptions));
+    }
+
+    /**
      * Patch: copy of this.__getToken with patches
      */
     private async __getToken_custom(
         /**
-         * Patch: added additional fields to request to support Authorization code flow
+         * Patch: added additional fields to request to support Authorization PKCE and ROPC flow
          */
         request: Corti.AuthGetTokenRequest & Partial<{
-            grantType: "client_credentials" | "authorization_code" | "refresh_token";
+            grantType: "client_credentials" | "authorization_code" | "refresh_token" | "password";
             code: string;
             redirectUri: string;
             refreshToken: string;
+            codeVerifier: string;
+            username: string;
+            password: string;
         }>,
         requestOptions?: FernAuth.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.GetTokenResponse>> {
@@ -157,33 +262,7 @@ export class Auth extends FernAuth {
             /**
              * Patch: removed `requestType: "json"`, made body a URLSearchParams object
              */
-            body: new URLSearchParams({
-                ...serializers.AuthGetTokenRequest.jsonOrThrow(request, {
-                    unrecognizedObjectKeys: "strip",
-                    omitUndefined: true,
-                }),
-                scope: "openid",
-                /**
-                 * Patch: `grant_type` uses values from request or defaults to "client_credentials"
-                 */
-                grant_type: request.grantType || "client_credentials",
-                /**
-                 * Patch: added `code` and `redirect_uri` fields for Authorization code flow
-                 * Patch: added `refresh_token` field for Refresh token flow
-                 */
-                ...(request.grantType === "authorization_code"
-                    ? {
-                        code: request.code,
-                        redirect_uri: request.redirectUri
-                    }
-                    : {}),
-                ...(request.grantType === "refresh_token"
-                        ? {
-                            refresh_token: request.refreshToken,
-                        }
-                        : {}
-                ),
-            }),
+            body: buildTokenRequestBody(request),
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
             maxRetries: requestOptions?.maxRetries,
             abortSignal: requestOptions?.abortSignal,
@@ -240,4 +319,5 @@ export class Auth extends FernAuth {
             grantType: "refresh_token",
         }, requestOptions));
     }
+
 }
