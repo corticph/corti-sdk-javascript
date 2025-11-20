@@ -3,10 +3,11 @@
  */
 
 import * as errors from "../../errors/index.js";
+import * as Corti from "../index.js";
 import * as core from "../../core/index.js";
 
 export class InternalServerError extends errors.CortiError {
-    constructor(body?: unknown, rawResponse?: core.RawResponse) {
+    constructor(body: Corti.ErrorResponse, rawResponse?: core.RawResponse) {
         super({
             message: "InternalServerError",
             statusCode: 500,

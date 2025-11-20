@@ -115,7 +115,16 @@ export class Documents {
                         _response.rawResponse,
                     );
                 case 500:
-                    throw new Corti.InternalServerError(_response.error.body, _response.rawResponse);
+                    throw new Corti.InternalServerError(
+                        serializers.ErrorResponse.parseOrThrow(_response.error.body, {
+                            unrecognizedObjectKeys: "passthrough",
+                            allowUnrecognizedUnionMembers: true,
+                            allowUnrecognizedEnumValues: true,
+                            skipValidation: true,
+                            breadcrumbsPrefix: ["response"],
+                        }),
+                        _response.rawResponse,
+                    );
                 case 504:
                     throw new Corti.GatewayTimeoutError(
                         serializers.ErrorResponse.parseOrThrow(_response.error.body, {
@@ -245,7 +254,16 @@ export class Documents {
                         _response.rawResponse,
                     );
                 case 500:
-                    throw new Corti.InternalServerError(_response.error.body, _response.rawResponse);
+                    throw new Corti.InternalServerError(
+                        serializers.ErrorResponse.parseOrThrow(_response.error.body, {
+                            unrecognizedObjectKeys: "passthrough",
+                            allowUnrecognizedUnionMembers: true,
+                            allowUnrecognizedEnumValues: true,
+                            skipValidation: true,
+                            breadcrumbsPrefix: ["response"],
+                        }),
+                        _response.rawResponse,
+                    );
                 case 504:
                     throw new Corti.GatewayTimeoutError(
                         serializers.ErrorResponse.parseOrThrow(_response.error.body, {
@@ -359,7 +377,16 @@ export class Documents {
                         _response.rawResponse,
                     );
                 case 500:
-                    throw new Corti.InternalServerError(_response.error.body, _response.rawResponse);
+                    throw new Corti.InternalServerError(
+                        serializers.ErrorResponse.parseOrThrow(_response.error.body, {
+                            unrecognizedObjectKeys: "passthrough",
+                            allowUnrecognizedUnionMembers: true,
+                            allowUnrecognizedEnumValues: true,
+                            skipValidation: true,
+                            breadcrumbsPrefix: ["response"],
+                        }),
+                        _response.rawResponse,
+                    );
                 case 504:
                     throw new Corti.GatewayTimeoutError(
                         serializers.ErrorResponse.parseOrThrow(_response.error.body, {
@@ -464,7 +491,16 @@ export class Documents {
                 case 404:
                     throw new Corti.NotFoundError(_response.error.body, _response.rawResponse);
                 case 500:
-                    throw new Corti.InternalServerError(_response.error.body, _response.rawResponse);
+                    throw new Corti.InternalServerError(
+                        serializers.ErrorResponse.parseOrThrow(_response.error.body, {
+                            unrecognizedObjectKeys: "passthrough",
+                            allowUnrecognizedUnionMembers: true,
+                            allowUnrecognizedEnumValues: true,
+                            skipValidation: true,
+                            breadcrumbsPrefix: ["response"],
+                        }),
+                        _response.rawResponse,
+                    );
                 case 504:
                     throw new Corti.GatewayTimeoutError(
                         serializers.ErrorResponse.parseOrThrow(_response.error.body, {
@@ -587,7 +623,16 @@ export class Documents {
                         _response.rawResponse,
                     );
                 case 500:
-                    throw new Corti.InternalServerError(_response.error.body, _response.rawResponse);
+                    throw new Corti.InternalServerError(
+                        serializers.ErrorResponse.parseOrThrow(_response.error.body, {
+                            unrecognizedObjectKeys: "passthrough",
+                            allowUnrecognizedUnionMembers: true,
+                            allowUnrecognizedEnumValues: true,
+                            skipValidation: true,
+                            breadcrumbsPrefix: ["response"],
+                        }),
+                        _response.rawResponse,
+                    );
                 case 504:
                     throw new Corti.GatewayTimeoutError(
                         serializers.ErrorResponse.parseOrThrow(_response.error.body, {

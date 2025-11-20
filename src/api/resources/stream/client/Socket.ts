@@ -5,6 +5,7 @@
 import * as core from "../../../../core/index.js";
 import * as Corti from "../../../index.js";
 import { StreamConfigMessage } from "../../../../serialization/types/StreamConfigMessage.js";
+import { StreamFlushMessage } from "../../../../serialization/types/StreamFlushMessage.js";
 import { StreamEndMessage } from "../../../../serialization/types/StreamEndMessage.js";
 import { fromJson } from "../../../../core/json.js";
 import * as serializers from "../../../../serialization/index.js";
@@ -18,6 +19,7 @@ export declare namespace StreamSocket {
         | Corti.StreamConfigStatusMessage
         | Corti.StreamTranscriptMessage
         | Corti.StreamFactsMessage
+        | Corti.StreamFlushedMessage
         | Corti.StreamEndedMessage
         | Corti.StreamUsageMessage
         | Corti.StreamErrorMessage;
@@ -109,6 +111,18 @@ export class StreamSocket {
                 skipValidation: true,
                 omitUndefined: true,
             });
+        this.socket.send(JSON.stringify(jsonPayload));
+    }
+
+    public sendFlush(message: Corti.StreamFlushMessage): void {
+        this.assertSocketIsOpen();
+        const jsonPayload = StreamFlushMessage.jsonOrThrow(message, {
+            unrecognizedObjectKeys: "passthrough",
+            allowUnrecognizedUnionMembers: true,
+            allowUnrecognizedEnumValues: true,
+            skipValidation: true,
+            omitUndefined: true,
+        });
         this.socket.send(JSON.stringify(jsonPayload));
     }
 
