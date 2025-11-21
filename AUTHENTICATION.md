@@ -222,7 +222,7 @@ if (code) {
         code: code,
     });
 
-    console.log('Token Response: ', tokenResponse);
+    const { accessToken, refreshToken } = tokenResponse;
 }
 ```
 
@@ -362,8 +362,7 @@ if (code) {
         codeVerifier: codeVerifier,
     });
 
-    // Store tokens securely
-    console.log("Token Response: ", tokenResponse)
+    const { accessToken, refreshToken } = tokenResponse;
 }
 ```
 
