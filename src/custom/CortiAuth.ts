@@ -67,11 +67,11 @@ interface AuthorizationRopcServer {
 
 interface AuthorizationRefreshServer {
     clientId: string;
-    clientSecret: string;
     /**
-     * Patch: added optional refreshToken for ROPC and PKCE flow
+     * Patch: added optional clientSecret for ROPC and PKCE flow
      */
-    refreshToken?: string;
+    clientSecret?: string;
+    refreshToken: string;
 }
 
 interface Options {
