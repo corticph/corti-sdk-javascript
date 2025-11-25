@@ -46,4 +46,4 @@ Attach screenshots, recordings, or logs that help clarify the problem.
 
 ## 8. Additional Context
 
-Anything else that might be useful for diagnosing or fixing the issue. 
+Anything else that might be useful for diagnosing or fixing the issue.

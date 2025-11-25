@@ -73,16 +73,10 @@ export function resolveClientOptions(options: CortiClient.Options): ResolvedClie
     })();
 
     return {
-        tenantName:
-            options.tenantName ||
-            tokenResponsePromise.then(({ tenantName }) => tenantName),
+        tenantName: options.tenantName || tokenResponsePromise.then(({ tenantName }) => tenantName),
         environment:
             options.environment ||
-            tokenResponsePromise.then(({ environment }) =>
-                core.Supplier.get(getEnvironment(environment))
-            ),
-        initialTokenResponse: tokenResponsePromise.then(
-            (result) => result.tokenResponse
-        ),
+            tokenResponsePromise.then(({ environment }) => core.Supplier.get(getEnvironment(environment))),
+        initialTokenResponse: tokenResponsePromise.then((result) => result.tokenResponse),
     };
 }

@@ -1,15 +1,16 @@
 import * as Corti from "../../api/index.js";
 import * as serializers from "../../serialization/index.js";
 
-export type TokenRequest = Corti.AuthGetTokenRequest & Partial<{
-    grantType: "client_credentials" | "authorization_code" | "refresh_token" | "password";
-    code: string;
-    redirectUri: string;
-    refreshToken: string;
-    codeVerifier: string;
-    username: string;
-    password: string;
-}>;
+export type TokenRequest = Corti.AuthGetTokenRequest &
+    Partial<{
+        grantType: "client_credentials" | "authorization_code" | "refresh_token" | "password";
+        code: string;
+        redirectUri: string;
+        refreshToken: string;
+        codeVerifier: string;
+        username: string;
+        password: string;
+    }>;
 
 export const buildTokenRequestBody = (request: TokenRequest): URLSearchParams => {
     type TokenRequestBody = Record<string, string>;
@@ -56,4 +57,3 @@ export const buildTokenRequestBody = (request: TokenRequest): URLSearchParams =>
 
     return new URLSearchParams(tokenRequestBody);
 };
-

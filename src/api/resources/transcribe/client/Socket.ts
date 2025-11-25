@@ -5,6 +5,7 @@
 import * as core from "../../../../core/index.js";
 import * as Corti from "../../../index.js";
 import { TranscribeConfigMessage } from "../../../../serialization/types/TranscribeConfigMessage.js";
+import { TranscribeFlushMessage } from "../../../../serialization/types/TranscribeFlushMessage.js";
 import { TranscribeEndMessage } from "../../../../serialization/types/TranscribeEndMessage.js";
 import { fromJson } from "../../../../core/json.js";
 import * as serializers from "../../../../serialization/index.js";
@@ -17,6 +18,7 @@ export declare namespace TranscribeSocket {
     export type Response =
         | Corti.TranscribeConfigStatusMessage
         | Corti.TranscribeUsageMessage
+        | Corti.TranscribeFlushedMessage
         | Corti.TranscribeEndedMessage
         | Corti.TranscribeErrorMessage
         | Corti.TranscribeTranscriptMessage
@@ -100,15 +102,25 @@ export class TranscribeSocket {
 
     public sendAudio(message: string): void {
         this.assertSocketIsOpen();
-        const jsonPayload = core.serialization
-            .string()
-            .jsonOrThrow(message, {
-                unrecognizedObjectKeys: "passthrough",
-                allowUnrecognizedUnionMembers: true,
-                allowUnrecognizedEnumValues: true,
-                skipValidation: true,
-                omitUndefined: true,
-            });
+        const jsonPayload = core.serialization.string().jsonOrThrow(message, {
+            unrecognizedObjectKeys: "passthrough",
+            allowUnrecognizedUnionMembers: true,
+            allowUnrecognizedEnumValues: true,
+            skipValidation: true,
+            omitUndefined: true,
+        });
+        this.socket.send(JSON.stringify(jsonPayload));
+    }
+
+    public sendFlush(message: Corti.TranscribeFlushMessage): void {
+        this.assertSocketIsOpen();
+        const jsonPayload = TranscribeFlushMessage.jsonOrThrow(message, {
+            unrecognizedObjectKeys: "passthrough",
+            allowUnrecognizedUnionMembers: true,
+            allowUnrecognizedEnumValues: true,
+            skipValidation: true,
+            omitUndefined: true,
+        });
         this.socket.send(JSON.stringify(jsonPayload));
     }
 

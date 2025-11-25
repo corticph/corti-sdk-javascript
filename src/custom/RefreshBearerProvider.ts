@@ -12,13 +12,17 @@ export type ExpectedTokenResponse = Omit<api.GetTokenResponse, "tokenType" | "ex
 };
 type RefreshAccessTokenFunction = (refreshToken?: string) => Promise<ExpectedTokenResponse> | ExpectedTokenResponse;
 
-export type BearerOptions = Partial<Omit<api.GetTokenResponse, 'accessToken'>> & ({
-    refreshAccessToken?: RefreshAccessTokenFunction;
-    accessToken: string;
-} | {
-    refreshAccessToken: RefreshAccessTokenFunction;
-    accessToken?: string;
-});
+export type BearerOptions = Partial<Omit<api.GetTokenResponse, "accessToken">> &
+    (
+        | {
+              refreshAccessToken?: RefreshAccessTokenFunction;
+              accessToken: string;
+          }
+        | {
+              refreshAccessToken: RefreshAccessTokenFunction;
+              accessToken?: string;
+          }
+    );
 
 export class RefreshBearerProvider {
     private readonly BUFFER_IN_MINUTES = 2;

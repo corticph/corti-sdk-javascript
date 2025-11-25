@@ -1,372 +1,397 @@
-import { CortiClient } from '../../src';
-import { faker } from '@faker-js/faker';
-import { 
-  createTestCortiClient, 
-  createTestAgent,
-  cleanupAgents,
-  setupConsoleWarnSpy 
-} from './testUtils';
+import { CortiClient } from "../../src";
+import { faker } from "@faker-js/faker";
+import { createTestCortiClient, createTestAgent, cleanupAgents, setupConsoleWarnSpy } from "./testUtils";
 
-describe('cortiClient.agents.messageSend', () => {
-  let cortiClient: CortiClient;
-  let consoleWarnSpy: jest.SpyInstance;
-  let createdAgentIds: string[] = [];
+describe("cortiClient.agents.messageSend", () => {
+    let cortiClient: CortiClient;
+    let consoleWarnSpy: jest.SpyInstance;
+    let createdAgentIds: string[] = [];
 
-  beforeAll(() => {
-    cortiClient = createTestCortiClient();
-  });
-
-  beforeEach(() => {
-    consoleWarnSpy = setupConsoleWarnSpy();
-    createdAgentIds = [];
-  });
-
-  afterEach(async () => {
-    consoleWarnSpy.mockRestore();
-    await cleanupAgents(cortiClient, createdAgentIds);
-    createdAgentIds = [];
-  });
-
-  describe('should send message with minimal fields', () => {
-    it('should send message with only required fields without errors or warnings', async () => {
-      expect.assertions(2);
-
-      const agent = await createTestAgent(cortiClient, createdAgentIds);
-
-      const result = await cortiClient.agents.messageSend(agent.id, {
-        message: {
-          role: 'user',
-          parts: [{
-            kind: 'text',
-            text: faker.lorem.sentence(),
-          }],
-          messageId: faker.string.uuid(),
-          kind: 'message',
-        },
-      });
-
-      expect(result).toBeDefined();
-      expect(consoleWarnSpy).not.toHaveBeenCalled();
+    beforeAll(() => {
+        cortiClient = createTestCortiClient();
     });
 
-    it('should send message with agent role without errors or warnings', async () => {
-      expect.assertions(2);
-
-      const agent = await createTestAgent(cortiClient, createdAgentIds);
-
-      const result = await cortiClient.agents.messageSend(agent.id, {
-        message: {
-          role: 'agent',
-          parts: [{
-            kind: 'text',
-            text: faker.lorem.sentence(),
-          }],
-          messageId: faker.string.uuid(),
-          kind: 'message',
-        },
-      });
-
-      expect(result).toBeDefined();
-      expect(consoleWarnSpy).not.toHaveBeenCalled();
-    });
-  });
-
-  describe('should send message with all optional fields', () => {
-    it('should send message with metadata without errors or warnings', async () => {
-      expect.assertions(2);
-
-      const agent = await createTestAgent(cortiClient, createdAgentIds);
-
-      const result = await cortiClient.agents.messageSend(agent.id, {
-        message: {
-          role: 'user',
-          parts: [{
-            kind: 'text',
-            text: faker.lorem.sentence(),
-          }],
-          messageId: faker.string.uuid(),
-          kind: 'message',
-          metadata: {
-            testKey: faker.lorem.word(),
-          },
-        },
-      });
-
-      expect(result).toBeDefined();
-      expect(consoleWarnSpy).not.toHaveBeenCalled();
+    beforeEach(() => {
+        consoleWarnSpy = setupConsoleWarnSpy();
+        createdAgentIds = [];
     });
 
-    it('should send message with extensions without errors or warnings', async () => {
-      expect.assertions(2);
-
-      const agent = await createTestAgent(cortiClient, createdAgentIds);
-
-      const result = await cortiClient.agents.messageSend(agent.id, {
-        message: {
-          role: 'user',
-          parts: [{
-            kind: 'text',
-            text: faker.lorem.sentence(),
-          }],
-          messageId: faker.string.uuid(),
-          kind: 'message',
-          extensions: [faker.lorem.word()],
-        },
-      });
-
-      expect(result).toBeDefined();
-      expect(consoleWarnSpy).not.toHaveBeenCalled();
+    afterEach(async () => {
+        consoleWarnSpy.mockRestore();
+        await cleanupAgents(cortiClient, createdAgentIds);
+        createdAgentIds = [];
     });
 
-    it('should send message with taskId and contextId without errors or warnings', async () => {
-      expect.assertions(2);
+    describe("should send message with minimal fields", () => {
+        it("should send message with only required fields without errors or warnings", async () => {
+            expect.assertions(2);
 
-      const agent = await createTestAgent(cortiClient, createdAgentIds);
+            const agent = await createTestAgent(cortiClient, createdAgentIds);
 
-      const firstMessage = await cortiClient.agents.messageSend(agent.id, {
-        message: {
-          role: 'user',
-          parts: [{
-            kind: 'text',
-            text: faker.lorem.sentence(),
-          }],
-          messageId: faker.string.uuid(),
-          kind: 'message',
-        },
-      });
+            const result = await cortiClient.agents.messageSend(agent.id, {
+                message: {
+                    role: "user",
+                    parts: [
+                        {
+                            kind: "text",
+                            text: faker.lorem.sentence(),
+                        },
+                    ],
+                    messageId: faker.string.uuid(),
+                    kind: "message",
+                },
+            });
 
-      const taskId = firstMessage.task?.id;
-      const contextId = firstMessage.task?.contextId;
+            expect(result).toBeDefined();
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
 
-      const result = await cortiClient.agents.messageSend(agent.id, {
-        message: {
-          role: 'user',
-          parts: [{
-            kind: 'text',
-            text: faker.lorem.sentence(),
-          }],
-          messageId: faker.string.uuid(),
-          kind: 'message',
-          taskId: taskId,
-          contextId: contextId,
-        },
-      });
+        it("should send message with agent role without errors or warnings", async () => {
+            expect.assertions(2);
 
-      expect(result).toBeDefined();
-      expect(consoleWarnSpy).not.toHaveBeenCalled();
+            const agent = await createTestAgent(cortiClient, createdAgentIds);
+
+            const result = await cortiClient.agents.messageSend(agent.id, {
+                message: {
+                    role: "agent",
+                    parts: [
+                        {
+                            kind: "text",
+                            text: faker.lorem.sentence(),
+                        },
+                    ],
+                    messageId: faker.string.uuid(),
+                    kind: "message",
+                },
+            });
+
+            expect(result).toBeDefined();
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
     });
 
-    it('should send message with referenceTaskIds without errors or warnings', async () => {
-      expect.assertions(2);
+    describe("should send message with all optional fields", () => {
+        it("should send message with metadata without errors or warnings", async () => {
+            expect.assertions(2);
 
-      const agent = await createTestAgent(cortiClient, createdAgentIds);
+            const agent = await createTestAgent(cortiClient, createdAgentIds);
 
-      const result = await cortiClient.agents.messageSend(agent.id, {
-        message: {
-          role: 'user',
-          parts: [{
-            kind: 'text',
-            text: faker.lorem.sentence(),
-          }],
-          messageId: faker.string.uuid(),
-          kind: 'message',
-          referenceTaskIds: [faker.string.uuid()],
-        },
-      });
+            const result = await cortiClient.agents.messageSend(agent.id, {
+                message: {
+                    role: "user",
+                    parts: [
+                        {
+                            kind: "text",
+                            text: faker.lorem.sentence(),
+                        },
+                    ],
+                    messageId: faker.string.uuid(),
+                    kind: "message",
+                    metadata: {
+                        testKey: faker.lorem.word(),
+                    },
+                },
+            });
 
-      expect(result).toBeDefined();
-      expect(consoleWarnSpy).not.toHaveBeenCalled();
+            expect(result).toBeDefined();
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
+
+        it("should send message with extensions without errors or warnings", async () => {
+            expect.assertions(2);
+
+            const agent = await createTestAgent(cortiClient, createdAgentIds);
+
+            const result = await cortiClient.agents.messageSend(agent.id, {
+                message: {
+                    role: "user",
+                    parts: [
+                        {
+                            kind: "text",
+                            text: faker.lorem.sentence(),
+                        },
+                    ],
+                    messageId: faker.string.uuid(),
+                    kind: "message",
+                    extensions: [faker.lorem.word()],
+                },
+            });
+
+            expect(result).toBeDefined();
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
+
+        it("should send message with taskId and contextId without errors or warnings", async () => {
+            expect.assertions(2);
+
+            const agent = await createTestAgent(cortiClient, createdAgentIds);
+
+            const firstMessage = await cortiClient.agents.messageSend(agent.id, {
+                message: {
+                    role: "user",
+                    parts: [
+                        {
+                            kind: "text",
+                            text: faker.lorem.sentence(),
+                        },
+                    ],
+                    messageId: faker.string.uuid(),
+                    kind: "message",
+                },
+            });
+
+            const taskId = firstMessage.task?.id;
+            const contextId = firstMessage.task?.contextId;
+
+            const result = await cortiClient.agents.messageSend(agent.id, {
+                message: {
+                    role: "user",
+                    parts: [
+                        {
+                            kind: "text",
+                            text: faker.lorem.sentence(),
+                        },
+                    ],
+                    messageId: faker.string.uuid(),
+                    kind: "message",
+                    taskId: taskId,
+                    contextId: contextId,
+                },
+            });
+
+            expect(result).toBeDefined();
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
+
+        it("should send message with referenceTaskIds without errors or warnings", async () => {
+            expect.assertions(2);
+
+            const agent = await createTestAgent(cortiClient, createdAgentIds);
+
+            const result = await cortiClient.agents.messageSend(agent.id, {
+                message: {
+                    role: "user",
+                    parts: [
+                        {
+                            kind: "text",
+                            text: faker.lorem.sentence(),
+                        },
+                    ],
+                    messageId: faker.string.uuid(),
+                    kind: "message",
+                    referenceTaskIds: [faker.string.uuid()],
+                },
+            });
+
+            expect(result).toBeDefined();
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
+
+        it("should send message with all optional parameters without errors or warnings", async () => {
+            expect.assertions(2);
+
+            const agent = await createTestAgent(cortiClient, createdAgentIds);
+
+            const firstMessage = await cortiClient.agents.messageSend(agent.id, {
+                message: {
+                    role: "user",
+                    parts: [
+                        {
+                            kind: "text",
+                            text: faker.lorem.sentence(),
+                        },
+                    ],
+                    messageId: faker.string.uuid(),
+                    kind: "message",
+                },
+            });
+
+            const taskId = firstMessage.task?.id;
+            const contextId = firstMessage.task?.contextId;
+
+            const result = await cortiClient.agents.messageSend(agent.id, {
+                message: {
+                    role: "user",
+                    parts: [
+                        {
+                            kind: "text",
+                            text: faker.lorem.sentence(),
+                        },
+                    ],
+                    messageId: faker.string.uuid(),
+                    kind: "message",
+                    metadata: {
+                        testKey: faker.lorem.word(),
+                    },
+                    extensions: [faker.lorem.word()],
+                    taskId: taskId,
+                    contextId: contextId,
+                    referenceTaskIds: [faker.string.uuid()],
+                },
+                configuration: {
+                    blocking: true,
+                },
+                metadata: {
+                    testMetadata: faker.lorem.word(),
+                },
+            });
+
+            expect(result).toBeDefined();
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
     });
 
-    it('should send message with all optional parameters without errors or warnings', async () => {
-      expect.assertions(2);
+    describe("should handle errors when required parameters are missing", () => {
+        it("should throw error when message is missing", async () => {
+            expect.assertions(1);
 
-      const agent = await createTestAgent(cortiClient, createdAgentIds);
+            const agent = await createTestAgent(cortiClient, createdAgentIds);
 
-      const firstMessage = await cortiClient.agents.messageSend(agent.id, {
-        message: {
-          role: 'user',
-          parts: [{
-            kind: 'text',
-            text: faker.lorem.sentence(),
-          }],
-          messageId: faker.string.uuid(),
-          kind: 'message',
-        },
-      });
+            await expect(cortiClient.agents.messageSend(agent.id, {} as any)).rejects.toThrow(
+                'Missing required key "message"',
+            );
+        });
 
-      const taskId = firstMessage.task?.id;
-      const contextId = firstMessage.task?.contextId;
+        it("should throw error when role is missing", async () => {
+            expect.assertions(1);
 
-      const result = await cortiClient.agents.messageSend(agent.id, {
-        message: {
-          role: 'user',
-          parts: [{
-            kind: 'text',
-            text: faker.lorem.sentence(),
-          }],
-          messageId: faker.string.uuid(),
-          kind: 'message',
-          metadata: {
-            testKey: faker.lorem.word(),
-          },
-          extensions: [faker.lorem.word()],
-          taskId: taskId,
-          contextId: contextId,
-          referenceTaskIds: [faker.string.uuid()],
-        },
-        configuration: {
-          blocking: true,
-        },
-        metadata: {
-          testMetadata: faker.lorem.word(),
-        },
-      });
+            const agent = await createTestAgent(cortiClient, createdAgentIds);
 
-      expect(result).toBeDefined();
-      expect(consoleWarnSpy).not.toHaveBeenCalled();
-    });
-  });
+            await expect(
+                cortiClient.agents.messageSend(agent.id, {
+                    message: {
+                        parts: [
+                            {
+                                kind: "text",
+                                text: faker.lorem.sentence(),
+                            },
+                        ],
+                        messageId: faker.string.uuid(),
+                        kind: "message",
+                    } as any,
+                }),
+            ).rejects.toThrow('Missing required key "role"');
+        });
 
-  describe('should handle errors when required parameters are missing', () => {
-    it('should throw error when message is missing', async () => {
-      expect.assertions(1);
+        it("should throw error when parts is missing", async () => {
+            expect.assertions(1);
 
-      const agent = await createTestAgent(cortiClient, createdAgentIds);
+            const agent = await createTestAgent(cortiClient, createdAgentIds);
 
-      await expect(
-        cortiClient.agents.messageSend(agent.id, {} as any)
-      ).rejects.toThrow('Missing required key "message"');
-    });
+            await expect(
+                cortiClient.agents.messageSend(agent.id, {
+                    message: {
+                        role: "user",
+                        messageId: faker.string.uuid(),
+                        kind: "message",
+                    } as any,
+                }),
+            ).rejects.toThrow('Missing required key "parts"');
+        });
 
-    it('should throw error when role is missing', async () => {
-      expect.assertions(1);
+        it("should throw error when messageId is missing", async () => {
+            expect.assertions(1);
 
-      const agent = await createTestAgent(cortiClient, createdAgentIds);
+            const agent = await createTestAgent(cortiClient, createdAgentIds);
 
-      await expect(
-        cortiClient.agents.messageSend(agent.id, {
-          message: {
-            parts: [{
-              kind: 'text',
-              text: faker.lorem.sentence(),
-            }],
-            messageId: faker.string.uuid(),
-            kind: 'message',
-          } as any,
-        })
-      ).rejects.toThrow('Missing required key "role"');
-    });
+            await expect(
+                cortiClient.agents.messageSend(agent.id, {
+                    message: {
+                        role: "user",
+                        parts: [
+                            {
+                                kind: "text",
+                                text: faker.lorem.sentence(),
+                            },
+                        ],
+                        kind: "message",
+                    } as any,
+                }),
+            ).rejects.toThrow('Missing required key "messageId"');
+        });
 
-    it('should throw error when parts is missing', async () => {
-      expect.assertions(1);
+        it("should throw error when kind is missing", async () => {
+            expect.assertions(1);
 
-      const agent = await createTestAgent(cortiClient, createdAgentIds);
+            const agent = await createTestAgent(cortiClient, createdAgentIds);
 
-      await expect(
-        cortiClient.agents.messageSend(agent.id, {
-          message: {
-            role: 'user',
-            messageId: faker.string.uuid(),
-            kind: 'message',
-          } as any,
-        })
-      ).rejects.toThrow('Missing required key "parts"');
-    });
+            await expect(
+                cortiClient.agents.messageSend(agent.id, {
+                    message: {
+                        role: "user",
+                        parts: [
+                            {
+                                kind: "text",
+                                text: faker.lorem.sentence(),
+                            },
+                        ],
+                        messageId: faker.string.uuid(),
+                    } as any,
+                }),
+            ).rejects.toThrow('Missing required key "kind"');
+        });
 
-    it('should throw error when messageId is missing', async () => {
-      expect.assertions(1);
+        it("should throw error when text is missing in text part", async () => {
+            expect.assertions(1);
 
-      const agent = await createTestAgent(cortiClient, createdAgentIds);
+            const agent = await createTestAgent(cortiClient, createdAgentIds);
 
-      await expect(
-        cortiClient.agents.messageSend(agent.id, {
-          message: {
-            role: 'user',
-            parts: [{
-              kind: 'text',
-              text: faker.lorem.sentence(),
-            }],
-            kind: 'message',
-          } as any,
-        })
-      ).rejects.toThrow('Missing required key "messageId"');
+            await expect(
+                cortiClient.agents.messageSend(agent.id, {
+                    message: {
+                        role: "user",
+                        parts: [
+                            {
+                                kind: "text",
+                            } as any,
+                        ],
+                        messageId: faker.string.uuid(),
+                        kind: "message",
+                    },
+                }),
+            ).rejects.toThrow('Missing required key "text"');
+        });
     });
 
-    it('should throw error when kind is missing', async () => {
-      expect.assertions(1);
+    describe("should throw error when invalid parameters are provided", () => {
+        it("should throw error when agent ID is invalid format", async () => {
+            expect.assertions(1);
 
-      const agent = await createTestAgent(cortiClient, createdAgentIds);
+            await expect(
+                cortiClient.agents.messageSend("invalid-uuid", {
+                    message: {
+                        role: "user",
+                        parts: [
+                            {
+                                kind: "text",
+                                text: faker.lorem.sentence(),
+                            },
+                        ],
+                        messageId: faker.string.uuid(),
+                        kind: "message",
+                    },
+                }),
+            ).rejects.toThrow("Status code: 400");
+        });
 
-      await expect(
-        cortiClient.agents.messageSend(agent.id, {
-          message: {
-            role: 'user',
-            parts: [{
-              kind: 'text',
-              text: faker.lorem.sentence(),
-            }],
-            messageId: faker.string.uuid(),
-          } as any,
-        })
-      ).rejects.toThrow('Missing required key "kind"');
+        it("should throw error when agent ID does not exist", async () => {
+            expect.assertions(1);
+
+            await expect(
+                cortiClient.agents.messageSend(faker.string.uuid(), {
+                    message: {
+                        role: "user",
+                        parts: [
+                            {
+                                kind: "text",
+                                text: faker.lorem.sentence(),
+                            },
+                        ],
+                        messageId: faker.string.uuid(),
+                        kind: "message",
+                    },
+                }),
+            ).rejects.toThrow("Status code: 404");
+        });
     });
-
-    it('should throw error when text is missing in text part', async () => {
-      expect.assertions(1);
-
-      const agent = await createTestAgent(cortiClient, createdAgentIds);
-
-      await expect(
-        cortiClient.agents.messageSend(agent.id, {
-          message: {
-            role: 'user',
-            parts: [{
-              kind: 'text',
-            } as any],
-            messageId: faker.string.uuid(),
-            kind: 'message',
-          },
-        })
-      ).rejects.toThrow('Missing required key "text"');
-    });
-  });
-
-  describe('should throw error when invalid parameters are provided', () => {
-    it('should throw error when agent ID is invalid format', async () => {
-      expect.assertions(1);
-
-      await expect(
-        cortiClient.agents.messageSend('invalid-uuid', {
-          message: {
-            role: 'user',
-            parts: [{
-              kind: 'text',
-              text: faker.lorem.sentence(),
-            }],
-            messageId: faker.string.uuid(),
-            kind: 'message',
-          },
-        })
-      ).rejects.toThrow('Status code: 400');
-    });
-
-    it('should throw error when agent ID does not exist', async () => {
-      expect.assertions(1);
-
-      await expect(
-        cortiClient.agents.messageSend(faker.string.uuid(), {
-          message: {
-            role: 'user',
-            parts: [{
-              kind: 'text',
-              text: faker.lorem.sentence(),
-            }],
-            messageId: faker.string.uuid(),
-            kind: 'message',
-          },
-        })
-      ).rejects.toThrow('Status code: 404');
-    });
-  });
 });

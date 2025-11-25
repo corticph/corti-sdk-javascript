@@ -21,7 +21,7 @@
  */
 export function decodeToken(token: string) {
     // Validate the token structure (should contain at least header and payload parts)
-    const parts = token ? token.split('.') : '';
+    const parts = token ? token.split(".") : "";
 
     if (parts.length < 2) {
         return null;
@@ -31,16 +31,16 @@ export function decodeToken(token: string) {
     const base64Url = parts[1];
 
     // Replace URL-safe characters to match standard base64 encoding
-    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
 
     // Decode the base64 string into a JSON string
     let jsonPayload: string;
     try {
         jsonPayload = decodeURIComponent(
             atob(base64)
-                .split('')
-                .map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
-                .join(''),
+                .split("")
+                .map((c) => "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2))
+                .join(""),
         );
     } catch (error) {
         return null;
@@ -64,15 +64,12 @@ export function decodeToken(token: string) {
     // Regex to extract environment and tenant from issuer URL:
     // Expected format: https://keycloak.{environment}.corti.app/realms/{tenant}
     // Note: Unnecessary escapes in character classes have been removed.
-    const regex =
-        /^https:\/\/(keycloak|auth)\.([^.]+)\.corti\.app\/realms\/([^/]+)/;
+    const regex = /^https:\/\/(keycloak|auth)\.([^.]+)\.corti\.app\/realms\/([^/]+)/;
     const match = issuerUrl.match(regex);
 
     // If the issuer URL matches the expected pattern, return the extracted values along with the token
     if (match) {
-        const expiresAt = tokenDetails.exp && typeof tokenDetails.exp === 'number'
-            ? tokenDetails.exp
-            : undefined;
+        const expiresAt = tokenDetails.exp && typeof tokenDetails.exp === "number" ? tokenDetails.exp : undefined;
 
         return {
             environment: match[2],
