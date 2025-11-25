@@ -11,8 +11,8 @@ jobs:
 
             - name: Set up node
               uses: actions/setup-node@v4
-              with:
-                  node-version: "18.18.0"
+#              with:
+#                  node-version: "18.18.0"
 
             - name: Setup yarn
               run: npm install -g yarn
@@ -31,8 +31,8 @@ jobs:
 
             - name: Set up node
               uses: actions/setup-node@v4
-              with:
-                  node-version: "18.18.0"
+#              with:
+#                  node-version: "18.18.0"
 
             - name: Setup yarn
               run: npm install -g yarn
@@ -58,8 +58,8 @@ jobs:
 
             - name: Set up node
               uses: actions/setup-node@v4
-              with:
-                  node-version: "18.18.0"
+#              with:
+#                  node-version: "18.18.0"
 
             - name: Setup yarn
               run: npm install -g yarn
