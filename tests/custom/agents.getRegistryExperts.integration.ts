@@ -1,67 +1,64 @@
-import { CortiClient } from '../../src';
-import { faker } from '@faker-js/faker';
-import { 
-  createTestCortiClient, 
-  setupConsoleWarnSpy 
-} from './testUtils';
+import { CortiClient } from "../../src";
+import { faker } from "@faker-js/faker";
+import { createTestCortiClient, setupConsoleWarnSpy } from "./testUtils";
 
 // FIXME : Skipping until registry experts functionality is restored
-describe.skip('cortiClient.agents.getRegistryExperts', () => {
-  let cortiClient: CortiClient;
-  let consoleWarnSpy: jest.SpyInstance;
+describe.skip("cortiClient.agents.getRegistryExperts", () => {
+    let cortiClient: CortiClient;
+    let consoleWarnSpy: jest.SpyInstance;
 
-  beforeAll(() => {
-    cortiClient = createTestCortiClient();
-  });
-
-  beforeEach(() => {
-    consoleWarnSpy = setupConsoleWarnSpy();
-  });
-
-  afterEach(() => {
-    consoleWarnSpy.mockRestore();
-  });
-
-  it('should return registry experts without errors or warnings', async () => {
-    expect.assertions(2);
-
-    const result = await cortiClient.agents.getRegistryExperts();
-
-    expect(result).toBeDefined();
-    expect(consoleWarnSpy).not.toHaveBeenCalled();
-  });
-
-  it('should return registry experts with limit parameter without errors or warnings', async () => {
-    expect.assertions(2);
-
-    const result = await cortiClient.agents.getRegistryExperts({
-      limit: faker.number.int({ min: 1, max: 100 }),
+    beforeAll(() => {
+        cortiClient = createTestCortiClient();
     });
 
-    expect(result).toBeDefined();
-    expect(consoleWarnSpy).not.toHaveBeenCalled();
-  });
-
-  it('should return registry experts with offset parameter without errors or warnings', async () => {
-    expect.assertions(2);
-
-    const result = await cortiClient.agents.getRegistryExperts({
-      offset: faker.number.int({ min: 0, max: 100 }),
+    beforeEach(() => {
+        consoleWarnSpy = setupConsoleWarnSpy();
     });
 
-    expect(result).toBeDefined();
-    expect(consoleWarnSpy).not.toHaveBeenCalled();
-  });
-
-  it('should return registry experts with all optional parameters without errors or warnings', async () => {
-    expect.assertions(2);
-
-    const result = await cortiClient.agents.getRegistryExperts({
-      limit: faker.number.int({ min: 1, max: 100 }),
-      offset: faker.number.int({ min: 0, max: 100 }),
+    afterEach(() => {
+        consoleWarnSpy.mockRestore();
     });
 
-    expect(result).toBeDefined();
-    expect(consoleWarnSpy).not.toHaveBeenCalled();
-  });
+    it("should return registry experts without errors or warnings", async () => {
+        expect.assertions(2);
+
+        const result = await cortiClient.agents.getRegistryExperts();
+
+        expect(result).toBeDefined();
+        expect(consoleWarnSpy).not.toHaveBeenCalled();
+    });
+
+    it("should return registry experts with limit parameter without errors or warnings", async () => {
+        expect.assertions(2);
+
+        const result = await cortiClient.agents.getRegistryExperts({
+            limit: faker.number.int({ min: 1, max: 100 }),
+        });
+
+        expect(result).toBeDefined();
+        expect(consoleWarnSpy).not.toHaveBeenCalled();
+    });
+
+    it("should return registry experts with offset parameter without errors or warnings", async () => {
+        expect.assertions(2);
+
+        const result = await cortiClient.agents.getRegistryExperts({
+            offset: faker.number.int({ min: 0, max: 100 }),
+        });
+
+        expect(result).toBeDefined();
+        expect(consoleWarnSpy).not.toHaveBeenCalled();
+    });
+
+    it("should return registry experts with all optional parameters without errors or warnings", async () => {
+        expect.assertions(2);
+
+        const result = await cortiClient.agents.getRegistryExperts({
+            limit: faker.number.int({ min: 1, max: 100 }),
+            offset: faker.number.int({ min: 0, max: 100 }),
+        });
+
+        expect(result).toBeDefined();
+        expect(consoleWarnSpy).not.toHaveBeenCalled();
+    });
 });

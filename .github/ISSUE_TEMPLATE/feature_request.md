@@ -45,4 +45,4 @@ Have you tried any workarounds or alternative solutions?
 
 ## 8. Additional Context / Mockups
 
-Attach diagrams, mockups, references, or similar feature links if available. 
+Attach diagrams, mockups, references, or similar feature links if available.

@@ -3,27 +3,27 @@ name: integration-tests
 on: [pull_request]
 
 concurrency:
-  group: integration-tests
-  cancel-in-progress: true
+    group: integration-tests
+    cancel-in-progress: true
 
 jobs:
-  integration-tests:
-    runs-on: ubuntu-latest
+    integration-tests:
+        runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
+        steps:
+            - name: Checkout repo
+              uses: actions/checkout@v4
 
-      - name: Set up node
-        uses: actions/setup-node@v3
+            - name: Set up node
+              uses: actions/setup-node@v3
 
-      - name: Install dependencies
-        run: yarn
+            - name: Install dependencies
+              run: yarn
 
-      - name: Run integration tests
-        run: yarn jest --config jest.integration.config.mjs
-        env:
-          CORTI_ENVIRONMENT: ${{ vars.CORTI_ENVIRONMENT }}
-          CORTI_TENANT_NAME: ${{ vars.CORTI_TENANT_NAME }}
-          CORTI_CLIENT_ID: ${{ vars.CORTI_CLIENT_ID }}
-          CORTI_CLIENT_SECRET: ${{ secrets.CORTI_CLIENT_SECRET }}
+            - name: Run integration tests
+              run: yarn jest --config jest.integration.config.mjs
+              env:
+                  CORTI_ENVIRONMENT: ${{ vars.CORTI_ENVIRONMENT }}
+                  CORTI_TENANT_NAME: ${{ vars.CORTI_TENANT_NAME }}
+                  CORTI_CLIENT_ID: ${{ vars.CORTI_CLIENT_ID }}
+                  CORTI_CLIENT_SECRET: ${{ secrets.CORTI_CLIENT_SECRET }}

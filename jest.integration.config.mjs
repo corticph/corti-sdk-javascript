@@ -13,4 +13,4 @@ export default {
     maxWorkers: 1, // Run tests one by one (no concurrent execution)
     workerThreads: false,
     passWithNoTests: true,
-}; 
+};

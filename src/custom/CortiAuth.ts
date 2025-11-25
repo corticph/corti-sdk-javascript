@@ -78,9 +78,9 @@ interface Options {
     skipRedirect?: boolean;
 }
 
-type AuthOptions = Omit<FernAuth.Options, 'environment'> & {
+type AuthOptions = Omit<FernAuth.Options, "environment"> & {
     environment: core.Supplier<environments.CortiEnvironment | environments.CortiEnvironmentUrls> | string;
-}
+};
 
 export class Auth extends FernAuth {
     /**
@@ -96,20 +96,23 @@ export class Auth extends FernAuth {
     /**
      * Patch: Generate PKCE authorization URL with automatic code verifier generation
      */
-    public async authorizePkceUrl({
-        clientId,
-        redirectUri,
-    }: AuthorizationCodeClient, options?: Options): Promise<string> {
+    public async authorizePkceUrl(
+        { clientId, redirectUri }: AuthorizationCodeClient,
+        options?: Options,
+    ): Promise<string> {
         const codeVerifier = generateCodeVerifier();
         setLocalStorageItem(CODE_VERIFIER_KEY, codeVerifier);
 
         const codeChallenge = await generateCodeChallenge(codeVerifier);
 
-        return this.authorizeURL({
-            clientId,
-            redirectUri,
-            codeChallenge,
-        }, options);
+        return this.authorizeURL(
+            {
+                clientId,
+                redirectUri,
+                codeChallenge,
+            },
+            options,
+        );
     }
 
     /**
@@ -132,32 +135,33 @@ export class Auth extends FernAuth {
     /**
      * Patch: added method to get Authorization URL for Authorization code flow and PKCE flow
      */
-    public async authorizeURL({
-        clientId,
-        redirectUri,
-        codeChallenge,
-    }: AuthorizationCodeClient, options?: Options): Promise<string> {
-        const authUrl = new URL(core.url.join(
-            (await core.Supplier.get(this._options.baseUrl)) ??
-            (await core.Supplier.get(this._options.environment)).login,
-            await core.Supplier.get(this._options.tenantName),
-            "protocol/openid-connect/auth",
-        ));
+    public async authorizeURL(
+        { clientId, redirectUri, codeChallenge }: AuthorizationCodeClient,
+        options?: Options,
+    ): Promise<string> {
+        const authUrl = new URL(
+            core.url.join(
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)).login,
+                await core.Supplier.get(this._options.tenantName),
+                "protocol/openid-connect/auth",
+            ),
+        );
 
-        authUrl.searchParams.set('response_type', 'code');
-        authUrl.searchParams.set('scope', 'openid profile');
+        authUrl.searchParams.set("response_type", "code");
+        authUrl.searchParams.set("scope", "openid profile");
 
         if (clientId !== undefined) {
-            authUrl.searchParams.set('client_id', clientId);
+            authUrl.searchParams.set("client_id", clientId);
         }
 
         if (redirectUri !== undefined) {
-            authUrl.searchParams.set('redirect_uri', redirectUri);
+            authUrl.searchParams.set("redirect_uri", redirectUri);
         }
 
         if (codeChallenge !== undefined) {
-            authUrl.searchParams.set('code_challenge', codeChallenge);
-            authUrl.searchParams.set('code_challenge_method', 'S256');
+            authUrl.searchParams.set("code_challenge", codeChallenge);
+            authUrl.searchParams.set("code_challenge_method", "S256");
         }
 
         const authUrlString = authUrl.toString();
@@ -177,10 +181,15 @@ export class Auth extends FernAuth {
         request: AuthorizationCode,
         requestOptions?: FernAuth.RequestOptions,
     ): core.HttpResponsePromise<Corti.GetTokenResponse> {
-        return core.HttpResponsePromise.fromPromise(this.__getToken_custom({
-            ...request,
-            grantType: "authorization_code",
-        }, requestOptions));
+        return core.HttpResponsePromise.fromPromise(
+            this.__getToken_custom(
+                {
+                    ...request,
+                    grantType: "authorization_code",
+                },
+                requestOptions,
+            ),
+        );
     }
 
     /**
@@ -195,17 +204,22 @@ export class Auth extends FernAuth {
         if (!codeVerifier) {
             throw new ParseError([
                 {
-                    path: ['codeVerifier'],
-                    message: 'Code verifier was not provided and not found in localStorage.',
+                    path: ["codeVerifier"],
+                    message: "Code verifier was not provided and not found in localStorage.",
                 },
             ]);
         }
 
-        return core.HttpResponsePromise.fromPromise(this.__getToken_custom({
-            ...request,
-            codeVerifier: codeVerifier,
-            grantType: "authorization_code",
-        }, requestOptions));
+        return core.HttpResponsePromise.fromPromise(
+            this.__getToken_custom(
+                {
+                    ...request,
+                    codeVerifier: codeVerifier,
+                    grantType: "authorization_code",
+                },
+                requestOptions,
+            ),
+        );
     }
 
     /**
@@ -215,10 +229,15 @@ export class Auth extends FernAuth {
         request: AuthorizationRopcServer,
         requestOptions?: FernAuth.RequestOptions,
     ): core.HttpResponsePromise<Corti.GetTokenResponse> {
-        return core.HttpResponsePromise.fromPromise(this.__getToken_custom({
-            ...request,
-            grantType: "password",
-        }, requestOptions));
+        return core.HttpResponsePromise.fromPromise(
+            this.__getToken_custom(
+                {
+                    ...request,
+                    grantType: "password",
+                },
+                requestOptions,
+            ),
+        );
     }
 
     /**
@@ -228,21 +247,22 @@ export class Auth extends FernAuth {
         /**
          * Patch: added additional fields to request to support Authorization PKCE and ROPC flow
          */
-        request: Corti.AuthGetTokenRequest & Partial<{
-            grantType: "client_credentials" | "authorization_code" | "refresh_token" | "password";
-            code: string;
-            redirectUri: string;
-            refreshToken: string;
-            codeVerifier: string;
-            username: string;
-            password: string;
-        }>,
+        request: Corti.AuthGetTokenRequest &
+            Partial<{
+                grantType: "client_credentials" | "authorization_code" | "refresh_token" | "password";
+                code: string;
+                redirectUri: string;
+                refreshToken: string;
+                codeVerifier: string;
+                username: string;
+                password: string;
+            }>,
         requestOptions?: FernAuth.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.GetTokenResponse>> {
         const _response = await core.fetcher({
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
-                (await core.Supplier.get(this._options.environment)).login,
+                    (await core.Supplier.get(this._options.environment)).login,
                 /**
                  * Patch: use tenantName as path parameter
                  *  (consider to be generated from the spec in the future)
@@ -317,10 +337,14 @@ export class Auth extends FernAuth {
         request: AuthorizationRefreshServer,
         requestOptions?: FernAuth.RequestOptions,
     ): core.HttpResponsePromise<Corti.GetTokenResponse> {
-        return core.HttpResponsePromise.fromPromise(this.__getToken_custom({
-            ...request,
-            grantType: "refresh_token",
-        }, requestOptions));
+        return core.HttpResponsePromise.fromPromise(
+            this.__getToken_custom(
+                {
+                    ...request,
+                    grantType: "refresh_token",
+                },
+                requestOptions,
+            ),
+        );
     }
-
 }

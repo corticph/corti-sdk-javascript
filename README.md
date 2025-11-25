@@ -39,7 +39,7 @@ const client = new CortiClient({
 // Or using a bearer token
 const client = new CortiClient({
     auth: {
-        accessToken: "YOUR_ACCESS_TOKEN"
+        accessToken: "YOUR_ACCESS_TOKEN",
     },
 });
 
@@ -50,7 +50,7 @@ const client = new CortiClient({
         refreshAccessToken: async (refreshToken?: string) => {
             // Your custom logic to get a new access token
             const response = await fetch("https://your-auth-server/token", {
-                method: "POST", 
+                method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ refreshToken }),
             });

@@ -102,15 +102,13 @@ export class TranscribeSocket {
 
     public sendAudio(message: string): void {
         this.assertSocketIsOpen();
-        const jsonPayload = core.serialization
-            .string()
-            .jsonOrThrow(message, {
-                unrecognizedObjectKeys: "passthrough",
-                allowUnrecognizedUnionMembers: true,
-                allowUnrecognizedEnumValues: true,
-                skipValidation: true,
-                omitUndefined: true,
-            });
+        const jsonPayload = core.serialization.string().jsonOrThrow(message, {
+            unrecognizedObjectKeys: "passthrough",
+            allowUnrecognizedUnionMembers: true,
+            allowUnrecognizedEnumValues: true,
+            skipValidation: true,
+            omitUndefined: true,
+        });
         this.socket.send(JSON.stringify(jsonPayload));
     }
 

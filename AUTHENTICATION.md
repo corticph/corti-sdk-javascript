@@ -110,11 +110,11 @@ const client = new CortiClient({
         refreshAccessToken: async (refreshToken?: string) => {
             // Your custom logic to get a new access token
             const response = await fetch("https://your-auth-server/refresh", {
-                method: "POST", 
+                method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ refreshToken }),
             });
-            
+
             // Response must return a valid token object:
             // {
             //   accessToken: string;      // Required: The new access token
@@ -138,11 +138,11 @@ const client = new CortiClient({
         refreshAccessToken: async (refreshToken?: string) => {
             // Your custom logic to get a new access token
             const response = await fetch("https://your-auth-server/token", {
-                method: "POST", 
+                method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ refreshToken }),
             });
-            
+
             // Response must return a valid token object:
             // {
             //   accessToken: string;      // Required: The new access token
@@ -192,10 +192,13 @@ const authUrl = await auth.authorizeURL({
 }); // Automatically redirects to authorization URL
 
 // To prevent automatic redirect and get URL only:
-const authUrlNoRedirect = await auth.authorizeURL({
-    clientId: "YOUR_CLIENT_ID", 
-    redirectUri: "https://your-app.com/callback",
-}, { skipRedirect: true });
+const authUrlNoRedirect = await auth.authorizeURL(
+    {
+        clientId: "YOUR_CLIENT_ID",
+        redirectUri: "https://your-app.com/callback",
+    },
+    { skipRedirect: true },
+);
 ```
 
 ### Step 2: Handle the Callback and Exchange Code for Tokens
@@ -205,11 +208,11 @@ When the user is redirected back to your application, you'll receive an authoriz
 ```typescript
 // Extract the authorization code from URL parameters
 const urlParams = new URLSearchParams(window.location.search);
-const code = urlParams.get('code');
-const error = urlParams.get('error');
+const code = urlParams.get("code");
+const error = urlParams.get("error");
 
 if (error) {
-    console.error('Authorization failed:', error);
+    console.error("Authorization failed:", error);
     return;
 }
 
@@ -239,11 +242,11 @@ const client = new CortiClient({
         refreshAccessToken: async (refreshToken: string) => {
             // Custom refresh logic -- get new access_token from server
             const response = await fetch("https://your-auth-server/refresh", {
-                method: "POST", 
+                method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ refreshToken: refreshToken }),
             });
-            
+
             // Response must return a valid token object:
             // {
             //   accessToken: string;      // Required: The new access token
@@ -260,9 +263,9 @@ const client = new CortiClient({
 // Now you can use the client for API calls
 try {
     const interactions = await client.interactions.list();
-    console.log('Interactions:', interactions);
+    console.log("Interactions:", interactions);
 } catch (error) {
-    console.error('API call failed:', error);
+    console.error("API call failed:", error);
 }
 ```
 
@@ -273,6 +276,7 @@ try {
 **Note**: CORS is enabled for this flow. Requests must come from the same origin as specified in your redirect URIs configuration.
 
 The Authorization Code Flow with PKCE is ideal for:
+
 - Native apps
 - Single Page Applications (SPAs)
 - Browser-based integration where a user is present
@@ -303,14 +307,17 @@ const auth = new CortiAuth({
 // SDK automatically generates code verifier and stores it in localStorage
 const authUrl = await auth.authorizePkceUrl({
     clientId: "YOUR_CLIENT_ID",
-    redirectUri: "https://your-app.com/callback"
+    redirectUri: "https://your-app.com/callback",
 });
 
 // To prevent automatic redirect and get URL only:
-const authUrlNoRedirect = await auth.authorizePkceUrl({
-    clientId: "YOUR_CLIENT_ID", 
-    redirectUri: "https://your-app.com/callback",
-}, { skipRedirect: true });
+const authUrlNoRedirect = await auth.authorizePkceUrl(
+    {
+        clientId: "YOUR_CLIENT_ID",
+        redirectUri: "https://your-app.com/callback",
+    },
+    { skipRedirect: true },
+);
 ```
 
 **Alternative: Manual Generation** - If you need more control over the process:
@@ -324,11 +331,14 @@ const auth = new CortiAuth({
 const codeVerifier = "your-precomputed-verifier"; // Use high-entropy value
 const codeChallenge = "your-precomputed-challenge"; // base64url(SHA-256(codeVerifier))
 
-const authUrl = await auth.authorizeURL({
-    clientId: "YOUR_CLIENT_ID",
-    redirectUri: "https://your-app.com/callback",
-    codeChallenge,
-}, { skipRedirect: true });
+const authUrl = await auth.authorizeURL(
+    {
+        clientId: "YOUR_CLIENT_ID",
+        redirectUri: "https://your-app.com/callback",
+        codeChallenge,
+    },
+    { skipRedirect: true },
+);
 ```
 
 ### Step 2: Handle the Callback and Exchange Code for Tokens
@@ -336,24 +346,24 @@ const authUrl = await auth.authorizeURL({
 ```typescript
 // Extract the authorization code from URL parameters
 const urlParams = new URLSearchParams(window.location.search);
-const code = urlParams.get('code');
-const error = urlParams.get('error');
+const code = urlParams.get("code");
+const error = urlParams.get("error");
 
 if (error) {
-    console.error('Authorization failed:', error);
+    console.error("Authorization failed:", error);
     return;
 }
 
 if (code) {
     // Retrieve codeVerifier from SDK if you used authorizePkceUrl (automatically stored)
     // Otherwise, you need to pass it manually if you generated it yourself
-    const codeVerifier = auth.getCodeVerifier()
-    
+    const codeVerifier = auth.getCodeVerifier();
+
     if (!codeVerifier) {
-        console.error('Code verifier not found');
+        console.error("Code verifier not found");
         return;
     }
-    
+
     // Exchange the authorization code for tokens using SDK (client-side)
     const tokenResponse = await auth.getPkceFlowToken({
         clientId: "YOUR_CLIENT_ID",
@@ -381,11 +391,11 @@ const client = new CortiClient({
         refreshAccessToken: async (refreshToken: string) => {
             // Custom refresh logic -- get new access_token from server
             const response = await fetch("https://your-auth-server/refresh", {
-                method: "POST", 
+                method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ refreshToken: refreshToken }),
             });
-            
+
             // Response must return a valid token object:
             // {
             //   accessToken: string;      // Required: The new access token
@@ -402,9 +412,9 @@ const client = new CortiClient({
 // Now you can use the client for API calls
 try {
     const interactions = await client.interactions.list();
-    console.log('Interactions:', interactions);
+    console.log("Interactions:", interactions);
 } catch (error) {
-    console.error('API call failed:', error);
+    console.error("API call failed:", error);
 }
 ```
 
@@ -413,6 +423,7 @@ try {
 **⚠️ Backend Only** - This method should only be used in server-side applications. The ROPC flow allows users to authenticate directly with their username and password using the SDK.
 
 **⚠️ Security Note**: ROPC flow requires sending credentials directly. This should only be used for:
+
 - Trusted applications (e.g., first-party mobile apps, backend services)
 - Testing and development
 - Internal tools
@@ -454,11 +465,11 @@ const client = new CortiClient({
         refreshAccessToken: async (refreshToken: string) => {
             // Custom refresh logic -- get new access_token from server
             const response = await fetch("https://your-auth-server/refresh", {
-                method: "POST", 
+                method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ refreshToken: refreshToken }),
             });
-            
+
             // Response must return a valid token object:
             // {
             //   accessToken: string;      // Required: The new access token

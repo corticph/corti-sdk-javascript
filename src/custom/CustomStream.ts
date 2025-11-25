@@ -22,14 +22,15 @@ export class Stream extends FernStream {
     /**
      * Patch: use custom connect method to support passing _options parameters
      */
-    public async connect(
-        { configuration, ...args }: Omit<FernStream.ConnectArgs, 'token' | 'tenantName'> & {
-            configuration?: api.StreamConfig;
-        }
-    ): Promise<StreamSocket> {
+    public async connect({
+        configuration,
+        ...args
+    }: Omit<FernStream.ConnectArgs, "token" | "tenantName"> & {
+        configuration?: api.StreamConfig;
+    }): Promise<StreamSocket> {
         const fernWs = await super.connect({
             ...args,
-            token: await this._getAuthorizationHeader() || '',
+            token: (await this._getAuthorizationHeader()) || "",
             tenantName: await core.Supplier.get(this._options.tenantName),
         });
         const ws = new StreamSocket({ socket: fernWs.socket });
@@ -38,14 +39,14 @@ export class Stream extends FernStream {
             return ws;
         }
 
-        ws.socket.addEventListener('open', () => {
+        ws.socket.addEventListener("open", () => {
             ws.sendConfiguration({
-                type: 'config',
+                type: "config",
                 configuration,
             });
         });
 
-        ws.socket.addEventListener('message', (event) => {
+        ws.socket.addEventListener("message", (event) => {
             const data = fromJson(event.data);
 
             const parsedResponse = serializers.StreamSocketResponse.parse(data, {
@@ -56,36 +57,47 @@ export class Stream extends FernStream {
                 omitUndefined: true,
             });
 
-            if (parsedResponse.ok && parsedResponse.value.type === 'CONFIG_ACCEPTED') {
+            if (parsedResponse.ok && parsedResponse.value.type === "CONFIG_ACCEPTED") {
                 return;
             }
 
-            if (parsedResponse.ok && (
-                parsedResponse.value.type === 'CONFIG_DENIED'
-                || parsedResponse.value.type === 'CONFIG_MISSING'
-                || parsedResponse.value.type === 'CONFIG_TIMEOUT'
-                || parsedResponse.value.type === 'CONFIG_NOT_PROVIDED'
-            )) {
-                ws.socket.dispatchEvent(new ErrorEvent({
-                    name: parsedResponse.value.type,
-                    message: JSON.stringify(parsedResponse.value),
-                }, ''));
+            if (
+                parsedResponse.ok &&
+                (parsedResponse.value.type === "CONFIG_DENIED" ||
+                    parsedResponse.value.type === "CONFIG_MISSING" ||
+                    parsedResponse.value.type === "CONFIG_TIMEOUT" ||
+                    parsedResponse.value.type === "CONFIG_NOT_PROVIDED")
+            ) {
+                ws.socket.dispatchEvent(
+                    new ErrorEvent(
+                        {
+                            name: parsedResponse.value.type,
+                            message: JSON.stringify(parsedResponse.value),
+                        },
+                        "",
+                    ),
+                );
 
                 ws.close();
                 return;
             }
 
-            if (parsedResponse.ok && parsedResponse.value.type === 'error') {
-                ws.socket.dispatchEvent(new ErrorEvent({
-                    name: 'error',
-                    message: JSON.stringify(parsedResponse.value),
-                }, ''));
+            if (parsedResponse.ok && parsedResponse.value.type === "error") {
+                ws.socket.dispatchEvent(
+                    new ErrorEvent(
+                        {
+                            name: "error",
+                            message: JSON.stringify(parsedResponse.value),
+                        },
+                        "",
+                    ),
+                );
 
                 ws.close();
                 return;
             }
 
-            if (parsedResponse.ok && parsedResponse.value.type === 'ENDED') {
+            if (parsedResponse.ok && parsedResponse.value.type === "ENDED") {
                 ws.close();
                 return;
             }
