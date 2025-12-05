@@ -12,7 +12,7 @@ type ResolvedClientOptions = {
 };
 
 function isClientCredentialsOptions(options: CortiClient.Options): options is CortiClient.OptionsWithClientCredentials {
-    return "clientId" in options.auth;
+    return !!options.auth && "clientId" in options.auth;
 }
 
 export function resolveClientOptions(options: CortiClient.Options): ResolvedClientOptions {
@@ -23,8 +23,16 @@ export function resolveClientOptions(options: CortiClient.Options): ResolvedClie
         };
     }
 
-    if ("accessToken" in options.auth && options.auth.accessToken) {
-        const decoded = decodeToken(options.auth.accessToken);
+    // When auth is not provided (baseUrl-only or environment-object scenario), use provided values or defaults
+    if (!options.auth) {
+        return {
+            tenantName: options.tenantName || "",
+            environment: options.environment || "",
+        };
+    }
+
+    if ("accessToken" in options.auth) {
+        const decoded = decodeToken(options.auth.accessToken || "");
 
         /**
          * Do not throw an error when we have some proxying:
@@ -42,8 +50,8 @@ export function resolveClientOptions(options: CortiClient.Options): ResolvedClie
         }
 
         return {
-            tenantName: options.tenantName || decoded?.tenantName || "base",
-            environment: options.environment || decoded?.environment || "eu",
+            tenantName: options.tenantName || decoded?.tenantName || "",
+            environment: options.environment || decoded?.environment || "",
         };
     }
 
@@ -58,8 +66,11 @@ export function resolveClientOptions(options: CortiClient.Options): ResolvedClie
         };
     }
 
+    // At this point, auth exists and has refreshAccessToken (BearerOptions without accessToken)
+    const auth = options.auth as { refreshAccessToken: () => Promise<ExpectedTokenResponse> };
+
     const tokenResponsePromise = (async () => {
-        const tokenResponse = await core.Supplier.get(options.auth.refreshAccessToken!);
+        const tokenResponse = await core.Supplier.get(auth.refreshAccessToken);
         const decoded = decodeToken(tokenResponse.accessToken);
 
         /**
@@ -79,8 +90,8 @@ export function resolveClientOptions(options: CortiClient.Options): ResolvedClie
 
         return {
             tokenResponse,
-            tenantName: decoded?.tenantName || "base",
-            environment: decoded?.environment || "eu",
+            tenantName: decoded?.tenantName || "",
+            environment: decoded?.environment || "",
         };
     })();
 

@@ -81,7 +81,26 @@ export declare namespace CortiClient {
         auth: BearerOptions;
     }
 
-    export type Options = OptionsWithClientCredentials | OptionsWithBearerToken;
+    // When baseUrl is provided, auth becomes optional (for proxying scenarios)
+    interface OptionsWithBaseUrl extends BaseOptions {
+        baseUrl: core.Supplier<string>;
+        environment?: Environment;
+        tenantName?: core.Supplier<string>;
+        auth?: ClientCredentials | BearerOptions;
+    }
+
+    // When environment is an object, auth becomes optional (for proxying scenarios)
+    interface OptionsWithObjectEnvironment extends BaseOptions {
+        environment: CortiInternalEnvironment;
+        tenantName?: core.Supplier<string>;
+        auth?: ClientCredentials | BearerOptions;
+    }
+
+    export type Options =
+        | OptionsWithClientCredentials
+        | OptionsWithBearerToken
+        | OptionsWithBaseUrl
+        | OptionsWithObjectEnvironment;
 
     /**
      * Patch:
@@ -124,8 +143,9 @@ export class CortiClient {
     protected readonly _options: CortiClient.InternalOptions;
     /**
      * Patch: extended `_oauthTokenProvider` to support both `RefreshBearerProvider` and `OAuthTokenProvider` options
+     * Optional - not created when auth is not provided (proxying scenarios)
      */
-    private readonly _oauthTokenProvider: core.OAuthTokenProvider | RefreshBearerProvider;
+    private readonly _oauthTokenProvider?: core.OAuthTokenProvider | RefreshBearerProvider;
     protected _interactions: Interactions | undefined;
     protected _recordings: Recordings | undefined;
     protected _transcripts: Transcripts | undefined;
@@ -168,92 +188,95 @@ export class CortiClient {
                 },
                 _options?.headers,
             ),
-            clientId: "clientId" in _options.auth ? _options.auth.clientId : undefined,
-            clientSecret: "clientSecret" in _options.auth ? _options.auth.clientSecret : undefined,
-            token: "accessToken" in _options.auth ? _options.auth.accessToken : undefined,
+            clientId: _options.auth && "clientId" in _options.auth ? _options.auth.clientId : undefined,
+            clientSecret: _options.auth && "clientSecret" in _options.auth ? _options.auth.clientSecret : undefined,
+            token: _options.auth && "accessToken" in _options.auth ? _options.auth.accessToken : undefined,
             tenantName,
             environment: getEnvironment(environment),
         };
 
         /**
          * Patch: if `clientId` is provided, use OAuthTokenProvider, otherwise use BearerProvider
+         * Only create token provider when auth is provided
          */
-        this._oauthTokenProvider =
-            "clientId" in _options.auth
-                ? new core.OAuthTokenProvider({
-                      clientId: _options.auth.clientId,
-                      clientSecret: _options.auth.clientSecret,
-                      /**
-                       * Patch: provide whole `options` object to the Auth client, since it depends on both tenantName and environment
-                       */
-                      authClient: new Auth(this._options),
-                  })
-                : new RefreshBearerProvider({
-                      ..._options.auth,
-                      initialTokenResponse,
-                  });
+        if (_options.auth) {
+            this._oauthTokenProvider =
+                "clientId" in _options.auth
+                    ? new core.OAuthTokenProvider({
+                          clientId: _options.auth.clientId,
+                          clientSecret: _options.auth.clientSecret,
+                          /**
+                           * Patch: provide whole `options` object to the Auth client, since it depends on both tenantName and environment
+                           */
+                          authClient: new Auth(this._options),
+                      })
+                    : new RefreshBearerProvider({
+                          ..._options.auth,
+                          initialTokenResponse,
+                      });
+        }
     }
 
     public get interactions(): Interactions {
         return (this._interactions ??= new Interactions({
             ...this._options,
-            token: async () => await this._oauthTokenProvider.getToken(),
+            token: this._oauthTokenProvider ? async () => await this._oauthTokenProvider!.getToken() : undefined,
         }));
     }
 
     public get recordings(): Recordings {
         return (this._recordings ??= new Recordings({
             ...this._options,
-            token: async () => await this._oauthTokenProvider.getToken(),
+            token: this._oauthTokenProvider ? async () => await this._oauthTokenProvider!.getToken() : undefined,
         }));
     }
 
     public get transcripts(): Transcripts {
         return (this._transcripts ??= new Transcripts({
             ...this._options,
-            token: async () => await this._oauthTokenProvider.getToken(),
+            token: this._oauthTokenProvider ? async () => await this._oauthTokenProvider!.getToken() : undefined,
         }));
     }
 
     public get facts(): Facts {
         return (this._facts ??= new Facts({
             ...this._options,
-            token: async () => await this._oauthTokenProvider.getToken(),
+            token: this._oauthTokenProvider ? async () => await this._oauthTokenProvider!.getToken() : undefined,
         }));
     }
 
     public get documents(): Documents {
         return (this._documents ??= new Documents({
             ...this._options,
-            token: async () => await this._oauthTokenProvider.getToken(),
+            token: this._oauthTokenProvider ? async () => await this._oauthTokenProvider!.getToken() : undefined,
         }));
     }
 
     public get templates(): Templates {
         return (this._templates ??= new Templates({
             ...this._options,
-            token: async () => await this._oauthTokenProvider.getToken(),
+            token: this._oauthTokenProvider ? async () => await this._oauthTokenProvider!.getToken() : undefined,
         }));
     }
 
     public get agents(): Agents {
         return (this._agents ??= new Agents({
             ...this._options,
-            token: async () => await this._oauthTokenProvider.getToken(),
+            token: this._oauthTokenProvider ? async () => await this._oauthTokenProvider!.getToken() : undefined,
         }));
     }
 
     public get stream(): Stream {
         return (this._stream ??= new Stream({
             ...this._options,
-            token: async () => await this._oauthTokenProvider.getToken(),
+            token: this._oauthTokenProvider ? async () => await this._oauthTokenProvider!.getToken() : undefined,
         }));
     }
 
     public get transcribe(): Transcribe {
         return (this._transcribe ??= new Transcribe({
             ...this._options,
-            token: async () => await this._oauthTokenProvider.getToken(),
+            token: this._oauthTokenProvider ? async () => await this._oauthTokenProvider!.getToken() : undefined,
         }));
     }
 
