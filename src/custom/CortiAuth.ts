@@ -18,8 +18,7 @@ import * as Corti from "../api/index.js";
 import { mergeHeaders, mergeOnlyDefinedHeaders } from "../core/headers.js";
 import * as serializers from "../serialization/index.js";
 import * as errors from "../errors/index.js";
-import * as environments from "../environments.js";
-import { getEnvironment } from "./utils/getEnvironmentFromString.js";
+import { Environment, CortiInternalEnvironment, getEnvironment } from "./utils/getEnvironmentFromString.js";
 import { ParseError } from "../core/schemas/builders/schema-utils/ParseError.js";
 import { getLocalStorageItem, setLocalStorageItem } from "./utils/localStorage.js";
 import { generateCodeChallenge, generateCodeVerifier } from "./utils/pkce.js";
@@ -78,17 +77,40 @@ interface Options {
     skipRedirect?: boolean;
 }
 
-type AuthOptions = Omit<FernAuth.Options, "environment"> & {
-    environment: core.Supplier<environments.CortiEnvironment | environments.CortiEnvironmentUrls> | string;
+type AuthOptionsBase = Omit<FernAuth.Options, "environment" | "tenantName" | "baseUrl">;
+
+// When baseUrl is provided, environment and tenantName are optional
+type AuthOptionsWithBaseUrl = AuthOptionsBase & {
+    baseUrl: core.Supplier<string>;
+    environment?: Environment;
+    tenantName?: core.Supplier<string>;
 };
+
+// When environment is an object, tenantName is optional
+type AuthOptionsWithObjectEnvironment = AuthOptionsBase & {
+    baseUrl?: core.Supplier<string>;
+    environment: CortiInternalEnvironment;
+    tenantName?: core.Supplier<string>;
+};
+
+// When environment is a string, tenantName is required
+type AuthOptionsWithStringEnvironment = AuthOptionsBase & {
+    baseUrl?: core.Supplier<string>;
+    environment: string;
+    tenantName: core.Supplier<string>;
+};
+
+type AuthOptions = AuthOptionsWithBaseUrl | AuthOptionsWithObjectEnvironment | AuthOptionsWithStringEnvironment;
 
 export class Auth extends FernAuth {
     /**
      * Patch: use custom AuthOptions type to support string-based environment
+     * When baseUrl is provided, environment and tenantName become optional
      */
     constructor(_options: AuthOptions) {
         super({
             ..._options,
+            tenantName: _options.tenantName || "",
             environment: getEnvironment(_options.environment),
         });
     }

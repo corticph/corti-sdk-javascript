@@ -26,7 +26,13 @@ export function resolveClientOptions(options: CortiClient.Options): ResolvedClie
     if ("accessToken" in options.auth && options.auth.accessToken) {
         const decoded = decodeToken(options.auth.accessToken);
 
-        if (!decoded) {
+        /**
+         * Do not throw an error when we have some proxying:
+         *  baseUrl is set
+         *  or
+         *  environment is explicitly provided (not string-generated)
+         */
+        if (!decoded && !options.baseUrl && typeof options.environment !== "object") {
             throw new ParseError([
                 {
                     path: ["auth", "accessToken"],
@@ -36,8 +42,8 @@ export function resolveClientOptions(options: CortiClient.Options): ResolvedClie
         }
 
         return {
-            tenantName: options.tenantName || decoded.tenantName,
-            environment: options.environment || decoded.environment,
+            tenantName: options.tenantName || decoded?.tenantName || "base",
+            environment: options.environment || decoded?.environment || "eu",
         };
     }
 
@@ -56,7 +62,13 @@ export function resolveClientOptions(options: CortiClient.Options): ResolvedClie
         const tokenResponse = await core.Supplier.get(options.auth.refreshAccessToken!);
         const decoded = decodeToken(tokenResponse.accessToken);
 
-        if (!decoded) {
+        /**
+         * Do not throw an error when we have some proxying:
+         *  baseUrl is set
+         *  or
+         *  environment is explicitly provided (not string-generated)
+         */
+        if (!decoded && !options.baseUrl && typeof options.environment !== "object") {
             throw new ParseError([
                 {
                     path: ["auth", "refreshAccessToken"],
@@ -67,8 +79,8 @@ export function resolveClientOptions(options: CortiClient.Options): ResolvedClie
 
         return {
             tokenResponse,
-            tenantName: decoded.tenantName,
-            environment: decoded.environment,
+            tenantName: decoded?.tenantName || "base",
+            environment: decoded?.environment || "eu",
         };
     })();
 

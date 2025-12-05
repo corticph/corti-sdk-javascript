@@ -57,6 +57,8 @@ export declare namespace CortiClient {
     interface BaseOptions {
         /** Additional headers to include in requests. */
         headers?: Record<string, string | core.Supplier<string | undefined> | undefined>;
+        /** Specify a custom URL to connect the client to. */
+        baseUrl?: core.Supplier<string>;
     }
 
     interface OptionsWithClientCredentials extends BaseOptions {
