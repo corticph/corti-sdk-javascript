@@ -33,6 +33,7 @@ interface AuthorizationCodeClient {
     clientId: string;
     redirectUri: string;
     codeChallenge?: string;
+    scopes?: string[];
 }
 
 /**
@@ -43,6 +44,7 @@ interface AuthorizationCode {
     clientSecret: string;
     redirectUri: string;
     code: string;
+    scopes?: string[];
 }
 
 /**
@@ -53,6 +55,7 @@ interface AuthorizationPkce {
     redirectUri: string;
     code: string;
     codeVerifier?: string;
+    scopes?: string[];
 }
 
 /**
@@ -62,6 +65,7 @@ interface AuthorizationRopcServer {
     clientId: string;
     username: string;
     password: string;
+    scopes?: string[];
 }
 
 interface AuthorizationRefreshServer {
@@ -71,6 +75,7 @@ interface AuthorizationRefreshServer {
      */
     clientSecret?: string;
     refreshToken: string;
+    scopes?: string[];
 }
 
 interface Options {
@@ -119,7 +124,7 @@ export class Auth extends FernAuth {
      * Patch: Generate PKCE authorization URL with automatic code verifier generation
      */
     public async authorizePkceUrl(
-        { clientId, redirectUri }: AuthorizationCodeClient,
+        { clientId, redirectUri, scopes }: AuthorizationCodeClient,
         options?: Options,
     ): Promise<string> {
         const codeVerifier = generateCodeVerifier();
@@ -132,6 +137,7 @@ export class Auth extends FernAuth {
                 clientId,
                 redirectUri,
                 codeChallenge,
+                scopes,
             },
             options,
         );
@@ -146,9 +152,10 @@ export class Auth extends FernAuth {
 
     /**
      * Patch: called custom implementation this.__getToken_custom instead of this.__getToken
+     * Extended to support additional scopes
      */
     public getToken(
-        request: Corti.AuthGetTokenRequest,
+        request: Corti.AuthGetTokenRequest & { scopes?: string[] },
         requestOptions?: FernAuth.RequestOptions,
     ): core.HttpResponsePromise<Corti.GetTokenResponse> {
         return core.HttpResponsePromise.fromPromise(this.__getToken_custom(request, requestOptions));
@@ -158,7 +165,7 @@ export class Auth extends FernAuth {
      * Patch: added method to get Authorization URL for Authorization code flow and PKCE flow
      */
     public async authorizeURL(
-        { clientId, redirectUri, codeChallenge }: AuthorizationCodeClient,
+        { clientId, redirectUri, codeChallenge, scopes }: AuthorizationCodeClient,
         options?: Options,
     ): Promise<string> {
         const authUrl = new URL(
@@ -171,7 +178,12 @@ export class Auth extends FernAuth {
         );
 
         authUrl.searchParams.set("response_type", "code");
-        authUrl.searchParams.set("scope", "openid profile");
+
+        // Build scope string: always include "openid profile", add any additional scopes
+        const allScopes = ["openid", "profile", ...(scopes || [])];
+        const scopeString = [...new Set(allScopes)].join(" ");
+
+        authUrl.searchParams.set("scope", scopeString);
 
         if (clientId !== undefined) {
             authUrl.searchParams.set("client_id", clientId);
@@ -278,6 +290,7 @@ export class Auth extends FernAuth {
                 codeVerifier: string;
                 username: string;
                 password: string;
+                scopes: string[];
             }>,
         requestOptions?: FernAuth.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.GetTokenResponse>> {
