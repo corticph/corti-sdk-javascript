@@ -3,6 +3,7 @@
  */
 import { StreamSocket as FernStreamSocket } from "../api/resources/stream/client/Socket.js";
 import * as core from "../core/index.js";
+import { ReconnectingWebSocket } from "../core/index.js";
 
 export class StreamSocket extends FernStreamSocket {
     public sendAudio(message: ArrayBufferLike | Blob | ArrayBufferView | string): void {
@@ -34,5 +35,12 @@ export class StreamSocket extends FernStreamSocket {
         if (!callback || callback === this.eventHandlers[event]) {
             delete this.eventHandlers[event];
         }
+    }
+
+    /**
+     * Patch: expose underlying socket send method for direct access
+     */
+    public send(data: ReconnectingWebSocket.Message): void {
+        this.socket.send(data);
     }
 }
