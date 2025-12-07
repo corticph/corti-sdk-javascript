@@ -5,6 +5,10 @@ export * as serialization from "./serialization/index.js";
  * Patch: use custom CortiClient instead of the generated one.
  */
 export { CortiClient } from "./custom/CortiClient.js";
+/**
+ * Patch: lightweight proxy client with only WebSocket resources.
+ */
+export { CortiWebSocketProxyClient } from "./custom/CortiWebSocketProxyClient.js";
 export { CortiEnvironment, CortiEnvironmentUrls } from "./environments.js";
 
 /**
