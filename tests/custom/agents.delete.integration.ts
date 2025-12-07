@@ -2,8 +2,7 @@ import { CortiClient } from "../../src";
 import { faker } from "@faker-js/faker";
 import { createTestCortiClient, createTestAgent, cleanupAgents, setupConsoleWarnSpy } from "./testUtils";
 
-// FIXME : Skipping until delete agent functionality is restored
-describe.skip("cortiClient.agents.delete", () => {
+describe("cortiClient.agents.delete", () => {
     let cortiClient: CortiClient;
     let consoleWarnSpy: jest.SpyInstance;
     let createdAgentIds: string[] = [];

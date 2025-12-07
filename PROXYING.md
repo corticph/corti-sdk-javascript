@@ -12,6 +12,7 @@ When using **Client Credentials** authentication, the token you receive is a **m
 ### Security Best Practice
 
 **Our general recommendation when Client Credentials is used is to use the SDK (or other calls to Corti API) only on the backend** where you can:
+
 - Securely store client credentials
 - Implement proper access control checks
 - Validate user permissions before making API calls
@@ -83,10 +84,10 @@ The environment object has the following structure:
 
 ```typescript
 interface CortiEnvironmentUrls {
-    base: string;      // Base URL for REST API calls (e.g., "https://your-proxy.com/api/v2")
-    wss: string;      // WebSocket URL for stream/transcribe connections (e.g., "wss://your-proxy.com")
-    login: string;    // Authentication endpoint base URL (e.g., "https://your-proxy.com/auth/realms")
-    agents: string;   // Agents API base URL (e.g., "https://your-proxy.com/api")
+    base: string; // Base URL for REST API calls (e.g., "https://your-proxy.com/api/v2")
+    wss: string; // WebSocket URL for stream/transcribe connections (e.g., "wss://your-proxy.com")
+    login: string; // Authentication endpoint base URL (e.g., "https://your-proxy.com/auth/realms")
+    agents: string; // Agents API base URL (e.g., "https://your-proxy.com/api")
 }
 ```
 
@@ -157,6 +158,7 @@ When you use `baseUrl` or a custom environment:
 3. **WebSocket connections** - WebSocket connections are established to your proxy's WebSocket URL
 
 Your proxy server should:
+
 - Forward requests to the appropriate Corti API endpoints
 - Handle authentication and add the necessary tokens
 - Implement access control and data filtering
@@ -235,6 +237,7 @@ If exposing an `accessToken` for WebSockets is absolutely necessary and a proxy 
 ### Available Scopes
 
 Currently available scopes:
+
 - **`"transcribe"`** - Grants access only to the transcribe WebSocket endpoint
 - **`"stream"`** - Grants access only to the stream WebSocket endpoint
 
@@ -309,4 +312,3 @@ const streamSocket = await client.stream.connect({ id: "interaction-id" });
 - **Scoped tokens** provide an alternative when proxying isn't possible, but limit access to specific WebSocket endpoints only
 
 For more information about authentication methods, see the [Authentication Guide](./AUTHENTICATION.md).
-
