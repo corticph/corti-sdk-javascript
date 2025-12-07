@@ -3,6 +3,7 @@
  */
 import { TranscribeSocket as FernTranscribeSocket } from "../api/resources/transcribe/client/Socket.js";
 import * as core from "../core/index.js";
+import { ReconnectingWebSocket } from "../core/index.js";
 
 export class TranscribeSocket extends FernTranscribeSocket {
     public sendAudio(message: ArrayBufferLike | Blob | ArrayBufferView | string): void {
@@ -37,5 +38,12 @@ export class TranscribeSocket extends FernTranscribeSocket {
         if (!callback || callback === this.eventHandlers[event]) {
             delete this.eventHandlers[event];
         }
+    }
+
+    /**
+     * Patch: expose underlying socket send method for direct access
+     */
+    public send(data: ReconnectingWebSocket.Message): void {
+        this.socket.send(data);
     }
 }

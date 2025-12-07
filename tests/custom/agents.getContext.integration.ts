@@ -8,8 +8,7 @@ import {
     sendTestMessage,
 } from "./testUtils";
 
-// FIXME : Skipping until get context functionality is restored
-describe.skip("cortiClient.agents.getContext", () => {
+describe("cortiClient.agents.getContext", () => {
     let cortiClient: CortiClient;
     let consoleWarnSpy: jest.SpyInstance;
     let createdAgentIds: string[] = [];

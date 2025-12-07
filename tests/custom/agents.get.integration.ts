@@ -2,8 +2,7 @@ import { CortiClient } from "../../src";
 import { faker } from "@faker-js/faker";
 import { createTestCortiClient, createTestAgent, cleanupAgents, setupConsoleWarnSpy } from "./testUtils";
 
-// FIXME: Skipped due to inability to get agents in the test environment
-describe.skip("cortiClient.agents.get", () => {
+describe("cortiClient.agents.get", () => {
     let cortiClient: CortiClient;
     let consoleWarnSpy: jest.SpyInstance;
     let createdAgentIds: string[] = [];

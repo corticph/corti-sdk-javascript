@@ -18,8 +18,7 @@ import * as Corti from "../api/index.js";
 import { mergeHeaders, mergeOnlyDefinedHeaders } from "../core/headers.js";
 import * as serializers from "../serialization/index.js";
 import * as errors from "../errors/index.js";
-import * as environments from "../environments.js";
-import { getEnvironment } from "./utils/getEnvironmentFromString.js";
+import { Environment, CortiInternalEnvironment, getEnvironment } from "./utils/getEnvironmentFromString.js";
 import { ParseError } from "../core/schemas/builders/schema-utils/ParseError.js";
 import { getLocalStorageItem, setLocalStorageItem } from "./utils/localStorage.js";
 import { generateCodeChallenge, generateCodeVerifier } from "./utils/pkce.js";
@@ -34,6 +33,7 @@ interface AuthorizationCodeClient {
     clientId: string;
     redirectUri: string;
     codeChallenge?: string;
+    scopes?: string[];
 }
 
 /**
@@ -44,6 +44,7 @@ interface AuthorizationCode {
     clientSecret: string;
     redirectUri: string;
     code: string;
+    scopes?: string[];
 }
 
 /**
@@ -54,6 +55,7 @@ interface AuthorizationPkce {
     redirectUri: string;
     code: string;
     codeVerifier?: string;
+    scopes?: string[];
 }
 
 /**
@@ -63,6 +65,7 @@ interface AuthorizationRopcServer {
     clientId: string;
     username: string;
     password: string;
+    scopes?: string[];
 }
 
 interface AuthorizationRefreshServer {
@@ -72,23 +75,47 @@ interface AuthorizationRefreshServer {
      */
     clientSecret?: string;
     refreshToken: string;
+    scopes?: string[];
 }
 
 interface Options {
     skipRedirect?: boolean;
 }
 
-type AuthOptions = Omit<FernAuth.Options, "environment"> & {
-    environment: core.Supplier<environments.CortiEnvironment | environments.CortiEnvironmentUrls> | string;
+type AuthOptionsBase = Omit<FernAuth.Options, "environment" | "tenantName" | "baseUrl">;
+
+// When baseUrl is provided, environment and tenantName are optional
+type AuthOptionsWithBaseUrl = AuthOptionsBase & {
+    baseUrl: core.Supplier<string>;
+    environment?: Environment;
+    tenantName?: core.Supplier<string>;
 };
+
+// When environment is an object, tenantName is optional
+type AuthOptionsWithObjectEnvironment = AuthOptionsBase & {
+    baseUrl?: core.Supplier<string>;
+    environment: CortiInternalEnvironment;
+    tenantName?: core.Supplier<string>;
+};
+
+// When environment is a string, tenantName is required
+type AuthOptionsWithStringEnvironment = AuthOptionsBase & {
+    baseUrl?: core.Supplier<string>;
+    environment: string;
+    tenantName: core.Supplier<string>;
+};
+
+type AuthOptions = AuthOptionsWithBaseUrl | AuthOptionsWithObjectEnvironment | AuthOptionsWithStringEnvironment;
 
 export class Auth extends FernAuth {
     /**
      * Patch: use custom AuthOptions type to support string-based environment
+     * When baseUrl is provided, environment and tenantName become optional
      */
     constructor(_options: AuthOptions) {
         super({
             ..._options,
+            tenantName: _options.tenantName || "",
             environment: getEnvironment(_options.environment),
         });
     }
@@ -97,7 +124,7 @@ export class Auth extends FernAuth {
      * Patch: Generate PKCE authorization URL with automatic code verifier generation
      */
     public async authorizePkceUrl(
-        { clientId, redirectUri }: AuthorizationCodeClient,
+        { clientId, redirectUri, scopes }: AuthorizationCodeClient,
         options?: Options,
     ): Promise<string> {
         const codeVerifier = generateCodeVerifier();
@@ -110,6 +137,7 @@ export class Auth extends FernAuth {
                 clientId,
                 redirectUri,
                 codeChallenge,
+                scopes,
             },
             options,
         );
@@ -124,9 +152,10 @@ export class Auth extends FernAuth {
 
     /**
      * Patch: called custom implementation this.__getToken_custom instead of this.__getToken
+     * Extended to support additional scopes
      */
     public getToken(
-        request: Corti.AuthGetTokenRequest,
+        request: Corti.AuthGetTokenRequest & { scopes?: string[] },
         requestOptions?: FernAuth.RequestOptions,
     ): core.HttpResponsePromise<Corti.GetTokenResponse> {
         return core.HttpResponsePromise.fromPromise(this.__getToken_custom(request, requestOptions));
@@ -136,7 +165,7 @@ export class Auth extends FernAuth {
      * Patch: added method to get Authorization URL for Authorization code flow and PKCE flow
      */
     public async authorizeURL(
-        { clientId, redirectUri, codeChallenge }: AuthorizationCodeClient,
+        { clientId, redirectUri, codeChallenge, scopes }: AuthorizationCodeClient,
         options?: Options,
     ): Promise<string> {
         const authUrl = new URL(
@@ -149,7 +178,12 @@ export class Auth extends FernAuth {
         );
 
         authUrl.searchParams.set("response_type", "code");
-        authUrl.searchParams.set("scope", "openid profile");
+
+        // Build scope string: always include "openid profile", add any additional scopes
+        const allScopes = ["openid", "profile", ...(scopes || [])];
+        const scopeString = [...new Set(allScopes)].join(" ");
+
+        authUrl.searchParams.set("scope", scopeString);
 
         if (clientId !== undefined) {
             authUrl.searchParams.set("client_id", clientId);
@@ -256,6 +290,7 @@ export class Auth extends FernAuth {
                 codeVerifier: string;
                 username: string;
                 password: string;
+                scopes: string[];
             }>,
         requestOptions?: FernAuth.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.GetTokenResponse>> {

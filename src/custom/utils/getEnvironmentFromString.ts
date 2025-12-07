@@ -4,7 +4,7 @@ import * as environments from "../../environments.js";
 export type Environment = CortiInternalEnvironment | string;
 export type CortiInternalEnvironment = core.Supplier<environments.CortiEnvironment | environments.CortiEnvironmentUrls>;
 
-export function getEnvironment(environment: Environment): CortiInternalEnvironment {
+export function getEnvironment(environment: Environment = "eu"): CortiInternalEnvironment {
     return typeof environment === "string"
         ? {
               base: `https://api.${environment}.corti.app/v2`,

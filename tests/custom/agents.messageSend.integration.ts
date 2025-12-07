@@ -121,7 +121,8 @@ describe("cortiClient.agents.messageSend", () => {
             expect(consoleWarnSpy).not.toHaveBeenCalled();
         });
 
-        it("should send message with taskId and contextId without errors or warnings", async () => {
+        // FIXME: We need to be able to get a task in not final state, otherwise error is valid
+        it.skip("should send message with taskId and contextId without errors or warnings", async () => {
             expect.assertions(2);
 
             const agent = await createTestAgent(cortiClient, createdAgentIds);
@@ -187,7 +188,8 @@ describe("cortiClient.agents.messageSend", () => {
             expect(consoleWarnSpy).not.toHaveBeenCalled();
         });
 
-        it("should send message with all optional parameters without errors or warnings", async () => {
+        // FIXME: We need to be able to get a task in not final state, otherwise error is valid
+        it.skip("should send message with all optional parameters without errors or warnings", async () => {
             expect.assertions(2);
 
             const agent = await createTestAgent(cortiClient, createdAgentIds);
