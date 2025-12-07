@@ -19,6 +19,8 @@ npm i -s @corti/sdk
 
 For detailed authentication instructions, see the [Authentication Guide](./AUTHENTICATION.md).
 
+For information about proxying and securing frontend implementations, see the [Proxying Guide](./PROXYING.md).
+
 ## Usage
 
 Instantiate and use the client with the following:
