@@ -38,14 +38,15 @@ import { CortiClient } from "@corti/sdk";
 // Point the client to your proxy server
 const client = new CortiClient({
     baseUrl: "https://your-proxy-server.com/api/corti_proxy",
-    // Optional: baseUrl will be respected instead
-    environment: CortiEnvironment.Eu,
-    // Optional: tenantName can be omitted if handled by proxy
-    tenantName: "YOUR_TENANT_NAME",
-    // Optional: auth can be omitted if handled by proxy
+    // Optional: You can omit the `auth` option if your proxy handles authentication.
+    // If provided, it will add the header: `Authorization: Bearer {accessToken}`
     auth: {
         accessToken: "YOUR_TOKEN",
     },
+    // Optional: You can add custom headers here. These headers will be included in every request sent by the client.
+    headers: {
+        'X-Custom-Header': "CUSTOM_HEADER_VALUE",
+    }
 });
 
 // All API calls will go to your proxy
@@ -60,9 +61,6 @@ import { CortiAuth } from "@corti/sdk";
 
 const auth = new CortiAuth({
     baseUrl: "https://your-proxy-server.com/auth/corti_proxy",
-    // Optional: environment and tenantName can be omitted if handled by proxy
-    environment: CortiEnvironment.Eu,
-    tenantName: "YOUR_TENANT_NAME",
 });
 
 // Token requests will go to your proxy
@@ -105,12 +103,15 @@ const customEnvironment = {
 
 const client = new CortiClient({
     environment: customEnvironment,
-    // Optional: tenantName can be omitted if handled by proxy
-    tenantName: "YOUR_TENANT_NAME",
-    // Optional: auth can be omitted if handled by proxy
+    // Optional: You can omit the `auth` option if your proxy handles authentication.
+    // If provided, it will add the header: `Authorization: Bearer {accessToken}`
     auth: {
         accessToken: "YOUR_TOKEN",
     },
+    // Optional: You can add custom headers here. These headers will be included in every request sent by the client.
+    headers: {
+        'X-Custom-Header': "CUSTOM_HEADER_VALUE",
+    }
 });
 
 // REST API calls use environment.base
@@ -136,8 +137,6 @@ const customEnvironment = {
 
 const auth = new CortiAuth({
     environment: customEnvironment,
-    // Optional: tenantName can be omitted if handled by proxy
-    tenantName: "YOUR_TENANT_NAME",
 });
 
 // Token requests use environment.login
