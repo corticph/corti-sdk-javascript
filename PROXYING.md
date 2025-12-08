@@ -4,7 +4,7 @@ This guide explains how to use proxying with the Corti JavaScript SDK to securel
 
 ## Why Proxying?
 
-When using **Client Credentials** authentication, the token you receive is a **multi-user token** that provides access to all data created within the same API Client. This means:
+When using **Client Credentials** authentication, the token you receive is a **service account user token** that provides access to all data created within the same API Client. This means:
 
 - **Data isolation is your responsibility** - You must implement access control logic to ensure users can only access their own data
 - **Frontend exposure risk** - If you expose a Client Credentials token in your frontend application, it could be used to access all data associated with that API Client, not just the current user's data
