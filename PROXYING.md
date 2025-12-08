@@ -37,7 +37,7 @@ import { CortiClient } from "@corti/sdk";
 
 // Point the client to your proxy server
 const client = new CortiClient({
-    baseUrl: "https://your-proxy-server.com/api",
+    baseUrl: "https://your-proxy-server.com/api/corti_proxy",
     // Optional: baseUrl will be respected instead
     environment: CortiEnvironment.Eu,
     // Optional: tenantName can be omitted if handled by proxy
@@ -50,7 +50,7 @@ const client = new CortiClient({
 
 // All API calls will go to your proxy
 const interactions = await client.interactions.list();
-// Under the hood: GET https://your-proxy-server.com/api/interactions
+// Under the hood: GET https://your-proxy-server.com/api/corti_proxy/interactions
 ```
 
 #### Example: CortiAuth with baseUrl
@@ -59,7 +59,7 @@ const interactions = await client.interactions.list();
 import { CortiAuth } from "@corti/sdk";
 
 const auth = new CortiAuth({
-    baseUrl: "https://your-proxy-server.com/auth",
+    baseUrl: "https://your-proxy-server.com/auth/corti_proxy",
     // Optional: environment and tenantName can be omitted if handled by proxy
     environment: CortiEnvironment.Eu,
     tenantName: "YOUR_TENANT_NAME",
@@ -70,8 +70,8 @@ const tokenResponse = await auth.getToken({
     clientId: "YOUR_CLIENT_ID",
     clientSecret: "YOUR_CLIENT_SECRET",
 });
-// Under the hood: POST https://your-proxy-server.com/auth/{tenantName}/protocol/openid-connect/token
-// Under the hood if tenantName is empty: POST https://your-proxy-server.com/auth/protocol/openid-connect/token
+// Under the hood: POST https://your-proxy-server.com/auth/corti_proxy/{tenantName}/protocol/openid-connect/token
+// Under the hood if tenantName is empty: POST https://your-proxy-server.com/auth/corti_proxy/protocol/openid-connect/token
 ```
 
 ### Using Custom Environments
@@ -84,10 +84,10 @@ The environment object has the following structure:
 
 ```typescript
 interface CortiEnvironmentUrls {
-    base: string; // Base URL for REST API calls (e.g., "https://your-proxy.com/api/v2")
-    wss: string; // WebSocket URL for stream/transcribe connections (e.g., "wss://your-proxy.com")
-    login: string; // Authentication endpoint base URL (e.g., "https://your-proxy.com/auth/realms")
-    agents: string; // Agents API base URL (e.g., "https://your-proxy.com/api")
+    base: string; // Base URL for REST API calls (e.g., "https://your-proxy.com/api/v2/corti_proxy")
+    wss: string; // WebSocket URL for stream/transcribe connections (e.g., "wss://your-proxy.com/corti_proxy")
+    login: string; // Authentication endpoint base URL (e.g., "https://your-proxy.com/auth/realms/corti_proxy")
+    agents: string; // Agents API base URL (e.g., "https://your-proxy.com/api/corti_proxy")
 }
 ```
 
@@ -97,10 +97,10 @@ interface CortiEnvironmentUrls {
 import { CortiClient } from "@corti/sdk";
 
 const customEnvironment = {
-    base: "https://your-proxy-server.com/api/v2",
-    wss: "wss://your-proxy-server.com",
-    login: "https://your-proxy-server.com/auth/realms",
-    agents: "https://your-proxy-server.com/api",
+    base: "https://your-proxy-server.com/api/v2/corti_proxy",
+    wss: "wss://your-proxy-server.com/corti_proxy",
+    login: "https://your-proxy-server.com/auth/realms/corti_proxy",
+    agents: "https://your-proxy-server.com/api/corti_proxy",
 };
 
 const client = new CortiClient({
@@ -115,11 +115,11 @@ const client = new CortiClient({
 
 // REST API calls use environment.base
 const interactions = await client.interactions.list();
-// Under the hood: GET https://your-proxy-server.com/api/v2/interactions
+// Under the hood: GET https://your-proxy-server.com/api/corti_proxy/v2/interactions
 
 // WebSocket connections use environment.wss
 const socket = await client.stream.connect({ id: "interaction-id" });
-// Under the hood: Connects to wss://your-proxy-server.com
+// Under the hood: Connects to wss://your-proxy-server.com/corti_proxy
 ```
 
 #### Example: CortiAuth with Custom Environment
@@ -128,10 +128,10 @@ const socket = await client.stream.connect({ id: "interaction-id" });
 import { CortiAuth } from "@corti/sdk";
 
 const customEnvironment = {
-    base: "https://your-proxy-server.com/api/v2",
-    wss: "wss://your-proxy-server.com",
-    login: "https://your-proxy-server.com/auth/realms",
-    agents: "https://your-proxy-server.com/api",
+    base: "https://your-proxy-server.com/api/v2/corti_proxy",
+    wss: "wss://your-proxy-server.com/corti_proxy",
+    login: "https://your-proxy-server.com/auth/realms/corti_proxy",
+    agents: "https://your-proxy-server.com/api/corti_proxy",
 };
 
 const auth = new CortiAuth({
@@ -145,8 +145,8 @@ const tokenResponse = await auth.getToken({
     clientId: "YOUR_CLIENT_ID",
     clientSecret: "YOUR_CLIENT_SECRET",
 });
-// Under the hood: POST https://your-proxy-server.com/auth/realms/{tenantName}/protocol/openid-connect/token
-// Under the hood when tenantName is empty: POST https://your-proxy-server.com/auth/realms/protocol/openid-connect/token
+// Under the hood: POST https://your-proxy-server.com/auth/realms/corti_proxy/{tenantName}/protocol/openid-connect/token
+// Under the hood when tenantName is empty: POST https://your-proxy-server.com/auth/realms/corti_proxy/protocol/openid-connect/token
 ```
 
 ### What Gets Called Under the Hood
@@ -176,7 +176,7 @@ import { CortiWebSocketProxyClient } from "@corti/sdk";
 // Connect to stream through your proxy
 const streamSocket = await CortiWebSocketProxyClient.stream.connect({
     proxy: {
-        url: "wss://your-proxy-server.com/stream",
+        url: "wss://your-proxy-server.com/stream/corti_proxy",
         // Optional: specify WebSocket subprotocols
         protocols: ["stream-protocol"],
         // Optional: add query parameters
@@ -201,7 +201,7 @@ streamSocket.send({ type: "message", content: "Hello" });
 // Connect to transcribe through your proxy
 const transcribeSocket = await CortiWebSocketProxyClient.transcribe.connect({
     proxy: {
-        url: "wss://your-proxy-server.com/transcribe",
+        url: "wss://your-proxy-server.com/transcribe/corti_proxy",
         queryParameters: {
             interactionId: "interaction-id",
         },
