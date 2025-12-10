@@ -95,10 +95,10 @@ interface CortiEnvironmentUrls {
 import { CortiClient } from "@corti/sdk";
 
 const customEnvironment = {
-    base: "https://your-proxy-server.com/api/v2/corti_proxy",
+    base: "https://your-proxy-server.com/api/corti_proxy",
     wss: "wss://your-proxy-server.com/corti_proxy",
-    login: "https://your-proxy-server.com/auth/realms/corti_proxy",
-    agents: "https://your-proxy-server.com/api/corti_proxy",
+    login: "https://your-proxy-server.com/auth/corti_proxy",
+    agents: "https://your-proxy-server.com/agents/corti_proxy",
 };
 
 const client = new CortiClient({
@@ -116,11 +116,11 @@ const client = new CortiClient({
 
 // REST API calls use environment.base
 const interactions = await client.interactions.list();
-// Under the hood: GET https://your-proxy-server.com/api/corti_proxy/v2/interactions
+// Under the hood: GET https://your-proxy-server.com/api/corti_proxy/interactions
 
 // WebSocket connections use environment.wss
 const socket = await client.stream.connect({ id: "interaction-id" });
-// Under the hood: Connects to wss://your-proxy-server.com/corti_proxy
+// Under the hood: Connects to wss://your-proxy-server.com/corti_proxy/interactions/{interaction-id}/stream
 ```
 
 #### Example: CortiAuth with Custom Environment
@@ -129,10 +129,10 @@ const socket = await client.stream.connect({ id: "interaction-id" });
 import { CortiAuth } from "@corti/sdk";
 
 const customEnvironment = {
-    base: "https://your-proxy-server.com/api/v2/corti_proxy",
+    base: "https://your-proxy-server.com/api/corti_proxy",
     wss: "wss://your-proxy-server.com/corti_proxy",
-    login: "https://your-proxy-server.com/auth/realms/corti_proxy",
-    agents: "https://your-proxy-server.com/api/corti_proxy",
+    login: "https://your-proxy-server.com/auth/corti_proxy",
+    agents: "https://your-proxy-server.com/agents/corti_proxy",
 };
 
 const auth = new CortiAuth({
@@ -144,8 +144,8 @@ const tokenResponse = await auth.getToken({
     clientId: "YOUR_CLIENT_ID",
     clientSecret: "YOUR_CLIENT_SECRET",
 });
-// Under the hood: POST https://your-proxy-server.com/auth/realms/corti_proxy/{tenantName}/protocol/openid-connect/token
-// Under the hood when tenantName is empty: POST https://your-proxy-server.com/auth/realms/corti_proxy/protocol/openid-connect/token
+// Under the hood: POST https://your-proxy-server.com/auth/corti_proxy/{tenantName}/protocol/openid-connect/token
+// Under the hood when tenantName is empty: POST https://your-proxy-server.com/auth/corti_proxy/protocol/openid-connect/token
 ```
 
 ### What Gets Called Under the Hood
@@ -175,7 +175,7 @@ import { CortiWebSocketProxyClient } from "@corti/sdk";
 // Connect to stream through your proxy
 const streamSocket = await CortiWebSocketProxyClient.stream.connect({
     proxy: {
-        url: "wss://your-proxy-server.com/stream/corti_proxy",
+        url: "wss://your-proxy-server.com/corti_proxy/steam",
         // Optional: specify WebSocket subprotocols
         protocols: ["stream-protocol"],
         // Optional: add query parameters
@@ -200,7 +200,7 @@ streamSocket.send({ type: "message", content: "Hello" });
 // Connect to transcribe through your proxy
 const transcribeSocket = await CortiWebSocketProxyClient.transcribe.connect({
     proxy: {
-        url: "wss://your-proxy-server.com/transcribe/corti_proxy",
+        url: "wss://your-proxy-server.com/corti_proxy/transcribe",
         queryParameters: {
             interactionId: "interaction-id",
         },
