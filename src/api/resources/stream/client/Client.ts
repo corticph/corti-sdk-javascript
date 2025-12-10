@@ -50,7 +50,7 @@ export class Stream {
             url: core.url.join(
                 (await core.Supplier.get(this._options["baseUrl"])) ??
                     (await core.Supplier.get(this._options["environment"])).wss,
-                `/audio-bridge/v2/interactions/${encodeURIComponent(id)}/streams`,
+                `/interactions/${encodeURIComponent(id)}/streams`,
             ),
             protocols: [],
             queryParameters: _queryParams,
