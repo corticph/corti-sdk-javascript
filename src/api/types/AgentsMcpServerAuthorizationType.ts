@@ -5,9 +5,10 @@
 /**
  * Type of authorization used by the MCP server.
  */
-export type AgentsMcpServerAuthorizationType = "none" | "oauth2.0" | "oauth2.1";
+export type AgentsMcpServerAuthorizationType = "none" | "bearer" | "inherit" | "oauth2.0";
 export const AgentsMcpServerAuthorizationType = {
     None: "none",
+    Bearer: "bearer",
+    Inherit: "inherit",
     Oauth20: "oauth2.0",
-    Oauth21: "oauth2.1",
 } as const;
