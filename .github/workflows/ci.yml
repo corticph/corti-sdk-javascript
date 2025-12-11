@@ -4,15 +4,16 @@ on: [push]
 
 jobs:
     compile:
-        runs-on: ubuntu-latest
+        runs-on: ci
         steps:
             - name: Checkout repo
               uses: actions/checkout@v4
 
             - name: Set up node
               uses: actions/setup-node@v4
-            #              with:
-            #                  node-version: "18.18.0"
+              with:
+                  registry-url: "https://npm.corti.app"
+                  node-version: "22"
 
             - name: Setup yarn
               run: npm install -g yarn
@@ -24,15 +25,16 @@ jobs:
               run: yarn build
 
     test:
-        runs-on: ubuntu-latest
+        runs-on: ci
         steps:
             - name: Checkout repo
               uses: actions/checkout@v4
 
             - name: Set up node
               uses: actions/setup-node@v4
-            #              with:
-            #                  node-version: "18.18.0"
+              with:
+                  registry-url: "https://npm.corti.app"
+                  node-version: "22"
 
             - name: Setup yarn
               run: npm install -g yarn
@@ -49,7 +51,7 @@ jobs:
     publish:
         needs: [compile, test]
         if: github.event_name == 'push' && contains(github.ref, 'refs/tags/')
-        runs-on: ubuntu-latest
+        runs-on: ci
         permissions:
             id-token: write
         steps:
@@ -58,8 +60,9 @@ jobs:
 
             - name: Set up node
               uses: actions/setup-node@v4
-            #              with:
-            #                  node-version: "18.18.0"
+              with:
+                  registry-url: "https://npm.corti.app"
+                  node-version: "22"
 
             - name: Setup yarn
               run: npm install -g yarn
@@ -73,7 +76,7 @@ jobs:
             - name: Publish to npm
               run: |
                   publish() {
-                    npx -y npm@latest publish "$@"
+                    npx -y npm@latest publish --registry https://registry.npmjs.org "$@"
                   }
                   if [[ ${GITHUB_REF} == *alpha* ]]; then
                     publish --access public --tag alpha
