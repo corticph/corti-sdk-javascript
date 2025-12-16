@@ -5,6 +5,6 @@
 import * as Corti from "../index.js";
 
 export interface StreamFactsMessage {
-    type: "facts";
+    type: Corti.StreamFactsMessageType;
     fact: Corti.StreamFact[];
 }

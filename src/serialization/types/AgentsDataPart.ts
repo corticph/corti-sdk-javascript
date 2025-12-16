@@ -5,17 +5,18 @@
 import * as serializers from "../index.js";
 import * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
+import { AgentsDataPartKind } from "./AgentsDataPartKind.js";
 
 export const AgentsDataPart: core.serialization.ObjectSchema<serializers.AgentsDataPart.Raw, Corti.AgentsDataPart> =
     core.serialization.object({
-        kind: core.serialization.stringLiteral("data"),
+        kind: AgentsDataPartKind,
         data: core.serialization.record(core.serialization.string(), core.serialization.unknown()),
         metadata: core.serialization.record(core.serialization.string(), core.serialization.unknown()).optional(),
     });
 
 export declare namespace AgentsDataPart {
     export interface Raw {
-        kind: "data";
+        kind: AgentsDataPartKind.Raw;
         data: Record<string, unknown>;
         metadata?: Record<string, unknown> | null;
     }

@@ -16,7 +16,7 @@ export const TranscriptsResponse: core.serialization.ObjectSchema<
 > = core.serialization.object({
     id: Uuid,
     metadata: TranscriptsMetadata,
-    transcripts: core.serialization.list(CommonTranscriptResponse).optionalNullable(),
+    transcripts: core.serialization.list(CommonTranscriptResponse).nullable(),
     usageInfo: CommonUsageInfo,
 });
 
@@ -24,7 +24,7 @@ export declare namespace TranscriptsResponse {
     export interface Raw {
         id: Uuid.Raw;
         metadata: TranscriptsMetadata.Raw;
-        transcripts?: (CommonTranscriptResponse.Raw[] | null) | null;
+        transcripts: CommonTranscriptResponse.Raw[] | null;
         usageInfo: CommonUsageInfo.Raw;
     }
 }

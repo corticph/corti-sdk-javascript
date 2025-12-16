@@ -5,6 +5,6 @@
 import * as Corti from "../index.js";
 
 export interface StreamConfigMessage {
-    type: "config";
+    type: Corti.StreamConfigMessageType;
     configuration: Corti.StreamConfig;
 }

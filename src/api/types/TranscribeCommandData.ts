@@ -6,7 +6,7 @@ export interface TranscribeCommandData {
     /** To identify the command when it gets detected and returned over the WebSocket */
     id: string;
     /** The variables identified */
-    variables?: Record<string, (string | null) | undefined> | null;
+    variables?: Record<string, string | null> | null;
     /** The raw transcript without spoken punctuation applied and without command phrases removed */
     rawTranscriptText: string;
     /** Start time of the transcript segment in seconds */

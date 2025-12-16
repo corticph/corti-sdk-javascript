@@ -5,11 +5,12 @@
 import * as serializers from "../index.js";
 import * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
+import { AgentsExpertType } from "./AgentsExpertType.js";
 import { AgentsMcpServer } from "./AgentsMcpServer.js";
 
 export const AgentsExpert: core.serialization.ObjectSchema<serializers.AgentsExpert.Raw, Corti.AgentsExpert> =
     core.serialization.object({
-        type: core.serialization.stringLiteral("expert"),
+        type: AgentsExpertType,
         id: core.serialization.string(),
         name: core.serialization.string(),
         description: core.serialization.string(),
@@ -19,7 +20,7 @@ export const AgentsExpert: core.serialization.ObjectSchema<serializers.AgentsExp
 
 export declare namespace AgentsExpert {
     export interface Raw {
-        type: "expert";
+        type: AgentsExpertType.Raw;
         id: string;
         name: string;
         description: string;

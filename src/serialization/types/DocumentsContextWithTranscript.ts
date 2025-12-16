@@ -5,19 +5,20 @@
 import * as serializers from "../index.js";
 import * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
+import { DocumentsContextWithTranscriptType } from "./DocumentsContextWithTranscriptType.js";
 import { CommonTranscriptRequest } from "./CommonTranscriptRequest.js";
 
 export const DocumentsContextWithTranscript: core.serialization.ObjectSchema<
     serializers.DocumentsContextWithTranscript.Raw,
     Corti.DocumentsContextWithTranscript
 > = core.serialization.object({
-    type: core.serialization.stringLiteral("transcript"),
+    type: DocumentsContextWithTranscriptType,
     data: CommonTranscriptRequest,
 });
 
 export declare namespace DocumentsContextWithTranscript {
     export interface Raw {
-        type: "transcript";
+        type: DocumentsContextWithTranscriptType.Raw;
         data: CommonTranscriptRequest.Raw;
     }
 }

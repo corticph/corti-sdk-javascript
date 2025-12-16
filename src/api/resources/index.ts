@@ -12,6 +12,7 @@ export * as facts from "./facts/index.js";
 export * as documents from "./documents/index.js";
 export * as templates from "./templates/index.js";
 export * from "./interactions/client/requests/index.js";
+export * from "./recordings/client/requests/index.js";
 export * from "./transcripts/client/requests/index.js";
 export * from "./facts/client/requests/index.js";
 export * from "./documents/client/requests/index.js";

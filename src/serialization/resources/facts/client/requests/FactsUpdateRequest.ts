@@ -9,7 +9,7 @@ import { CommonSourceEnum } from "../../../../types/CommonSourceEnum.js";
 
 export const FactsUpdateRequest: core.serialization.Schema<
     serializers.FactsUpdateRequest.Raw,
-    Corti.FactsUpdateRequest
+    Omit<Corti.FactsUpdateRequest, "id" | "factId">
 > = core.serialization.object({
     text: core.serialization.string().optional(),
     group: core.serialization.string().optional(),

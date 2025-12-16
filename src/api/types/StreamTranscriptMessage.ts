@@ -5,6 +5,6 @@
 import * as Corti from "../index.js";
 
 export interface StreamTranscriptMessage {
-    type: "transcript";
+    type: Corti.StreamTranscriptMessageType;
     data: Corti.StreamTranscript[];
 }

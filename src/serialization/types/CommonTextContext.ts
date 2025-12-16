@@ -5,18 +5,19 @@
 import * as serializers from "../index.js";
 import * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
+import { CommonTextContextType } from "./CommonTextContextType.js";
 
 export const CommonTextContext: core.serialization.ObjectSchema<
     serializers.CommonTextContext.Raw,
     Corti.CommonTextContext
 > = core.serialization.object({
-    type: core.serialization.stringLiteral("text"),
+    type: CommonTextContextType,
     text: core.serialization.string(),
 });
 
 export declare namespace CommonTextContext {
     export interface Raw {
-        type: "text";
+        type: CommonTextContextType.Raw;
         text: string;
     }
 }

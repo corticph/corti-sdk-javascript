@@ -5,13 +5,14 @@
 import * as serializers from "../index.js";
 import * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
+import { AgentsCreateExpertType } from "./AgentsCreateExpertType.js";
 import { AgentsCreateMcpServer } from "./AgentsCreateMcpServer.js";
 
 export const AgentsCreateExpert: core.serialization.ObjectSchema<
     serializers.AgentsCreateExpert.Raw,
     Corti.AgentsCreateExpert
 > = core.serialization.object({
-    type: core.serialization.stringLiteral("new"),
+    type: AgentsCreateExpertType,
     name: core.serialization.string(),
     description: core.serialization.string(),
     systemPrompt: core.serialization.string().optional(),
@@ -20,7 +21,7 @@ export const AgentsCreateExpert: core.serialization.ObjectSchema<
 
 export declare namespace AgentsCreateExpert {
     export interface Raw {
-        type: "new";
+        type: AgentsCreateExpertType.Raw;
         name: string;
         description: string;
         systemPrompt?: string | null;

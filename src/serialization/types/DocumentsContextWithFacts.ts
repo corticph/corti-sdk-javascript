@@ -5,19 +5,20 @@
 import * as serializers from "../index.js";
 import * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
+import { DocumentsContextWithFactsType } from "./DocumentsContextWithFactsType.js";
 import { FactsContext } from "./FactsContext.js";
 
 export const DocumentsContextWithFacts: core.serialization.ObjectSchema<
     serializers.DocumentsContextWithFacts.Raw,
     Corti.DocumentsContextWithFacts
 > = core.serialization.object({
-    type: core.serialization.stringLiteral("facts"),
+    type: DocumentsContextWithFactsType,
     data: core.serialization.list(FactsContext),
 });
 
 export declare namespace DocumentsContextWithFacts {
     export interface Raw {
-        type: "facts";
+        type: DocumentsContextWithFactsType.Raw;
         data: FactsContext.Raw[];
     }
 }

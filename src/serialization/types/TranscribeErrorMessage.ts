@@ -5,19 +5,20 @@
 import * as serializers from "../index.js";
 import * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
+import { TranscribeErrorMessageType } from "./TranscribeErrorMessageType.js";
 import { TranscribeErrorMessageError } from "./TranscribeErrorMessageError.js";
 
 export const TranscribeErrorMessage: core.serialization.ObjectSchema<
     serializers.TranscribeErrorMessage.Raw,
     Corti.TranscribeErrorMessage
 > = core.serialization.object({
-    type: core.serialization.stringLiteral("error"),
+    type: TranscribeErrorMessageType,
     error: TranscribeErrorMessageError,
 });
 
 export declare namespace TranscribeErrorMessage {
     export interface Raw {
-        type: "error";
+        type: TranscribeErrorMessageType.Raw;
         error: TranscribeErrorMessageError.Raw;
     }
 }

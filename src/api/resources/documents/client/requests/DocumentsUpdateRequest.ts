@@ -6,9 +6,20 @@ import * as Corti from "../../../../index.js";
 
 /**
  * @example
- *     {}
+ *     {
+ *         id: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+ *         documentId: "f47ac10b-58cc-4372-a567-0e02b2c3d479"
+ *     }
  */
 export interface DocumentsUpdateRequest {
+    /**
+     * The unique identifier of the interaction. Must be a valid UUID.
+     */
+    id: Corti.Uuid;
+    /**
+     * The document ID representing the context for the request. Must be a valid UUID.
+     */
+    documentId: Corti.Uuid;
     /** An optional name for the document. */
     name?: string;
     sections?: Corti.DocumentsSectionInput[];

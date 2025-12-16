@@ -14,7 +14,7 @@ export declare namespace Templates {
         environment: core.Supplier<environments.CortiEnvironment | environments.CortiEnvironmentUrls>;
         /** Specify a custom URL to connect the client to. */
         baseUrl?: core.Supplier<string>;
-        token?: core.Supplier<core.BearerToken | undefined>;
+        token?: core.Supplier<core.BearerToken>;
         /** Override the Tenant-Name header */
         tenantName: core.Supplier<string>;
         /** Additional headers to include in requests. */
@@ -283,23 +283,29 @@ export class Templates {
     /**
      * Retrieves template by key.
      *
-     * @param {string} key - The key of the template
+     * @param {Corti.TemplatesGetRequest} request
      * @param {Templates.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Corti.UnauthorizedError}
      * @throws {@link Corti.InternalServerError}
      *
      * @example
-     *     await client.templates.get("key")
+     *     await client.templates.get({
+     *         key: "key"
+     *     })
      */
-    public get(key: string, requestOptions?: Templates.RequestOptions): core.HttpResponsePromise<Corti.TemplatesItem> {
-        return core.HttpResponsePromise.fromPromise(this.__get(key, requestOptions));
+    public get(
+        request: Corti.TemplatesGetRequest,
+        requestOptions?: Templates.RequestOptions,
+    ): core.HttpResponsePromise<Corti.TemplatesItem> {
+        return core.HttpResponsePromise.fromPromise(this.__get(request, requestOptions));
     }
 
     private async __get(
-        key: string,
+        request: Corti.TemplatesGetRequest,
         requestOptions?: Templates.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.TemplatesItem>> {
+        const { key } = request;
         const _response = await core.fetcher({
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
@@ -373,7 +379,7 @@ export class Templates {
         }
     }
 
-    protected async _getAuthorizationHeader(): Promise<string | undefined> {
+    protected async _getAuthorizationHeader(): Promise<string> {
         const bearer = await core.Supplier.get(this._options.token);
         if (bearer != null) {
             return `Bearer ${bearer}`;

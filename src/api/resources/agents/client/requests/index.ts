@@ -1,5 +1,9 @@
 export { type AgentsListRequest } from "./AgentsListRequest.js";
 export { type AgentsCreateAgent } from "./AgentsCreateAgent.js";
+export { type AgentsGetRequest } from "./AgentsGetRequest.js";
+export { type AgentsDeleteRequest } from "./AgentsDeleteRequest.js";
+export { type AgentsUpdateRequest } from "./AgentsUpdateRequest.js";
+export { type AgentsGetCardRequest } from "./AgentsGetCardRequest.js";
 export { type AgentsMessageSendParams } from "./AgentsMessageSendParams.js";
 export { type AgentsGetTaskRequest } from "./AgentsGetTaskRequest.js";
 export { type AgentsGetContextRequest } from "./AgentsGetContextRequest.js";

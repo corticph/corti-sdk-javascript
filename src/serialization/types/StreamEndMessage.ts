@@ -5,16 +5,17 @@
 import * as serializers from "../index.js";
 import * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
+import { StreamEndMessageType } from "./StreamEndMessageType.js";
 
 export const StreamEndMessage: core.serialization.ObjectSchema<
     serializers.StreamEndMessage.Raw,
     Corti.StreamEndMessage
 > = core.serialization.object({
-    type: core.serialization.stringLiteral("end"),
+    type: StreamEndMessageType,
 });
 
 export declare namespace StreamEndMessage {
     export interface Raw {
-        type: "end";
+        type: StreamEndMessageType.Raw;
     }
 }

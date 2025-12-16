@@ -11,11 +11,11 @@ export const TranscriptsListResponse: core.serialization.ObjectSchema<
     serializers.TranscriptsListResponse.Raw,
     Corti.TranscriptsListResponse
 > = core.serialization.object({
-    transcripts: core.serialization.list(TranscriptsListItem).optionalNullable(),
+    transcripts: core.serialization.list(TranscriptsListItem).nullable(),
 });
 
 export declare namespace TranscriptsListResponse {
     export interface Raw {
-        transcripts?: (TranscriptsListItem.Raw[] | null) | null;
+        transcripts: TranscriptsListItem.Raw[] | null;
     }
 }

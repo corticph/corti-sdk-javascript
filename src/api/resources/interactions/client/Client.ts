@@ -14,7 +14,7 @@ export declare namespace Interactions {
         environment: core.Supplier<environments.CortiEnvironment | environments.CortiEnvironmentUrls>;
         /** Specify a custom URL to connect the client to. */
         baseUrl?: core.Supplier<string>;
-        token?: core.Supplier<core.BearerToken | undefined>;
+        token?: core.Supplier<core.BearerToken>;
         /** Override the Tenant-Name header */
         tenantName: core.Supplier<string>;
         /** Additional headers to include in requests. */
@@ -64,23 +64,23 @@ export class Interactions {
             ): Promise<core.WithRawResponse<Corti.InteractionsListResponse>> => {
                 const { sort, direction, pageSize, index, encounterStatus, patient } = request;
                 const _queryParams: Record<string, string | string[] | object | object[] | null> = {};
-                if (sort !== undefined) {
+                if (sort != null) {
                     _queryParams["sort"] = serializers.InteractionsListRequestSort.jsonOrThrow(sort, {
                         unrecognizedObjectKeys: "strip",
                         omitUndefined: true,
                     });
                 }
-                if (direction !== undefined) {
+                if (direction != null) {
                     _queryParams["direction"] = serializers.CommonSortingDirectionEnum.jsonOrThrow(direction, {
                         unrecognizedObjectKeys: "strip",
                         omitUndefined: true,
                     });
                 }
-                if (pageSize !== undefined) {
-                    _queryParams["pageSize"] = pageSize?.toString() ?? null;
+                if (pageSize != null) {
+                    _queryParams["pageSize"] = pageSize.toString();
                 }
-                if (index !== undefined) {
-                    _queryParams["index"] = index?.toString() ?? null;
+                if (index != null) {
+                    _queryParams["index"] = index.toString();
                 }
                 if (encounterStatus != null) {
                     if (Array.isArray(encounterStatus)) {
@@ -97,7 +97,7 @@ export class Interactions {
                         );
                     }
                 }
-                if (patient !== undefined) {
+                if (patient != null) {
                     _queryParams["patient"] = patient;
                 }
                 const _response = await core.fetcher({
@@ -331,26 +331,29 @@ export class Interactions {
     /**
      * Retrieves a previously recorded interaction by its unique identifier (interaction ID).
      *
-     * @param {Corti.Uuid} id - The unique identifier of the interaction. Must be a valid UUID.
+     * @param {Corti.InteractionsGetRequest} request
      * @param {Interactions.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Corti.ForbiddenError}
      * @throws {@link Corti.GatewayTimeoutError}
      *
      * @example
-     *     await client.interactions.get("f47ac10b-58cc-4372-a567-0e02b2c3d479")
+     *     await client.interactions.get({
+     *         id: "f47ac10b-58cc-4372-a567-0e02b2c3d479"
+     *     })
      */
     public get(
-        id: Corti.Uuid,
+        request: Corti.InteractionsGetRequest,
         requestOptions?: Interactions.RequestOptions,
     ): core.HttpResponsePromise<Corti.InteractionsGetResponse> {
-        return core.HttpResponsePromise.fromPromise(this.__get(id, requestOptions));
+        return core.HttpResponsePromise.fromPromise(this.__get(request, requestOptions));
     }
 
     private async __get(
-        id: Corti.Uuid,
+        request: Corti.InteractionsGetRequest,
         requestOptions?: Interactions.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.InteractionsGetResponse>> {
+        const { id } = request;
         const _response = await core.fetcher({
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
@@ -436,23 +439,29 @@ export class Interactions {
     /**
      * Deletes an existing interaction.
      *
-     * @param {Corti.Uuid} id - The unique identifier of the interaction. Must be a valid UUID.
+     * @param {Corti.InteractionsDeleteRequest} request
      * @param {Interactions.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Corti.ForbiddenError}
      * @throws {@link Corti.GatewayTimeoutError}
      *
      * @example
-     *     await client.interactions.delete("f47ac10b-58cc-4372-a567-0e02b2c3d479")
+     *     await client.interactions.delete({
+     *         id: "f47ac10b-58cc-4372-a567-0e02b2c3d479"
+     *     })
      */
-    public delete(id: Corti.Uuid, requestOptions?: Interactions.RequestOptions): core.HttpResponsePromise<void> {
-        return core.HttpResponsePromise.fromPromise(this.__delete(id, requestOptions));
+    public delete(
+        request: Corti.InteractionsDeleteRequest,
+        requestOptions?: Interactions.RequestOptions,
+    ): core.HttpResponsePromise<void> {
+        return core.HttpResponsePromise.fromPromise(this.__delete(request, requestOptions));
     }
 
     private async __delete(
-        id: Corti.Uuid,
+        request: Corti.InteractionsDeleteRequest,
         requestOptions?: Interactions.RequestOptions,
     ): Promise<core.WithRawResponse<void>> {
+        const { id } = request;
         const _response = await core.fetcher({
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
@@ -529,7 +538,6 @@ export class Interactions {
     /**
      * Modifies an existing interaction by updating specific fields without overwriting the entire record.
      *
-     * @param {Corti.Uuid} id - The unique identifier of the interaction. Must be a valid UUID.
      * @param {Corti.InteractionsUpdateRequest} request
      * @param {Interactions.RequestOptions} requestOptions - Request-specific configuration.
      *
@@ -537,21 +545,22 @@ export class Interactions {
      * @throws {@link Corti.GatewayTimeoutError}
      *
      * @example
-     *     await client.interactions.update("f47ac10b-58cc-4372-a567-0e02b2c3d479")
+     *     await client.interactions.update({
+     *         id: "f47ac10b-58cc-4372-a567-0e02b2c3d479"
+     *     })
      */
     public update(
-        id: Corti.Uuid,
-        request: Corti.InteractionsUpdateRequest = {},
+        request: Corti.InteractionsUpdateRequest,
         requestOptions?: Interactions.RequestOptions,
     ): core.HttpResponsePromise<Corti.InteractionsGetResponse> {
-        return core.HttpResponsePromise.fromPromise(this.__update(id, request, requestOptions));
+        return core.HttpResponsePromise.fromPromise(this.__update(request, requestOptions));
     }
 
     private async __update(
-        id: Corti.Uuid,
-        request: Corti.InteractionsUpdateRequest = {},
+        request: Corti.InteractionsUpdateRequest,
         requestOptions?: Interactions.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.InteractionsGetResponse>> {
+        const { id, ..._body } = request;
         const _response = await core.fetcher({
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
@@ -569,7 +578,7 @@ export class Interactions {
             ),
             contentType: "application/json",
             requestType: "json",
-            body: serializers.InteractionsUpdateRequest.jsonOrThrow(request, {
+            body: serializers.InteractionsUpdateRequest.jsonOrThrow(_body, {
                 unrecognizedObjectKeys: "strip",
                 omitUndefined: true,
             }),
@@ -640,7 +649,7 @@ export class Interactions {
         }
     }
 
-    protected async _getAuthorizationHeader(): Promise<string | undefined> {
+    protected async _getAuthorizationHeader(): Promise<string> {
         const bearer = await core.Supplier.get(this._options.token);
         if (bearer != null) {
             return `Bearer ${bearer}`;

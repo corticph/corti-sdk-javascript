@@ -10,7 +10,7 @@ import { AgentsMessageSendConfiguration } from "../../../../types/AgentsMessageS
 
 export const AgentsMessageSendParams: core.serialization.Schema<
     serializers.AgentsMessageSendParams.Raw,
-    Corti.AgentsMessageSendParams
+    Omit<Corti.AgentsMessageSendParams, "id">
 > = core.serialization.object({
     message: AgentsMessage,
     configuration: AgentsMessageSendConfiguration.optional(),

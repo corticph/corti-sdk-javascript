@@ -5,18 +5,19 @@
 import * as serializers from "../index.js";
 import * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
+import { StreamUsageMessageType } from "./StreamUsageMessageType.js";
 
 export const StreamUsageMessage: core.serialization.ObjectSchema<
     serializers.StreamUsageMessage.Raw,
     Corti.StreamUsageMessage
 > = core.serialization.object({
-    type: core.serialization.stringLiteral("usage"),
+    type: StreamUsageMessageType,
     credits: core.serialization.number(),
 });
 
 export declare namespace StreamUsageMessage {
     export interface Raw {
-        type: "usage";
+        type: StreamUsageMessageType.Raw;
         credits: number;
     }
 }

@@ -13,9 +13,9 @@ export interface AgentsGetRegistryExpertsRequest {
     /**
      * The maximum number of items to return. If not specified, a default number of items will be returned.
      */
-    limit?: number | null;
+    limit?: number;
     /**
      * The number of items to skip before starting to collect the result set. Default is 0.
      */
-    offset?: number | null;
+    offset?: number;
 }
