@@ -5,6 +5,6 @@
 import * as Corti from "../index.js";
 
 export interface TranscribeConfigMessage {
-    type: Corti.TranscribeConfigMessageType;
+    type: "config";
     configuration: Corti.TranscribeConfig;
 }

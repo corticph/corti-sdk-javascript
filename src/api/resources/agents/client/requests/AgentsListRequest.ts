@@ -10,13 +10,13 @@ export interface AgentsListRequest {
     /**
      * The maximum number of agents to return. If not specified, all agents will be returned.
      */
-    limit?: number;
+    limit?: number | null;
     /**
      * The number of agents to skip before starting to collect the result set. Default is 0.
      */
-    offset?: number;
+    offset?: number | null;
     /**
      * If set to true, ephemeral agents will be included in the response. Default is false.
      */
-    ephemeral?: boolean;
+    ephemeral?: boolean | null;
 }

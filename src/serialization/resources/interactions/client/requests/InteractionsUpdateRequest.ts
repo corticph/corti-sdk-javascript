@@ -11,7 +11,7 @@ import { InteractionsPatient } from "../../../../types/InteractionsPatient.js";
 
 export const InteractionsUpdateRequest: core.serialization.Schema<
     serializers.InteractionsUpdateRequest.Raw,
-    Omit<Corti.InteractionsUpdateRequest, "id">
+    Corti.InteractionsUpdateRequest
 > = core.serialization.object({
     assignedUserId: Uuid.optional(),
     encounter: InteractionsEncounterUpdateRequest.optional(),

@@ -22,5 +22,5 @@ export interface AgentsMessage {
     /** Identifier for the context (thread) in which the message is sent. */
     contextId?: string;
     /** The kind of the object, always "message". */
-    kind: Corti.AgentsMessageKind;
+    kind: "message";
 }

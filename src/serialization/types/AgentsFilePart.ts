@@ -5,19 +5,18 @@
 import * as serializers from "../index.js";
 import * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
-import { AgentsFilePartKind } from "./AgentsFilePartKind.js";
 import { AgentsFilePartFile } from "./AgentsFilePartFile.js";
 
 export const AgentsFilePart: core.serialization.ObjectSchema<serializers.AgentsFilePart.Raw, Corti.AgentsFilePart> =
     core.serialization.object({
-        kind: AgentsFilePartKind,
+        kind: core.serialization.stringLiteral("file"),
         file: AgentsFilePartFile.optional(),
         metadata: core.serialization.record(core.serialization.string(), core.serialization.unknown()).optional(),
     });
 
 export declare namespace AgentsFilePart {
     export interface Raw {
-        kind: AgentsFilePartKind.Raw;
+        kind: "file";
         file?: AgentsFilePartFile.Raw | null;
         metadata?: Record<string, unknown> | null;
     }

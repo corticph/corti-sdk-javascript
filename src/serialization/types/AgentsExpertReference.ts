@@ -5,20 +5,19 @@
 import * as serializers from "../index.js";
 import * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
-import { AgentsExpertReferenceType } from "./AgentsExpertReferenceType.js";
 
 export const AgentsExpertReference: core.serialization.ObjectSchema<
     serializers.AgentsExpertReference.Raw,
     Corti.AgentsExpertReference
 > = core.serialization.object({
-    type: AgentsExpertReferenceType,
+    type: core.serialization.stringLiteral("reference"),
     id: core.serialization.string().optional(),
     name: core.serialization.string().optional(),
 });
 
 export declare namespace AgentsExpertReference {
     export interface Raw {
-        type: AgentsExpertReferenceType.Raw;
+        type: "reference";
         id?: string | null;
         name?: string | null;
     }

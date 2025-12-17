@@ -4,22 +4,11 @@
 
 /**
  * @example
- *     {
- *         id: "12345678-90ab-cdef-gh12-34567890abc",
- *         taskId: "taskId"
- *     }
+ *     {}
  */
 export interface AgentsGetTaskRequest {
     /**
-     * The identifier of the agent associated with the context.
-     */
-    id: string;
-    /**
-     * The identifier of the task to retrieve.
-     */
-    taskId: string;
-    /**
      * The number of previous messages to include in the context for the agent when retrieving this task. Default is all messages.
      */
-    historyLength?: number;
+    historyLength?: number | null;
 }

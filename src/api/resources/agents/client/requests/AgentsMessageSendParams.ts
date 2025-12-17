@@ -7,7 +7,6 @@ import * as Corti from "../../../../index.js";
 /**
  * @example
  *     {
- *         id: "12345678-90ab-cdef-gh12-34567890abc",
  *         message: {
  *             role: "user",
  *             parts: [{
@@ -20,10 +19,6 @@ import * as Corti from "../../../../index.js";
  *     }
  */
 export interface AgentsMessageSendParams {
-    /**
-     * The identifier of the agent associated with the context.
-     */
-    id: string;
     message: Corti.AgentsMessage;
     configuration?: Corti.AgentsMessageSendConfiguration;
     /** Optional metadata that will be associated with the message. */

@@ -9,7 +9,7 @@
  *         clientSecret: "my_secret_value"
  *     }
  */
-export interface GetTokenAuthRequest {
+export interface AuthGetTokenRequest {
     clientId: string;
     /** Optional secret for confidential clients and Authorization code flow */
     clientSecret?: string;

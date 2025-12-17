@@ -7,7 +7,6 @@ import * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
 import { AgentsMessageRole } from "./AgentsMessageRole.js";
 import { AgentsPart } from "./AgentsPart.js";
-import { AgentsMessageKind } from "./AgentsMessageKind.js";
 
 export const AgentsMessage: core.serialization.ObjectSchema<serializers.AgentsMessage.Raw, Corti.AgentsMessage> =
     core.serialization.object({
@@ -19,7 +18,7 @@ export const AgentsMessage: core.serialization.ObjectSchema<serializers.AgentsMe
         messageId: core.serialization.string(),
         taskId: core.serialization.string().optional(),
         contextId: core.serialization.string().optional(),
-        kind: AgentsMessageKind,
+        kind: core.serialization.stringLiteral("message"),
     });
 
 export declare namespace AgentsMessage {
@@ -32,6 +31,6 @@ export declare namespace AgentsMessage {
         messageId: string;
         taskId?: string | null;
         contextId?: string | null;
-        kind: AgentsMessageKind.Raw;
+        kind: "message";
     }
 }

@@ -5,7 +5,7 @@
 import * as Corti from "../index.js";
 
 export interface AgentsExpert {
-    type: Corti.AgentsExpertType;
+    type: "expert";
     /** The unique identifier of the expert. */
     id: string;
     /** The name of the expert. Must be unique. */

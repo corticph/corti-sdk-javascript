@@ -17,5 +17,5 @@ export interface AgentsTask {
     /** Additional metadata for the task. */
     metadata?: Record<string, unknown>;
     /** The kind of the object, always "task". */
-    kind: Corti.AgentsTaskKind;
+    kind: "task";
 }

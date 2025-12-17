@@ -5,19 +5,18 @@
 import * as serializers from "../index.js";
 import * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
-import { DocumentsContextWithStringType } from "./DocumentsContextWithStringType.js";
 
 export const DocumentsContextWithString: core.serialization.ObjectSchema<
     serializers.DocumentsContextWithString.Raw,
     Corti.DocumentsContextWithString
 > = core.serialization.object({
-    type: DocumentsContextWithStringType,
+    type: core.serialization.stringLiteral("string"),
     data: core.serialization.string(),
 });
 
 export declare namespace DocumentsContextWithString {
     export interface Raw {
-        type: DocumentsContextWithStringType.Raw;
+        type: "string";
         data: string;
     }
 }

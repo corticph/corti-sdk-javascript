@@ -5,6 +5,6 @@
 import * as Corti from "../index.js";
 
 export interface TranscribeErrorMessage {
-    type: Corti.TranscribeErrorMessageType;
+    type: "error";
     error: Corti.TranscribeErrorMessageError;
 }

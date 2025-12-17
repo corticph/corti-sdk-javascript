@@ -10,6 +10,6 @@ export interface TranscriptsResponse {
     /** Additional information about the participants involved in the transcript. */
     metadata: Corti.TranscriptsMetadata;
     /** An array of transcripts. */
-    transcripts: Corti.CommonTranscriptResponse[] | null;
+    transcripts?: Corti.CommonTranscriptResponse[] | null;
     usageInfo: Corti.CommonUsageInfo;
 }

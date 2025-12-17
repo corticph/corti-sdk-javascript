@@ -7,7 +7,6 @@ import * as Corti from "../../../../index.js";
 /**
  * @example
  *     {
- *         id: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
  *         facts: [{
  *                 text: "text",
  *                 group: "other"
@@ -15,10 +14,6 @@ import * as Corti from "../../../../index.js";
  *     }
  */
 export interface FactsCreateRequest {
-    /**
-     * The unique identifier of the interaction. Must be a valid UUID.
-     */
-    id: Corti.Uuid;
     /** A list of facts to be created. */
     facts: Corti.FactsCreateInput[];
 }

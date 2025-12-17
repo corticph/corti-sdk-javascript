@@ -8,7 +8,6 @@ import * as core from "../../core/index.js";
 import { AgentsTaskStatus } from "./AgentsTaskStatus.js";
 import { AgentsMessage } from "./AgentsMessage.js";
 import { AgentsArtifact } from "./AgentsArtifact.js";
-import { AgentsTaskKind } from "./AgentsTaskKind.js";
 
 export const AgentsTask: core.serialization.ObjectSchema<serializers.AgentsTask.Raw, Corti.AgentsTask> =
     core.serialization.object({
@@ -18,7 +17,7 @@ export const AgentsTask: core.serialization.ObjectSchema<serializers.AgentsTask.
         history: core.serialization.list(AgentsMessage).optional(),
         artifacts: core.serialization.list(AgentsArtifact).optional(),
         metadata: core.serialization.record(core.serialization.string(), core.serialization.unknown()).optional(),
-        kind: AgentsTaskKind,
+        kind: core.serialization.stringLiteral("task"),
     });
 
 export declare namespace AgentsTask {
@@ -29,6 +28,6 @@ export declare namespace AgentsTask {
         history?: AgentsMessage.Raw[] | null;
         artifacts?: AgentsArtifact.Raw[] | null;
         metadata?: Record<string, unknown> | null;
-        kind: AgentsTaskKind.Raw;
+        kind: "task";
     }
 }

@@ -5,20 +5,19 @@
 import * as serializers from "../index.js";
 import * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
-import { StreamConfigMessageType } from "./StreamConfigMessageType.js";
 import { StreamConfig } from "./StreamConfig.js";
 
 export const StreamConfigMessage: core.serialization.ObjectSchema<
     serializers.StreamConfigMessage.Raw,
     Corti.StreamConfigMessage
 > = core.serialization.object({
-    type: StreamConfigMessageType,
+    type: core.serialization.stringLiteral("config"),
     configuration: StreamConfig,
 });
 
 export declare namespace StreamConfigMessage {
     export interface Raw {
-        type: StreamConfigMessageType.Raw;
+        type: "config";
         configuration: StreamConfig.Raw;
     }
 }

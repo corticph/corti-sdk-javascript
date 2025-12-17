@@ -14,7 +14,7 @@ export declare namespace Facts {
         environment: core.Supplier<environments.CortiEnvironment | environments.CortiEnvironmentUrls>;
         /** Specify a custom URL to connect the client to. */
         baseUrl?: core.Supplier<string>;
-        token?: core.Supplier<core.BearerToken>;
+        token?: core.Supplier<core.BearerToken | undefined>;
         /** Override the Tenant-Name header */
         tenantName: core.Supplier<string>;
         /** Additional headers to include in requests. */
@@ -135,28 +135,25 @@ export class Facts {
     /**
      * Retrieves a list of facts for a given interaction.
      *
-     * @param {Corti.FactsListRequest} request
+     * @param {Corti.Uuid} id - The unique identifier of the interaction. Must be a valid UUID.
      * @param {Facts.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Corti.GatewayTimeoutError}
      *
      * @example
-     *     await client.facts.list({
-     *         id: "f47ac10b-58cc-4372-a567-0e02b2c3d479"
-     *     })
+     *     await client.facts.list("f47ac10b-58cc-4372-a567-0e02b2c3d479")
      */
     public list(
-        request: Corti.FactsListRequest,
+        id: Corti.Uuid,
         requestOptions?: Facts.RequestOptions,
     ): core.HttpResponsePromise<Corti.FactsListResponse> {
-        return core.HttpResponsePromise.fromPromise(this.__list(request, requestOptions));
+        return core.HttpResponsePromise.fromPromise(this.__list(id, requestOptions));
     }
 
     private async __list(
-        request: Corti.FactsListRequest,
+        id: Corti.Uuid,
         requestOptions?: Facts.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.FactsListResponse>> {
-        const { id } = request;
         const _response = await core.fetcher({
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
@@ -231,14 +228,14 @@ export class Facts {
     /**
      * Adds new facts to an interaction.
      *
+     * @param {Corti.Uuid} id - The unique identifier of the interaction. Must be a valid UUID.
      * @param {Corti.FactsCreateRequest} request
      * @param {Facts.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Corti.GatewayTimeoutError}
      *
      * @example
-     *     await client.facts.create({
-     *         id: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+     *     await client.facts.create("f47ac10b-58cc-4372-a567-0e02b2c3d479", {
      *         facts: [{
      *                 text: "text",
      *                 group: "other"
@@ -246,17 +243,18 @@ export class Facts {
      *     })
      */
     public create(
+        id: Corti.Uuid,
         request: Corti.FactsCreateRequest,
         requestOptions?: Facts.RequestOptions,
     ): core.HttpResponsePromise<Corti.FactsCreateResponse> {
-        return core.HttpResponsePromise.fromPromise(this.__create(request, requestOptions));
+        return core.HttpResponsePromise.fromPromise(this.__create(id, request, requestOptions));
     }
 
     private async __create(
+        id: Corti.Uuid,
         request: Corti.FactsCreateRequest,
         requestOptions?: Facts.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.FactsCreateResponse>> {
-        const { id, ..._body } = request;
         const _response = await core.fetcher({
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
@@ -274,7 +272,7 @@ export class Facts {
             ),
             contentType: "application/json",
             requestType: "json",
-            body: serializers.FactsCreateRequest.jsonOrThrow(_body, {
+            body: serializers.FactsCreateRequest.jsonOrThrow(request, {
                 unrecognizedObjectKeys: "strip",
                 omitUndefined: true,
             }),
@@ -337,31 +335,32 @@ export class Facts {
     /**
      * Updates multiple facts associated with an interaction.
      *
+     * @param {Corti.Uuid} id - The unique identifier of the interaction. Must be a valid UUID.
      * @param {Corti.FactsBatchUpdateRequest} request
      * @param {Facts.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Corti.GatewayTimeoutError}
      *
      * @example
-     *     await client.facts.batchUpdate({
-     *         id: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+     *     await client.facts.batchUpdate("f47ac10b-58cc-4372-a567-0e02b2c3d479", {
      *         facts: [{
      *                 factId: "f47ac10b-58cc-4372-a567-0e02b2c3d479"
      *             }]
      *     })
      */
     public batchUpdate(
+        id: Corti.Uuid,
         request: Corti.FactsBatchUpdateRequest,
         requestOptions?: Facts.RequestOptions,
     ): core.HttpResponsePromise<Corti.FactsBatchUpdateResponse> {
-        return core.HttpResponsePromise.fromPromise(this.__batchUpdate(request, requestOptions));
+        return core.HttpResponsePromise.fromPromise(this.__batchUpdate(id, request, requestOptions));
     }
 
     private async __batchUpdate(
+        id: Corti.Uuid,
         request: Corti.FactsBatchUpdateRequest,
         requestOptions?: Facts.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.FactsBatchUpdateResponse>> {
-        const { id, ..._body } = request;
         const _response = await core.fetcher({
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
@@ -379,7 +378,7 @@ export class Facts {
             ),
             contentType: "application/json",
             requestType: "json",
-            body: serializers.FactsBatchUpdateRequest.jsonOrThrow(_body, {
+            body: serializers.FactsBatchUpdateRequest.jsonOrThrow(request, {
                 unrecognizedObjectKeys: "strip",
                 omitUndefined: true,
             }),
@@ -442,29 +441,31 @@ export class Facts {
     /**
      * Updates an existing fact associated with a specific interaction.
      *
+     * @param {Corti.Uuid} id - The unique identifier of the interaction. Must be a valid UUID.
+     * @param {Corti.Uuid} factId - The unique identifier of the fact to update. Must be a valid UUID.
      * @param {Corti.FactsUpdateRequest} request
      * @param {Facts.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Corti.GatewayTimeoutError}
      *
      * @example
-     *     await client.facts.update({
-     *         id: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
-     *         factId: "f47ac10b-58cc-4372-a567-0e02b2c3d479"
-     *     })
+     *     await client.facts.update("f47ac10b-58cc-4372-a567-0e02b2c3d479", "f47ac10b-58cc-4372-a567-0e02b2c3d479")
      */
     public update(
-        request: Corti.FactsUpdateRequest,
+        id: Corti.Uuid,
+        factId: Corti.Uuid,
+        request: Corti.FactsUpdateRequest = {},
         requestOptions?: Facts.RequestOptions,
     ): core.HttpResponsePromise<Corti.FactsUpdateResponse> {
-        return core.HttpResponsePromise.fromPromise(this.__update(request, requestOptions));
+        return core.HttpResponsePromise.fromPromise(this.__update(id, factId, request, requestOptions));
     }
 
     private async __update(
-        request: Corti.FactsUpdateRequest,
+        id: Corti.Uuid,
+        factId: Corti.Uuid,
+        request: Corti.FactsUpdateRequest = {},
         requestOptions?: Facts.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.FactsUpdateResponse>> {
-        const { id, factId, ..._body } = request;
         const _response = await core.fetcher({
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
@@ -482,7 +483,7 @@ export class Facts {
             ),
             contentType: "application/json",
             requestType: "json",
-            body: serializers.FactsUpdateRequest.jsonOrThrow(_body, {
+            body: serializers.FactsUpdateRequest.jsonOrThrow(request, {
                 unrecognizedObjectKeys: "strip",
                 omitUndefined: true,
             }),
@@ -649,7 +650,7 @@ export class Facts {
         }
     }
 
-    protected async _getAuthorizationHeader(): Promise<string> {
+    protected async _getAuthorizationHeader(): Promise<string | undefined> {
         const bearer = await core.Supplier.get(this._options.token);
         if (bearer != null) {
             return `Bearer ${bearer}`;

@@ -5,17 +5,16 @@
 import * as serializers from "../index.js";
 import * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
-import { TranscribeEndMessageType } from "./TranscribeEndMessageType.js";
 
 export const TranscribeEndMessage: core.serialization.ObjectSchema<
     serializers.TranscribeEndMessage.Raw,
     Corti.TranscribeEndMessage
 > = core.serialization.object({
-    type: TranscribeEndMessageType,
+    type: core.serialization.stringLiteral("end"),
 });
 
 export declare namespace TranscribeEndMessage {
     export interface Raw {
-        type: TranscribeEndMessageType.Raw;
+        type: "end";
     }
 }
