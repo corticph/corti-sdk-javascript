@@ -8,7 +8,7 @@ concurrency:
 
 jobs:
     integration-tests:
-        runs-on: ci
+        runs-on: ubuntu-latest
 
         steps:
             - name: Checkout repo
@@ -16,9 +16,6 @@ jobs:
 
             - name: Set up node
               uses: actions/setup-node@v3
-              with:
-                  registry-url: "https://npm.corti.app"
-                  node-version: "22"
 
             - name: Install dependencies
               run: yarn
