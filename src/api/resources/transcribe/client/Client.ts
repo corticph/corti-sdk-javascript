@@ -49,7 +49,7 @@ export class Transcribe {
             url: core.url.join(
                 (await core.Supplier.get(this._options["baseUrl"])) ??
                     (await core.Supplier.get(this._options["environment"])).wss,
-                "/audio-bridge/v2/transcribe",
+                "/transcribe",
             ),
             protocols: [],
             queryParameters: _queryParams,

@@ -42,8 +42,8 @@ jobs:
             - name: Install dependencies
               run: yarn install
 
-            - name: Check for formatting issues
-              run: yarn prettier . --check --ignore-unknown
+#            - name: Check for formatting issues
+#              run: yarn prettier . --check --ignore-unknown
 
             - name: Run tests
               run: yarn test

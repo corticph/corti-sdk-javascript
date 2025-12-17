@@ -2,8 +2,7 @@ import { CortiClient } from "../../src";
 import { faker } from "@faker-js/faker";
 import { createTestCortiClient, setupConsoleWarnSpy } from "./testUtils";
 
-// FIXME : Skipping until registry experts functionality is restored
-describe.skip("cortiClient.agents.getRegistryExperts", () => {
+describe("cortiClient.agents.getRegistryExperts", () => {
     let cortiClient: CortiClient;
     let consoleWarnSpy: jest.SpyInstance;
 

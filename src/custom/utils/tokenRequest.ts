@@ -10,6 +10,7 @@ export type TokenRequest = Corti.AuthGetTokenRequest &
         codeVerifier: string;
         username: string;
         password: string;
+        scopes: string[];
     }>;
 
 export const buildTokenRequestBody = (request: TokenRequest): URLSearchParams => {
@@ -19,8 +20,12 @@ export const buildTokenRequestBody = (request: TokenRequest): URLSearchParams =>
         omitUndefined: true,
     });
 
+    // Build scope string: always include "openid", add any additional scopes
+    const allScopes = ["openid", ...(request.scopes || [])];
+    const scopeString = [...new Set(allScopes)].join(" ");
+
     const tokenRequestBody: TokenRequestBody = {
-        scope: "openid",
+        scope: scopeString,
         grant_type: request.grantType || "client_credentials",
     };
 

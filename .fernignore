@@ -9,6 +9,7 @@ src/api/index.ts
 README.md
 AUTHENTICATION.md
 reference.md
+PROXYING.md
 
 # Integration tests
 tests/custom

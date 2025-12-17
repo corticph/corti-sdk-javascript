@@ -21,19 +21,38 @@ import { StreamSocket } from "./CustomStreamSocket.js";
 export class Stream extends FernStream {
     /**
      * Patch: use custom connect method to support passing _options parameters
+     * Added optional `proxy` parameter for direct WebSocket connection (proxy scenarios)
      */
     public async connect({
         configuration,
+        proxy,
         ...args
     }: Omit<FernStream.ConnectArgs, "token" | "tenantName"> & {
         configuration?: api.StreamConfig;
+        /** Patch: Proxy connection options - bypasses normal URL construction */
+        proxy?: {
+            url: string;
+            protocols?: string[];
+            queryParameters?: Record<string, string>;
+        };
     }): Promise<StreamSocket> {
-        const fernWs = await super.connect({
-            ...args,
-            token: (await this._getAuthorizationHeader()) || "",
-            tenantName: await core.Supplier.get(this._options.tenantName),
-        });
-        const ws = new StreamSocket({ socket: fernWs.socket });
+        const socket = proxy
+            ? new core.ReconnectingWebSocket({
+                  url: proxy.url,
+                  protocols: proxy.protocols || [],
+                  queryParameters: proxy.queryParameters || {},
+                  headers: args.headers || {},
+                  options: { debug: args.debug ?? false, maxRetries: args.reconnectAttempts ?? 30 },
+              })
+            : (
+                  await super.connect({
+                      ...args,
+                      token: (await this._getAuthorizationHeader()) || "",
+                      tenantName: await core.Supplier.get(this._options.tenantName),
+                  })
+              ).socket;
+
+        const ws = new StreamSocket({ socket });
 
         if (!configuration) {
             return ws;
