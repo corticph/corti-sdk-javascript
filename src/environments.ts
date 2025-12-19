@@ -12,13 +12,13 @@ export interface CortiEnvironmentUrls {
 export const CortiEnvironment = {
     Eu: {
         base: "https://api.eu.corti.app/v2",
-        wss: "wss://api.eu.corti.app/audio-bridge/v2",
+        wss: "wss://api.eu.corti.app",
         login: "https://auth.eu.corti.app/realms",
         agents: "https://api.eu.corti.app",
     },
     Us: {
         base: "https://api.us.corti.app/v2",
-        wss: "wss://api.us.corti.app/audio-bridge/v2",
+        wss: "wss://api.us.corti.app",
         login: "https://auth.us.corti.app/realms",
         agents: "https://api.us.corti.app",
     },
