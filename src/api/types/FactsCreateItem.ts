@@ -6,7 +6,7 @@ import * as Corti from "../index.js";
 
 export interface FactsCreateItem {
     /** The unique identifier of the newly created fact. */
-    id?: Corti.Uuid;
+    id?: string;
     /** The textual content of the created fact. */
     text?: string;
     /** The group key categorizing the fact. */

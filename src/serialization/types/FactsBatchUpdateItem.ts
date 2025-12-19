@@ -12,7 +12,7 @@ export const FactsBatchUpdateItem: core.serialization.ObjectSchema<
     serializers.FactsBatchUpdateItem.Raw,
     Corti.FactsBatchUpdateItem
 > = core.serialization.object({
-    id: Uuid,
+    id: core.serialization.string(),
     text: core.serialization.string(),
     group: core.serialization.string(),
     groupId: Uuid,
@@ -24,7 +24,7 @@ export const FactsBatchUpdateItem: core.serialization.ObjectSchema<
 
 export declare namespace FactsBatchUpdateItem {
     export interface Raw {
-        id: Uuid.Raw;
+        id: string;
         text: string;
         group: string;
         groupId: Uuid.Raw;
