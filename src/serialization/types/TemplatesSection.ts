@@ -21,6 +21,7 @@ export const TemplatesSection: core.serialization.ObjectSchema<
     key: core.serialization.string(),
     description: core.serialization.string(),
     defaultWritingStyle: core.serialization.property("default_writing_style", TemplatesWritingStyle),
+    documentationMode: core.serialization.unknown().optional(),
     sectionType: core.serialization.property("section_type", core.serialization.string()),
     translations: core.serialization.list(TemplatesSectionTranslation),
 });
@@ -33,6 +34,7 @@ export declare namespace TemplatesSection {
         key: string;
         description: string;
         default_writing_style: TemplatesWritingStyle.Raw;
+        documentationMode?: unknown | null;
         section_type: string;
         translations: TemplatesSectionTranslation.Raw[];
     }
