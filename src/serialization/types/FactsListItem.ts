@@ -11,7 +11,7 @@ import { FactsEvidence } from "./FactsEvidence.js";
 
 export const FactsListItem: core.serialization.ObjectSchema<serializers.FactsListItem.Raw, Corti.FactsListItem> =
     core.serialization.object({
-        id: Uuid.optional(),
+        id: core.serialization.string().optional(),
         text: core.serialization.string().optional(),
         group: core.serialization.string().optional(),
         groupId: Uuid.optional(),
@@ -24,7 +24,7 @@ export const FactsListItem: core.serialization.ObjectSchema<serializers.FactsLis
 
 export declare namespace FactsListItem {
     export interface Raw {
-        id?: Uuid.Raw | null;
+        id?: string | null;
         text?: string | null;
         group?: string | null;
         groupId?: Uuid.Raw | null;
