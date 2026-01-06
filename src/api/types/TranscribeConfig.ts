@@ -7,12 +7,12 @@ import * as Corti from "../index.js";
 export interface TranscribeConfig {
     /** The locale of the primary spoken language. */
     primaryLanguage: Corti.TranscribeSupportedLanguage;
-    /** When true, returns interim results for reduced latency */
-    interimResults?: boolean;
     /** When true, converts spoken punctuation such as 'period' or 'slash' into '.' or '/' */
     spokenPunctuation?: boolean;
     /** When true, automatically punctuates and capitalizes in the final transcript */
     automaticPunctuation?: boolean;
     /** Commands that should be registered and detected */
     commands?: Corti.TranscribeCommand[];
+    /** Formatting preferences */
+    formatting?: Corti.TranscribeFormatting[];
 }

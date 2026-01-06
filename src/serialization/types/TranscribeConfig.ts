@@ -7,24 +7,25 @@ import * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
 import { TranscribeSupportedLanguage } from "./TranscribeSupportedLanguage.js";
 import { TranscribeCommand } from "./TranscribeCommand.js";
+import { TranscribeFormatting } from "./TranscribeFormatting.js";
 
 export const TranscribeConfig: core.serialization.ObjectSchema<
     serializers.TranscribeConfig.Raw,
     Corti.TranscribeConfig
 > = core.serialization.object({
     primaryLanguage: TranscribeSupportedLanguage,
-    interimResults: core.serialization.boolean().optional(),
     spokenPunctuation: core.serialization.boolean().optional(),
     automaticPunctuation: core.serialization.boolean().optional(),
     commands: core.serialization.list(TranscribeCommand).optional(),
+    formatting: core.serialization.list(TranscribeFormatting).optional(),
 });
 
 export declare namespace TranscribeConfig {
     export interface Raw {
         primaryLanguage: TranscribeSupportedLanguage.Raw;
-        interimResults?: boolean | null;
         spokenPunctuation?: boolean | null;
         automaticPunctuation?: boolean | null;
         commands?: TranscribeCommand.Raw[] | null;
+        formatting?: TranscribeFormatting.Raw[] | null;
     }
 }
