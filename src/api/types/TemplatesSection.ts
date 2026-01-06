@@ -17,6 +17,7 @@ export interface TemplatesSection {
     description: string;
     /** Default writing style for the section */
     defaultWritingStyle: Corti.TemplatesWritingStyle;
+    documentationMode?: Corti.TemplatesDocumentationModeEnum;
     /** Type of section */
     sectionType: string;
     /** Available translations for the section */
