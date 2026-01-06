@@ -6,6 +6,7 @@ import * as serializers from "../index.js";
 import * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
 import { TemplatesWritingStyle } from "./TemplatesWritingStyle.js";
+import { TemplatesDocumentationModeEnum } from "./TemplatesDocumentationModeEnum.js";
 import { TemplatesSectionTranslation } from "./TemplatesSectionTranslation.js";
 
 export const TemplatesSection: core.serialization.ObjectSchema<
@@ -21,6 +22,8 @@ export const TemplatesSection: core.serialization.ObjectSchema<
     key: core.serialization.string(),
     description: core.serialization.string(),
     defaultWritingStyle: core.serialization.property("default_writing_style", TemplatesWritingStyle),
+    content: core.serialization.string().optional(),
+    documentationMode: TemplatesDocumentationModeEnum.optional(),
     sectionType: core.serialization.property("section_type", core.serialization.string()),
     translations: core.serialization.list(TemplatesSectionTranslation),
 });
@@ -33,6 +36,8 @@ export declare namespace TemplatesSection {
         key: string;
         description: string;
         default_writing_style: TemplatesWritingStyle.Raw;
+        content?: string | null;
+        documentationMode?: TemplatesDocumentationModeEnum.Raw | null;
         section_type: string;
         translations: TemplatesSectionTranslation.Raw[];
     }
