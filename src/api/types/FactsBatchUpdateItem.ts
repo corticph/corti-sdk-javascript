@@ -6,7 +6,7 @@ import * as Corti from "../index.js";
 
 export interface FactsBatchUpdateItem {
     /** The unique identifier of the updated fact. */
-    id: Corti.Uuid;
+    id: string;
     /** The updated text content of the fact. */
     text: string;
     /** The updated group key to which the fact belongs. */
