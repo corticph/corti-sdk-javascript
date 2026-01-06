@@ -51,6 +51,7 @@ export * from "./TranscriptsListItem.js";
 export * from "./TranscriptsData.js";
 export * from "./TemplatesSection.js";
 export * from "./CommonSortingDirectionEnum.js";
+export * from "./TemplatesDocumentationModeEnum.js";
 export * from "./TemplatesItem.js";
 export * from "./TemplatesSectionSorted.js";
 export * from "./CommonTranscriptRequest.js";

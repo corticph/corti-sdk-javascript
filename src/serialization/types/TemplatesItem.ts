@@ -5,6 +5,7 @@
 import * as serializers from "../index.js";
 import * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
+import { TemplatesDocumentationModeEnum } from "./TemplatesDocumentationModeEnum.js";
 import { TemplatesSectionSorted } from "./TemplatesSectionSorted.js";
 import { TemplatesTranslation } from "./TemplatesTranslation.js";
 
@@ -15,7 +16,7 @@ export const TemplatesItem: core.serialization.ObjectSchema<serializers.Template
         description: core.serialization.string(),
         key: core.serialization.string(),
         status: core.serialization.string(),
-        documentationMode: core.serialization.unknown().optional(),
+        documentationMode: TemplatesDocumentationModeEnum.optional(),
         templateSections: core.serialization.property(
             "template_sections",
             core.serialization.list(TemplatesSectionSorted),
@@ -30,7 +31,7 @@ export declare namespace TemplatesItem {
         description: string;
         key: string;
         status: string;
-        documentationMode?: unknown | null;
+        documentationMode?: TemplatesDocumentationModeEnum.Raw | null;
         template_sections: TemplatesSectionSorted.Raw[];
         translations: TemplatesTranslation.Raw[];
     }
