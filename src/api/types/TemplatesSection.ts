@@ -17,7 +17,7 @@ export interface TemplatesSection {
     description: string;
     /** Default writing style for the section */
     defaultWritingStyle: Corti.TemplatesWritingStyle;
-    /** Content prompt for the section */
+    /** Used to guide input assignment in documentationMode: routed_parallel, and for section generation. */
     content?: string;
     documentationMode?: Corti.TemplatesDocumentationModeEnum;
     /** Type of section */
