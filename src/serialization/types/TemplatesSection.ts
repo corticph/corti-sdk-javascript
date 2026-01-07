@@ -6,34 +6,41 @@ import * as serializers from "../index.js";
 import * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
 import { TemplatesWritingStyle } from "./TemplatesWritingStyle.js";
+import { TemplatesFormatRule } from "./TemplatesFormatRule.js";
+import { TemplatesDocumentationModeEnum } from "./TemplatesDocumentationModeEnum.js";
 import { TemplatesSectionTranslation } from "./TemplatesSectionTranslation.js";
 
 export const TemplatesSection: core.serialization.ObjectSchema<
     serializers.TemplatesSection.Raw,
     Corti.TemplatesSection
 > = core.serialization.object({
-    dateUpdated: core.serialization.property("date_updated", core.serialization.date().optionalNullable()),
+    updatedAt: core.serialization.date().optionalNullable(),
     name: core.serialization.string(),
-    alternateNames: core.serialization.property(
-        "alternate_names",
-        core.serialization.list(core.serialization.string()).optionalNullable(),
-    ),
+    alternateName: core.serialization.string().optional(),
     key: core.serialization.string(),
     description: core.serialization.string(),
-    defaultWritingStyle: core.serialization.property("default_writing_style", TemplatesWritingStyle),
-    sectionType: core.serialization.property("section_type", core.serialization.string()),
+    defaultWritingStyle: TemplatesWritingStyle,
+    defaultFormatRule: TemplatesFormatRule.optional(),
+    additionalInstructions: core.serialization.string().optional(),
+    content: core.serialization.string().optional(),
+    documentationMode: TemplatesDocumentationModeEnum.optional(),
+    sectionType: core.serialization.property("section_type", core.serialization.string().optional()),
     translations: core.serialization.list(TemplatesSectionTranslation),
 });
 
 export declare namespace TemplatesSection {
     export interface Raw {
-        date_updated?: (string | null) | null;
+        updatedAt?: (string | null) | null;
         name: string;
-        alternate_names?: (string[] | null) | null;
+        alternateName?: string | null;
         key: string;
         description: string;
-        default_writing_style: TemplatesWritingStyle.Raw;
-        section_type: string;
+        defaultWritingStyle: TemplatesWritingStyle.Raw;
+        defaultFormatRule?: TemplatesFormatRule.Raw | null;
+        additionalInstructions?: string | null;
+        content?: string | null;
+        documentationMode?: TemplatesDocumentationModeEnum.Raw | null;
+        section_type?: string | null;
         translations: TemplatesSectionTranslation.Raw[];
     }
 }
