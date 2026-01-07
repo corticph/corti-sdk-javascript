@@ -18,10 +18,7 @@ export const TemplatesItem: core.serialization.ObjectSchema<serializers.Template
         key: core.serialization.string(),
         status: core.serialization.string(),
         documentationMode: TemplatesDocumentationModeEnum.optional(),
-        templateSections: core.serialization.property(
-            "template_sections",
-            core.serialization.list(TemplatesSectionSorted).optional(),
-        ),
+        templateSections: core.serialization.list(TemplatesSectionSorted),
         translations: core.serialization.list(TemplatesTranslation),
     });
 
@@ -34,7 +31,7 @@ export declare namespace TemplatesItem {
         key: string;
         status: string;
         documentationMode?: TemplatesDocumentationModeEnum.Raw | null;
-        template_sections?: TemplatesSectionSorted.Raw[] | null;
+        templateSections: TemplatesSectionSorted.Raw[];
         translations: TemplatesTranslation.Raw[];
     }
 }

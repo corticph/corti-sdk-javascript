@@ -19,7 +19,7 @@ export interface TemplatesItem {
     status: string;
     documentationMode?: Corti.TemplatesDocumentationModeEnum;
     /** List of sections included in the template. */
-    templateSections?: Corti.TemplatesSectionSorted[];
+    templateSections: Corti.TemplatesSectionSorted[];
     /** Available translations for the template. */
     translations: Corti.TemplatesTranslation[];
 }
