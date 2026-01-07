@@ -5,31 +5,34 @@
 import * as serializers from "../index.js";
 import * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
+import { TemplatesDocumentationModeEnum } from "./TemplatesDocumentationModeEnum.js";
 import { TemplatesSectionSorted } from "./TemplatesSectionSorted.js";
 import { TemplatesTranslation } from "./TemplatesTranslation.js";
 
 export const TemplatesItem: core.serialization.ObjectSchema<serializers.TemplatesItem.Raw, Corti.TemplatesItem> =
     core.serialization.object({
-        dateUpdated: core.serialization.property("date_updated", core.serialization.date().optionalNullable()),
+        updatedAt: core.serialization.date().optionalNullable(),
         name: core.serialization.string(),
         description: core.serialization.string(),
         key: core.serialization.string(),
         status: core.serialization.string(),
+        documentationMode: TemplatesDocumentationModeEnum.optional(),
         templateSections: core.serialization.property(
             "template_sections",
-            core.serialization.list(TemplatesSectionSorted),
+            core.serialization.list(TemplatesSectionSorted).optional(),
         ),
         translations: core.serialization.list(TemplatesTranslation),
     });
 
 export declare namespace TemplatesItem {
     export interface Raw {
-        date_updated?: (string | null) | null;
+        updatedAt?: (string | null) | null;
         name: string;
         description: string;
         key: string;
         status: string;
-        template_sections: TemplatesSectionSorted.Raw[];
+        documentationMode?: TemplatesDocumentationModeEnum.Raw | null;
+        template_sections?: TemplatesSectionSorted.Raw[] | null;
         translations: TemplatesTranslation.Raw[];
     }
 }

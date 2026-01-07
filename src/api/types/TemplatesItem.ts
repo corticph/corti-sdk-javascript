@@ -6,7 +6,7 @@ import * as Corti from "../index.js";
 
 export interface TemplatesItem {
     /** The timestamp when the template was updated. */
-    dateUpdated?: Date | null;
+    updatedAt?: Date | null;
     /** Name of the template */
     name: string;
     /** Description of the template */
@@ -15,8 +15,9 @@ export interface TemplatesItem {
     key: string;
     /** Status of the template. */
     status: string;
+    documentationMode?: Corti.TemplatesDocumentationModeEnum;
     /** List of sections included in the template */
-    templateSections: Corti.TemplatesSectionSorted[];
+    templateSections?: Corti.TemplatesSectionSorted[];
     /** Available translations for the template */
     translations: Corti.TemplatesTranslation[];
 }

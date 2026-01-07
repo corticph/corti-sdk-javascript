@@ -6,19 +6,22 @@ import * as Corti from "../index.js";
 
 export interface TemplatesSection {
     /** The timestamp when the section was updated. */
-    dateUpdated?: Date | null;
+    updatedAt?: Date | null;
     /** Name of the section */
     name: string;
-    /** Alternate names for the section */
-    alternateNames?: string[] | null;
+    /** Alternate name for the section */
+    alternateName?: string;
     /** Unique key for the section */
     key: string;
     /** Description of the section */
     description: string;
     /** Default writing style for the section */
     defaultWritingStyle: Corti.TemplatesWritingStyle;
+    /** Used to guide input assignment in documentationMode: routed_parallel, and for section generation. */
+    content?: string;
+    documentationMode?: Corti.TemplatesDocumentationModeEnum;
     /** Type of section */
-    sectionType: string;
+    sectionType?: string;
     /** Available translations for the section */
     translations: Corti.TemplatesSectionTranslation[];
 }

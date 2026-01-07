@@ -12,7 +12,7 @@ export const FactsUpdateResponse: core.serialization.ObjectSchema<
     serializers.FactsUpdateResponse.Raw,
     Corti.FactsUpdateResponse
 > = core.serialization.object({
-    id: Uuid,
+    id: core.serialization.string(),
     text: core.serialization.string(),
     group: core.serialization.string(),
     groupId: Uuid,
@@ -24,7 +24,7 @@ export const FactsUpdateResponse: core.serialization.ObjectSchema<
 
 export declare namespace FactsUpdateResponse {
     export interface Raw {
-        id: Uuid.Raw;
+        id: string;
         text: string;
         group: string;
         groupId: Uuid.Raw;
