@@ -7,16 +7,20 @@ import * as Corti from "../index.js";
 export interface TemplatesSection {
     /** The timestamp when the section was updated. */
     updatedAt?: Date | null;
-    /** Name of the section */
+    /** Name of the section. */
     name: string;
-    /** Alternate name for the section */
+    /** Alternate name for the section. Not used by LLM response. */
     alternateName?: string;
-    /** Unique key for the section */
+    /** Unique key for the section. */
     key: string;
-    /** Description of the section */
+    /** Description of the section. */
     description: string;
-    /** Default writing style for the section */
+    /** Default writing style for the section. */
     defaultWritingStyle: Corti.TemplatesWritingStyle;
+    /** Default format rule for the section. */
+    defaultFormatRule?: Corti.TemplatesFormatRule;
+    /** Additional instructions or context for the section. */
+    additionalInstructions?: string;
     /** Used to guide input assignment in documentationMode: routed_parallel, and for section generation. */
     content?: string;
     documentationMode?: Corti.TemplatesDocumentationModeEnum;

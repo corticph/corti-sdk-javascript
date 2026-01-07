@@ -5,8 +5,8 @@
 import * as Corti from "../index.js";
 
 export interface TemplatesSectionSorted {
-    /** Sort order of the section within the template */
+    /** Sort order of the section within the template. */
     sort: number;
-    /** The section details */
+    /** The section details. */
     section: Corti.TemplatesSection;
 }

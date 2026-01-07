@@ -14,6 +14,7 @@ export const TemplatesItem: core.serialization.ObjectSchema<serializers.Template
         updatedAt: core.serialization.date().optionalNullable(),
         name: core.serialization.string(),
         description: core.serialization.string(),
+        additionalInstructions: core.serialization.string().optionalNullable(),
         key: core.serialization.string(),
         status: core.serialization.string(),
         documentationMode: TemplatesDocumentationModeEnum.optional(),
@@ -29,6 +30,7 @@ export declare namespace TemplatesItem {
         updatedAt?: (string | null) | null;
         name: string;
         description: string;
+        additionalInstructions?: (string | null) | null;
         key: string;
         status: string;
         documentationMode?: TemplatesDocumentationModeEnum.Raw | null;

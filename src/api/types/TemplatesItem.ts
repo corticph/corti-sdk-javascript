@@ -7,17 +7,19 @@ import * as Corti from "../index.js";
 export interface TemplatesItem {
     /** The timestamp when the template was updated. */
     updatedAt?: Date | null;
-    /** Name of the template */
+    /** Name of the template. */
     name: string;
-    /** Description of the template */
+    /** Description of the template. */
     description: string;
-    /** Unique key for the template */
+    /** Instructions or context for all template sections. */
+    additionalInstructions?: string | null;
+    /** Unique key for the template. */
     key: string;
     /** Status of the template. */
     status: string;
     documentationMode?: Corti.TemplatesDocumentationModeEnum;
-    /** List of sections included in the template */
+    /** List of sections included in the template. */
     templateSections?: Corti.TemplatesSectionSorted[];
-    /** Available translations for the template */
+    /** Available translations for the template. */
     translations: Corti.TemplatesTranslation[];
 }
