@@ -12,12 +12,12 @@ export const TemplatesSectionSorted: core.serialization.ObjectSchema<
     Corti.TemplatesSectionSorted
 > = core.serialization.object({
     sort: core.serialization.number(),
-    sectionsId: core.serialization.property("sections_id", TemplatesSection),
+    section: TemplatesSection,
 });
 
 export declare namespace TemplatesSectionSorted {
     export interface Raw {
         sort: number;
-        sections_id: TemplatesSection.Raw;
+        section: TemplatesSection.Raw;
     }
 }
