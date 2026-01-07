@@ -10,7 +10,7 @@ import { CommonSourceEnum } from "./CommonSourceEnum.js";
 
 export const FactsCreateItem: core.serialization.ObjectSchema<serializers.FactsCreateItem.Raw, Corti.FactsCreateItem> =
     core.serialization.object({
-        id: Uuid.optional(),
+        id: core.serialization.string().optional(),
         text: core.serialization.string().optional(),
         group: core.serialization.string().optional(),
         groupId: Uuid.optional(),
@@ -21,7 +21,7 @@ export const FactsCreateItem: core.serialization.ObjectSchema<serializers.FactsC
 
 export declare namespace FactsCreateItem {
     export interface Raw {
-        id?: Uuid.Raw | null;
+        id?: string | null;
         text?: string | null;
         group?: string | null;
         groupId?: Uuid.Raw | null;
