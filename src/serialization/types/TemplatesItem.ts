@@ -11,28 +11,30 @@ import { TemplatesTranslation } from "./TemplatesTranslation.js";
 
 export const TemplatesItem: core.serialization.ObjectSchema<serializers.TemplatesItem.Raw, Corti.TemplatesItem> =
     core.serialization.object({
-        dateUpdated: core.serialization.property("date_updated", core.serialization.date().optionalNullable()),
+        updatedAt: core.serialization.date().optionalNullable(),
         name: core.serialization.string(),
         description: core.serialization.string(),
+        additionalInstructions: core.serialization.string().optionalNullable(),
         key: core.serialization.string(),
         status: core.serialization.string(),
         documentationMode: TemplatesDocumentationModeEnum.optional(),
         templateSections: core.serialization.property(
             "template_sections",
-            core.serialization.list(TemplatesSectionSorted),
+            core.serialization.list(TemplatesSectionSorted).optional(),
         ),
         translations: core.serialization.list(TemplatesTranslation),
     });
 
 export declare namespace TemplatesItem {
     export interface Raw {
-        date_updated?: (string | null) | null;
+        updatedAt?: (string | null) | null;
         name: string;
         description: string;
+        additionalInstructions?: (string | null) | null;
         key: string;
         status: string;
         documentationMode?: TemplatesDocumentationModeEnum.Raw | null;
-        template_sections: TemplatesSectionSorted.Raw[];
+        template_sections?: TemplatesSectionSorted.Raw[] | null;
         translations: TemplatesTranslation.Raw[];
     }
 }

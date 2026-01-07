@@ -6,7 +6,7 @@ import * as Corti from "../index.js";
 
 export interface FactsListItem {
     /** The unique identifier of the fact. */
-    id?: Corti.Uuid;
+    id?: string;
     /** The text content of the fact. */
     text?: string;
     /** The key identifying the group to which the fact belongs. */

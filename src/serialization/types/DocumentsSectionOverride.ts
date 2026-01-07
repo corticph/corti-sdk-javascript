@@ -15,6 +15,7 @@ export const DocumentsSectionOverride: core.serialization.ObjectSchema<
     writingStyleOverride: core.serialization.string().optional(),
     formatRuleOverride: core.serialization.string().optional(),
     additionalInstructionsOverride: core.serialization.string().optional(),
+    contentOverride: core.serialization.string().optional(),
 });
 
 export declare namespace DocumentsSectionOverride {
@@ -24,5 +25,6 @@ export declare namespace DocumentsSectionOverride {
         writingStyleOverride?: string | null;
         formatRuleOverride?: string | null;
         additionalInstructionsOverride?: string | null;
+        contentOverride?: string | null;
     }
 }

@@ -3,14 +3,16 @@
  */
 
 export interface DocumentsSectionOverride {
-    /** The key of the section to be used during document generation. */
+    /** The key that references the section to use for document generation. */
     key: string;
-    /** Override to use as the name for the section during document generation. */
+    /** Overrides the section name used in document generation and response. */
     nameOverride?: string;
-    /** Override to use for the section-level writing style. */
+    /** Overrides the section's default writing style with your custom prompt. */
     writingStyleOverride?: string;
-    /** Override to use for the section-level format rule. */
+    /** Overrides the section's default format rule with your custom prompt. */
     formatRuleOverride?: string;
-    /** Override to use for the section-level additional instructions. */
+    /** Overrides and sets the section-level additional instructions with your custom prompt. */
     additionalInstructionsOverride?: string;
+    /** Overrides the section's content prompt used for input assignment with documentationMode: routed_parallel, and section generation. */
+    contentOverride?: string;
 }

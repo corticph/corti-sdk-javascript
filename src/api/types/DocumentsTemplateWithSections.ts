@@ -8,6 +8,6 @@ export interface DocumentsTemplateWithSections {
     sections?: Corti.DocumentsSectionOverride[];
     /** A brief description of the document that can help give the LLM some context. */
     description?: string;
-    /** Override to use for the template-level additional instructions. */
+    /** Overrides and sets template-level additional instructions. */
     additionalInstructionsOverride?: string;
 }
