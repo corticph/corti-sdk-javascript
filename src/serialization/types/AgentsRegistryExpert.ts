@@ -12,11 +12,13 @@ export const AgentsRegistryExpert: core.serialization.ObjectSchema<
 > = core.serialization.object({
     name: core.serialization.string(),
     description: core.serialization.string(),
+    requiresAuthBearerToken: core.serialization.boolean().optional(),
 });
 
 export declare namespace AgentsRegistryExpert {
     export interface Raw {
         name: string;
         description: string;
+        requiresAuthBearerToken?: boolean | null;
     }
 }

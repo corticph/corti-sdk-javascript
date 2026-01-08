@@ -7,4 +7,6 @@ export interface AgentsRegistryExpert {
     name: string;
     /** A brief description of the expert's capabilities. */
     description: string;
+    /** Indicates whether the expert requires an Authorization bearer token. */
+    requiresAuthBearerToken?: boolean;
 }
