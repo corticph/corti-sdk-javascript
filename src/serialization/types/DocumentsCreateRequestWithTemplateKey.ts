@@ -6,6 +6,7 @@ import * as serializers from "../index.js";
 import * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
 import { DocumentsContext } from "./DocumentsContext.js";
+import { TemplatesDocumentationModeEnum } from "./TemplatesDocumentationModeEnum.js";
 
 export const DocumentsCreateRequestWithTemplateKey: core.serialization.ObjectSchema<
     serializers.DocumentsCreateRequestWithTemplateKey.Raw,
@@ -16,6 +17,7 @@ export const DocumentsCreateRequestWithTemplateKey: core.serialization.ObjectSch
     name: core.serialization.string().optional(),
     outputLanguage: core.serialization.string(),
     disableGuardrails: core.serialization.boolean().optional(),
+    documentationMode: TemplatesDocumentationModeEnum.optional(),
 });
 
 export declare namespace DocumentsCreateRequestWithTemplateKey {
@@ -25,5 +27,6 @@ export declare namespace DocumentsCreateRequestWithTemplateKey {
         name?: string | null;
         outputLanguage: string;
         disableGuardrails?: boolean | null;
+        documentationMode?: TemplatesDocumentationModeEnum.Raw | null;
     }
 }

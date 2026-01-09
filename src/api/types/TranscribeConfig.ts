@@ -15,4 +15,6 @@ export interface TranscribeConfig {
     automaticPunctuation?: boolean;
     /** Commands that should be registered and detected */
     commands?: Corti.TranscribeCommand[];
+    /** Formatting preferences */
+    formatting?: Corti.TranscribeFormatting[];
 }

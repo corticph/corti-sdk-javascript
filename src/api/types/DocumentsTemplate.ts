@@ -4,4 +4,10 @@
 
 import * as Corti from "../index.js";
 
-export type DocumentsTemplate = Corti.DocumentsTemplateWithSectionKeys;
+export type DocumentsTemplate =
+    /**
+     * Flexible sections to be used in document generation. */
+    | Corti.DocumentsTemplateWithSections
+    /**
+     * Section keys to be used in document generation, without overrides. */
+    | Corti.DocumentsTemplateWithSectionKeys;
