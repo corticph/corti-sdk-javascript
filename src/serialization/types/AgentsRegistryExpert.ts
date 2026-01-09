@@ -5,6 +5,7 @@
 import * as serializers from "../index.js";
 import * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
+import { AgentsRegistryMcpServer } from "./AgentsRegistryMcpServer.js";
 
 export const AgentsRegistryExpert: core.serialization.ObjectSchema<
     serializers.AgentsRegistryExpert.Raw,
@@ -12,11 +13,15 @@ export const AgentsRegistryExpert: core.serialization.ObjectSchema<
 > = core.serialization.object({
     name: core.serialization.string(),
     description: core.serialization.string(),
+    mcpServers: core.serialization.list(AgentsRegistryMcpServer).optional(),
+    requiresAuthBearerToken: core.serialization.boolean().optional(),
 });
 
 export declare namespace AgentsRegistryExpert {
     export interface Raw {
         name: string;
         description: string;
+        mcpServers?: AgentsRegistryMcpServer.Raw[] | null;
+        requiresAuthBearerToken?: boolean | null;
     }
 }

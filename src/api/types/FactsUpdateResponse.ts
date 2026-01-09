@@ -6,7 +6,7 @@ import * as Corti from "../index.js";
 
 export interface FactsUpdateResponse {
     /** The unique identifier of the fact. */
-    id: Corti.Uuid;
+    id: string;
     /** The updated text content of the fact. */
     text: string;
     /** The updated group key to which the fact belongs. */
