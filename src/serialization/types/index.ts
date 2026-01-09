@@ -137,6 +137,8 @@ export * from "./AgentsCreateMcpServer.js";
 export * from "./AgentsMcpServerTransportType.js";
 export * from "./AgentsMcpServerAuthorizationType.js";
 export * from "./AgentsMcpServer.js";
+export * from "./AgentsRegistryMcpServerAuthorizationType.js";
+export * from "./AgentsRegistryMcpServer.js";
 export * from "./AgentsAgentExpertsItem.js";
 export * from "./AgentsAgent.js";
 export * from "./AgentsAgentReference.js";
