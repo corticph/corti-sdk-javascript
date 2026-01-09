@@ -1,6 +1,6 @@
 {
     "name": "@corti/sdk",
-    "version": "0.8.0",
+    "version": "0.9.0-rc",
     "private": false,
     "repository": "github:corticph/corti-sdk-javascript",
     "license": "MIT",

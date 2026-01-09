@@ -8,7 +8,7 @@ import * as Corti from "../../../../index.js";
  * @example
  *     {
  *         facts: [{
- *                 factId: "f47ac10b-58cc-4372-a567-0e02b2c3d479"
+ *                 factId: "3c9d8a12-7f44-4b3e-9e6f-9271c2bbfa08"
  *             }]
  *     }
  */
