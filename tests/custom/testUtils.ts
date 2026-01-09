@@ -128,7 +128,7 @@ export async function getValidTemplateKeyAndLanguage(
         throw new Error("No templates available for testing");
     }
 
-    const outputLanguage = first.translations?.[0]?.languagesId || "en";
+    const outputLanguage = first.translations?.[0]?.languageId || "en";
 
     return { templateKey: first.key, outputLanguage };
 }

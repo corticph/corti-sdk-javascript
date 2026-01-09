@@ -3,10 +3,10 @@
  */
 
 export interface TemplatesSectionTranslation {
-    /** Language identifier */
-    languagesId: string;
-    /** Localized name */
+    /** Language code. */
+    languageId: string;
+    /** Localized name. */
     name?: string | null;
-    /** Localized description */
+    /** Localized description. */
     description?: string | null;
 }

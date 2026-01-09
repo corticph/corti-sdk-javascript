@@ -15,4 +15,5 @@ export interface DocumentsCreateRequestWithTemplateKey {
     outputLanguage: string;
     /** Set to true to disable guardrails during document generation, default is false. */
     disableGuardrails?: boolean;
+    documentationMode?: Corti.TemplatesDocumentationModeEnum;
 }
