@@ -344,7 +344,7 @@ export class Facts {
      * @example
      *     await client.facts.batchUpdate("f47ac10b-58cc-4372-a567-0e02b2c3d479", {
      *         facts: [{
-     *                 factId: "f47ac10b-58cc-4372-a567-0e02b2c3d479"
+     *                 factId: "3c9d8a12-7f44-4b3e-9e6f-9271c2bbfa08"
      *             }]
      *     })
      */
@@ -442,18 +442,18 @@ export class Facts {
      * Updates an existing fact associated with a specific interaction.
      *
      * @param {Corti.Uuid} id - The unique identifier of the interaction. Must be a valid UUID.
-     * @param {Corti.Uuid} factId - The unique identifier of the fact to update. Must be a valid UUID.
+     * @param {string} factId - The unique identifier of the fact to update. Must be a valid UUID.
      * @param {Corti.FactsUpdateRequest} request
      * @param {Facts.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Corti.GatewayTimeoutError}
      *
      * @example
-     *     await client.facts.update("f47ac10b-58cc-4372-a567-0e02b2c3d479", "f47ac10b-58cc-4372-a567-0e02b2c3d479")
+     *     await client.facts.update("f47ac10b-58cc-4372-a567-0e02b2c3d479", "3c9d8a12-7f44-4b3e-9e6f-9271c2bbfa08")
      */
     public update(
         id: Corti.Uuid,
-        factId: Corti.Uuid,
+        factId: string,
         request: Corti.FactsUpdateRequest = {},
         requestOptions?: Facts.RequestOptions,
     ): core.HttpResponsePromise<Corti.FactsUpdateResponse> {
@@ -462,7 +462,7 @@ export class Facts {
 
     private async __update(
         id: Corti.Uuid,
-        factId: Corti.Uuid,
+        factId: string,
         request: Corti.FactsUpdateRequest = {},
         requestOptions?: Facts.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.FactsUpdateResponse>> {
@@ -470,7 +470,7 @@ export class Facts {
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
                     (await core.Supplier.get(this._options.environment)).base,
-                `interactions/${encodeURIComponent(serializers.Uuid.jsonOrThrow(id, { omitUndefined: true }))}/facts/${encodeURIComponent(serializers.Uuid.jsonOrThrow(factId, { omitUndefined: true }))}`,
+                `interactions/${encodeURIComponent(serializers.Uuid.jsonOrThrow(id, { omitUndefined: true }))}/facts/${encodeURIComponent(factId)}`,
             ),
             method: "PATCH",
             headers: mergeHeaders(

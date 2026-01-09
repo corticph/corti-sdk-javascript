@@ -5,13 +5,12 @@
 import * as serializers from "../index.js";
 import * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
-import { Uuid } from "./Uuid.js";
 
 export const FactsBatchUpdateInput: core.serialization.ObjectSchema<
     serializers.FactsBatchUpdateInput.Raw,
     Corti.FactsBatchUpdateInput
 > = core.serialization.object({
-    factId: Uuid,
+    factId: core.serialization.string(),
     isDiscarded: core.serialization.boolean().optional(),
     text: core.serialization.string().optional(),
     group: core.serialization.string().optional(),
@@ -19,7 +18,7 @@ export const FactsBatchUpdateInput: core.serialization.ObjectSchema<
 
 export declare namespace FactsBatchUpdateInput {
     export interface Raw {
-        factId: Uuid.Raw;
+        factId: string;
         isDiscarded?: boolean | null;
         text?: string | null;
         group?: string | null;
