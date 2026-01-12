@@ -278,4 +278,167 @@ describe("cortiClient.transcribe.connect", () => {
             expect(consoleWarnSpy).not.toHaveBeenCalled();
         });
     });
+
+    describe("should connect with formatting configuration", () => {
+        it("should connect with dates formatting", async () => {
+            expect.assertions(3);
+
+            const transcribeSocket = await cortiClient.transcribe.connect({
+                configuration: {
+                    primaryLanguage: "en",
+                    formatting: { dates: "long_text" },
+                },
+            });
+            activeSockets.push(transcribeSocket);
+
+            const messages: any[] = [];
+            await waitForWebSocketMessage(transcribeSocket, "CONFIG_ACCEPTED", {
+                messages,
+                rejectOnWrongMessage: true,
+            });
+
+            expect(transcribeSocket).toBeDefined();
+            expect(transcribeSocket.socket.readyState).toBe(1);
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
+
+        it("should connect with times formatting", async () => {
+            expect.assertions(3);
+
+            const transcribeSocket = await cortiClient.transcribe.connect({
+                configuration: {
+                    primaryLanguage: "en",
+                    formatting: { times: "h12" },
+                },
+            });
+            activeSockets.push(transcribeSocket);
+
+            const messages: any[] = [];
+            await waitForWebSocketMessage(transcribeSocket, "CONFIG_ACCEPTED", {
+                messages,
+                rejectOnWrongMessage: true,
+            });
+
+            expect(transcribeSocket).toBeDefined();
+            expect(transcribeSocket.socket.readyState).toBe(1);
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
+
+        it("should connect with numbers formatting", async () => {
+            expect.assertions(3);
+
+            const transcribeSocket = await cortiClient.transcribe.connect({
+                configuration: {
+                    primaryLanguage: "en",
+                    formatting: { numbers: "numerals" },
+                },
+            });
+            activeSockets.push(transcribeSocket);
+
+            const messages: any[] = [];
+            await waitForWebSocketMessage(transcribeSocket, "CONFIG_ACCEPTED", {
+                messages,
+                rejectOnWrongMessage: true,
+            });
+
+            expect(transcribeSocket).toBeDefined();
+            expect(transcribeSocket.socket.readyState).toBe(1);
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
+
+        it("should connect with measurements formatting", async () => {
+            expect.assertions(3);
+
+            const transcribeSocket = await cortiClient.transcribe.connect({
+                configuration: {
+                    primaryLanguage: "en",
+                    formatting: { measurements: "abbreviated" },
+                },
+            });
+            activeSockets.push(transcribeSocket);
+
+            const messages: any[] = [];
+            await waitForWebSocketMessage(transcribeSocket, "CONFIG_ACCEPTED", {
+                messages,
+                rejectOnWrongMessage: true,
+            });
+
+            expect(transcribeSocket).toBeDefined();
+            expect(transcribeSocket.socket.readyState).toBe(1);
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
+
+        it("should connect with numeric ranges formatting", async () => {
+            expect.assertions(3);
+
+            const transcribeSocket = await cortiClient.transcribe.connect({
+                configuration: {
+                    primaryLanguage: "en",
+                    formatting: { numericRanges: "numerals" },
+                },
+            });
+            activeSockets.push(transcribeSocket);
+
+            const messages: any[] = [];
+            await waitForWebSocketMessage(transcribeSocket, "CONFIG_ACCEPTED", {
+                messages,
+                rejectOnWrongMessage: true,
+            });
+
+            expect(transcribeSocket).toBeDefined();
+            expect(transcribeSocket.socket.readyState).toBe(1);
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
+
+        it("should connect with ordinals formatting", async () => {
+            expect.assertions(3);
+
+            const transcribeSocket = await cortiClient.transcribe.connect({
+                configuration: {
+                    primaryLanguage: "en",
+                    formatting: { ordinals: "numerals" },
+                },
+            });
+            activeSockets.push(transcribeSocket);
+
+            const messages: any[] = [];
+            await waitForWebSocketMessage(transcribeSocket, "CONFIG_ACCEPTED", {
+                messages,
+                rejectOnWrongMessage: true,
+            });
+
+            expect(transcribeSocket).toBeDefined();
+            expect(transcribeSocket.socket.readyState).toBe(1);
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
+
+        it("should connect with full formatting configuration", async () => {
+            expect.assertions(3);
+
+            const transcribeSocket = await cortiClient.transcribe.connect({
+                configuration: {
+                    primaryLanguage: "en",
+                    formatting: {
+                        dates: "long_text",
+                        times: "h12",
+                        numbers: "numerals",
+                        measurements: "abbreviated",
+                        numericRanges: "numerals",
+                        ordinals: "numerals",
+                    },
+                },
+            });
+            activeSockets.push(transcribeSocket);
+
+            const messages: any[] = [];
+            await waitForWebSocketMessage(transcribeSocket, "CONFIG_ACCEPTED", {
+                messages,
+                rejectOnWrongMessage: true,
+            });
+
+            expect(transcribeSocket).toBeDefined();
+            expect(transcribeSocket.socket.readyState).toBe(1);
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
+    });
 });
