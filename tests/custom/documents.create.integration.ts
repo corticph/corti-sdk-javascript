@@ -551,6 +551,578 @@ describe("cortiClient.documents.create", () => {
         });
     });
 
+    describe("should create document with DocumentsTemplateWithSections", () => {
+        it("should create document with sections array with single section", async () => {
+            expect.assertions(2);
+
+            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+
+            const result = await cortiClient.documents.create(interactionId, {
+                context: [
+                    {
+                        type: "string",
+                        data: faker.lorem.paragraph(),
+                    },
+                ],
+                template: {
+                    sections: [
+                        {
+                            key: faker.helpers.arrayElement(validSectionKeys),
+                        },
+                    ],
+                },
+                outputLanguage: "en",
+            });
+
+            expect(result).toBeDefined();
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
+
+        it("should create document with sections array with multiple sections", async () => {
+            expect.assertions(2);
+
+            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+
+            const result = await cortiClient.documents.create(interactionId, {
+                context: [
+                    {
+                        type: "string",
+                        data: faker.lorem.paragraph(),
+                    },
+                ],
+                template: {
+                    sections: [
+                        {
+                            key: faker.helpers.arrayElement(validSectionKeys),
+                        },
+                        {
+                            key: faker.helpers.arrayElement(validSectionKeys),
+                        },
+                    ],
+                },
+                outputLanguage: "en",
+            });
+
+            expect(result).toBeDefined();
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
+
+        it("should create document with sections array with nameOverride", async () => {
+            expect.assertions(2);
+
+            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+
+            const result = await cortiClient.documents.create(interactionId, {
+                context: [
+                    {
+                        type: "string",
+                        data: faker.lorem.paragraph(),
+                    },
+                ],
+                template: {
+                    sections: [
+                        {
+                            key: faker.helpers.arrayElement(validSectionKeys),
+                            nameOverride: faker.lorem.words(2),
+                        },
+                    ],
+                },
+                outputLanguage: "en",
+            });
+
+            expect(result).toBeDefined();
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
+
+        it("should create document with sections array with writingStyleOverride", async () => {
+            expect.assertions(2);
+
+            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+
+            const result = await cortiClient.documents.create(interactionId, {
+                context: [
+                    {
+                        type: "string",
+                        data: faker.lorem.paragraph(),
+                    },
+                ],
+                template: {
+                    sections: [
+                        {
+                            key: faker.helpers.arrayElement(validSectionKeys),
+                            writingStyleOverride: "Use bullet points and short sentences",
+                        },
+                    ],
+                },
+                outputLanguage: "en",
+            });
+
+            expect(result).toBeDefined();
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
+
+        it("should create document with sections array with formatRuleOverride", async () => {
+            expect.assertions(2);
+
+            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+
+            const result = await cortiClient.documents.create(interactionId, {
+                context: [
+                    {
+                        type: "string",
+                        data: faker.lorem.paragraph(),
+                    },
+                ],
+                template: {
+                    sections: [
+                        {
+                            key: faker.helpers.arrayElement(validSectionKeys),
+                            formatRuleOverride: "Format as numbered list",
+                        },
+                    ],
+                },
+                outputLanguage: "en",
+            });
+
+            expect(result).toBeDefined();
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
+
+        it("should create document with sections array with additionalInstructionsOverride", async () => {
+            expect.assertions(2);
+
+            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+
+            const result = await cortiClient.documents.create(interactionId, {
+                context: [
+                    {
+                        type: "string",
+                        data: faker.lorem.paragraph(),
+                    },
+                ],
+                template: {
+                    sections: [
+                        {
+                            key: faker.helpers.arrayElement(validSectionKeys),
+                            additionalInstructionsOverride: faker.lorem.sentence(),
+                        },
+                    ],
+                },
+                outputLanguage: "en",
+            });
+
+            expect(result).toBeDefined();
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
+
+        it("should create document with sections array with contentOverride", async () => {
+            expect.assertions(2);
+
+            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+
+            const result = await cortiClient.documents.create(interactionId, {
+                context: [
+                    {
+                        type: "string",
+                        data: faker.lorem.paragraph(),
+                    },
+                ],
+                template: {
+                    sections: [
+                        {
+                            key: faker.helpers.arrayElement(validSectionKeys),
+                            contentOverride: faker.lorem.sentence(),
+                        },
+                    ],
+                },
+                outputLanguage: "en",
+            });
+
+            expect(result).toBeDefined();
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
+
+        it("should create document with sections array with all overrides", async () => {
+            expect.assertions(2);
+
+            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+
+            const result = await cortiClient.documents.create(interactionId, {
+                context: [
+                    {
+                        type: "string",
+                        data: faker.lorem.paragraph(),
+                    },
+                ],
+                template: {
+                    sections: [
+                        {
+                            key: faker.helpers.arrayElement(validSectionKeys),
+                            nameOverride: faker.lorem.words(2),
+                            writingStyleOverride: "Use formal medical terminology",
+                            formatRuleOverride: "Use headers and subheaders",
+                            additionalInstructionsOverride: faker.lorem.sentence(),
+                            contentOverride: faker.lorem.sentence(),
+                        },
+                    ],
+                },
+                outputLanguage: "en",
+            });
+
+            expect(result).toBeDefined();
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
+
+        it("should create document with sections array with template description", async () => {
+            expect.assertions(2);
+
+            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+
+            const result = await cortiClient.documents.create(interactionId, {
+                context: [
+                    {
+                        type: "string",
+                        data: faker.lorem.paragraph(),
+                    },
+                ],
+                template: {
+                    sections: [
+                        {
+                            key: faker.helpers.arrayElement(validSectionKeys),
+                        },
+                    ],
+                    description: faker.lorem.sentence(),
+                },
+                outputLanguage: "en",
+            });
+
+            expect(result).toBeDefined();
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
+
+        it("should create document with sections array with template additionalInstructionsOverride", async () => {
+            expect.assertions(2);
+
+            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+
+            const result = await cortiClient.documents.create(interactionId, {
+                context: [
+                    {
+                        type: "string",
+                        data: faker.lorem.paragraph(),
+                    },
+                ],
+                template: {
+                    sections: [
+                        {
+                            key: faker.helpers.arrayElement(validSectionKeys),
+                        },
+                    ],
+                    additionalInstructionsOverride: faker.lorem.sentence(),
+                },
+                outputLanguage: "en",
+            });
+
+            expect(result).toBeDefined();
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
+
+        it("should create document with sections array with all template-level options", async () => {
+            expect.assertions(2);
+
+            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+
+            const result = await cortiClient.documents.create(interactionId, {
+                context: [
+                    {
+                        type: "string",
+                        data: faker.lorem.paragraph(),
+                    },
+                ],
+                template: {
+                    sections: [
+                        {
+                            key: faker.helpers.arrayElement(validSectionKeys),
+                            nameOverride: faker.lorem.words(2),
+                        },
+                        {
+                            key: faker.helpers.arrayElement(validSectionKeys),
+                            writingStyleOverride: faker.lorem.sentence(),
+                        },
+                    ],
+                    description: faker.lorem.sentence(),
+                    additionalInstructionsOverride: faker.lorem.sentence(),
+                },
+                outputLanguage: "en",
+            });
+
+            expect(result).toBeDefined();
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
+    });
+
+    describe("should create document with documentationMode", () => {
+        it("should create document with documentationMode: global_sequential using templateKey", async () => {
+            expect.assertions(2);
+
+            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+
+            const result = await cortiClient.documents.create(interactionId, {
+                context: [
+                    {
+                        type: "string",
+                        data: faker.lorem.paragraph(),
+                    },
+                ],
+                templateKey,
+                outputLanguage: "en",
+                documentationMode: "global_sequential",
+            });
+
+            expect(result).toBeDefined();
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
+
+        it("should throw error when documentationMode: routed_parallel used with templateKey", async () => {
+            expect.assertions(1);
+
+            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+
+            await expect(
+                cortiClient.documents.create(interactionId, {
+                    context: [
+                        {
+                            type: "string",
+                            data: faker.lorem.paragraph(),
+                        },
+                    ],
+                    templateKey,
+                    outputLanguage: "en",
+                    documentationMode: "routed_parallel",
+                }),
+            ).rejects.toThrow("BadRequestError");
+        });
+
+        it("should create document with documentationMode: global_sequential using template with sectionKeys", async () => {
+            expect.assertions(2);
+
+            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+
+            const result = await cortiClient.documents.create(interactionId, {
+                context: [
+                    {
+                        type: "string",
+                        data: faker.lorem.paragraph(),
+                    },
+                ],
+                template: {
+                    sectionKeys: [faker.helpers.arrayElement(validSectionKeys)],
+                },
+                outputLanguage: "en",
+                documentationMode: "global_sequential",
+            });
+
+            expect(result).toBeDefined();
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
+
+        it("should create document with documentationMode: routed_parallel using template with sectionKeys", async () => {
+            expect.assertions(2);
+
+            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+
+            const result = await cortiClient.documents.create(interactionId, {
+                context: [
+                    {
+                        type: "string",
+                        data: faker.lorem.paragraph(),
+                    },
+                ],
+                template: {
+                    sectionKeys: [faker.helpers.arrayElement(validSectionKeys)],
+                },
+                outputLanguage: "en",
+                documentationMode: "routed_parallel",
+            });
+
+            expect(result).toBeDefined();
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
+
+        it("should create document with documentationMode: global_sequential using template with sections", async () => {
+            expect.assertions(2);
+
+            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+
+            const result = await cortiClient.documents.create(interactionId, {
+                context: [
+                    {
+                        type: "string",
+                        data: faker.lorem.paragraph(),
+                    },
+                ],
+                template: {
+                    sections: [
+                        {
+                            key: faker.helpers.arrayElement(validSectionKeys),
+                        },
+                    ],
+                },
+                outputLanguage: "en",
+                documentationMode: "global_sequential",
+            });
+
+            expect(result).toBeDefined();
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
+
+        it("should create document with documentationMode: routed_parallel using template with sections", async () => {
+            expect.assertions(2);
+
+            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+
+            const result = await cortiClient.documents.create(interactionId, {
+                context: [
+                    {
+                        type: "string",
+                        data: faker.lorem.paragraph(),
+                    },
+                ],
+                template: {
+                    sections: [
+                        {
+                            key: faker.helpers.arrayElement(validSectionKeys),
+                        },
+                    ],
+                },
+                outputLanguage: "en",
+                documentationMode: "routed_parallel",
+            });
+
+            expect(result).toBeDefined();
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
+    });
+
+    describe("should throw error for invalid documentationMode requests", () => {
+        it("should throw error when documentationMode is invalid", async () => {
+            expect.assertions(1);
+
+            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+
+            await expect(
+                cortiClient.documents.create(interactionId, {
+                    context: [
+                        {
+                            type: "string",
+                            data: faker.lorem.paragraph(),
+                        },
+                    ],
+                    templateKey,
+                    outputLanguage: "en",
+                    documentationMode: "invalid_mode" as any,
+                }),
+            ).rejects.toThrow();
+        });
+    });
+
+    describe("should handle templateKey vs template mutual exclusion", () => {
+        it("should create document when both templateKey and template provided (templateKey takes precedence)", async () => {
+            expect.assertions(2);
+
+            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+
+            // API should accept this - templateKey takes precedence over template
+            const result = await cortiClient.documents.create(interactionId, {
+                context: [
+                    {
+                        type: "string",
+                        data: faker.lorem.paragraph(),
+                    },
+                ],
+                templateKey,
+                template: {
+                    sectionKeys: [faker.helpers.arrayElement(validSectionKeys)],
+                },
+                outputLanguage: "en",
+            } as any);
+
+            expect(result).toBeDefined();
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
+    });
+
+    describe("should throw error for invalid DocumentsTemplateWithSections requests", () => {
+        it("should throw error when sections array is empty", async () => {
+            expect.assertions(1);
+
+            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+
+            await expect(
+                cortiClient.documents.create(interactionId, {
+                    context: [
+                        {
+                            type: "string",
+                            data: faker.lorem.paragraph(),
+                        },
+                    ],
+                    template: {
+                        sections: [],
+                    },
+                    outputLanguage: "en",
+                }),
+            ).rejects.toThrow("BadRequestError");
+        });
+
+        it("should throw error when section key is missing", async () => {
+            expect.assertions(1);
+
+            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+
+            await expect(
+                cortiClient.documents.create(interactionId, {
+                    context: [
+                        {
+                            type: "string",
+                            data: faker.lorem.paragraph(),
+                        },
+                    ],
+                    template: {
+                        sections: [
+                            {} as any,
+                        ],
+                    },
+                    outputLanguage: "en",
+                }),
+            ).rejects.toThrow();
+        });
+
+        it("should throw error when section key is invalid", async () => {
+            expect.assertions(1);
+
+            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+
+            await expect(
+                cortiClient.documents.create(interactionId, {
+                    context: [
+                        {
+                            type: "string",
+                            data: faker.lorem.paragraph(),
+                        },
+                    ],
+                    template: {
+                        sections: [
+                            {
+                                key: "invalid_section_key_that_does_not_exist",
+                            },
+                        ],
+                    },
+                    outputLanguage: "en",
+                }),
+            ).rejects.toThrow("Status code: 404");
+        });
+    });
+
     describe("should handle errors when required parameters are missing", () => {
         it("should throw error when context is missing", async () => {
             expect.assertions(1);
