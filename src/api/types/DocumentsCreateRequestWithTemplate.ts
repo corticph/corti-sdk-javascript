@@ -5,7 +5,7 @@
 import * as Corti from "../index.js";
 
 export interface DocumentsCreateRequestWithTemplate {
-    /** An array of context objects. Currently accepts exactly one context object to be used as input for document generation. */
+    /** An array of context objects. Currently only accepts multiple objects when of type `transcript`. See [guide](/textgen/documents-standard#generate-document-from-transcript-as-input). */
     context: Corti.DocumentsContext[];
     /** Template details if the template should be generated during the request. */
     template: Corti.DocumentsTemplate;
@@ -15,4 +15,5 @@ export interface DocumentsCreateRequestWithTemplate {
     outputLanguage: string;
     /** Set to true to disable guardrails during document generation, default is false. */
     disableGuardrails?: boolean;
+    documentationMode?: Corti.TemplatesDocumentationModeEnum;
 }

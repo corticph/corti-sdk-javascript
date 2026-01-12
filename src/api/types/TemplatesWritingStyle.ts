@@ -3,6 +3,6 @@
  */
 
 export interface TemplatesWritingStyle {
-    /** Name of the writing style */
+    /** Name of the writing style. */
     name: string;
 }
