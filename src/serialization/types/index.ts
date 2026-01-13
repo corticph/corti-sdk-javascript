@@ -49,6 +49,7 @@ export * from "./TranscriptsResponse.js";
 export * from "./TranscriptsListResponse.js";
 export * from "./TranscriptsListItem.js";
 export * from "./TranscriptsData.js";
+export * from "./TranscriptsStatusResponse.js";
 export * from "./TranscriptsStatusEnum.js";
 export * from "./TemplatesSection.js";
 export * from "./CommonSortingDirectionEnum.js";
