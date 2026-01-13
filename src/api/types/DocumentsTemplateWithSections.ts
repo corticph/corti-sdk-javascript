@@ -5,7 +5,7 @@
 import * as Corti from "../index.js";
 
 export interface DocumentsTemplateWithSections {
-    sections?: Corti.DocumentsSectionOverride[];
+    sections: Corti.DocumentsSectionOverride[];
     /** A brief description of the document that can help give the LLM some context. */
     description?: string;
     /** Overrides and sets template-level additional instructions. */

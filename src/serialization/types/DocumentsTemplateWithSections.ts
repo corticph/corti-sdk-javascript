@@ -11,14 +11,14 @@ export const DocumentsTemplateWithSections: core.serialization.ObjectSchema<
     serializers.DocumentsTemplateWithSections.Raw,
     Corti.DocumentsTemplateWithSections
 > = core.serialization.object({
-    sections: core.serialization.list(DocumentsSectionOverride).optional(),
+    sections: core.serialization.list(DocumentsSectionOverride),
     description: core.serialization.string().optional(),
     additionalInstructionsOverride: core.serialization.string().optional(),
 });
 
 export declare namespace DocumentsTemplateWithSections {
     export interface Raw {
-        sections?: DocumentsSectionOverride.Raw[] | null;
+        sections: DocumentsSectionOverride.Raw[];
         description?: string | null;
         additionalInstructionsOverride?: string | null;
     }
