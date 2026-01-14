@@ -7,6 +7,6 @@ import * as Corti from "../index.js";
 export interface DocumentsContextWithFacts {
     /** The type of context data that will be used in the request: `Facts`, `Transcript`, or `String`. */
     type: "facts";
-    /** An array of facts. */
+    /** An array of facts. See [guide](/textgen/documents-standard##generate-document-from-facts-as-input). */
     data: Corti.FactsContext[];
 }
