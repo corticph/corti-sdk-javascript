@@ -14,6 +14,7 @@ export const AgentsMcpServer: core.serialization.ObjectSchema<serializers.Agents
         name: core.serialization.string(),
         transportType: AgentsMcpServerTransportType,
         authorizationType: AgentsMcpServerAuthorizationType,
+        authorizationScope: core.serialization.string().optional(),
         url: core.serialization.string(),
         redirectUrl: core.serialization.string().optionalNullable(),
     });
@@ -24,6 +25,7 @@ export declare namespace AgentsMcpServer {
         name: string;
         transportType: AgentsMcpServerTransportType.Raw;
         authorizationType: AgentsMcpServerAuthorizationType.Raw;
+        authorizationScope?: string | null;
         url: string;
         redirectUrl?: (string | null) | null;
     }
