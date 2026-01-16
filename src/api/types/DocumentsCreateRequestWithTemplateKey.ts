@@ -5,9 +5,9 @@
 import * as Corti from "../index.js";
 
 export interface DocumentsCreateRequestWithTemplateKey {
-    /** An array of context objects. Currently accepts exactly one context object to be used as input for document generation. */
+    /** An array of context objects. Currently only accepts multiple objects when of type `transcript`. See [guide](/textgen/documents-standard#generate-document-from-transcript-as-input). */
     context: Corti.DocumentsContext[];
-    /** The key of the template that informs on what kind of document is to be generated. */
+    /** The key of the template referencing the sections for generating a document. */
     templateKey: string;
     /** An optional name for the document. */
     name?: string;
