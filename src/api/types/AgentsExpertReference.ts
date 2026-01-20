@@ -3,7 +3,7 @@
  */
 
 /**
- * A reference to an expert, either id or name must be provided. If both are passed, the id will be used.
+ * A reference to an expert, either id or name must be provided. If both are passed, the id will be used. An optional systemPrompt can be provided when creating an expert from the registry and will be returned on the reference.
  */
 export interface AgentsExpertReference {
     type: "reference";
@@ -11,4 +11,6 @@ export interface AgentsExpertReference {
     id?: string;
     /** The name of the expert. */
     name?: string;
+    /** Optional system prompt that defines the expert's behavior and expectations when created from the registry. */
+    systemPrompt?: string;
 }
