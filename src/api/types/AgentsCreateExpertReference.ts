@@ -3,14 +3,14 @@
  */
 
 /**
- * A reference to an expert returned by the API. The expert's id and name are always provided, and an optional systemPrompt may appear when created from the registry.
+ * A reference to a registry expert when creating an agent, either id or name must be provided. If both are passed, the id will be used.
  */
-export interface AgentsExpertReference {
+export interface AgentsCreateExpertReference {
     type: "reference";
     /** The unique identifier of the expert. */
-    id: string;
+    id?: string;
     /** The name of the expert. */
-    name: string;
+    name?: string;
     /** Optional system prompt that defines the expert's behavior and expectations when created from the registry. */
     systemPrompt?: string;
 }

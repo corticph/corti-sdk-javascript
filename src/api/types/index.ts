@@ -145,6 +145,7 @@ export * from "./AgentsAgentExpertsItem.js";
 export * from "./AgentsAgent.js";
 export * from "./AgentsAgentReference.js";
 export * from "./AgentsCreateExpert.js";
+export * from "./AgentsCreateExpertReference.js";
 export * from "./AgentsExpert.js";
 export * from "./AgentsExpertReference.js";
 export * from "./AgentsAgentResponse.js";
