@@ -928,7 +928,7 @@ export class Agents {
     }
 
     /**
-     * This endpoint retrieves the experts registry, which contains information about all available experts that can be referenced when creating agents through the AgentsExpertReference schema.
+     * This endpoint retrieves the experts registry, which contains information about all available experts that can be referenced when creating agents through the AgentsCreateExpertReference schema.
      *
      * @param {Corti.AgentsGetRegistryExpertsRequest} request
      * @param {Agents.RequestOptions} requestOptions - Request-specific configuration.
