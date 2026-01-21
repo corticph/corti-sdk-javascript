@@ -11,6 +11,6 @@ export interface AgentsExpertReference {
     id: string;
     /** The name of the expert. */
     name: string;
-    /** Optional system prompt that defines the expert's behavior and expectations when created from the registry. */
+    /** Optional. Additional system instructions appended to the default system prompt when creating an expert from the registry, extending the expert's behavior. */
     systemPrompt?: string;
 }
