@@ -3,7 +3,7 @@
  */
 
 /**
- * A reference to an expert returned by the API. The expert's id and name are always provided, and an optional systemPrompt may appear when created from the registry.
+ * A reference to an expert returned by the API. The expert's id and name are always provided. systemPrompt is included only when a registry expert was created with a custom system prompt.
  */
 export interface AgentsExpertReference {
     type: "reference";
