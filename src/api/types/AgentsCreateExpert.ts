@@ -12,6 +12,8 @@ export interface AgentsCreateExpert {
     description: string;
     /** Optional system prompt that defines the expert's behavior and expectations. */
     systemPrompt?: string;
+    /** Optional flag indicating whether the expert should be able to search the context for relevant information to perform its task. */
+    memory?: boolean;
     /** A list of MCP servers that the expert can call. If omitted, the expert can't call any MCP Servers. */
     mcpServers?: Corti.AgentsCreateMcpServer[];
 }
