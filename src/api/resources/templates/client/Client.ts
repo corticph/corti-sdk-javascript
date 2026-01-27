@@ -101,6 +101,7 @@ export class Templates {
             queryParameters: _queryParams,
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
             maxRetries: requestOptions?.maxRetries,
+            withCredentials: true,
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
@@ -224,6 +225,7 @@ export class Templates {
             queryParameters: _queryParams,
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
             maxRetries: requestOptions?.maxRetries,
+            withCredentials: true,
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
@@ -317,6 +319,7 @@ export class Templates {
             ),
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
             maxRetries: requestOptions?.maxRetries,
+            withCredentials: true,
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
