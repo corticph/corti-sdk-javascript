@@ -5,6 +5,7 @@
 import * as serializers from "../../../../index.js";
 import * as Corti from "../../../../../api/index.js";
 import * as core from "../../../../../core/index.js";
+import { AgentsCreateAgentAgentType } from "../../types/AgentsCreateAgentAgentType.js";
 import { AgentsCreateAgentExpertsItem } from "../../types/AgentsCreateAgentExpertsItem.js";
 
 export const AgentsCreateAgent: core.serialization.Schema<
@@ -12,6 +13,7 @@ export const AgentsCreateAgent: core.serialization.Schema<
     Omit<Corti.AgentsCreateAgent, "ephemeral">
 > = core.serialization.object({
     name: core.serialization.string(),
+    agentType: AgentsCreateAgentAgentType.optional(),
     systemPrompt: core.serialization.string().optional(),
     description: core.serialization.string(),
     experts: core.serialization.list(AgentsCreateAgentExpertsItem).optional(),
@@ -20,6 +22,7 @@ export const AgentsCreateAgent: core.serialization.Schema<
 export declare namespace AgentsCreateAgent {
     export interface Raw {
         name: string;
+        agentType?: AgentsCreateAgentAgentType.Raw | null;
         systemPrompt?: string | null;
         description: string;
         experts?: AgentsCreateAgentExpertsItem.Raw[] | null;

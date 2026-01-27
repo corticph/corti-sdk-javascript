@@ -15,6 +15,7 @@ export const AgentsCreateExpert: core.serialization.ObjectSchema<
     name: core.serialization.string(),
     description: core.serialization.string(),
     systemPrompt: core.serialization.string().optional(),
+    memory: core.serialization.boolean().optional(),
     mcpServers: core.serialization.list(AgentsCreateMcpServer).optional(),
 });
 
@@ -24,6 +25,7 @@ export declare namespace AgentsCreateExpert {
         name: string;
         description: string;
         systemPrompt?: string | null;
+        memory?: boolean | null;
         mcpServers?: AgentsCreateMcpServer.Raw[] | null;
     }
 }
