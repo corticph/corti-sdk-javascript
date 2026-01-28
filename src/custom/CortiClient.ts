@@ -29,6 +29,7 @@ import { Facts } from "../api/resources/facts/client/Client.js";
 import { Documents } from "../api/resources/documents/client/Client.js";
 import { Templates } from "../api/resources/templates/client/Client.js";
 import { Agents } from "../api/resources/agents/client/Client.js";
+import { Codes } from "./api/resources/codes/client/Client.js";
 
 /**
  * Patch: changed import to custom Stream and Transcribe implementations
@@ -161,6 +162,7 @@ export class CortiClient {
      */
     protected _stream: Stream | undefined;
     protected _transcribe: Transcribe | undefined;
+    protected _codes: Codes | undefined;
 
     constructor(_options: CortiClient.Options) {
         /**
@@ -277,6 +279,13 @@ export class CortiClient {
         return (this._transcribe ??= new Transcribe({
             ...this._options,
             token: this._oauthTokenProvider ? async () => await this._oauthTokenProvider!.getToken() : undefined,
+        }));
+    }
+
+    public get codes(): Codes {
+        return (this._codes ??= new Codes({
+            ...this._options,
+            token: async () => await this._oauthTokenProvider.getToken(),
         }));
     }
 
