@@ -9,6 +9,7 @@ import { Uuid } from "./Uuid.js";
 import { TranscriptsMetadata } from "./TranscriptsMetadata.js";
 import { CommonTranscriptResponse } from "./CommonTranscriptResponse.js";
 import { CommonUsageInfo } from "./CommonUsageInfo.js";
+import { TranscriptsStatusEnum } from "./TranscriptsStatusEnum.js";
 
 export const TranscriptsResponse: core.serialization.ObjectSchema<
     serializers.TranscriptsResponse.Raw,
@@ -18,6 +19,8 @@ export const TranscriptsResponse: core.serialization.ObjectSchema<
     metadata: TranscriptsMetadata,
     transcripts: core.serialization.list(CommonTranscriptResponse).optionalNullable(),
     usageInfo: CommonUsageInfo,
+    recordingId: Uuid,
+    status: TranscriptsStatusEnum,
 });
 
 export declare namespace TranscriptsResponse {
@@ -26,5 +29,7 @@ export declare namespace TranscriptsResponse {
         metadata: TranscriptsMetadata.Raw;
         transcripts?: (CommonTranscriptResponse.Raw[] | null) | null;
         usageInfo: CommonUsageInfo.Raw;
+        recordingId: Uuid.Raw;
+        status: TranscriptsStatusEnum.Raw;
     }
 }
