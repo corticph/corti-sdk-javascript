@@ -11,14 +11,16 @@ export const AgentsExpertReference: core.serialization.ObjectSchema<
     Corti.AgentsExpertReference
 > = core.serialization.object({
     type: core.serialization.stringLiteral("reference"),
-    id: core.serialization.string().optional(),
-    name: core.serialization.string().optional(),
+    id: core.serialization.string(),
+    name: core.serialization.string(),
+    systemPrompt: core.serialization.string().optional(),
 });
 
 export declare namespace AgentsExpertReference {
     export interface Raw {
         type: "reference";
-        id?: string | null;
-        name?: string | null;
+        id: string;
+        name: string;
+        systemPrompt?: string | null;
     }
 }

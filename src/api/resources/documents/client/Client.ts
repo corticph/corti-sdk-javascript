@@ -84,6 +84,7 @@ export class Documents {
             ),
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
             maxRetries: requestOptions?.maxRetries,
+            withCredentials: true,
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
@@ -163,7 +164,7 @@ export class Documents {
     }
 
     /**
-     * Generate Document.
+     * This endpoint offers different ways to generate a document. Find guides to document generation [here](/textgen/documents-standard).
      *
      * @param {Corti.Uuid} id - The unique identifier of the interaction. Must be a valid UUID.
      * @param {Corti.DocumentsCreateRequest} request
@@ -223,6 +224,7 @@ export class Documents {
             }),
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
             maxRetries: requestOptions?.maxRetries,
+            withCredentials: true,
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
@@ -346,6 +348,7 @@ export class Documents {
             ),
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
             maxRetries: requestOptions?.maxRetries,
+            withCredentials: true,
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
@@ -469,6 +472,7 @@ export class Documents {
             ),
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
             maxRetries: requestOptions?.maxRetries,
+            withCredentials: true,
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
@@ -592,6 +596,7 @@ export class Documents {
             }),
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
             maxRetries: requestOptions?.maxRetries,
+            withCredentials: true,
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {

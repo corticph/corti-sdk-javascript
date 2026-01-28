@@ -97,6 +97,7 @@ export class Agents {
             queryParameters: _queryParams,
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
             maxRetries: requestOptions?.maxRetries,
+            withCredentials: true,
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
@@ -200,6 +201,7 @@ export class Agents {
             }),
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
             maxRetries: requestOptions?.maxRetries,
+            withCredentials: true,
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
@@ -288,6 +290,7 @@ export class Agents {
             ),
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
             maxRetries: requestOptions?.maxRetries,
+            withCredentials: true,
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
@@ -372,6 +375,7 @@ export class Agents {
             ),
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
             maxRetries: requestOptions?.maxRetries,
+            withCredentials: true,
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
@@ -467,6 +471,7 @@ export class Agents {
             }),
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
             maxRetries: requestOptions?.maxRetries,
+            withCredentials: true,
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
@@ -557,6 +562,7 @@ export class Agents {
             ),
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
             maxRetries: requestOptions?.maxRetries,
+            withCredentials: true,
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
@@ -666,6 +672,7 @@ export class Agents {
             }),
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
             maxRetries: requestOptions?.maxRetries,
+            withCredentials: true,
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
@@ -769,6 +776,7 @@ export class Agents {
             queryParameters: _queryParams,
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
             maxRetries: requestOptions?.maxRetries,
+            withCredentials: true,
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
@@ -876,6 +884,7 @@ export class Agents {
             queryParameters: _queryParams,
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
             maxRetries: requestOptions?.maxRetries,
+            withCredentials: true,
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
@@ -928,7 +937,7 @@ export class Agents {
     }
 
     /**
-     * This endpoint retrieves the experts registry, which contains information about all available experts that can be referenced when creating agents through the AgentsExpertReference schema.
+     * This endpoint retrieves the experts registry, which contains information about all available experts that can be referenced when creating agents through the AgentsCreateExpertReference schema.
      *
      * @param {Corti.AgentsGetRegistryExpertsRequest} request
      * @param {Agents.RequestOptions} requestOptions - Request-specific configuration.
@@ -981,6 +990,7 @@ export class Agents {
             queryParameters: _queryParams,
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
             maxRetries: requestOptions?.maxRetries,
+            withCredentials: true,
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {

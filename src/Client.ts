@@ -12,6 +12,7 @@ import { Transcripts } from "./api/resources/transcripts/client/Client.js";
 import { Facts } from "./api/resources/facts/client/Client.js";
 import { Documents } from "./api/resources/documents/client/Client.js";
 import { Templates } from "./api/resources/templates/client/Client.js";
+import { Codes } from "./api/resources/codes/client/Client.js";
 import { Agents } from "./api/resources/agents/client/Client.js";
 import { Stream } from "./api/resources/stream/client/Client.js";
 import { Transcribe } from "./api/resources/transcribe/client/Client.js";
@@ -52,6 +53,7 @@ export class CortiClient {
     protected _facts: Facts | undefined;
     protected _documents: Documents | undefined;
     protected _templates: Templates | undefined;
+    protected _codes: Codes | undefined;
     protected _auth: Auth | undefined;
     protected _agents: Agents | undefined;
     protected _stream: Stream | undefined;
@@ -65,8 +67,8 @@ export class CortiClient {
                     "Tenant-Name": _options?.tenantName,
                     "X-Fern-Language": "JavaScript",
                     "X-Fern-SDK-Name": "@corti/sdk",
-                    "X-Fern-SDK-Version": "0.9.0",
-                    "User-Agent": "@corti/sdk/0.9.0",
+                    "X-Fern-SDK-Version": "0.10.0-rc.1",
+                    "User-Agent": "@corti/sdk/0.10.0-rc.1",
                     "X-Fern-Runtime": core.RUNTIME.type,
                     "X-Fern-Runtime-Version": core.RUNTIME.version,
                 },
@@ -121,6 +123,13 @@ export class CortiClient {
 
     public get templates(): Templates {
         return (this._templates ??= new Templates({
+            ...this._options,
+            token: async () => await this._oauthTokenProvider.getToken(),
+        }));
+    }
+
+    public get codes(): Codes {
+        return (this._codes ??= new Codes({
             ...this._options,
             token: async () => await this._oauthTokenProvider.getToken(),
         }));
