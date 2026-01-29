@@ -8,21 +8,21 @@ import * as core from "../../core/index.js";
 
 export const ErrorResponse: core.serialization.ObjectSchema<serializers.ErrorResponse.Raw, Corti.ErrorResponse> =
     core.serialization.object({
-        requestid: core.serialization.string().optional(),
+        requestid: core.serialization.string(),
+        status: core.serialization.number(),
         type: core.serialization.string(),
-        status: core.serialization.number().optional(),
-        title: core.serialization.string().optional(),
-        details: core.serialization.string().optional(),
-        instance: core.serialization.string().optional(),
+        detail: core.serialization.string(),
+        validationErrors: core.serialization
+            .list(core.serialization.record(core.serialization.string(), core.serialization.string()))
+            .optional(),
     });
 
 export declare namespace ErrorResponse {
     export interface Raw {
-        requestid?: string | null;
+        requestid: string;
+        status: number;
         type: string;
-        status?: number | null;
-        title?: string | null;
-        details?: string | null;
-        instance?: string | null;
+        detail: string;
+        validationErrors?: Record<string, string>[] | null;
     }
 }
