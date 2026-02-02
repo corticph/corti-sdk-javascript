@@ -13,6 +13,8 @@ export interface AgentsCreateMcpServer {
     transportType: Corti.AgentsCreateMcpServerTransportType;
     /** Type of authorization used by the MCP server. */
     authorizationType: Corti.AgentsCreateMcpServerAuthorizationType;
+    /** OAuth2.0 authorization scope to request. */
+    authorizationScope?: string;
     /** URL of the MCP server. */
     url: string;
     /** Redirect URI for OAuth2.0 authorization. */

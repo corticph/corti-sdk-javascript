@@ -18,6 +18,8 @@ export interface AgentsCreateAgent {
     ephemeral?: boolean | null;
     /** The name of the agent. */
     name: string;
+    /** Optional type of agent. */
+    agentType?: Corti.AgentsCreateAgentAgentType;
     /** The system prompt that defines the overall agents behavior and expectations. This field is optional as there is a default system orchestrator. */
     systemPrompt?: string;
     /** A brief description of the agent's capabilities. */
