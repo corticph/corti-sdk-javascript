@@ -163,7 +163,7 @@ export class Documents {
     }
 
     /**
-     * Generate Document.
+     * This endpoint offers different ways to generate a document. Find guides to document generation [here](/textgen/documents-standard).
      *
      * @param {Corti.Uuid} id - The unique identifier of the interaction. Must be a valid UUID.
      * @param {Corti.DocumentsCreateRequest} request

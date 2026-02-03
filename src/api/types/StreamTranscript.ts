@@ -5,7 +5,7 @@
 import * as Corti from "../index.js";
 
 export interface StreamTranscript {
-    /** Unique identifier for the transcript */
+    /** Interaction ID that the transcript segments are associated with */
     id: string;
     /** The transcribed text */
     transcript: string;
