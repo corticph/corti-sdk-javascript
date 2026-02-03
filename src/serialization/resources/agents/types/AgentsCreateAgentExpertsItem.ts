@@ -6,13 +6,13 @@ import * as serializers from "../../../index.js";
 import * as Corti from "../../../../api/index.js";
 import * as core from "../../../../core/index.js";
 import { AgentsCreateExpert } from "../../../types/AgentsCreateExpert.js";
-import { AgentsExpertReference } from "../../../types/AgentsExpertReference.js";
+import { AgentsCreateExpertReference } from "../../../types/AgentsCreateExpertReference.js";
 
 export const AgentsCreateAgentExpertsItem: core.serialization.Schema<
     serializers.AgentsCreateAgentExpertsItem.Raw,
     Corti.AgentsCreateAgentExpertsItem
-> = core.serialization.undiscriminatedUnion([AgentsCreateExpert, AgentsExpertReference]);
+> = core.serialization.undiscriminatedUnion([AgentsCreateExpert, AgentsCreateExpertReference]);
 
 export declare namespace AgentsCreateAgentExpertsItem {
-    export type Raw = AgentsCreateExpert.Raw | AgentsExpertReference.Raw;
+    export type Raw = AgentsCreateExpert.Raw | AgentsCreateExpertReference.Raw;
 }
