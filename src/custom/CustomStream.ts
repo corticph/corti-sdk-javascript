@@ -31,14 +31,18 @@ export class Stream extends FernStream {
         configuration?: api.StreamConfig;
         /** Patch: Proxy connection options - bypasses normal URL construction */
         proxy?: {
-            url: string;
+            url?: string;
             protocols?: string[];
             queryParameters?: Record<string, string>;
         };
     }): Promise<StreamSocket> {
         const socket = proxy
             ? new core.ReconnectingWebSocket({
-                  url: proxy.url,
+                  url: proxy.url || core.url.join(
+                      (await core.Supplier.get(this._options["baseUrl"])) ??
+                        (await core.Supplier.get(this._options["environment"])).wss,
+                        `/interactions/${encodeURIComponent(args.id)}/streams`,
+                  ),
                   protocols: proxy.protocols || [],
                   queryParameters: proxy.queryParameters || {},
                   headers: args.headers || {},
