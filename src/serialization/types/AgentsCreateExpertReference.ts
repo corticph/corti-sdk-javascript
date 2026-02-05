@@ -6,21 +6,21 @@ import * as serializers from "../index.js";
 import * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
 
-export const AgentsExpertReference: core.serialization.ObjectSchema<
-    serializers.AgentsExpertReference.Raw,
-    Corti.AgentsExpertReference
+export const AgentsCreateExpertReference: core.serialization.ObjectSchema<
+    serializers.AgentsCreateExpertReference.Raw,
+    Corti.AgentsCreateExpertReference
 > = core.serialization.object({
     type: core.serialization.stringLiteral("reference"),
-    id: core.serialization.string(),
-    name: core.serialization.string(),
+    id: core.serialization.string().optional(),
+    name: core.serialization.string().optional(),
     systemPrompt: core.serialization.string().optional(),
 });
 
-export declare namespace AgentsExpertReference {
+export declare namespace AgentsCreateExpertReference {
     export interface Raw {
         type: "reference";
-        id: string;
-        name: string;
+        id?: string | null;
+        name?: string | null;
         systemPrompt?: string | null;
     }
 }

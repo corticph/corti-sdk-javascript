@@ -5,9 +5,8 @@
 /**
  * Processing mode
  */
-export type StreamConfigModeType = "facts" | "transcription" | "documentation";
+export type StreamConfigModeType = "facts" | "transcription";
 export const StreamConfigModeType = {
     Facts: "facts",
     Transcription: "transcription",
-    Documentation: "documentation",
 } as const;

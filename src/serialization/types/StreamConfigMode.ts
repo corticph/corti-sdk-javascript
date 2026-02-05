@@ -7,6 +7,7 @@ import * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
 import { StreamConfigModeType } from "./StreamConfigModeType.js";
 import { StreamSupportedLanguage } from "./StreamSupportedLanguage.js";
+import { StreamConfigModeFactGenerationInterval } from "./StreamConfigModeFactGenerationInterval.js";
 
 export const StreamConfigMode: core.serialization.ObjectSchema<
     serializers.StreamConfigMode.Raw,
@@ -14,13 +15,13 @@ export const StreamConfigMode: core.serialization.ObjectSchema<
 > = core.serialization.object({
     type: StreamConfigModeType,
     outputLocale: StreamSupportedLanguage.optional(),
-    templateId: core.serialization.string().optional(),
+    factGenerationInterval: StreamConfigModeFactGenerationInterval.optional(),
 });
 
 export declare namespace StreamConfigMode {
     export interface Raw {
         type: StreamConfigModeType.Raw;
         outputLocale?: StreamSupportedLanguage.Raw | null;
-        templateId?: string | null;
+        factGenerationInterval?: StreamConfigModeFactGenerationInterval.Raw | null;
     }
 }
