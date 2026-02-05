@@ -9,6 +9,6 @@ export interface StreamConfigMode {
     type: Corti.StreamConfigModeType;
     /** Output language locale specific to facts. */
     outputLocale?: Corti.StreamSupportedLanguage;
-    /** Template identifier for processing configuration */
-    templateId?: string;
+    /** Rate at which fact generation should process and return results. */
+    factGenerationInterval?: Corti.StreamConfigModeFactGenerationInterval;
 }
