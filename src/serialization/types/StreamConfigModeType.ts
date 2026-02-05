@@ -9,8 +9,8 @@ import * as core from "../../core/index.js";
 export const StreamConfigModeType: core.serialization.Schema<
     serializers.StreamConfigModeType.Raw,
     Corti.StreamConfigModeType
-> = core.serialization.enum_(["facts", "transcription", "documentation"]);
+> = core.serialization.enum_(["facts", "transcription"]);
 
 export declare namespace StreamConfigModeType {
-    export type Raw = "facts" | "transcription" | "documentation";
+    export type Raw = "facts" | "transcription";
 }
