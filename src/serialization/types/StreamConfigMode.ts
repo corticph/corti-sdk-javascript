@@ -14,13 +14,11 @@ export const StreamConfigMode: core.serialization.ObjectSchema<
 > = core.serialization.object({
     type: StreamConfigModeType,
     outputLocale: StreamSupportedLanguage.optional(),
-    templateId: core.serialization.string().optional(),
 });
 
 export declare namespace StreamConfigMode {
     export interface Raw {
         type: StreamConfigModeType.Raw;
         outputLocale?: StreamSupportedLanguage.Raw | null;
-        templateId?: string | null;
     }
 }
