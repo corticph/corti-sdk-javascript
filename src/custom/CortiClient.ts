@@ -50,6 +50,9 @@ export declare namespace CortiClient {
      * Patch: added new public type for `Options` + internal interfaces to create it
      */
 
+    /** Patch: exported headers type for options.headers and WS protocol encoding. */
+    export type HeadersRecord = Record<string, string | core.Supplier<string | undefined> | undefined>;
+
     interface ClientCredentials {
         clientId: core.Supplier<string>;
         clientSecret: core.Supplier<string>;
@@ -57,9 +60,11 @@ export declare namespace CortiClient {
 
     interface BaseOptions {
         /** Additional headers to include in requests. */
-        headers?: Record<string, string | core.Supplier<string | undefined> | undefined>;
+        headers?: HeadersRecord;
         /** Specify a custom URL to connect the client to. */
         baseUrl?: core.Supplier<string>;
+        /** Patch: added new option to encode headers as WebSocket protocols for streaming resources (for proxy scenarios) */
+        encodeHeadersAsWsProtocols?: boolean;
     }
 
     interface OptionsWithClientCredentials extends BaseOptions {
@@ -109,6 +114,7 @@ export declare namespace CortiClient {
      *  - added `token` field to support BearerProvider
      *  - made clientId and clientSecret optional
      *  - updated environment type to CortiInternalEnvironment
+     *  - added `encodeHeadersAsWsProtocols`
      */
     interface InternalOptions {
         environment: CortiInternalEnvironment;
@@ -120,7 +126,8 @@ export declare namespace CortiClient {
         /** Override the Tenant-Name header */
         tenantName: core.Supplier<string>;
         /** Additional headers to include in requests. */
-        headers?: Record<string, string | core.Supplier<string | undefined> | undefined>;
+        headers?: HeadersRecord;
+        encodeHeadersAsWsProtocols?: boolean;
     }
 
     export interface RequestOptions {
@@ -133,7 +140,7 @@ export declare namespace CortiClient {
         /** Override the Tenant-Name header */
         tenantName?: string;
         /** Additional headers to include in the request. */
-        headers?: Record<string, string | core.Supplier<string | undefined> | undefined>;
+        headers?: HeadersRecord;
     }
 }
 

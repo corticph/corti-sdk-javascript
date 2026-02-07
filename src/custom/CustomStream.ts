@@ -17,11 +17,30 @@ import { ErrorEvent } from "../core/websocket/events.js";
  * Patch: changed import to custom StreamSocket implementation
  */
 import { StreamSocket } from "./CustomStreamSocket.js";
+/**
+ * Patch: import getWsProtocols for building WS protocols from headers when encodeHeadersAsWsProtocols is set.
+ */
+import { getWsProtocols } from "./utils/encodeHeadersAsWsProtocols.js";
+import type { CortiClient } from "./CortiClient.js";
+
+/** Patch: options type extended with encodeHeadersAsWsProtocols (set by CortiClient). */
+type StreamOptionsWithEncode = FernStream["_options"] & { encodeHeadersAsWsProtocols?: boolean };
 
 export class Stream extends FernStream {
+    /** Patch: narrow type so encodeHeadersAsWsProtocols is available when client is CortiClient. */
+    protected readonly _options: StreamOptionsWithEncode;
+
+    /** Patch: constructor accepts extended options so _options is correctly typed. */
+    constructor(_options: StreamOptionsWithEncode) {
+        super(_options);
+        this._options = _options;
+    }
+
     /**
-     * Patch: use custom connect method to support passing _options parameters
-     * Added optional `proxy` parameter for direct WebSocket connection (proxy scenarios)
+     * Patch: use custom connect method to support passing _options parameters.
+     * Patch: optional proxy parameter for direct WebSocket connection (proxy scenarios).
+     * Patch: use proxy path when proxy is passed or encodeHeadersAsWsProtocols is set.
+     * Patch: protocols from getWsProtocols; queryParameters from proxy or empty.
      */
     public async connect({
         configuration,
@@ -29,23 +48,28 @@ export class Stream extends FernStream {
         ...args
     }: Omit<FernStream.ConnectArgs, "token" | "tenantName"> & {
         configuration?: api.StreamConfig;
-        /** Patch: Proxy connection options - bypasses normal URL construction */
+        /** Patch: proxy connection options - bypasses normal URL construction. protocols: array passed as-is, object encoded like headers. */
         proxy?: {
             url?: string;
-            protocols?: string[];
+            protocols?: string[] | CortiClient.HeadersRecord;
             queryParameters?: Record<string, string>;
         };
     }): Promise<StreamSocket> {
-        const socket = proxy
+        const useProxyPath = proxy || this._options.encodeHeadersAsWsProtocols;
+        const protocols = await getWsProtocols(this._options, proxy?.protocols);
+
+        const socket = useProxyPath
             ? new core.ReconnectingWebSocket({
-                  url: proxy.url || core.url.join(
-                      (await core.Supplier.get(this._options["baseUrl"])) ??
-                        (await core.Supplier.get(this._options["environment"])).wss,
-                        `/interactions/${encodeURIComponent(args.id)}/streams`,
-                  ),
-                  protocols: proxy.protocols || [],
-                  queryParameters: proxy.queryParameters || {},
-                  headers: args.headers || {},
+                  url:
+                      proxy?.url ||
+                      core.url.join(
+                          (await core.Supplier.get(this._options["baseUrl"])) ??
+                              (await core.Supplier.get(this._options["environment"])).wss,
+                          `/interactions/${encodeURIComponent(args.id)}/streams`
+                      ),
+                  protocols,
+                  queryParameters: proxy?.queryParameters ?? {},
+                  headers: args.headers ?? {},
                   options: { debug: args.debug ?? false, maxRetries: args.reconnectAttempts ?? 30 },
               })
             : (
