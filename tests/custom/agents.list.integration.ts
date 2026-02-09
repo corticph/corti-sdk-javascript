@@ -45,16 +45,18 @@ describe("cortiClient.agents.list", () => {
         expect(consoleWarnSpy).not.toHaveBeenCalled();
     });
 
-    it("should return created agent in list", async () => {
-        expect.assertions(3);
+    describe("should list agents with only required values", () => {
+        it("should return created agent in list without errors or warnings", async () => {
+            expect.assertions(3);
 
-        const agent = await createTestAgent(cortiClient, createdAgentIds);
+            const agent = await createTestAgent(cortiClient, createdAgentIds);
 
-        const result = await cortiClient.agents.list();
+            const result = await cortiClient.agents.list();
 
-        expect(result.length).toBeGreaterThan(0);
-        expect(result.some((listAgent: any) => listAgent.id === agent.id)).toBe(true);
-        expect(consoleWarnSpy).not.toHaveBeenCalled();
+            expect(result.length).toBeGreaterThan(0);
+            expect(result.some((listAgent: any) => listAgent.id === agent.id)).toBe(true);
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
     });
 
     describe("should return list with optional parameters", () => {

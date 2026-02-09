@@ -17,13 +17,15 @@ describe("cortiClient.templates.list", () => {
         consoleWarnSpy.mockRestore();
     });
 
-    it("should retrieve templates without parameters", async () => {
-        expect.assertions(2);
+    describe("should list templates with only required values", () => {
+        it("should retrieve templates without parameters without errors or warnings", async () => {
+            expect.assertions(2);
 
-        const result = await cortiClient.templates.list();
+            const result = await cortiClient.templates.list();
 
-        expect(result.data.length).toBeGreaterThan(0);
-        expect(consoleWarnSpy).not.toHaveBeenCalled();
+            expect(result.data.length).toBeGreaterThan(0);
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
     });
 
     describe("language filtering (lang parameter)", () => {

@@ -18,7 +18,7 @@ describe("cortiClient.facts.extract", () => {
         consoleWarnSpy.mockRestore();
     });
 
-    describe("should extract facts with required fields", () => {
+    describe("should extract facts with only required values", () => {
         it("should extract facts with single text context without errors or warnings", async () => {
             expect.assertions(2);
 
@@ -200,7 +200,7 @@ describe("cortiClient.facts.extract", () => {
         });
     });
 
-    describe("should throw error when required fields are missing or invalid", () => {
+    describe("should throw error when required parameters are missing", () => {
         it("should throw error when context is missing", async () => {
             expect.assertions(1);
 
@@ -209,33 +209,6 @@ describe("cortiClient.facts.extract", () => {
                     outputLanguage: "en",
                 } as any),
             ).rejects.toThrow('Missing required key "context"');
-        });
-
-        it("should throw error when context is empty array", async () => {
-            expect.assertions(1);
-
-            await expect(
-                cortiClient.facts.extract({
-                    context: [],
-                    outputLanguage: "en",
-                }),
-            ).rejects.toThrow();
-        });
-
-        it("should throw error when context text is empty", async () => {
-            expect.assertions(1);
-
-            await expect(
-                cortiClient.facts.extract({
-                    context: [
-                        {
-                            type: "text",
-                            text: "",
-                        },
-                    ],
-                    outputLanguage: "en",
-                }),
-            ).rejects.toThrow("Status code: 400");
         });
 
         it("should throw error when outputLanguage is missing", async () => {
@@ -281,6 +254,35 @@ describe("cortiClient.facts.extract", () => {
                     outputLanguage: "en",
                 }),
             ).rejects.toThrow();
+        });
+    });
+
+    describe("should throw error when invalid parameters are provided", () => {
+        it("should throw error when context is empty array", async () => {
+            expect.assertions(1);
+
+            await expect(
+                cortiClient.facts.extract({
+                    context: [],
+                    outputLanguage: "en",
+                }),
+            ).rejects.toThrow();
+        });
+
+        it("should throw error when context text is empty", async () => {
+            expect.assertions(1);
+
+            await expect(
+                cortiClient.facts.extract({
+                    context: [
+                        {
+                            type: "text",
+                            text: "",
+                        },
+                    ],
+                    outputLanguage: "en",
+                }),
+            ).rejects.toThrow("Status code: 400");
         });
 
         it("should throw error when context item has incorrect type value", async () => {
