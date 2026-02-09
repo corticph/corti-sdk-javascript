@@ -28,21 +28,23 @@ describe("cortiClient.agents.getContext", () => {
         createdAgentIds = [];
     });
 
-    it("should successfully retrieve a context without errors or warnings", async () => {
-        expect.assertions(2);
+    describe("should retrieve context with only required values", () => {
+        it("should successfully retrieve a context without errors or warnings", async () => {
+            expect.assertions(2);
 
-        const agent = await createTestAgent(cortiClient, createdAgentIds);
-        const messageResponse = await sendTestMessage(cortiClient, agent.id);
-        const contextId = messageResponse.task?.contextId;
+            const agent = await createTestAgent(cortiClient, createdAgentIds);
+            const messageResponse = await sendTestMessage(cortiClient, agent.id);
+            const contextId = messageResponse.task?.contextId;
 
-        if (!contextId) {
-            throw new Error("No context ID returned from message send");
-        }
+            if (!contextId) {
+                throw new Error("No context ID returned from message send");
+            }
 
-        const result = await cortiClient.agents.getContext(agent.id, contextId);
+            const result = await cortiClient.agents.getContext(agent.id, contextId);
 
-        expect(result).toBeDefined();
-        expect(consoleWarnSpy).not.toHaveBeenCalled();
+            expect(result).toBeDefined();
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
     });
 
     it("should retrieve context with limit parameter without errors or warnings", async () => {

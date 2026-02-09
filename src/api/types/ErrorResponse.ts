@@ -3,10 +3,9 @@
  */
 
 export interface ErrorResponse {
-    requestid?: string;
+    requestid: string;
+    status: number;
     type: string;
-    status?: number;
-    title?: string;
-    details?: string;
-    instance?: string;
+    detail: string;
+    validationErrors?: Record<string, string>[];
 }

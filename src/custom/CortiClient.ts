@@ -29,6 +29,7 @@ import { Facts } from "../api/resources/facts/client/Client.js";
 import { Documents } from "../api/resources/documents/client/Client.js";
 import { Templates } from "../api/resources/templates/client/Client.js";
 import { Agents } from "../api/resources/agents/client/Client.js";
+import { Codes } from "../api/resources/codes/client/Client.js";
 
 /**
  * Patch: changed import to custom Stream and Transcribe implementations
@@ -49,6 +50,9 @@ export declare namespace CortiClient {
      * Patch: added new public type for `Options` + internal interfaces to create it
      */
 
+    /** Patch: exported headers type for options.headers and WS protocol encoding. */
+    export type HeadersRecord = Record<string, string | core.Supplier<string | undefined> | undefined>;
+
     interface ClientCredentials {
         clientId: core.Supplier<string>;
         clientSecret: core.Supplier<string>;
@@ -56,9 +60,11 @@ export declare namespace CortiClient {
 
     interface BaseOptions {
         /** Additional headers to include in requests. */
-        headers?: Record<string, string | core.Supplier<string | undefined> | undefined>;
+        headers?: HeadersRecord;
         /** Specify a custom URL to connect the client to. */
         baseUrl?: core.Supplier<string>;
+        /** Patch: added new option to encode headers as WebSocket protocols for streaming resources (for proxy scenarios) */
+        encodeHeadersAsWsProtocols?: boolean;
     }
 
     interface OptionsWithClientCredentials extends BaseOptions {
@@ -108,6 +114,7 @@ export declare namespace CortiClient {
      *  - added `token` field to support BearerProvider
      *  - made clientId and clientSecret optional
      *  - updated environment type to CortiInternalEnvironment
+     *  - added `encodeHeadersAsWsProtocols`
      */
     interface InternalOptions {
         environment: CortiInternalEnvironment;
@@ -119,7 +126,8 @@ export declare namespace CortiClient {
         /** Override the Tenant-Name header */
         tenantName: core.Supplier<string>;
         /** Additional headers to include in requests. */
-        headers?: Record<string, string | core.Supplier<string | undefined> | undefined>;
+        headers?: HeadersRecord;
+        encodeHeadersAsWsProtocols?: boolean;
     }
 
     export interface RequestOptions {
@@ -132,7 +140,7 @@ export declare namespace CortiClient {
         /** Override the Tenant-Name header */
         tenantName?: string;
         /** Additional headers to include in the request. */
-        headers?: Record<string, string | core.Supplier<string | undefined> | undefined>;
+        headers?: HeadersRecord;
     }
 }
 
@@ -161,6 +169,7 @@ export class CortiClient {
      */
     protected _stream: Stream | undefined;
     protected _transcribe: Transcribe | undefined;
+    protected _codes: Codes | undefined;
 
     constructor(_options: CortiClient.Options) {
         /**
@@ -275,6 +284,13 @@ export class CortiClient {
 
     public get transcribe(): Transcribe {
         return (this._transcribe ??= new Transcribe({
+            ...this._options,
+            token: this._oauthTokenProvider ? async () => await this._oauthTokenProvider!.getToken() : undefined,
+        }));
+    }
+
+    public get codes(): Codes {
+        return (this._codes ??= new Codes({
             ...this._options,
             token: this._oauthTokenProvider ? async () => await this._oauthTokenProvider!.getToken() : undefined,
         }));
