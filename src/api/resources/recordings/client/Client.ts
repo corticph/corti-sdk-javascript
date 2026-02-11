@@ -84,7 +84,6 @@ export class Recordings {
             ),
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
             maxRetries: requestOptions?.maxRetries,
-            withCredentials: true,
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
@@ -211,7 +210,6 @@ export class Recordings {
             body: _binaryUploadRequest.body,
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
             maxRetries: requestOptions?.maxRetries,
-            withCredentials: true,
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
@@ -331,7 +329,6 @@ export class Recordings {
             responseType: "binary-response",
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
             maxRetries: requestOptions?.maxRetries,
-            withCredentials: true,
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
@@ -450,7 +447,6 @@ export class Recordings {
             ),
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
             maxRetries: requestOptions?.maxRetries,
-            withCredentials: true,
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
