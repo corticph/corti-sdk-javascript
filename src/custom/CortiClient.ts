@@ -44,6 +44,7 @@ import { SDK_VERSION } from "../version.js";
 import { getEnvironment, Environment, CortiInternalEnvironment } from "./utils/getEnvironmentFromString.js";
 import { resolveClientOptions } from "./utils/resolveClientOptions.js";
 import { BearerOptions, RefreshBearerProvider } from "./RefreshBearerProvider.js";
+import { setDefaultWithCredentials } from "./utils/withCredentialsConfig.js";
 
 export declare namespace CortiClient {
     /**
@@ -65,6 +66,8 @@ export declare namespace CortiClient {
         baseUrl?: core.Supplier<string>;
         /** Patch: added new option to encode headers as WebSocket protocols for streaming resources (for proxy scenarios) */
         encodeHeadersAsWsProtocols?: boolean;
+        /** Patch: when true, fetcher sends credentials (cookies, auth headers) on cross-origin requests; sets global default used by core fetcher when not passed per-request */
+        withCredentials?: boolean;
     }
 
     interface OptionsWithClientCredentials extends BaseOptions {
@@ -115,6 +118,7 @@ export declare namespace CortiClient {
      *  - made clientId and clientSecret optional
      *  - updated environment type to CortiInternalEnvironment
      *  - added `encodeHeadersAsWsProtocols`
+     *  - added `withCredentials`
      */
     interface InternalOptions {
         environment: CortiInternalEnvironment;
@@ -128,6 +132,7 @@ export declare namespace CortiClient {
         /** Additional headers to include in requests. */
         headers?: HeadersRecord;
         encodeHeadersAsWsProtocols?: boolean;
+        withCredentials?: boolean;
     }
 
     export interface RequestOptions {
@@ -202,7 +207,15 @@ export class CortiClient {
             token: _options.auth && "accessToken" in _options.auth ? _options.auth.accessToken : undefined,
             tenantName,
             environment: getEnvironment(environment),
+            withCredentials: _options.withCredentials,
         };
+
+        /**
+         * Patch: set global default for fetcher withCredentials when passed on CortiClient
+         */
+        if (_options.withCredentials !== undefined) {
+            setDefaultWithCredentials(_options.withCredentials);
+        }
 
         /**
          * Patch: if `clientId` is provided, use OAuthTokenProvider, otherwise use BearerProvider
