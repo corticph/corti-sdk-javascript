@@ -5,8 +5,8 @@ import type { MockServer } from "../mock-server/MockServer";
 export function mockOAuth(server: MockServer): void {
     const rawRequestBody = {
         client_id: "client_id_123",
-        client_secret: "my_secret_value",
         grant_type: "client_credentials",
+        client_secret: "test_client_secret",
     };
     const rawResponseBody = {
         access_token: "access_token",
@@ -17,7 +17,7 @@ export function mockOAuth(server: MockServer): void {
     };
     server
         .mockEndpoint()
-        .post("/protocol/openid-connect/token")
+        .post("/base/protocol/openid-connect/token")
         .formUrlEncodedBody(rawRequestBody)
         .respondWith()
         .statusCode(200)

@@ -1849,7 +1849,8 @@ await client.codes.predict({
 <dl>
 <dd>
 
-Obtain an OAuth2 access token using client credentials
+Obtain an OAuth2 access token. The token endpoint supports multiple grant types (client_credentials, authorization_code, refresh_token, password).
+The path parameter tenantName (realm) identifies the Keycloak realm; use the same value as the Tenant-Name header for API requests.
 </dd>
 </dl>
 </dd>
@@ -1865,8 +1866,9 @@ Obtain an OAuth2 access token using client credentials
 
 ```typescript
 await client.auth.getToken({
+    tenantName: "base",
     clientId: "client_id_123",
-    clientSecret: "my_secret_value"
+    grantType: "client_credentials"
 });
 
 ```

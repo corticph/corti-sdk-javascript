@@ -13,7 +13,7 @@ describe("RecordingsClient", () => {
         const client = new CortiClient({
             maxRetries: 0,
             clientId: "client_id_123",
-            clientSecret: "my_secret_value",
+            clientSecret: "test_client_secret",
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
@@ -42,7 +42,7 @@ describe("RecordingsClient", () => {
         const client = new CortiClient({
             maxRetries: 0,
             clientId: "client_id_123",
-            clientSecret: "my_secret_value",
+            clientSecret: "test_client_secret",
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
@@ -70,7 +70,7 @@ describe("RecordingsClient", () => {
         const client = new CortiClient({
             maxRetries: 0,
             clientId: "client_id_123",
-            clientSecret: "my_secret_value",
+            clientSecret: "test_client_secret",
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
@@ -98,7 +98,7 @@ describe("RecordingsClient", () => {
         const client = new CortiClient({
             maxRetries: 0,
             clientId: "client_id_123",
-            clientSecret: "my_secret_value",
+            clientSecret: "test_client_secret",
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
@@ -126,7 +126,7 @@ describe("RecordingsClient", () => {
         const client = new CortiClient({
             maxRetries: 0,
             clientId: "client_id_123",
-            clientSecret: "my_secret_value",
+            clientSecret: "test_client_secret",
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
@@ -154,7 +154,7 @@ describe("RecordingsClient", () => {
         const client = new CortiClient({
             maxRetries: 0,
             clientId: "client_id_123",
-            clientSecret: "my_secret_value",
+            clientSecret: "test_client_secret",
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
@@ -182,7 +182,7 @@ describe("RecordingsClient", () => {
         const client = new CortiClient({
             maxRetries: 0,
             clientId: "client_id_123",
-            clientSecret: "my_secret_value",
+            clientSecret: "test_client_secret",
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
@@ -211,7 +211,7 @@ describe("RecordingsClient", () => {
         const client = new CortiClient({
             maxRetries: 0,
             clientId: "client_id_123",
-            clientSecret: "my_secret_value",
+            clientSecret: "test_client_secret",
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
@@ -240,7 +240,7 @@ describe("RecordingsClient", () => {
         const client = new CortiClient({
             maxRetries: 0,
             clientId: "client_id_123",
-            clientSecret: "my_secret_value",
+            clientSecret: "test_client_secret",
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
@@ -269,7 +269,7 @@ describe("RecordingsClient", () => {
         const client = new CortiClient({
             maxRetries: 0,
             clientId: "client_id_123",
-            clientSecret: "my_secret_value",
+            clientSecret: "test_client_secret",
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });

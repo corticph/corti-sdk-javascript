@@ -12,16 +12,11 @@ describe("AuthClient", () => {
         const client = new CortiClient({
             maxRetries: 0,
             clientId: "client_id_123",
-            clientSecret: "my_secret_value",
+            clientSecret: "test_client_secret",
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
-        const rawRequestBody = {
-            client_id: "client_id_123",
-            client_secret: "my_secret_value",
-            scope: "openid",
-            grant_type: "client_credentials",
-        };
+        const rawRequestBody = { client_id: "client_id_123", grant_type: "client_credentials" };
         const rawResponseBody = {
             access_token: "access_token",
             token_type: "token_type",
@@ -31,7 +26,7 @@ describe("AuthClient", () => {
         };
         server
             .mockEndpoint()
-            .post("/protocol/openid-connect/token")
+            .post("/base/protocol/openid-connect/token")
             .formUrlEncodedBody(rawRequestBody)
             .respondWith()
             .statusCode(200)
@@ -39,8 +34,9 @@ describe("AuthClient", () => {
             .build();
 
         const response = await client.auth.getToken({
+            tenantName: "base",
             clientId: "client_id_123",
-            clientSecret: "my_secret_value",
+            grantType: "client_credentials",
         });
         expect(response).toEqual({
             accessToken: "access_token",

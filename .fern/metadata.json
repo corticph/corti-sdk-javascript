@@ -12,5 +12,5 @@
             "@faker-js/faker": "^9.9.0"
         }
     },
-    "sdkVersion": "0.10.1"
+    "sdkVersion": "0.10.2"
 }
