@@ -45,7 +45,9 @@ export class OauthClient {
         request: Corti.GetTokenOauthRequest,
         requestOptions?: OauthClient.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.GetTokenOauthResponse>> {
+        const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+            _authRequest.headers,
             this._options?.headers,
             mergeOnlyDefinedHeaders({ "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName }),
             requestOptions?.headers,

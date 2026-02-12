@@ -10,7 +10,6 @@ The Corti TypeScript library provides convenient access to the Corti APIs from T
 - [Installation](#installation)
 - [Reference](#reference)
 - [Usage](#usage)
-- [Authentication](#authentication)
 - [Request and Response Types](#request-and-response-types)
 - [Exception Handling](#exception-handling)
 - [Pagination](#pagination)
@@ -43,44 +42,13 @@ Instantiate and use the client with the following:
 ```typescript
 import { CortiClient, CortiEnvironment } from "@corti/sdk";
 
-const client = new CortiClient({ environment: CortiEnvironment.Eu, clientId: "YOUR_CLIENT_ID", clientSecret: "YOUR_CLIENT_SECRET", tenantName: "YOUR_TENANT_NAME" });
+const client = new CortiClient({ environment: CortiEnvironment.Eu, token: "YOUR_TOKEN", tenantName: "YOUR_TENANT_NAME" });
 await client.interactions.create({
     encounter: {
         identifier: "identifier",
         status: "planned",
         type: "first_consultation"
     }
-});
-```
-
-## Authentication
-
-The SDK supports OAuth authentication with two options:
-
-**Option 1: OAuth Client Credentials Flow**
-
-Use this when you want the SDK to automatically handle OAuth token retrieval and refreshing:
-
-```typescript
-import { CortiClient } from "@corti/sdk";
-
-const client = new CortiClient({
-    clientId: "YOUR_CLIENT_ID",
-    clientSecret: "YOUR_CLIENT_SECRET",
-    ...
-});
-```
-
-**Option 2: Token Override**
-
-Use this when you already have a valid bearer token and want to skip the OAuth flow:
-
-```typescript
-import { CortiClient } from "@corti/sdk";
-
-const client = new CortiClient({
-    token: "my-pre-generated-bearer-token",
-    ...
 });
 ```
 
@@ -124,7 +92,7 @@ List endpoints are paginated. The SDK provides an iterator so that you can simpl
 ```typescript
 import { CortiClient, CortiEnvironment } from "@corti/sdk";
 
-const client = new CortiClient({ environment: CortiEnvironment.Eu, clientId: "YOUR_CLIENT_ID", clientSecret: "YOUR_CLIENT_SECRET", tenantName: "YOUR_TENANT_NAME" });
+const client = new CortiClient({ environment: CortiEnvironment.Eu, token: "YOUR_TOKEN", tenantName: "YOUR_TENANT_NAME" });
 const pageableResponse = await client.interactions.list();
 for await (const item of pageableResponse) {
     console.log(item);

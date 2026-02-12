@@ -2,17 +2,13 @@
 
 import { CortiClient } from "../../src/Client";
 import { mockServerPool } from "../mock-server/MockServerPool";
-import { mockOAuth } from "./mockAuth";
 
 describe("OauthClient", () => {
     test("getToken", async () => {
         const server = mockServerPool.createServer();
-        mockOAuth(server);
-
         const client = new CortiClient({
             maxRetries: 0,
-            clientId: "client_id",
-            clientSecret: "client_secret",
+            token: "test",
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
