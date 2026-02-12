@@ -2,9 +2,10 @@
 
 import type * as core from "../../core/index.js";
 import * as errors from "../../errors/index.js";
+import type * as Corti from "../index.js";
 
 export class BadRequestError extends errors.CortiError {
-    constructor(body?: unknown, rawResponse?: core.RawResponse) {
+    constructor(body: Corti.ErrorResponse, rawResponse?: core.RawResponse) {
         super({
             message: "BadRequestError",
             statusCode: 400,
