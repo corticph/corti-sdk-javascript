@@ -2,16 +2,9 @@
 
 /**
  * @example
- *     {
- *         id: "12345678-90ab-cdef-gh12-34567890abc",
- *         contextId: "contextId"
- *     }
+ *     {}
  */
 export interface AgentsGetContextRequest {
-    /** The identifier of the agent associated with the context. */
-    id: string;
-    /** The identifier of the context (thread) to retrieve tasks for. */
-    contextId: string;
     /** The maximum number of tasks and messages to return. If not specified all history is returned. */
     limit?: number;
     /** The number of tasks and messages to skip before starting to collect the result set. Default is 0. */

@@ -5,7 +5,6 @@ import type * as Corti from "../../../../index.js";
 /**
  * @example
  *     {
- *         tenantName: "base",
  *         body: {
  *             grantType: "client_credentials",
  *             clientId: "client_id_123"
@@ -13,7 +12,5 @@ import type * as Corti from "../../../../index.js";
  *     }
  */
 export interface RequestTokenAuthRequest {
-    /** Keycloak realm / tenant name. Must match the tenant used for API requests (same as Tenant-Name header). */
-    tenantName: string;
     body: Corti.RequestTokenAuthRequestBody;
 }

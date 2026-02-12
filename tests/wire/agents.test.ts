@@ -264,9 +264,7 @@ describe("AgentsClient", () => {
             .jsonBody(rawResponseBody)
             .build();
 
-        const response = await client.agents.get({
-            id: "12345678-90ab-cdef-gh12-34567890abc",
-        });
+        const response = await client.agents.get("12345678-90ab-cdef-gh12-34567890abc");
         expect(response).toEqual({
             id: "id",
             name: "name",
@@ -309,9 +307,7 @@ describe("AgentsClient", () => {
         server.mockEndpoint().get("/agents/id").respondWith().statusCode(400).jsonBody(rawResponseBody).build();
 
         await expect(async () => {
-            return await client.agents.get({
-                id: "id",
-            });
+            return await client.agents.get("id");
         }).rejects.toThrow(Corti.BadRequestError);
     });
 
@@ -331,9 +327,7 @@ describe("AgentsClient", () => {
         server.mockEndpoint().get("/agents/id").respondWith().statusCode(401).jsonBody(rawResponseBody).build();
 
         await expect(async () => {
-            return await client.agents.get({
-                id: "id",
-            });
+            return await client.agents.get("id");
         }).rejects.toThrow(Corti.UnauthorizedError);
     });
 
@@ -353,9 +347,7 @@ describe("AgentsClient", () => {
         server.mockEndpoint().get("/agents/id").respondWith().statusCode(404).jsonBody(rawResponseBody).build();
 
         await expect(async () => {
-            return await client.agents.get({
-                id: "id",
-            });
+            return await client.agents.get("id");
         }).rejects.toThrow(Corti.NotFoundError);
     });
 
@@ -378,9 +370,7 @@ describe("AgentsClient", () => {
             .statusCode(200)
             .build();
 
-        const response = await client.agents.delete({
-            id: "12345678-90ab-cdef-gh12-34567890abc",
-        });
+        const response = await client.agents.delete("12345678-90ab-cdef-gh12-34567890abc");
         expect(response).toEqual(undefined);
     });
 
@@ -400,9 +390,7 @@ describe("AgentsClient", () => {
         server.mockEndpoint().delete("/agents/id").respondWith().statusCode(400).jsonBody(rawResponseBody).build();
 
         await expect(async () => {
-            return await client.agents.delete({
-                id: "id",
-            });
+            return await client.agents.delete("id");
         }).rejects.toThrow(Corti.BadRequestError);
     });
 
@@ -422,9 +410,7 @@ describe("AgentsClient", () => {
         server.mockEndpoint().delete("/agents/id").respondWith().statusCode(401).jsonBody(rawResponseBody).build();
 
         await expect(async () => {
-            return await client.agents.delete({
-                id: "id",
-            });
+            return await client.agents.delete("id");
         }).rejects.toThrow(Corti.UnauthorizedError);
     });
 
@@ -444,9 +430,7 @@ describe("AgentsClient", () => {
         server.mockEndpoint().delete("/agents/id").respondWith().statusCode(404).jsonBody(rawResponseBody).build();
 
         await expect(async () => {
-            return await client.agents.delete({
-                id: "id",
-            });
+            return await client.agents.delete("id");
         }).rejects.toThrow(Corti.NotFoundError);
     });
 
@@ -489,8 +473,7 @@ describe("AgentsClient", () => {
             .jsonBody(rawResponseBody)
             .build();
 
-        const response = await client.agents.update({
-            id: "12345678-90ab-cdef-gh12-34567890abc",
+        const response = await client.agents.update("12345678-90ab-cdef-gh12-34567890abc", {
             body: {
                 id: "id",
                 name: "name",
@@ -547,8 +530,7 @@ describe("AgentsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.agents.update({
-                id: "id",
+            return await client.agents.update("id", {
                 body: {
                     id: "id",
                     name: "name",
@@ -582,8 +564,7 @@ describe("AgentsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.agents.update({
-                id: "id",
+            return await client.agents.update("id", {
                 body: {
                     id: "id",
                     name: "name",
@@ -617,8 +598,7 @@ describe("AgentsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.agents.update({
-                id: "id",
+            return await client.agents.update("id", {
                 body: {
                     id: "id",
                     name: "name",
@@ -692,9 +672,7 @@ describe("AgentsClient", () => {
             .jsonBody(rawResponseBody)
             .build();
 
-        const response = await client.agents.getCard({
-            id: "12345678-90ab-cdef-gh12-34567890abc",
-        });
+        const response = await client.agents.getCard("12345678-90ab-cdef-gh12-34567890abc");
         expect(response).toEqual({
             protocolVersion: "protocolVersion",
             name: "name",
@@ -793,9 +771,7 @@ describe("AgentsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.agents.getCard({
-                id: "id",
-            });
+            return await client.agents.getCard("id");
         }).rejects.toThrow(Corti.BadRequestError);
     });
 
@@ -821,9 +797,7 @@ describe("AgentsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.agents.getCard({
-                id: "id",
-            });
+            return await client.agents.getCard("id");
         }).rejects.toThrow(Corti.UnauthorizedError);
     });
 
@@ -849,9 +823,7 @@ describe("AgentsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.agents.getCard({
-                id: "id",
-            });
+            return await client.agents.getCard("id");
         }).rejects.toThrow(Corti.NotFoundError);
     });
 
@@ -911,8 +883,7 @@ describe("AgentsClient", () => {
             .jsonBody(rawResponseBody)
             .build();
 
-        const response = await client.agents.messageSend({
-            id: "12345678-90ab-cdef-gh12-34567890abc",
+        const response = await client.agents.messageSend("12345678-90ab-cdef-gh12-34567890abc", {
             message: {
                 role: "user",
                 parts: [
@@ -1027,8 +998,7 @@ describe("AgentsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.agents.messageSend({
-                id: "id",
+            return await client.agents.messageSend("id", {
                 message: {
                     role: "user",
                     parts: [
@@ -1081,8 +1051,7 @@ describe("AgentsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.agents.messageSend({
-                id: "id",
+            return await client.agents.messageSend("id", {
                 message: {
                     role: "user",
                     parts: [
@@ -1135,8 +1104,7 @@ describe("AgentsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.agents.messageSend({
-                id: "id",
+            return await client.agents.messageSend("id", {
                 message: {
                     role: "user",
                     parts: [
@@ -1220,10 +1188,7 @@ describe("AgentsClient", () => {
             .jsonBody(rawResponseBody)
             .build();
 
-        const response = await client.agents.getTask({
-            id: "12345678-90ab-cdef-gh12-34567890abc",
-            taskId: "taskId",
-        });
+        const response = await client.agents.getTask("12345678-90ab-cdef-gh12-34567890abc", "taskId");
         expect(response).toEqual({
             id: "id",
             contextId: "contextId",
@@ -1315,10 +1280,7 @@ describe("AgentsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.agents.getTask({
-                id: "id",
-                taskId: "taskId",
-            });
+            return await client.agents.getTask("id", "taskId");
         }).rejects.toThrow(Corti.BadRequestError);
     });
 
@@ -1344,10 +1306,7 @@ describe("AgentsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.agents.getTask({
-                id: "id",
-                taskId: "taskId",
-            });
+            return await client.agents.getTask("id", "taskId");
         }).rejects.toThrow(Corti.UnauthorizedError);
     });
 
@@ -1373,10 +1332,7 @@ describe("AgentsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.agents.getTask({
-                id: "id",
-                taskId: "taskId",
-            });
+            return await client.agents.getTask("id", "taskId");
         }).rejects.toThrow(Corti.NotFoundError);
     });
 
@@ -1421,10 +1377,7 @@ describe("AgentsClient", () => {
             .jsonBody(rawResponseBody)
             .build();
 
-        const response = await client.agents.getContext({
-            id: "12345678-90ab-cdef-gh12-34567890abc",
-            contextId: "contextId",
-        });
+        const response = await client.agents.getContext("12345678-90ab-cdef-gh12-34567890abc", "contextId");
         expect(response).toEqual({
             id: "id",
             items: [
@@ -1489,10 +1442,7 @@ describe("AgentsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.agents.getContext({
-                id: "id",
-                contextId: "contextId",
-            });
+            return await client.agents.getContext("id", "contextId");
         }).rejects.toThrow(Corti.BadRequestError);
     });
 
@@ -1518,10 +1468,7 @@ describe("AgentsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.agents.getContext({
-                id: "id",
-                contextId: "contextId",
-            });
+            return await client.agents.getContext("id", "contextId");
         }).rejects.toThrow(Corti.UnauthorizedError);
     });
 
@@ -1547,10 +1494,7 @@ describe("AgentsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.agents.getContext({
-                id: "id",
-                contextId: "contextId",
-            });
+            return await client.agents.getContext("id", "contextId");
         }).rejects.toThrow(Corti.NotFoundError);
     });
 

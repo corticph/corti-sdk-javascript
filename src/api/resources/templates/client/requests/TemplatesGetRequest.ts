@@ -2,11 +2,6 @@
 
 /**
  * @example
- *     {
- *         key: "key"
- *     }
+ *     {}
  */
-export interface TemplatesGetRequest {
-    /** The key of the template */
-    key: string;
-}
+export type TemplatesGetRequest = {};

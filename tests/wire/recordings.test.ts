@@ -27,9 +27,7 @@ describe("RecordingsClient", () => {
             .jsonBody(rawResponseBody)
             .build();
 
-        const response = await client.recordings.list({
-            id: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
-        });
+        const response = await client.recordings.list("f47ac10b-58cc-4372-a567-0e02b2c3d479");
         expect(response).toEqual({
             recordings: ["f47ac10b-58cc-4372-a567-0e02b2c3d479"],
         });
@@ -57,9 +55,7 @@ describe("RecordingsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.recordings.list({
-                id: "id",
-            });
+            return await client.recordings.list("id");
         }).rejects.toThrow(Corti.BadRequestError);
     });
 
@@ -85,9 +81,7 @@ describe("RecordingsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.recordings.list({
-                id: "id",
-            });
+            return await client.recordings.list("id");
         }).rejects.toThrow(Corti.ForbiddenError);
     });
 
@@ -113,9 +107,7 @@ describe("RecordingsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.recordings.list({
-                id: "id",
-            });
+            return await client.recordings.list("id");
         }).rejects.toThrow(Corti.InternalServerError);
     });
 
@@ -141,9 +133,7 @@ describe("RecordingsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.recordings.list({
-                id: "id",
-            });
+            return await client.recordings.list("id");
         }).rejects.toThrow(Corti.GatewayTimeoutError);
     });
 
@@ -168,10 +158,10 @@ describe("RecordingsClient", () => {
             .statusCode(200)
             .build();
 
-        const response = await client.recordings.delete({
-            id: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
-            recordingId: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
-        });
+        const response = await client.recordings.delete(
+            "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+            "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+        );
         expect(response).toEqual(undefined);
     });
 
@@ -197,10 +187,7 @@ describe("RecordingsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.recordings.delete({
-                id: "id",
-                recordingId: "recordingId",
-            });
+            return await client.recordings.delete("id", "recordingId");
         }).rejects.toThrow(Corti.ForbiddenError);
     });
 
@@ -226,10 +213,7 @@ describe("RecordingsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.recordings.delete({
-                id: "id",
-                recordingId: "recordingId",
-            });
+            return await client.recordings.delete("id", "recordingId");
         }).rejects.toThrow(Corti.NotFoundError);
     });
 
@@ -255,10 +239,7 @@ describe("RecordingsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.recordings.delete({
-                id: "id",
-                recordingId: "recordingId",
-            });
+            return await client.recordings.delete("id", "recordingId");
         }).rejects.toThrow(Corti.InternalServerError);
     });
 
@@ -284,10 +265,7 @@ describe("RecordingsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.recordings.delete({
-                id: "id",
-                recordingId: "recordingId",
-            });
+            return await client.recordings.delete("id", "recordingId");
         }).rejects.toThrow(Corti.GatewayTimeoutError);
     });
 });

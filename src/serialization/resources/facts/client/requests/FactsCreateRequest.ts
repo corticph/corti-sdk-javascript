@@ -7,7 +7,7 @@ import { FactsCreateInput } from "../../../../types/FactsCreateInput.js";
 
 export const FactsCreateRequest: core.serialization.Schema<
     serializers.FactsCreateRequest.Raw,
-    Omit<Corti.FactsCreateRequest, "id">
+    Corti.FactsCreateRequest
 > = core.serialization.object({
     facts: core.serialization.list(FactsCreateInput),
 });

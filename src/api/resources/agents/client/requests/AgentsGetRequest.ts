@@ -2,11 +2,6 @@
 
 /**
  * @example
- *     {
- *         id: "12345678-90ab-cdef-gh12-34567890abc"
- *     }
+ *     {}
  */
-export interface AgentsGetRequest {
-    /** The identifier of the agent associated with the context. */
-    id: string;
-}
+export type AgentsGetRequest = {};

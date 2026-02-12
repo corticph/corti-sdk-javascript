@@ -263,9 +263,7 @@ describe("TemplatesClient", () => {
         };
         server.mockEndpoint().get("/templates/key").respondWith().statusCode(200).jsonBody(rawResponseBody).build();
 
-        const response = await client.templates.get({
-            key: "key",
-        });
+        const response = await client.templates.get("key");
         expect(response).toEqual({
             updatedAt: new Date("2024-01-15T09:30:00.000Z"),
             name: "name",
@@ -319,9 +317,7 @@ describe("TemplatesClient", () => {
         server.mockEndpoint().get("/templates/key").respondWith().statusCode(401).jsonBody(rawResponseBody).build();
 
         await expect(async () => {
-            return await client.templates.get({
-                key: "key",
-            });
+            return await client.templates.get("key");
         }).rejects.toThrow(Corti.UnauthorizedError);
     });
 
@@ -341,9 +337,7 @@ describe("TemplatesClient", () => {
         server.mockEndpoint().get("/templates/key").respondWith().statusCode(500).jsonBody(rawResponseBody).build();
 
         await expect(async () => {
-            return await client.templates.get({
-                key: "key",
-            });
+            return await client.templates.get("key");
         }).rejects.toThrow(Corti.InternalServerError);
     });
 });

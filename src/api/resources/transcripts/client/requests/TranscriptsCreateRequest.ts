@@ -5,14 +5,11 @@ import type * as Corti from "../../../../index.js";
 /**
  * @example
  *     {
- *         id: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
  *         recordingId: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
  *         primaryLanguage: "en"
  *     }
  */
 export interface TranscriptsCreateRequest {
-    /** The unique identifier of the interaction. Must be a valid UUID. */
-    id: Corti.Uuid;
     /** The unique identifier for the recording. */
     recordingId: Corti.Uuid;
     /** The primary spoken language of the recording. Check https://docs.corti.ai/about/languages for more. */

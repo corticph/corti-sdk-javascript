@@ -26,12 +26,12 @@ export class AuthClient {
      * Obtain an OAuth2 access token. Supports multiple grant types (client_credentials, authorization_code, refresh_token, password).
      * The path parameter tenantName (realm) identifies the Keycloak realm; use the same value as the Tenant-Name header for API requests.
      *
+     * @param {string} tenantName - Keycloak realm / tenant name. Must match the tenant used for API requests (same as Tenant-Name header).
      * @param {Corti.RequestTokenAuthRequest} request
      * @param {AuthClient.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @example
-     *     await client.auth.requestToken({
-     *         tenantName: "base",
+     *     await client.auth.requestToken("base", {
      *         body: {
      *             grantType: "client_credentials",
      *             clientId: "client_id_123"
@@ -39,17 +39,19 @@ export class AuthClient {
      *     })
      */
     public requestToken(
+        tenantName: string,
         request: Corti.RequestTokenAuthRequest,
         requestOptions?: AuthClient.RequestOptions,
     ): core.HttpResponsePromise<Corti.GetTokenResponse> {
-        return core.HttpResponsePromise.fromPromise(this.__requestToken(request, requestOptions));
+        return core.HttpResponsePromise.fromPromise(this.__requestToken(tenantName, request, requestOptions));
     }
 
     private async __requestToken(
+        tenantName: string,
         request: Corti.RequestTokenAuthRequest,
         requestOptions?: AuthClient.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.GetTokenResponse>> {
-        const { tenantName, body: _body } = request;
+        const { body: _body } = request;
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,

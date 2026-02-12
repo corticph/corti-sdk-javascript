@@ -5,7 +5,6 @@ import type * as Corti from "../../../../index.js";
 /**
  * @example
  *     {
- *         id: "12345678-90ab-cdef-gh12-34567890abc",
  *         body: {
  *             id: "id",
  *             name: "name",
@@ -15,7 +14,5 @@ import type * as Corti from "../../../../index.js";
  *     }
  */
 export interface AgentsUpdateRequest {
-    /** The identifier of the agent associated with the context. */
-    id: string;
     body: Corti.AgentsAgent;
 }

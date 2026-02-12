@@ -25,6 +25,7 @@ export class RecordingsClient {
     /**
      * Retrieve a list of recordings for a given interaction.
      *
+     * @param {Corti.Uuid} id - The unique identifier of the interaction. Must be a valid UUID.
      * @param {Corti.RecordingsListRequest} request
      * @param {RecordingsClient.RequestOptions} requestOptions - Request-specific configuration.
      *
@@ -34,22 +35,21 @@ export class RecordingsClient {
      * @throws {@link Corti.GatewayTimeoutError}
      *
      * @example
-     *     await client.recordings.list({
-     *         id: "f47ac10b-58cc-4372-a567-0e02b2c3d479"
-     *     })
+     *     await client.recordings.list("f47ac10b-58cc-4372-a567-0e02b2c3d479")
      */
     public list(
-        request: Corti.RecordingsListRequest,
+        id: Corti.Uuid,
+        request: Corti.RecordingsListRequest = {},
         requestOptions?: RecordingsClient.RequestOptions,
     ): core.HttpResponsePromise<Corti.RecordingsListResponse> {
-        return core.HttpResponsePromise.fromPromise(this.__list(request, requestOptions));
+        return core.HttpResponsePromise.fromPromise(this.__list(id, request, requestOptions));
     }
 
     private async __list(
-        request: Corti.RecordingsListRequest,
+        id: Corti.Uuid,
+        _request: Corti.RecordingsListRequest = {},
         requestOptions?: RecordingsClient.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.RecordingsListResponse>> {
-        const { id } = request;
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
@@ -268,17 +268,20 @@ export class RecordingsClient {
      * @throws {@link Corti.GatewayTimeoutError}
      */
     public get(
-        request: Corti.RecordingsGetRequest,
+        id: Corti.Uuid,
+        recordingId: Corti.Uuid,
+        request: Corti.RecordingsGetRequest = {},
         requestOptions?: RecordingsClient.RequestOptions,
     ): core.HttpResponsePromise<core.BinaryResponse> {
-        return core.HttpResponsePromise.fromPromise(this.__get(request, requestOptions));
+        return core.HttpResponsePromise.fromPromise(this.__get(id, recordingId, request, requestOptions));
     }
 
     private async __get(
-        request: Corti.RecordingsGetRequest,
+        id: Corti.Uuid,
+        recordingId: Corti.Uuid,
+        _request: Corti.RecordingsGetRequest = {},
         requestOptions?: RecordingsClient.RequestOptions,
     ): Promise<core.WithRawResponse<core.BinaryResponse>> {
-        const { id, recordingId } = request;
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
@@ -365,6 +368,8 @@ export class RecordingsClient {
     /**
      * Delete a specific recording for a given interaction.
      *
+     * @param {Corti.Uuid} id - The unique identifier of the interaction. Must be a valid UUID.
+     * @param {Corti.Uuid} recordingId - The unique identifier of the recording. Must be a valid UUID.
      * @param {Corti.RecordingsDeleteRequest} request
      * @param {RecordingsClient.RequestOptions} requestOptions - Request-specific configuration.
      *
@@ -374,23 +379,23 @@ export class RecordingsClient {
      * @throws {@link Corti.GatewayTimeoutError}
      *
      * @example
-     *     await client.recordings.delete({
-     *         id: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
-     *         recordingId: "f47ac10b-58cc-4372-a567-0e02b2c3d479"
-     *     })
+     *     await client.recordings.delete("f47ac10b-58cc-4372-a567-0e02b2c3d479", "f47ac10b-58cc-4372-a567-0e02b2c3d479")
      */
     public delete(
-        request: Corti.RecordingsDeleteRequest,
+        id: Corti.Uuid,
+        recordingId: Corti.Uuid,
+        request: Corti.RecordingsDeleteRequest = {},
         requestOptions?: RecordingsClient.RequestOptions,
     ): core.HttpResponsePromise<void> {
-        return core.HttpResponsePromise.fromPromise(this.__delete(request, requestOptions));
+        return core.HttpResponsePromise.fromPromise(this.__delete(id, recordingId, request, requestOptions));
     }
 
     private async __delete(
-        request: Corti.RecordingsDeleteRequest,
+        id: Corti.Uuid,
+        recordingId: Corti.Uuid,
+        _request: Corti.RecordingsDeleteRequest = {},
         requestOptions?: RecordingsClient.RequestOptions,
     ): Promise<core.WithRawResponse<void>> {
-        const { id, recordingId } = request;
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,

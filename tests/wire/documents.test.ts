@@ -50,9 +50,7 @@ describe("DocumentsClient", () => {
             .jsonBody(rawResponseBody)
             .build();
 
-        const response = await client.documents.list({
-            id: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
-        });
+        const response = await client.documents.list("f47ac10b-58cc-4372-a567-0e02b2c3d479");
         expect(response).toEqual({
             data: [
                 {
@@ -103,9 +101,7 @@ describe("DocumentsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.documents.list({
-                id: "id",
-            });
+            return await client.documents.list("id");
         }).rejects.toThrow(Corti.BadRequestError);
     });
 
@@ -131,9 +127,7 @@ describe("DocumentsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.documents.list({
-                id: "id",
-            });
+            return await client.documents.list("id");
         }).rejects.toThrow(Corti.ForbiddenError);
     });
 
@@ -159,9 +153,7 @@ describe("DocumentsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.documents.list({
-                id: "id",
-            });
+            return await client.documents.list("id");
         }).rejects.toThrow(Corti.InternalServerError);
     });
 
@@ -187,9 +179,7 @@ describe("DocumentsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.documents.list({
-                id: "id",
-            });
+            return await client.documents.list("id");
         }).rejects.toThrow(Corti.GatewayTimeoutError);
     });
 
@@ -238,8 +228,7 @@ describe("DocumentsClient", () => {
             .jsonBody(rawResponseBody)
             .build();
 
-        const response = await client.documents.create({
-            id: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+        const response = await client.documents.create("f47ac10b-58cc-4372-a567-0e02b2c3d479", {
             body: {
                 context: [
                     {
@@ -322,8 +311,7 @@ describe("DocumentsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.documents.create({
-                id: "id",
+            return await client.documents.create("id", {
                 body: {
                     context: [
                         {
@@ -402,8 +390,7 @@ describe("DocumentsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.documents.create({
-                id: "id",
+            return await client.documents.create("id", {
                 body: {
                     context: [
                         {
@@ -482,8 +469,7 @@ describe("DocumentsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.documents.create({
-                id: "id",
+            return await client.documents.create("id", {
                 body: {
                     context: [
                         {
@@ -562,8 +548,7 @@ describe("DocumentsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.documents.create({
-                id: "id",
+            return await client.documents.create("id", {
                 body: {
                     context: [
                         {
@@ -640,10 +625,10 @@ describe("DocumentsClient", () => {
             .jsonBody(rawResponseBody)
             .build();
 
-        const response = await client.documents.get({
-            id: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
-            documentId: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
-        });
+        const response = await client.documents.get(
+            "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+            "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+        );
         expect(response).toEqual({
             id: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
             name: "name",
@@ -690,10 +675,7 @@ describe("DocumentsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.documents.get({
-                id: "id",
-                documentId: "documentId",
-            });
+            return await client.documents.get("id", "documentId");
         }).rejects.toThrow(Corti.BadRequestError);
     });
 
@@ -719,10 +701,7 @@ describe("DocumentsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.documents.get({
-                id: "id",
-                documentId: "documentId",
-            });
+            return await client.documents.get("id", "documentId");
         }).rejects.toThrow(Corti.ForbiddenError);
     });
 
@@ -748,10 +727,7 @@ describe("DocumentsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.documents.get({
-                id: "id",
-                documentId: "documentId",
-            });
+            return await client.documents.get("id", "documentId");
         }).rejects.toThrow(Corti.InternalServerError);
     });
 
@@ -777,10 +753,7 @@ describe("DocumentsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.documents.get({
-                id: "id",
-                documentId: "documentId",
-            });
+            return await client.documents.get("id", "documentId");
         }).rejects.toThrow(Corti.GatewayTimeoutError);
     });
 
@@ -803,10 +776,10 @@ describe("DocumentsClient", () => {
             .statusCode(200)
             .build();
 
-        const response = await client.documents.delete({
-            id: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
-            documentId: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
-        });
+        const response = await client.documents.delete(
+            "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+            "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+        );
         expect(response).toEqual(undefined);
     });
 
@@ -832,10 +805,7 @@ describe("DocumentsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.documents.delete({
-                id: "id",
-                documentId: "documentId",
-            });
+            return await client.documents.delete("id", "documentId");
         }).rejects.toThrow(Corti.ForbiddenError);
     });
 
@@ -861,10 +831,7 @@ describe("DocumentsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.documents.delete({
-                id: "id",
-                documentId: "documentId",
-            });
+            return await client.documents.delete("id", "documentId");
         }).rejects.toThrow(Corti.NotFoundError);
     });
 
@@ -890,10 +857,7 @@ describe("DocumentsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.documents.delete({
-                id: "id",
-                documentId: "documentId",
-            });
+            return await client.documents.delete("id", "documentId");
         }).rejects.toThrow(Corti.InternalServerError);
     });
 
@@ -919,10 +883,7 @@ describe("DocumentsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.documents.delete({
-                id: "id",
-                documentId: "documentId",
-            });
+            return await client.documents.delete("id", "documentId");
         }).rejects.toThrow(Corti.GatewayTimeoutError);
     });
 
@@ -967,10 +928,10 @@ describe("DocumentsClient", () => {
             .jsonBody(rawResponseBody)
             .build();
 
-        const response = await client.documents.update({
-            id: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
-            documentId: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
-        });
+        const response = await client.documents.update(
+            "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+            "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+        );
         expect(response).toEqual({
             id: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
             name: "name",
@@ -1018,10 +979,7 @@ describe("DocumentsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.documents.update({
-                id: "id",
-                documentId: "documentId",
-            });
+            return await client.documents.update("id", "documentId");
         }).rejects.toThrow(Corti.BadRequestError);
     });
 
@@ -1048,10 +1006,7 @@ describe("DocumentsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.documents.update({
-                id: "id",
-                documentId: "documentId",
-            });
+            return await client.documents.update("id", "documentId");
         }).rejects.toThrow(Corti.ForbiddenError);
     });
 
@@ -1078,10 +1033,7 @@ describe("DocumentsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.documents.update({
-                id: "id",
-                documentId: "documentId",
-            });
+            return await client.documents.update("id", "documentId");
         }).rejects.toThrow(Corti.InternalServerError);
     });
 
@@ -1108,10 +1060,7 @@ describe("DocumentsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.documents.update({
-                id: "id",
-                documentId: "documentId",
-            });
+            return await client.documents.update("id", "documentId");
         }).rejects.toThrow(Corti.GatewayTimeoutError);
     });
 });

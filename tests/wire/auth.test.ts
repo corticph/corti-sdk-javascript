@@ -33,8 +33,7 @@ describe("AuthClient", () => {
             .jsonBody(rawResponseBody)
             .build();
 
-        const response = await client.auth.requestToken({
-            tenantName: "base",
+        const response = await client.auth.requestToken("base", {
             body: {
                 grantType: "client_credentials",
                 clientId: "client_id_123",

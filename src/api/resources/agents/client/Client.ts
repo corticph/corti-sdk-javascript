@@ -196,6 +196,7 @@ export class AgentsClient {
     /**
      * This endpoint retrieves an agent by its identifier. The agent contains information about its capabilities and the experts it can call.
      *
+     * @param {string} id - The identifier of the agent associated with the context.
      * @param {Corti.AgentsGetRequest} request
      * @param {AgentsClient.RequestOptions} requestOptions - Request-specific configuration.
      *
@@ -204,22 +205,21 @@ export class AgentsClient {
      * @throws {@link Corti.NotFoundError}
      *
      * @example
-     *     await client.agents.get({
-     *         id: "12345678-90ab-cdef-gh12-34567890abc"
-     *     })
+     *     await client.agents.get("12345678-90ab-cdef-gh12-34567890abc")
      */
     public get(
-        request: Corti.AgentsGetRequest,
+        id: string,
+        request: Corti.AgentsGetRequest = {},
         requestOptions?: AgentsClient.RequestOptions,
     ): core.HttpResponsePromise<Corti.AgentsAgentResponse> {
-        return core.HttpResponsePromise.fromPromise(this.__get(request, requestOptions));
+        return core.HttpResponsePromise.fromPromise(this.__get(id, request, requestOptions));
     }
 
     private async __get(
-        request: Corti.AgentsGetRequest,
+        id: string,
+        _request: Corti.AgentsGetRequest = {},
         requestOptions?: AgentsClient.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.AgentsAgentResponse>> {
-        const { id } = request;
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
@@ -278,6 +278,7 @@ export class AgentsClient {
     /**
      * This endpoint deletes an agent by its identifier. Once deleted, the agent can no longer be used in threads.
      *
+     * @param {string} id - The identifier of the agent associated with the context.
      * @param {Corti.AgentsDeleteRequest} request
      * @param {AgentsClient.RequestOptions} requestOptions - Request-specific configuration.
      *
@@ -286,22 +287,21 @@ export class AgentsClient {
      * @throws {@link Corti.NotFoundError}
      *
      * @example
-     *     await client.agents.delete({
-     *         id: "12345678-90ab-cdef-gh12-34567890abc"
-     *     })
+     *     await client.agents.delete("12345678-90ab-cdef-gh12-34567890abc")
      */
     public delete(
-        request: Corti.AgentsDeleteRequest,
+        id: string,
+        request: Corti.AgentsDeleteRequest = {},
         requestOptions?: AgentsClient.RequestOptions,
     ): core.HttpResponsePromise<void> {
-        return core.HttpResponsePromise.fromPromise(this.__delete(request, requestOptions));
+        return core.HttpResponsePromise.fromPromise(this.__delete(id, request, requestOptions));
     }
 
     private async __delete(
-        request: Corti.AgentsDeleteRequest,
+        id: string,
+        _request: Corti.AgentsDeleteRequest = {},
         requestOptions?: AgentsClient.RequestOptions,
     ): Promise<core.WithRawResponse<void>> {
-        const { id } = request;
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
@@ -351,6 +351,7 @@ export class AgentsClient {
     /**
      * This endpoint updates an existing agent. Only the fields provided in the request body will be updated; other fields will remain unchanged.
      *
+     * @param {string} id - The identifier of the agent associated with the context.
      * @param {Corti.AgentsUpdateRequest} request
      * @param {AgentsClient.RequestOptions} requestOptions - Request-specific configuration.
      *
@@ -359,8 +360,7 @@ export class AgentsClient {
      * @throws {@link Corti.NotFoundError}
      *
      * @example
-     *     await client.agents.update({
-     *         id: "12345678-90ab-cdef-gh12-34567890abc",
+     *     await client.agents.update("12345678-90ab-cdef-gh12-34567890abc", {
      *         body: {
      *             id: "id",
      *             name: "name",
@@ -370,17 +370,19 @@ export class AgentsClient {
      *     })
      */
     public update(
+        id: string,
         request: Corti.AgentsUpdateRequest,
         requestOptions?: AgentsClient.RequestOptions,
     ): core.HttpResponsePromise<Corti.AgentsAgent> {
-        return core.HttpResponsePromise.fromPromise(this.__update(request, requestOptions));
+        return core.HttpResponsePromise.fromPromise(this.__update(id, request, requestOptions));
     }
 
     private async __update(
+        id: string,
         request: Corti.AgentsUpdateRequest,
         requestOptions?: AgentsClient.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.AgentsAgent>> {
-        const { id, body: _body } = request;
+        const { body: _body } = request;
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
@@ -442,6 +444,7 @@ export class AgentsClient {
     /**
      * This endpoint retrieves the agent card in JSON format, which provides metadata about the agent, including its name, description, and the experts it can call.
      *
+     * @param {string} id - The identifier of the agent associated with the context.
      * @param {Corti.AgentsGetCardRequest} request
      * @param {AgentsClient.RequestOptions} requestOptions - Request-specific configuration.
      *
@@ -450,22 +453,21 @@ export class AgentsClient {
      * @throws {@link Corti.NotFoundError}
      *
      * @example
-     *     await client.agents.getCard({
-     *         id: "12345678-90ab-cdef-gh12-34567890abc"
-     *     })
+     *     await client.agents.getCard("12345678-90ab-cdef-gh12-34567890abc")
      */
     public getCard(
-        request: Corti.AgentsGetCardRequest,
+        id: string,
+        request: Corti.AgentsGetCardRequest = {},
         requestOptions?: AgentsClient.RequestOptions,
     ): core.HttpResponsePromise<Corti.AgentsAgentCard> {
-        return core.HttpResponsePromise.fromPromise(this.__getCard(request, requestOptions));
+        return core.HttpResponsePromise.fromPromise(this.__getCard(id, request, requestOptions));
     }
 
     private async __getCard(
-        request: Corti.AgentsGetCardRequest,
+        id: string,
+        _request: Corti.AgentsGetCardRequest = {},
         requestOptions?: AgentsClient.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.AgentsAgentCard>> {
-        const { id } = request;
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
@@ -524,6 +526,7 @@ export class AgentsClient {
     /**
      * This endpoint sends a message to the specified agent to start or continue a task. The agent processes the message and returns a response. If the message contains a task ID that matches an ongoing task, the agent will continue that task; otherwise, it will start a new task.
      *
+     * @param {string} id - The identifier of the agent associated with the context.
      * @param {Corti.AgentsMessageSendParams} request
      * @param {AgentsClient.RequestOptions} requestOptions - Request-specific configuration.
      *
@@ -532,8 +535,7 @@ export class AgentsClient {
      * @throws {@link Corti.NotFoundError}
      *
      * @example
-     *     await client.agents.messageSend({
-     *         id: "12345678-90ab-cdef-gh12-34567890abc",
+     *     await client.agents.messageSend("12345678-90ab-cdef-gh12-34567890abc", {
      *         message: {
      *             role: "user",
      *             parts: [{
@@ -546,17 +548,18 @@ export class AgentsClient {
      *     })
      */
     public messageSend(
+        id: string,
         request: Corti.AgentsMessageSendParams,
         requestOptions?: AgentsClient.RequestOptions,
     ): core.HttpResponsePromise<Corti.AgentsMessageSendResponse> {
-        return core.HttpResponsePromise.fromPromise(this.__messageSend(request, requestOptions));
+        return core.HttpResponsePromise.fromPromise(this.__messageSend(id, request, requestOptions));
     }
 
     private async __messageSend(
+        id: string,
         request: Corti.AgentsMessageSendParams,
         requestOptions?: AgentsClient.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.AgentsMessageSendResponse>> {
-        const { id, ..._body } = request;
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
@@ -575,7 +578,7 @@ export class AgentsClient {
             contentType: "application/json",
             queryParameters: requestOptions?.queryParams,
             requestType: "json",
-            body: serializers.AgentsMessageSendParams.jsonOrThrow(_body, {
+            body: serializers.AgentsMessageSendParams.jsonOrThrow(request, {
                 unrecognizedObjectKeys: "strip",
                 omitUndefined: true,
             }),
@@ -621,6 +624,8 @@ export class AgentsClient {
     /**
      * This endpoint retrieves the status and details of a specific task associated with the given agent. It provides information about the task's current state, history, and any artifacts produced during its execution.
      *
+     * @param {string} id - The identifier of the agent associated with the context.
+     * @param {string} taskId - The identifier of the task to retrieve.
      * @param {Corti.AgentsGetTaskRequest} request
      * @param {AgentsClient.RequestOptions} requestOptions - Request-specific configuration.
      *
@@ -629,23 +634,24 @@ export class AgentsClient {
      * @throws {@link Corti.NotFoundError}
      *
      * @example
-     *     await client.agents.getTask({
-     *         id: "12345678-90ab-cdef-gh12-34567890abc",
-     *         taskId: "taskId"
-     *     })
+     *     await client.agents.getTask("12345678-90ab-cdef-gh12-34567890abc", "taskId")
      */
     public getTask(
-        request: Corti.AgentsGetTaskRequest,
+        id: string,
+        taskId: string,
+        request: Corti.AgentsGetTaskRequest = {},
         requestOptions?: AgentsClient.RequestOptions,
     ): core.HttpResponsePromise<Corti.AgentsTask> {
-        return core.HttpResponsePromise.fromPromise(this.__getTask(request, requestOptions));
+        return core.HttpResponsePromise.fromPromise(this.__getTask(id, taskId, request, requestOptions));
     }
 
     private async __getTask(
-        request: Corti.AgentsGetTaskRequest,
+        id: string,
+        taskId: string,
+        request: Corti.AgentsGetTaskRequest = {},
         requestOptions?: AgentsClient.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.AgentsTask>> {
-        const { id, taskId, historyLength } = request;
+        const { historyLength } = request;
         const _queryParams: Record<string, unknown> = {
             historyLength,
         };
@@ -712,6 +718,8 @@ export class AgentsClient {
     /**
      * This endpoint retrieves all tasks and top-level messages associated with a specific context for the given agent.
      *
+     * @param {string} id - The identifier of the agent associated with the context.
+     * @param {string} contextId - The identifier of the context (thread) to retrieve tasks for.
      * @param {Corti.AgentsGetContextRequest} request
      * @param {AgentsClient.RequestOptions} requestOptions - Request-specific configuration.
      *
@@ -720,23 +728,24 @@ export class AgentsClient {
      * @throws {@link Corti.NotFoundError}
      *
      * @example
-     *     await client.agents.getContext({
-     *         id: "12345678-90ab-cdef-gh12-34567890abc",
-     *         contextId: "contextId"
-     *     })
+     *     await client.agents.getContext("12345678-90ab-cdef-gh12-34567890abc", "contextId")
      */
     public getContext(
-        request: Corti.AgentsGetContextRequest,
+        id: string,
+        contextId: string,
+        request: Corti.AgentsGetContextRequest = {},
         requestOptions?: AgentsClient.RequestOptions,
     ): core.HttpResponsePromise<Corti.AgentsContext> {
-        return core.HttpResponsePromise.fromPromise(this.__getContext(request, requestOptions));
+        return core.HttpResponsePromise.fromPromise(this.__getContext(id, contextId, request, requestOptions));
     }
 
     private async __getContext(
-        request: Corti.AgentsGetContextRequest,
+        id: string,
+        contextId: string,
+        request: Corti.AgentsGetContextRequest = {},
         requestOptions?: AgentsClient.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.AgentsContext>> {
-        const { id, contextId, limit, offset } = request;
+        const { limit, offset } = request;
         const _queryParams: Record<string, unknown> = {
             limit,
             offset,

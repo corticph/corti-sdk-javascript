@@ -4,13 +4,9 @@ import type * as Corti from "../../../../index.js";
 
 /**
  * @example
- *     {
- *         id: "f47ac10b-58cc-4372-a567-0e02b2c3d479"
- *     }
+ *     {}
  */
 export interface InteractionsUpdateRequest {
-    /** The unique identifier of the interaction. Must be a valid UUID. */
-    id: Corti.Uuid;
     /** The unique identifier of the medical professional responsible for this interaction.  If nulled, automatically set to a uuid. */
     assignedUserId?: Corti.Uuid;
     /** Details of the encounter being updated. */

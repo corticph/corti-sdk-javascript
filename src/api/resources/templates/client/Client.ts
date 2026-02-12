@@ -206,6 +206,7 @@ export class TemplatesClient {
     /**
      * Retrieves template by key.
      *
+     * @param {string} key - The key of the template
      * @param {Corti.TemplatesGetRequest} request
      * @param {TemplatesClient.RequestOptions} requestOptions - Request-specific configuration.
      *
@@ -213,22 +214,21 @@ export class TemplatesClient {
      * @throws {@link Corti.InternalServerError}
      *
      * @example
-     *     await client.templates.get({
-     *         key: "key"
-     *     })
+     *     await client.templates.get("key")
      */
     public get(
-        request: Corti.TemplatesGetRequest,
+        key: string,
+        request: Corti.TemplatesGetRequest = {},
         requestOptions?: TemplatesClient.RequestOptions,
     ): core.HttpResponsePromise<Corti.TemplatesItem> {
-        return core.HttpResponsePromise.fromPromise(this.__get(request, requestOptions));
+        return core.HttpResponsePromise.fromPromise(this.__get(key, request, requestOptions));
     }
 
     private async __get(
-        request: Corti.TemplatesGetRequest,
+        key: string,
+        _request: Corti.TemplatesGetRequest = {},
         requestOptions?: TemplatesClient.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.TemplatesItem>> {
-        const { key } = request;
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
