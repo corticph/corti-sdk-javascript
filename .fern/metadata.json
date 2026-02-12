@@ -8,6 +8,7 @@
         "enableInlineTypes": false,
         "streamType": "web",
         "shouldGenerateWebsocketClients": true,
+        "generateSubpackageExports": true,
         "extraDevDependencies": {
             "@faker-js/faker": "^9.9.0"
         }
