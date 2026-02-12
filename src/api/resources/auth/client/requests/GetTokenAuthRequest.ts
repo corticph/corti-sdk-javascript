@@ -11,6 +11,6 @@ import type * as Corti from "../../../../index.js";
  *         }
  *     }
  */
-export interface RequestTokenAuthRequest {
-    body: Corti.RequestTokenAuthRequestBody;
+export interface GetTokenAuthRequest {
+    body: Corti.GetTokenAuthRequestBody;
 }

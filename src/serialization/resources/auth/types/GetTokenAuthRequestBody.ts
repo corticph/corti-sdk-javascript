@@ -8,9 +8,9 @@ import { GetTokenRequestClientCredentials } from "../../../types/GetTokenRequest
 import { GetTokenRequestPassword } from "../../../types/GetTokenRequestPassword.js";
 import { GetTokenRequestRefreshToken } from "../../../types/GetTokenRequestRefreshToken.js";
 
-export const RequestTokenAuthRequestBody: core.serialization.Schema<
-    serializers.RequestTokenAuthRequestBody.Raw,
-    Corti.RequestTokenAuthRequestBody
+export const GetTokenAuthRequestBody: core.serialization.Schema<
+    serializers.GetTokenAuthRequestBody.Raw,
+    Corti.GetTokenAuthRequestBody
 > = core.serialization.undiscriminatedUnion([
     GetTokenRequestClientCredentials,
     GetTokenRequestAuthorizationCode,
@@ -18,7 +18,7 @@ export const RequestTokenAuthRequestBody: core.serialization.Schema<
     GetTokenRequestPassword,
 ]);
 
-export declare namespace RequestTokenAuthRequestBody {
+export declare namespace GetTokenAuthRequestBody {
     export type Raw =
         | GetTokenRequestClientCredentials.Raw
         | GetTokenRequestAuthorizationCode.Raw

@@ -27,28 +27,28 @@ export class AuthClient {
      * The path parameter tenantName (realm) identifies the Keycloak realm; use the same value as the Tenant-Name header for API requests.
      *
      * @param {string} tenantName - Keycloak realm / tenant name. Must match the tenant used for API requests (same as Tenant-Name header).
-     * @param {Corti.RequestTokenAuthRequest} request
+     * @param {Corti.GetTokenAuthRequest} request
      * @param {AuthClient.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @example
-     *     await client.auth.requestToken("base", {
+     *     await client.auth.getToken("base", {
      *         body: {
      *             grantType: "client_credentials",
      *             clientId: "client_id_123"
      *         }
      *     })
      */
-    public requestToken(
+    public getToken(
         tenantName: string,
-        request: Corti.RequestTokenAuthRequest,
+        request: Corti.GetTokenAuthRequest,
         requestOptions?: AuthClient.RequestOptions,
     ): core.HttpResponsePromise<Corti.GetTokenResponse> {
-        return core.HttpResponsePromise.fromPromise(this.__requestToken(tenantName, request, requestOptions));
+        return core.HttpResponsePromise.fromPromise(this.__getToken(tenantName, request, requestOptions));
     }
 
-    private async __requestToken(
+    private async __getToken(
         tenantName: string,
-        request: Corti.RequestTokenAuthRequest,
+        request: Corti.GetTokenAuthRequest,
         requestOptions?: AuthClient.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.GetTokenResponse>> {
         const { body: _body } = request;
@@ -70,7 +70,7 @@ export class AuthClient {
             contentType: "application/x-www-form-urlencoded",
             queryParameters: requestOptions?.queryParams,
             requestType: "form",
-            body: serializers.RequestTokenAuthRequestBody.jsonOrThrow(_body, {
+            body: serializers.GetTokenAuthRequestBody.jsonOrThrow(_body, {
                 unrecognizedObjectKeys: "strip",
                 omitUndefined: true,
             }),

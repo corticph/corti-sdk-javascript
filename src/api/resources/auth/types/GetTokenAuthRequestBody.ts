@@ -2,7 +2,7 @@
 
 import type * as Corti from "../../../index.js";
 
-export type RequestTokenAuthRequestBody =
+export type GetTokenAuthRequestBody =
     | Corti.GetTokenRequestClientCredentials
     | Corti.GetTokenRequestAuthorizationCode
     | Corti.GetTokenRequestRefreshToken

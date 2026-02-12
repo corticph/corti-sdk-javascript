@@ -145,7 +145,7 @@ await client.interactions.create({
 </details>
 
 ## Auth
-<details><summary><code>client.auth.<a href="/src/api/resources/auth/client/Client.ts">requestToken</a>(tenantName, { ...params }) -> Corti.GetTokenResponse</code></summary>
+<details><summary><code>client.auth.<a href="/src/api/resources/auth/client/Client.ts">getToken</a>(tenantName, { ...params }) -> Corti.GetTokenResponse</code></summary>
 <dl>
 <dd>
 
@@ -173,7 +173,7 @@ The path parameter tenantName (realm) identifies the Keycloak realm; use the sam
 <dd>
 
 ```typescript
-await client.auth.requestToken("base", {
+await client.auth.getToken("base", {
     body: {
         grantType: "client_credentials",
         clientId: "client_id_123"
@@ -202,7 +202,7 @@ await client.auth.requestToken("base", {
 <dl>
 <dd>
 
-**request:** `Corti.RequestTokenAuthRequest` 
+**request:** `Corti.GetTokenAuthRequest` 
     
 </dd>
 </dl>
