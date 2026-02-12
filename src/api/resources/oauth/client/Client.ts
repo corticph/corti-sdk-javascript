@@ -9,50 +9,43 @@ import * as errors from "../../../../errors/index.js";
 import * as serializers from "../../../../serialization/index.js";
 import type * as Corti from "../../../index.js";
 
-export declare namespace AuthClient {
+export declare namespace OauthClient {
     export type Options = BaseClientOptions;
 
     export interface RequestOptions extends BaseRequestOptions {}
 }
 
-export class AuthClient {
-    protected readonly _options: NormalizedClientOptionsWithAuth<AuthClient.Options>;
+export class OauthClient {
+    protected readonly _options: NormalizedClientOptionsWithAuth<OauthClient.Options>;
 
-    constructor(options: AuthClient.Options) {
+    constructor(options: OauthClient.Options) {
         this._options = normalizeClientOptionsWithAuth(options);
     }
 
     /**
-     * Obtain an OAuth2 access token. Supports multiple grant types (client_credentials, authorization_code, refresh_token, password).
-     * The path parameter tenantName (realm) identifies the Keycloak realm; use the same value as the Tenant-Name header for API requests.
+     * Minimal endpoint for Fern OAuth; implementation should call the real token endpoint.
      *
-     * @param {Corti.RequestTokenAuthRequest} request
-     * @param {AuthClient.RequestOptions} requestOptions - Request-specific configuration.
+     * @param {Corti.GetTokenOauthRequest} request
+     * @param {OauthClient.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @example
-     *     await client.auth.requestToken({
-     *         tenantName: "base",
-     *         body: {
-     *             grantType: "client_credentials",
-     *             clientId: "client_id_123"
-     *         }
+     *     await client.oauth.getToken({
+     *         clientId: "client_id",
+     *         clientSecret: "client_secret"
      *     })
      */
-    public requestToken(
-        request: Corti.RequestTokenAuthRequest,
-        requestOptions?: AuthClient.RequestOptions,
-    ): core.HttpResponsePromise<Corti.GetTokenResponse> {
-        return core.HttpResponsePromise.fromPromise(this.__requestToken(request, requestOptions));
+    public getToken(
+        request: Corti.GetTokenOauthRequest,
+        requestOptions?: OauthClient.RequestOptions,
+    ): core.HttpResponsePromise<Corti.GetTokenOauthResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__getToken(request, requestOptions));
     }
 
-    private async __requestToken(
-        request: Corti.RequestTokenAuthRequest,
-        requestOptions?: AuthClient.RequestOptions,
-    ): Promise<core.WithRawResponse<Corti.GetTokenResponse>> {
-        const { tenantName, body: _body } = request;
-        const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
+    private async __getToken(
+        request: Corti.GetTokenOauthRequest,
+        requestOptions?: OauthClient.RequestOptions,
+    ): Promise<core.WithRawResponse<Corti.GetTokenOauthResponse>> {
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
-            _authRequest.headers,
             this._options?.headers,
             mergeOnlyDefinedHeaders({ "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName }),
             requestOptions?.headers,
@@ -61,14 +54,14 @@ export class AuthClient {
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
                     (await core.Supplier.get(this._options.environment)).login,
-                `${core.url.encodePathParam(tenantName)}/protocol/openid-connect/token`,
+                "token",
             ),
             method: "POST",
             headers: _headers,
             contentType: "application/x-www-form-urlencoded",
             queryParameters: requestOptions?.queryParams,
             requestType: "form",
-            body: serializers.RequestTokenAuthRequestBody.jsonOrThrow(_body, {
+            body: serializers.GetTokenOauthRequest.jsonOrThrow(request, {
                 unrecognizedObjectKeys: "strip",
                 omitUndefined: true,
             }),
@@ -80,7 +73,7 @@ export class AuthClient {
         });
         if (_response.ok) {
             return {
-                data: serializers.GetTokenResponse.parseOrThrow(_response.body, {
+                data: serializers.GetTokenOauthResponse.parseOrThrow(_response.body, {
                     unrecognizedObjectKeys: "passthrough",
                     allowUnrecognizedUnionMembers: true,
                     allowUnrecognizedEnumValues: true,
@@ -99,11 +92,6 @@ export class AuthClient {
             });
         }
 
-        return handleNonStatusCodeError(
-            _response.error,
-            _response.rawResponse,
-            "POST",
-            "/{tenantName}/protocol/openid-connect/token",
-        );
+        return handleNonStatusCodeError(_response.error, _response.rawResponse, "POST", "/token");
     }
 }

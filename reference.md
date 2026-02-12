@@ -1837,7 +1837,7 @@ await client.codes.predict({
 </details>
 
 ## Auth
-<details><summary><code>client.auth.<a href="/src/api/resources/auth/client/Client.ts">getToken</a>({ ...params }) -> Corti.GetTokenResponse</code></summary>
+<details><summary><code>client.auth.<a href="/src/api/resources/auth/client/Client.ts">requestToken</a>({ ...params }) -> Corti.GetTokenResponse</code></summary>
 <dl>
 <dd>
 
@@ -1849,7 +1849,7 @@ await client.codes.predict({
 <dl>
 <dd>
 
-Obtain an OAuth2 access token. The token endpoint supports multiple grant types (client_credentials, authorization_code, refresh_token, password).
+Obtain an OAuth2 access token. Supports multiple grant types (client_credentials, authorization_code, refresh_token, password).
 The path parameter tenantName (realm) identifies the Keycloak realm; use the same value as the Tenant-Name header for API requests.
 </dd>
 </dl>
@@ -1865,9 +1865,12 @@ The path parameter tenantName (realm) identifies the Keycloak realm; use the sam
 <dd>
 
 ```typescript
-await client.auth.getToken({
+await client.auth.requestToken({
     tenantName: "base",
-    clientId: "client_id_123"
+    body: {
+        grantType: "client_credentials",
+        clientId: "client_id_123"
+    }
 });
 
 ```
@@ -1884,7 +1887,7 @@ await client.auth.getToken({
 <dl>
 <dd>
 
-**request:** `Corti.GetTokenAuthRequest` 
+**request:** `Corti.RequestTokenAuthRequest` 
     
 </dd>
 </dl>
@@ -1893,6 +1896,73 @@ await client.auth.getToken({
 <dd>
 
 **requestOptions:** `AuthClient.RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## Oauth
+<details><summary><code>client.oauth.<a href="/src/api/resources/oauth/client/Client.ts">getToken</a>({ ...params }) -> Corti.GetTokenOauthResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Minimal endpoint for Fern OAuth; implementation should call the real token endpoint.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.oauth.getToken({
+    clientId: "client_id",
+    clientSecret: "client_secret"
+});
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `Corti.GetTokenOauthRequest` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `OauthClient.RequestOptions` 
     
 </dd>
 </dl>

@@ -6,6 +6,7 @@ import { CodesClient } from "./api/resources/codes/client/Client.js";
 import { DocumentsClient } from "./api/resources/documents/client/Client.js";
 import { FactsClient } from "./api/resources/facts/client/Client.js";
 import { InteractionsClient } from "./api/resources/interactions/client/Client.js";
+import { OauthClient } from "./api/resources/oauth/client/Client.js";
 import { RecordingsClient } from "./api/resources/recordings/client/Client.js";
 import { StreamClient } from "./api/resources/stream/client/Client.js";
 import { TemplatesClient } from "./api/resources/templates/client/Client.js";
@@ -30,6 +31,7 @@ export class CortiClient {
     protected _templates: TemplatesClient | undefined;
     protected _codes: CodesClient | undefined;
     protected _auth: AuthClient | undefined;
+    protected _oauth: OauthClient | undefined;
     protected _agents: AgentsClient | undefined;
     protected _stream: StreamClient | undefined;
     protected _transcribe: TranscribeClient | undefined;
@@ -68,6 +70,10 @@ export class CortiClient {
 
     public get auth(): AuthClient {
         return (this._auth ??= new AuthClient(this._options));
+    }
+
+    public get oauth(): OauthClient {
+        return (this._oauth ??= new OauthClient(this._options));
     }
 
     public get agents(): AgentsClient {

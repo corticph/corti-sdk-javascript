@@ -12,8 +12,8 @@ describe("DocumentsClient", () => {
 
         const client = new CortiClient({
             maxRetries: 0,
-            clientId: "client_id_123",
-            clientSecret: "test_client_secret",
+            clientId: "client_id",
+            clientSecret: "client_secret",
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
@@ -87,8 +87,8 @@ describe("DocumentsClient", () => {
 
         const client = new CortiClient({
             maxRetries: 0,
-            clientId: "client_id_123",
-            clientSecret: "test_client_secret",
+            clientId: "client_id",
+            clientSecret: "client_secret",
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
@@ -115,8 +115,8 @@ describe("DocumentsClient", () => {
 
         const client = new CortiClient({
             maxRetries: 0,
-            clientId: "client_id_123",
-            clientSecret: "test_client_secret",
+            clientId: "client_id",
+            clientSecret: "client_secret",
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
@@ -143,8 +143,8 @@ describe("DocumentsClient", () => {
 
         const client = new CortiClient({
             maxRetries: 0,
-            clientId: "client_id_123",
-            clientSecret: "test_client_secret",
+            clientId: "client_id",
+            clientSecret: "client_secret",
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
@@ -171,8 +171,8 @@ describe("DocumentsClient", () => {
 
         const client = new CortiClient({
             maxRetries: 0,
-            clientId: "client_id_123",
-            clientSecret: "test_client_secret",
+            clientId: "client_id",
+            clientSecret: "client_secret",
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
@@ -199,8 +199,8 @@ describe("DocumentsClient", () => {
 
         const client = new CortiClient({
             maxRetries: 0,
-            clientId: "client_id_123",
-            clientSecret: "test_client_secret",
+            clientId: "client_id",
+            clientSecret: "client_secret",
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
@@ -286,8 +286,8 @@ describe("DocumentsClient", () => {
 
         const client = new CortiClient({
             maxRetries: 0,
-            clientId: "client_id_123",
-            clientSecret: "test_client_secret",
+            clientId: "client_id",
+            clientSecret: "client_secret",
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
@@ -366,8 +366,8 @@ describe("DocumentsClient", () => {
 
         const client = new CortiClient({
             maxRetries: 0,
-            clientId: "client_id_123",
-            clientSecret: "test_client_secret",
+            clientId: "client_id",
+            clientSecret: "client_secret",
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
@@ -446,8 +446,8 @@ describe("DocumentsClient", () => {
 
         const client = new CortiClient({
             maxRetries: 0,
-            clientId: "client_id_123",
-            clientSecret: "test_client_secret",
+            clientId: "client_id",
+            clientSecret: "client_secret",
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
@@ -526,8 +526,8 @@ describe("DocumentsClient", () => {
 
         const client = new CortiClient({
             maxRetries: 0,
-            clientId: "client_id_123",
-            clientSecret: "test_client_secret",
+            clientId: "client_id",
+            clientSecret: "client_secret",
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
@@ -606,8 +606,8 @@ describe("DocumentsClient", () => {
 
         const client = new CortiClient({
             maxRetries: 0,
-            clientId: "client_id_123",
-            clientSecret: "test_client_secret",
+            clientId: "client_id",
+            clientSecret: "client_secret",
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
@@ -674,8 +674,8 @@ describe("DocumentsClient", () => {
 
         const client = new CortiClient({
             maxRetries: 0,
-            clientId: "client_id_123",
-            clientSecret: "test_client_secret",
+            clientId: "client_id",
+            clientSecret: "client_secret",
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
@@ -703,8 +703,8 @@ describe("DocumentsClient", () => {
 
         const client = new CortiClient({
             maxRetries: 0,
-            clientId: "client_id_123",
-            clientSecret: "test_client_secret",
+            clientId: "client_id",
+            clientSecret: "client_secret",
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
@@ -732,8 +732,8 @@ describe("DocumentsClient", () => {
 
         const client = new CortiClient({
             maxRetries: 0,
-            clientId: "client_id_123",
-            clientSecret: "test_client_secret",
+            clientId: "client_id",
+            clientSecret: "client_secret",
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
@@ -761,8 +761,8 @@ describe("DocumentsClient", () => {
 
         const client = new CortiClient({
             maxRetries: 0,
-            clientId: "client_id_123",
-            clientSecret: "test_client_secret",
+            clientId: "client_id",
+            clientSecret: "client_secret",
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
@@ -790,8 +790,8 @@ describe("DocumentsClient", () => {
 
         const client = new CortiClient({
             maxRetries: 0,
-            clientId: "client_id_123",
-            clientSecret: "test_client_secret",
+            clientId: "client_id",
+            clientSecret: "client_secret",
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
@@ -816,8 +816,8 @@ describe("DocumentsClient", () => {
 
         const client = new CortiClient({
             maxRetries: 0,
-            clientId: "client_id_123",
-            clientSecret: "test_client_secret",
+            clientId: "client_id",
+            clientSecret: "client_secret",
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
@@ -845,8 +845,8 @@ describe("DocumentsClient", () => {
 
         const client = new CortiClient({
             maxRetries: 0,
-            clientId: "client_id_123",
-            clientSecret: "test_client_secret",
+            clientId: "client_id",
+            clientSecret: "client_secret",
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
@@ -874,8 +874,8 @@ describe("DocumentsClient", () => {
 
         const client = new CortiClient({
             maxRetries: 0,
-            clientId: "client_id_123",
-            clientSecret: "test_client_secret",
+            clientId: "client_id",
+            clientSecret: "client_secret",
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
@@ -903,8 +903,8 @@ describe("DocumentsClient", () => {
 
         const client = new CortiClient({
             maxRetries: 0,
-            clientId: "client_id_123",
-            clientSecret: "test_client_secret",
+            clientId: "client_id",
+            clientSecret: "client_secret",
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
@@ -932,8 +932,8 @@ describe("DocumentsClient", () => {
 
         const client = new CortiClient({
             maxRetries: 0,
-            clientId: "client_id_123",
-            clientSecret: "test_client_secret",
+            clientId: "client_id",
+            clientSecret: "client_secret",
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
@@ -1001,8 +1001,8 @@ describe("DocumentsClient", () => {
 
         const client = new CortiClient({
             maxRetries: 0,
-            clientId: "client_id_123",
-            clientSecret: "test_client_secret",
+            clientId: "client_id",
+            clientSecret: "client_secret",
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
@@ -1031,8 +1031,8 @@ describe("DocumentsClient", () => {
 
         const client = new CortiClient({
             maxRetries: 0,
-            clientId: "client_id_123",
-            clientSecret: "test_client_secret",
+            clientId: "client_id",
+            clientSecret: "client_secret",
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
@@ -1061,8 +1061,8 @@ describe("DocumentsClient", () => {
 
         const client = new CortiClient({
             maxRetries: 0,
-            clientId: "client_id_123",
-            clientSecret: "test_client_secret",
+            clientId: "client_id",
+            clientSecret: "client_secret",
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
@@ -1091,8 +1091,8 @@ describe("DocumentsClient", () => {
 
         const client = new CortiClient({
             maxRetries: 0,
-            clientId: "client_id_123",
-            clientSecret: "test_client_secret",
+            clientId: "client_id",
+            clientSecret: "client_secret",
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });

@@ -1,7 +1,6 @@
 export * from "./agents/client/requests/index.js";
 export * as agents from "./agents/index.js";
 export * from "./agents/types/index.js";
-export * from "./auth/client/requests/index.js";
 export * as auth from "./auth/index.js";
 export * from "./auth/types/index.js";
 export * from "./codes/client/requests/index.js";
@@ -13,6 +12,9 @@ export * as facts from "./facts/index.js";
 export * from "./interactions/client/requests/index.js";
 export * as interactions from "./interactions/index.js";
 export * from "./interactions/types/index.js";
+export * from "./oauth/client/requests/index.js";
+export * as oauth from "./oauth/index.js";
+export * from "./oauth/types/index.js";
 export * from "./stream/client/socket/index.js";
 export * as stream from "./stream/index.js";
 export * from "./transcribe/client/socket/index.js";

@@ -4,8 +4,8 @@ import { CortiClient } from "../../src/Client";
 import { mockServerPool } from "../mock-server/MockServerPool";
 import { mockOAuth } from "./mockAuth";
 
-describe("AuthClient", () => {
-    test("requestToken", async () => {
+describe("OauthClient", () => {
+    test("getToken", async () => {
         const server = mockServerPool.createServer();
         mockOAuth(server);
 
@@ -16,7 +16,7 @@ describe("AuthClient", () => {
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
-        const rawRequestBody = { grant_type: "client_credentials", client_id: "client_id_123" };
+        const rawRequestBody = { client_id: "client_id", client_secret: "client_secret" };
         const rawResponseBody = {
             access_token: "access_token",
             token_type: "token_type",
@@ -26,19 +26,16 @@ describe("AuthClient", () => {
         };
         server
             .mockEndpoint()
-            .post("/base/protocol/openid-connect/token")
+            .post("/token")
             .formUrlEncodedBody(rawRequestBody)
             .respondWith()
             .statusCode(200)
             .jsonBody(rawResponseBody)
             .build();
 
-        const response = await client.auth.requestToken({
-            tenantName: "base",
-            body: {
-                grantType: "client_credentials",
-                clientId: "client_id_123",
-            },
+        const response = await client.oauth.getToken({
+            clientId: "client_id",
+            clientSecret: "client_secret",
         });
         expect(response).toEqual({
             accessToken: "access_token",
