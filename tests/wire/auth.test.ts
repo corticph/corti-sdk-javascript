@@ -16,7 +16,7 @@ describe("AuthClient", () => {
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
-        const rawRequestBody = { client_id: "client_id_123", grant_type: "client_credentials" };
+        const rawRequestBody = { client_id: "client_id_123" };
         const rawResponseBody = {
             access_token: "access_token",
             token_type: "token_type",
@@ -36,7 +36,6 @@ describe("AuthClient", () => {
         const response = await client.auth.getToken({
             tenantName: "base",
             clientId: "client_id_123",
-            grantType: "client_credentials",
         });
         expect(response).toEqual({
             accessToken: "access_token",

@@ -32,8 +32,7 @@ export class AuthClient {
      * @example
      *     await client.auth.getToken({
      *         tenantName: "base",
-     *         clientId: "client_id_123",
-     *         grantType: "client_credentials"
+     *         clientId: "client_id_123"
      *     })
      */
     public getToken(

@@ -6,8 +6,7 @@ import type * as Corti from "../../../../index.js";
  * @example
  *     {
  *         tenantName: "base",
- *         clientId: "client_id_123",
- *         grantType: "client_credentials"
+ *         clientId: "client_id_123"
  *     }
  */
 export interface GetTokenAuthRequest {
@@ -16,7 +15,7 @@ export interface GetTokenAuthRequest {
     clientId: string;
     /** Optional for public clients; required for client_credentials and other confidential flows */
     clientSecret?: string;
-    grantType: Corti.GetTokenAuthRequestGrantType;
+    grantType?: Corti.GetTokenAuthRequestGrantType;
     scope?: string;
     /** For grant_type authorization_code */
     code?: string;

@@ -1867,8 +1867,7 @@ The path parameter tenantName (realm) identifies the Keycloak realm; use the sam
 ```typescript
 await client.auth.getToken({
     tenantName: "base",
-    clientId: "client_id_123",
-    grantType: "client_credentials"
+    clientId: "client_id_123"
 });
 
 ```

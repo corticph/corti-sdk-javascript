@@ -11,7 +11,7 @@ export const GetTokenAuthRequest: core.serialization.Schema<
 > = core.serialization.object({
     clientId: core.serialization.property("client_id", core.serialization.string()),
     clientSecret: core.serialization.property("client_secret", core.serialization.string().optional()),
-    grantType: core.serialization.property("grant_type", GetTokenAuthRequestGrantType),
+    grantType: core.serialization.property("grant_type", GetTokenAuthRequestGrantType.optional()),
     scope: core.serialization.string().optional(),
     code: core.serialization.string().optional(),
     redirectUri: core.serialization.property("redirect_uri", core.serialization.string().optional()),
@@ -24,7 +24,7 @@ export declare namespace GetTokenAuthRequest {
     export interface Raw {
         client_id: string;
         client_secret?: string | null;
-        grant_type: GetTokenAuthRequestGrantType.Raw;
+        grant_type?: GetTokenAuthRequestGrantType.Raw | null;
         scope?: string | null;
         code?: string | null;
         redirect_uri?: string | null;
