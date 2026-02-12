@@ -1,1 +1,1 @@
-export { type CodesGeneralPredictRequest } from "./CodesGeneralPredictRequest.js";
+export type { CodesGeneralPredictRequest } from "./CodesGeneralPredictRequest.js";

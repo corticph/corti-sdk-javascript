@@ -1,30 +1,7 @@
 export * as Corti from "./api/index.js";
+export type { BaseClientOptions, BaseRequestOptions } from "./BaseClient.js";
+export { CortiClient } from "./Client.js";
+export { CortiEnvironment, type CortiEnvironmentUrls } from "./environments.js";
 export { CortiError, CortiTimeoutError } from "./errors/index.js";
+export * from "./exports.js";
 export * as serialization from "./serialization/index.js";
-/**
- * Patch: use custom CortiClient instead of the generated one.
- */
-export { CortiClient } from "./custom/CortiClient.js";
-/**
- * Patch: lightweight proxy client with only WebSocket resources.
- */
-export { CortiWebSocketProxyClient } from "./custom/CortiWebSocketProxyClient.js";
-export { CortiEnvironment, CortiEnvironmentUrls } from "./environments.js";
-
-/**
- * Patch: added new export to provide Authorization code flow support.
- */
-export { Auth as CortiAuth } from "./custom/CortiAuth.js";
-/**
- * Patch: added new exports to provide schema validation errors.
- */
-export { JsonError } from "./core/schemas/builders/schema-utils/JsonError.js";
-export { ParseError } from "./core/schemas/builders/schema-utils/ParseError.js";
-/**
- * Patch: added new export to provide SDK-level error handling.
- */
-export { CortiSDKError } from "./custom/CortiSDKError.js";
-/**
- * Patch: added new export to expose environment resolution utility.
- */
-export { getEnvironment } from "./custom/utils/getEnvironmentFromString.js";
