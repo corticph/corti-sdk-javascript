@@ -5,9 +5,10 @@
 /**
  * Formatting for dates.
  */
-export type TranscribeFormattingDates = "locale:long" | "locale:short" | "as_dictated" | "iso";
+export type TranscribeFormattingDates = "locale:long" | "locale:medium" | "locale:short" | "as_dictated" | "iso";
 export const TranscribeFormattingDates = {
     LocaleLong: "locale:long",
+    LocaleMedium: "locale:medium",
     LocaleShort: "locale:short",
     AsDictated: "as_dictated",
     Iso: "iso",

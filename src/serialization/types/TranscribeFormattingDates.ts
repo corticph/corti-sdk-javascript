@@ -9,8 +9,8 @@ import * as core from "../../core/index.js";
 export const TranscribeFormattingDates: core.serialization.Schema<
     serializers.TranscribeFormattingDates.Raw,
     Corti.TranscribeFormattingDates
-> = core.serialization.enum_(["locale:long", "locale:short", "as_dictated", "iso"]);
+> = core.serialization.enum_(["locale:long", "locale:medium", "locale:short", "as_dictated", "iso"]);
 
 export declare namespace TranscribeFormattingDates {
-    export type Raw = "locale:long" | "locale:short" | "as_dictated" | "iso";
+    export type Raw = "locale:long" | "locale:medium" | "locale:short" | "as_dictated" | "iso";
 }
