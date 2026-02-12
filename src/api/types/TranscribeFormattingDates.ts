@@ -5,11 +5,11 @@
 /**
  * Formatting for dates.
  */
-export type TranscribeFormattingDates = "as_dictated" | "eu_slash" | "iso_compact" | "long_text" | "us_slash";
+export type TranscribeFormattingDates = "locale:long" | "locale:medium" | "locale:short" | "as_dictated" | "iso";
 export const TranscribeFormattingDates = {
+    LocaleLong: "locale:long",
+    LocaleMedium: "locale:medium",
+    LocaleShort: "locale:short",
     AsDictated: "as_dictated",
-    EuSlash: "eu_slash",
-    IsoCompact: "iso_compact",
-    LongText: "long_text",
-    UsSlash: "us_slash",
+    Iso: "iso",
 } as const;
