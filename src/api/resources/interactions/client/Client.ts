@@ -287,4 +287,292 @@ export class InteractionsClient {
 
         return handleNonStatusCodeError(_response.error, _response.rawResponse, "POST", "/interactions/");
     }
+
+    /**
+     * Retrieves a previously recorded interaction by its unique identifier (interaction ID).
+     *
+     * @param {Corti.Uuid} id - The unique identifier of the interaction. Must be a valid UUID.
+     * @param {Corti.InteractionsGetRequest} request
+     * @param {InteractionsClient.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link Corti.ForbiddenError}
+     * @throws {@link Corti.GatewayTimeoutError}
+     *
+     * @example
+     *     await client.interactions.get("f47ac10b-58cc-4372-a567-0e02b2c3d479")
+     */
+    public get(
+        id: Corti.Uuid,
+        request: Corti.InteractionsGetRequest = {},
+        requestOptions?: InteractionsClient.RequestOptions,
+    ): core.HttpResponsePromise<Corti.InteractionsGetResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__get(id, request, requestOptions));
+    }
+
+    private async __get(
+        id: Corti.Uuid,
+        _request: Corti.InteractionsGetRequest = {},
+        requestOptions?: InteractionsClient.RequestOptions,
+    ): Promise<core.WithRawResponse<Corti.InteractionsGetResponse>> {
+        const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
+        const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+            _authRequest.headers,
+            this._options?.headers,
+            mergeOnlyDefinedHeaders({ "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName }),
+            requestOptions?.headers,
+        );
+        const _response = await core.fetcher({
+            url: core.url.join(
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)).base,
+                `interactions/${core.url.encodePathParam(serializers.Uuid.jsonOrThrow(id, { omitUndefined: true }))}`,
+            ),
+            method: "GET",
+            headers: _headers,
+            queryParameters: requestOptions?.queryParams,
+            timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
+            maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
+            abortSignal: requestOptions?.abortSignal,
+            fetchFn: this._options?.fetch,
+            logging: this._options.logging,
+        });
+        if (_response.ok) {
+            return {
+                data: serializers.InteractionsGetResponse.parseOrThrow(_response.body, {
+                    unrecognizedObjectKeys: "passthrough",
+                    allowUnrecognizedUnionMembers: true,
+                    allowUnrecognizedEnumValues: true,
+                    skipValidation: true,
+                    breadcrumbsPrefix: ["response"],
+                }),
+                rawResponse: _response.rawResponse,
+            };
+        }
+
+        if (_response.error.reason === "status-code") {
+            switch (_response.error.statusCode) {
+                case 403:
+                    throw new Corti.ForbiddenError(
+                        serializers.ErrorResponse.parseOrThrow(_response.error.body, {
+                            unrecognizedObjectKeys: "passthrough",
+                            allowUnrecognizedUnionMembers: true,
+                            allowUnrecognizedEnumValues: true,
+                            skipValidation: true,
+                            breadcrumbsPrefix: ["response"],
+                        }),
+                        _response.rawResponse,
+                    );
+                case 504:
+                    throw new Corti.GatewayTimeoutError(
+                        serializers.ErrorResponse.parseOrThrow(_response.error.body, {
+                            unrecognizedObjectKeys: "passthrough",
+                            allowUnrecognizedUnionMembers: true,
+                            allowUnrecognizedEnumValues: true,
+                            skipValidation: true,
+                            breadcrumbsPrefix: ["response"],
+                        }),
+                        _response.rawResponse,
+                    );
+                default:
+                    throw new errors.CortiError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                        rawResponse: _response.rawResponse,
+                    });
+            }
+        }
+
+        return handleNonStatusCodeError(_response.error, _response.rawResponse, "GET", "/interactions/{id}");
+    }
+
+    /**
+     * Deletes an existing interaction.
+     *
+     * @param {Corti.Uuid} id - The unique identifier of the interaction. Must be a valid UUID.
+     * @param {Corti.InteractionsDeleteRequest} request
+     * @param {InteractionsClient.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link Corti.ForbiddenError}
+     * @throws {@link Corti.GatewayTimeoutError}
+     *
+     * @example
+     *     await client.interactions.delete("f47ac10b-58cc-4372-a567-0e02b2c3d479")
+     */
+    public delete(
+        id: Corti.Uuid,
+        request: Corti.InteractionsDeleteRequest = {},
+        requestOptions?: InteractionsClient.RequestOptions,
+    ): core.HttpResponsePromise<void> {
+        return core.HttpResponsePromise.fromPromise(this.__delete(id, request, requestOptions));
+    }
+
+    private async __delete(
+        id: Corti.Uuid,
+        _request: Corti.InteractionsDeleteRequest = {},
+        requestOptions?: InteractionsClient.RequestOptions,
+    ): Promise<core.WithRawResponse<void>> {
+        const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
+        const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+            _authRequest.headers,
+            this._options?.headers,
+            mergeOnlyDefinedHeaders({ "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName }),
+            requestOptions?.headers,
+        );
+        const _response = await core.fetcher({
+            url: core.url.join(
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)).base,
+                `interactions/${core.url.encodePathParam(serializers.Uuid.jsonOrThrow(id, { omitUndefined: true }))}`,
+            ),
+            method: "DELETE",
+            headers: _headers,
+            queryParameters: requestOptions?.queryParams,
+            timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
+            maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
+            abortSignal: requestOptions?.abortSignal,
+            fetchFn: this._options?.fetch,
+            logging: this._options.logging,
+        });
+        if (_response.ok) {
+            return { data: undefined, rawResponse: _response.rawResponse };
+        }
+
+        if (_response.error.reason === "status-code") {
+            switch (_response.error.statusCode) {
+                case 403:
+                    throw new Corti.ForbiddenError(
+                        serializers.ErrorResponse.parseOrThrow(_response.error.body, {
+                            unrecognizedObjectKeys: "passthrough",
+                            allowUnrecognizedUnionMembers: true,
+                            allowUnrecognizedEnumValues: true,
+                            skipValidation: true,
+                            breadcrumbsPrefix: ["response"],
+                        }),
+                        _response.rawResponse,
+                    );
+                case 504:
+                    throw new Corti.GatewayTimeoutError(
+                        serializers.ErrorResponse.parseOrThrow(_response.error.body, {
+                            unrecognizedObjectKeys: "passthrough",
+                            allowUnrecognizedUnionMembers: true,
+                            allowUnrecognizedEnumValues: true,
+                            skipValidation: true,
+                            breadcrumbsPrefix: ["response"],
+                        }),
+                        _response.rawResponse,
+                    );
+                default:
+                    throw new errors.CortiError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                        rawResponse: _response.rawResponse,
+                    });
+            }
+        }
+
+        return handleNonStatusCodeError(_response.error, _response.rawResponse, "DELETE", "/interactions/{id}");
+    }
+
+    /**
+     * Modifies an existing interaction by updating specific fields without overwriting the entire record.
+     *
+     * @param {Corti.Uuid} id - The unique identifier of the interaction. Must be a valid UUID.
+     * @param {Corti.InteractionsUpdateRequest} request
+     * @param {InteractionsClient.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link Corti.ForbiddenError}
+     * @throws {@link Corti.GatewayTimeoutError}
+     *
+     * @example
+     *     await client.interactions.update("f47ac10b-58cc-4372-a567-0e02b2c3d479")
+     */
+    public update(
+        id: Corti.Uuid,
+        request: Corti.InteractionsUpdateRequest = {},
+        requestOptions?: InteractionsClient.RequestOptions,
+    ): core.HttpResponsePromise<Corti.InteractionsGetResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__update(id, request, requestOptions));
+    }
+
+    private async __update(
+        id: Corti.Uuid,
+        request: Corti.InteractionsUpdateRequest = {},
+        requestOptions?: InteractionsClient.RequestOptions,
+    ): Promise<core.WithRawResponse<Corti.InteractionsGetResponse>> {
+        const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
+        const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+            _authRequest.headers,
+            this._options?.headers,
+            mergeOnlyDefinedHeaders({ "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName }),
+            requestOptions?.headers,
+        );
+        const _response = await core.fetcher({
+            url: core.url.join(
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)).base,
+                `interactions/${core.url.encodePathParam(serializers.Uuid.jsonOrThrow(id, { omitUndefined: true }))}`,
+            ),
+            method: "PATCH",
+            headers: _headers,
+            contentType: "application/json",
+            queryParameters: requestOptions?.queryParams,
+            requestType: "json",
+            body: serializers.InteractionsUpdateRequest.jsonOrThrow(request, {
+                unrecognizedObjectKeys: "strip",
+                omitUndefined: true,
+            }),
+            timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
+            maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
+            abortSignal: requestOptions?.abortSignal,
+            fetchFn: this._options?.fetch,
+            logging: this._options.logging,
+        });
+        if (_response.ok) {
+            return {
+                data: serializers.InteractionsGetResponse.parseOrThrow(_response.body, {
+                    unrecognizedObjectKeys: "passthrough",
+                    allowUnrecognizedUnionMembers: true,
+                    allowUnrecognizedEnumValues: true,
+                    skipValidation: true,
+                    breadcrumbsPrefix: ["response"],
+                }),
+                rawResponse: _response.rawResponse,
+            };
+        }
+
+        if (_response.error.reason === "status-code") {
+            switch (_response.error.statusCode) {
+                case 403:
+                    throw new Corti.ForbiddenError(
+                        serializers.ErrorResponse.parseOrThrow(_response.error.body, {
+                            unrecognizedObjectKeys: "passthrough",
+                            allowUnrecognizedUnionMembers: true,
+                            allowUnrecognizedEnumValues: true,
+                            skipValidation: true,
+                            breadcrumbsPrefix: ["response"],
+                        }),
+                        _response.rawResponse,
+                    );
+                case 504:
+                    throw new Corti.GatewayTimeoutError(
+                        serializers.ErrorResponse.parseOrThrow(_response.error.body, {
+                            unrecognizedObjectKeys: "passthrough",
+                            allowUnrecognizedUnionMembers: true,
+                            allowUnrecognizedEnumValues: true,
+                            skipValidation: true,
+                            breadcrumbsPrefix: ["response"],
+                        }),
+                        _response.rawResponse,
+                    );
+                default:
+                    throw new errors.CortiError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                        rawResponse: _response.rawResponse,
+                    });
+            }
+        }
+
+        return handleNonStatusCodeError(_response.error, _response.rawResponse, "PATCH", "/interactions/{id}");
+    }
 }

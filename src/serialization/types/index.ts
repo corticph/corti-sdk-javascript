@@ -6,6 +6,7 @@ export * from "./InteractionsEncounterPeriod.js";
 export * from "./InteractionsEncounterResponse.js";
 export * from "./InteractionsEncounterStatusEnum.js";
 export * from "./InteractionsEncounterTypeEnum.js";
+export * from "./InteractionsEncounterUpdateRequest.js";
 export * from "./InteractionsGenderEnum.js";
 export * from "./InteractionsGetResponse.js";
 export * from "./InteractionsListResponse.js";

@@ -143,3 +143,216 @@ await client.interactions.create({
 </dd>
 </dl>
 </details>
+
+<details><summary><code>client.interactions.<a href="/src/api/resources/interactions/client/Client.ts">get</a>(id, { ...params }) -> Corti.InteractionsGetResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieves a previously recorded interaction by its unique identifier (interaction ID).
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.interactions.get("f47ac10b-58cc-4372-a567-0e02b2c3d479");
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**id:** `Corti.Uuid` — The unique identifier of the interaction. Must be a valid UUID.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `Corti.InteractionsGetRequest` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `InteractionsClient.RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.interactions.<a href="/src/api/resources/interactions/client/Client.ts">delete</a>(id, { ...params }) -> void</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Deletes an existing interaction.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.interactions.delete("f47ac10b-58cc-4372-a567-0e02b2c3d479");
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**id:** `Corti.Uuid` — The unique identifier of the interaction. Must be a valid UUID.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `Corti.InteractionsDeleteRequest` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `InteractionsClient.RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.interactions.<a href="/src/api/resources/interactions/client/Client.ts">update</a>(id, { ...params }) -> Corti.InteractionsGetResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Modifies an existing interaction by updating specific fields without overwriting the entire record.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.interactions.update("f47ac10b-58cc-4372-a567-0e02b2c3d479");
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**id:** `Corti.Uuid` — The unique identifier of the interaction. Must be a valid UUID.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `Corti.InteractionsUpdateRequest` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `InteractionsClient.RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>

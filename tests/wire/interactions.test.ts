@@ -281,4 +281,291 @@ describe("InteractionsClient", () => {
             });
         }).rejects.toThrow(Corti.GatewayTimeoutError);
     });
+
+    test("get (1)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new CortiClient({
+            maxRetries: 0,
+            token: "test",
+            tenantName: "test",
+            environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
+        });
+
+        const rawResponseBody = {
+            id: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+            assignedUserId: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+            encounter: {
+                identifier: "identifier",
+                status: "planned",
+                type: "first_consultation",
+                period: { startedAt: "2024-01-15T09:30:00Z", endedAt: "2024-01-15T09:30:00Z" },
+                title: "title",
+            },
+            patient: {
+                identifier: "identifier",
+                name: "name",
+                gender: "male",
+                birthDate: "2024-01-15T09:30:00Z",
+                pronouns: "pronouns",
+            },
+            endedAt: "2024-01-15T09:30:00Z",
+            createdAt: "2024-01-15T09:30:00Z",
+            updatedAt: "2024-01-15T09:30:00Z",
+            websocketUrl: "websocketUrl",
+            lastUpdated: "2024-01-15T09:30:00Z",
+        };
+        server
+            .mockEndpoint()
+            .get("/interactions/f47ac10b-58cc-4372-a567-0e02b2c3d479")
+            .respondWith()
+            .statusCode(200)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        const response = await client.interactions.get("f47ac10b-58cc-4372-a567-0e02b2c3d479");
+        expect(response).toEqual({
+            id: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+            assignedUserId: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+            encounter: {
+                identifier: "identifier",
+                status: "planned",
+                type: "first_consultation",
+                period: {
+                    startedAt: new Date("2024-01-15T09:30:00.000Z"),
+                    endedAt: new Date("2024-01-15T09:30:00.000Z"),
+                },
+                title: "title",
+            },
+            patient: {
+                identifier: "identifier",
+                name: "name",
+                gender: "male",
+                birthDate: new Date("2024-01-15T09:30:00.000Z"),
+                pronouns: "pronouns",
+            },
+            endedAt: new Date("2024-01-15T09:30:00.000Z"),
+            createdAt: new Date("2024-01-15T09:30:00.000Z"),
+            updatedAt: new Date("2024-01-15T09:30:00.000Z"),
+            websocketUrl: "websocketUrl",
+            lastUpdated: new Date("2024-01-15T09:30:00.000Z"),
+        });
+    });
+
+    test("get (2)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new CortiClient({
+            maxRetries: 0,
+            token: "test",
+            tenantName: "test",
+            environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
+        });
+
+        const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
+        server.mockEndpoint().get("/interactions/id").respondWith().statusCode(403).jsonBody(rawResponseBody).build();
+
+        await expect(async () => {
+            return await client.interactions.get("id");
+        }).rejects.toThrow(Corti.ForbiddenError);
+    });
+
+    test("get (3)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new CortiClient({
+            maxRetries: 0,
+            token: "test",
+            tenantName: "test",
+            environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
+        });
+
+        const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
+        server.mockEndpoint().get("/interactions/id").respondWith().statusCode(504).jsonBody(rawResponseBody).build();
+
+        await expect(async () => {
+            return await client.interactions.get("id");
+        }).rejects.toThrow(Corti.GatewayTimeoutError);
+    });
+
+    test("delete (1)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new CortiClient({
+            maxRetries: 0,
+            token: "test",
+            tenantName: "test",
+            environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
+        });
+
+        server
+            .mockEndpoint()
+            .delete("/interactions/f47ac10b-58cc-4372-a567-0e02b2c3d479")
+            .respondWith()
+            .statusCode(200)
+            .build();
+
+        const response = await client.interactions.delete("f47ac10b-58cc-4372-a567-0e02b2c3d479");
+        expect(response).toEqual(undefined);
+    });
+
+    test("delete (2)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new CortiClient({
+            maxRetries: 0,
+            token: "test",
+            tenantName: "test",
+            environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
+        });
+
+        const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
+        server
+            .mockEndpoint()
+            .delete("/interactions/id")
+            .respondWith()
+            .statusCode(403)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.interactions.delete("id");
+        }).rejects.toThrow(Corti.ForbiddenError);
+    });
+
+    test("delete (3)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new CortiClient({
+            maxRetries: 0,
+            token: "test",
+            tenantName: "test",
+            environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
+        });
+
+        const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
+        server
+            .mockEndpoint()
+            .delete("/interactions/id")
+            .respondWith()
+            .statusCode(504)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.interactions.delete("id");
+        }).rejects.toThrow(Corti.GatewayTimeoutError);
+    });
+
+    test("update (1)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new CortiClient({
+            maxRetries: 0,
+            token: "test",
+            tenantName: "test",
+            environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
+        });
+        const rawRequestBody = {};
+        const rawResponseBody = {
+            id: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+            assignedUserId: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+            encounter: {
+                identifier: "identifier",
+                status: "planned",
+                type: "first_consultation",
+                period: { startedAt: "2024-01-15T09:30:00Z", endedAt: "2024-01-15T09:30:00Z" },
+                title: "title",
+            },
+            patient: {
+                identifier: "identifier",
+                name: "name",
+                gender: "male",
+                birthDate: "2024-01-15T09:30:00Z",
+                pronouns: "pronouns",
+            },
+            endedAt: "2024-01-15T09:30:00Z",
+            createdAt: "2024-01-15T09:30:00Z",
+            updatedAt: "2024-01-15T09:30:00Z",
+            websocketUrl: "websocketUrl",
+            lastUpdated: "2024-01-15T09:30:00Z",
+        };
+        server
+            .mockEndpoint()
+            .patch("/interactions/f47ac10b-58cc-4372-a567-0e02b2c3d479")
+            .jsonBody(rawRequestBody)
+            .respondWith()
+            .statusCode(200)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        const response = await client.interactions.update("f47ac10b-58cc-4372-a567-0e02b2c3d479");
+        expect(response).toEqual({
+            id: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+            assignedUserId: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+            encounter: {
+                identifier: "identifier",
+                status: "planned",
+                type: "first_consultation",
+                period: {
+                    startedAt: new Date("2024-01-15T09:30:00.000Z"),
+                    endedAt: new Date("2024-01-15T09:30:00.000Z"),
+                },
+                title: "title",
+            },
+            patient: {
+                identifier: "identifier",
+                name: "name",
+                gender: "male",
+                birthDate: new Date("2024-01-15T09:30:00.000Z"),
+                pronouns: "pronouns",
+            },
+            endedAt: new Date("2024-01-15T09:30:00.000Z"),
+            createdAt: new Date("2024-01-15T09:30:00.000Z"),
+            updatedAt: new Date("2024-01-15T09:30:00.000Z"),
+            websocketUrl: "websocketUrl",
+            lastUpdated: new Date("2024-01-15T09:30:00.000Z"),
+        });
+    });
+
+    test("update (2)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new CortiClient({
+            maxRetries: 0,
+            token: "test",
+            tenantName: "test",
+            environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
+        });
+        const rawRequestBody = {};
+        const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
+        server
+            .mockEndpoint()
+            .patch("/interactions/id")
+            .jsonBody(rawRequestBody)
+            .respondWith()
+            .statusCode(403)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.interactions.update("id");
+        }).rejects.toThrow(Corti.ForbiddenError);
+    });
+
+    test("update (3)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new CortiClient({
+            maxRetries: 0,
+            token: "test",
+            tenantName: "test",
+            environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
+        });
+        const rawRequestBody = {};
+        const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
+        server
+            .mockEndpoint()
+            .patch("/interactions/id")
+            .jsonBody(rawRequestBody)
+            .respondWith()
+            .statusCode(504)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.interactions.update("id");
+        }).rejects.toThrow(Corti.GatewayTimeoutError);
+    });
 });
