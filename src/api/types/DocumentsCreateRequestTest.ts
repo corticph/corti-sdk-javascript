@@ -2,7 +2,7 @@
 
 import type * as Corti from "../index.js";
 
-export type DocumentsCreateRequestBody =
+export type DocumentsCreateRequestTest =
     /**
      * Standard method for document generation: Use template key to generate document based on pre-defined template. */
     | Corti.DocumentsCreateRequestWithTemplateKey

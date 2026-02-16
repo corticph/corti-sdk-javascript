@@ -202,7 +202,7 @@ export class DocumentsClient {
             contentType: "application/json",
             queryParameters: requestOptions?.queryParams,
             requestType: "json",
-            body: serializers.DocumentsCreateRequestBody.jsonOrThrow(_body, {
+            body: serializers.DocumentsCreateRequestTest.jsonOrThrow(_body, {
                 unrecognizedObjectKeys: "strip",
                 omitUndefined: true,
             }),

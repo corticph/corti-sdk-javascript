@@ -19,7 +19,7 @@ export * from "./DocumentsContextWithString.js";
 export * from "./DocumentsContextWithStringType.js";
 export * from "./DocumentsContextWithTranscript.js";
 export * from "./DocumentsContextWithTranscriptType.js";
-export * from "./DocumentsCreateRequestBody.js";
+export * from "./DocumentsCreateRequestTest.js";
 export * from "./DocumentsCreateRequestWithTemplate.js";
 export * from "./DocumentsCreateRequestWithTemplateKey.js";
 export * from "./DocumentsGetResponse.js";
