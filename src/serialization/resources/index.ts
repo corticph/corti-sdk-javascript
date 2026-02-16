@@ -1,3 +1,5 @@
+export * from "./codes/client/requests/index.js";
+export * as codes from "./codes/index.js";
 export * from "./facts/client/requests/index.js";
 export * as facts from "./facts/index.js";
 export * from "./interactions/client/requests/index.js";

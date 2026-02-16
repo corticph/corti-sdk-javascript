@@ -1,3 +1,4 @@
+export * from "./BadGatewayError.js";
 export * from "./BadRequestError.js";
 export * from "./ForbiddenError.js";
 export * from "./GatewayTimeoutError.js";
