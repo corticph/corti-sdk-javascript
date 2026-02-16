@@ -11,4 +11,6 @@ export * from "./InteractionsGenderEnum.js";
 export * from "./InteractionsGetResponse.js";
 export * from "./InteractionsListResponse.js";
 export * from "./InteractionsPatient.js";
+export * from "./RecordingsCreateResponse.js";
+export * from "./RecordingsListResponse.js";
 export * from "./Uuid.js";

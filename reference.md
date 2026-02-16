@@ -356,3 +356,233 @@ await client.interactions.update("f47ac10b-58cc-4372-a567-0e02b2c3d479");
 </dd>
 </dl>
 </details>
+
+## Recordings
+<details><summary><code>client.recordings.<a href="/src/api/resources/recordings/client/Client.ts">list</a>(id, { ...params }) -> Corti.RecordingsListResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieve a list of recordings for a given interaction.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.recordings.list("f47ac10b-58cc-4372-a567-0e02b2c3d479");
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**id:** `Corti.Uuid` — The unique identifier of the interaction. Must be a valid UUID.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `Corti.RecordingsListRequest` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `RecordingsClient.RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.recordings.<a href="/src/api/resources/recordings/client/Client.ts">get</a>(id, recordingId, { ...params }) -> core.BinaryResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieve a specific recording for a given interaction.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.recordings.get("id", "recordingId");
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**id:** `Corti.Uuid` — The unique identifier of the interaction. Must be a valid UUID.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**recordingId:** `Corti.Uuid` — The unique identifier of the recording. Must be a valid UUID.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `Corti.RecordingsGetRequest` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `RecordingsClient.RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.recordings.<a href="/src/api/resources/recordings/client/Client.ts">delete</a>(id, recordingId, { ...params }) -> void</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Delete a specific recording for a given interaction.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.recordings.delete("f47ac10b-58cc-4372-a567-0e02b2c3d479", "f47ac10b-58cc-4372-a567-0e02b2c3d479");
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**id:** `Corti.Uuid` — The unique identifier of the interaction. Must be a valid UUID.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**recordingId:** `Corti.Uuid` — The unique identifier of the recording. Must be a valid UUID.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `Corti.RecordingsDeleteRequest` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `RecordingsClient.RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
