@@ -175,11 +175,7 @@ describe("DocumentsClient", () => {
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
-        const rawRequestBody = {
-            context: [{ type: "facts", data: [{ text: "text", source: "core" }] }],
-            templateKey: "templateKey",
-            outputLanguage: "outputLanguage",
-        };
+        const rawRequestBody = {};
         const rawResponseBody = {
             id: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
             name: "name",
@@ -209,23 +205,7 @@ describe("DocumentsClient", () => {
             .jsonBody(rawResponseBody)
             .build();
 
-        const response = await client.documents.create("f47ac10b-58cc-4372-a567-0e02b2c3d479", {
-            body: {
-                context: [
-                    {
-                        type: "facts",
-                        data: [
-                            {
-                                text: "text",
-                                source: "core",
-                            },
-                        ],
-                    },
-                ],
-                templateKey: "templateKey",
-                outputLanguage: "outputLanguage",
-            },
-        });
+        const response = await client.documents.create("f47ac10b-58cc-4372-a567-0e02b2c3d479");
         expect(response).toEqual({
             id: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
             name: "name",
@@ -258,26 +238,7 @@ describe("DocumentsClient", () => {
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
-        const rawRequestBody = {
-            context: [
-                {
-                    type: "facts",
-                    data: [
-                        { text: "text", source: "core" },
-                        { text: "text", source: "core" },
-                    ],
-                },
-                {
-                    type: "facts",
-                    data: [
-                        { text: "text", source: "core" },
-                        { text: "text", source: "core" },
-                    ],
-                },
-            ],
-            templateKey: "templateKey",
-            outputLanguage: "outputLanguage",
-        };
+        const rawRequestBody = {};
         const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
         server
             .mockEndpoint()
@@ -289,40 +250,7 @@ describe("DocumentsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.documents.create("id", {
-                body: {
-                    context: [
-                        {
-                            type: "facts",
-                            data: [
-                                {
-                                    text: "text",
-                                    source: "core",
-                                },
-                                {
-                                    text: "text",
-                                    source: "core",
-                                },
-                            ],
-                        },
-                        {
-                            type: "facts",
-                            data: [
-                                {
-                                    text: "text",
-                                    source: "core",
-                                },
-                                {
-                                    text: "text",
-                                    source: "core",
-                                },
-                            ],
-                        },
-                    ],
-                    templateKey: "templateKey",
-                    outputLanguage: "outputLanguage",
-                },
-            });
+            return await client.documents.create("id");
         }).rejects.toThrow(Corti.BadRequestError);
     });
 
@@ -334,26 +262,7 @@ describe("DocumentsClient", () => {
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
-        const rawRequestBody = {
-            context: [
-                {
-                    type: "facts",
-                    data: [
-                        { text: "text", source: "core" },
-                        { text: "text", source: "core" },
-                    ],
-                },
-                {
-                    type: "facts",
-                    data: [
-                        { text: "text", source: "core" },
-                        { text: "text", source: "core" },
-                    ],
-                },
-            ],
-            templateKey: "templateKey",
-            outputLanguage: "outputLanguage",
-        };
+        const rawRequestBody = {};
         const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
         server
             .mockEndpoint()
@@ -365,40 +274,7 @@ describe("DocumentsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.documents.create("id", {
-                body: {
-                    context: [
-                        {
-                            type: "facts",
-                            data: [
-                                {
-                                    text: "text",
-                                    source: "core",
-                                },
-                                {
-                                    text: "text",
-                                    source: "core",
-                                },
-                            ],
-                        },
-                        {
-                            type: "facts",
-                            data: [
-                                {
-                                    text: "text",
-                                    source: "core",
-                                },
-                                {
-                                    text: "text",
-                                    source: "core",
-                                },
-                            ],
-                        },
-                    ],
-                    templateKey: "templateKey",
-                    outputLanguage: "outputLanguage",
-                },
-            });
+            return await client.documents.create("id");
         }).rejects.toThrow(Corti.ForbiddenError);
     });
 
@@ -410,26 +286,7 @@ describe("DocumentsClient", () => {
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
-        const rawRequestBody = {
-            context: [
-                {
-                    type: "facts",
-                    data: [
-                        { text: "text", source: "core" },
-                        { text: "text", source: "core" },
-                    ],
-                },
-                {
-                    type: "facts",
-                    data: [
-                        { text: "text", source: "core" },
-                        { text: "text", source: "core" },
-                    ],
-                },
-            ],
-            templateKey: "templateKey",
-            outputLanguage: "outputLanguage",
-        };
+        const rawRequestBody = {};
         const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
         server
             .mockEndpoint()
@@ -441,40 +298,7 @@ describe("DocumentsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.documents.create("id", {
-                body: {
-                    context: [
-                        {
-                            type: "facts",
-                            data: [
-                                {
-                                    text: "text",
-                                    source: "core",
-                                },
-                                {
-                                    text: "text",
-                                    source: "core",
-                                },
-                            ],
-                        },
-                        {
-                            type: "facts",
-                            data: [
-                                {
-                                    text: "text",
-                                    source: "core",
-                                },
-                                {
-                                    text: "text",
-                                    source: "core",
-                                },
-                            ],
-                        },
-                    ],
-                    templateKey: "templateKey",
-                    outputLanguage: "outputLanguage",
-                },
-            });
+            return await client.documents.create("id");
         }).rejects.toThrow(Corti.InternalServerError);
     });
 
@@ -486,26 +310,7 @@ describe("DocumentsClient", () => {
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
-        const rawRequestBody = {
-            context: [
-                {
-                    type: "facts",
-                    data: [
-                        { text: "text", source: "core" },
-                        { text: "text", source: "core" },
-                    ],
-                },
-                {
-                    type: "facts",
-                    data: [
-                        { text: "text", source: "core" },
-                        { text: "text", source: "core" },
-                    ],
-                },
-            ],
-            templateKey: "templateKey",
-            outputLanguage: "outputLanguage",
-        };
+        const rawRequestBody = {};
         const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
         server
             .mockEndpoint()
@@ -517,40 +322,7 @@ describe("DocumentsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.documents.create("id", {
-                body: {
-                    context: [
-                        {
-                            type: "facts",
-                            data: [
-                                {
-                                    text: "text",
-                                    source: "core",
-                                },
-                                {
-                                    text: "text",
-                                    source: "core",
-                                },
-                            ],
-                        },
-                        {
-                            type: "facts",
-                            data: [
-                                {
-                                    text: "text",
-                                    source: "core",
-                                },
-                                {
-                                    text: "text",
-                                    source: "core",
-                                },
-                            ],
-                        },
-                    ],
-                    templateKey: "templateKey",
-                    outputLanguage: "outputLanguage",
-                },
-            });
+            return await client.documents.create("id");
         }).rejects.toThrow(Corti.GatewayTimeoutError);
     });
 

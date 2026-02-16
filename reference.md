@@ -1495,19 +1495,7 @@ This endpoint offers different ways to generate a document. Find guides to docum
 <dd>
 
 ```typescript
-await client.documents.create("f47ac10b-58cc-4372-a567-0e02b2c3d479", {
-    body: {
-        context: [{
-                type: "facts",
-                data: [{
-                        text: "text",
-                        source: "core"
-                    }]
-            }],
-        templateKey: "templateKey",
-        outputLanguage: "outputLanguage"
-    }
-});
+await client.documents.create("f47ac10b-58cc-4372-a567-0e02b2c3d479");
 
 ```
 </dd>

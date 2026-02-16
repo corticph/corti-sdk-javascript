@@ -156,23 +156,11 @@ export class DocumentsClient {
      * @throws {@link Corti.GatewayTimeoutError}
      *
      * @example
-     *     await client.documents.create("f47ac10b-58cc-4372-a567-0e02b2c3d479", {
-     *         body: {
-     *             context: [{
-     *                     type: "facts",
-     *                     data: [{
-     *                             text: "text",
-     *                             source: "core"
-     *                         }]
-     *                 }],
-     *             templateKey: "templateKey",
-     *             outputLanguage: "outputLanguage"
-     *         }
-     *     })
+     *     await client.documents.create("f47ac10b-58cc-4372-a567-0e02b2c3d479")
      */
     public create(
         id: Corti.Uuid,
-        request: Corti.DocumentsCreateRequest,
+        request: Corti.DocumentsCreateRequest = {},
         requestOptions?: DocumentsClient.RequestOptions,
     ): core.HttpResponsePromise<Corti.DocumentsGetResponse> {
         return core.HttpResponsePromise.fromPromise(this.__create(id, request, requestOptions));
@@ -180,10 +168,9 @@ export class DocumentsClient {
 
     private async __create(
         id: Corti.Uuid,
-        request: Corti.DocumentsCreateRequest,
+        request: Corti.DocumentsCreateRequest = {},
         requestOptions?: DocumentsClient.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.DocumentsGetResponse>> {
-        const { body: _body } = request;
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
@@ -202,7 +189,7 @@ export class DocumentsClient {
             contentType: "application/json",
             queryParameters: requestOptions?.queryParams,
             requestType: "json",
-            body: serializers.DocumentsCreateRequestBody.jsonOrThrow(_body, {
+            body: serializers.DocumentsCreateRequest.jsonOrThrow(request, {
                 unrecognizedObjectKeys: "strip",
                 omitUndefined: true,
             }),
