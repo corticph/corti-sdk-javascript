@@ -183,15 +183,12 @@ export class DocumentsClient {
         request: Corti.DocumentsCreateRequest,
         requestOptions?: DocumentsClient.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.DocumentsGetResponse>> {
-        const { cortiRetentionPolicy, body: _body } = request;
+        const { body: _body } = request;
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
             this._options?.headers,
-            mergeOnlyDefinedHeaders({
-                "X-Corti-Retention-Policy": cortiRetentionPolicy,
-                "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName,
-            }),
+            mergeOnlyDefinedHeaders({ "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName }),
             requestOptions?.headers,
         );
         const _response = await core.fetcher({
