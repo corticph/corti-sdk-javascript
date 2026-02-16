@@ -60,6 +60,18 @@
             },
             "default": "./dist/cjs/api/resources/recordings/exports.js"
         },
+        "./transcripts": {
+            "types": "./dist/cjs/api/resources/transcripts/exports.d.ts",
+            "import": {
+                "types": "./dist/esm/api/resources/transcripts/exports.d.mts",
+                "default": "./dist/esm/api/resources/transcripts/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/transcripts/exports.d.ts",
+                "default": "./dist/cjs/api/resources/transcripts/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/transcripts/exports.js"
+        },
         "./package.json": "./package.json"
     },
     "files": [

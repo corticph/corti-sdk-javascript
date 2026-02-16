@@ -2,6 +2,7 @@
 
 import { InteractionsClient } from "./api/resources/interactions/client/Client.js";
 import { RecordingsClient } from "./api/resources/recordings/client/Client.js";
+import { TranscriptsClient } from "./api/resources/transcripts/client/Client.js";
 import type { BaseClientOptions, BaseRequestOptions } from "./BaseClient.js";
 import { type NormalizedClientOptionsWithAuth, normalizeClientOptionsWithAuth } from "./BaseClient.js";
 
@@ -15,6 +16,7 @@ export class CortiClient {
     protected readonly _options: NormalizedClientOptionsWithAuth<CortiClient.Options>;
     protected _interactions: InteractionsClient | undefined;
     protected _recordings: RecordingsClient | undefined;
+    protected _transcripts: TranscriptsClient | undefined;
 
     constructor(options: CortiClient.Options) {
         this._options = normalizeClientOptionsWithAuth(options);
@@ -26,5 +28,9 @@ export class CortiClient {
 
     public get recordings(): RecordingsClient {
         return (this._recordings ??= new RecordingsClient(this._options));
+    }
+
+    public get transcripts(): TranscriptsClient {
+        return (this._transcripts ??= new TranscriptsClient(this._options));
     }
 }
