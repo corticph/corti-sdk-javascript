@@ -19,5 +19,5 @@ import type * as Corti from "../../../../index.js";
  *     }
  */
 export interface DocumentsCreateRequest {
-    body: Corti.DocumentsCreateRequestTest;
+    body: Corti.DocumentsCreateRequestBody;
 }
