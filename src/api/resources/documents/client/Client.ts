@@ -144,7 +144,7 @@ export class DocumentsClient {
      * This endpoint offers different ways to generate a document. Find guides to document generation [here](/textgen/documents-standard).
      *
      * @param {Corti.Uuid} id - The unique identifier of the interaction. Must be a valid UUID.
-     * @param {Corti.DocumentsCreateRequestBody} request
+     * @param {Corti.DocumentsCreateRequest} request
      * @param {DocumentsClient.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Corti.BadRequestError}
@@ -167,7 +167,7 @@ export class DocumentsClient {
      */
     public create(
         id: Corti.Uuid,
-        request: Corti.DocumentsCreateRequestBody,
+        request: Corti.DocumentsCreateRequest,
         requestOptions?: DocumentsClient.RequestOptions,
     ): core.HttpResponsePromise<Corti.DocumentsGetResponse> {
         return core.HttpResponsePromise.fromPromise(this.__create(id, request, requestOptions));
@@ -175,7 +175,7 @@ export class DocumentsClient {
 
     private async __create(
         id: Corti.Uuid,
-        request: Corti.DocumentsCreateRequestBody,
+        request: Corti.DocumentsCreateRequest,
         requestOptions?: DocumentsClient.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.DocumentsGetResponse>> {
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
@@ -196,7 +196,7 @@ export class DocumentsClient {
             contentType: "application/json",
             queryParameters: requestOptions?.queryParams,
             requestType: "json",
-            body: serializers.DocumentsCreateRequestBody.jsonOrThrow(request, {
+            body: serializers.DocumentsCreateRequest.jsonOrThrow(request, {
                 unrecognizedObjectKeys: "strip",
                 omitUndefined: true,
             }),
