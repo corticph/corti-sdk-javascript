@@ -210,21 +210,19 @@ describe("DocumentsClient", () => {
             .build();
 
         const response = await client.documents.create("f47ac10b-58cc-4372-a567-0e02b2c3d479", {
-            body: {
-                context: [
-                    {
-                        type: "facts",
-                        data: [
-                            {
-                                text: "text",
-                                source: "core",
-                            },
-                        ],
-                    },
-                ],
-                templateKey: "templateKey",
-                outputLanguage: "outputLanguage",
-            },
+            context: [
+                {
+                    type: "facts",
+                    data: [
+                        {
+                            text: "text",
+                            source: "core",
+                        },
+                    ],
+                },
+            ],
+            templateKey: "templateKey",
+            outputLanguage: "outputLanguage",
         });
         expect(response).toEqual({
             id: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
@@ -290,38 +288,36 @@ describe("DocumentsClient", () => {
 
         await expect(async () => {
             return await client.documents.create("id", {
-                body: {
-                    context: [
-                        {
-                            type: "facts",
-                            data: [
-                                {
-                                    text: "text",
-                                    source: "core",
-                                },
-                                {
-                                    text: "text",
-                                    source: "core",
-                                },
-                            ],
-                        },
-                        {
-                            type: "facts",
-                            data: [
-                                {
-                                    text: "text",
-                                    source: "core",
-                                },
-                                {
-                                    text: "text",
-                                    source: "core",
-                                },
-                            ],
-                        },
-                    ],
-                    templateKey: "templateKey",
-                    outputLanguage: "outputLanguage",
-                },
+                context: [
+                    {
+                        type: "facts",
+                        data: [
+                            {
+                                text: "text",
+                                source: "core",
+                            },
+                            {
+                                text: "text",
+                                source: "core",
+                            },
+                        ],
+                    },
+                    {
+                        type: "facts",
+                        data: [
+                            {
+                                text: "text",
+                                source: "core",
+                            },
+                            {
+                                text: "text",
+                                source: "core",
+                            },
+                        ],
+                    },
+                ],
+                templateKey: "templateKey",
+                outputLanguage: "outputLanguage",
             });
         }).rejects.toThrow(Corti.BadRequestError);
     });
@@ -366,38 +362,36 @@ describe("DocumentsClient", () => {
 
         await expect(async () => {
             return await client.documents.create("id", {
-                body: {
-                    context: [
-                        {
-                            type: "facts",
-                            data: [
-                                {
-                                    text: "text",
-                                    source: "core",
-                                },
-                                {
-                                    text: "text",
-                                    source: "core",
-                                },
-                            ],
-                        },
-                        {
-                            type: "facts",
-                            data: [
-                                {
-                                    text: "text",
-                                    source: "core",
-                                },
-                                {
-                                    text: "text",
-                                    source: "core",
-                                },
-                            ],
-                        },
-                    ],
-                    templateKey: "templateKey",
-                    outputLanguage: "outputLanguage",
-                },
+                context: [
+                    {
+                        type: "facts",
+                        data: [
+                            {
+                                text: "text",
+                                source: "core",
+                            },
+                            {
+                                text: "text",
+                                source: "core",
+                            },
+                        ],
+                    },
+                    {
+                        type: "facts",
+                        data: [
+                            {
+                                text: "text",
+                                source: "core",
+                            },
+                            {
+                                text: "text",
+                                source: "core",
+                            },
+                        ],
+                    },
+                ],
+                templateKey: "templateKey",
+                outputLanguage: "outputLanguage",
             });
         }).rejects.toThrow(Corti.ForbiddenError);
     });
@@ -442,38 +436,36 @@ describe("DocumentsClient", () => {
 
         await expect(async () => {
             return await client.documents.create("id", {
-                body: {
-                    context: [
-                        {
-                            type: "facts",
-                            data: [
-                                {
-                                    text: "text",
-                                    source: "core",
-                                },
-                                {
-                                    text: "text",
-                                    source: "core",
-                                },
-                            ],
-                        },
-                        {
-                            type: "facts",
-                            data: [
-                                {
-                                    text: "text",
-                                    source: "core",
-                                },
-                                {
-                                    text: "text",
-                                    source: "core",
-                                },
-                            ],
-                        },
-                    ],
-                    templateKey: "templateKey",
-                    outputLanguage: "outputLanguage",
-                },
+                context: [
+                    {
+                        type: "facts",
+                        data: [
+                            {
+                                text: "text",
+                                source: "core",
+                            },
+                            {
+                                text: "text",
+                                source: "core",
+                            },
+                        ],
+                    },
+                    {
+                        type: "facts",
+                        data: [
+                            {
+                                text: "text",
+                                source: "core",
+                            },
+                            {
+                                text: "text",
+                                source: "core",
+                            },
+                        ],
+                    },
+                ],
+                templateKey: "templateKey",
+                outputLanguage: "outputLanguage",
             });
         }).rejects.toThrow(Corti.InternalServerError);
     });
@@ -518,38 +510,36 @@ describe("DocumentsClient", () => {
 
         await expect(async () => {
             return await client.documents.create("id", {
-                body: {
-                    context: [
-                        {
-                            type: "facts",
-                            data: [
-                                {
-                                    text: "text",
-                                    source: "core",
-                                },
-                                {
-                                    text: "text",
-                                    source: "core",
-                                },
-                            ],
-                        },
-                        {
-                            type: "facts",
-                            data: [
-                                {
-                                    text: "text",
-                                    source: "core",
-                                },
-                                {
-                                    text: "text",
-                                    source: "core",
-                                },
-                            ],
-                        },
-                    ],
-                    templateKey: "templateKey",
-                    outputLanguage: "outputLanguage",
-                },
+                context: [
+                    {
+                        type: "facts",
+                        data: [
+                            {
+                                text: "text",
+                                source: "core",
+                            },
+                            {
+                                text: "text",
+                                source: "core",
+                            },
+                        ],
+                    },
+                    {
+                        type: "facts",
+                        data: [
+                            {
+                                text: "text",
+                                source: "core",
+                            },
+                            {
+                                text: "text",
+                                source: "core",
+                            },
+                        ],
+                    },
+                ],
+                templateKey: "templateKey",
+                outputLanguage: "outputLanguage",
             });
         }).rejects.toThrow(Corti.GatewayTimeoutError);
     });

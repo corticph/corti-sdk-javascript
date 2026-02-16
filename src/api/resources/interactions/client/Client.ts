@@ -292,7 +292,6 @@ export class InteractionsClient {
      * Retrieves a previously recorded interaction by its unique identifier (interaction ID).
      *
      * @param {Corti.Uuid} id - The unique identifier of the interaction. Must be a valid UUID.
-     * @param {Corti.InteractionsGetRequest} request
      * @param {InteractionsClient.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Corti.ForbiddenError}
@@ -303,15 +302,13 @@ export class InteractionsClient {
      */
     public get(
         id: Corti.Uuid,
-        request: Corti.InteractionsGetRequest = {},
         requestOptions?: InteractionsClient.RequestOptions,
     ): core.HttpResponsePromise<Corti.InteractionsGetResponse> {
-        return core.HttpResponsePromise.fromPromise(this.__get(id, request, requestOptions));
+        return core.HttpResponsePromise.fromPromise(this.__get(id, requestOptions));
     }
 
     private async __get(
         id: Corti.Uuid,
-        _request: Corti.InteractionsGetRequest = {},
         requestOptions?: InteractionsClient.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.InteractionsGetResponse>> {
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
@@ -389,7 +386,6 @@ export class InteractionsClient {
      * Deletes an existing interaction.
      *
      * @param {Corti.Uuid} id - The unique identifier of the interaction. Must be a valid UUID.
-     * @param {Corti.InteractionsDeleteRequest} request
      * @param {InteractionsClient.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Corti.ForbiddenError}
@@ -398,17 +394,12 @@ export class InteractionsClient {
      * @example
      *     await client.interactions.delete("f47ac10b-58cc-4372-a567-0e02b2c3d479")
      */
-    public delete(
-        id: Corti.Uuid,
-        request: Corti.InteractionsDeleteRequest = {},
-        requestOptions?: InteractionsClient.RequestOptions,
-    ): core.HttpResponsePromise<void> {
-        return core.HttpResponsePromise.fromPromise(this.__delete(id, request, requestOptions));
+    public delete(id: Corti.Uuid, requestOptions?: InteractionsClient.RequestOptions): core.HttpResponsePromise<void> {
+        return core.HttpResponsePromise.fromPromise(this.__delete(id, requestOptions));
     }
 
     private async __delete(
         id: Corti.Uuid,
-        _request: Corti.InteractionsDeleteRequest = {},
         requestOptions?: InteractionsClient.RequestOptions,
     ): Promise<core.WithRawResponse<void>> {
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();

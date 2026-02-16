@@ -144,7 +144,7 @@ await client.interactions.create({
 </dl>
 </details>
 
-<details><summary><code>client.interactions.<a href="/src/api/resources/interactions/client/Client.ts">get</a>(id, { ...params }) -> Corti.InteractionsGetResponse</code></summary>
+<details><summary><code>client.interactions.<a href="/src/api/resources/interactions/client/Client.ts">get</a>(id) -> Corti.InteractionsGetResponse</code></summary>
 <dl>
 <dd>
 
@@ -195,14 +195,6 @@ await client.interactions.get("f47ac10b-58cc-4372-a567-0e02b2c3d479");
 <dl>
 <dd>
 
-**request:** `Corti.InteractionsGetRequest` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
 **requestOptions:** `InteractionsClient.RequestOptions` 
     
 </dd>
@@ -215,7 +207,7 @@ await client.interactions.get("f47ac10b-58cc-4372-a567-0e02b2c3d479");
 </dl>
 </details>
 
-<details><summary><code>client.interactions.<a href="/src/api/resources/interactions/client/Client.ts">delete</a>(id, { ...params }) -> void</code></summary>
+<details><summary><code>client.interactions.<a href="/src/api/resources/interactions/client/Client.ts">delete</a>(id) -> void</code></summary>
 <dl>
 <dd>
 
@@ -259,14 +251,6 @@ await client.interactions.delete("f47ac10b-58cc-4372-a567-0e02b2c3d479");
 <dd>
 
 **id:** `Corti.Uuid` — The unique identifier of the interaction. Must be a valid UUID.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request:** `Corti.InteractionsDeleteRequest` 
     
 </dd>
 </dl>
@@ -358,7 +342,7 @@ await client.interactions.update("f47ac10b-58cc-4372-a567-0e02b2c3d479");
 </details>
 
 ## Recordings
-<details><summary><code>client.recordings.<a href="/src/api/resources/recordings/client/Client.ts">list</a>(id, { ...params }) -> Corti.RecordingsListResponse</code></summary>
+<details><summary><code>client.recordings.<a href="/src/api/resources/recordings/client/Client.ts">list</a>(id) -> Corti.RecordingsListResponse</code></summary>
 <dl>
 <dd>
 
@@ -409,14 +393,6 @@ await client.recordings.list("f47ac10b-58cc-4372-a567-0e02b2c3d479");
 <dl>
 <dd>
 
-**request:** `Corti.RecordingsListRequest` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
 **requestOptions:** `RecordingsClient.RequestOptions` 
     
 </dd>
@@ -429,7 +405,7 @@ await client.recordings.list("f47ac10b-58cc-4372-a567-0e02b2c3d479");
 </dl>
 </details>
 
-<details><summary><code>client.recordings.<a href="/src/api/resources/recordings/client/Client.ts">get</a>(id, recordingId, { ...params }) -> core.BinaryResponse</code></summary>
+<details><summary><code>client.recordings.<a href="/src/api/resources/recordings/client/Client.ts">get</a>(id, recordingId) -> core.BinaryResponse</code></summary>
 <dl>
 <dd>
 
@@ -488,14 +464,6 @@ await client.recordings.get("id", "recordingId");
 <dl>
 <dd>
 
-**request:** `Corti.RecordingsGetRequest` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
 **requestOptions:** `RecordingsClient.RequestOptions` 
     
 </dd>
@@ -508,7 +476,7 @@ await client.recordings.get("id", "recordingId");
 </dl>
 </details>
 
-<details><summary><code>client.recordings.<a href="/src/api/resources/recordings/client/Client.ts">delete</a>(id, recordingId, { ...params }) -> void</code></summary>
+<details><summary><code>client.recordings.<a href="/src/api/resources/recordings/client/Client.ts">delete</a>(id, recordingId) -> void</code></summary>
 <dl>
 <dd>
 
@@ -560,14 +528,6 @@ await client.recordings.delete("f47ac10b-58cc-4372-a567-0e02b2c3d479", "f47ac10b
 <dd>
 
 **recordingId:** `Corti.Uuid` — The unique identifier of the recording. Must be a valid UUID.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request:** `Corti.RecordingsDeleteRequest` 
     
 </dd>
 </dl>
@@ -733,7 +693,7 @@ await client.transcripts.create("f47ac10b-58cc-4372-a567-0e02b2c3d479", {
 </dl>
 </details>
 
-<details><summary><code>client.transcripts.<a href="/src/api/resources/transcripts/client/Client.ts">get</a>(id, transcriptId, { ...params }) -> Corti.TranscriptsResponse</code></summary>
+<details><summary><code>client.transcripts.<a href="/src/api/resources/transcripts/client/Client.ts">get</a>(id, transcriptId) -> Corti.TranscriptsResponse</code></summary>
 <dl>
 <dd>
 
@@ -792,14 +752,6 @@ await client.transcripts.get("f47ac10b-58cc-4372-a567-0e02b2c3d479", "f47ac10b-5
 <dl>
 <dd>
 
-**request:** `Corti.TranscriptsGetRequest` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
 **requestOptions:** `TranscriptsClient.RequestOptions` 
     
 </dd>
@@ -812,7 +764,7 @@ await client.transcripts.get("f47ac10b-58cc-4372-a567-0e02b2c3d479", "f47ac10b-5
 </dl>
 </details>
 
-<details><summary><code>client.transcripts.<a href="/src/api/resources/transcripts/client/Client.ts">delete</a>(id, transcriptId, { ...params }) -> void</code></summary>
+<details><summary><code>client.transcripts.<a href="/src/api/resources/transcripts/client/Client.ts">delete</a>(id, transcriptId) -> void</code></summary>
 <dl>
 <dd>
 
@@ -871,14 +823,6 @@ await client.transcripts.delete("f47ac10b-58cc-4372-a567-0e02b2c3d479", "f47ac10
 <dl>
 <dd>
 
-**request:** `Corti.TranscriptsDeleteRequest` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
 **requestOptions:** `TranscriptsClient.RequestOptions` 
     
 </dd>
@@ -891,7 +835,7 @@ await client.transcripts.delete("f47ac10b-58cc-4372-a567-0e02b2c3d479", "f47ac10
 </dl>
 </details>
 
-<details><summary><code>client.transcripts.<a href="/src/api/resources/transcripts/client/Client.ts">getStatus</a>(id, transcriptId, { ...params }) -> Corti.TranscriptsStatusResponse</code></summary>
+<details><summary><code>client.transcripts.<a href="/src/api/resources/transcripts/client/Client.ts">getStatus</a>(id, transcriptId) -> Corti.TranscriptsStatusResponse</code></summary>
 <dl>
 <dd>
 
@@ -943,14 +887,6 @@ await client.transcripts.getStatus("f47ac10b-58cc-4372-a567-0e02b2c3d479", "f47a
 <dd>
 
 **transcriptId:** `Corti.Uuid` — The unique identifier of the transcript. Must be a valid UUID.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request:** `Corti.TranscriptsGetStatusRequest` 
     
 </dd>
 </dl>
@@ -1026,7 +962,7 @@ await client.facts.factGroupsList();
 </dl>
 </details>
 
-<details><summary><code>client.facts.<a href="/src/api/resources/facts/client/Client.ts">list</a>(id, { ...params }) -> Corti.FactsListResponse</code></summary>
+<details><summary><code>client.facts.<a href="/src/api/resources/facts/client/Client.ts">list</a>(id) -> Corti.FactsListResponse</code></summary>
 <dl>
 <dd>
 
@@ -1070,14 +1006,6 @@ await client.facts.list("f47ac10b-58cc-4372-a567-0e02b2c3d479");
 <dd>
 
 **id:** `Corti.Uuid` — The unique identifier of the interaction. Must be a valid UUID.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request:** `Corti.FactsListRequest` 
     
 </dd>
 </dl>
@@ -1397,7 +1325,7 @@ await client.facts.extract({
 </details>
 
 ## Documents
-<details><summary><code>client.documents.<a href="/src/api/resources/documents/client/Client.ts">list</a>(id, { ...params }) -> Corti.DocumentsListResponse</code></summary>
+<details><summary><code>client.documents.<a href="/src/api/resources/documents/client/Client.ts">list</a>(id) -> Corti.DocumentsListResponse</code></summary>
 <dl>
 <dd>
 
@@ -1448,14 +1376,6 @@ await client.documents.list("f47ac10b-58cc-4372-a567-0e02b2c3d479");
 <dl>
 <dd>
 
-**request:** `Corti.DocumentsListRequest` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
 **requestOptions:** `DocumentsClient.RequestOptions` 
     
 </dd>
@@ -1496,17 +1416,15 @@ This endpoint offers different ways to generate a document. Find guides to docum
 
 ```typescript
 await client.documents.create("f47ac10b-58cc-4372-a567-0e02b2c3d479", {
-    body: {
-        context: [{
-                type: "facts",
-                data: [{
-                        text: "text",
-                        source: "core"
-                    }]
-            }],
-        templateKey: "templateKey",
-        outputLanguage: "outputLanguage"
-    }
+    context: [{
+            type: "facts",
+            data: [{
+                    text: "text",
+                    source: "core"
+                }]
+        }],
+    templateKey: "templateKey",
+    outputLanguage: "outputLanguage"
 });
 
 ```
@@ -1531,7 +1449,7 @@ await client.documents.create("f47ac10b-58cc-4372-a567-0e02b2c3d479", {
 <dl>
 <dd>
 
-**request:** `Corti.DocumentsCreateRequest` 
+**request:** `Corti.DocumentsCreateRequestBody` 
     
 </dd>
 </dl>
@@ -1551,7 +1469,7 @@ await client.documents.create("f47ac10b-58cc-4372-a567-0e02b2c3d479", {
 </dl>
 </details>
 
-<details><summary><code>client.documents.<a href="/src/api/resources/documents/client/Client.ts">get</a>(id, documentId, { ...params }) -> Corti.DocumentsGetResponse</code></summary>
+<details><summary><code>client.documents.<a href="/src/api/resources/documents/client/Client.ts">get</a>(id, documentId) -> Corti.DocumentsGetResponse</code></summary>
 <dl>
 <dd>
 
@@ -1610,14 +1528,6 @@ await client.documents.get("f47ac10b-58cc-4372-a567-0e02b2c3d479", "f47ac10b-58c
 <dl>
 <dd>
 
-**request:** `Corti.DocumentsGetRequest` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
 **requestOptions:** `DocumentsClient.RequestOptions` 
     
 </dd>
@@ -1630,7 +1540,7 @@ await client.documents.get("f47ac10b-58cc-4372-a567-0e02b2c3d479", "f47ac10b-58c
 </dl>
 </details>
 
-<details><summary><code>client.documents.<a href="/src/api/resources/documents/client/Client.ts">delete</a>(id, documentId, { ...params }) -> void</code></summary>
+<details><summary><code>client.documents.<a href="/src/api/resources/documents/client/Client.ts">delete</a>(id, documentId) -> void</code></summary>
 <dl>
 <dd>
 
@@ -1668,14 +1578,6 @@ await client.documents.delete("f47ac10b-58cc-4372-a567-0e02b2c3d479", "f47ac10b-
 <dd>
 
 **documentId:** `Corti.Uuid` — The document ID representing the context for the request. Must be a valid UUID.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request:** `Corti.DocumentsDeleteRequest` 
     
 </dd>
 </dl>

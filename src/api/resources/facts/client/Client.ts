@@ -105,7 +105,6 @@ export class FactsClient {
      * Retrieves a list of facts for a given interaction.
      *
      * @param {Corti.Uuid} id - The unique identifier of the interaction. Must be a valid UUID.
-     * @param {Corti.FactsListRequest} request
      * @param {FactsClient.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Corti.GatewayTimeoutError}
@@ -115,15 +114,13 @@ export class FactsClient {
      */
     public list(
         id: Corti.Uuid,
-        request: Corti.FactsListRequest = {},
         requestOptions?: FactsClient.RequestOptions,
     ): core.HttpResponsePromise<Corti.FactsListResponse> {
-        return core.HttpResponsePromise.fromPromise(this.__list(id, request, requestOptions));
+        return core.HttpResponsePromise.fromPromise(this.__list(id, requestOptions));
     }
 
     private async __list(
         id: Corti.Uuid,
-        _request: Corti.FactsListRequest = {},
         requestOptions?: FactsClient.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.FactsListResponse>> {
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();

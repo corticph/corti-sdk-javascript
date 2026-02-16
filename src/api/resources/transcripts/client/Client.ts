@@ -316,7 +316,6 @@ export class TranscriptsClient {
      *
      * @param {Corti.Uuid} id - The unique identifier of the interaction. Must be a valid UUID.
      * @param {Corti.Uuid} transcriptId - The unique identifier of the transcript. Must be a valid UUID.
-     * @param {Corti.TranscriptsGetRequest} request
      * @param {TranscriptsClient.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Corti.BadRequestError}
@@ -331,16 +330,14 @@ export class TranscriptsClient {
     public get(
         id: Corti.Uuid,
         transcriptId: Corti.Uuid,
-        request: Corti.TranscriptsGetRequest = {},
         requestOptions?: TranscriptsClient.RequestOptions,
     ): core.HttpResponsePromise<Corti.TranscriptsResponse> {
-        return core.HttpResponsePromise.fromPromise(this.__get(id, transcriptId, request, requestOptions));
+        return core.HttpResponsePromise.fromPromise(this.__get(id, transcriptId, requestOptions));
     }
 
     private async __get(
         id: Corti.Uuid,
         transcriptId: Corti.Uuid,
-        _request: Corti.TranscriptsGetRequest = {},
         requestOptions?: TranscriptsClient.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.TranscriptsResponse>> {
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
@@ -457,7 +454,6 @@ export class TranscriptsClient {
      *
      * @param {Corti.Uuid} id - The unique identifier of the interaction. Must be a valid UUID.
      * @param {Corti.Uuid} transcriptId - The unique identifier of the transcript. Must be a valid UUID.
-     * @param {Corti.TranscriptsDeleteRequest} request
      * @param {TranscriptsClient.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Corti.BadRequestError}
@@ -472,16 +468,14 @@ export class TranscriptsClient {
     public delete(
         id: Corti.Uuid,
         transcriptId: Corti.Uuid,
-        request: Corti.TranscriptsDeleteRequest = {},
         requestOptions?: TranscriptsClient.RequestOptions,
     ): core.HttpResponsePromise<void> {
-        return core.HttpResponsePromise.fromPromise(this.__delete(id, transcriptId, request, requestOptions));
+        return core.HttpResponsePromise.fromPromise(this.__delete(id, transcriptId, requestOptions));
     }
 
     private async __delete(
         id: Corti.Uuid,
         transcriptId: Corti.Uuid,
-        _request: Corti.TranscriptsDeleteRequest = {},
         requestOptions?: TranscriptsClient.RequestOptions,
     ): Promise<core.WithRawResponse<void>> {
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
@@ -589,7 +583,6 @@ export class TranscriptsClient {
      *
      * @param {Corti.Uuid} id - The unique identifier of the interaction. Must be a valid UUID.
      * @param {Corti.Uuid} transcriptId - The unique identifier of the transcript. Must be a valid UUID.
-     * @param {Corti.TranscriptsGetStatusRequest} request
      * @param {TranscriptsClient.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Corti.NotFoundError}
@@ -600,16 +593,14 @@ export class TranscriptsClient {
     public getStatus(
         id: Corti.Uuid,
         transcriptId: Corti.Uuid,
-        request: Corti.TranscriptsGetStatusRequest = {},
         requestOptions?: TranscriptsClient.RequestOptions,
     ): core.HttpResponsePromise<Corti.TranscriptsStatusResponse> {
-        return core.HttpResponsePromise.fromPromise(this.__getStatus(id, transcriptId, request, requestOptions));
+        return core.HttpResponsePromise.fromPromise(this.__getStatus(id, transcriptId, requestOptions));
     }
 
     private async __getStatus(
         id: Corti.Uuid,
         transcriptId: Corti.Uuid,
-        _request: Corti.TranscriptsGetStatusRequest = {},
         requestOptions?: TranscriptsClient.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.TranscriptsStatusResponse>> {
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
