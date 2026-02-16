@@ -291,7 +291,6 @@ export class InteractionsClient {
     /**
      * Retrieves a previously recorded interaction by its unique identifier (interaction ID).
      *
-     * @param {Corti.Uuid} id - The unique identifier of the interaction. Must be a valid UUID.
      * @param {Corti.InteractionsGetRequest} request
      * @param {InteractionsClient.RequestOptions} requestOptions - Request-specific configuration.
      *
@@ -299,21 +298,22 @@ export class InteractionsClient {
      * @throws {@link Corti.GatewayTimeoutError}
      *
      * @example
-     *     await client.interactions.get("f47ac10b-58cc-4372-a567-0e02b2c3d479")
+     *     await client.interactions.get({
+     *         id: "f47ac10b-58cc-4372-a567-0e02b2c3d479"
+     *     })
      */
     public get(
-        id: Corti.Uuid,
-        request: Corti.InteractionsGetRequest = {},
+        request: Corti.InteractionsGetRequest,
         requestOptions?: InteractionsClient.RequestOptions,
     ): core.HttpResponsePromise<Corti.InteractionsGetResponse> {
-        return core.HttpResponsePromise.fromPromise(this.__get(id, request, requestOptions));
+        return core.HttpResponsePromise.fromPromise(this.__get(request, requestOptions));
     }
 
     private async __get(
-        id: Corti.Uuid,
-        _request: Corti.InteractionsGetRequest = {},
+        request: Corti.InteractionsGetRequest,
         requestOptions?: InteractionsClient.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.InteractionsGetResponse>> {
+        const { id } = request;
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
@@ -388,7 +388,6 @@ export class InteractionsClient {
     /**
      * Deletes an existing interaction.
      *
-     * @param {Corti.Uuid} id - The unique identifier of the interaction. Must be a valid UUID.
      * @param {Corti.InteractionsDeleteRequest} request
      * @param {InteractionsClient.RequestOptions} requestOptions - Request-specific configuration.
      *
@@ -396,21 +395,22 @@ export class InteractionsClient {
      * @throws {@link Corti.GatewayTimeoutError}
      *
      * @example
-     *     await client.interactions.delete("f47ac10b-58cc-4372-a567-0e02b2c3d479")
+     *     await client.interactions.delete({
+     *         id: "f47ac10b-58cc-4372-a567-0e02b2c3d479"
+     *     })
      */
     public delete(
-        id: Corti.Uuid,
-        request: Corti.InteractionsDeleteRequest = {},
+        request: Corti.InteractionsDeleteRequest,
         requestOptions?: InteractionsClient.RequestOptions,
     ): core.HttpResponsePromise<void> {
-        return core.HttpResponsePromise.fromPromise(this.__delete(id, request, requestOptions));
+        return core.HttpResponsePromise.fromPromise(this.__delete(request, requestOptions));
     }
 
     private async __delete(
-        id: Corti.Uuid,
-        _request: Corti.InteractionsDeleteRequest = {},
+        request: Corti.InteractionsDeleteRequest,
         requestOptions?: InteractionsClient.RequestOptions,
     ): Promise<core.WithRawResponse<void>> {
+        const { id } = request;
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
@@ -476,7 +476,6 @@ export class InteractionsClient {
     /**
      * Modifies an existing interaction by updating specific fields without overwriting the entire record.
      *
-     * @param {Corti.Uuid} id - The unique identifier of the interaction. Must be a valid UUID.
      * @param {Corti.InteractionsUpdateRequest} request
      * @param {InteractionsClient.RequestOptions} requestOptions - Request-specific configuration.
      *
@@ -484,21 +483,22 @@ export class InteractionsClient {
      * @throws {@link Corti.GatewayTimeoutError}
      *
      * @example
-     *     await client.interactions.update("f47ac10b-58cc-4372-a567-0e02b2c3d479")
+     *     await client.interactions.update({
+     *         id: "f47ac10b-58cc-4372-a567-0e02b2c3d479"
+     *     })
      */
     public update(
-        id: Corti.Uuid,
-        request: Corti.InteractionsUpdateRequest = {},
+        request: Corti.InteractionsUpdateRequest,
         requestOptions?: InteractionsClient.RequestOptions,
     ): core.HttpResponsePromise<Corti.InteractionsGetResponse> {
-        return core.HttpResponsePromise.fromPromise(this.__update(id, request, requestOptions));
+        return core.HttpResponsePromise.fromPromise(this.__update(request, requestOptions));
     }
 
     private async __update(
-        id: Corti.Uuid,
-        request: Corti.InteractionsUpdateRequest = {},
+        request: Corti.InteractionsUpdateRequest,
         requestOptions?: InteractionsClient.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.InteractionsGetResponse>> {
+        const { id, ..._body } = request;
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
@@ -517,7 +517,7 @@ export class InteractionsClient {
             contentType: "application/json",
             queryParameters: requestOptions?.queryParams,
             requestType: "json",
-            body: serializers.InteractionsUpdateRequest.jsonOrThrow(request, {
+            body: serializers.InteractionsUpdateRequest.jsonOrThrow(_body, {
                 unrecognizedObjectKeys: "strip",
                 omitUndefined: true,
             }),

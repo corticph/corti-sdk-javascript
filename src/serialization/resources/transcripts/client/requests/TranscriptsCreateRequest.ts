@@ -8,7 +8,7 @@ import { Uuid } from "../../../../types/Uuid.js";
 
 export const TranscriptsCreateRequest: core.serialization.Schema<
     serializers.TranscriptsCreateRequest.Raw,
-    Corti.TranscriptsCreateRequest
+    Omit<Corti.TranscriptsCreateRequest, "id">
 > = core.serialization.object({
     recordingId: Uuid,
     primaryLanguage: core.serialization.string(),

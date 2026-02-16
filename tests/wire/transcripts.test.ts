@@ -34,7 +34,9 @@ describe("TranscriptsClient", () => {
             .jsonBody(rawResponseBody)
             .build();
 
-        const response = await client.transcripts.list("f47ac10b-58cc-4372-a567-0e02b2c3d479");
+        const response = await client.transcripts.list({
+            id: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+        });
         expect(response).toEqual({
             transcripts: [
                 {
@@ -77,7 +79,9 @@ describe("TranscriptsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.transcripts.list("id");
+            return await client.transcripts.list({
+                id: "id",
+            });
         }).rejects.toThrow(Corti.BadRequestError);
     });
 
@@ -100,7 +104,9 @@ describe("TranscriptsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.transcripts.list("id");
+            return await client.transcripts.list({
+                id: "id",
+            });
         }).rejects.toThrow(Corti.UnauthorizedError);
     });
 
@@ -123,7 +129,9 @@ describe("TranscriptsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.transcripts.list("id");
+            return await client.transcripts.list({
+                id: "id",
+            });
         }).rejects.toThrow(Corti.ForbiddenError);
     });
 
@@ -146,7 +154,9 @@ describe("TranscriptsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.transcripts.list("id");
+            return await client.transcripts.list({
+                id: "id",
+            });
         }).rejects.toThrow(Corti.InternalServerError);
     });
 
@@ -169,7 +179,9 @@ describe("TranscriptsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.transcripts.list("id");
+            return await client.transcripts.list({
+                id: "id",
+            });
         }).rejects.toThrow(Corti.GatewayTimeoutError);
     });
 
@@ -199,7 +211,8 @@ describe("TranscriptsClient", () => {
             .jsonBody(rawResponseBody)
             .build();
 
-        const response = await client.transcripts.create("f47ac10b-58cc-4372-a567-0e02b2c3d479", {
+        const response = await client.transcripts.create({
+            id: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
             recordingId: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
             primaryLanguage: "en",
         });
@@ -251,7 +264,8 @@ describe("TranscriptsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.transcripts.create("id", {
+            return await client.transcripts.create({
+                id: "id",
                 recordingId: "recordingId",
                 primaryLanguage: "primaryLanguage",
             });
@@ -278,7 +292,8 @@ describe("TranscriptsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.transcripts.create("id", {
+            return await client.transcripts.create({
+                id: "id",
                 recordingId: "recordingId",
                 primaryLanguage: "primaryLanguage",
             });
@@ -305,7 +320,8 @@ describe("TranscriptsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.transcripts.create("id", {
+            return await client.transcripts.create({
+                id: "id",
                 recordingId: "recordingId",
                 primaryLanguage: "primaryLanguage",
             });
@@ -332,7 +348,8 @@ describe("TranscriptsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.transcripts.create("id", {
+            return await client.transcripts.create({
+                id: "id",
                 recordingId: "recordingId",
                 primaryLanguage: "primaryLanguage",
             });
@@ -359,7 +376,8 @@ describe("TranscriptsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.transcripts.create("id", {
+            return await client.transcripts.create({
+                id: "id",
                 recordingId: "recordingId",
                 primaryLanguage: "primaryLanguage",
             });
@@ -391,10 +409,10 @@ describe("TranscriptsClient", () => {
             .jsonBody(rawResponseBody)
             .build();
 
-        const response = await client.transcripts.get(
-            "f47ac10b-58cc-4372-a567-0e02b2c3d479",
-            "f47ac10b-58cc-4372-a567-0e02b2c3d479",
-        );
+        const response = await client.transcripts.get({
+            id: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+            transcriptId: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+        });
         expect(response).toEqual({
             id: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
             metadata: {
@@ -442,7 +460,10 @@ describe("TranscriptsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.transcripts.get("id", "transcriptId");
+            return await client.transcripts.get({
+                id: "id",
+                transcriptId: "transcriptId",
+            });
         }).rejects.toThrow(Corti.BadRequestError);
     });
 
@@ -465,7 +486,10 @@ describe("TranscriptsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.transcripts.get("id", "transcriptId");
+            return await client.transcripts.get({
+                id: "id",
+                transcriptId: "transcriptId",
+            });
         }).rejects.toThrow(Corti.UnauthorizedError);
     });
 
@@ -488,7 +512,10 @@ describe("TranscriptsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.transcripts.get("id", "transcriptId");
+            return await client.transcripts.get({
+                id: "id",
+                transcriptId: "transcriptId",
+            });
         }).rejects.toThrow(Corti.ForbiddenError);
     });
 
@@ -511,7 +538,10 @@ describe("TranscriptsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.transcripts.get("id", "transcriptId");
+            return await client.transcripts.get({
+                id: "id",
+                transcriptId: "transcriptId",
+            });
         }).rejects.toThrow(Corti.InternalServerError);
     });
 
@@ -534,7 +564,10 @@ describe("TranscriptsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.transcripts.get("id", "transcriptId");
+            return await client.transcripts.get({
+                id: "id",
+                transcriptId: "transcriptId",
+            });
         }).rejects.toThrow(Corti.GatewayTimeoutError);
     });
 
@@ -556,10 +589,10 @@ describe("TranscriptsClient", () => {
             .statusCode(200)
             .build();
 
-        const response = await client.transcripts.delete(
-            "f47ac10b-58cc-4372-a567-0e02b2c3d479",
-            "f47ac10b-58cc-4372-a567-0e02b2c3d479",
-        );
+        const response = await client.transcripts.delete({
+            id: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+            transcriptId: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+        });
         expect(response).toEqual(undefined);
     });
 
@@ -582,7 +615,10 @@ describe("TranscriptsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.transcripts.delete("id", "transcriptId");
+            return await client.transcripts.delete({
+                id: "id",
+                transcriptId: "transcriptId",
+            });
         }).rejects.toThrow(Corti.BadRequestError);
     });
 
@@ -605,7 +641,10 @@ describe("TranscriptsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.transcripts.delete("id", "transcriptId");
+            return await client.transcripts.delete({
+                id: "id",
+                transcriptId: "transcriptId",
+            });
         }).rejects.toThrow(Corti.UnauthorizedError);
     });
 
@@ -628,7 +667,10 @@ describe("TranscriptsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.transcripts.delete("id", "transcriptId");
+            return await client.transcripts.delete({
+                id: "id",
+                transcriptId: "transcriptId",
+            });
         }).rejects.toThrow(Corti.ForbiddenError);
     });
 
@@ -651,7 +693,10 @@ describe("TranscriptsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.transcripts.delete("id", "transcriptId");
+            return await client.transcripts.delete({
+                id: "id",
+                transcriptId: "transcriptId",
+            });
         }).rejects.toThrow(Corti.InternalServerError);
     });
 
@@ -674,7 +719,10 @@ describe("TranscriptsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.transcripts.delete("id", "transcriptId");
+            return await client.transcripts.delete({
+                id: "id",
+                transcriptId: "transcriptId",
+            });
         }).rejects.toThrow(Corti.GatewayTimeoutError);
     });
 
@@ -698,10 +746,10 @@ describe("TranscriptsClient", () => {
             .jsonBody(rawResponseBody)
             .build();
 
-        const response = await client.transcripts.getStatus(
-            "f47ac10b-58cc-4372-a567-0e02b2c3d479",
-            "f47ac10b-58cc-4372-a567-0e02b2c3d479",
-        );
+        const response = await client.transcripts.getStatus({
+            id: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+            transcriptId: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+        });
         expect(response).toEqual({
             status: "completed",
         });
@@ -726,7 +774,10 @@ describe("TranscriptsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.transcripts.getStatus("id", "transcriptId");
+            return await client.transcripts.getStatus({
+                id: "id",
+                transcriptId: "transcriptId",
+            });
         }).rejects.toThrow(Corti.NotFoundError);
     });
 });

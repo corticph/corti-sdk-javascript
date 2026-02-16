@@ -46,7 +46,9 @@ describe("DocumentsClient", () => {
             .jsonBody(rawResponseBody)
             .build();
 
-        const response = await client.documents.list("f47ac10b-58cc-4372-a567-0e02b2c3d479");
+        const response = await client.documents.list({
+            id: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+        });
         expect(response).toEqual({
             data: [
                 {
@@ -94,7 +96,9 @@ describe("DocumentsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.documents.list("id");
+            return await client.documents.list({
+                id: "id",
+            });
         }).rejects.toThrow(Corti.BadRequestError);
     });
 
@@ -117,7 +121,9 @@ describe("DocumentsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.documents.list("id");
+            return await client.documents.list({
+                id: "id",
+            });
         }).rejects.toThrow(Corti.ForbiddenError);
     });
 
@@ -140,7 +146,9 @@ describe("DocumentsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.documents.list("id");
+            return await client.documents.list({
+                id: "id",
+            });
         }).rejects.toThrow(Corti.InternalServerError);
     });
 
@@ -163,7 +171,9 @@ describe("DocumentsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.documents.list("id");
+            return await client.documents.list({
+                id: "id",
+            });
         }).rejects.toThrow(Corti.GatewayTimeoutError);
     });
 
@@ -175,7 +185,11 @@ describe("DocumentsClient", () => {
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
-        const rawRequestBody = {};
+        const rawRequestBody = {
+            context: [{ type: "facts", data: [{ text: "text", source: "core" }] }],
+            templateKey: "templateKey",
+            outputLanguage: "outputLanguage",
+        };
         const rawResponseBody = {
             id: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
             name: "name",
@@ -205,7 +219,24 @@ describe("DocumentsClient", () => {
             .jsonBody(rawResponseBody)
             .build();
 
-        const response = await client.documents.create("f47ac10b-58cc-4372-a567-0e02b2c3d479");
+        const response = await client.documents.create({
+            id: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+            body: {
+                context: [
+                    {
+                        type: "facts",
+                        data: [
+                            {
+                                text: "text",
+                                source: "core",
+                            },
+                        ],
+                    },
+                ],
+                templateKey: "templateKey",
+                outputLanguage: "outputLanguage",
+            },
+        });
         expect(response).toEqual({
             id: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
             name: "name",
@@ -238,7 +269,26 @@ describe("DocumentsClient", () => {
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
-        const rawRequestBody = {};
+        const rawRequestBody = {
+            context: [
+                {
+                    type: "facts",
+                    data: [
+                        { text: "text", source: "core" },
+                        { text: "text", source: "core" },
+                    ],
+                },
+                {
+                    type: "facts",
+                    data: [
+                        { text: "text", source: "core" },
+                        { text: "text", source: "core" },
+                    ],
+                },
+            ],
+            templateKey: "templateKey",
+            outputLanguage: "outputLanguage",
+        };
         const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
         server
             .mockEndpoint()
@@ -250,7 +300,41 @@ describe("DocumentsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.documents.create("id");
+            return await client.documents.create({
+                id: "id",
+                body: {
+                    context: [
+                        {
+                            type: "facts",
+                            data: [
+                                {
+                                    text: "text",
+                                    source: "core",
+                                },
+                                {
+                                    text: "text",
+                                    source: "core",
+                                },
+                            ],
+                        },
+                        {
+                            type: "facts",
+                            data: [
+                                {
+                                    text: "text",
+                                    source: "core",
+                                },
+                                {
+                                    text: "text",
+                                    source: "core",
+                                },
+                            ],
+                        },
+                    ],
+                    templateKey: "templateKey",
+                    outputLanguage: "outputLanguage",
+                },
+            });
         }).rejects.toThrow(Corti.BadRequestError);
     });
 
@@ -262,7 +346,26 @@ describe("DocumentsClient", () => {
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
-        const rawRequestBody = {};
+        const rawRequestBody = {
+            context: [
+                {
+                    type: "facts",
+                    data: [
+                        { text: "text", source: "core" },
+                        { text: "text", source: "core" },
+                    ],
+                },
+                {
+                    type: "facts",
+                    data: [
+                        { text: "text", source: "core" },
+                        { text: "text", source: "core" },
+                    ],
+                },
+            ],
+            templateKey: "templateKey",
+            outputLanguage: "outputLanguage",
+        };
         const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
         server
             .mockEndpoint()
@@ -274,7 +377,41 @@ describe("DocumentsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.documents.create("id");
+            return await client.documents.create({
+                id: "id",
+                body: {
+                    context: [
+                        {
+                            type: "facts",
+                            data: [
+                                {
+                                    text: "text",
+                                    source: "core",
+                                },
+                                {
+                                    text: "text",
+                                    source: "core",
+                                },
+                            ],
+                        },
+                        {
+                            type: "facts",
+                            data: [
+                                {
+                                    text: "text",
+                                    source: "core",
+                                },
+                                {
+                                    text: "text",
+                                    source: "core",
+                                },
+                            ],
+                        },
+                    ],
+                    templateKey: "templateKey",
+                    outputLanguage: "outputLanguage",
+                },
+            });
         }).rejects.toThrow(Corti.ForbiddenError);
     });
 
@@ -286,7 +423,26 @@ describe("DocumentsClient", () => {
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
-        const rawRequestBody = {};
+        const rawRequestBody = {
+            context: [
+                {
+                    type: "facts",
+                    data: [
+                        { text: "text", source: "core" },
+                        { text: "text", source: "core" },
+                    ],
+                },
+                {
+                    type: "facts",
+                    data: [
+                        { text: "text", source: "core" },
+                        { text: "text", source: "core" },
+                    ],
+                },
+            ],
+            templateKey: "templateKey",
+            outputLanguage: "outputLanguage",
+        };
         const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
         server
             .mockEndpoint()
@@ -298,7 +454,41 @@ describe("DocumentsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.documents.create("id");
+            return await client.documents.create({
+                id: "id",
+                body: {
+                    context: [
+                        {
+                            type: "facts",
+                            data: [
+                                {
+                                    text: "text",
+                                    source: "core",
+                                },
+                                {
+                                    text: "text",
+                                    source: "core",
+                                },
+                            ],
+                        },
+                        {
+                            type: "facts",
+                            data: [
+                                {
+                                    text: "text",
+                                    source: "core",
+                                },
+                                {
+                                    text: "text",
+                                    source: "core",
+                                },
+                            ],
+                        },
+                    ],
+                    templateKey: "templateKey",
+                    outputLanguage: "outputLanguage",
+                },
+            });
         }).rejects.toThrow(Corti.InternalServerError);
     });
 
@@ -310,7 +500,26 @@ describe("DocumentsClient", () => {
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
-        const rawRequestBody = {};
+        const rawRequestBody = {
+            context: [
+                {
+                    type: "facts",
+                    data: [
+                        { text: "text", source: "core" },
+                        { text: "text", source: "core" },
+                    ],
+                },
+                {
+                    type: "facts",
+                    data: [
+                        { text: "text", source: "core" },
+                        { text: "text", source: "core" },
+                    ],
+                },
+            ],
+            templateKey: "templateKey",
+            outputLanguage: "outputLanguage",
+        };
         const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
         server
             .mockEndpoint()
@@ -322,7 +531,41 @@ describe("DocumentsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.documents.create("id");
+            return await client.documents.create({
+                id: "id",
+                body: {
+                    context: [
+                        {
+                            type: "facts",
+                            data: [
+                                {
+                                    text: "text",
+                                    source: "core",
+                                },
+                                {
+                                    text: "text",
+                                    source: "core",
+                                },
+                            ],
+                        },
+                        {
+                            type: "facts",
+                            data: [
+                                {
+                                    text: "text",
+                                    source: "core",
+                                },
+                                {
+                                    text: "text",
+                                    source: "core",
+                                },
+                            ],
+                        },
+                    ],
+                    templateKey: "templateKey",
+                    outputLanguage: "outputLanguage",
+                },
+            });
         }).rejects.toThrow(Corti.GatewayTimeoutError);
     });
 
@@ -363,10 +606,10 @@ describe("DocumentsClient", () => {
             .jsonBody(rawResponseBody)
             .build();
 
-        const response = await client.documents.get(
-            "f47ac10b-58cc-4372-a567-0e02b2c3d479",
-            "f47ac10b-58cc-4372-a567-0e02b2c3d479",
-        );
+        const response = await client.documents.get({
+            id: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+            documentId: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+        });
         expect(response).toEqual({
             id: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
             name: "name",
@@ -410,7 +653,10 @@ describe("DocumentsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.documents.get("id", "documentId");
+            return await client.documents.get({
+                id: "id",
+                documentId: "documentId",
+            });
         }).rejects.toThrow(Corti.BadRequestError);
     });
 
@@ -433,7 +679,10 @@ describe("DocumentsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.documents.get("id", "documentId");
+            return await client.documents.get({
+                id: "id",
+                documentId: "documentId",
+            });
         }).rejects.toThrow(Corti.ForbiddenError);
     });
 
@@ -456,7 +705,10 @@ describe("DocumentsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.documents.get("id", "documentId");
+            return await client.documents.get({
+                id: "id",
+                documentId: "documentId",
+            });
         }).rejects.toThrow(Corti.InternalServerError);
     });
 
@@ -479,7 +731,10 @@ describe("DocumentsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.documents.get("id", "documentId");
+            return await client.documents.get({
+                id: "id",
+                documentId: "documentId",
+            });
         }).rejects.toThrow(Corti.GatewayTimeoutError);
     });
 
@@ -499,10 +754,10 @@ describe("DocumentsClient", () => {
             .statusCode(200)
             .build();
 
-        const response = await client.documents.delete(
-            "f47ac10b-58cc-4372-a567-0e02b2c3d479",
-            "f47ac10b-58cc-4372-a567-0e02b2c3d479",
-        );
+        const response = await client.documents.delete({
+            id: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+            documentId: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+        });
         expect(response).toEqual(undefined);
     });
 
@@ -525,7 +780,10 @@ describe("DocumentsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.documents.delete("id", "documentId");
+            return await client.documents.delete({
+                id: "id",
+                documentId: "documentId",
+            });
         }).rejects.toThrow(Corti.ForbiddenError);
     });
 
@@ -548,7 +806,10 @@ describe("DocumentsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.documents.delete("id", "documentId");
+            return await client.documents.delete({
+                id: "id",
+                documentId: "documentId",
+            });
         }).rejects.toThrow(Corti.NotFoundError);
     });
 
@@ -571,7 +832,10 @@ describe("DocumentsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.documents.delete("id", "documentId");
+            return await client.documents.delete({
+                id: "id",
+                documentId: "documentId",
+            });
         }).rejects.toThrow(Corti.InternalServerError);
     });
 
@@ -594,7 +858,10 @@ describe("DocumentsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.documents.delete("id", "documentId");
+            return await client.documents.delete({
+                id: "id",
+                documentId: "documentId",
+            });
         }).rejects.toThrow(Corti.GatewayTimeoutError);
     });
 
@@ -636,10 +903,10 @@ describe("DocumentsClient", () => {
             .jsonBody(rawResponseBody)
             .build();
 
-        const response = await client.documents.update(
-            "f47ac10b-58cc-4372-a567-0e02b2c3d479",
-            "f47ac10b-58cc-4372-a567-0e02b2c3d479",
-        );
+        const response = await client.documents.update({
+            id: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+            documentId: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+        });
         expect(response).toEqual({
             id: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
             name: "name",
@@ -684,7 +951,10 @@ describe("DocumentsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.documents.update("id", "documentId");
+            return await client.documents.update({
+                id: "id",
+                documentId: "documentId",
+            });
         }).rejects.toThrow(Corti.BadRequestError);
     });
 
@@ -708,7 +978,10 @@ describe("DocumentsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.documents.update("id", "documentId");
+            return await client.documents.update({
+                id: "id",
+                documentId: "documentId",
+            });
         }).rejects.toThrow(Corti.ForbiddenError);
     });
 
@@ -732,7 +1005,10 @@ describe("DocumentsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.documents.update("id", "documentId");
+            return await client.documents.update({
+                id: "id",
+                documentId: "documentId",
+            });
         }).rejects.toThrow(Corti.InternalServerError);
     });
 
@@ -756,7 +1032,10 @@ describe("DocumentsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.documents.update("id", "documentId");
+            return await client.documents.update({
+                id: "id",
+                documentId: "documentId",
+            });
         }).rejects.toThrow(Corti.GatewayTimeoutError);
     });
 });
