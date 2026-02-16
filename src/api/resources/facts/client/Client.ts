@@ -104,28 +104,28 @@ export class FactsClient {
     /**
      * Retrieves a list of facts for a given interaction.
      *
+     * @param {Corti.Uuid} id - The unique identifier of the interaction. Must be a valid UUID.
      * @param {Corti.FactsListRequest} request
      * @param {FactsClient.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Corti.GatewayTimeoutError}
      *
      * @example
-     *     await client.facts.list({
-     *         id: "f47ac10b-58cc-4372-a567-0e02b2c3d479"
-     *     })
+     *     await client.facts.list("f47ac10b-58cc-4372-a567-0e02b2c3d479")
      */
     public list(
-        request: Corti.FactsListRequest,
+        id: Corti.Uuid,
+        request: Corti.FactsListRequest = {},
         requestOptions?: FactsClient.RequestOptions,
     ): core.HttpResponsePromise<Corti.FactsListResponse> {
-        return core.HttpResponsePromise.fromPromise(this.__list(request, requestOptions));
+        return core.HttpResponsePromise.fromPromise(this.__list(id, request, requestOptions));
     }
 
     private async __list(
-        request: Corti.FactsListRequest,
+        id: Corti.Uuid,
+        _request: Corti.FactsListRequest = {},
         requestOptions?: FactsClient.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.FactsListResponse>> {
-        const { id } = request;
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
@@ -189,14 +189,14 @@ export class FactsClient {
     /**
      * Adds new facts to an interaction.
      *
+     * @param {Corti.Uuid} id - The unique identifier of the interaction. Must be a valid UUID.
      * @param {Corti.FactsCreateRequest} request
      * @param {FactsClient.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Corti.GatewayTimeoutError}
      *
      * @example
-     *     await client.facts.create({
-     *         id: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+     *     await client.facts.create("f47ac10b-58cc-4372-a567-0e02b2c3d479", {
      *         facts: [{
      *                 text: "text",
      *                 group: "other"
@@ -204,17 +204,18 @@ export class FactsClient {
      *     })
      */
     public create(
+        id: Corti.Uuid,
         request: Corti.FactsCreateRequest,
         requestOptions?: FactsClient.RequestOptions,
     ): core.HttpResponsePromise<Corti.FactsCreateResponse> {
-        return core.HttpResponsePromise.fromPromise(this.__create(request, requestOptions));
+        return core.HttpResponsePromise.fromPromise(this.__create(id, request, requestOptions));
     }
 
     private async __create(
+        id: Corti.Uuid,
         request: Corti.FactsCreateRequest,
         requestOptions?: FactsClient.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.FactsCreateResponse>> {
-        const { id, ..._body } = request;
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
@@ -233,7 +234,7 @@ export class FactsClient {
             contentType: "application/json",
             queryParameters: requestOptions?.queryParams,
             requestType: "json",
-            body: serializers.FactsCreateRequest.jsonOrThrow(_body, {
+            body: serializers.FactsCreateRequest.jsonOrThrow(request, {
                 unrecognizedObjectKeys: "strip",
                 omitUndefined: true,
             }),
@@ -284,31 +285,32 @@ export class FactsClient {
     /**
      * Updates multiple facts associated with an interaction.
      *
+     * @param {Corti.Uuid} id - The unique identifier of the interaction. Must be a valid UUID.
      * @param {Corti.FactsBatchUpdateRequest} request
      * @param {FactsClient.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Corti.GatewayTimeoutError}
      *
      * @example
-     *     await client.facts.batchUpdate({
-     *         id: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+     *     await client.facts.batchUpdate("f47ac10b-58cc-4372-a567-0e02b2c3d479", {
      *         facts: [{
      *                 factId: "3c9d8a12-7f44-4b3e-9e6f-9271c2bbfa08"
      *             }]
      *     })
      */
     public batchUpdate(
+        id: Corti.Uuid,
         request: Corti.FactsBatchUpdateRequest,
         requestOptions?: FactsClient.RequestOptions,
     ): core.HttpResponsePromise<Corti.FactsBatchUpdateResponse> {
-        return core.HttpResponsePromise.fromPromise(this.__batchUpdate(request, requestOptions));
+        return core.HttpResponsePromise.fromPromise(this.__batchUpdate(id, request, requestOptions));
     }
 
     private async __batchUpdate(
+        id: Corti.Uuid,
         request: Corti.FactsBatchUpdateRequest,
         requestOptions?: FactsClient.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.FactsBatchUpdateResponse>> {
-        const { id, ..._body } = request;
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
@@ -327,7 +329,7 @@ export class FactsClient {
             contentType: "application/json",
             queryParameters: requestOptions?.queryParams,
             requestType: "json",
-            body: serializers.FactsBatchUpdateRequest.jsonOrThrow(_body, {
+            body: serializers.FactsBatchUpdateRequest.jsonOrThrow(request, {
                 unrecognizedObjectKeys: "strip",
                 omitUndefined: true,
             }),
@@ -378,29 +380,31 @@ export class FactsClient {
     /**
      * Updates an existing fact associated with a specific interaction.
      *
+     * @param {Corti.Uuid} id - The unique identifier of the interaction. Must be a valid UUID.
+     * @param {string} factId - The unique identifier of the fact to update. Must be a valid UUID.
      * @param {Corti.FactsUpdateRequest} request
      * @param {FactsClient.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Corti.GatewayTimeoutError}
      *
      * @example
-     *     await client.facts.update({
-     *         id: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
-     *         factId: "3c9d8a12-7f44-4b3e-9e6f-9271c2bbfa08"
-     *     })
+     *     await client.facts.update("f47ac10b-58cc-4372-a567-0e02b2c3d479", "3c9d8a12-7f44-4b3e-9e6f-9271c2bbfa08")
      */
     public update(
-        request: Corti.FactsUpdateRequest,
+        id: Corti.Uuid,
+        factId: string,
+        request: Corti.FactsUpdateRequest = {},
         requestOptions?: FactsClient.RequestOptions,
     ): core.HttpResponsePromise<Corti.FactsUpdateResponse> {
-        return core.HttpResponsePromise.fromPromise(this.__update(request, requestOptions));
+        return core.HttpResponsePromise.fromPromise(this.__update(id, factId, request, requestOptions));
     }
 
     private async __update(
-        request: Corti.FactsUpdateRequest,
+        id: Corti.Uuid,
+        factId: string,
+        request: Corti.FactsUpdateRequest = {},
         requestOptions?: FactsClient.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.FactsUpdateResponse>> {
-        const { id, factId, ..._body } = request;
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
@@ -419,7 +423,7 @@ export class FactsClient {
             contentType: "application/json",
             queryParameters: requestOptions?.queryParams,
             requestType: "json",
-            body: serializers.FactsUpdateRequest.jsonOrThrow(_body, {
+            body: serializers.FactsUpdateRequest.jsonOrThrow(request, {
                 unrecognizedObjectKeys: "strip",
                 omitUndefined: true,
             }),

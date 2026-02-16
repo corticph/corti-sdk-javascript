@@ -4,16 +4,9 @@ import type * as Corti from "../../../../index.js";
 
 /**
  * @example
- *     {
- *         id: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
- *         factId: "3c9d8a12-7f44-4b3e-9e6f-9271c2bbfa08"
- *     }
+ *     {}
  */
 export interface FactsUpdateRequest {
-    /** The unique identifier of the interaction. Must be a valid UUID. */
-    id: Corti.Uuid;
-    /** The unique identifier of the fact to update. Must be a valid UUID. */
-    factId: string;
     /** The updated text of the fact. */
     text?: string;
     /** The updated group key for the fact. */

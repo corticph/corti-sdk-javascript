@@ -322,9 +322,7 @@ describe("InteractionsClient", () => {
             .jsonBody(rawResponseBody)
             .build();
 
-        const response = await client.interactions.get({
-            id: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
-        });
+        const response = await client.interactions.get("f47ac10b-58cc-4372-a567-0e02b2c3d479");
         expect(response).toEqual({
             id: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
             assignedUserId: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
@@ -366,9 +364,7 @@ describe("InteractionsClient", () => {
         server.mockEndpoint().get("/interactions/id").respondWith().statusCode(403).jsonBody(rawResponseBody).build();
 
         await expect(async () => {
-            return await client.interactions.get({
-                id: "id",
-            });
+            return await client.interactions.get("id");
         }).rejects.toThrow(Corti.ForbiddenError);
     });
 
@@ -385,9 +381,7 @@ describe("InteractionsClient", () => {
         server.mockEndpoint().get("/interactions/id").respondWith().statusCode(504).jsonBody(rawResponseBody).build();
 
         await expect(async () => {
-            return await client.interactions.get({
-                id: "id",
-            });
+            return await client.interactions.get("id");
         }).rejects.toThrow(Corti.GatewayTimeoutError);
     });
 
@@ -407,9 +401,7 @@ describe("InteractionsClient", () => {
             .statusCode(200)
             .build();
 
-        const response = await client.interactions.delete({
-            id: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
-        });
+        const response = await client.interactions.delete("f47ac10b-58cc-4372-a567-0e02b2c3d479");
         expect(response).toEqual(undefined);
     });
 
@@ -432,9 +424,7 @@ describe("InteractionsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.interactions.delete({
-                id: "id",
-            });
+            return await client.interactions.delete("id");
         }).rejects.toThrow(Corti.ForbiddenError);
     });
 
@@ -457,9 +447,7 @@ describe("InteractionsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.interactions.delete({
-                id: "id",
-            });
+            return await client.interactions.delete("id");
         }).rejects.toThrow(Corti.GatewayTimeoutError);
     });
 
@@ -504,9 +492,7 @@ describe("InteractionsClient", () => {
             .jsonBody(rawResponseBody)
             .build();
 
-        const response = await client.interactions.update({
-            id: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
-        });
+        const response = await client.interactions.update("f47ac10b-58cc-4372-a567-0e02b2c3d479");
         expect(response).toEqual({
             id: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
             assignedUserId: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
@@ -555,9 +541,7 @@ describe("InteractionsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.interactions.update({
-                id: "id",
-            });
+            return await client.interactions.update("id");
         }).rejects.toThrow(Corti.ForbiddenError);
     });
 
@@ -581,9 +565,7 @@ describe("InteractionsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.interactions.update({
-                id: "id",
-            });
+            return await client.interactions.update("id");
         }).rejects.toThrow(Corti.GatewayTimeoutError);
     });
 });

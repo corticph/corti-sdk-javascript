@@ -80,9 +80,7 @@ describe("FactsClient", () => {
             .jsonBody(rawResponseBody)
             .build();
 
-        const response = await client.facts.list({
-            id: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
-        });
+        const response = await client.facts.list("f47ac10b-58cc-4372-a567-0e02b2c3d479");
         expect(response).toEqual({
             facts: [
                 {
@@ -119,9 +117,7 @@ describe("FactsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.facts.list({
-                id: "id",
-            });
+            return await client.facts.list("id");
         }).rejects.toThrow(Corti.GatewayTimeoutError);
     });
 
@@ -156,8 +152,7 @@ describe("FactsClient", () => {
             .jsonBody(rawResponseBody)
             .build();
 
-        const response = await client.facts.create({
-            id: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+        const response = await client.facts.create("f47ac10b-58cc-4372-a567-0e02b2c3d479", {
             facts: [
                 {
                     text: "text",
@@ -205,8 +200,7 @@ describe("FactsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.facts.create({
-                id: "id",
+            return await client.facts.create("id", {
                 facts: [
                     {
                         text: "text",
@@ -253,8 +247,7 @@ describe("FactsClient", () => {
             .jsonBody(rawResponseBody)
             .build();
 
-        const response = await client.facts.batchUpdate({
-            id: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+        const response = await client.facts.batchUpdate("f47ac10b-58cc-4372-a567-0e02b2c3d479", {
             facts: [
                 {
                     factId: "3c9d8a12-7f44-4b3e-9e6f-9271c2bbfa08",
@@ -297,8 +290,7 @@ describe("FactsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.facts.batchUpdate({
-                id: "id",
+            return await client.facts.batchUpdate("id", {
                 facts: [
                     {
                         factId: "factId",
@@ -339,10 +331,10 @@ describe("FactsClient", () => {
             .jsonBody(rawResponseBody)
             .build();
 
-        const response = await client.facts.update({
-            id: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
-            factId: "3c9d8a12-7f44-4b3e-9e6f-9271c2bbfa08",
-        });
+        const response = await client.facts.update(
+            "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+            "3c9d8a12-7f44-4b3e-9e6f-9271c2bbfa08",
+        );
         expect(response).toEqual({
             id: "3c9d8a12-7f44-4b3e-9e6f-9271c2bbfa08",
             text: "text",
@@ -375,10 +367,7 @@ describe("FactsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.facts.update({
-                id: "id",
-                factId: "factId",
-            });
+            return await client.facts.update("id", "factId");
         }).rejects.toThrow(Corti.GatewayTimeoutError);
     });
 

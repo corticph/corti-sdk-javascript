@@ -5,15 +5,12 @@ import type * as Corti from "../../../../index.js";
 /**
  * @example
  *     {
- *         id: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
  *         facts: [{
  *                 factId: "3c9d8a12-7f44-4b3e-9e6f-9271c2bbfa08"
  *             }]
  *     }
  */
 export interface FactsBatchUpdateRequest {
-    /** The unique identifier of the interaction. Must be a valid UUID. */
-    id: Corti.Uuid;
     /** A list of facts to be updated. */
     facts: Corti.FactsBatchUpdateInput[];
 }

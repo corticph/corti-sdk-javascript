@@ -5,7 +5,6 @@ import type * as Corti from "../../../../index.js";
 /**
  * @example
  *     {
- *         id: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
  *         body: {
  *             context: [{
  *                     type: "facts",
@@ -20,7 +19,5 @@ import type * as Corti from "../../../../index.js";
  *     }
  */
 export interface DocumentsCreateRequest {
-    /** The unique identifier of the interaction. Must be a valid UUID. */
-    id: Corti.Uuid;
     body: Corti.DocumentsCreateRequestBody;
 }
