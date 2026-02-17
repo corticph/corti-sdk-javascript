@@ -206,4 +206,343 @@ describe("AgentsClient", () => {
             });
         }).rejects.toThrow(Corti.UnauthorizedError);
     });
+
+    test("get (1)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new CortiClient({
+            maxRetries: 0,
+            token: "test",
+            tenantName: "test",
+            environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
+        });
+
+        const rawResponseBody = {
+            id: "id",
+            name: "name",
+            description: "description",
+            systemPrompt: "systemPrompt",
+            experts: [
+                {
+                    type: "expert",
+                    id: "id",
+                    name: "name",
+                    description: "description",
+                    systemPrompt: "systemPrompt",
+                    mcpServers: [
+                        { id: "id", name: "name", transportType: "stdio", authorizationType: "none", url: "url" },
+                    ],
+                },
+            ],
+        };
+        server
+            .mockEndpoint()
+            .get("/agents/12345678-90ab-cdef-gh12-34567890abc")
+            .respondWith()
+            .statusCode(200)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        const response = await client.agents.get("12345678-90ab-cdef-gh12-34567890abc");
+        expect(response).toEqual({
+            id: "id",
+            name: "name",
+            description: "description",
+            systemPrompt: "systemPrompt",
+            experts: [
+                {
+                    type: "expert",
+                    id: "id",
+                    name: "name",
+                    description: "description",
+                    systemPrompt: "systemPrompt",
+                    mcpServers: [
+                        {
+                            id: "id",
+                            name: "name",
+                            transportType: "stdio",
+                            authorizationType: "none",
+                            url: "url",
+                        },
+                    ],
+                },
+            ],
+        });
+    });
+
+    test("get (2)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new CortiClient({
+            maxRetries: 0,
+            token: "test",
+            tenantName: "test",
+            environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
+        });
+
+        const rawResponseBody = { key: "value" };
+        server.mockEndpoint().get("/agents/id").respondWith().statusCode(400).jsonBody(rawResponseBody).build();
+
+        await expect(async () => {
+            return await client.agents.get("id");
+        }).rejects.toThrow(Corti.BadRequestError);
+    });
+
+    test("get (3)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new CortiClient({
+            maxRetries: 0,
+            token: "test",
+            tenantName: "test",
+            environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
+        });
+
+        const rawResponseBody = { key: "value" };
+        server.mockEndpoint().get("/agents/id").respondWith().statusCode(401).jsonBody(rawResponseBody).build();
+
+        await expect(async () => {
+            return await client.agents.get("id");
+        }).rejects.toThrow(Corti.UnauthorizedError);
+    });
+
+    test("get (4)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new CortiClient({
+            maxRetries: 0,
+            token: "test",
+            tenantName: "test",
+            environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
+        });
+
+        const rawResponseBody = { key: "value" };
+        server.mockEndpoint().get("/agents/id").respondWith().statusCode(404).jsonBody(rawResponseBody).build();
+
+        await expect(async () => {
+            return await client.agents.get("id");
+        }).rejects.toThrow(Corti.NotFoundError);
+    });
+
+    test("delete (1)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new CortiClient({
+            maxRetries: 0,
+            token: "test",
+            tenantName: "test",
+            environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
+        });
+
+        server
+            .mockEndpoint()
+            .delete("/agents/12345678-90ab-cdef-gh12-34567890abc")
+            .respondWith()
+            .statusCode(200)
+            .build();
+
+        const response = await client.agents.delete("12345678-90ab-cdef-gh12-34567890abc");
+        expect(response).toEqual(undefined);
+    });
+
+    test("delete (2)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new CortiClient({
+            maxRetries: 0,
+            token: "test",
+            tenantName: "test",
+            environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
+        });
+
+        const rawResponseBody = { key: "value" };
+        server.mockEndpoint().delete("/agents/id").respondWith().statusCode(400).jsonBody(rawResponseBody).build();
+
+        await expect(async () => {
+            return await client.agents.delete("id");
+        }).rejects.toThrow(Corti.BadRequestError);
+    });
+
+    test("delete (3)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new CortiClient({
+            maxRetries: 0,
+            token: "test",
+            tenantName: "test",
+            environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
+        });
+
+        const rawResponseBody = { key: "value" };
+        server.mockEndpoint().delete("/agents/id").respondWith().statusCode(401).jsonBody(rawResponseBody).build();
+
+        await expect(async () => {
+            return await client.agents.delete("id");
+        }).rejects.toThrow(Corti.UnauthorizedError);
+    });
+
+    test("delete (4)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new CortiClient({
+            maxRetries: 0,
+            token: "test",
+            tenantName: "test",
+            environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
+        });
+
+        const rawResponseBody = { key: "value" };
+        server.mockEndpoint().delete("/agents/id").respondWith().statusCode(404).jsonBody(rawResponseBody).build();
+
+        await expect(async () => {
+            return await client.agents.delete("id");
+        }).rejects.toThrow(Corti.NotFoundError);
+    });
+
+    test("update (1)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new CortiClient({
+            maxRetries: 0,
+            token: "test",
+            tenantName: "test",
+            environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
+        });
+        const rawRequestBody = { id: "id", name: "name", description: "description", systemPrompt: "systemPrompt" };
+        const rawResponseBody = {
+            id: "id",
+            name: "name",
+            description: "description",
+            systemPrompt: "systemPrompt",
+            experts: [
+                {
+                    type: "expert",
+                    id: "id",
+                    name: "name",
+                    description: "description",
+                    systemPrompt: "systemPrompt",
+                    mcpServers: [
+                        { id: "id", name: "name", transportType: "stdio", authorizationType: "none", url: "url" },
+                    ],
+                },
+            ],
+        };
+        server
+            .mockEndpoint()
+            .patch("/agents/12345678-90ab-cdef-gh12-34567890abc")
+            .jsonBody(rawRequestBody)
+            .respondWith()
+            .statusCode(200)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        const response = await client.agents.update("12345678-90ab-cdef-gh12-34567890abc", {
+            id: "id",
+            name: "name",
+            description: "description",
+            systemPrompt: "systemPrompt",
+        });
+        expect(response).toEqual({
+            id: "id",
+            name: "name",
+            description: "description",
+            systemPrompt: "systemPrompt",
+            experts: [
+                {
+                    type: "expert",
+                    id: "id",
+                    name: "name",
+                    description: "description",
+                    systemPrompt: "systemPrompt",
+                    mcpServers: [
+                        {
+                            id: "id",
+                            name: "name",
+                            transportType: "stdio",
+                            authorizationType: "none",
+                            url: "url",
+                        },
+                    ],
+                },
+            ],
+        });
+    });
+
+    test("update (2)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new CortiClient({
+            maxRetries: 0,
+            token: "test",
+            tenantName: "test",
+            environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
+        });
+        const rawRequestBody = { id: "id", name: "name", description: "description", systemPrompt: "systemPrompt" };
+        const rawResponseBody = { key: "value" };
+        server
+            .mockEndpoint()
+            .patch("/agents/id")
+            .jsonBody(rawRequestBody)
+            .respondWith()
+            .statusCode(400)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.agents.update("id", {
+                id: "id",
+                name: "name",
+                description: "description",
+                systemPrompt: "systemPrompt",
+            });
+        }).rejects.toThrow(Corti.BadRequestError);
+    });
+
+    test("update (3)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new CortiClient({
+            maxRetries: 0,
+            token: "test",
+            tenantName: "test",
+            environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
+        });
+        const rawRequestBody = { id: "id", name: "name", description: "description", systemPrompt: "systemPrompt" };
+        const rawResponseBody = { key: "value" };
+        server
+            .mockEndpoint()
+            .patch("/agents/id")
+            .jsonBody(rawRequestBody)
+            .respondWith()
+            .statusCode(401)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.agents.update("id", {
+                id: "id",
+                name: "name",
+                description: "description",
+                systemPrompt: "systemPrompt",
+            });
+        }).rejects.toThrow(Corti.UnauthorizedError);
+    });
+
+    test("update (4)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new CortiClient({
+            maxRetries: 0,
+            token: "test",
+            tenantName: "test",
+            environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
+        });
+        const rawRequestBody = { id: "id", name: "name", description: "description", systemPrompt: "systemPrompt" };
+        const rawResponseBody = { key: "value" };
+        server
+            .mockEndpoint()
+            .patch("/agents/id")
+            .jsonBody(rawRequestBody)
+            .respondWith()
+            .statusCode(404)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.agents.update("id", {
+                id: "id",
+                name: "name",
+                description: "description",
+                systemPrompt: "systemPrompt",
+            });
+        }).rejects.toThrow(Corti.NotFoundError);
+    });
 });
