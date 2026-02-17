@@ -1923,8 +1923,8 @@ await client.codes.predict({
 </dl>
 </details>
 
-## Agents Agents
-<details><summary><code>client.agents.agents.<a href="/src/api/resources/agents/resources/agents/client/Client.ts">list</a>({ ...params }) -> Corti.AgentsAgentResponse[]</code></summary>
+## Agents
+<details><summary><code>client.agents.<a href="/src/api/resources/agents/client/Client.ts">list</a>({ ...params }) -> Corti.AgentsAgentResponse[]</code></summary>
 <dl>
 <dd>
 
@@ -1951,7 +1951,7 @@ This endpoint retrieves a list of all agents that can be called by the Corti Age
 <dd>
 
 ```typescript
-await client.agents.agents.list();
+await client.agents.list();
 
 ```
 </dd>
@@ -1967,7 +1967,7 @@ await client.agents.agents.list();
 <dl>
 <dd>
 
-**request:** `Corti.agents.AgentsListRequest` 
+**request:** `Corti.AgentsListRequest` 
     
 </dd>
 </dl>
@@ -1987,7 +1987,7 @@ await client.agents.agents.list();
 </dl>
 </details>
 
-<details><summary><code>client.agents.agents.<a href="/src/api/resources/agents/resources/agents/client/Client.ts">create</a>({ ...params }) -> Corti.AgentsAgent</code></summary>
+<details><summary><code>client.agents.<a href="/src/api/resources/agents/client/Client.ts">create</a>({ ...params }) -> Corti.AgentsAgent</code></summary>
 <dl>
 <dd>
 
@@ -2014,7 +2014,7 @@ This endpoint allows the creation of a new agent that can be utilized in the `PO
 <dd>
 
 ```typescript
-await client.agents.agents.create({
+await client.agents.create({
     name: "name",
     description: "description"
 });
@@ -2033,7 +2033,7 @@ await client.agents.agents.create({
 <dl>
 <dd>
 
-**request:** `Corti.agents.AgentsCreateAgent` 
+**request:** `Corti.AgentsCreateAgent` 
     
 </dd>
 </dl>
@@ -2053,7 +2053,7 @@ await client.agents.agents.create({
 </dl>
 </details>
 
-<details><summary><code>client.agents.agents.<a href="/src/api/resources/agents/resources/agents/client/Client.ts">get</a>(id) -> Corti.AgentsAgentResponse</code></summary>
+<details><summary><code>client.agents.<a href="/src/api/resources/agents/client/Client.ts">get</a>(id) -> Corti.AgentsAgentResponse</code></summary>
 <dl>
 <dd>
 
@@ -2080,7 +2080,7 @@ This endpoint retrieves an agent by its identifier. The agent contains informati
 <dd>
 
 ```typescript
-await client.agents.agents.get("12345678-90ab-cdef-gh12-34567890abc");
+await client.agents.get("12345678-90ab-cdef-gh12-34567890abc");
 
 ```
 </dd>
@@ -2116,7 +2116,7 @@ await client.agents.agents.get("12345678-90ab-cdef-gh12-34567890abc");
 </dl>
 </details>
 
-<details><summary><code>client.agents.agents.<a href="/src/api/resources/agents/resources/agents/client/Client.ts">delete</a>(id) -> void</code></summary>
+<details><summary><code>client.agents.<a href="/src/api/resources/agents/client/Client.ts">delete</a>(id) -> void</code></summary>
 <dl>
 <dd>
 
@@ -2143,7 +2143,7 @@ This endpoint deletes an agent by its identifier. Once deleted, the agent can no
 <dd>
 
 ```typescript
-await client.agents.agents.delete("12345678-90ab-cdef-gh12-34567890abc");
+await client.agents.delete("12345678-90ab-cdef-gh12-34567890abc");
 
 ```
 </dd>
@@ -2179,7 +2179,7 @@ await client.agents.agents.delete("12345678-90ab-cdef-gh12-34567890abc");
 </dl>
 </details>
 
-<details><summary><code>client.agents.agents.<a href="/src/api/resources/agents/resources/agents/client/Client.ts">update</a>(id, { ...params }) -> Corti.AgentsAgent</code></summary>
+<details><summary><code>client.agents.<a href="/src/api/resources/agents/client/Client.ts">update</a>(id, { ...params }) -> Corti.AgentsAgent</code></summary>
 <dl>
 <dd>
 
@@ -2206,7 +2206,7 @@ This endpoint updates an existing agent. Only the fields provided in the request
 <dd>
 
 ```typescript
-await client.agents.agents.update("12345678-90ab-cdef-gh12-34567890abc", {
+await client.agents.update("12345678-90ab-cdef-gh12-34567890abc", {
     id: "id",
     name: "name",
     description: "description",
@@ -2255,7 +2255,7 @@ await client.agents.agents.update("12345678-90ab-cdef-gh12-34567890abc", {
 </dl>
 </details>
 
-<details><summary><code>client.agents.agents.<a href="/src/api/resources/agents/resources/agents/client/Client.ts">getCard</a>(id) -> Corti.AgentsAgentCard</code></summary>
+<details><summary><code>client.agents.<a href="/src/api/resources/agents/client/Client.ts">getCard</a>(id) -> Corti.AgentsAgentCard</code></summary>
 <dl>
 <dd>
 
@@ -2282,7 +2282,7 @@ This endpoint retrieves the agent card in JSON format, which provides metadata a
 <dd>
 
 ```typescript
-await client.agents.agents.getCard("12345678-90ab-cdef-gh12-34567890abc");
+await client.agents.getCard("12345678-90ab-cdef-gh12-34567890abc");
 
 ```
 </dd>
@@ -2318,7 +2318,7 @@ await client.agents.agents.getCard("12345678-90ab-cdef-gh12-34567890abc");
 </dl>
 </details>
 
-<details><summary><code>client.agents.agents.<a href="/src/api/resources/agents/resources/agents/client/Client.ts">messageSend</a>(id, { ...params }) -> Corti.AgentsMessageSendResponse</code></summary>
+<details><summary><code>client.agents.<a href="/src/api/resources/agents/client/Client.ts">messageSend</a>(id, { ...params }) -> Corti.AgentsMessageSendResponse</code></summary>
 <dl>
 <dd>
 
@@ -2345,7 +2345,7 @@ This endpoint sends a message to the specified agent to start or continue a task
 <dd>
 
 ```typescript
-await client.agents.agents.messageSend("12345678-90ab-cdef-gh12-34567890abc", {
+await client.agents.messageSend("12345678-90ab-cdef-gh12-34567890abc", {
     message: {
         role: "user",
         parts: [{
@@ -2379,7 +2379,7 @@ await client.agents.agents.messageSend("12345678-90ab-cdef-gh12-34567890abc", {
 <dl>
 <dd>
 
-**request:** `Corti.agents.AgentsMessageSendParams` 
+**request:** `Corti.AgentsMessageSendParams` 
     
 </dd>
 </dl>
@@ -2399,7 +2399,7 @@ await client.agents.agents.messageSend("12345678-90ab-cdef-gh12-34567890abc", {
 </dl>
 </details>
 
-<details><summary><code>client.agents.agents.<a href="/src/api/resources/agents/resources/agents/client/Client.ts">getTask</a>(id, taskId, { ...params }) -> Corti.AgentsTask</code></summary>
+<details><summary><code>client.agents.<a href="/src/api/resources/agents/client/Client.ts">getTask</a>(id, taskId, { ...params }) -> Corti.AgentsTask</code></summary>
 <dl>
 <dd>
 
@@ -2426,7 +2426,7 @@ This endpoint retrieves the status and details of a specific task associated wit
 <dd>
 
 ```typescript
-await client.agents.agents.getTask("12345678-90ab-cdef-gh12-34567890abc", "taskId");
+await client.agents.getTask("12345678-90ab-cdef-gh12-34567890abc", "taskId");
 
 ```
 </dd>
@@ -2458,7 +2458,7 @@ await client.agents.agents.getTask("12345678-90ab-cdef-gh12-34567890abc", "taskI
 <dl>
 <dd>
 
-**request:** `Corti.agents.AgentsGetTaskRequest` 
+**request:** `Corti.AgentsGetTaskRequest` 
     
 </dd>
 </dl>
@@ -2478,7 +2478,7 @@ await client.agents.agents.getTask("12345678-90ab-cdef-gh12-34567890abc", "taskI
 </dl>
 </details>
 
-<details><summary><code>client.agents.agents.<a href="/src/api/resources/agents/resources/agents/client/Client.ts">getContext</a>(id, contextId, { ...params }) -> Corti.AgentsContext</code></summary>
+<details><summary><code>client.agents.<a href="/src/api/resources/agents/client/Client.ts">getContext</a>(id, contextId, { ...params }) -> Corti.AgentsContext</code></summary>
 <dl>
 <dd>
 
@@ -2505,7 +2505,7 @@ This endpoint retrieves all tasks and top-level messages associated with a speci
 <dd>
 
 ```typescript
-await client.agents.agents.getContext("12345678-90ab-cdef-gh12-34567890abc", "contextId");
+await client.agents.getContext("12345678-90ab-cdef-gh12-34567890abc", "contextId");
 
 ```
 </dd>
@@ -2537,7 +2537,7 @@ await client.agents.agents.getContext("12345678-90ab-cdef-gh12-34567890abc", "co
 <dl>
 <dd>
 
-**request:** `Corti.agents.AgentsGetContextRequest` 
+**request:** `Corti.AgentsGetContextRequest` 
     
 </dd>
 </dl>
@@ -2557,7 +2557,7 @@ await client.agents.agents.getContext("12345678-90ab-cdef-gh12-34567890abc", "co
 </dl>
 </details>
 
-<details><summary><code>client.agents.agents.<a href="/src/api/resources/agents/resources/agents/client/Client.ts">getRegistryExperts</a>({ ...params }) -> Corti.AgentsRegistryExpertsResponse</code></summary>
+<details><summary><code>client.agents.<a href="/src/api/resources/agents/client/Client.ts">getRegistryExperts</a>({ ...params }) -> Corti.AgentsRegistryExpertsResponse</code></summary>
 <dl>
 <dd>
 
@@ -2584,7 +2584,7 @@ This endpoint retrieves the experts registry, which contains information about a
 <dd>
 
 ```typescript
-await client.agents.agents.getRegistryExperts({
+await client.agents.getRegistryExperts({
     limit: 100,
     offset: 0
 });
@@ -2603,7 +2603,7 @@ await client.agents.agents.getRegistryExperts({
 <dl>
 <dd>
 
-**request:** `Corti.agents.AgentsGetRegistryExpertsRequest` 
+**request:** `Corti.AgentsGetRegistryExpertsRequest` 
     
 </dd>
 </dl>

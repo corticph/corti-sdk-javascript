@@ -121,16 +121,16 @@
             "default": "./dist/cjs/api/resources/codes/exports.js"
         },
         "./agents": {
-            "types": "./dist/cjs/api/resources/agents/resources/agents/exports.d.ts",
+            "types": "./dist/cjs/api/resources/agents/exports.d.ts",
             "import": {
-                "types": "./dist/esm/api/resources/agents/resources/agents/exports.d.mts",
-                "default": "./dist/esm/api/resources/agents/resources/agents/exports.mjs"
+                "types": "./dist/esm/api/resources/agents/exports.d.mts",
+                "default": "./dist/esm/api/resources/agents/exports.mjs"
             },
             "require": {
-                "types": "./dist/cjs/api/resources/agents/resources/agents/exports.d.ts",
-                "default": "./dist/cjs/api/resources/agents/resources/agents/exports.js"
+                "types": "./dist/cjs/api/resources/agents/exports.d.ts",
+                "default": "./dist/cjs/api/resources/agents/exports.js"
             },
-            "default": "./dist/cjs/api/resources/agents/resources/agents/exports.js"
+            "default": "./dist/cjs/api/resources/agents/exports.js"
         },
         "./package.json": "./package.json"
     },
