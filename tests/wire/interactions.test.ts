@@ -165,7 +165,7 @@ describe("InteractionsClient", () => {
         const rawRequestBody = {
             encounter: { identifier: "identifier", status: "planned", type: "first_consultation" },
         };
-        const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
+        const rawResponseBody = { key: "value" };
         server
             .mockEndpoint()
             .post("/interactions/")

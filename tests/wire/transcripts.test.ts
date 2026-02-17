@@ -67,7 +67,7 @@ describe("TranscriptsClient", () => {
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
-        const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
+        const rawResponseBody = { key: "value" };
         server
             .mockEndpoint()
             .get("/interactions/id/transcripts/")
@@ -90,7 +90,7 @@ describe("TranscriptsClient", () => {
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
-        const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
+        const rawResponseBody = { key: "value" };
         server
             .mockEndpoint()
             .get("/interactions/id/transcripts/")
@@ -240,7 +240,7 @@ describe("TranscriptsClient", () => {
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
         const rawRequestBody = { recordingId: "recordingId", primaryLanguage: "primaryLanguage" };
-        const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
+        const rawResponseBody = { key: "value" };
         server
             .mockEndpoint()
             .post("/interactions/id/transcripts/")
@@ -267,7 +267,7 @@ describe("TranscriptsClient", () => {
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
         const rawRequestBody = { recordingId: "recordingId", primaryLanguage: "primaryLanguage" };
-        const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
+        const rawResponseBody = { key: "value" };
         server
             .mockEndpoint()
             .post("/interactions/id/transcripts/")
@@ -432,7 +432,7 @@ describe("TranscriptsClient", () => {
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
-        const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
+        const rawResponseBody = { key: "value" };
         server
             .mockEndpoint()
             .get("/interactions/id/transcripts/transcriptId")
@@ -455,7 +455,7 @@ describe("TranscriptsClient", () => {
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
-        const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
+        const rawResponseBody = { key: "value" };
         server
             .mockEndpoint()
             .get("/interactions/id/transcripts/transcriptId")
@@ -572,7 +572,7 @@ describe("TranscriptsClient", () => {
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
-        const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
+        const rawResponseBody = { key: "value" };
         server
             .mockEndpoint()
             .delete("/interactions/id/transcripts/transcriptId")
@@ -595,7 +595,7 @@ describe("TranscriptsClient", () => {
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
-        const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
+        const rawResponseBody = { key: "value" };
         server
             .mockEndpoint()
             .delete("/interactions/id/transcripts/transcriptId")
@@ -716,7 +716,7 @@ describe("TranscriptsClient", () => {
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
-        const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
+        const rawResponseBody = { key: "value" };
         server
             .mockEndpoint()
             .get("/interactions/id/transcripts/transcriptId/status")

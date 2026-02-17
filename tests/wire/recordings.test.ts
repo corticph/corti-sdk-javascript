@@ -38,7 +38,7 @@ describe("RecordingsClient", () => {
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
-        const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
+        const rawResponseBody = { key: "value" };
         server
             .mockEndpoint()
             .get("/interactions/id/recordings/")
@@ -178,7 +178,7 @@ describe("RecordingsClient", () => {
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
-        const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
+        const rawResponseBody = { key: "value" };
         server
             .mockEndpoint()
             .delete("/interactions/id/recordings/recordingId")

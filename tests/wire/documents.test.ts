@@ -84,7 +84,7 @@ describe("DocumentsClient", () => {
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
-        const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
+        const rawResponseBody = { key: "value" };
         server
             .mockEndpoint()
             .get("/interactions/id/documents/")
@@ -276,7 +276,7 @@ describe("DocumentsClient", () => {
             templateKey: "templateKey",
             outputLanguage: "outputLanguage",
         };
-        const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
+        const rawResponseBody = { key: "value" };
         server
             .mockEndpoint()
             .post("/interactions/id/documents/")
@@ -618,7 +618,7 @@ describe("DocumentsClient", () => {
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
-        const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
+        const rawResponseBody = { key: "value" };
         server
             .mockEndpoint()
             .get("/interactions/id/documents/documentId")
@@ -756,7 +756,7 @@ describe("DocumentsClient", () => {
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
-        const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
+        const rawResponseBody = { key: "value" };
         server
             .mockEndpoint()
             .delete("/interactions/id/documents/documentId")
@@ -891,7 +891,7 @@ describe("DocumentsClient", () => {
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
         const rawRequestBody = {};
-        const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
+        const rawResponseBody = { key: "value" };
         server
             .mockEndpoint()
             .patch("/interactions/id/documents/documentId")

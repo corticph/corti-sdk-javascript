@@ -233,16 +233,7 @@ export class InteractionsClient {
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 400:
-                    throw new Corti.BadRequestError(
-                        serializers.ErrorResponse.parseOrThrow(_response.error.body, {
-                            unrecognizedObjectKeys: "passthrough",
-                            allowUnrecognizedUnionMembers: true,
-                            allowUnrecognizedEnumValues: true,
-                            skipValidation: true,
-                            breadcrumbsPrefix: ["response"],
-                        }),
-                        _response.rawResponse,
-                    );
+                    throw new Corti.BadRequestError(_response.error.body, _response.rawResponse);
                 case 403:
                     throw new Corti.ForbiddenError(
                         serializers.ErrorResponse.parseOrThrow(_response.error.body, {

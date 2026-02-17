@@ -104,7 +104,7 @@ describe("CodesClient", () => {
                 { type: "text", text: "text" },
             ],
         };
-        const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
+        const rawResponseBody = { key: "value" };
         server
             .mockEndpoint()
             .post("/tools/coding/")
