@@ -7,6 +7,7 @@ import { FactsClient } from "./api/resources/facts/client/Client.js";
 import { InteractionsClient } from "./api/resources/interactions/client/Client.js";
 import { RecordingsClient } from "./api/resources/recordings/client/Client.js";
 import { TemplatesClient } from "./api/resources/templates/client/Client.js";
+import { TranscribeClient } from "./api/resources/transcribe/client/Client.js";
 import { TranscriptsClient } from "./api/resources/transcripts/client/Client.js";
 import type { BaseClientOptions, BaseRequestOptions } from "./BaseClient.js";
 import { type NormalizedClientOptionsWithAuth, normalizeClientOptionsWithAuth } from "./BaseClient.js";
@@ -27,6 +28,7 @@ export class CortiClient {
     protected _templates: TemplatesClient | undefined;
     protected _codes: CodesClient | undefined;
     protected _agents: AgentsClient | undefined;
+    protected _transcribe: TranscribeClient | undefined;
 
     constructor(options: CortiClient.Options) {
         this._options = normalizeClientOptionsWithAuth(options);
@@ -62,5 +64,9 @@ export class CortiClient {
 
     public get agents(): AgentsClient {
         return (this._agents ??= new AgentsClient(this._options));
+    }
+
+    public get transcribe(): TranscribeClient {
+        return (this._transcribe ??= new TranscribeClient(this._options));
     }
 }

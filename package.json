@@ -132,6 +132,18 @@
             },
             "default": "./dist/cjs/api/resources/agents/exports.js"
         },
+        "./transcribe": {
+            "types": "./dist/cjs/api/resources/transcribe/exports.d.ts",
+            "import": {
+                "types": "./dist/esm/api/resources/transcribe/exports.d.mts",
+                "default": "./dist/esm/api/resources/transcribe/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/transcribe/exports.d.ts",
+                "default": "./dist/cjs/api/resources/transcribe/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/transcribe/exports.js"
+        },
         "./package.json": "./package.json"
     },
     "files": [
@@ -154,10 +166,13 @@
         "test:unit": "vitest --project unit",
         "test:wire": "vitest --project wire"
     },
-    "dependencies": {},
+    "dependencies": {
+        "ws": "^8.16.0"
+    },
     "devDependencies": {
         "webpack": "^5.97.1",
         "ts-loader": "^9.5.1",
+        "@types/ws": "^8.5.10",
         "vitest": "^3.2.4",
         "msw": "2.11.2",
         "@types/node": "^18.19.70",
