@@ -96,6 +96,18 @@
             },
             "default": "./dist/cjs/api/resources/documents/exports.js"
         },
+        "./templates": {
+            "types": "./dist/cjs/api/resources/templates/exports.d.ts",
+            "import": {
+                "types": "./dist/esm/api/resources/templates/exports.d.mts",
+                "default": "./dist/esm/api/resources/templates/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/templates/exports.d.ts",
+                "default": "./dist/cjs/api/resources/templates/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/templates/exports.js"
+        },
         "./codes": {
             "types": "./dist/cjs/api/resources/codes/exports.d.ts",
             "import": {
