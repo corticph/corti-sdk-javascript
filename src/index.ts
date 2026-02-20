@@ -24,3 +24,7 @@ export { ParseError } from "./core/schemas/builders/schema-utils/ParseError.js";
  * Patch: added new export to provide SDK-level error handling.
  */
 export { CortiSDKError } from "./custom/CortiSDKError.js";
+/**
+ * Patch: added new export to expose environment resolution utility.
+ */
+export { getEnvironment } from "./custom/utils/getEnvironmentFromString.js";

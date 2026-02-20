@@ -1,3 +1,7 @@
+/**
+ * Patch: respect CortiClient withCredentials. When args.withCredentials is undefined,
+ * use the global default set by CortiClient (see src/custom/withCredentialsConfig.ts).
+ */
 import { toJson } from "../json.js";
 import { APIResponse } from "./APIResponse.js";
 import { abortRawResponse, toRawResponse, unknownRawResponse } from "./RawResponse.js";
@@ -9,6 +13,7 @@ import { getRequestBody } from "./getRequestBody.js";
 import { getResponseBody } from "./getResponseBody.js";
 import { makeRequest } from "./makeRequest.js";
 import { requestWithRetries } from "./requestWithRetries.js";
+import { getDefaultWithCredentials } from "../../custom/utils/withCredentialsConfig.js";
 
 export type FetchFunction = <R = unknown>(args: Fetcher.Args) => Promise<APIResponse<R, Fetcher.Error>>;
 
@@ -96,7 +101,7 @@ export async function fetcherImpl<R = unknown>(args: Fetcher.Args): Promise<APIR
                     requestBody,
                     args.timeoutMs,
                     args.abortSignal,
-                    args.withCredentials,
+                    args.withCredentials ?? getDefaultWithCredentials(),
                     args.duplex,
                 ),
             args.maxRetries,

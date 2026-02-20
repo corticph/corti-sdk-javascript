@@ -243,7 +243,7 @@ describe("cortiClient.agents.messageSend", () => {
         });
     });
 
-    describe("should handle errors when required parameters are missing", () => {
+    describe("should throw error when required parameters are missing", () => {
         it("should throw error when message is missing", async () => {
             expect.assertions(1);
 

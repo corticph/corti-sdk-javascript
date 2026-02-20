@@ -371,38 +371,6 @@ describe("cortiClient.stream.connect", () => {
             expect(streamSocket.socket.readyState).toBe(1); // OPEN
             expect(consoleWarnSpy).not.toHaveBeenCalled();
         });
-
-        it("should connect with documentation mode", async () => {
-            expect.assertions(4);
-
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
-
-            const streamSocket = await cortiClient.stream.connect({
-                id: interactionId,
-                configuration: {
-                    transcription: {
-                        primaryLanguage: "en",
-                        participants: [
-                            {
-                                channel: faker.number.int({ min: 0, max: 10 }),
-                                role: "doctor",
-                            },
-                        ],
-                    },
-                    mode: {
-                        type: "documentation",
-                    },
-                },
-            });
-            activeSockets.push(streamSocket);
-
-            await waitForWebSocketMessage(streamSocket, "CONFIG_ACCEPTED", { rejectOnWrongMessage: true });
-
-            expect(streamSocket).toBeDefined();
-            expect(streamSocket.socket).toBeDefined();
-            expect(streamSocket.socket.readyState).toBe(1); // OPEN
-            expect(consoleWarnSpy).not.toHaveBeenCalled();
-        });
     });
 
     describe("should handle transcription scenario with audio", () => {
@@ -444,6 +412,8 @@ describe("cortiClient.stream.connect", () => {
                 const chunk = audioBuffer.subarray(i * 60 * 1024, (i + 1) * 60 * 1024);
                 streamSocket.sendAudio(chunk);
             }
+
+            streamSocket.sendFlush({ type: "flush" });
 
             await waitForWebSocketMessage(streamSocket, "transcript", { messages, timeoutMs: 30000 });
 

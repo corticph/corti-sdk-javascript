@@ -22,15 +22,25 @@ describe("cortiClient.agents.get", () => {
         createdAgentIds = [];
     });
 
-    it("should successfully retrieve an existing agent without errors or warnings", async () => {
-        expect.assertions(2);
+    describe("should retrieve agent with only required values", () => {
+        it("should successfully retrieve an existing agent without errors or warnings", async () => {
+            expect.assertions(2);
 
-        const agent = await createTestAgent(cortiClient, createdAgentIds);
+            const agent = await createTestAgent(cortiClient, createdAgentIds);
 
-        const result = await cortiClient.agents.get(agent.id);
+            const result = await cortiClient.agents.get(agent.id);
 
-        expect(result.id).toBe(agent.id);
-        expect(consoleWarnSpy).not.toHaveBeenCalled();
+            expect(result.id).toBe(agent.id);
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
+    });
+
+    describe("should throw error when required parameters are missing", () => {
+        it("should throw error when agent ID is missing", async () => {
+            expect.assertions(1);
+
+            await expect(cortiClient.agents.get(undefined as any)).rejects.toThrow();
+        });
     });
 
     describe("should throw error when invalid parameters are provided", () => {

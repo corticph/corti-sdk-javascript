@@ -18,15 +18,17 @@ describe("cortiClient.templates.get", () => {
         consoleWarnSpy.mockRestore();
     });
 
-    it("should successfully retrieve an existing template without errors or warnings", async () => {
-        expect.assertions(2);
+    describe("should retrieve template with only required values", () => {
+        it("should successfully retrieve an existing template without errors or warnings", async () => {
+            expect.assertions(2);
 
-        const templateData = await getValidTemplateKeyAndLanguage(cortiClient);
+            const templateData = await getValidTemplateKeyAndLanguage(cortiClient);
 
-        const result = await cortiClient.templates.get(templateData.templateKey);
+            const result = await cortiClient.templates.get(templateData.templateKey);
 
-        expect(result.key).toBe(templateData.templateKey);
-        expect(consoleWarnSpy).not.toHaveBeenCalled();
+            expect(result.key).toBe(templateData.templateKey);
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
     });
 
     describe("should return template with section defaultFormatRule", () => {
@@ -57,6 +59,14 @@ describe("cortiClient.templates.get", () => {
                 expect(section.defaultFormatRule).toBeUndefined();
             }
             expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
+    });
+
+    describe("should throw error when required parameters are missing", () => {
+        it("should throw error when template key is missing", async () => {
+            expect.assertions(1);
+
+            await expect(cortiClient.templates.get(undefined as any)).rejects.toThrow();
         });
     });
 

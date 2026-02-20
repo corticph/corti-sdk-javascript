@@ -21,39 +21,41 @@ describe("cortiClient.interactions.list", () => {
         createdInteractionIds.length = 0;
     });
 
-    it("should return empty result when no interactions exist", async () => {
-        expect.assertions(3);
+    describe("should list interactions with only required values", () => {
+        it("should return empty result when no interactions exist", async () => {
+            expect.assertions(3);
 
-        const response = await cortiClient.interactions.list();
-        const interactionIds: string[] = [];
+            const response = await cortiClient.interactions.list();
+            const interactionIds: string[] = [];
 
-        for await (const interaction of response) {
-            interactionIds.push(interaction.id);
-        }
+            for await (const interaction of response) {
+                interactionIds.push(interaction.id);
+            }
 
-        if (interactionIds.length > 0) {
-            await cleanupInteractions(cortiClient, interactionIds);
-        }
+            if (interactionIds.length > 0) {
+                await cleanupInteractions(cortiClient, interactionIds);
+            }
 
-        const result = await cortiClient.interactions.list();
+            const result = await cortiClient.interactions.list();
 
-        expect(result.data).toEqual([]);
-        expect(result.hasNextPage()).toBe(false);
-        expect(consoleWarnSpy).not.toHaveBeenCalled();
-    });
+            expect(result.data).toEqual([]);
+            expect(result.hasNextPage()).toBe(false);
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
 
-    it("should return interactions when they exist", async () => {
-        expect.assertions(4);
+        it("should return interactions when they exist without errors or warnings", async () => {
+            expect.assertions(4);
 
-        const interactionId1 = await createTestInteraction(cortiClient, createdInteractionIds);
-        const interactionId2 = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId1 = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId2 = await createTestInteraction(cortiClient, createdInteractionIds);
 
-        const result = await cortiClient.interactions.list();
+            const result = await cortiClient.interactions.list();
 
-        expect(result.data.length).toBeGreaterThanOrEqual(2);
-        expect(result.data.some((interaction) => interaction.id === interactionId1)).toBe(true);
-        expect(result.data.some((interaction) => interaction.id === interactionId2)).toBe(true);
-        expect(consoleWarnSpy).not.toHaveBeenCalled();
+            expect(result.data.length).toBeGreaterThanOrEqual(2);
+            expect(result.data.some((interaction) => interaction.id === interactionId1)).toBe(true);
+            expect(result.data.some((interaction) => interaction.id === interactionId2)).toBe(true);
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
     });
 
     describe("filtering by patient", () => {
@@ -258,7 +260,7 @@ describe("cortiClient.interactions.list", () => {
         });
     });
 
-    describe("error handling", () => {
+    describe("should throw error when invalid parameters are provided", () => {
         it("should throw error for invalid encounterStatus", async () => {
             expect.assertions(1);
 

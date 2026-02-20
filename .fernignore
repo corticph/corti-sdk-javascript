@@ -5,6 +5,9 @@ src/custom
 src/index.ts
 src/api/index.ts
 
+# Patch: fetcher respects CortiClient withCredentials via global config
+src/core/fetcher/Fetcher.ts
+
 # Documentation
 README.md
 AUTHENTICATION.md

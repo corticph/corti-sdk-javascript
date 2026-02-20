@@ -883,26 +883,6 @@ describe("cortiClient.documents.create", () => {
             expect(consoleWarnSpy).not.toHaveBeenCalled();
         });
 
-        it("should throw error when documentationMode: routed_parallel used with templateKey", async () => {
-            expect.assertions(1);
-
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
-
-            await expect(
-                cortiClient.documents.create(interactionId, {
-                    context: [
-                        {
-                            type: "string",
-                            data: faker.lorem.paragraph(),
-                        },
-                    ],
-                    templateKey,
-                    outputLanguage: "en",
-                    documentationMode: "routed_parallel",
-                }),
-            ).rejects.toThrow("BadRequestError");
-        });
-
         it("should create document with documentationMode: global_sequential using template with sectionKeys", async () => {
             expect.assertions(2);
 

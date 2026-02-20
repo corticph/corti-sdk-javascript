@@ -217,8 +217,37 @@ const transcribeSocket = await CortiWebSocketProxyClient.transcribe.connect({
 The `proxy` parameter accepts the following options:
 
 - **`url`** (required): The WebSocket URL of your proxy server
-- **`protocols`** (optional): Array of WebSocket subprotocols to use
+- **`protocols`** (optional): WebSocket subprotocols. Pass an **array** to use it as-is on the WebSocket handshake. Pass an **object** (e.g. `{ "Custom-Header": value }`) to have it encoded the same way as headers (name, `encodeURIComponent(value)`, ...); values can be strings or suppliers (e.g. functions).
 - **`queryParameters`** (optional): Query parameters to append to the WebSocket URL
+
+### Encoding custom headers as WebSocket protocols
+
+You can use **`encodeHeadersAsWsProtocols`** whenever you pass `headers` on **`CortiClient`**; it only makes sense when you use the same client with a proxy for **both** REST API and WebSocket (stream/transcribe). In that case, the client encodes those headers as **WebSocket subprotocols** (each header as two strings: name, then `encodeURIComponent(value)`), since browsers do not allow arbitrary HTTP headers on the WebSocket handshake. Your proxy can read them from `Sec-WebSocket-Protocol` and use or forward them.
+
+If you only use WebSocket through a proxy (e.g. with `CortiWebSocketProxyClient`) or you don't need the same headers on the WS handshake, pass protocols as usual via **`proxy.protocols`** when calling `stream.connect` or `transcribe.connect`.
+
+#### Example: CortiClient with encodeHeadersAsWsProtocols
+
+```typescript
+import { CortiClient } from "@corti/sdk";
+
+const client = new CortiClient({
+    baseUrl: "https://your-proxy-server.com/api/corti_proxy",
+    encodeHeadersAsWsProtocols: true,
+    headers: {
+        "Custom-Header": customValue,
+        "Custom-Protocol": () => getLatestProtocolValue(), // suppliers (e.g. functions) are resolved when connecting
+    },
+});
+
+// When connecting, Sec-WebSocket-Protocol will include the encoded headers
+const socket = await client.stream.connect({
+    id: "interaction-id",
+});
+// Under the hood: protocols sent as e.g. ["Custom-Header", "<encoded>", "Custom-Protocol", "<encoded>"]
+```
+
+Your proxy should parse the `Sec-WebSocket-Protocol` header to extract these name/value pairs (split by comma, then decode and pair them) and use or forward them as required.
 
 ### Benefits
 
@@ -308,6 +337,7 @@ const streamSocket = await client.stream.connect({ id: "interaction-id" });
 - **Proxying is recommended** when using Client Credentials in frontend applications to protect sensitive tokens and implement proper access control
 - **Use `baseUrl` or custom environments** to route SDK requests through your proxy server while maintaining type safety
 - **Use `CortiWebSocketProxyClient`** for simplified WebSocket proxying with automatic message handling
+- **Use `encodeHeadersAsWsProtocols`** on `CortiClient` only when using the same client with a proxy for both API and WebSocket and you need the same headers on the WS handshake; otherwise pass **`proxy.protocols`** as usual
 - **Scoped tokens** provide an alternative when proxying isn't possible, but limit access to specific WebSocket endpoints only
 
 For more information about authentication methods, see the [Authentication Guide](./AUTHENTICATION.md).
