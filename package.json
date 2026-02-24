@@ -1,6 +1,6 @@
 {
     "name": "@corti/sdk",
-    "version": "0.10.1",
+    "version": "0.0.899",
     "private": false,
     "repository": {
         "type": "git",
@@ -132,6 +132,18 @@
             },
             "default": "./dist/cjs/api/resources/agents/exports.js"
         },
+        "./stream": {
+            "types": "./dist/cjs/api/resources/stream/exports.d.ts",
+            "import": {
+                "types": "./dist/esm/api/resources/stream/exports.d.mts",
+                "default": "./dist/esm/api/resources/stream/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/stream/exports.d.ts",
+                "default": "./dist/cjs/api/resources/stream/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/stream/exports.js"
+        },
         "./transcribe": {
             "types": "./dist/cjs/api/resources/transcribe/exports.d.ts",
             "import": {
@@ -177,7 +189,7 @@
         "msw": "2.11.2",
         "@types/node": "^18.19.70",
         "typescript": "~5.7.2",
-        "@biomejs/biome": "2.3.11",
+        "@biomejs/biome": "2.4.3",
         "@faker-js/faker": "^9.9.0"
     },
     "browser": {

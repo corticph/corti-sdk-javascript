@@ -1,7 +1,7 @@
 {
-    "cliVersion": "3.74.1",
+    "cliVersion": "3.85.2",
     "generatorName": "fernapi/fern-typescript-node-sdk",
-    "generatorVersion": "3.48.0",
+    "generatorVersion": "3.49.3",
     "generatorConfig": {
         "namespaceExport": "Corti",
         "noSerdeLayer": false,
@@ -14,5 +14,5 @@
             "@faker-js/faker": "^9.9.0"
         }
     },
-    "sdkVersion": "0.10.1"
+    "sdkVersion": "0.0.899"
 }

@@ -11,6 +11,7 @@ export * from "./interactions/client/requests/index.js";
 export * as interactions from "./interactions/index.js";
 export * from "./interactions/types/index.js";
 export * as recordings from "./recordings/index.js";
+export * as stream from "./stream/index.js";
 export * from "./templates/client/requests/index.js";
 export * as templates from "./templates/index.js";
 export * as transcribe from "./transcribe/index.js";

@@ -6,6 +6,7 @@ import { DocumentsClient } from "./api/resources/documents/client/Client.js";
 import { FactsClient } from "./api/resources/facts/client/Client.js";
 import { InteractionsClient } from "./api/resources/interactions/client/Client.js";
 import { RecordingsClient } from "./api/resources/recordings/client/Client.js";
+import { StreamClient } from "./api/resources/stream/client/Client.js";
 import { TemplatesClient } from "./api/resources/templates/client/Client.js";
 import { TranscribeClient } from "./api/resources/transcribe/client/Client.js";
 import { TranscriptsClient } from "./api/resources/transcripts/client/Client.js";
@@ -28,6 +29,7 @@ export class CortiClient {
     protected _templates: TemplatesClient | undefined;
     protected _codes: CodesClient | undefined;
     protected _agents: AgentsClient | undefined;
+    protected _stream: StreamClient | undefined;
     protected _transcribe: TranscribeClient | undefined;
 
     constructor(options: CortiClient.Options) {
@@ -64,6 +66,10 @@ export class CortiClient {
 
     public get agents(): AgentsClient {
         return (this._agents ??= new AgentsClient(this._options));
+    }
+
+    public get stream(): StreamClient {
+        return (this._stream ??= new StreamClient(this._options));
     }
 
     public get transcribe(): TranscribeClient {
