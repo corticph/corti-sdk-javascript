@@ -15,7 +15,5 @@ export * as facts from "./facts/index.js";
 export * from "./facts/client/requests/index.js";
 export * as documents from "./documents/index.js";
 export * from "./documents/client/requests/index.js";
-export * as codes from "./codes/index.js";
-export * from "./codes/client/requests/index.js";
 export * from "./auth/client/requests/index.js";
 export * from "./agents/client/requests/index.js";
