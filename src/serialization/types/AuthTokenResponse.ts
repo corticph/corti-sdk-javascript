@@ -10,7 +10,10 @@ export const AuthTokenResponse: core.serialization.ObjectSchema<
 > = core.serialization.object({
     accessToken: core.serialization.property("access_token", core.serialization.string()),
     expiresIn: core.serialization.property("expires_in", core.serialization.number()),
+    refreshExpiresIn: core.serialization.property("refresh_expires_in", core.serialization.number().optional()),
     tokenType: core.serialization.property("token_type", core.serialization.string()),
+    idToken: core.serialization.property("id_token", core.serialization.string().optional()),
+    notBeforePolicy: core.serialization.property("not-before-policy", core.serialization.number().optional()),
     scope: core.serialization.string().optional(),
 });
 
@@ -18,7 +21,10 @@ export declare namespace AuthTokenResponse {
     export interface Raw {
         access_token: string;
         expires_in: number;
+        refresh_expires_in?: number | null;
         token_type: string;
+        id_token?: string | null;
+        "not-before-policy"?: number | null;
         scope?: string | null;
     }
 }

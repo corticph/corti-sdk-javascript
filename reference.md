@@ -1,6 +1,6 @@
 # Reference
 ## Auth
-<details><summary><code>client.auth.<a href="/src/api/resources/auth/client/Client.ts">token</a>({ ...params }) -> Corti.AuthTokenResponse</code></summary>
+<details><summary><code>client.auth.<a href="/src/api/resources/auth/client/Client.ts">token</a>(tenantName, { ...params }) -> Corti.AuthTokenResponse</code></summary>
 <dl>
 <dd>
 
@@ -12,8 +12,8 @@
 <dl>
 <dd>
 
-Exchange client_id and client_secret for a short-lived access token (OAuth 2.0 client credentials).
-Use the returned access_token in the Authorization header when calling the Corti API.
+Exchange credentials for a short-lived access token. Supports grant_type client_credentials (server-to-server)
+or authorization_code (after user redirect). Use the returned access_token in the Authorization header when calling the Corti API.
 </dd>
 </dl>
 </dd>
@@ -28,11 +28,10 @@ Use the returned access_token in the Authorization header when calling the Corti
 <dd>
 
 ```typescript
-await client.auth.token({
+await client.auth.token("tenantName", {
     clientId: "client_id",
     clientSecret: "client_secret",
-    grantType: "client_credentials",
-    scope: "openid"
+    grantType: "client_credentials"
 });
 
 ```
@@ -45,6 +44,14 @@ await client.auth.token({
 
 <dl>
 <dd>
+
+<dl>
+<dd>
+
+**tenantName:** `string` 
+    
+</dd>
+</dl>
 
 <dl>
 <dd>

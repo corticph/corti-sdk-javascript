@@ -17,28 +17,37 @@ describe("AuthClient", () => {
             client_id: "client_id",
             client_secret: "client_secret",
             grant_type: "client_credentials",
-            scope: "openid",
         };
-        const rawResponseBody = { access_token: "access_token", expires_in: 1, token_type: "Bearer", scope: "scope" };
+        const rawResponseBody = {
+            access_token: "access_token",
+            expires_in: 1,
+            refresh_expires_in: 1,
+            token_type: "Bearer",
+            id_token: "id_token",
+            "not-before-policy": 1,
+            scope: "scope",
+        };
         server
             .mockEndpoint()
-            .post("/protocol/openid-connect/token")
+            .post("/tenantName/protocol/openid-connect/token")
             .formUrlEncodedBody(rawRequestBody)
             .respondWith()
             .statusCode(200)
             .jsonBody(rawResponseBody)
             .build();
 
-        const response = await client.auth.token({
+        const response = await client.auth.token("tenantName", {
             clientId: "client_id",
             clientSecret: "client_secret",
             grantType: "client_credentials",
-            scope: "openid",
         });
         expect(response).toEqual({
             accessToken: "access_token",
             expiresIn: 1,
+            refreshExpiresIn: 1,
             tokenType: "Bearer",
+            idToken: "id_token",
+            notBeforePolicy: 1,
             scope: "scope",
         });
     });
@@ -55,12 +64,11 @@ describe("AuthClient", () => {
             client_id: "client_id",
             client_secret: "client_secret",
             grant_type: "client_credentials",
-            scope: "openid",
         };
         const rawResponseBody = { key: "value" };
         server
             .mockEndpoint()
-            .post("/protocol/openid-connect/token")
+            .post("/tenantName/protocol/openid-connect/token")
             .formUrlEncodedBody(rawRequestBody)
             .respondWith()
             .statusCode(400)
@@ -68,11 +76,10 @@ describe("AuthClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.auth.token({
+            return await client.auth.token("tenantName", {
                 clientId: "client_id",
                 clientSecret: "client_secret",
                 grantType: "client_credentials",
-                scope: "openid",
             });
         }).rejects.toThrow(Corti.BadRequestError);
     });
@@ -89,12 +96,11 @@ describe("AuthClient", () => {
             client_id: "client_id",
             client_secret: "client_secret",
             grant_type: "client_credentials",
-            scope: "openid",
         };
         const rawResponseBody = { key: "value" };
         server
             .mockEndpoint()
-            .post("/protocol/openid-connect/token")
+            .post("/tenantName/protocol/openid-connect/token")
             .formUrlEncodedBody(rawRequestBody)
             .respondWith()
             .statusCode(401)
@@ -102,11 +108,10 @@ describe("AuthClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.auth.token({
+            return await client.auth.token("tenantName", {
                 clientId: "client_id",
                 clientSecret: "client_secret",
                 grantType: "client_credentials",
-                scope: "openid",
             });
         }).rejects.toThrow(Corti.UnauthorizedError);
     });
