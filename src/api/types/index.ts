@@ -54,6 +54,7 @@ export * from "./AgentsTextPartKind.js";
 export * from "./AuthTokenRequestAuthorizationCode.js";
 export * from "./AuthTokenRequestAuthorizationPkce.js";
 export * from "./AuthTokenRequestClientCredentials.js";
+export * from "./AuthTokenRequestRefresh.js";
 export * from "./AuthTokenRequestRopc.js";
 export * from "./AuthTokenResponse.js";
 export * from "./CodesGeneralReadResponse.js";

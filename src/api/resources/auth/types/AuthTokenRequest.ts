@@ -6,4 +6,5 @@ export type AuthTokenRequest =
     | Corti.AuthTokenRequestClientCredentials
     | Corti.AuthTokenRequestAuthorizationCode
     | Corti.AuthTokenRequestAuthorizationPkce
-    | Corti.AuthTokenRequestRopc;
+    | Corti.AuthTokenRequestRopc
+    | Corti.AuthTokenRequestRefresh;

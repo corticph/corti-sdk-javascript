@@ -6,6 +6,7 @@ import type * as serializers from "../../../index.js";
 import { AuthTokenRequestAuthorizationCode } from "../../../types/AuthTokenRequestAuthorizationCode.js";
 import { AuthTokenRequestAuthorizationPkce } from "../../../types/AuthTokenRequestAuthorizationPkce.js";
 import { AuthTokenRequestClientCredentials } from "../../../types/AuthTokenRequestClientCredentials.js";
+import { AuthTokenRequestRefresh } from "../../../types/AuthTokenRequestRefresh.js";
 import { AuthTokenRequestRopc } from "../../../types/AuthTokenRequestRopc.js";
 
 export const AuthTokenRequest: core.serialization.Schema<serializers.AuthTokenRequest.Raw, Corti.AuthTokenRequest> =
@@ -14,6 +15,7 @@ export const AuthTokenRequest: core.serialization.Schema<serializers.AuthTokenRe
         AuthTokenRequestAuthorizationCode,
         AuthTokenRequestAuthorizationPkce,
         AuthTokenRequestRopc,
+        AuthTokenRequestRefresh,
     ]);
 
 export declare namespace AuthTokenRequest {
@@ -21,5 +23,6 @@ export declare namespace AuthTokenRequest {
         | AuthTokenRequestClientCredentials.Raw
         | AuthTokenRequestAuthorizationCode.Raw
         | AuthTokenRequestAuthorizationPkce.Raw
-        | AuthTokenRequestRopc.Raw;
+        | AuthTokenRequestRopc.Raw
+        | AuthTokenRequestRefresh.Raw;
 }
