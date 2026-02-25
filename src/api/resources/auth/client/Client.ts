@@ -27,19 +27,19 @@ export class AuthClient {
      * @param {AuthClient.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @example
-     *     await client.auth.getToken({
+     *     await client.auth.fakeToken({
      *         clientId: "client_id",
      *         clientSecret: "client_secret"
      *     })
      */
-    public getToken(
+    public fakeToken(
         request: Corti.OAuthTokenRequest,
         requestOptions?: AuthClient.RequestOptions,
     ): core.HttpResponsePromise<Corti.AuthTokenResponse> {
-        return core.HttpResponsePromise.fromPromise(this.__getToken(request, requestOptions));
+        return core.HttpResponsePromise.fromPromise(this.__fakeToken(request, requestOptions));
     }
 
-    private async __getToken(
+    private async __fakeToken(
         request: Corti.OAuthTokenRequest,
         requestOptions?: AuthClient.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.AuthTokenResponse>> {
@@ -52,7 +52,7 @@ export class AuthClient {
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
                     (await core.Supplier.get(this._options.environment)).login,
-                "token",
+                "fake-token",
             ),
             method: "POST",
             headers: _headers,
@@ -90,7 +90,7 @@ export class AuthClient {
             });
         }
 
-        return handleNonStatusCodeError(_response.error, _response.rawResponse, "POST", "/token");
+        return handleNonStatusCodeError(_response.error, _response.rawResponse, "POST", "/fake-token");
     }
 
     /**

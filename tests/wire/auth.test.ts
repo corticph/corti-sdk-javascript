@@ -6,7 +6,7 @@ import { mockServerPool } from "../mock-server/MockServerPool";
 import { mockOAuth } from "./mockAuth";
 
 describe("AuthClient", () => {
-    test("getToken", async () => {
+    test("fake_token", async () => {
         const server = mockServerPool.createServer();
         mockOAuth(server);
 
@@ -31,14 +31,14 @@ describe("AuthClient", () => {
         };
         server
             .mockEndpoint()
-            .post("/token")
+            .post("/fake-token")
             .formUrlEncodedBody(rawRequestBody)
             .respondWith()
             .statusCode(200)
             .jsonBody(rawResponseBody)
             .build();
 
-        const response = await client.auth.getToken({
+        const response = await client.auth.fakeToken({
             clientId: "client_id",
             clientSecret: "client_secret",
         });

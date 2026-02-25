@@ -14,5 +14,5 @@ export function mockOAuth(server: MockServer): void {
         scope: "scope",
         session_state: "session_state",
     };
-    server.mockEndpoint().post("/token").respondWith().statusCode(200).jsonBody(rawResponseBody).build();
+    server.mockEndpoint().post("/fake-token").respondWith().statusCode(200).jsonBody(rawResponseBody).build();
 }
