@@ -1,4 +1,82 @@
 # Reference
+## Auth
+<details><summary><code>client.auth.<a href="/src/api/resources/auth/client/Client.ts">token</a>(tenantName, { ...params }) -> Corti.AuthTokenResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Exchange client_id and client_secret for a short-lived access token (OAuth 2.0 client credentials).
+Use the returned access_token in the Authorization header when calling the Corti API.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.auth.token("tenantName", {
+    clientId: "client_id",
+    clientSecret: "client_secret",
+    grantType: "client_credentials",
+    scope: "openid"
+});
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**tenantName:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `Corti.AuthTokenRequest` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `AuthClient.RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 ## Interactions
 <details><summary><code>client.interactions.<a href="/src/api/resources/interactions/client/Client.ts">list</a>({ ...params }) -> core.Page&lt;Corti.InteractionsGetResponse, Corti.InteractionsListResponse&gt;</code></summary>
 <dl>
