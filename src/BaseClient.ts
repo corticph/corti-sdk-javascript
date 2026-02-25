@@ -11,7 +11,7 @@ export type BaseClientOptions = {
     baseUrl?: core.Supplier<string>;
     tenantName: string;
     /** Override the Tenant-Name header */
-    tenantName?: core.Supplier<string | undefined>;
+    tenantName: core.Supplier<string>;
     /** Additional headers to include in requests. */
     headers?: Record<string, string | core.Supplier<string | null | undefined> | null | undefined>;
     /** The default maximum time to wait for a response in seconds. */
@@ -32,7 +32,7 @@ export interface BaseRequestOptions {
     /** A hook to abort the request. */
     abortSignal?: AbortSignal;
     /** Override the Tenant-Name header */
-    tenantName?: string | undefined;
+    tenantName?: string;
     /** Additional query string parameters to include in the request. */
     queryParams?: Record<string, unknown>;
     /** Additional headers to include in the request. */
@@ -56,8 +56,8 @@ export function normalizeClientOptions<T extends BaseClientOptions = BaseClientO
         {
             "X-Fern-Language": "JavaScript",
             "X-Fern-SDK-Name": "@corti/sdk",
-            "X-Fern-SDK-Version": "0.0.905",
-            "User-Agent": "@corti/sdk/0.0.905",
+            "X-Fern-SDK-Version": "0.0.906",
+            "User-Agent": "@corti/sdk/0.0.906",
             "X-Fern-Runtime": core.RUNTIME.type,
             "X-Fern-Runtime-Version": core.RUNTIME.version,
             "Tenant-Name": options?.tenantName,
