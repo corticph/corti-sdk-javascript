@@ -12,7 +12,7 @@ export const AuthTokenRequest: core.serialization.ObjectSchema<
     clientId: core.serialization.property("client_id", core.serialization.string()),
     clientSecret: core.serialization.property("client_secret", core.serialization.string()),
     grantType: core.serialization.property("grant_type", AuthTokenRequestGrantType),
-    scope: core.serialization.string().optional(),
+    scope: core.serialization.list(core.serialization.string()).optional(),
 });
 
 export declare namespace AuthTokenRequest {
@@ -20,6 +20,6 @@ export declare namespace AuthTokenRequest {
         client_id: string;
         client_secret: string;
         grant_type: AuthTokenRequestGrantType.Raw;
-        scope?: string | null;
+        scope?: string[] | null;
     }
 }
