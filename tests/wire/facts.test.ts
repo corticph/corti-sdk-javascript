@@ -9,8 +9,8 @@ describe("FactsClient", () => {
         const server = mockServerPool.createServer();
         const client = new CortiClient({
             maxRetries: 0,
-            tenantName: "test",
             token: "test",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
@@ -35,8 +35,8 @@ describe("FactsClient", () => {
         const server = mockServerPool.createServer();
         const client = new CortiClient({
             maxRetries: 0,
-            tenantName: "test",
             token: "test",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
@@ -52,8 +52,8 @@ describe("FactsClient", () => {
         const server = mockServerPool.createServer();
         const client = new CortiClient({
             maxRetries: 0,
-            tenantName: "test",
             token: "test",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
@@ -102,8 +102,8 @@ describe("FactsClient", () => {
         const server = mockServerPool.createServer();
         const client = new CortiClient({
             maxRetries: 0,
-            tenantName: "test",
             token: "test",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
@@ -125,8 +125,8 @@ describe("FactsClient", () => {
         const server = mockServerPool.createServer();
         const client = new CortiClient({
             maxRetries: 0,
-            tenantName: "test",
             token: "test",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
         const rawRequestBody = { facts: [{ text: "text", group: "other" }] };
@@ -179,8 +179,8 @@ describe("FactsClient", () => {
         const server = mockServerPool.createServer();
         const client = new CortiClient({
             maxRetries: 0,
-            tenantName: "test",
             token: "test",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
         const rawRequestBody = {
@@ -219,8 +219,8 @@ describe("FactsClient", () => {
         const server = mockServerPool.createServer();
         const client = new CortiClient({
             maxRetries: 0,
-            tenantName: "test",
             token: "test",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
         const rawRequestBody = { facts: [{ factId: "3c9d8a12-7f44-4b3e-9e6f-9271c2bbfa08" }] };
@@ -274,8 +274,8 @@ describe("FactsClient", () => {
         const server = mockServerPool.createServer();
         const client = new CortiClient({
             maxRetries: 0,
-            tenantName: "test",
             token: "test",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
         const rawRequestBody = { facts: [{ factId: "factId" }, { factId: "factId" }] };
@@ -307,8 +307,8 @@ describe("FactsClient", () => {
         const server = mockServerPool.createServer();
         const client = new CortiClient({
             maxRetries: 0,
-            tenantName: "test",
             token: "test",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
         const rawRequestBody = {};
@@ -351,8 +351,8 @@ describe("FactsClient", () => {
         const server = mockServerPool.createServer();
         const client = new CortiClient({
             maxRetries: 0,
-            tenantName: "test",
             token: "test",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
         const rawRequestBody = {};
@@ -375,8 +375,8 @@ describe("FactsClient", () => {
         const server = mockServerPool.createServer();
         const client = new CortiClient({
             maxRetries: 0,
-            tenantName: "test",
             token: "test",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
         const rawRequestBody = { context: [{ type: "text", text: "text" }], outputLanguage: "outputLanguage" };
@@ -421,8 +421,8 @@ describe("FactsClient", () => {
         const server = mockServerPool.createServer();
         const client = new CortiClient({
             maxRetries: 0,
-            tenantName: "test",
             token: "test",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
         const rawRequestBody = {

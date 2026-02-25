@@ -9,8 +9,8 @@ describe("AuthClient", () => {
         const server = mockServerPool.createServer();
         const client = new CortiClient({
             maxRetries: 0,
-            tenantName: "base",
             token: "test",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
         const rawRequestBody = {
@@ -28,7 +28,7 @@ describe("AuthClient", () => {
             .jsonBody(rawResponseBody)
             .build();
 
-        const response = await client.auth.token({
+        const response = await client.auth.token("base", {
             clientId: "client_id",
             clientSecret: "client_secret",
             grantType: "client_credentials",
@@ -45,8 +45,8 @@ describe("AuthClient", () => {
         const server = mockServerPool.createServer();
         const client = new CortiClient({
             maxRetries: 0,
-            tenantName: "tenantName",
             token: "test",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
         const rawRequestBody = {
@@ -65,7 +65,7 @@ describe("AuthClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.auth.token({
+            return await client.auth.token("tenantName", {
                 clientId: "client_id",
                 clientSecret: "client_secret",
                 grantType: "client_credentials",
@@ -77,8 +77,8 @@ describe("AuthClient", () => {
         const server = mockServerPool.createServer();
         const client = new CortiClient({
             maxRetries: 0,
-            tenantName: "tenantName",
             token: "test",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
         const rawRequestBody = {
@@ -97,7 +97,7 @@ describe("AuthClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.auth.token({
+            return await client.auth.token("tenantName", {
                 clientId: "client_id",
                 clientSecret: "client_secret",
                 grantType: "client_credentials",
