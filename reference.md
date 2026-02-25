@@ -13,7 +13,7 @@
 <dd>
 
 Exchange credentials for a short-lived access token. Supports grant_type client_credentials (server-to-server),
-authorization_code (with client_secret), or authorization_code with PKCE (code_verifier). Use the returned access_token in the Authorization header when calling the Corti API.
+authorization_code (with client_secret), authorization_code with PKCE (code_verifier), or password (ROPC). Use the returned access_token in the Authorization header when calling the Corti API.
 </dd>
 </dl>
 </dd>

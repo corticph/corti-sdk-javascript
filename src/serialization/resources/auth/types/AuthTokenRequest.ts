@@ -6,17 +6,20 @@ import type * as serializers from "../../../index.js";
 import { AuthTokenRequestAuthorizationCode } from "../../../types/AuthTokenRequestAuthorizationCode.js";
 import { AuthTokenRequestAuthorizationPkce } from "../../../types/AuthTokenRequestAuthorizationPkce.js";
 import { AuthTokenRequestClientCredentials } from "../../../types/AuthTokenRequestClientCredentials.js";
+import { AuthTokenRequestRopc } from "../../../types/AuthTokenRequestRopc.js";
 
 export const AuthTokenRequest: core.serialization.Schema<serializers.AuthTokenRequest.Raw, Corti.AuthTokenRequest> =
     core.serialization.undiscriminatedUnion([
         AuthTokenRequestClientCredentials,
         AuthTokenRequestAuthorizationCode,
         AuthTokenRequestAuthorizationPkce,
+        AuthTokenRequestRopc,
     ]);
 
 export declare namespace AuthTokenRequest {
     export type Raw =
         | AuthTokenRequestClientCredentials.Raw
         | AuthTokenRequestAuthorizationCode.Raw
-        | AuthTokenRequestAuthorizationPkce.Raw;
+        | AuthTokenRequestAuthorizationPkce.Raw
+        | AuthTokenRequestRopc.Raw;
 }
