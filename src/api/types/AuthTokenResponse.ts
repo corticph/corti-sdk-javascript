@@ -10,6 +10,8 @@ export interface AuthTokenResponse {
     expiresIn: number;
     /** Refresh token lifetime in seconds (0 if refresh not supported). */
     refreshExpiresIn?: number;
+    /** Refresh token for obtaining new access tokens (when grant supports it). */
+    refreshToken?: string;
     tokenType: string;
     /** OpenID Connect ID token JWT (when scope includes openid). */
     idToken?: string;
@@ -17,4 +19,6 @@ export interface AuthTokenResponse {
     notBeforePolicy?: number;
     /** Granted scope(s), space-separated. */
     scope?: string;
+    /** Keycloak session state. */
+    sessionState?: string;
 }

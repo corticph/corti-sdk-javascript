@@ -22,10 +22,12 @@ describe("AuthClient", () => {
             access_token: "access_token",
             expires_in: 1,
             refresh_expires_in: 1,
+            refresh_token: "refresh_token",
             token_type: "Bearer",
             id_token: "id_token",
             "not-before-policy": 1,
             scope: "scope",
+            session_state: "session_state",
         };
         server
             .mockEndpoint()
@@ -45,10 +47,12 @@ describe("AuthClient", () => {
             accessToken: "access_token",
             expiresIn: 1,
             refreshExpiresIn: 1,
+            refreshToken: "refresh_token",
             tokenType: "Bearer",
             idToken: "id_token",
             notBeforePolicy: 1,
             scope: "scope",
+            sessionState: "session_state",
         });
     });
 
