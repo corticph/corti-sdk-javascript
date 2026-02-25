@@ -1,6 +1,6 @@
 # Reference
 ## Auth
-<details><summary><code>client.auth.<a href="/src/api/resources/auth/client/Client.ts">token</a>(tenantName, { ...params }) -> Corti.AuthTokenResponse</code></summary>
+<details><summary><code>client.auth.<a href="/src/api/resources/auth/client/Client.ts">token</a>({ ...params }) -> Corti.AuthTokenResponse</code></summary>
 <dl>
 <dd>
 
@@ -28,7 +28,7 @@ Use the returned access_token in the Authorization header when calling the Corti
 <dd>
 
 ```typescript
-await client.auth.token("base", {
+await client.auth.token({
     clientId: "client_id",
     clientSecret: "client_secret",
     grantType: "client_credentials"
@@ -44,14 +44,6 @@ await client.auth.token("base", {
 
 <dl>
 <dd>
-
-<dl>
-<dd>
-
-**tenantName:** `string` — Tenant identifier (e.g. base or custom tenant name).
-    
-</dd>
-</dl>
 
 <dl>
 <dd>

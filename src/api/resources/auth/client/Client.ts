@@ -26,7 +26,6 @@ export class AuthClient {
      * Exchange client_id and client_secret for a short-lived access token (OAuth 2.0 client credentials).
      * Use the returned access_token in the Authorization header when calling the Corti API.
      *
-     * @param {string} tenantName - Tenant identifier (e.g. base or custom tenant name).
      * @param {Corti.AuthTokenRequest} request
      * @param {AuthClient.RequestOptions} requestOptions - Request-specific configuration.
      *
@@ -34,22 +33,20 @@ export class AuthClient {
      * @throws {@link Corti.UnauthorizedError}
      *
      * @example
-     *     await client.auth.token("base", {
+     *     await client.auth.token({
      *         clientId: "client_id",
      *         clientSecret: "client_secret",
      *         grantType: "client_credentials"
      *     })
      */
     public token(
-        tenantName: string,
         request: Corti.AuthTokenRequest,
         requestOptions?: AuthClient.RequestOptions,
     ): core.HttpResponsePromise<Corti.AuthTokenResponse> {
-        return core.HttpResponsePromise.fromPromise(this.__token(tenantName, request, requestOptions));
+        return core.HttpResponsePromise.fromPromise(this.__token(request, requestOptions));
     }
 
     private async __token(
-        tenantName: string,
         request: Corti.AuthTokenRequest,
         requestOptions?: AuthClient.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.AuthTokenResponse>> {
@@ -62,7 +59,7 @@ export class AuthClient {
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
                     (await core.Supplier.get(this._options.environment)).login,
-                `${core.url.encodePathParam(tenantName)}/protocol/openid-connect/token`,
+                `${core.url.encodePathParam(this._options.tenantName)}/protocol/openid-connect/token`,
             ),
             method: "POST",
             headers: _headers,

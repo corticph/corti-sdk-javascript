@@ -9,8 +9,8 @@ describe("DocumentsClient", () => {
         const server = mockServerPool.createServer();
         const client = new CortiClient({
             maxRetries: 0,
-            token: "test",
             tenantName: "test",
+            token: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
@@ -79,8 +79,8 @@ describe("DocumentsClient", () => {
         const server = mockServerPool.createServer();
         const client = new CortiClient({
             maxRetries: 0,
-            token: "test",
             tenantName: "test",
+            token: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
@@ -102,8 +102,8 @@ describe("DocumentsClient", () => {
         const server = mockServerPool.createServer();
         const client = new CortiClient({
             maxRetries: 0,
-            token: "test",
             tenantName: "test",
+            token: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
@@ -125,8 +125,8 @@ describe("DocumentsClient", () => {
         const server = mockServerPool.createServer();
         const client = new CortiClient({
             maxRetries: 0,
-            token: "test",
             tenantName: "test",
+            token: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
@@ -148,8 +148,8 @@ describe("DocumentsClient", () => {
         const server = mockServerPool.createServer();
         const client = new CortiClient({
             maxRetries: 0,
-            token: "test",
             tenantName: "test",
+            token: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
@@ -171,8 +171,8 @@ describe("DocumentsClient", () => {
         const server = mockServerPool.createServer();
         const client = new CortiClient({
             maxRetries: 0,
-            token: "test",
             tenantName: "test",
+            token: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
         const rawRequestBody = {
@@ -252,8 +252,8 @@ describe("DocumentsClient", () => {
         const server = mockServerPool.createServer();
         const client = new CortiClient({
             maxRetries: 0,
-            token: "test",
             tenantName: "test",
+            token: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
         const rawRequestBody = {
@@ -326,8 +326,8 @@ describe("DocumentsClient", () => {
         const server = mockServerPool.createServer();
         const client = new CortiClient({
             maxRetries: 0,
-            token: "test",
             tenantName: "test",
+            token: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
         const rawRequestBody = {
@@ -400,8 +400,8 @@ describe("DocumentsClient", () => {
         const server = mockServerPool.createServer();
         const client = new CortiClient({
             maxRetries: 0,
-            token: "test",
             tenantName: "test",
+            token: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
         const rawRequestBody = {
@@ -474,8 +474,8 @@ describe("DocumentsClient", () => {
         const server = mockServerPool.createServer();
         const client = new CortiClient({
             maxRetries: 0,
-            token: "test",
             tenantName: "test",
+            token: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
         const rawRequestBody = {
@@ -548,8 +548,8 @@ describe("DocumentsClient", () => {
         const server = mockServerPool.createServer();
         const client = new CortiClient({
             maxRetries: 0,
-            token: "test",
             tenantName: "test",
+            token: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
@@ -613,8 +613,8 @@ describe("DocumentsClient", () => {
         const server = mockServerPool.createServer();
         const client = new CortiClient({
             maxRetries: 0,
-            token: "test",
             tenantName: "test",
+            token: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
@@ -636,8 +636,8 @@ describe("DocumentsClient", () => {
         const server = mockServerPool.createServer();
         const client = new CortiClient({
             maxRetries: 0,
-            token: "test",
             tenantName: "test",
+            token: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
@@ -659,8 +659,8 @@ describe("DocumentsClient", () => {
         const server = mockServerPool.createServer();
         const client = new CortiClient({
             maxRetries: 0,
-            token: "test",
             tenantName: "test",
+            token: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
@@ -682,8 +682,8 @@ describe("DocumentsClient", () => {
         const server = mockServerPool.createServer();
         const client = new CortiClient({
             maxRetries: 0,
-            token: "test",
             tenantName: "test",
+            token: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
@@ -705,8 +705,8 @@ describe("DocumentsClient", () => {
         const server = mockServerPool.createServer();
         const client = new CortiClient({
             maxRetries: 0,
-            token: "test",
             tenantName: "test",
+            token: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
@@ -728,8 +728,8 @@ describe("DocumentsClient", () => {
         const server = mockServerPool.createServer();
         const client = new CortiClient({
             maxRetries: 0,
-            token: "test",
             tenantName: "test",
+            token: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
@@ -751,8 +751,8 @@ describe("DocumentsClient", () => {
         const server = mockServerPool.createServer();
         const client = new CortiClient({
             maxRetries: 0,
-            token: "test",
             tenantName: "test",
+            token: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
@@ -774,8 +774,8 @@ describe("DocumentsClient", () => {
         const server = mockServerPool.createServer();
         const client = new CortiClient({
             maxRetries: 0,
-            token: "test",
             tenantName: "test",
+            token: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
@@ -797,8 +797,8 @@ describe("DocumentsClient", () => {
         const server = mockServerPool.createServer();
         const client = new CortiClient({
             maxRetries: 0,
-            token: "test",
             tenantName: "test",
+            token: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
@@ -820,8 +820,8 @@ describe("DocumentsClient", () => {
         const server = mockServerPool.createServer();
         const client = new CortiClient({
             maxRetries: 0,
-            token: "test",
             tenantName: "test",
+            token: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
         const rawRequestBody = {};
@@ -886,8 +886,8 @@ describe("DocumentsClient", () => {
         const server = mockServerPool.createServer();
         const client = new CortiClient({
             maxRetries: 0,
-            token: "test",
             tenantName: "test",
+            token: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
         const rawRequestBody = {};
@@ -910,8 +910,8 @@ describe("DocumentsClient", () => {
         const server = mockServerPool.createServer();
         const client = new CortiClient({
             maxRetries: 0,
-            token: "test",
             tenantName: "test",
+            token: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
         const rawRequestBody = {};
@@ -934,8 +934,8 @@ describe("DocumentsClient", () => {
         const server = mockServerPool.createServer();
         const client = new CortiClient({
             maxRetries: 0,
-            token: "test",
             tenantName: "test",
+            token: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
         const rawRequestBody = {};
@@ -958,8 +958,8 @@ describe("DocumentsClient", () => {
         const server = mockServerPool.createServer();
         const client = new CortiClient({
             maxRetries: 0,
-            token: "test",
             tenantName: "test",
+            token: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
         const rawRequestBody = {};

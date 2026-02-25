@@ -9,6 +9,7 @@ export type BaseClientOptions = {
     environment: core.Supplier<environments.CortiEnvironment | environments.CortiEnvironmentUrls>;
     /** Specify a custom URL to connect the client to. */
     baseUrl?: core.Supplier<string>;
+    tenantName: string;
     /** Override the Tenant-Name header */
     tenantName?: core.Supplier<string | undefined>;
     /** Additional headers to include in requests. */
@@ -55,8 +56,8 @@ export function normalizeClientOptions<T extends BaseClientOptions = BaseClientO
         {
             "X-Fern-Language": "JavaScript",
             "X-Fern-SDK-Name": "@corti/sdk",
-            "X-Fern-SDK-Version": "0.0.902",
-            "User-Agent": "@corti/sdk/0.0.902",
+            "X-Fern-SDK-Version": "0.0.903",
+            "User-Agent": "@corti/sdk/0.0.903",
             "X-Fern-Runtime": core.RUNTIME.type,
             "X-Fern-Runtime-Version": core.RUNTIME.version,
             "Tenant-Name": options?.tenantName,

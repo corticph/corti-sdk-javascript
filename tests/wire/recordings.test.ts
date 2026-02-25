@@ -9,8 +9,8 @@ describe("RecordingsClient", () => {
         const server = mockServerPool.createServer();
         const client = new CortiClient({
             maxRetries: 0,
-            token: "test",
             tenantName: "test",
+            token: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
@@ -33,8 +33,8 @@ describe("RecordingsClient", () => {
         const server = mockServerPool.createServer();
         const client = new CortiClient({
             maxRetries: 0,
-            token: "test",
             tenantName: "test",
+            token: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
@@ -56,8 +56,8 @@ describe("RecordingsClient", () => {
         const server = mockServerPool.createServer();
         const client = new CortiClient({
             maxRetries: 0,
-            token: "test",
             tenantName: "test",
+            token: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
@@ -79,8 +79,8 @@ describe("RecordingsClient", () => {
         const server = mockServerPool.createServer();
         const client = new CortiClient({
             maxRetries: 0,
-            token: "test",
             tenantName: "test",
+            token: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
@@ -102,8 +102,8 @@ describe("RecordingsClient", () => {
         const server = mockServerPool.createServer();
         const client = new CortiClient({
             maxRetries: 0,
-            token: "test",
             tenantName: "test",
+            token: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
@@ -125,8 +125,8 @@ describe("RecordingsClient", () => {
         const server = mockServerPool.createServer();
         const client = new CortiClient({
             maxRetries: 0,
-            token: "test",
             tenantName: "test",
+            token: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
@@ -150,8 +150,8 @@ describe("RecordingsClient", () => {
         const server = mockServerPool.createServer();
         const client = new CortiClient({
             maxRetries: 0,
-            token: "test",
             tenantName: "test",
+            token: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
@@ -173,8 +173,8 @@ describe("RecordingsClient", () => {
         const server = mockServerPool.createServer();
         const client = new CortiClient({
             maxRetries: 0,
-            token: "test",
             tenantName: "test",
+            token: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
@@ -196,8 +196,8 @@ describe("RecordingsClient", () => {
         const server = mockServerPool.createServer();
         const client = new CortiClient({
             maxRetries: 0,
-            token: "test",
             tenantName: "test",
+            token: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
@@ -219,8 +219,8 @@ describe("RecordingsClient", () => {
         const server = mockServerPool.createServer();
         const client = new CortiClient({
             maxRetries: 0,
-            token: "test",
             tenantName: "test",
+            token: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
