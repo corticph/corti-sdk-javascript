@@ -3,13 +3,17 @@
 import * as Corti from "../../src/api/index";
 import { CortiClient } from "../../src/Client";
 import { mockServerPool } from "../mock-server/MockServerPool";
+import { mockOAuth } from "./mockAuth";
 
 describe("DocumentsClient", () => {
     test("list (1)", async () => {
         const server = mockServerPool.createServer();
+        mockOAuth(server);
+
         const client = new CortiClient({
             maxRetries: 0,
-            token: "test",
+            clientId: "client_id",
+            clientSecret: "client_secret",
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
@@ -77,9 +81,12 @@ describe("DocumentsClient", () => {
 
     test("list (2)", async () => {
         const server = mockServerPool.createServer();
+        mockOAuth(server);
+
         const client = new CortiClient({
             maxRetries: 0,
-            token: "test",
+            clientId: "client_id",
+            clientSecret: "client_secret",
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
@@ -100,9 +107,12 @@ describe("DocumentsClient", () => {
 
     test("list (3)", async () => {
         const server = mockServerPool.createServer();
+        mockOAuth(server);
+
         const client = new CortiClient({
             maxRetries: 0,
-            token: "test",
+            clientId: "client_id",
+            clientSecret: "client_secret",
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
@@ -123,9 +133,12 @@ describe("DocumentsClient", () => {
 
     test("list (4)", async () => {
         const server = mockServerPool.createServer();
+        mockOAuth(server);
+
         const client = new CortiClient({
             maxRetries: 0,
-            token: "test",
+            clientId: "client_id",
+            clientSecret: "client_secret",
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
@@ -146,9 +159,12 @@ describe("DocumentsClient", () => {
 
     test("list (5)", async () => {
         const server = mockServerPool.createServer();
+        mockOAuth(server);
+
         const client = new CortiClient({
             maxRetries: 0,
-            token: "test",
+            clientId: "client_id",
+            clientSecret: "client_secret",
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
@@ -169,9 +185,12 @@ describe("DocumentsClient", () => {
 
     test("create (1)", async () => {
         const server = mockServerPool.createServer();
+        mockOAuth(server);
+
         const client = new CortiClient({
             maxRetries: 0,
-            token: "test",
+            clientId: "client_id",
+            clientSecret: "client_secret",
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
@@ -250,9 +269,12 @@ describe("DocumentsClient", () => {
 
     test("create (2)", async () => {
         const server = mockServerPool.createServer();
+        mockOAuth(server);
+
         const client = new CortiClient({
             maxRetries: 0,
-            token: "test",
+            clientId: "client_id",
+            clientSecret: "client_secret",
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
@@ -324,9 +346,12 @@ describe("DocumentsClient", () => {
 
     test("create (3)", async () => {
         const server = mockServerPool.createServer();
+        mockOAuth(server);
+
         const client = new CortiClient({
             maxRetries: 0,
-            token: "test",
+            clientId: "client_id",
+            clientSecret: "client_secret",
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
@@ -398,9 +423,12 @@ describe("DocumentsClient", () => {
 
     test("create (4)", async () => {
         const server = mockServerPool.createServer();
+        mockOAuth(server);
+
         const client = new CortiClient({
             maxRetries: 0,
-            token: "test",
+            clientId: "client_id",
+            clientSecret: "client_secret",
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
@@ -472,9 +500,12 @@ describe("DocumentsClient", () => {
 
     test("create (5)", async () => {
         const server = mockServerPool.createServer();
+        mockOAuth(server);
+
         const client = new CortiClient({
             maxRetries: 0,
-            token: "test",
+            clientId: "client_id",
+            clientSecret: "client_secret",
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
@@ -546,9 +577,12 @@ describe("DocumentsClient", () => {
 
     test("get (1)", async () => {
         const server = mockServerPool.createServer();
+        mockOAuth(server);
+
         const client = new CortiClient({
             maxRetries: 0,
-            token: "test",
+            clientId: "client_id",
+            clientSecret: "client_secret",
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
@@ -611,9 +645,12 @@ describe("DocumentsClient", () => {
 
     test("get (2)", async () => {
         const server = mockServerPool.createServer();
+        mockOAuth(server);
+
         const client = new CortiClient({
             maxRetries: 0,
-            token: "test",
+            clientId: "client_id",
+            clientSecret: "client_secret",
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
@@ -634,9 +671,12 @@ describe("DocumentsClient", () => {
 
     test("get (3)", async () => {
         const server = mockServerPool.createServer();
+        mockOAuth(server);
+
         const client = new CortiClient({
             maxRetries: 0,
-            token: "test",
+            clientId: "client_id",
+            clientSecret: "client_secret",
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
@@ -657,9 +697,12 @@ describe("DocumentsClient", () => {
 
     test("get (4)", async () => {
         const server = mockServerPool.createServer();
+        mockOAuth(server);
+
         const client = new CortiClient({
             maxRetries: 0,
-            token: "test",
+            clientId: "client_id",
+            clientSecret: "client_secret",
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
@@ -680,9 +723,12 @@ describe("DocumentsClient", () => {
 
     test("get (5)", async () => {
         const server = mockServerPool.createServer();
+        mockOAuth(server);
+
         const client = new CortiClient({
             maxRetries: 0,
-            token: "test",
+            clientId: "client_id",
+            clientSecret: "client_secret",
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
@@ -703,9 +749,12 @@ describe("DocumentsClient", () => {
 
     test("delete (1)", async () => {
         const server = mockServerPool.createServer();
+        mockOAuth(server);
+
         const client = new CortiClient({
             maxRetries: 0,
-            token: "test",
+            clientId: "client_id",
+            clientSecret: "client_secret",
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
@@ -726,9 +775,12 @@ describe("DocumentsClient", () => {
 
     test("delete (2)", async () => {
         const server = mockServerPool.createServer();
+        mockOAuth(server);
+
         const client = new CortiClient({
             maxRetries: 0,
-            token: "test",
+            clientId: "client_id",
+            clientSecret: "client_secret",
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
@@ -749,9 +801,12 @@ describe("DocumentsClient", () => {
 
     test("delete (3)", async () => {
         const server = mockServerPool.createServer();
+        mockOAuth(server);
+
         const client = new CortiClient({
             maxRetries: 0,
-            token: "test",
+            clientId: "client_id",
+            clientSecret: "client_secret",
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
@@ -772,9 +827,12 @@ describe("DocumentsClient", () => {
 
     test("delete (4)", async () => {
         const server = mockServerPool.createServer();
+        mockOAuth(server);
+
         const client = new CortiClient({
             maxRetries: 0,
-            token: "test",
+            clientId: "client_id",
+            clientSecret: "client_secret",
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
@@ -795,9 +853,12 @@ describe("DocumentsClient", () => {
 
     test("delete (5)", async () => {
         const server = mockServerPool.createServer();
+        mockOAuth(server);
+
         const client = new CortiClient({
             maxRetries: 0,
-            token: "test",
+            clientId: "client_id",
+            clientSecret: "client_secret",
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
@@ -818,9 +879,12 @@ describe("DocumentsClient", () => {
 
     test("update (1)", async () => {
         const server = mockServerPool.createServer();
+        mockOAuth(server);
+
         const client = new CortiClient({
             maxRetries: 0,
-            token: "test",
+            clientId: "client_id",
+            clientSecret: "client_secret",
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
@@ -884,9 +948,12 @@ describe("DocumentsClient", () => {
 
     test("update (2)", async () => {
         const server = mockServerPool.createServer();
+        mockOAuth(server);
+
         const client = new CortiClient({
             maxRetries: 0,
-            token: "test",
+            clientId: "client_id",
+            clientSecret: "client_secret",
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
@@ -908,9 +975,12 @@ describe("DocumentsClient", () => {
 
     test("update (3)", async () => {
         const server = mockServerPool.createServer();
+        mockOAuth(server);
+
         const client = new CortiClient({
             maxRetries: 0,
-            token: "test",
+            clientId: "client_id",
+            clientSecret: "client_secret",
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
@@ -932,9 +1002,12 @@ describe("DocumentsClient", () => {
 
     test("update (4)", async () => {
         const server = mockServerPool.createServer();
+        mockOAuth(server);
+
         const client = new CortiClient({
             maxRetries: 0,
-            token: "test",
+            clientId: "client_id",
+            clientSecret: "client_secret",
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
@@ -956,9 +1029,12 @@ describe("DocumentsClient", () => {
 
     test("update (5)", async () => {
         const server = mockServerPool.createServer();
+        mockOAuth(server);
+
         const client = new CortiClient({
             maxRetries: 0,
-            token: "test",
+            clientId: "client_id",
+            clientSecret: "client_secret",
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });

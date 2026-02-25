@@ -1,5 +1,57 @@
 # Reference
 ## Auth
+<details><summary><code>client.auth.<a href="/src/api/resources/auth/client/Client.ts">getToken</a>({ ...params }) -> Corti.AuthTokenResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.auth.getToken({
+    clientId: "client_id",
+    clientSecret: "client_secret"
+});
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `Corti.OAuthTokenRequest` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `AuthClient.RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.auth.<a href="/src/api/resources/auth/client/Client.ts">token</a>(tenantName, { ...params }) -> Corti.AuthTokenResponse</code></summary>
 <dl>
 <dd>

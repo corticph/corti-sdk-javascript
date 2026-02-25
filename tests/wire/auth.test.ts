@@ -3,13 +3,66 @@
 import * as Corti from "../../src/api/index";
 import { CortiClient } from "../../src/Client";
 import { mockServerPool } from "../mock-server/MockServerPool";
+import { mockOAuth } from "./mockAuth";
 
 describe("AuthClient", () => {
-    test("token (1)", async () => {
+    test("getToken", async () => {
         const server = mockServerPool.createServer();
+        mockOAuth(server);
+
         const client = new CortiClient({
             maxRetries: 0,
-            token: "test",
+            clientId: "client_id",
+            clientSecret: "client_secret",
+            tenantName: "test",
+            environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
+        });
+        const rawRequestBody = { client_id: "client_id", client_secret: "client_secret" };
+        const rawResponseBody = {
+            access_token: "access_token",
+            expires_in: 1,
+            refresh_expires_in: 1,
+            refresh_token: "refresh_token",
+            token_type: "Bearer",
+            id_token: "id_token",
+            "not-before-policy": 1,
+            scope: "scope",
+            session_state: "session_state",
+        };
+        server
+            .mockEndpoint()
+            .post("/token")
+            .formUrlEncodedBody(rawRequestBody)
+            .respondWith()
+            .statusCode(200)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        const response = await client.auth.getToken({
+            clientId: "client_id",
+            clientSecret: "client_secret",
+        });
+        expect(response).toEqual({
+            accessToken: "access_token",
+            expiresIn: 1,
+            refreshExpiresIn: 1,
+            refreshToken: "refresh_token",
+            tokenType: "Bearer",
+            idToken: "id_token",
+            notBeforePolicy: 1,
+            scope: "scope",
+            sessionState: "session_state",
+        });
+    });
+
+    test("token (1)", async () => {
+        const server = mockServerPool.createServer();
+        mockOAuth(server);
+
+        const client = new CortiClient({
+            maxRetries: 0,
+            clientId: "client_id",
+            clientSecret: "client_secret",
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
@@ -58,9 +111,12 @@ describe("AuthClient", () => {
 
     test("token (2)", async () => {
         const server = mockServerPool.createServer();
+        mockOAuth(server);
+
         const client = new CortiClient({
             maxRetries: 0,
-            token: "test",
+            clientId: "client_id",
+            clientSecret: "client_secret",
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
@@ -90,9 +146,12 @@ describe("AuthClient", () => {
 
     test("token (3)", async () => {
         const server = mockServerPool.createServer();
+        mockOAuth(server);
+
         const client = new CortiClient({
             maxRetries: 0,
-            token: "test",
+            clientId: "client_id",
+            clientSecret: "client_secret",
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });

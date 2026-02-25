@@ -23,6 +23,77 @@ export class AuthClient {
     }
 
     /**
+     * @param {Corti.OAuthTokenRequest} request
+     * @param {AuthClient.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @example
+     *     await client.auth.getToken({
+     *         clientId: "client_id",
+     *         clientSecret: "client_secret"
+     *     })
+     */
+    public getToken(
+        request: Corti.OAuthTokenRequest,
+        requestOptions?: AuthClient.RequestOptions,
+    ): core.HttpResponsePromise<Corti.AuthTokenResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__getToken(request, requestOptions));
+    }
+
+    private async __getToken(
+        request: Corti.OAuthTokenRequest,
+        requestOptions?: AuthClient.RequestOptions,
+    ): Promise<core.WithRawResponse<Corti.AuthTokenResponse>> {
+        const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+            this._options?.headers,
+            mergeOnlyDefinedHeaders({ "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName }),
+            requestOptions?.headers,
+        );
+        const _response = await core.fetcher({
+            url: core.url.join(
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)).login,
+                "token",
+            ),
+            method: "POST",
+            headers: _headers,
+            contentType: "application/x-www-form-urlencoded",
+            queryParameters: requestOptions?.queryParams,
+            requestType: "form",
+            body: serializers.OAuthTokenRequest.jsonOrThrow(request, {
+                unrecognizedObjectKeys: "strip",
+                omitUndefined: true,
+            }),
+            timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
+            maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
+            abortSignal: requestOptions?.abortSignal,
+            fetchFn: this._options?.fetch,
+            logging: this._options.logging,
+        });
+        if (_response.ok) {
+            return {
+                data: serializers.AuthTokenResponse.parseOrThrow(_response.body, {
+                    unrecognizedObjectKeys: "passthrough",
+                    allowUnrecognizedUnionMembers: true,
+                    allowUnrecognizedEnumValues: true,
+                    skipValidation: true,
+                    breadcrumbsPrefix: ["response"],
+                }),
+                rawResponse: _response.rawResponse,
+            };
+        }
+
+        if (_response.error.reason === "status-code") {
+            throw new errors.CortiError({
+                statusCode: _response.error.statusCode,
+                body: _response.error.body,
+                rawResponse: _response.rawResponse,
+            });
+        }
+
+        return handleNonStatusCodeError(_response.error, _response.rawResponse, "POST", "/token");
+    }
+
+    /**
      * Exchange credentials for a short-lived access token. Supports grant_type client_credentials (server-to-server),
      * authorization_code (with client_secret), authorization_code with PKCE (code_verifier), password (ROPC), or refresh_token. Use the returned access_token in the Authorization header when calling the Corti API.
      *
