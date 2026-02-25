@@ -12,6 +12,6 @@ export interface AuthTokenRequest {
     clientSecret: string;
     /** Must be client_credentials. */
     grantType: Corti.AuthTokenRequestGrantType;
-    /** OAuth scope(s). Sent as space-separated string to the API. Default openid. */
-    scope?: string[];
+    /** OAuth scope(s). Default openid. */
+    scope?: string;
 }
