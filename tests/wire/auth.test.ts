@@ -22,14 +22,14 @@ describe("AuthClient", () => {
         const rawResponseBody = { access_token: "access_token", expires_in: 1, token_type: "Bearer", scope: "scope" };
         server
             .mockEndpoint()
-            .post("/tenantName/protocol/openid-connect/token")
+            .post("/protocol/openid-connect/token")
             .formUrlEncodedBody(rawRequestBody)
             .respondWith()
             .statusCode(200)
             .jsonBody(rawResponseBody)
             .build();
 
-        const response = await client.auth.token("tenantName", {
+        const response = await client.auth.token({
             clientId: "client_id",
             clientSecret: "client_secret",
             grantType: "client_credentials",
@@ -60,7 +60,7 @@ describe("AuthClient", () => {
         const rawResponseBody = { key: "value" };
         server
             .mockEndpoint()
-            .post("/tenantName/protocol/openid-connect/token")
+            .post("/protocol/openid-connect/token")
             .formUrlEncodedBody(rawRequestBody)
             .respondWith()
             .statusCode(400)
@@ -68,7 +68,7 @@ describe("AuthClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.auth.token("tenantName", {
+            return await client.auth.token({
                 clientId: "client_id",
                 clientSecret: "client_secret",
                 grantType: "client_credentials",
@@ -94,7 +94,7 @@ describe("AuthClient", () => {
         const rawResponseBody = { key: "value" };
         server
             .mockEndpoint()
-            .post("/tenantName/protocol/openid-connect/token")
+            .post("/protocol/openid-connect/token")
             .formUrlEncodedBody(rawRequestBody)
             .respondWith()
             .statusCode(401)
@@ -102,7 +102,7 @@ describe("AuthClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.auth.token("tenantName", {
+            return await client.auth.token({
                 clientId: "client_id",
                 clientSecret: "client_secret",
                 grantType: "client_credentials",
