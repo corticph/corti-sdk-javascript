@@ -31,7 +31,8 @@ Use the returned access_token in the Authorization header when calling the Corti
 await client.auth.token("base", {
     clientId: "client_id",
     clientSecret: "client_secret",
-    grantType: "client_credentials"
+    grantType: "client_credentials",
+    scope: "openid"
 });
 
 ```

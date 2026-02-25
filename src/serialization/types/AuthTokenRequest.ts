@@ -3,7 +3,6 @@
 import type * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
 import type * as serializers from "../index.js";
-import { AuthTokenRequestGrantType } from "./AuthTokenRequestGrantType.js";
 
 export const AuthTokenRequest: core.serialization.ObjectSchema<
     serializers.AuthTokenRequest.Raw,
@@ -11,15 +10,15 @@ export const AuthTokenRequest: core.serialization.ObjectSchema<
 > = core.serialization.object({
     clientId: core.serialization.property("client_id", core.serialization.string()),
     clientSecret: core.serialization.property("client_secret", core.serialization.string()),
-    grantType: core.serialization.property("grant_type", AuthTokenRequestGrantType),
-    scope: core.serialization.string().optional(),
+    grantType: core.serialization.property("grant_type", core.serialization.stringLiteral("client_credentials")),
+    scope: core.serialization.stringLiteral("openid"),
 });
 
 export declare namespace AuthTokenRequest {
     export interface Raw {
         client_id: string;
         client_secret: string;
-        grant_type: AuthTokenRequestGrantType.Raw;
-        scope?: string | null;
+        grant_type: "client_credentials";
+        scope: "openid";
     }
 }
