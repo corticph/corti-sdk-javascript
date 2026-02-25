@@ -4,11 +4,19 @@ import type * as Corti from "../../../../api/index.js";
 import * as core from "../../../../core/index.js";
 import type * as serializers from "../../../index.js";
 import { AuthTokenRequestAuthorizationCode } from "../../../types/AuthTokenRequestAuthorizationCode.js";
+import { AuthTokenRequestAuthorizationPkce } from "../../../types/AuthTokenRequestAuthorizationPkce.js";
 import { AuthTokenRequestClientCredentials } from "../../../types/AuthTokenRequestClientCredentials.js";
 
 export const AuthTokenRequest: core.serialization.Schema<serializers.AuthTokenRequest.Raw, Corti.AuthTokenRequest> =
-    core.serialization.undiscriminatedUnion([AuthTokenRequestClientCredentials, AuthTokenRequestAuthorizationCode]);
+    core.serialization.undiscriminatedUnion([
+        AuthTokenRequestClientCredentials,
+        AuthTokenRequestAuthorizationCode,
+        AuthTokenRequestAuthorizationPkce,
+    ]);
 
 export declare namespace AuthTokenRequest {
-    export type Raw = AuthTokenRequestClientCredentials.Raw | AuthTokenRequestAuthorizationCode.Raw;
+    export type Raw =
+        | AuthTokenRequestClientCredentials.Raw
+        | AuthTokenRequestAuthorizationCode.Raw
+        | AuthTokenRequestAuthorizationPkce.Raw;
 }

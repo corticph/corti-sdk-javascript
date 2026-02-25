@@ -52,6 +52,7 @@ export * from "./AgentsTaskStatusState.js";
 export * from "./AgentsTextPart.js";
 export * from "./AgentsTextPartKind.js";
 export * from "./AuthTokenRequestAuthorizationCode.js";
+export * from "./AuthTokenRequestAuthorizationPkce.js";
 export * from "./AuthTokenRequestClientCredentials.js";
 export * from "./AuthTokenResponse.js";
 export * from "./CodesGeneralReadResponse.js";
