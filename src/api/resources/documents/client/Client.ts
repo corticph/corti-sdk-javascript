@@ -179,8 +179,7 @@ export class Documents {
      *         context: [{
      *                 type: "facts",
      *                 data: [{
-     *                         text: "text",
-     *                         source: "core"
+     *                         text: "text"
      *                     }]
      *             }],
      *         templateKey: "templateKey",
