@@ -42,6 +42,8 @@ export * from "./FactsBatchUpdateResponse.js";
 export * from "./FactsBatchUpdateItem.js";
 export * from "./CodesGeneralResponse.js";
 export * from "./CodesGeneralReadResponseEvidencesItem.js";
+export * from "./CodesGeneralReadResponseModifiersItem.js";
+export * from "./CodesGeneralReadResponseAlternativesItem.js";
 export * from "./CodesGeneralReadResponse.js";
 export * from "./FactsExtractResponseFactsItem.js";
 export * from "./FactsExtractResponse.js";
