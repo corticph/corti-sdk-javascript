@@ -5,9 +5,9 @@
 /**
  * Formatting for numbers.
  */
-export type TranscribeFormattingNumbers = "as_dictated" | "numerals" | "numerals_above_nine";
+export type TranscribeFormattingNumbers = "numerals_above_nine" | "numerals" | "as_dictated";
 export const TranscribeFormattingNumbers = {
-    AsDictated: "as_dictated",
-    Numerals: "numerals",
     NumeralsAboveNine: "numerals_above_nine",
+    Numerals: "numerals",
+    AsDictated: "as_dictated",
 } as const;
