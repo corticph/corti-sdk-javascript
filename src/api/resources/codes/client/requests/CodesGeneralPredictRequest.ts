@@ -11,8 +11,7 @@ import * as Corti from "../../../../index.js";
  *         context: [{
  *                 type: "text",
  *                 text: "Short arm splint applied in ED for pain control."
- *             }],
- *         maxCandidates: 5
+ *             }]
  *     }
  */
 export interface CodesGeneralPredictRequest {
@@ -20,6 +19,4 @@ export interface CodesGeneralPredictRequest {
     system: Corti.CommonCodingSystemEnum[];
     /** Select either `text` or `documentId` as input context to the model for code prediction. Evidence indices in the response map to this array. */
     context: Corti.CommonAiContext[];
-    /** Maximum number of code candidates to include in the response (per system). */
-    maxCandidates?: number;
 }

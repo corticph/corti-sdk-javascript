@@ -60,8 +60,7 @@ export class Codes {
      *         context: [{
      *                 type: "text",
      *                 text: "Short arm splint applied in ED for pain control."
-     *             }],
-     *         maxCandidates: 5
+     *             }]
      *     })
      */
     public predict(

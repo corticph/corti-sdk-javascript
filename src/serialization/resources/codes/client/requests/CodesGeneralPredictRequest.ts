@@ -14,13 +14,11 @@ export const CodesGeneralPredictRequest: core.serialization.Schema<
 > = core.serialization.object({
     system: core.serialization.list(CommonCodingSystemEnum),
     context: core.serialization.list(CommonAiContext),
-    maxCandidates: core.serialization.number().optional(),
 });
 
 export declare namespace CodesGeneralPredictRequest {
     export interface Raw {
         system: CommonCodingSystemEnum.Raw[];
         context: CommonAiContext.Raw[];
-        maxCandidates?: number | null;
     }
 }
