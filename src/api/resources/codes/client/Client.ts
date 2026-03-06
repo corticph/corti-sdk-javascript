@@ -56,7 +56,7 @@ export class Codes {
      *
      * @example
      *     await client.codes.predict({
-     *         system: ["icd10cm", "cpt"],
+     *         system: ["icd10cm-outpatient", "cpt"],
      *         context: [{
      *                 type: "text",
      *                 text: "Short arm splint applied in ED for pain control."

@@ -7,7 +7,7 @@ import * as Corti from "../../../../index.js";
 /**
  * @example
  *     {
- *         system: ["icd10cm", "cpt"],
+ *         system: ["icd10cm-outpatient", "cpt"],
  *         context: [{
  *                 type: "text",
  *                 text: "Short arm splint applied in ED for pain control."
