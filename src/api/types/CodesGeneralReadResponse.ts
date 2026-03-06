@@ -16,8 +16,6 @@ export interface CodesGeneralReadResponse {
     display: string;
     /** The evidence for the prediction */
     evidences?: Corti.CodesGeneralReadResponseEvidencesItem[];
-    /** Modifier codes associated with the code */
-    modifiers?: Corti.CodesGeneralReadResponseModifiersItem[];
     /** Codes the model also considered for this prediction. */
     alternatives?: Corti.CodesGeneralReadResponseAlternativesItem[];
 }
