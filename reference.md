@@ -108,7 +108,7 @@ await client.auth.token("tenantName", {
 <dl>
 <dd>
 
-**request:** `Corti.AuthTokenRequest` 
+**request:** `Corti.AuthTokenRequestBody` 
     
 </dd>
 </dl>

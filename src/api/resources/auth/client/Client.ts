@@ -98,7 +98,7 @@ export class AuthClient {
      * authorization_code (with client_secret), authorization_code with PKCE (code_verifier), password (ROPC), or refresh_token. Use the returned access_token in the Authorization header when calling the Corti API.
      *
      * @param {string} tenantName
-     * @param {Corti.AuthTokenRequest} request
+     * @param {Corti.AuthTokenRequestBody} request
      * @param {AuthClient.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Corti.BadRequestError}
@@ -113,7 +113,7 @@ export class AuthClient {
      */
     public token(
         tenantName: string,
-        request: Corti.AuthTokenRequest,
+        request: Corti.AuthTokenRequestBody,
         requestOptions?: AuthClient.RequestOptions,
     ): core.HttpResponsePromise<Corti.AuthTokenResponse> {
         return core.HttpResponsePromise.fromPromise(this.__token(tenantName, request, requestOptions));
@@ -121,7 +121,7 @@ export class AuthClient {
 
     private async __token(
         tenantName: string,
-        request: Corti.AuthTokenRequest,
+        request: Corti.AuthTokenRequestBody,
         requestOptions?: AuthClient.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.AuthTokenResponse>> {
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
@@ -142,7 +142,7 @@ export class AuthClient {
             contentType: "application/x-www-form-urlencoded",
             queryParameters: requestOptions?.queryParams,
             requestType: "form",
-            body: serializers.AuthTokenRequest.jsonOrThrow(request, {
+            body: serializers.AuthTokenRequestBody.jsonOrThrow(request, {
                 unrecognizedObjectKeys: "strip",
                 omitUndefined: true,
             }),
