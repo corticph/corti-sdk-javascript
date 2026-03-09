@@ -20,6 +20,10 @@ export declare namespace StreamClient {
         debug?: boolean;
         /** Number of reconnect attempts. Defaults to 30. */
         reconnectAttempts?: number;
+        /** The timeout for establishing the WebSocket connection in seconds. */
+        connectionTimeoutInSeconds?: number;
+        /** A signal to abort the WebSocket connection. */
+        abortSignal?: AbortSignal;
     }
 }
 
@@ -31,7 +35,17 @@ export class StreamClient {
     }
 
     public async connect(args: StreamClient.ConnectArgs): Promise<StreamSocket> {
-        const { id, tenantName, token, queryParams, headers, debug, reconnectAttempts } = args;
+        const {
+            id,
+            tenantName,
+            token,
+            queryParams,
+            headers,
+            debug,
+            reconnectAttempts,
+            connectionTimeoutInSeconds,
+            abortSignal,
+        } = args;
         const _queryParams: Record<string, unknown> = {
             "tenant-name": tenantName,
             token,
@@ -46,7 +60,12 @@ export class StreamClient {
             protocols: [],
             queryParameters: { ..._queryParams, ...queryParams },
             headers: _headers,
-            options: { debug: debug ?? false, maxRetries: reconnectAttempts ?? 30 },
+            options: {
+                debug: debug ?? false,
+                maxRetries: reconnectAttempts ?? 30,
+                connectionTimeout: connectionTimeoutInSeconds != null ? connectionTimeoutInSeconds * 1000 : undefined,
+            },
+            abortSignal: abortSignal,
         });
         return new StreamSocket({ socket });
     }
