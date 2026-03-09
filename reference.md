@@ -1548,8 +1548,7 @@ await client.documents.create("f47ac10b-58cc-4372-a567-0e02b2c3d479", {
     context: [{
             type: "facts",
             data: [{
-                    text: "text",
-                    source: "core"
+                    text: "text"
                 }]
         }],
     templateKey: "templateKey",
@@ -2335,12 +2334,7 @@ This endpoint updates an existing agent. Only the fields provided in the request
 <dd>
 
 ```typescript
-await client.agents.update("12345678-90ab-cdef-gh12-34567890abc", {
-    id: "id",
-    name: "name",
-    description: "description",
-    systemPrompt: "systemPrompt"
-});
+await client.agents.update("12345678-90ab-cdef-gh12-34567890abc");
 
 ```
 </dd>
@@ -2364,7 +2358,7 @@ await client.agents.update("12345678-90ab-cdef-gh12-34567890abc", {
 <dl>
 <dd>
 
-**request:** `Corti.AgentsAgent` 
+**request:** `Corti.AgentsUpdateAgent` 
     
 </dd>
 </dl>

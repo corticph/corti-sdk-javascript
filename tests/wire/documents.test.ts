@@ -195,7 +195,7 @@ describe("DocumentsClient", () => {
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
         const rawRequestBody = {
-            context: [{ type: "facts", data: [{ text: "text", source: "core" }] }],
+            context: [{ type: "facts", data: [{ text: "text" }] }],
             templateKey: "templateKey",
             outputLanguage: "outputLanguage",
         };
@@ -235,7 +235,6 @@ describe("DocumentsClient", () => {
                     data: [
                         {
                             text: "text",
-                            source: "core",
                         },
                     ],
                 },
@@ -280,20 +279,8 @@ describe("DocumentsClient", () => {
         });
         const rawRequestBody = {
             context: [
-                {
-                    type: "facts",
-                    data: [
-                        { text: "text", source: "core" },
-                        { text: "text", source: "core" },
-                    ],
-                },
-                {
-                    type: "facts",
-                    data: [
-                        { text: "text", source: "core" },
-                        { text: "text", source: "core" },
-                    ],
-                },
+                { type: "facts", data: [{ text: "text" }, { text: "text" }] },
+                { type: "facts", data: [{ text: "text" }, { text: "text" }] },
             ],
             templateKey: "templateKey",
             outputLanguage: "outputLanguage",
@@ -316,11 +303,9 @@ describe("DocumentsClient", () => {
                         data: [
                             {
                                 text: "text",
-                                source: "core",
                             },
                             {
                                 text: "text",
-                                source: "core",
                             },
                         ],
                     },
@@ -329,11 +314,9 @@ describe("DocumentsClient", () => {
                         data: [
                             {
                                 text: "text",
-                                source: "core",
                             },
                             {
                                 text: "text",
-                                source: "core",
                             },
                         ],
                     },
@@ -357,20 +340,8 @@ describe("DocumentsClient", () => {
         });
         const rawRequestBody = {
             context: [
-                {
-                    type: "facts",
-                    data: [
-                        { text: "text", source: "core" },
-                        { text: "text", source: "core" },
-                    ],
-                },
-                {
-                    type: "facts",
-                    data: [
-                        { text: "text", source: "core" },
-                        { text: "text", source: "core" },
-                    ],
-                },
+                { type: "facts", data: [{ text: "text" }, { text: "text" }] },
+                { type: "facts", data: [{ text: "text" }, { text: "text" }] },
             ],
             templateKey: "templateKey",
             outputLanguage: "outputLanguage",
@@ -393,11 +364,9 @@ describe("DocumentsClient", () => {
                         data: [
                             {
                                 text: "text",
-                                source: "core",
                             },
                             {
                                 text: "text",
-                                source: "core",
                             },
                         ],
                     },
@@ -406,11 +375,9 @@ describe("DocumentsClient", () => {
                         data: [
                             {
                                 text: "text",
-                                source: "core",
                             },
                             {
                                 text: "text",
-                                source: "core",
                             },
                         ],
                     },
@@ -434,20 +401,8 @@ describe("DocumentsClient", () => {
         });
         const rawRequestBody = {
             context: [
-                {
-                    type: "facts",
-                    data: [
-                        { text: "text", source: "core" },
-                        { text: "text", source: "core" },
-                    ],
-                },
-                {
-                    type: "facts",
-                    data: [
-                        { text: "text", source: "core" },
-                        { text: "text", source: "core" },
-                    ],
-                },
+                { type: "facts", data: [{ text: "text" }, { text: "text" }] },
+                { type: "facts", data: [{ text: "text" }, { text: "text" }] },
             ],
             templateKey: "templateKey",
             outputLanguage: "outputLanguage",
@@ -470,11 +425,9 @@ describe("DocumentsClient", () => {
                         data: [
                             {
                                 text: "text",
-                                source: "core",
                             },
                             {
                                 text: "text",
-                                source: "core",
                             },
                         ],
                     },
@@ -483,11 +436,9 @@ describe("DocumentsClient", () => {
                         data: [
                             {
                                 text: "text",
-                                source: "core",
                             },
                             {
                                 text: "text",
-                                source: "core",
                             },
                         ],
                     },
@@ -511,20 +462,8 @@ describe("DocumentsClient", () => {
         });
         const rawRequestBody = {
             context: [
-                {
-                    type: "facts",
-                    data: [
-                        { text: "text", source: "core" },
-                        { text: "text", source: "core" },
-                    ],
-                },
-                {
-                    type: "facts",
-                    data: [
-                        { text: "text", source: "core" },
-                        { text: "text", source: "core" },
-                    ],
-                },
+                { type: "facts", data: [{ text: "text" }, { text: "text" }] },
+                { type: "facts", data: [{ text: "text" }, { text: "text" }] },
             ],
             templateKey: "templateKey",
             outputLanguage: "outputLanguage",
@@ -547,11 +486,9 @@ describe("DocumentsClient", () => {
                         data: [
                             {
                                 text: "text",
-                                source: "core",
                             },
                             {
                                 text: "text",
-                                source: "core",
                             },
                         ],
                     },
@@ -560,11 +497,9 @@ describe("DocumentsClient", () => {
                         data: [
                             {
                                 text: "text",
-                                source: "core",
                             },
                             {
                                 text: "text",
-                                source: "core",
                             },
                         ],
                     },

@@ -415,7 +415,7 @@ describe("FactsClient", () => {
         });
         const rawRequestBody = { context: [{ type: "text", text: "text" }], outputLanguage: "outputLanguage" };
         const rawResponseBody = {
-            facts: [{ group: "group", value: "value" }],
+            facts: [{ group: "group", value: "value", text: "text" }],
             outputLanguage: "outputLanguage",
             usageInfo: { creditsConsumed: 1.1 },
         };
@@ -442,6 +442,7 @@ describe("FactsClient", () => {
                 {
                     group: "group",
                     value: "value",
+                    text: "text",
                 },
             ],
             outputLanguage: "outputLanguage",

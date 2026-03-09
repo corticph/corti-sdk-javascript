@@ -445,7 +445,7 @@ describe("AgentsClient", () => {
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
-        const rawRequestBody = { id: "id", name: "name", description: "description", systemPrompt: "systemPrompt" };
+        const rawRequestBody = {};
         const rawResponseBody = {
             id: "id",
             name: "name",
@@ -473,12 +473,7 @@ describe("AgentsClient", () => {
             .jsonBody(rawResponseBody)
             .build();
 
-        const response = await client.agents.update("12345678-90ab-cdef-gh12-34567890abc", {
-            id: "id",
-            name: "name",
-            description: "description",
-            systemPrompt: "systemPrompt",
-        });
+        const response = await client.agents.update("12345678-90ab-cdef-gh12-34567890abc");
         expect(response).toEqual({
             id: "id",
             name: "name",
@@ -516,7 +511,7 @@ describe("AgentsClient", () => {
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
-        const rawRequestBody = { id: "id", name: "name", description: "description", systemPrompt: "systemPrompt" };
+        const rawRequestBody = {};
         const rawResponseBody = { key: "value" };
         server
             .mockEndpoint()
@@ -528,12 +523,7 @@ describe("AgentsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.agents.update("id", {
-                id: "id",
-                name: "name",
-                description: "description",
-                systemPrompt: "systemPrompt",
-            });
+            return await client.agents.update("id");
         }).rejects.toThrow(Corti.BadRequestError);
     });
 
@@ -548,7 +538,7 @@ describe("AgentsClient", () => {
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
-        const rawRequestBody = { id: "id", name: "name", description: "description", systemPrompt: "systemPrompt" };
+        const rawRequestBody = {};
         const rawResponseBody = { key: "value" };
         server
             .mockEndpoint()
@@ -560,12 +550,7 @@ describe("AgentsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.agents.update("id", {
-                id: "id",
-                name: "name",
-                description: "description",
-                systemPrompt: "systemPrompt",
-            });
+            return await client.agents.update("id");
         }).rejects.toThrow(Corti.UnauthorizedError);
     });
 
@@ -580,7 +565,7 @@ describe("AgentsClient", () => {
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
-        const rawRequestBody = { id: "id", name: "name", description: "description", systemPrompt: "systemPrompt" };
+        const rawRequestBody = {};
         const rawResponseBody = { key: "value" };
         server
             .mockEndpoint()
@@ -592,12 +577,7 @@ describe("AgentsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.agents.update("id", {
-                id: "id",
-                name: "name",
-                description: "description",
-                systemPrompt: "systemPrompt",
-            });
+            return await client.agents.update("id");
         }).rejects.toThrow(Corti.NotFoundError);
     });
 
