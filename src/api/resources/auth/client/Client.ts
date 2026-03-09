@@ -27,19 +27,19 @@ export class AuthClient {
      * @param {AuthClient.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @example
-     *     await client.auth.fakeToken({
+     *     await client.auth.getToken({
      *         clientId: "client_id",
      *         clientSecret: "client_secret"
      *     })
      */
-    public fakeToken(
+    public getToken(
         request: Corti.OAuthTokenRequest,
         requestOptions?: AuthClient.RequestOptions,
     ): core.HttpResponsePromise<Corti.AuthTokenResponse> {
-        return core.HttpResponsePromise.fromPromise(this.__fakeToken(request, requestOptions));
+        return core.HttpResponsePromise.fromPromise(this.__getToken(request, requestOptions));
     }
 
-    private async __fakeToken(
+    private async __getToken(
         request: Corti.OAuthTokenRequest,
         requestOptions?: AuthClient.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.AuthTokenResponse>> {

@@ -6,7 +6,7 @@ import { mockServerPool } from "../mock-server/MockServerPool";
 import { mockOAuth } from "./mockAuth";
 
 describe("AuthClient", () => {
-    test("fake_token", async () => {
+    test("get_token", async () => {
         const server = mockServerPool.createServer();
         mockOAuth(server);
 
@@ -38,7 +38,7 @@ describe("AuthClient", () => {
             .jsonBody(rawResponseBody)
             .build();
 
-        const response = await client.auth.fakeToken({
+        const response = await client.auth.getToken({
             clientId: "client_id",
             clientSecret: "client_secret",
         });

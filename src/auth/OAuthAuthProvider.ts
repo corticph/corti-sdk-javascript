@@ -88,7 +88,7 @@ export class OAuthAuthProvider implements core.AuthProvider {
             try {
                 const clientId = await this.clientIdSupplier({ endpointMetadata });
                 const clientSecret = await this.clientSecretSupplier({ endpointMetadata });
-                const tokenResponse = await this.authClient.fakeToken({
+                const tokenResponse = await this.authClient.getToken({
                     clientId: clientId,
                     clientSecret: clientSecret,
                 });
