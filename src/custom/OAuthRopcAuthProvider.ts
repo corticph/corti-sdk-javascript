@@ -20,6 +20,8 @@ export class OAuthRopcAuthProvider implements core.AuthProvider {
     private accessToken: string | undefined;
     private expiresAt: Date;
     private refreshPromise: Promise<string> | undefined;
+    private storedRefreshToken: string | undefined;
+    private refreshExpiresAt: Date | undefined;
 
     constructor(options: BaseClientOptions & OAuthAuthProvider.RopcCredentials) {
         this.options = options;
@@ -95,16 +97,23 @@ export class OAuthRopcAuthProvider implements core.AuthProvider {
         this.refreshPromise = (async () => {
             try {
                 const clientId = await this.clientIdSupplier({ endpointMetadata });
-                const username = await this.usernameSupplier({ endpointMetadata });
-                const password = await this.passwordSupplier({ endpointMetadata });
-                const tokenResponse = await this.authClient.getRopcFlowToken({
-                    clientId,
-                    username,
-                    password,
-                });
+                const tokenResponse =
+                    clientId && this.storedRefreshToken && this.refreshExpiresAt && this.refreshExpiresAt > new Date()
+                        ? await this.authClient.refreshToken({ clientId, refreshToken: this.storedRefreshToken })
+                        : await this.authClient.getRopcFlowToken({
+                              clientId,
+                              username: await this.usernameSupplier({ endpointMetadata }),
+                              password: await this.passwordSupplier({ endpointMetadata }),
+                          });
 
                 this.accessToken = tokenResponse.accessToken;
                 this.expiresAt = getExpiresAt(tokenResponse.expiresIn, BUFFER_IN_MINUTES);
+                if (tokenResponse.refreshToken) {
+                    this.storedRefreshToken = tokenResponse.refreshToken;
+                    this.refreshExpiresAt = tokenResponse.refreshExpiresIn
+                        ? getExpiresAt(tokenResponse.refreshExpiresIn, BUFFER_IN_MINUTES)
+                        : undefined;
+                }
                 return this.accessToken;
             } finally {
                 this.refreshPromise = undefined;

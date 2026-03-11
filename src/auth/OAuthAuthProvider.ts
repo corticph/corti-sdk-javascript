@@ -40,6 +40,8 @@ export class OAuthAuthProvider implements core.AuthProvider {
     private accessToken: string | undefined;
     private expiresAt: Date;
     private refreshPromise: Promise<string> | undefined;
+    private storedRefreshToken: string | undefined;
+    private refreshExpiresAt: Date | undefined;
 
     constructor(options: OAuthAuthProvider.Options & OAuthAuthProvider.ClientCredentials) {
         this.options = options;
@@ -112,13 +114,22 @@ export class OAuthAuthProvider implements core.AuthProvider {
             try {
                 const clientId = await this.clientIdSupplier({ endpointMetadata });
                 const clientSecret = await this.clientSecretSupplier({ endpointMetadata });
-                const tokenResponse = await this.authClient.getToken({
-                    clientId: clientId,
-                    clientSecret: clientSecret,
-                });
+                const tokenResponse =
+                    clientId && this.storedRefreshToken && this.refreshExpiresAt && this.refreshExpiresAt > new Date()
+                        ? await this.authClient.refreshToken({
+                              clientId,
+                              refreshToken: this.storedRefreshToken,
+                          })
+                        : await this.authClient.getToken({ clientId, clientSecret });
 
                 this.accessToken = tokenResponse.accessToken;
                 this.expiresAt = getExpiresAt(tokenResponse.expiresIn, BUFFER_IN_MINUTES);
+                if (tokenResponse.refreshToken) {
+                    this.storedRefreshToken = tokenResponse.refreshToken;
+                    this.refreshExpiresAt = tokenResponse.refreshExpiresIn
+                        ? getExpiresAt(tokenResponse.refreshExpiresIn, BUFFER_IN_MINUTES)
+                        : undefined;
+                }
                 return this.accessToken;
             } finally {
                 this.refreshPromise = undefined;
@@ -129,15 +140,30 @@ export class OAuthAuthProvider implements core.AuthProvider {
 }
 
 export class OAuthTokenOverrideAuthProvider implements core.AuthProvider {
-    private readonly options: OAuthAuthProvider.TokenOverride;
+    private readonly authClient: CortiAuth | undefined;
+    private readonly _tokenSupplier: core.Supplier<string>;
+    private readonly _clientIdSupplier: core.Supplier<string> | undefined;
+    private accessToken: string | undefined;
+    private expiresAt: Date | undefined;
+    private storedRefreshToken: string | undefined;
+    private refreshExpiresAt: Date | undefined;
 
-    constructor(options: OAuthAuthProvider.TokenOverride) {
-        this.options = options;
+    constructor(options: OAuthAuthProvider.TokenOverride & BaseClientOptions) {
+        this._tokenSupplier = options[TOKEN_PARAM];
+        this._clientIdSupplier = options.clientId;
+        this.expiresAt = options.expiresIn ? getExpiresAt(options.expiresIn, BUFFER_IN_MINUTES) : undefined;
+        this.storedRefreshToken = options.refreshToken;
+        this.refreshExpiresAt = options.refreshExpiresIn
+            ? getExpiresAt(options.refreshExpiresIn, BUFFER_IN_MINUTES)
+            : undefined;
+        if (options.clientId && options.refreshToken) {
+            this.authClient = new CortiAuth(options);
+        }
     }
 
     public static canCreate(
         options?: Partial<OAuthAuthProvider.TokenOverride & BaseClientOptions>,
-    ): options is OAuthAuthProvider.TokenOverride {
+    ): options is OAuthAuthProvider.TokenOverride & BaseClientOptions {
         return options?.[TOKEN_PARAM] != null;
     }
 
@@ -146,17 +172,41 @@ export class OAuthTokenOverrideAuthProvider implements core.AuthProvider {
     }: {
         endpointMetadata?: core.EndpointMetadata;
     } = {}): Promise<core.AuthRequest> {
-        const token = this.options[TOKEN_PARAM];
-        if (token == null) {
-            throw new errors.CortiError({
-                message: TOKEN_PARAM_REQUIRED_ERROR_MESSAGE,
+        // If access token is expired and we have a valid refresh token, use it
+        if (
+            this.expiresAt != null &&
+            this.expiresAt <= new Date() &&
+            this._clientIdSupplier &&
+            this.storedRefreshToken &&
+            this.refreshExpiresAt &&
+            this.refreshExpiresAt > new Date() &&
+            this.authClient
+        ) {
+            const clientId = await core.EndpointSupplier.get(this._clientIdSupplier, { endpointMetadata });
+            const tokenResponse = await this.authClient.refreshToken({
+                clientId,
+                refreshToken: this.storedRefreshToken,
             });
+            this.accessToken = tokenResponse.accessToken;
+            this.expiresAt = getExpiresAt(tokenResponse.expiresIn, BUFFER_IN_MINUTES);
+            if (tokenResponse.refreshToken) {
+                this.storedRefreshToken = tokenResponse.refreshToken;
+                this.refreshExpiresAt = tokenResponse.refreshExpiresIn
+                    ? getExpiresAt(tokenResponse.refreshExpiresIn, BUFFER_IN_MINUTES)
+                    : undefined;
+            }
+            return { headers: { Authorization: `Bearer ${this.accessToken}` } };
         }
-        return {
-            headers: {
-                Authorization: `Bearer ${await core.EndpointSupplier.get(token, { endpointMetadata })}`,
-            },
-        };
+
+        // No expiry set or not yet expired — resolve token supplier
+        if (!this.expiresAt || this.expiresAt > new Date() || !this.accessToken) {
+            this.accessToken = await core.EndpointSupplier.get(this._tokenSupplier, { endpointMetadata });
+        }
+
+        if (!this.accessToken) {
+            throw new errors.CortiError({ message: TOKEN_PARAM_REQUIRED_ERROR_MESSAGE });
+        }
+        return { headers: { Authorization: `Bearer ${this.accessToken}` } };
     }
 }
 
@@ -171,6 +221,10 @@ export namespace OAuthAuthProvider {
     };
     export type TokenOverride = {
         [TOKEN_PARAM]: core.Supplier<string>;
+        expiresIn?: number;
+        refreshToken?: string;
+        refreshExpiresIn?: number;
+        clientId?: core.Supplier<string>;
     };
     /** Patch: ROPC grant credentials (clientId + username + password) */
     export type RopcCredentials = {

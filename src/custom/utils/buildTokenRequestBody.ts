@@ -19,10 +19,27 @@ export type TokenRequestRopc = {
     scopes?: string[];
 };
 
+export type TokenRequestRefresh = {
+    clientId: string;
+    refreshToken: string;
+    clientSecret?: string;
+    scopes?: string[];
+};
+
 export function buildTokenRequestBody(
-    request: TokenRequestClientCredentials | TokenRequestRopc,
-): Corti.AuthTokenRequestClientCredentials | Corti.AuthTokenRequestRopc {
+    request: TokenRequestClientCredentials | TokenRequestRopc | TokenRequestRefresh,
+): Corti.AuthTokenRequestClientCredentials | Corti.AuthTokenRequestRopc | Corti.AuthTokenRequestRefresh {
     const scope = buildScopeString(request.scopes);
+
+    if ("refreshToken" in request) {
+        return {
+            clientId: request.clientId,
+            clientSecret: request.clientSecret,
+            grantType: "refresh_token",
+            refreshToken: request.refreshToken,
+            scope,
+        };
+    }
 
     if ("clientSecret" in request) {
         return {

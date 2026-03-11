@@ -22,6 +22,14 @@ export declare namespace CortiAuth {
         password: string;
         scopes?: string[];
     }
+
+    /** Refresh token request for refreshToken. */
+    export interface RefreshTokenRequest {
+        clientId: string;
+        refreshToken: string;
+        clientSecret?: string;
+        scopes?: string[];
+    }
 }
 
 export class CortiAuth extends AuthClient {
@@ -60,7 +68,7 @@ export class CortiAuth extends AuthClient {
     }
 
     private async _getTokenWithTenant(
-        request: CortiAuth.GetTokenRequest | CortiAuth.GetRopcFlowTokenRequest,
+        request: CortiAuth.GetTokenRequest | CortiAuth.GetRopcFlowTokenRequest | CortiAuth.RefreshTokenRequest,
         requestOptions: AuthClient.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.AuthTokenResponse>> {
         const authRequest = buildTokenRequestBody(request);
@@ -72,6 +80,29 @@ export class CortiAuth extends AuthClient {
     /** Exchange username/password for access token via ROPC (resource owner password credentials). */
     public getRopcFlowToken(
         request: CortiAuth.GetRopcFlowTokenRequest,
+        requestOptions?: AuthClient.RequestOptions,
+    ): core.HttpResponsePromise<Corti.AuthTokenResponse> {
+        return core.HttpResponsePromise.fromPromise(this._getTokenWithTenant(request, requestOptions ?? {}));
+    }
+
+    /**
+     * Exchange a refresh token for a new access token (refresh_token grant).
+     * Resolves tenant from client options.
+     *
+     * @param request - Client ID, refresh token, and optional scopes
+     * @param requestOptions - Request-specific configuration
+     *
+     * @throws {@link Corti.BadRequestError}
+     * @throws {@link Corti.UnauthorizedError}
+     *
+     * @example
+     *     const response = await auth.refreshToken({
+     *         clientId: "client_id",
+     *         refreshToken: "refresh_token",
+     *     });
+     */
+    public refreshToken(
+        request: CortiAuth.RefreshTokenRequest,
         requestOptions?: AuthClient.RequestOptions,
     ): core.HttpResponsePromise<Corti.AuthTokenResponse> {
         return core.HttpResponsePromise.fromPromise(this._getTokenWithTenant(request, requestOptions ?? {}));
