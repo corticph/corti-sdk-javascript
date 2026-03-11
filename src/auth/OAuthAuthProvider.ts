@@ -3,15 +3,33 @@
 import type { BaseClientOptions } from "../BaseClient.js";
 import * as core from "../core/index.js";
 import { CortiAuth } from "../custom/CortiAuth.js";
+import {
+    BUFFER_IN_MINUTES,
+    CLIENT_ID_PARAM,
+    CLIENT_ID_REQUIRED_ERROR_MESSAGE,
+    getExpiresAt,
+    PASSWORD_PARAM,
+    USERNAME_PARAM,
+} from "../custom/utils/oauthAuthHelpers.js";
 import * as errors from "../errors/index.js";
+import { OAuthRopcAuthProvider } from "../custom/OAuthRopcAuthProvider.js";
 
-const CLIENT_ID_PARAM = "clientId" as const;
+/** Patch: Re-export for consumers; implementation shared with OAuthRopcAuthProvider. */
+export {
+    BUFFER_IN_MINUTES,
+    CLIENT_ID_PARAM,
+    CLIENT_ID_REQUIRED_ERROR_MESSAGE,
+    getExpiresAt,
+    PASSWORD_PARAM,
+    PASSWORD_REQUIRED_ERROR_MESSAGE,
+    USERNAME_PARAM,
+    USERNAME_REQUIRED_ERROR_MESSAGE,
+} from "../custom/utils/oauthAuthHelpers.js";
+
 const CLIENT_SECRET_PARAM = "clientSecret" as const;
 const TOKEN_PARAM = "token" as const;
-const CLIENT_ID_REQUIRED_ERROR_MESSAGE = `${CLIENT_ID_PARAM} is required` as const;
 const CLIENT_SECRET_REQUIRED_ERROR_MESSAGE = `${CLIENT_SECRET_PARAM} is required` as const;
 const TOKEN_PARAM_REQUIRED_ERROR_MESSAGE = `${TOKEN_PARAM} is required. Please provide it in options.` as const;
-const BUFFER_IN_MINUTES = 2 as const;
 
 export class OAuthAuthProvider implements core.AuthProvider {
     private readonly options: BaseClientOptions & OAuthAuthProvider.ClientCredentials;
@@ -100,18 +118,13 @@ export class OAuthAuthProvider implements core.AuthProvider {
                 });
 
                 this.accessToken = tokenResponse.accessToken;
-                this.expiresAt = this.getExpiresAt(tokenResponse.expiresIn, BUFFER_IN_MINUTES);
+                this.expiresAt = getExpiresAt(tokenResponse.expiresIn, BUFFER_IN_MINUTES);
                 return this.accessToken;
             } finally {
                 this.refreshPromise = undefined;
             }
         })();
         return this.refreshPromise;
-    }
-
-    private getExpiresAt(expiresInSeconds: number, bufferInMinutes: number): Date {
-        const now = new Date();
-        return new Date(now.getTime() + expiresInSeconds * 1000 - bufferInMinutes * 60 * 1000);
     }
 }
 
@@ -149,8 +162,9 @@ export class OAuthTokenOverrideAuthProvider implements core.AuthProvider {
 
 export namespace OAuthAuthProvider {
     export const AUTH_SCHEME = "OAuth" as const;
+    /** Patch: Message extended to mention ROPC (clientId, username, password). */
     export const AUTH_CONFIG_ERROR_MESSAGE: string =
-        `Insufficient options to create OAuthAuthProvider. Please provide '${CLIENT_ID_PARAM}' and '${CLIENT_SECRET_PARAM}', or ${TOKEN_PARAM}.` as const;
+        `Insufficient options to create OAuthAuthProvider. Please provide '${CLIENT_ID_PARAM}' and '${CLIENT_SECRET_PARAM}', or ${TOKEN_PARAM}, or ROPC (${CLIENT_ID_PARAM}, username, password).` as const;
     export type ClientCredentials = {
         [CLIENT_ID_PARAM]: core.Supplier<string>;
         [CLIENT_SECRET_PARAM]: core.Supplier<string>;
@@ -158,13 +172,25 @@ export namespace OAuthAuthProvider {
     export type TokenOverride = {
         [TOKEN_PARAM]: core.Supplier<string>;
     };
-    export type AuthOptions = ClientCredentials | TokenOverride;
+    /** Patch: ROPC grant credentials (clientId + username + password) */
+    export type RopcCredentials = {
+        [CLIENT_ID_PARAM]: core.Supplier<string>;
+        [USERNAME_PARAM]: core.Supplier<string>;
+        [PASSWORD_PARAM]: core.Supplier<string>;
+    };
+    /** Patch: Include RopcCredentials so CortiClient can use ROPC auth. */
+    export type AuthOptions = ClientCredentials | TokenOverride | RopcCredentials;
     export type Options = BaseClientOptions & AuthOptions;
 
     export function createInstance(options: Options): core.AuthProvider {
         if (OAuthTokenOverrideAuthProvider.canCreate(options)) {
             return new OAuthTokenOverrideAuthProvider(options);
-        } else if (OAuthAuthProvider.canCreate(options)) {
+        }
+        /** Patch: ROPC provider before client credentials so ROPC auth is used when username+password provided. */
+        if (OAuthRopcAuthProvider.canCreate(options)) {
+            return new OAuthRopcAuthProvider(options);
+        }
+        if (OAuthAuthProvider.canCreate(options)) {
             return new OAuthAuthProvider(options);
         }
         throw new errors.CortiError({

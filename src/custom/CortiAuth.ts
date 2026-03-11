@@ -5,26 +5,27 @@ import * as core from "../core/index.js";
 import { buildTokenRequestBody } from "./utils/buildTokenRequestBody.js";
 
 export declare namespace CortiAuth {
-    /**
-     * Patch: Auth (clientId/clientSecret or token) is optional; credentials can be passed to getToken() instead.
-     */
+    /** Auth (clientId/clientSecret or token) is optional; credentials can be passed to getToken() instead. */
     export type Options = Omit<AuthClient.Options, "clientId" | "clientSecret" | "token"> &
         Partial<OAuthAuthProvider.ClientCredentials> &
         Partial<OAuthAuthProvider.TokenOverride>;
 
-    /**
-     * Patch: Optional scopes on getToken request.
-     */
+    /** Optional scopes on getToken request. */
     export interface GetTokenRequest extends Corti.OAuthTokenRequest {
+        scopes?: string[];
+    }
+
+    /** ROPC (resource owner password credentials) request for getRopcFlowToken. */
+    export interface GetRopcFlowTokenRequest {
+        clientId: string;
+        username: string;
+        password: string;
         scopes?: string[];
     }
 }
 
 export class CortiAuth extends AuthClient {
-    /**
-     * Patch: Use no-op auth provider so super.token() does not trigger OAuthAuthProvider refresh (which calls base getToken → fake-token).
-     * When auth is omitted from options, pass a dummy token so the base constructor does not throw.
-     */
+    /** No-op auth provider so super.token() does not trigger OAuth refresh. When auth is omitted, a dummy token is passed so the base constructor does not throw. */
     constructor(options: CortiAuth.Options) {
         super({
             ...options,
@@ -59,12 +60,20 @@ export class CortiAuth extends AuthClient {
     }
 
     private async _getTokenWithTenant(
-        request: CortiAuth.GetTokenRequest,
+        request: CortiAuth.GetTokenRequest | CortiAuth.GetRopcFlowTokenRequest,
         requestOptions: AuthClient.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.AuthTokenResponse>> {
         const authRequest = buildTokenRequestBody(request);
         const tenantName = await core.Supplier.get(this._options.tenantName);
 
         return this.token(tenantName, authRequest, requestOptions).withRawResponse();
+    }
+
+    /** Exchange username/password for access token via ROPC (resource owner password credentials). */
+    public getRopcFlowToken(
+        request: CortiAuth.GetRopcFlowTokenRequest,
+        requestOptions?: AuthClient.RequestOptions,
+    ): core.HttpResponsePromise<Corti.AuthTokenResponse> {
+        return core.HttpResponsePromise.fromPromise(this._getTokenWithTenant(request, requestOptions ?? {}));
     }
 }
