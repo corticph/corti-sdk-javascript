@@ -3,12 +3,15 @@ import { AuthClient } from "../api/resources/auth/client/Client.js";
 import type { OAuthAuthProvider } from "../auth/OAuthAuthProvider.js";
 import * as core from "../core/index.js";
 import { buildTokenRequestBody } from "./utils/buildTokenRequestBody.js";
+import { getEnvironment, type Environment } from "./utils/environment.js";
 
 export declare namespace CortiAuth {
     /** Auth (clientId/clientSecret or token) is optional; credentials can be passed to getToken() instead. */
-    export type Options = Omit<AuthClient.Options, "clientId" | "clientSecret" | "token"> &
+    export type Options = Omit<AuthClient.Options, "clientId" | "clientSecret" | "token" | "environment"> &
         Partial<OAuthAuthProvider.ClientCredentials> &
-        Partial<OAuthAuthProvider.TokenOverride>;
+        Partial<OAuthAuthProvider.TokenOverride> & {
+            environment: Environment;
+        };
 
     /** Optional scopes on getToken request. */
     export interface GetTokenRequest extends Corti.OAuthTokenRequest {
@@ -35,8 +38,10 @@ export declare namespace CortiAuth {
 export class CortiAuth extends AuthClient {
     /** No-op auth provider so super.token() does not trigger OAuth refresh. When auth is omitted, a dummy token is passed so the base constructor does not throw. */
     constructor(options: CortiAuth.Options) {
+        const { environment, ...rest } = options;
         super({
-            ...options,
+            ...rest,
+            environment: getEnvironment(environment),
             token: options.token ?? (() => ""),
         });
 
