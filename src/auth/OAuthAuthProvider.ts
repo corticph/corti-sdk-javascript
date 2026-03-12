@@ -151,6 +151,8 @@ export class OAuthTokenOverrideAuthProvider implements core.AuthProvider {
     private expiresAt: Date | undefined;
     private storedRefreshToken: string | undefined;
     private refreshExpiresAt: Date | undefined;
+    // Patch: seed promise — resolves the initial token from resolveClientOptions to avoid double refreshAccessToken call
+    private _seedPromise: Promise<void> | undefined;
 
     constructor(options: OAuthAuthProvider.TokenOverride & BaseClientOptions) {
         this._tokenSupplier = options[TOKEN_PARAM];
@@ -164,6 +166,23 @@ export class OAuthTokenOverrideAuthProvider implements core.AuthProvider {
             : undefined;
         if (options.clientId && options.refreshToken) {
             this.authClient = new CortiAuth(options);
+        }
+        // Patch: pre-seed token from discovery promise so getAuthRequest doesn't call refreshAccessToken again
+        if (options.initialTokenResponse) {
+            this._seedPromise = options.initialTokenResponse
+                .then((resp) => {
+                    this.accessToken = resp.accessToken;
+                    this.expiresAt = resp.expiresIn ? getExpiresAt(resp.expiresIn, BUFFER_IN_MINUTES) : undefined;
+                    if (resp.refreshToken) {
+                        this.storedRefreshToken = resp.refreshToken;
+                        this.refreshExpiresAt = resp.refreshExpiresIn
+                            ? getExpiresAt(resp.refreshExpiresIn, BUFFER_IN_MINUTES)
+                            : undefined;
+                    }
+                })
+                .finally(() => {
+                    this._seedPromise = undefined;
+                });
         }
     }
 
@@ -179,6 +198,11 @@ export class OAuthTokenOverrideAuthProvider implements core.AuthProvider {
     }: {
         endpointMetadata?: core.EndpointMetadata;
     } = {}): Promise<core.AuthRequest> {
+        // Patch: await seed promise so the initial token from resolveClientOptions is set before checking expiry
+        if (this._seedPromise) {
+            await this._seedPromise;
+        }
+
         const isExpiredOrAbsent = !this.accessToken || (this.expiresAt != null && this.expiresAt <= new Date());
 
         // Patch: custom refreshAccessToken takes priority — call it when token is absent or expired
@@ -221,8 +245,8 @@ export class OAuthTokenOverrideAuthProvider implements core.AuthProvider {
             return { headers: { Authorization: `Bearer ${this.accessToken}` } };
         }
 
-        // No expiry set or not yet expired — resolve token supplier
-        if (!this.expiresAt || this.expiresAt > new Date() || !this.accessToken) {
+        // Token not yet acquired — resolve from supplier (static token / initial value)
+        if (!this.accessToken) {
             if (this._tokenSupplier == null) {
                 throw new errors.CortiError({ message: TOKEN_PARAM_REQUIRED_ERROR_MESSAGE });
             }
@@ -268,6 +292,8 @@ export namespace OAuthAuthProvider {
         refreshToken?: string;
         refreshExpiresIn?: number;
         clientId?: core.Supplier<string>;
+        /** Patch: Pre-seeded token response from resolveClientOptions — avoids a second refreshAccessToken call on first API request. */
+        initialTokenResponse?: Promise<OAuthAuthProvider.ExpectedTokenResponse>;
     };
     /** Patch: ROPC grant credentials (clientId + username + password) */
     export type RopcCredentials = {
@@ -289,6 +315,17 @@ export namespace OAuthAuthProvider {
         }
         if (OAuthAuthProvider.canCreate(options)) {
             return new OAuthAuthProvider(options);
+        }
+        /** Patch: No credentials provided — proxy/passthrough mode; requests are sent without an Authorization header. */
+        const partialOptions = options as Partial<ClientCredentials & TokenOverride & RopcCredentials>;
+        const hasNoCredentials =
+            partialOptions[CLIENT_ID_PARAM] == null &&
+            partialOptions[CLIENT_SECRET_PARAM] == null &&
+            partialOptions[TOKEN_PARAM] == null &&
+            partialOptions.refreshAccessToken == null &&
+            partialOptions[USERNAME_PARAM] == null;
+        if (hasNoCredentials) {
+            return new core.NoOpAuthProvider();
         }
         throw new errors.CortiError({
             message: AUTH_CONFIG_ERROR_MESSAGE,

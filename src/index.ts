@@ -7,6 +7,8 @@ export { CortiAuth } from "./custom/CortiAuth.js";
 export { CortiEnvironment, type CortiEnvironmentUrls } from "./environments.js";
 /** Patch: Export environment utilities. */
 export { getEnvironment, type Environment, type CortiInternalEnvironment } from "./custom/utils/environment.js";
+/** Patch: Export token decode utility. */
+export { decodeToken } from "./custom/utils/decodeToken.js";
 export { CortiError, CortiTimeoutError } from "./errors/index.js";
 export * from "./exports.js";
 export * as serialization from "./serialization/index.js";

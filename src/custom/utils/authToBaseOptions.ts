@@ -1,6 +1,8 @@
 import type { CortiClient as BaseCortiClient } from "../../Client.js";
 import type { OAuthAuthProvider } from "../../auth/OAuthAuthProvider.js";
 
+type InitialTokenResponse = Promise<OAuthAuthProvider.ExpectedTokenResponse> | undefined;
+
 export type AuthForBaseOptions =
     | { clientId: string; clientSecret: string }
     | { accessToken: string; refreshAccessToken?: OAuthAuthProvider.RefreshAccessTokenFunction; expiresIn?: number; refreshToken?: string; refreshExpiresIn?: number; clientId?: string }
@@ -10,9 +12,14 @@ export type AuthForBaseOptions =
 export type OptionsRest = Omit<BaseCortiClient.Options, "clientId" | "clientSecret" | "token">;
 
 export function authToBaseOptions(
-    auth: AuthForBaseOptions,
+    auth: AuthForBaseOptions | undefined,
     rest: OptionsRest,
 ): BaseCortiClient.Options {
+    // No auth — proxy/passthrough mode (e.g. custom environment URLs with no credentials)
+    if (!auth) {
+        return rest as BaseCortiClient.Options;
+    }
+
     if ("username" in auth && "password" in auth) {
         return {
             ...rest,
@@ -27,6 +34,8 @@ export function authToBaseOptions(
     }
 
     // Bearer / token override — covers plain token, token + optional refreshAccessToken, and standalone refreshAccessToken
+    const initialTokenResponse = (rest as Record<string, unknown>).initialTokenResponse as InitialTokenResponse;
+
     return {
         ...rest,
         token: auth.accessToken,
@@ -35,5 +44,6 @@ export function authToBaseOptions(
         refreshToken: auth.refreshToken,
         refreshExpiresIn: auth.refreshExpiresIn,
         clientId: auth.clientId,
-    };
+        ...(initialTokenResponse != null ? { initialTokenResponse } : {}),
+    } as BaseCortiClient.Options;
 }
