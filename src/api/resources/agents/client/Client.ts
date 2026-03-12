@@ -416,7 +416,7 @@ export class Agents {
      * This endpoint updates an existing agent. Only the fields provided in the request body will be updated; other fields will remain unchanged.
      *
      * @param {string} id - The identifier of the agent associated with the context.
-     * @param {Corti.AgentsAgent} request
+     * @param {Corti.AgentsUpdateAgent} request
      * @param {Agents.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Corti.BadRequestError}
@@ -424,16 +424,11 @@ export class Agents {
      * @throws {@link Corti.NotFoundError}
      *
      * @example
-     *     await client.agents.update("12345678-90ab-cdef-gh12-34567890abc", {
-     *         id: "id",
-     *         name: "name",
-     *         description: "description",
-     *         systemPrompt: "systemPrompt"
-     *     })
+     *     await client.agents.update("12345678-90ab-cdef-gh12-34567890abc")
      */
     public update(
         id: string,
-        request: Corti.AgentsAgent,
+        request: Corti.AgentsUpdateAgent = {},
         requestOptions?: Agents.RequestOptions,
     ): core.HttpResponsePromise<Corti.AgentsAgent> {
         return core.HttpResponsePromise.fromPromise(this.__update(id, request, requestOptions));
@@ -441,7 +436,7 @@ export class Agents {
 
     private async __update(
         id: string,
-        request: Corti.AgentsAgent,
+        request: Corti.AgentsUpdateAgent = {},
         requestOptions?: Agents.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.AgentsAgent>> {
         const _response = await core.fetcher({
@@ -461,7 +456,7 @@ export class Agents {
             ),
             contentType: "application/json",
             requestType: "json",
-            body: serializers.AgentsAgent.jsonOrThrow(request, {
+            body: serializers.AgentsUpdateAgent.jsonOrThrow(request, {
                 unrecognizedObjectKeys: "strip",
                 omitUndefined: true,
             }),
@@ -615,6 +610,7 @@ export class Agents {
      *
      * @throws {@link Corti.BadRequestError}
      * @throws {@link Corti.UnauthorizedError}
+     * @throws {@link Corti.ForbiddenError}
      * @throws {@link Corti.NotFoundError}
      *
      * @example
@@ -687,6 +683,8 @@ export class Agents {
                     throw new Corti.BadRequestError(_response.error.body, _response.rawResponse);
                 case 401:
                     throw new Corti.UnauthorizedError(_response.error.body, _response.rawResponse);
+                case 403:
+                    throw new Corti.ForbiddenError(_response.error.body, _response.rawResponse);
                 case 404:
                     throw new Corti.NotFoundError(_response.error.body, _response.rawResponse);
                 default:
@@ -725,6 +723,7 @@ export class Agents {
      *
      * @throws {@link Corti.BadRequestError}
      * @throws {@link Corti.UnauthorizedError}
+     * @throws {@link Corti.ForbiddenError}
      * @throws {@link Corti.NotFoundError}
      *
      * @example
@@ -790,6 +789,8 @@ export class Agents {
                     throw new Corti.BadRequestError(_response.error.body, _response.rawResponse);
                 case 401:
                     throw new Corti.UnauthorizedError(_response.error.body, _response.rawResponse);
+                case 403:
+                    throw new Corti.ForbiddenError(_response.error.body, _response.rawResponse);
                 case 404:
                     throw new Corti.NotFoundError(_response.error.body, _response.rawResponse);
                 default:
