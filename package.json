@@ -1,6 +1,6 @@
 {
     "name": "@corti/sdk",
-    "version": "0.10.2",
+    "version": "1.0.0-alpha",
     "private": false,
     "repository": {
         "type": "git",
