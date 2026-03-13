@@ -5,7 +5,7 @@
 import * as serializers from "../index.js";
 import * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
-import { ValidationError } from "./ValidationError.js";
+import { AgentValidationError } from "./AgentValidationError.js";
 import { AgentsErrorResponse } from "./AgentsErrorResponse.js";
 
 export const AgentsValidationErrorResponse: core.serialization.ObjectSchema<
@@ -13,12 +13,12 @@ export const AgentsValidationErrorResponse: core.serialization.ObjectSchema<
     Corti.AgentsValidationErrorResponse
 > = core.serialization
     .object({
-        detail: core.serialization.list(ValidationError).optional(),
+        detail: core.serialization.list(AgentValidationError).optional(),
     })
     .extend(AgentsErrorResponse);
 
 export declare namespace AgentsValidationErrorResponse {
     export interface Raw extends AgentsErrorResponse.Raw {
-        detail?: ValidationError.Raw[] | null;
+        detail?: AgentValidationError.Raw[] | null;
     }
 }
