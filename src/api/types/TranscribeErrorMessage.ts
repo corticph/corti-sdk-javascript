@@ -3,6 +3,6 @@
 import type * as Corti from "../index.js";
 
 export interface TranscribeErrorMessage {
-    type: "error";
+    type: Corti.TranscribeErrorMessageType;
     error: Corti.TranscribeErrorMessageError;
 }

@@ -4,18 +4,19 @@ import type * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
 import type * as serializers from "../index.js";
 import { StreamTranscript } from "./StreamTranscript.js";
+import { StreamTranscriptMessageType } from "./StreamTranscriptMessageType.js";
 
 export const StreamTranscriptMessage: core.serialization.ObjectSchema<
     serializers.StreamTranscriptMessage.Raw,
     Corti.StreamTranscriptMessage
 > = core.serialization.object({
-    type: core.serialization.stringLiteral("transcript"),
+    type: StreamTranscriptMessageType,
     data: core.serialization.list(StreamTranscript),
 });
 
 export declare namespace StreamTranscriptMessage {
     export interface Raw {
-        type: "transcript";
+        type: StreamTranscriptMessageType.Raw;
         data: StreamTranscript.Raw[];
     }
 }

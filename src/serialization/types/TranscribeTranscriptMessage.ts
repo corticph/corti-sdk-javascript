@@ -4,18 +4,19 @@ import type * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
 import type * as serializers from "../index.js";
 import { TranscribeTranscriptData } from "./TranscribeTranscriptData.js";
+import { TranscribeTranscriptMessageType } from "./TranscribeTranscriptMessageType.js";
 
 export const TranscribeTranscriptMessage: core.serialization.ObjectSchema<
     serializers.TranscribeTranscriptMessage.Raw,
     Corti.TranscribeTranscriptMessage
 > = core.serialization.object({
-    type: core.serialization.stringLiteral("transcript"),
+    type: TranscribeTranscriptMessageType,
     data: TranscribeTranscriptData,
 });
 
 export declare namespace TranscribeTranscriptMessage {
     export interface Raw {
-        type: "transcript";
+        type: TranscribeTranscriptMessageType.Raw;
         data: TranscribeTranscriptData.Raw;
     }
 }

@@ -3,6 +3,6 @@
 import type * as Corti from "../index.js";
 
 export interface StreamErrorMessage {
-    type: "error";
+    type: Corti.StreamErrorMessageType;
     error: Corti.StreamErrorDetail;
 }
