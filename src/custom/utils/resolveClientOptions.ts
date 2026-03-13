@@ -1,10 +1,10 @@
-import * as core from "../../core/index.js";
-import { ParseError } from "../../core/schemas/index.js";
-import { decodeToken } from "./decodeToken.js";
-import { getEnvironment, type Environment } from "./environment.js";
-import type * as environments from "../../environments.js";
 import type { OAuthAuthProvider } from "../../auth/OAuthAuthProvider.js";
+import type * as core from "../../core/index.js";
+import { ParseError } from "../../core/schemas/index.js";
+import type * as environments from "../../environments.js";
 import type { CortiClient } from "../CortiClient.js";
+import { decodeToken } from "./decodeToken.js";
+import { type Environment, getEnvironment } from "./environment.js";
 
 export type ResolvedClientOptions = {
     environment: Environment;
@@ -17,14 +17,11 @@ export type ResolvedClientOptions = {
 function isProxyMode(options: { baseUrl?: string; environment?: Environment }): boolean {
     return !!(
         options.baseUrl ||
-        (options.environment &&
-            typeof options.environment === "object" &&
-            !("then" in (options.environment as object)))
+        (options.environment && typeof options.environment === "object" && !("then" in (options.environment as object)))
     );
 }
 
-// CC has clientSecret; ROPC has username+password — both require explicit tenant/env
-function requiresExplicitTenantEnv(auth: CortiClient.Auth): boolean {
+function isCcOrRopcAuth(auth: CortiClient.Auth): boolean {
     return "clientSecret" in auth || "username" in auth;
 }
 
@@ -36,9 +33,12 @@ export function resolveClientOptions(options: CortiClient.Options): ResolvedClie
         baseUrl?: string;
     };
 
-    // CC / ROPC — tenantName and environment enforced by types; just return them
-    if (opts.auth && requiresExplicitTenantEnv(opts.auth)) {
-        return { tenantName: opts.tenantName!, environment: opts.environment! };
+    // CC / ROPC — tenantName and environment are required by the Options type for this auth shape
+    if (opts.auth && isCcOrRopcAuth(opts.auth)) {
+        return {
+            tenantName: opts.tenantName as string,
+            environment: opts.environment as Environment,
+        };
     }
 
     // Both already explicit — skip all JWT parsing regardless of auth variant
@@ -65,7 +65,10 @@ export function resolveClientOptions(options: CortiClient.Options): ResolvedClie
 
     // Only refreshAccessToken — fire once, share the same promise for tenant/env discovery AND
     // as the seed token for the provider (avoids a second refreshAccessToken call on first API request).
-    const auth = opts.auth as { refreshAccessToken: OAuthAuthProvider.RefreshAccessTokenFunction; refreshToken?: string };
+    const auth = opts.auth as {
+        refreshAccessToken: OAuthAuthProvider.RefreshAccessTokenFunction;
+        refreshToken?: string;
+    };
     const discoveryPromise = (async () => {
         const tokenResponse = await auth.refreshAccessToken(auth.refreshToken);
         const decoded = decodeToken(tokenResponse.accessToken ?? "");

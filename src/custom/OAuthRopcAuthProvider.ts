@@ -1,5 +1,8 @@
-import type { BaseClientOptions } from "../BaseClient.js";
 import type { OAuthAuthProvider } from "../auth/OAuthAuthProvider.js";
+import type { BaseClientOptions } from "../BaseClient.js";
+import * as core from "../core/index.js";
+import * as errors from "../errors/index.js";
+import { CortiAuth } from "./CortiAuth.js";
 import {
     BUFFER_IN_MINUTES,
     CLIENT_ID_PARAM,
@@ -10,9 +13,6 @@ import {
     USERNAME_PARAM,
     USERNAME_REQUIRED_ERROR_MESSAGE,
 } from "./utils/oauthAuthHelpers.js";
-import * as core from "../core/index.js";
-import * as errors from "../errors/index.js";
-import { CortiAuth } from "./CortiAuth.js";
 
 export class OAuthRopcAuthProvider implements core.AuthProvider {
     private readonly options: BaseClientOptions & OAuthAuthProvider.RopcCredentials;
@@ -33,15 +33,15 @@ export class OAuthRopcAuthProvider implements core.AuthProvider {
         options?: Partial<OAuthAuthProvider.RopcCredentials & BaseClientOptions>,
     ): options is BaseClientOptions & OAuthAuthProvider.RopcCredentials {
         return (
-            options?.[CLIENT_ID_PARAM] != null &&
-            options?.[USERNAME_PARAM] != null &&
-            options?.[PASSWORD_PARAM] != null
+            options?.[CLIENT_ID_PARAM] != null && options?.[USERNAME_PARAM] != null && options?.[PASSWORD_PARAM] != null
         );
     }
 
     private async clientIdSupplier({
         endpointMetadata,
-    }: { endpointMetadata?: core.EndpointMetadata } = {}): Promise<string> {
+    }: {
+        endpointMetadata?: core.EndpointMetadata;
+    } = {}): Promise<string> {
         const supplier = this.options[CLIENT_ID_PARAM];
         if (supplier == null) {
             throw new errors.CortiError({ message: CLIENT_ID_REQUIRED_ERROR_MESSAGE });
@@ -51,7 +51,9 @@ export class OAuthRopcAuthProvider implements core.AuthProvider {
 
     private async usernameSupplier({
         endpointMetadata,
-    }: { endpointMetadata?: core.EndpointMetadata } = {}): Promise<string> {
+    }: {
+        endpointMetadata?: core.EndpointMetadata;
+    } = {}): Promise<string> {
         const supplier = this.options[USERNAME_PARAM];
         if (supplier == null) {
             throw new errors.CortiError({ message: USERNAME_REQUIRED_ERROR_MESSAGE });
@@ -61,7 +63,9 @@ export class OAuthRopcAuthProvider implements core.AuthProvider {
 
     private async passwordSupplier({
         endpointMetadata,
-    }: { endpointMetadata?: core.EndpointMetadata } = {}): Promise<string> {
+    }: {
+        endpointMetadata?: core.EndpointMetadata;
+    } = {}): Promise<string> {
         const supplier = this.options[PASSWORD_PARAM];
         if (supplier == null) {
             throw new errors.CortiError({ message: PASSWORD_REQUIRED_ERROR_MESSAGE });

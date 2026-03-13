@@ -19,7 +19,7 @@ export function decodeToken(token: string): DecodedToken {
         jsonPayload = decodeURIComponent(
             atob(base64)
                 .split("")
-                .map((c) => "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2))
+                .map((c) => `%${(`00${c.charCodeAt(0).toString(16)}`).slice(-2)}`)
                 .join(""),
         );
     } catch {
@@ -42,8 +42,7 @@ export function decodeToken(token: string): DecodedToken {
     const match = issuerUrl.match(regex);
 
     if (match) {
-        const expiresAt =
-            tokenDetails.exp && typeof tokenDetails.exp === "number" ? tokenDetails.exp : undefined;
+        const expiresAt = tokenDetails.exp && typeof tokenDetails.exp === "number" ? tokenDetails.exp : undefined;
         return {
             environment: match[2],
             tenantName: match[3],

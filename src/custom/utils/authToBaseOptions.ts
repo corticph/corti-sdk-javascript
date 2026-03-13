@@ -1,22 +1,33 @@
-import type { CortiClient as BaseCortiClient } from "../../Client.js";
 import type { OAuthAuthProvider } from "../../auth/OAuthAuthProvider.js";
+import type { CortiClient as BaseCortiClient } from "../../Client.js";
 
 type InitialTokenResponse = Promise<OAuthAuthProvider.ExpectedTokenResponse> | undefined;
 
 export type AuthForBaseOptions =
     | { clientId: string; clientSecret: string }
-    | { accessToken: string; refreshAccessToken?: OAuthAuthProvider.RefreshAccessTokenFunction; expiresIn?: number; refreshToken?: string; refreshExpiresIn?: number; clientId?: string }
+    | {
+          accessToken: string;
+          refreshAccessToken?: OAuthAuthProvider.RefreshAccessTokenFunction;
+          expiresIn?: number;
+          refreshToken?: string;
+          refreshExpiresIn?: number;
+          clientId?: string;
+      }
     | { clientId: string; username: string; password: string }
     | { clientId: string; clientSecret: string; code: string; redirectUri: string }
     | { clientId: string; code: string; redirectUri: string; codeVerifier?: string }
-    | { refreshAccessToken: OAuthAuthProvider.RefreshAccessTokenFunction; accessToken?: string; expiresIn?: number; refreshToken?: string; refreshExpiresIn?: number; clientId?: string };
+    | {
+          refreshAccessToken: OAuthAuthProvider.RefreshAccessTokenFunction;
+          accessToken?: string;
+          expiresIn?: number;
+          refreshToken?: string;
+          refreshExpiresIn?: number;
+          clientId?: string;
+      };
 
 export type OptionsRest = Omit<BaseCortiClient.Options, "clientId" | "clientSecret" | "token">;
 
-export function authToBaseOptions(
-    auth: AuthForBaseOptions | undefined,
-    rest: OptionsRest,
-): BaseCortiClient.Options {
+export function authToBaseOptions(auth: AuthForBaseOptions | undefined, rest: OptionsRest): BaseCortiClient.Options {
     // No auth — proxy/passthrough mode (e.g. custom environment URLs with no credentials)
     if (!auth) {
         return rest as BaseCortiClient.Options;
@@ -33,12 +44,24 @@ export function authToBaseOptions(
 
     // PKCE — no clientSecret; must come before auth code (both have code + redirectUri)
     if ("code" in auth && "redirectUri" in auth && !("clientSecret" in auth)) {
-        return { ...rest, clientId: auth.clientId, code: auth.code, redirectUri: auth.redirectUri, codeVerifier: auth.codeVerifier };
+        return {
+            ...rest,
+            clientId: auth.clientId,
+            code: auth.code,
+            redirectUri: auth.redirectUri,
+            codeVerifier: auth.codeVerifier,
+        };
     }
 
     // Auth code — must come before CC since both have clientId + clientSecret
     if ("code" in auth && "redirectUri" in auth) {
-        return { ...rest, clientId: auth.clientId, clientSecret: auth.clientSecret, code: auth.code, redirectUri: auth.redirectUri };
+        return {
+            ...rest,
+            clientId: auth.clientId,
+            clientSecret: auth.clientSecret,
+            code: auth.code,
+            redirectUri: auth.redirectUri,
+        };
     }
 
     if ("clientId" in auth && "clientSecret" in auth) {

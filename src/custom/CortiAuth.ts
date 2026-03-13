@@ -4,7 +4,7 @@ import type { OAuthAuthProvider } from "../auth/OAuthAuthProvider.js";
 import * as core from "../core/index.js";
 import { ParseError } from "../core/schemas/index.js";
 import { buildTokenRequestBody } from "./utils/buildTokenRequestBody.js";
-import { getEnvironment, type Environment } from "./utils/environment.js";
+import { type Environment, getEnvironment } from "./utils/environment.js";
 import { CODE_VERIFIER_KEY, getLocalStorageItem, setLocalStorageItem } from "./utils/localStorageHelpers.js";
 import { generateCodeChallenge, generateCodeVerifier } from "./utils/pkceHelpers.js";
 
@@ -228,13 +228,7 @@ export class CortiAuth extends AuthClient {
         const envUrls = await core.Supplier.get(this._options.environment);
         const tenantName = await core.Supplier.get(this._options.tenantName);
 
-        const authUrl = new URL(
-            core.url.join(
-                envUrls.login,
-                tenantName,
-                "protocol/openid-connect/auth",
-            ),
-        );
+        const authUrl = new URL(core.url.join(envUrls.login, tenantName, "protocol/openid-connect/auth"));
 
         authUrl.searchParams.set("response_type", "code");
 

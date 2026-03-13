@@ -1,5 +1,5 @@
-import * as core from "../../core/index.js";
-import * as environments from "../../environments.js";
+import type * as core from "../../core/index.js";
+import type * as environments from "../../environments.js";
 
 export type CortiInternalEnvironment = core.Supplier<environments.CortiEnvironment | environments.CortiEnvironmentUrls>;
 export type Environment = CortiInternalEnvironment | string;

@@ -15,7 +15,7 @@ export const setLocalStorageItem = (key: string, value: string): void => {
     const storage = requireLocalStorage();
     try {
         storage.setItem(key, value);
-    } catch (error) {
+    } catch (_error) {
         throw new CortiError({
             message: "LocalStorage set operation failed.",
         });
@@ -26,7 +26,7 @@ export const getLocalStorageItem = (key: string): string | null => {
     const storage = requireLocalStorage();
     try {
         return storage.getItem(key);
-    } catch (error) {
+    } catch (_error) {
         throw new CortiError({
             message: "LocalStorage get operation failed.",
         });
