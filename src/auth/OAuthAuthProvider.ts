@@ -11,6 +11,7 @@ import {
     CLIENT_SECRET_PARAM,
     CLIENT_SECRET_REQUIRED_ERROR_MESSAGE,
     CODE_PARAM,
+    CODE_VERIFIER_PARAM,
     getExpiresAt,
     PASSWORD_PARAM,
     REDIRECT_URI_PARAM,
@@ -19,8 +20,9 @@ import {
 import * as errors from "../errors/index.js";
 import { OAuthRopcAuthProvider } from "../custom/OAuthRopcAuthProvider.js";
 import { OAuthAuthCodeAuthProvider } from "../custom/OAuthAuthCodeAuthProvider.js";
+import { OAuthPkceAuthProvider } from "../custom/OAuthPkceAuthProvider.js";
 
-/** Patch: Re-export for consumers; implementation shared with OAuthRopcAuthProvider and OAuthAuthCodeAuthProvider. */
+/** Patch: Re-export for consumers; implementation shared with OAuthRopcAuthProvider, OAuthAuthCodeAuthProvider and OAuthPkceAuthProvider. */
 export {
     BUFFER_IN_MINUTES,
     CLIENT_ID_PARAM,
@@ -28,6 +30,7 @@ export {
     CLIENT_SECRET_PARAM,
     CLIENT_SECRET_REQUIRED_ERROR_MESSAGE,
     CODE_PARAM,
+    CODE_VERIFIER_PARAM,
     getExpiresAt,
     PASSWORD_PARAM,
     PASSWORD_REQUIRED_ERROR_MESSAGE,
@@ -315,8 +318,15 @@ export namespace OAuthAuthProvider {
         [CODE_PARAM]: core.Supplier<string>;
         [REDIRECT_URI_PARAM]: core.Supplier<string>;
     };
-    /** Patch: Include RopcCredentials and AuthCodeCredentials so CortiClient can use those auth flows. */
-    export type AuthOptions = ClientCredentials | TokenOverride | RopcCredentials | AuthCodeCredentials;
+    /** Patch: PKCE credentials (clientId + code + redirectUri; no clientSecret) */
+    export type PkceCredentials = {
+        [CLIENT_ID_PARAM]: core.Supplier<string>;
+        [CODE_PARAM]: core.Supplier<string>;
+        [REDIRECT_URI_PARAM]: core.Supplier<string>;
+        [CODE_VERIFIER_PARAM]?: core.Supplier<string>;
+    };
+    /** Patch: Include RopcCredentials, AuthCodeCredentials and PkceCredentials so CortiClient can use those auth flows. */
+    export type AuthOptions = ClientCredentials | TokenOverride | RopcCredentials | AuthCodeCredentials | PkceCredentials;
     export type Options = BaseClientOptions & AuthOptions;
 
     export function createInstance(options: Options): core.AuthProvider {
@@ -327,6 +337,10 @@ export namespace OAuthAuthProvider {
         if (OAuthRopcAuthProvider.canCreate(options)) {
             return new OAuthRopcAuthProvider(options);
         }
+        /** Patch: PKCE provider before auth code — both have clientId+code+redirectUri, but PKCE has no clientSecret. */
+        if (OAuthPkceAuthProvider.canCreate(options)) {
+            return new OAuthPkceAuthProvider(options);
+        }
         /** Patch: Auth code provider before client credentials — both have clientId+clientSecret, code+redirectUri distinguishes auth code. */
         if (OAuthAuthCodeAuthProvider.canCreate(options)) {
             return new OAuthAuthCodeAuthProvider(options);
@@ -335,7 +349,7 @@ export namespace OAuthAuthProvider {
             return new OAuthAuthProvider(options);
         }
         /** Patch: No credentials provided — proxy/passthrough mode; requests are sent without an Authorization header. */
-        const partialOptions = options as Partial<ClientCredentials & TokenOverride & RopcCredentials & AuthCodeCredentials>;
+        const partialOptions = options as Partial<ClientCredentials & TokenOverride & RopcCredentials & AuthCodeCredentials & PkceCredentials>;
         const hasNoCredentials =
             partialOptions[CLIENT_ID_PARAM] == null &&
             partialOptions[CLIENT_SECRET_PARAM] == null &&

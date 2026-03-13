@@ -34,13 +34,27 @@ export type TokenRequestAuthorizationCode = {
     scopes?: string[];
 };
 
+export type TokenRequestPkce = {
+    clientId: string;
+    redirectUri: string;
+    code: string;
+    codeVerifier: string;
+    scopes?: string[];
+};
+
 export function buildTokenRequestBody(
-    request: TokenRequestClientCredentials | TokenRequestRopc | TokenRequestRefresh | TokenRequestAuthorizationCode,
+    request:
+        | TokenRequestClientCredentials
+        | TokenRequestRopc
+        | TokenRequestRefresh
+        | TokenRequestAuthorizationCode
+        | TokenRequestPkce,
 ):
     | Corti.AuthTokenRequestClientCredentials
     | Corti.AuthTokenRequestRopc
     | Corti.AuthTokenRequestRefresh
-    | Corti.AuthTokenRequestAuthorizationCode {
+    | Corti.AuthTokenRequestAuthorizationCode
+    | Corti.AuthTokenRequestAuthorizationPkce {
     const scope = buildScopeString(request.scopes);
 
     if ("refreshToken" in request) {
@@ -49,6 +63,17 @@ export function buildTokenRequestBody(
             clientSecret: request.clientSecret,
             grantType: "refresh_token",
             refreshToken: request.refreshToken,
+            scope,
+        };
+    }
+
+    if ("codeVerifier" in request) {
+        return {
+            clientId: request.clientId,
+            grantType: "authorization_code",
+            redirectUri: request.redirectUri,
+            code: request.code,
+            codeVerifier: request.codeVerifier,
             scope,
         };
     }

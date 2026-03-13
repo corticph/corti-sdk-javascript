@@ -2,8 +2,11 @@ import type * as Corti from "../api/index.js";
 import { AuthClient } from "../api/resources/auth/client/Client.js";
 import type { OAuthAuthProvider } from "../auth/OAuthAuthProvider.js";
 import * as core from "../core/index.js";
+import { ParseError } from "../core/schemas/index.js";
 import { buildTokenRequestBody } from "./utils/buildTokenRequestBody.js";
 import { getEnvironment, type Environment } from "./utils/environment.js";
+import { CODE_VERIFIER_KEY, getLocalStorageItem, setLocalStorageItem } from "./utils/localStorageHelpers.js";
+import { generateCodeChallenge, generateCodeVerifier } from "./utils/pkceHelpers.js";
 
 interface Options {
     skipRedirect?: boolean;
@@ -47,12 +50,29 @@ export declare namespace CortiAuth {
         scopes?: string[];
     }
 
+    /** PKCE grant request for getPkceFlowToken. codeVerifier is optional — if omitted, reads from localStorage. */
+    export interface GetPkceFlowTokenRequest {
+        clientId: string;
+        redirectUri: string;
+        code: string;
+        codeVerifier?: string;
+        scopes?: string[];
+    }
+
     /** Parameters for authorizeUrl — builds the Keycloak authorization endpoint URL. */
     export interface AuthorizationCodeClient {
         clientId: string;
         redirectUri: string;
         codeChallenge?: string;
         scopes?: string[];
+    }
+
+    /** Parameters for authorizePkceUrl — like AuthorizationCodeClient but without codeChallenge (generated internally). */
+    export interface PkceClient {
+        clientId: string;
+        redirectUri: string;
+        scopes?: string[];
+        codeVerifier?: string;
     }
 }
 
@@ -98,7 +118,8 @@ export class CortiAuth extends AuthClient {
             | CortiAuth.GetTokenRequest
             | CortiAuth.GetRopcFlowTokenRequest
             | CortiAuth.RefreshTokenRequest
-            | CortiAuth.GetCodeFlowTokenRequest,
+            | CortiAuth.GetCodeFlowTokenRequest
+            | (CortiAuth.GetPkceFlowTokenRequest & { codeVerifier: string }),
         requestOptions: AuthClient.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.AuthTokenResponse>> {
         const authRequest = buildTokenRequestBody(request);
@@ -144,6 +165,52 @@ export class CortiAuth extends AuthClient {
         requestOptions?: AuthClient.RequestOptions,
     ): core.HttpResponsePromise<Corti.AuthTokenResponse> {
         return core.HttpResponsePromise.fromPromise(this._getTokenWithTenant(request, requestOptions ?? {}));
+    }
+
+    /**
+     * Exchange a PKCE authorization code for an access token (authorization_code grant with code_verifier).
+     * If codeVerifier is omitted, it is read from localStorage (set by authorizePkceUrl).
+     */
+    public getPkceFlowToken(
+        request: CortiAuth.GetPkceFlowTokenRequest,
+        requestOptions?: AuthClient.RequestOptions,
+    ): core.HttpResponsePromise<Corti.AuthTokenResponse> {
+        const codeVerifier = request.codeVerifier ?? getLocalStorageItem(CODE_VERIFIER_KEY);
+
+        if (!codeVerifier) {
+            throw new ParseError([
+                {
+                    path: ["codeVerifier"],
+                    message: "Code verifier was not provided and not found in localStorage.",
+                },
+            ]);
+        }
+
+        return core.HttpResponsePromise.fromPromise(
+            this._getTokenWithTenant({ ...request, codeVerifier }, requestOptions ?? {}),
+        );
+    }
+
+    /**
+     * Build the Keycloak authorization endpoint URL for the PKCE flow.
+     * Generates a code verifier if not provided, stores it in localStorage, and computes the challenge.
+     * In a browser environment, redirects to the URL unless skipRedirect is true.
+     */
+    public async authorizePkceUrl(
+        { clientId, redirectUri, scopes, codeVerifier }: CortiAuth.PkceClient,
+        options?: Options,
+    ): Promise<string> {
+        const verifier = codeVerifier ?? generateCodeVerifier();
+        setLocalStorageItem(CODE_VERIFIER_KEY, verifier);
+
+        const codeChallenge = await generateCodeChallenge(verifier);
+
+        return this.authorizeUrl({ clientId, redirectUri, codeChallenge, scopes }, options);
+    }
+
+    /** Read the PKCE code verifier stored in localStorage by authorizePkceUrl. Returns null if not found. */
+    public static getCodeVerifier(): string | null {
+        return getLocalStorageItem(CODE_VERIFIER_KEY);
     }
 
     /**
