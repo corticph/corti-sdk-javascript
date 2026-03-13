@@ -1,10 +1,12 @@
+import type { OAuthAuthProvider } from "../auth/OAuthAuthProvider.js";
 import { CortiClient as BaseCortiClient } from "../Client.js";
 import type * as environments from "../environments.js";
-import type { OAuthAuthProvider } from "../auth/OAuthAuthProvider.js";
-import { authToBaseOptions } from "./utils/authToBaseOptions.js";
-import { getEnvironment, type Environment } from "./utils/environment.js";
-import { resolveClientOptions } from "./utils/resolveClientOptions.js";
 import { CortiAuth } from "./CortiAuth.js";
+import { CustomStream } from "./CustomStream.js";
+import { CustomTranscribe } from "./CustomTranscribe.js";
+import { authToBaseOptions } from "./utils/authToBaseOptions.js";
+import { type Environment, getEnvironment } from "./utils/environment.js";
+import { resolveClientOptions } from "./utils/resolveClientOptions.js";
 
 type TokenDerivableAuth =
     | {
@@ -100,5 +102,13 @@ export class CortiClient extends BaseCortiClient {
 
     public override get auth(): CortiAuth {
         return (this._auth ??= new CortiAuth(this._options));
+    }
+
+    public override get stream(): CustomStream {
+        return (this._stream ??= new CustomStream(this._options));
+    }
+
+    public override get transcribe(): CustomTranscribe {
+        return (this._transcribe ??= new CustomTranscribe(this._options));
     }
 }
