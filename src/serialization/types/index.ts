@@ -168,5 +168,5 @@ export * from "./AgentsContextItemsItem.js";
 export * from "./AgentsContext.js";
 export * from "./AgentsRegistryExpert.js";
 export * from "./AgentsRegistryExpertsResponse.js";
-export * from "./AgentValidationErrorErrorsItem.js";
-export * from "./AgentValidationError.js";
+export * from "./AgentsValidationErrorErrorsItem.js";
+export * from "./AgentsValidationError.js";

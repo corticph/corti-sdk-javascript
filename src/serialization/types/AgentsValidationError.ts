@@ -5,25 +5,25 @@
 import * as serializers from "../index.js";
 import * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
-import { AgentValidationErrorErrorsItem } from "./AgentValidationErrorErrorsItem.js";
+import { AgentsValidationErrorErrorsItem } from "./AgentsValidationErrorErrorsItem.js";
 
-export const AgentValidationError: core.serialization.ObjectSchema<
-    serializers.AgentValidationError.Raw,
-    Corti.AgentValidationError
+export const AgentsValidationError: core.serialization.ObjectSchema<
+    serializers.AgentsValidationError.Raw,
+    Corti.AgentsValidationError
 > = core.serialization.object({
     msg: core.serialization.string(),
     type: core.serialization.string(),
     reason: core.serialization.string(),
     howToFix: core.serialization.string(),
-    errors: core.serialization.list(AgentValidationErrorErrorsItem).optional(),
+    errors: core.serialization.list(AgentsValidationErrorErrorsItem).optional(),
 });
 
-export declare namespace AgentValidationError {
+export declare namespace AgentsValidationError {
     export interface Raw {
         msg: string;
         type: string;
         reason: string;
         howToFix: string;
-        errors?: AgentValidationErrorErrorsItem.Raw[] | null;
+        errors?: AgentsValidationErrorErrorsItem.Raw[] | null;
     }
 }

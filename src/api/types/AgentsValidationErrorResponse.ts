@@ -5,5 +5,5 @@
 import * as Corti from "../index.js";
 
 export interface AgentsValidationErrorResponse extends Corti.AgentsErrorResponse {
-    detail?: Corti.AgentValidationError[];
+    detail?: Corti.AgentsValidationError[];
 }

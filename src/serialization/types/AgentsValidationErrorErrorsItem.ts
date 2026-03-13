@@ -6,15 +6,15 @@ import * as serializers from "../index.js";
 import * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
 
-export const AgentValidationErrorErrorsItem: core.serialization.ObjectSchema<
-    serializers.AgentValidationErrorErrorsItem.Raw,
-    Corti.AgentValidationErrorErrorsItem
+export const AgentsValidationErrorErrorsItem: core.serialization.ObjectSchema<
+    serializers.AgentsValidationErrorErrorsItem.Raw,
+    Corti.AgentsValidationErrorErrorsItem
 > = core.serialization.object({
     location: core.serialization.string().optional(),
     reason: core.serialization.string().optional(),
 });
 
-export declare namespace AgentValidationErrorErrorsItem {
+export declare namespace AgentsValidationErrorErrorsItem {
     export interface Raw {
         location?: string | null;
         reason?: string | null;

@@ -4,10 +4,10 @@
 
 import * as Corti from "../index.js";
 
-export interface AgentValidationError {
+export interface AgentsValidationError {
     msg: string;
     type: string;
     reason: string;
     howToFix: string;
-    errors?: Corti.AgentValidationErrorErrorsItem[];
+    errors?: Corti.AgentsValidationErrorErrorsItem[];
 }

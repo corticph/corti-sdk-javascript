@@ -358,7 +358,6 @@ export class Agents {
      * @throws {@link Corti.BadRequestError}
      * @throws {@link Corti.UnauthorizedError}
      * @throws {@link Corti.NotFoundError}
-     * @throws {@link Corti.UnprocessableEntityError}
      *
      * @example
      *     await client.agents.delete("12345678-90ab-cdef-gh12-34567890abc")
@@ -399,17 +398,6 @@ export class Agents {
                     throw new Corti.UnauthorizedError(_response.error.body, _response.rawResponse);
                 case 404:
                     throw new Corti.NotFoundError(_response.error.body, _response.rawResponse);
-                case 422:
-                    throw new Corti.UnprocessableEntityError(
-                        serializers.AgentsValidationErrorResponse.parseOrThrow(_response.error.body, {
-                            unrecognizedObjectKeys: "passthrough",
-                            allowUnrecognizedUnionMembers: true,
-                            allowUnrecognizedEnumValues: true,
-                            skipValidation: true,
-                            breadcrumbsPrefix: ["response"],
-                        }),
-                        _response.rawResponse,
-                    );
                 default:
                     throw new errors.CortiError({
                         statusCode: _response.error.statusCode,
@@ -978,6 +966,7 @@ export class Agents {
      *
      * @throws {@link Corti.BadRequestError}
      * @throws {@link Corti.UnauthorizedError}
+     * @throws {@link Corti.UnprocessableEntityError}
      *
      * @example
      *     await client.agents.getRegistryExperts({
@@ -1045,6 +1034,17 @@ export class Agents {
                     throw new Corti.BadRequestError(_response.error.body, _response.rawResponse);
                 case 401:
                     throw new Corti.UnauthorizedError(_response.error.body, _response.rawResponse);
+                case 422:
+                    throw new Corti.UnprocessableEntityError(
+                        serializers.AgentsValidationErrorResponse.parseOrThrow(_response.error.body, {
+                            unrecognizedObjectKeys: "passthrough",
+                            allowUnrecognizedUnionMembers: true,
+                            allowUnrecognizedEnumValues: true,
+                            skipValidation: true,
+                            breadcrumbsPrefix: ["response"],
+                        }),
+                        _response.rawResponse,
+                    );
                 default:
                     throw new errors.CortiError({
                         statusCode: _response.error.statusCode,
