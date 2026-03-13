@@ -3,13 +3,17 @@
 import * as Corti from "../../src/api/index";
 import { CortiClient } from "../../src/Client";
 import { mockServerPool } from "../mock-server/MockServerPool";
+import { mockOAuth } from "./mockAuth";
 
 describe("AgentsClient", () => {
     test("list (1)", async () => {
         const server = mockServerPool.createServer();
+        mockOAuth(server);
+
         const client = new CortiClient({
             maxRetries: 0,
-            token: "test",
+            clientId: "client_id",
+            clientSecret: "client_secret",
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
@@ -31,6 +35,7 @@ describe("AgentsClient", () => {
                 ],
             },
         ];
+
         server.mockEndpoint().get("/agents").respondWith().statusCode(200).jsonBody(rawResponseBody).build();
 
         const response = await client.agents.list();
@@ -55,14 +60,18 @@ describe("AgentsClient", () => {
 
     test("list (2)", async () => {
         const server = mockServerPool.createServer();
+        mockOAuth(server);
+
         const client = new CortiClient({
             maxRetries: 0,
-            token: "test",
+            clientId: "client_id",
+            clientSecret: "client_secret",
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
         const rawResponseBody = { key: "value" };
+
         server.mockEndpoint().get("/agents").respondWith().statusCode(400).jsonBody(rawResponseBody).build();
 
         await expect(async () => {
@@ -72,14 +81,18 @@ describe("AgentsClient", () => {
 
     test("list (3)", async () => {
         const server = mockServerPool.createServer();
+        mockOAuth(server);
+
         const client = new CortiClient({
             maxRetries: 0,
-            token: "test",
+            clientId: "client_id",
+            clientSecret: "client_secret",
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
         const rawResponseBody = { key: "value" };
+
         server.mockEndpoint().get("/agents").respondWith().statusCode(401).jsonBody(rawResponseBody).build();
 
         await expect(async () => {
@@ -89,9 +102,12 @@ describe("AgentsClient", () => {
 
     test("create (1)", async () => {
         const server = mockServerPool.createServer();
+        mockOAuth(server);
+
         const client = new CortiClient({
             maxRetries: 0,
-            token: "test",
+            clientId: "client_id",
+            clientSecret: "client_secret",
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
@@ -114,6 +130,7 @@ describe("AgentsClient", () => {
                 },
             ],
         };
+
         server
             .mockEndpoint()
             .post("/agents")
@@ -155,14 +172,18 @@ describe("AgentsClient", () => {
 
     test("create (2)", async () => {
         const server = mockServerPool.createServer();
+        mockOAuth(server);
+
         const client = new CortiClient({
             maxRetries: 0,
-            token: "test",
+            clientId: "client_id",
+            clientSecret: "client_secret",
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
         const rawRequestBody = { name: "name", description: "description" };
         const rawResponseBody = { key: "value" };
+
         server
             .mockEndpoint()
             .post("/agents")
@@ -182,14 +203,18 @@ describe("AgentsClient", () => {
 
     test("create (3)", async () => {
         const server = mockServerPool.createServer();
+        mockOAuth(server);
+
         const client = new CortiClient({
             maxRetries: 0,
-            token: "test",
+            clientId: "client_id",
+            clientSecret: "client_secret",
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
         const rawRequestBody = { name: "name", description: "description" };
         const rawResponseBody = { key: "value" };
+
         server
             .mockEndpoint()
             .post("/agents")
@@ -209,9 +234,12 @@ describe("AgentsClient", () => {
 
     test("get (1)", async () => {
         const server = mockServerPool.createServer();
+        mockOAuth(server);
+
         const client = new CortiClient({
             maxRetries: 0,
-            token: "test",
+            clientId: "client_id",
+            clientSecret: "client_secret",
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
@@ -234,6 +262,7 @@ describe("AgentsClient", () => {
                 },
             ],
         };
+
         server
             .mockEndpoint()
             .get("/agents/12345678-90ab-cdef-gh12-34567890abc")
@@ -271,14 +300,18 @@ describe("AgentsClient", () => {
 
     test("get (2)", async () => {
         const server = mockServerPool.createServer();
+        mockOAuth(server);
+
         const client = new CortiClient({
             maxRetries: 0,
-            token: "test",
+            clientId: "client_id",
+            clientSecret: "client_secret",
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
         const rawResponseBody = { key: "value" };
+
         server.mockEndpoint().get("/agents/id").respondWith().statusCode(400).jsonBody(rawResponseBody).build();
 
         await expect(async () => {
@@ -288,14 +321,18 @@ describe("AgentsClient", () => {
 
     test("get (3)", async () => {
         const server = mockServerPool.createServer();
+        mockOAuth(server);
+
         const client = new CortiClient({
             maxRetries: 0,
-            token: "test",
+            clientId: "client_id",
+            clientSecret: "client_secret",
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
         const rawResponseBody = { key: "value" };
+
         server.mockEndpoint().get("/agents/id").respondWith().statusCode(401).jsonBody(rawResponseBody).build();
 
         await expect(async () => {
@@ -305,14 +342,18 @@ describe("AgentsClient", () => {
 
     test("get (4)", async () => {
         const server = mockServerPool.createServer();
+        mockOAuth(server);
+
         const client = new CortiClient({
             maxRetries: 0,
-            token: "test",
+            clientId: "client_id",
+            clientSecret: "client_secret",
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
         const rawResponseBody = { key: "value" };
+
         server.mockEndpoint().get("/agents/id").respondWith().statusCode(404).jsonBody(rawResponseBody).build();
 
         await expect(async () => {
@@ -322,9 +363,12 @@ describe("AgentsClient", () => {
 
     test("delete (1)", async () => {
         const server = mockServerPool.createServer();
+        mockOAuth(server);
+
         const client = new CortiClient({
             maxRetries: 0,
-            token: "test",
+            clientId: "client_id",
+            clientSecret: "client_secret",
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
@@ -342,14 +386,18 @@ describe("AgentsClient", () => {
 
     test("delete (2)", async () => {
         const server = mockServerPool.createServer();
+        mockOAuth(server);
+
         const client = new CortiClient({
             maxRetries: 0,
-            token: "test",
+            clientId: "client_id",
+            clientSecret: "client_secret",
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
         const rawResponseBody = { key: "value" };
+
         server.mockEndpoint().delete("/agents/id").respondWith().statusCode(400).jsonBody(rawResponseBody).build();
 
         await expect(async () => {
@@ -359,14 +407,18 @@ describe("AgentsClient", () => {
 
     test("delete (3)", async () => {
         const server = mockServerPool.createServer();
+        mockOAuth(server);
+
         const client = new CortiClient({
             maxRetries: 0,
-            token: "test",
+            clientId: "client_id",
+            clientSecret: "client_secret",
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
         const rawResponseBody = { key: "value" };
+
         server.mockEndpoint().delete("/agents/id").respondWith().statusCode(401).jsonBody(rawResponseBody).build();
 
         await expect(async () => {
@@ -376,14 +428,18 @@ describe("AgentsClient", () => {
 
     test("delete (4)", async () => {
         const server = mockServerPool.createServer();
+        mockOAuth(server);
+
         const client = new CortiClient({
             maxRetries: 0,
-            token: "test",
+            clientId: "client_id",
+            clientSecret: "client_secret",
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
         const rawResponseBody = { key: "value" };
+
         server.mockEndpoint().delete("/agents/id").respondWith().statusCode(404).jsonBody(rawResponseBody).build();
 
         await expect(async () => {
@@ -393,13 +449,16 @@ describe("AgentsClient", () => {
 
     test("update (1)", async () => {
         const server = mockServerPool.createServer();
+        mockOAuth(server);
+
         const client = new CortiClient({
             maxRetries: 0,
-            token: "test",
+            clientId: "client_id",
+            clientSecret: "client_secret",
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
-        const rawRequestBody = { id: "id", name: "name", description: "description", systemPrompt: "systemPrompt" };
+        const rawRequestBody = {};
         const rawResponseBody = {
             id: "id",
             name: "name",
@@ -418,6 +477,7 @@ describe("AgentsClient", () => {
                 },
             ],
         };
+
         server
             .mockEndpoint()
             .patch("/agents/12345678-90ab-cdef-gh12-34567890abc")
@@ -427,12 +487,7 @@ describe("AgentsClient", () => {
             .jsonBody(rawResponseBody)
             .build();
 
-        const response = await client.agents.update("12345678-90ab-cdef-gh12-34567890abc", {
-            id: "id",
-            name: "name",
-            description: "description",
-            systemPrompt: "systemPrompt",
-        });
+        const response = await client.agents.update("12345678-90ab-cdef-gh12-34567890abc");
         expect(response).toEqual({
             id: "id",
             name: "name",
@@ -461,14 +516,18 @@ describe("AgentsClient", () => {
 
     test("update (2)", async () => {
         const server = mockServerPool.createServer();
+        mockOAuth(server);
+
         const client = new CortiClient({
             maxRetries: 0,
-            token: "test",
+            clientId: "client_id",
+            clientSecret: "client_secret",
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
-        const rawRequestBody = { id: "id", name: "name", description: "description", systemPrompt: "systemPrompt" };
+        const rawRequestBody = {};
         const rawResponseBody = { key: "value" };
+
         server
             .mockEndpoint()
             .patch("/agents/id")
@@ -479,25 +538,24 @@ describe("AgentsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.agents.update("id", {
-                id: "id",
-                name: "name",
-                description: "description",
-                systemPrompt: "systemPrompt",
-            });
+            return await client.agents.update("id");
         }).rejects.toThrow(Corti.BadRequestError);
     });
 
     test("update (3)", async () => {
         const server = mockServerPool.createServer();
+        mockOAuth(server);
+
         const client = new CortiClient({
             maxRetries: 0,
-            token: "test",
+            clientId: "client_id",
+            clientSecret: "client_secret",
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
-        const rawRequestBody = { id: "id", name: "name", description: "description", systemPrompt: "systemPrompt" };
+        const rawRequestBody = {};
         const rawResponseBody = { key: "value" };
+
         server
             .mockEndpoint()
             .patch("/agents/id")
@@ -508,25 +566,24 @@ describe("AgentsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.agents.update("id", {
-                id: "id",
-                name: "name",
-                description: "description",
-                systemPrompt: "systemPrompt",
-            });
+            return await client.agents.update("id");
         }).rejects.toThrow(Corti.UnauthorizedError);
     });
 
     test("update (4)", async () => {
         const server = mockServerPool.createServer();
+        mockOAuth(server);
+
         const client = new CortiClient({
             maxRetries: 0,
-            token: "test",
+            clientId: "client_id",
+            clientSecret: "client_secret",
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
-        const rawRequestBody = { id: "id", name: "name", description: "description", systemPrompt: "systemPrompt" };
+        const rawRequestBody = {};
         const rawResponseBody = { key: "value" };
+
         server
             .mockEndpoint()
             .patch("/agents/id")
@@ -537,20 +594,18 @@ describe("AgentsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.agents.update("id", {
-                id: "id",
-                name: "name",
-                description: "description",
-                systemPrompt: "systemPrompt",
-            });
+            return await client.agents.update("id");
         }).rejects.toThrow(Corti.NotFoundError);
     });
 
     test("getCard (1)", async () => {
         const server = mockServerPool.createServer();
+        mockOAuth(server);
+
         const client = new CortiClient({
             maxRetries: 0,
-            token: "test",
+            clientId: "client_id",
+            clientSecret: "client_secret",
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
@@ -598,6 +653,7 @@ describe("AgentsClient", () => {
             supportsAuthenticatedExtendedCard: true,
             signatures: [{ protected: "protected", signature: "signature", header: { key: "value" } }],
         };
+
         server
             .mockEndpoint()
             .get("/agents/12345678-90ab-cdef-gh12-34567890abc/agent-card.json")
@@ -685,14 +741,18 @@ describe("AgentsClient", () => {
 
     test("getCard (2)", async () => {
         const server = mockServerPool.createServer();
+        mockOAuth(server);
+
         const client = new CortiClient({
             maxRetries: 0,
-            token: "test",
+            clientId: "client_id",
+            clientSecret: "client_secret",
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
         const rawResponseBody = { key: "value" };
+
         server
             .mockEndpoint()
             .get("/agents/id/agent-card.json")
@@ -708,14 +768,18 @@ describe("AgentsClient", () => {
 
     test("getCard (3)", async () => {
         const server = mockServerPool.createServer();
+        mockOAuth(server);
+
         const client = new CortiClient({
             maxRetries: 0,
-            token: "test",
+            clientId: "client_id",
+            clientSecret: "client_secret",
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
         const rawResponseBody = { key: "value" };
+
         server
             .mockEndpoint()
             .get("/agents/id/agent-card.json")
@@ -731,14 +795,18 @@ describe("AgentsClient", () => {
 
     test("getCard (4)", async () => {
         const server = mockServerPool.createServer();
+        mockOAuth(server);
+
         const client = new CortiClient({
             maxRetries: 0,
-            token: "test",
+            clientId: "client_id",
+            clientSecret: "client_secret",
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
         const rawResponseBody = { key: "value" };
+
         server
             .mockEndpoint()
             .get("/agents/id/agent-card.json")
@@ -754,9 +822,12 @@ describe("AgentsClient", () => {
 
     test("messageSend (1)", async () => {
         const server = mockServerPool.createServer();
+        mockOAuth(server);
+
         const client = new CortiClient({
             maxRetries: 0,
-            token: "test",
+            clientId: "client_id",
+            clientSecret: "client_secret",
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
@@ -796,6 +867,7 @@ describe("AgentsClient", () => {
                 kind: "task",
             },
         };
+
         server
             .mockEndpoint()
             .post("/agents/12345678-90ab-cdef-gh12-34567890abc/v1/message:send")
@@ -889,9 +961,12 @@ describe("AgentsClient", () => {
 
     test("messageSend (2)", async () => {
         const server = mockServerPool.createServer();
+        mockOAuth(server);
+
         const client = new CortiClient({
             maxRetries: 0,
-            token: "test",
+            clientId: "client_id",
+            clientSecret: "client_secret",
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
@@ -907,6 +982,7 @@ describe("AgentsClient", () => {
             },
         };
         const rawResponseBody = { key: "value" };
+
         server
             .mockEndpoint()
             .post("/agents/id/v1/message:send")
@@ -939,9 +1015,12 @@ describe("AgentsClient", () => {
 
     test("messageSend (3)", async () => {
         const server = mockServerPool.createServer();
+        mockOAuth(server);
+
         const client = new CortiClient({
             maxRetries: 0,
-            token: "test",
+            clientId: "client_id",
+            clientSecret: "client_secret",
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
@@ -957,6 +1036,7 @@ describe("AgentsClient", () => {
             },
         };
         const rawResponseBody = { key: "value" };
+
         server
             .mockEndpoint()
             .post("/agents/id/v1/message:send")
@@ -989,9 +1069,12 @@ describe("AgentsClient", () => {
 
     test("messageSend (4)", async () => {
         const server = mockServerPool.createServer();
+        mockOAuth(server);
+
         const client = new CortiClient({
             maxRetries: 0,
-            token: "test",
+            clientId: "client_id",
+            clientSecret: "client_secret",
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
@@ -1007,6 +1090,7 @@ describe("AgentsClient", () => {
             },
         };
         const rawResponseBody = { key: "value" };
+
         server
             .mockEndpoint()
             .post("/agents/id/v1/message:send")
@@ -1039,9 +1123,12 @@ describe("AgentsClient", () => {
 
     test("getTask (1)", async () => {
         const server = mockServerPool.createServer();
+        mockOAuth(server);
+
         const client = new CortiClient({
             maxRetries: 0,
-            token: "test",
+            clientId: "client_id",
+            clientSecret: "client_secret",
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
@@ -1090,6 +1177,7 @@ describe("AgentsClient", () => {
             metadata: { key: "value" },
             kind: "task",
         };
+
         server
             .mockEndpoint()
             .get("/agents/12345678-90ab-cdef-gh12-34567890abc/v1/tasks/taskId")
@@ -1170,14 +1258,18 @@ describe("AgentsClient", () => {
 
     test("getTask (2)", async () => {
         const server = mockServerPool.createServer();
+        mockOAuth(server);
+
         const client = new CortiClient({
             maxRetries: 0,
-            token: "test",
+            clientId: "client_id",
+            clientSecret: "client_secret",
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
         const rawResponseBody = { key: "value" };
+
         server
             .mockEndpoint()
             .get("/agents/id/v1/tasks/taskId")
@@ -1193,14 +1285,18 @@ describe("AgentsClient", () => {
 
     test("getTask (3)", async () => {
         const server = mockServerPool.createServer();
+        mockOAuth(server);
+
         const client = new CortiClient({
             maxRetries: 0,
-            token: "test",
+            clientId: "client_id",
+            clientSecret: "client_secret",
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
         const rawResponseBody = { key: "value" };
+
         server
             .mockEndpoint()
             .get("/agents/id/v1/tasks/taskId")
@@ -1216,14 +1312,18 @@ describe("AgentsClient", () => {
 
     test("getTask (4)", async () => {
         const server = mockServerPool.createServer();
+        mockOAuth(server);
+
         const client = new CortiClient({
             maxRetries: 0,
-            token: "test",
+            clientId: "client_id",
+            clientSecret: "client_secret",
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
         const rawResponseBody = { key: "value" };
+
         server
             .mockEndpoint()
             .get("/agents/id/v1/tasks/taskId")
@@ -1239,9 +1339,12 @@ describe("AgentsClient", () => {
 
     test("getContext (1)", async () => {
         const server = mockServerPool.createServer();
+        mockOAuth(server);
+
         const client = new CortiClient({
             maxRetries: 0,
-            token: "test",
+            clientId: "client_id",
+            clientSecret: "client_secret",
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
@@ -1267,6 +1370,7 @@ describe("AgentsClient", () => {
                 },
             ],
         };
+
         server
             .mockEndpoint()
             .get("/agents/12345678-90ab-cdef-gh12-34567890abc/v1/contexts/contextId")
@@ -1320,14 +1424,18 @@ describe("AgentsClient", () => {
 
     test("getContext (2)", async () => {
         const server = mockServerPool.createServer();
+        mockOAuth(server);
+
         const client = new CortiClient({
             maxRetries: 0,
-            token: "test",
+            clientId: "client_id",
+            clientSecret: "client_secret",
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
         const rawResponseBody = { key: "value" };
+
         server
             .mockEndpoint()
             .get("/agents/id/v1/contexts/contextId")
@@ -1343,14 +1451,18 @@ describe("AgentsClient", () => {
 
     test("getContext (3)", async () => {
         const server = mockServerPool.createServer();
+        mockOAuth(server);
+
         const client = new CortiClient({
             maxRetries: 0,
-            token: "test",
+            clientId: "client_id",
+            clientSecret: "client_secret",
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
         const rawResponseBody = { key: "value" };
+
         server
             .mockEndpoint()
             .get("/agents/id/v1/contexts/contextId")
@@ -1366,14 +1478,18 @@ describe("AgentsClient", () => {
 
     test("getContext (4)", async () => {
         const server = mockServerPool.createServer();
+        mockOAuth(server);
+
         const client = new CortiClient({
             maxRetries: 0,
-            token: "test",
+            clientId: "client_id",
+            clientSecret: "client_secret",
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
         const rawResponseBody = { key: "value" };
+
         server
             .mockEndpoint()
             .get("/agents/id/v1/contexts/contextId")
@@ -1389,9 +1505,12 @@ describe("AgentsClient", () => {
 
     test("getRegistryExperts (1)", async () => {
         const server = mockServerPool.createServer();
+        mockOAuth(server);
+
         const client = new CortiClient({
             maxRetries: 0,
-            token: "test",
+            clientId: "client_id",
+            clientSecret: "client_secret",
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
@@ -1401,6 +1520,7 @@ describe("AgentsClient", () => {
                 { name: "name", description: "description", mcpServers: [{ name: "name", authorizationType: "none" }] },
             ],
         };
+
         server
             .mockEndpoint()
             .get("/agents/registry/experts")
@@ -1431,14 +1551,18 @@ describe("AgentsClient", () => {
 
     test("getRegistryExperts (2)", async () => {
         const server = mockServerPool.createServer();
+        mockOAuth(server);
+
         const client = new CortiClient({
             maxRetries: 0,
-            token: "test",
+            clientId: "client_id",
+            clientSecret: "client_secret",
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
         const rawResponseBody = { key: "value" };
+
         server
             .mockEndpoint()
             .get("/agents/registry/experts")
@@ -1454,14 +1578,18 @@ describe("AgentsClient", () => {
 
     test("getRegistryExperts (3)", async () => {
         const server = mockServerPool.createServer();
+        mockOAuth(server);
+
         const client = new CortiClient({
             maxRetries: 0,
-            token: "test",
+            clientId: "client_id",
+            clientSecret: "client_secret",
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
         const rawResponseBody = { key: "value" };
+
         server
             .mockEndpoint()
             .get("/agents/registry/experts")

@@ -258,6 +258,7 @@ export class RecordingsClient {
 
     /**
      * Retrieve a specific recording for a given interaction.
+     *
      * @throws {@link Corti.BadRequestError}
      * @throws {@link Corti.ForbiddenError}
      * @throws {@link Corti.NotFoundError}

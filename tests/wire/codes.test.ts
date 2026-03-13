@@ -3,13 +3,17 @@
 import * as Corti from "../../src/api/index";
 import { CortiClient } from "../../src/Client";
 import { mockServerPool } from "../mock-server/MockServerPool";
+import { mockOAuth } from "./mockAuth";
 
 describe("CodesClient", () => {
     test("predict (1)", async () => {
         const server = mockServerPool.createServer();
+        mockOAuth(server);
+
         const client = new CortiClient({
             maxRetries: 0,
-            token: "test",
+            clientId: "client_id",
+            clientSecret: "client_secret",
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
@@ -37,6 +41,7 @@ describe("CodesClient", () => {
             ],
             usageInfo: { creditsConsumed: 1.1 },
         };
+
         server
             .mockEndpoint()
             .post("/tools/coding/")
@@ -91,9 +96,12 @@ describe("CodesClient", () => {
 
     test("predict (2)", async () => {
         const server = mockServerPool.createServer();
+        mockOAuth(server);
+
         const client = new CortiClient({
             maxRetries: 0,
-            token: "test",
+            clientId: "client_id",
+            clientSecret: "client_secret",
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
@@ -105,6 +113,7 @@ describe("CodesClient", () => {
             ],
         };
         const rawResponseBody = { key: "value" };
+
         server
             .mockEndpoint()
             .post("/tools/coding/")
@@ -133,9 +142,12 @@ describe("CodesClient", () => {
 
     test("predict (3)", async () => {
         const server = mockServerPool.createServer();
+        mockOAuth(server);
+
         const client = new CortiClient({
             maxRetries: 0,
-            token: "test",
+            clientId: "client_id",
+            clientSecret: "client_secret",
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
@@ -147,6 +159,7 @@ describe("CodesClient", () => {
             ],
         };
         const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
+
         server
             .mockEndpoint()
             .post("/tools/coding/")
@@ -175,9 +188,12 @@ describe("CodesClient", () => {
 
     test("predict (4)", async () => {
         const server = mockServerPool.createServer();
+        mockOAuth(server);
+
         const client = new CortiClient({
             maxRetries: 0,
-            token: "test",
+            clientId: "client_id",
+            clientSecret: "client_secret",
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
@@ -189,6 +205,7 @@ describe("CodesClient", () => {
             ],
         };
         const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
+
         server
             .mockEndpoint()
             .post("/tools/coding/")
@@ -217,9 +234,12 @@ describe("CodesClient", () => {
 
     test("predict (5)", async () => {
         const server = mockServerPool.createServer();
+        mockOAuth(server);
+
         const client = new CortiClient({
             maxRetries: 0,
-            token: "test",
+            clientId: "client_id",
+            clientSecret: "client_secret",
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
@@ -231,6 +251,7 @@ describe("CodesClient", () => {
             ],
         };
         const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
+
         server
             .mockEndpoint()
             .post("/tools/coding/")
@@ -259,9 +280,12 @@ describe("CodesClient", () => {
 
     test("predict (6)", async () => {
         const server = mockServerPool.createServer();
+        mockOAuth(server);
+
         const client = new CortiClient({
             maxRetries: 0,
-            token: "test",
+            clientId: "client_id",
+            clientSecret: "client_secret",
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
@@ -273,6 +297,7 @@ describe("CodesClient", () => {
             ],
         };
         const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
+
         server
             .mockEndpoint()
             .post("/tools/coding/")

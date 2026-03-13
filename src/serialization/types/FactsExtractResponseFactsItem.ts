@@ -10,11 +10,13 @@ export const FactsExtractResponseFactsItem: core.serialization.ObjectSchema<
 > = core.serialization.object({
     group: core.serialization.string(),
     value: core.serialization.string(),
+    text: core.serialization.string(),
 });
 
 export declare namespace FactsExtractResponseFactsItem {
     export interface Raw {
         group: string;
         value: string;
+        text: string;
     }
 }

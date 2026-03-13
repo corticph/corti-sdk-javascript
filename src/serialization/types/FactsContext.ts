@@ -9,13 +9,13 @@ export const FactsContext: core.serialization.ObjectSchema<serializers.FactsCont
     core.serialization.object({
         text: core.serialization.string(),
         group: core.serialization.string().optional(),
-        source: CommonSourceEnum,
+        source: CommonSourceEnum.optional(),
     });
 
 export declare namespace FactsContext {
     export interface Raw {
         text: string;
         group?: string | null;
-        source: CommonSourceEnum.Raw;
+        source?: CommonSourceEnum.Raw | null;
     }
 }

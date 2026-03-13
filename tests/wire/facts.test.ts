@@ -3,13 +3,17 @@
 import * as Corti from "../../src/api/index";
 import { CortiClient } from "../../src/Client";
 import { mockServerPool } from "../mock-server/MockServerPool";
+import { mockOAuth } from "./mockAuth";
 
 describe("FactsClient", () => {
     test("factGroupsList (1)", async () => {
         const server = mockServerPool.createServer();
+        mockOAuth(server);
+
         const client = new CortiClient({
             maxRetries: 0,
-            token: "test",
+            clientId: "client_id",
+            clientSecret: "client_secret",
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
@@ -17,6 +21,7 @@ describe("FactsClient", () => {
         const rawResponseBody = {
             data: [{ id: "f47ac10b-58cc-4372-a567-0e02b2c3d479", key: "key", translations: [{}] }],
         };
+
         server.mockEndpoint().get("/factgroups/").respondWith().statusCode(200).jsonBody(rawResponseBody).build();
 
         const response = await client.facts.factGroupsList();
@@ -33,14 +38,18 @@ describe("FactsClient", () => {
 
     test("factGroupsList (2)", async () => {
         const server = mockServerPool.createServer();
+        mockOAuth(server);
+
         const client = new CortiClient({
             maxRetries: 0,
-            token: "test",
+            clientId: "client_id",
+            clientSecret: "client_secret",
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
         const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
+
         server.mockEndpoint().get("/factgroups/").respondWith().statusCode(500).jsonBody(rawResponseBody).build();
 
         await expect(async () => {
@@ -50,9 +59,12 @@ describe("FactsClient", () => {
 
     test("list (1)", async () => {
         const server = mockServerPool.createServer();
+        mockOAuth(server);
+
         const client = new CortiClient({
             maxRetries: 0,
-            token: "test",
+            clientId: "client_id",
+            clientSecret: "client_secret",
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
@@ -72,6 +84,7 @@ describe("FactsClient", () => {
                 },
             ],
         };
+
         server
             .mockEndpoint()
             .get("/interactions/f47ac10b-58cc-4372-a567-0e02b2c3d479/facts/")
@@ -100,14 +113,18 @@ describe("FactsClient", () => {
 
     test("list (2)", async () => {
         const server = mockServerPool.createServer();
+        mockOAuth(server);
+
         const client = new CortiClient({
             maxRetries: 0,
-            token: "test",
+            clientId: "client_id",
+            clientSecret: "client_secret",
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
         const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
+
         server
             .mockEndpoint()
             .get("/interactions/id/facts/")
@@ -123,9 +140,12 @@ describe("FactsClient", () => {
 
     test("create (1)", async () => {
         const server = mockServerPool.createServer();
+        mockOAuth(server);
+
         const client = new CortiClient({
             maxRetries: 0,
-            token: "test",
+            clientId: "client_id",
+            clientSecret: "client_secret",
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
@@ -143,6 +163,7 @@ describe("FactsClient", () => {
                 },
             ],
         };
+
         server
             .mockEndpoint()
             .post("/interactions/f47ac10b-58cc-4372-a567-0e02b2c3d479/facts/")
@@ -177,9 +198,12 @@ describe("FactsClient", () => {
 
     test("create (2)", async () => {
         const server = mockServerPool.createServer();
+        mockOAuth(server);
+
         const client = new CortiClient({
             maxRetries: 0,
-            token: "test",
+            clientId: "client_id",
+            clientSecret: "client_secret",
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
@@ -190,6 +214,7 @@ describe("FactsClient", () => {
             ],
         };
         const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
+
         server
             .mockEndpoint()
             .post("/interactions/id/facts/")
@@ -217,9 +242,12 @@ describe("FactsClient", () => {
 
     test("batchUpdate (1)", async () => {
         const server = mockServerPool.createServer();
+        mockOAuth(server);
+
         const client = new CortiClient({
             maxRetries: 0,
-            token: "test",
+            clientId: "client_id",
+            clientSecret: "client_secret",
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
@@ -238,6 +266,7 @@ describe("FactsClient", () => {
                 },
             ],
         };
+
         server
             .mockEndpoint()
             .patch("/interactions/f47ac10b-58cc-4372-a567-0e02b2c3d479/facts/")
@@ -272,14 +301,18 @@ describe("FactsClient", () => {
 
     test("batchUpdate (2)", async () => {
         const server = mockServerPool.createServer();
+        mockOAuth(server);
+
         const client = new CortiClient({
             maxRetries: 0,
-            token: "test",
+            clientId: "client_id",
+            clientSecret: "client_secret",
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
         const rawRequestBody = { facts: [{ factId: "factId" }, { factId: "factId" }] };
         const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
+
         server
             .mockEndpoint()
             .patch("/interactions/id/facts/")
@@ -305,9 +338,12 @@ describe("FactsClient", () => {
 
     test("update (1)", async () => {
         const server = mockServerPool.createServer();
+        mockOAuth(server);
+
         const client = new CortiClient({
             maxRetries: 0,
-            token: "test",
+            clientId: "client_id",
+            clientSecret: "client_secret",
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
@@ -322,6 +358,7 @@ describe("FactsClient", () => {
             createdAt: "2024-01-15T09:30:00Z",
             updatedAt: "2024-01-15T09:30:00Z",
         };
+
         server
             .mockEndpoint()
             .patch("/interactions/f47ac10b-58cc-4372-a567-0e02b2c3d479/facts/3c9d8a12-7f44-4b3e-9e6f-9271c2bbfa08")
@@ -349,14 +386,18 @@ describe("FactsClient", () => {
 
     test("update (2)", async () => {
         const server = mockServerPool.createServer();
+        mockOAuth(server);
+
         const client = new CortiClient({
             maxRetries: 0,
-            token: "test",
+            clientId: "client_id",
+            clientSecret: "client_secret",
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
         const rawRequestBody = {};
         const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
+
         server
             .mockEndpoint()
             .patch("/interactions/id/facts/factId")
@@ -373,18 +414,22 @@ describe("FactsClient", () => {
 
     test("extract (1)", async () => {
         const server = mockServerPool.createServer();
+        mockOAuth(server);
+
         const client = new CortiClient({
             maxRetries: 0,
-            token: "test",
+            clientId: "client_id",
+            clientSecret: "client_secret",
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
         const rawRequestBody = { context: [{ type: "text", text: "text" }], outputLanguage: "outputLanguage" };
         const rawResponseBody = {
-            facts: [{ group: "group", value: "value" }],
+            facts: [{ group: "group", value: "value", text: "text" }],
             outputLanguage: "outputLanguage",
             usageInfo: { creditsConsumed: 1.1 },
         };
+
         server
             .mockEndpoint()
             .post("/tools/extract-facts")
@@ -408,6 +453,7 @@ describe("FactsClient", () => {
                 {
                     group: "group",
                     value: "value",
+                    text: "text",
                 },
             ],
             outputLanguage: "outputLanguage",
@@ -419,9 +465,12 @@ describe("FactsClient", () => {
 
     test("extract (2)", async () => {
         const server = mockServerPool.createServer();
+        mockOAuth(server);
+
         const client = new CortiClient({
             maxRetries: 0,
-            token: "test",
+            clientId: "client_id",
+            clientSecret: "client_secret",
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
@@ -433,6 +482,7 @@ describe("FactsClient", () => {
             outputLanguage: "outputLanguage",
         };
         const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
+
         server
             .mockEndpoint()
             .post("/tools/extract-facts")

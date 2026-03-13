@@ -343,7 +343,7 @@ export class AgentsClient {
      * This endpoint updates an existing agent. Only the fields provided in the request body will be updated; other fields will remain unchanged.
      *
      * @param {string} id - The identifier of the agent associated with the context.
-     * @param {Corti.AgentsAgent} request
+     * @param {Corti.AgentsUpdateAgent} request
      * @param {AgentsClient.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Corti.BadRequestError}
@@ -351,16 +351,11 @@ export class AgentsClient {
      * @throws {@link Corti.NotFoundError}
      *
      * @example
-     *     await client.agents.update("12345678-90ab-cdef-gh12-34567890abc", {
-     *         id: "id",
-     *         name: "name",
-     *         description: "description",
-     *         systemPrompt: "systemPrompt"
-     *     })
+     *     await client.agents.update("12345678-90ab-cdef-gh12-34567890abc")
      */
     public update(
         id: string,
-        request: Corti.AgentsAgent,
+        request: Corti.AgentsUpdateAgent = {},
         requestOptions?: AgentsClient.RequestOptions,
     ): core.HttpResponsePromise<Corti.AgentsAgent> {
         return core.HttpResponsePromise.fromPromise(this.__update(id, request, requestOptions));
@@ -368,7 +363,7 @@ export class AgentsClient {
 
     private async __update(
         id: string,
-        request: Corti.AgentsAgent,
+        request: Corti.AgentsUpdateAgent = {},
         requestOptions?: AgentsClient.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.AgentsAgent>> {
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
@@ -389,7 +384,7 @@ export class AgentsClient {
             contentType: "application/json",
             queryParameters: requestOptions?.queryParams,
             requestType: "json",
-            body: serializers.AgentsAgent.jsonOrThrow(request, {
+            body: serializers.AgentsUpdateAgent.jsonOrThrow(request, {
                 unrecognizedObjectKeys: "strip",
                 omitUndefined: true,
             }),

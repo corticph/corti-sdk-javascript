@@ -148,8 +148,7 @@ export class DocumentsClient {
      *         context: [{
      *                 type: "facts",
      *                 data: [{
-     *                         text: "text",
-     *                         source: "core"
+     *                         text: "text"
      *                     }]
      *             }],
      *         templateKey: "templateKey",

@@ -4,3 +4,4 @@ export type { AgentsGetRegistryExpertsRequest } from "./AgentsGetRegistryExperts
 export type { AgentsGetTaskRequest } from "./AgentsGetTaskRequest.js";
 export type { AgentsListRequest } from "./AgentsListRequest.js";
 export type { AgentsMessageSendParams } from "./AgentsMessageSendParams.js";
+export type { AgentsUpdateAgent } from "./AgentsUpdateAgent.js";

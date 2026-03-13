@@ -1,4 +1,133 @@
 # Reference
+## Auth
+<details><summary><code>client.auth.<a href="/src/api/resources/auth/client/Client.ts">getToken</a>({ ...params }) -> Corti.AuthTokenResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.auth.getToken({
+    clientId: "client_id",
+    clientSecret: "client_secret"
+});
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `Corti.OAuthTokenRequest` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `AuthClient.RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.auth.<a href="/src/api/resources/auth/client/Client.ts">token</a>(tenantName, { ...params }) -> Corti.AuthTokenResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Exchange credentials for a short-lived access token. Supports grant_type client_credentials (server-to-server),
+authorization_code (with client_secret), authorization_code with PKCE (code_verifier), password (ROPC), or refresh_token. Use the returned access_token in the Authorization header when calling the Corti API.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.auth.token("tenantName", {
+    clientId: "client_id",
+    clientSecret: "client_secret",
+    grantType: "client_credentials"
+});
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**tenantName:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `Corti.AuthTokenRequestBody` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `AuthClient.RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 ## Interactions
 <details><summary><code>client.interactions.<a href="/src/api/resources/interactions/client/Client.ts">list</a>({ ...params }) -> core.Page&lt;Corti.InteractionsGetResponse, Corti.InteractionsListResponse&gt;</code></summary>
 <dl>
@@ -1419,8 +1548,7 @@ await client.documents.create("f47ac10b-58cc-4372-a567-0e02b2c3d479", {
     context: [{
             type: "facts",
             data: [{
-                    text: "text",
-                    source: "core"
+                    text: "text"
                 }]
         }],
     templateKey: "templateKey",
@@ -2206,12 +2334,7 @@ This endpoint updates an existing agent. Only the fields provided in the request
 <dd>
 
 ```typescript
-await client.agents.update("12345678-90ab-cdef-gh12-34567890abc", {
-    id: "id",
-    name: "name",
-    description: "description",
-    systemPrompt: "systemPrompt"
-});
+await client.agents.update("12345678-90ab-cdef-gh12-34567890abc");
 
 ```
 </dd>
@@ -2235,7 +2358,7 @@ await client.agents.update("12345678-90ab-cdef-gh12-34567890abc", {
 <dl>
 <dd>
 
-**request:** `Corti.AgentsAgent` 
+**request:** `Corti.AgentsUpdateAgent` 
     
 </dd>
 </dl>
@@ -2622,3 +2745,4 @@ await client.agents.getRegistryExperts({
 </dd>
 </dl>
 </details>
+
