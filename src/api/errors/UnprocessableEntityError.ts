@@ -3,10 +3,11 @@
  */
 
 import * as errors from "../../errors/index.js";
+import * as Corti from "../index.js";
 import * as core from "../../core/index.js";
 
 export class UnprocessableEntityError extends errors.CortiError {
-    constructor(body?: unknown, rawResponse?: core.RawResponse) {
+    constructor(body: Corti.AgentsValidationErrorResponse, rawResponse?: core.RawResponse) {
         super({
             message: "UnprocessableEntityError",
             statusCode: 422,
