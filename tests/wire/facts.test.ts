@@ -21,6 +21,7 @@ describe("FactsClient", () => {
         const rawResponseBody = {
             data: [{ id: "f47ac10b-58cc-4372-a567-0e02b2c3d479", key: "key", translations: [{}] }],
         };
+
         server.mockEndpoint().get("/factgroups/").respondWith().statusCode(200).jsonBody(rawResponseBody).build();
 
         const response = await client.facts.factGroupsList();
@@ -48,6 +49,7 @@ describe("FactsClient", () => {
         });
 
         const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
+
         server.mockEndpoint().get("/factgroups/").respondWith().statusCode(500).jsonBody(rawResponseBody).build();
 
         await expect(async () => {
@@ -82,6 +84,7 @@ describe("FactsClient", () => {
                 },
             ],
         };
+
         server
             .mockEndpoint()
             .get("/interactions/f47ac10b-58cc-4372-a567-0e02b2c3d479/facts/")
@@ -121,6 +124,7 @@ describe("FactsClient", () => {
         });
 
         const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
+
         server
             .mockEndpoint()
             .get("/interactions/id/facts/")
@@ -159,6 +163,7 @@ describe("FactsClient", () => {
                 },
             ],
         };
+
         server
             .mockEndpoint()
             .post("/interactions/f47ac10b-58cc-4372-a567-0e02b2c3d479/facts/")
@@ -209,6 +214,7 @@ describe("FactsClient", () => {
             ],
         };
         const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
+
         server
             .mockEndpoint()
             .post("/interactions/id/facts/")
@@ -260,6 +266,7 @@ describe("FactsClient", () => {
                 },
             ],
         };
+
         server
             .mockEndpoint()
             .patch("/interactions/f47ac10b-58cc-4372-a567-0e02b2c3d479/facts/")
@@ -305,6 +312,7 @@ describe("FactsClient", () => {
         });
         const rawRequestBody = { facts: [{ factId: "factId" }, { factId: "factId" }] };
         const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
+
         server
             .mockEndpoint()
             .patch("/interactions/id/facts/")
@@ -350,6 +358,7 @@ describe("FactsClient", () => {
             createdAt: "2024-01-15T09:30:00Z",
             updatedAt: "2024-01-15T09:30:00Z",
         };
+
         server
             .mockEndpoint()
             .patch("/interactions/f47ac10b-58cc-4372-a567-0e02b2c3d479/facts/3c9d8a12-7f44-4b3e-9e6f-9271c2bbfa08")
@@ -388,6 +397,7 @@ describe("FactsClient", () => {
         });
         const rawRequestBody = {};
         const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
+
         server
             .mockEndpoint()
             .patch("/interactions/id/facts/factId")
@@ -419,6 +429,7 @@ describe("FactsClient", () => {
             outputLanguage: "outputLanguage",
             usageInfo: { creditsConsumed: 1.1 },
         };
+
         server
             .mockEndpoint()
             .post("/tools/extract-facts")
@@ -471,6 +482,7 @@ describe("FactsClient", () => {
             outputLanguage: "outputLanguage",
         };
         const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
+
         server
             .mockEndpoint()
             .post("/tools/extract-facts")

@@ -38,6 +38,7 @@ describe("InteractionsClient", () => {
                 },
             ],
         };
+
         server
             .mockEndpoint({ once: false })
             .get("/interactions/")
@@ -91,6 +92,7 @@ describe("InteractionsClient", () => {
         });
 
         const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
+
         server
             .mockEndpoint({ once: false })
             .get("/interactions/")
@@ -117,6 +119,7 @@ describe("InteractionsClient", () => {
         });
 
         const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
+
         server
             .mockEndpoint({ once: false })
             .get("/interactions/")
@@ -145,6 +148,7 @@ describe("InteractionsClient", () => {
             encounter: { identifier: "identifier", status: "planned", type: "first_consultation" },
         };
         const rawResponseBody = { interactionId: "f47ac10b-58cc-4372-a567-0e02b2c3d479", websocketUrl: "websocketUrl" };
+
         server
             .mockEndpoint()
             .post("/interactions/")
@@ -182,6 +186,7 @@ describe("InteractionsClient", () => {
             encounter: { identifier: "identifier", status: "planned", type: "first_consultation" },
         };
         const rawResponseBody = { key: "value" };
+
         server
             .mockEndpoint()
             .post("/interactions/")
@@ -217,6 +222,7 @@ describe("InteractionsClient", () => {
             encounter: { identifier: "identifier", status: "planned", type: "first_consultation" },
         };
         const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
+
         server
             .mockEndpoint()
             .post("/interactions/")
@@ -252,6 +258,7 @@ describe("InteractionsClient", () => {
             encounter: { identifier: "identifier", status: "planned", type: "first_consultation" },
         };
         const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
+
         server
             .mockEndpoint()
             .post("/interactions/")
@@ -287,6 +294,7 @@ describe("InteractionsClient", () => {
             encounter: { identifier: "identifier", status: "planned", type: "first_consultation" },
         };
         const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
+
         server
             .mockEndpoint()
             .post("/interactions/")
@@ -342,6 +350,7 @@ describe("InteractionsClient", () => {
             websocketUrl: "websocketUrl",
             lastUpdated: "2024-01-15T09:30:00Z",
         };
+
         server
             .mockEndpoint()
             .get("/interactions/f47ac10b-58cc-4372-a567-0e02b2c3d479")
@@ -392,6 +401,7 @@ describe("InteractionsClient", () => {
         });
 
         const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
+
         server.mockEndpoint().get("/interactions/id").respondWith().statusCode(403).jsonBody(rawResponseBody).build();
 
         await expect(async () => {
@@ -412,6 +422,7 @@ describe("InteractionsClient", () => {
         });
 
         const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
+
         server.mockEndpoint().get("/interactions/id").respondWith().statusCode(504).jsonBody(rawResponseBody).build();
 
         await expect(async () => {
@@ -455,6 +466,7 @@ describe("InteractionsClient", () => {
         });
 
         const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
+
         server
             .mockEndpoint()
             .delete("/interactions/id")
@@ -481,6 +493,7 @@ describe("InteractionsClient", () => {
         });
 
         const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
+
         server
             .mockEndpoint()
             .delete("/interactions/id")
@@ -529,6 +542,7 @@ describe("InteractionsClient", () => {
             websocketUrl: "websocketUrl",
             lastUpdated: "2024-01-15T09:30:00Z",
         };
+
         server
             .mockEndpoint()
             .patch("/interactions/f47ac10b-58cc-4372-a567-0e02b2c3d479")
@@ -580,6 +594,7 @@ describe("InteractionsClient", () => {
         });
         const rawRequestBody = {};
         const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
+
         server
             .mockEndpoint()
             .patch("/interactions/id")
@@ -607,6 +622,7 @@ describe("InteractionsClient", () => {
         });
         const rawRequestBody = {};
         const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
+
         server
             .mockEndpoint()
             .patch("/interactions/id")

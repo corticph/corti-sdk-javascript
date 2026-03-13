@@ -36,6 +36,7 @@ describe("TemplatesClient", () => {
                 },
             ],
         };
+
         server.mockEndpoint().get("/templateSections/").respondWith().statusCode(200).jsonBody(rawResponseBody).build();
 
         const response = await client.templates.sectionList();
@@ -78,6 +79,7 @@ describe("TemplatesClient", () => {
         });
 
         const rawResponseBody = { key: "value" };
+
         server.mockEndpoint().get("/templateSections/").respondWith().statusCode(401).jsonBody(rawResponseBody).build();
 
         await expect(async () => {
@@ -98,6 +100,7 @@ describe("TemplatesClient", () => {
         });
 
         const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
+
         server.mockEndpoint().get("/templateSections/").respondWith().statusCode(500).jsonBody(rawResponseBody).build();
 
         await expect(async () => {
@@ -144,6 +147,7 @@ describe("TemplatesClient", () => {
                 },
             ],
         };
+
         server.mockEndpoint().get("/templates/").respondWith().statusCode(200).jsonBody(rawResponseBody).build();
 
         const response = await client.templates.list();
@@ -199,6 +203,7 @@ describe("TemplatesClient", () => {
         });
 
         const rawResponseBody = { key: "value" };
+
         server.mockEndpoint().get("/templates/").respondWith().statusCode(401).jsonBody(rawResponseBody).build();
 
         await expect(async () => {
@@ -219,6 +224,7 @@ describe("TemplatesClient", () => {
         });
 
         const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
+
         server.mockEndpoint().get("/templates/").respondWith().statusCode(500).jsonBody(rawResponseBody).build();
 
         await expect(async () => {
@@ -261,6 +267,7 @@ describe("TemplatesClient", () => {
             ],
             translations: [{ languageId: "languageId", name: "name", description: "description" }],
         };
+
         server.mockEndpoint().get("/templates/key").respondWith().statusCode(200).jsonBody(rawResponseBody).build();
 
         const response = await client.templates.get("key");
@@ -314,6 +321,7 @@ describe("TemplatesClient", () => {
         });
 
         const rawResponseBody = { key: "value" };
+
         server.mockEndpoint().get("/templates/key").respondWith().statusCode(401).jsonBody(rawResponseBody).build();
 
         await expect(async () => {
@@ -334,6 +342,7 @@ describe("TemplatesClient", () => {
         });
 
         const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
+
         server.mockEndpoint().get("/templates/key").respondWith().statusCode(500).jsonBody(rawResponseBody).build();
 
         await expect(async () => {

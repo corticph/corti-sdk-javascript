@@ -29,6 +29,7 @@ describe("AuthClient", () => {
             scope: "scope",
             session_state: "session_state",
         };
+
         server
             .mockEndpoint()
             .post("/fake-token")
@@ -82,6 +83,7 @@ describe("AuthClient", () => {
             scope: "scope",
             session_state: "session_state",
         };
+
         server
             .mockEndpoint()
             .post("/tenantName/protocol/openid-connect/token")
@@ -126,6 +128,7 @@ describe("AuthClient", () => {
             grant_type: "client_credentials",
         };
         const rawResponseBody = { key: "value" };
+
         server
             .mockEndpoint()
             .post("/tenantName/protocol/openid-connect/token")
@@ -161,6 +164,7 @@ describe("AuthClient", () => {
             grant_type: "client_credentials",
         };
         const rawResponseBody = { key: "value" };
+
         server
             .mockEndpoint()
             .post("/tenantName/protocol/openid-connect/token")

@@ -30,6 +30,7 @@ describe("TranscriptsClient", () => {
                 },
             ],
         };
+
         server
             .mockEndpoint()
             .get("/interactions/f47ac10b-58cc-4372-a567-0e02b2c3d479/transcripts/")
@@ -75,6 +76,7 @@ describe("TranscriptsClient", () => {
         });
 
         const rawResponseBody = { key: "value" };
+
         server
             .mockEndpoint()
             .get("/interactions/id/transcripts/")
@@ -101,6 +103,7 @@ describe("TranscriptsClient", () => {
         });
 
         const rawResponseBody = { key: "value" };
+
         server
             .mockEndpoint()
             .get("/interactions/id/transcripts/")
@@ -127,6 +130,7 @@ describe("TranscriptsClient", () => {
         });
 
         const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
+
         server
             .mockEndpoint()
             .get("/interactions/id/transcripts/")
@@ -153,6 +157,7 @@ describe("TranscriptsClient", () => {
         });
 
         const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
+
         server
             .mockEndpoint()
             .get("/interactions/id/transcripts/")
@@ -179,6 +184,7 @@ describe("TranscriptsClient", () => {
         });
 
         const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
+
         server
             .mockEndpoint()
             .get("/interactions/id/transcripts/")
@@ -212,6 +218,7 @@ describe("TranscriptsClient", () => {
             recordingId: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
             status: "completed",
         };
+
         server
             .mockEndpoint()
             .post("/interactions/f47ac10b-58cc-4372-a567-0e02b2c3d479/transcripts/")
@@ -266,6 +273,7 @@ describe("TranscriptsClient", () => {
         });
         const rawRequestBody = { recordingId: "recordingId", primaryLanguage: "primaryLanguage" };
         const rawResponseBody = { key: "value" };
+
         server
             .mockEndpoint()
             .post("/interactions/id/transcripts/")
@@ -296,6 +304,7 @@ describe("TranscriptsClient", () => {
         });
         const rawRequestBody = { recordingId: "recordingId", primaryLanguage: "primaryLanguage" };
         const rawResponseBody = { key: "value" };
+
         server
             .mockEndpoint()
             .post("/interactions/id/transcripts/")
@@ -326,6 +335,7 @@ describe("TranscriptsClient", () => {
         });
         const rawRequestBody = { recordingId: "recordingId", primaryLanguage: "primaryLanguage" };
         const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
+
         server
             .mockEndpoint()
             .post("/interactions/id/transcripts/")
@@ -356,6 +366,7 @@ describe("TranscriptsClient", () => {
         });
         const rawRequestBody = { recordingId: "recordingId", primaryLanguage: "primaryLanguage" };
         const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
+
         server
             .mockEndpoint()
             .post("/interactions/id/transcripts/")
@@ -386,6 +397,7 @@ describe("TranscriptsClient", () => {
         });
         const rawRequestBody = { recordingId: "recordingId", primaryLanguage: "primaryLanguage" };
         const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
+
         server
             .mockEndpoint()
             .post("/interactions/id/transcripts/")
@@ -423,6 +435,7 @@ describe("TranscriptsClient", () => {
             recordingId: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
             status: "completed",
         };
+
         server
             .mockEndpoint()
             .get("/interactions/f47ac10b-58cc-4372-a567-0e02b2c3d479/transcripts/f47ac10b-58cc-4372-a567-0e02b2c3d479")
@@ -476,6 +489,7 @@ describe("TranscriptsClient", () => {
         });
 
         const rawResponseBody = { key: "value" };
+
         server
             .mockEndpoint()
             .get("/interactions/id/transcripts/transcriptId")
@@ -502,6 +516,7 @@ describe("TranscriptsClient", () => {
         });
 
         const rawResponseBody = { key: "value" };
+
         server
             .mockEndpoint()
             .get("/interactions/id/transcripts/transcriptId")
@@ -528,6 +543,7 @@ describe("TranscriptsClient", () => {
         });
 
         const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
+
         server
             .mockEndpoint()
             .get("/interactions/id/transcripts/transcriptId")
@@ -554,6 +570,7 @@ describe("TranscriptsClient", () => {
         });
 
         const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
+
         server
             .mockEndpoint()
             .get("/interactions/id/transcripts/transcriptId")
@@ -580,6 +597,7 @@ describe("TranscriptsClient", () => {
         });
 
         const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
+
         server
             .mockEndpoint()
             .get("/interactions/id/transcripts/transcriptId")
@@ -634,6 +652,7 @@ describe("TranscriptsClient", () => {
         });
 
         const rawResponseBody = { key: "value" };
+
         server
             .mockEndpoint()
             .delete("/interactions/id/transcripts/transcriptId")
@@ -660,6 +679,7 @@ describe("TranscriptsClient", () => {
         });
 
         const rawResponseBody = { key: "value" };
+
         server
             .mockEndpoint()
             .delete("/interactions/id/transcripts/transcriptId")
@@ -686,6 +706,7 @@ describe("TranscriptsClient", () => {
         });
 
         const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
+
         server
             .mockEndpoint()
             .delete("/interactions/id/transcripts/transcriptId")
@@ -712,6 +733,7 @@ describe("TranscriptsClient", () => {
         });
 
         const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
+
         server
             .mockEndpoint()
             .delete("/interactions/id/transcripts/transcriptId")
@@ -738,6 +760,7 @@ describe("TranscriptsClient", () => {
         });
 
         const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
+
         server
             .mockEndpoint()
             .delete("/interactions/id/transcripts/transcriptId")
@@ -764,6 +787,7 @@ describe("TranscriptsClient", () => {
         });
 
         const rawResponseBody = { status: "completed" };
+
         server
             .mockEndpoint()
             .get(
@@ -796,6 +820,7 @@ describe("TranscriptsClient", () => {
         });
 
         const rawResponseBody = { key: "value" };
+
         server
             .mockEndpoint()
             .get("/interactions/id/transcripts/transcriptId/status")

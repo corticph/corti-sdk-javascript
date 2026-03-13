@@ -35,6 +35,7 @@ describe("AgentsClient", () => {
                 ],
             },
         ];
+
         server.mockEndpoint().get("/agents").respondWith().statusCode(200).jsonBody(rawResponseBody).build();
 
         const response = await client.agents.list();
@@ -70,6 +71,7 @@ describe("AgentsClient", () => {
         });
 
         const rawResponseBody = { key: "value" };
+
         server.mockEndpoint().get("/agents").respondWith().statusCode(400).jsonBody(rawResponseBody).build();
 
         await expect(async () => {
@@ -90,6 +92,7 @@ describe("AgentsClient", () => {
         });
 
         const rawResponseBody = { key: "value" };
+
         server.mockEndpoint().get("/agents").respondWith().statusCode(401).jsonBody(rawResponseBody).build();
 
         await expect(async () => {
@@ -127,6 +130,7 @@ describe("AgentsClient", () => {
                 },
             ],
         };
+
         server
             .mockEndpoint()
             .post("/agents")
@@ -179,6 +183,7 @@ describe("AgentsClient", () => {
         });
         const rawRequestBody = { name: "name", description: "description" };
         const rawResponseBody = { key: "value" };
+
         server
             .mockEndpoint()
             .post("/agents")
@@ -209,6 +214,7 @@ describe("AgentsClient", () => {
         });
         const rawRequestBody = { name: "name", description: "description" };
         const rawResponseBody = { key: "value" };
+
         server
             .mockEndpoint()
             .post("/agents")
@@ -256,6 +262,7 @@ describe("AgentsClient", () => {
                 },
             ],
         };
+
         server
             .mockEndpoint()
             .get("/agents/12345678-90ab-cdef-gh12-34567890abc")
@@ -304,6 +311,7 @@ describe("AgentsClient", () => {
         });
 
         const rawResponseBody = { key: "value" };
+
         server.mockEndpoint().get("/agents/id").respondWith().statusCode(400).jsonBody(rawResponseBody).build();
 
         await expect(async () => {
@@ -324,6 +332,7 @@ describe("AgentsClient", () => {
         });
 
         const rawResponseBody = { key: "value" };
+
         server.mockEndpoint().get("/agents/id").respondWith().statusCode(401).jsonBody(rawResponseBody).build();
 
         await expect(async () => {
@@ -344,6 +353,7 @@ describe("AgentsClient", () => {
         });
 
         const rawResponseBody = { key: "value" };
+
         server.mockEndpoint().get("/agents/id").respondWith().statusCode(404).jsonBody(rawResponseBody).build();
 
         await expect(async () => {
@@ -387,6 +397,7 @@ describe("AgentsClient", () => {
         });
 
         const rawResponseBody = { key: "value" };
+
         server.mockEndpoint().delete("/agents/id").respondWith().statusCode(400).jsonBody(rawResponseBody).build();
 
         await expect(async () => {
@@ -407,6 +418,7 @@ describe("AgentsClient", () => {
         });
 
         const rawResponseBody = { key: "value" };
+
         server.mockEndpoint().delete("/agents/id").respondWith().statusCode(401).jsonBody(rawResponseBody).build();
 
         await expect(async () => {
@@ -427,6 +439,7 @@ describe("AgentsClient", () => {
         });
 
         const rawResponseBody = { key: "value" };
+
         server.mockEndpoint().delete("/agents/id").respondWith().statusCode(404).jsonBody(rawResponseBody).build();
 
         await expect(async () => {
@@ -464,6 +477,7 @@ describe("AgentsClient", () => {
                 },
             ],
         };
+
         server
             .mockEndpoint()
             .patch("/agents/12345678-90ab-cdef-gh12-34567890abc")
@@ -513,6 +527,7 @@ describe("AgentsClient", () => {
         });
         const rawRequestBody = {};
         const rawResponseBody = { key: "value" };
+
         server
             .mockEndpoint()
             .patch("/agents/id")
@@ -540,6 +555,7 @@ describe("AgentsClient", () => {
         });
         const rawRequestBody = {};
         const rawResponseBody = { key: "value" };
+
         server
             .mockEndpoint()
             .patch("/agents/id")
@@ -567,6 +583,7 @@ describe("AgentsClient", () => {
         });
         const rawRequestBody = {};
         const rawResponseBody = { key: "value" };
+
         server
             .mockEndpoint()
             .patch("/agents/id")
@@ -636,6 +653,7 @@ describe("AgentsClient", () => {
             supportsAuthenticatedExtendedCard: true,
             signatures: [{ protected: "protected", signature: "signature", header: { key: "value" } }],
         };
+
         server
             .mockEndpoint()
             .get("/agents/12345678-90ab-cdef-gh12-34567890abc/agent-card.json")
@@ -734,6 +752,7 @@ describe("AgentsClient", () => {
         });
 
         const rawResponseBody = { key: "value" };
+
         server
             .mockEndpoint()
             .get("/agents/id/agent-card.json")
@@ -760,6 +779,7 @@ describe("AgentsClient", () => {
         });
 
         const rawResponseBody = { key: "value" };
+
         server
             .mockEndpoint()
             .get("/agents/id/agent-card.json")
@@ -786,6 +806,7 @@ describe("AgentsClient", () => {
         });
 
         const rawResponseBody = { key: "value" };
+
         server
             .mockEndpoint()
             .get("/agents/id/agent-card.json")
@@ -846,6 +867,7 @@ describe("AgentsClient", () => {
                 kind: "task",
             },
         };
+
         server
             .mockEndpoint()
             .post("/agents/12345678-90ab-cdef-gh12-34567890abc/v1/message:send")
@@ -960,6 +982,7 @@ describe("AgentsClient", () => {
             },
         };
         const rawResponseBody = { key: "value" };
+
         server
             .mockEndpoint()
             .post("/agents/id/v1/message:send")
@@ -1013,6 +1036,7 @@ describe("AgentsClient", () => {
             },
         };
         const rawResponseBody = { key: "value" };
+
         server
             .mockEndpoint()
             .post("/agents/id/v1/message:send")
@@ -1066,6 +1090,7 @@ describe("AgentsClient", () => {
             },
         };
         const rawResponseBody = { key: "value" };
+
         server
             .mockEndpoint()
             .post("/agents/id/v1/message:send")
@@ -1152,6 +1177,7 @@ describe("AgentsClient", () => {
             metadata: { key: "value" },
             kind: "task",
         };
+
         server
             .mockEndpoint()
             .get("/agents/12345678-90ab-cdef-gh12-34567890abc/v1/tasks/taskId")
@@ -1243,6 +1269,7 @@ describe("AgentsClient", () => {
         });
 
         const rawResponseBody = { key: "value" };
+
         server
             .mockEndpoint()
             .get("/agents/id/v1/tasks/taskId")
@@ -1269,6 +1296,7 @@ describe("AgentsClient", () => {
         });
 
         const rawResponseBody = { key: "value" };
+
         server
             .mockEndpoint()
             .get("/agents/id/v1/tasks/taskId")
@@ -1295,6 +1323,7 @@ describe("AgentsClient", () => {
         });
 
         const rawResponseBody = { key: "value" };
+
         server
             .mockEndpoint()
             .get("/agents/id/v1/tasks/taskId")
@@ -1341,6 +1370,7 @@ describe("AgentsClient", () => {
                 },
             ],
         };
+
         server
             .mockEndpoint()
             .get("/agents/12345678-90ab-cdef-gh12-34567890abc/v1/contexts/contextId")
@@ -1405,6 +1435,7 @@ describe("AgentsClient", () => {
         });
 
         const rawResponseBody = { key: "value" };
+
         server
             .mockEndpoint()
             .get("/agents/id/v1/contexts/contextId")
@@ -1431,6 +1462,7 @@ describe("AgentsClient", () => {
         });
 
         const rawResponseBody = { key: "value" };
+
         server
             .mockEndpoint()
             .get("/agents/id/v1/contexts/contextId")
@@ -1457,6 +1489,7 @@ describe("AgentsClient", () => {
         });
 
         const rawResponseBody = { key: "value" };
+
         server
             .mockEndpoint()
             .get("/agents/id/v1/contexts/contextId")
@@ -1487,6 +1520,7 @@ describe("AgentsClient", () => {
                 { name: "name", description: "description", mcpServers: [{ name: "name", authorizationType: "none" }] },
             ],
         };
+
         server
             .mockEndpoint()
             .get("/agents/registry/experts")
@@ -1528,6 +1562,7 @@ describe("AgentsClient", () => {
         });
 
         const rawResponseBody = { key: "value" };
+
         server
             .mockEndpoint()
             .get("/agents/registry/experts")
@@ -1554,6 +1589,7 @@ describe("AgentsClient", () => {
         });
 
         const rawResponseBody = { key: "value" };
+
         server
             .mockEndpoint()
             .get("/agents/registry/experts")

@@ -42,6 +42,7 @@ describe("DocumentsClient", () => {
                 },
             ],
         };
+
         server
             .mockEndpoint()
             .get("/interactions/f47ac10b-58cc-4372-a567-0e02b2c3d479/documents/")
@@ -92,6 +93,7 @@ describe("DocumentsClient", () => {
         });
 
         const rawResponseBody = { key: "value" };
+
         server
             .mockEndpoint()
             .get("/interactions/id/documents/")
@@ -118,6 +120,7 @@ describe("DocumentsClient", () => {
         });
 
         const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
+
         server
             .mockEndpoint()
             .get("/interactions/id/documents/")
@@ -144,6 +147,7 @@ describe("DocumentsClient", () => {
         });
 
         const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
+
         server
             .mockEndpoint()
             .get("/interactions/id/documents/")
@@ -170,6 +174,7 @@ describe("DocumentsClient", () => {
         });
 
         const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
+
         server
             .mockEndpoint()
             .get("/interactions/id/documents/")
@@ -219,6 +224,7 @@ describe("DocumentsClient", () => {
             outputLanguage: "outputLanguage",
             usageInfo: { creditsConsumed: 1.1 },
         };
+
         server
             .mockEndpoint()
             .post("/interactions/f47ac10b-58cc-4372-a567-0e02b2c3d479/documents/")
@@ -286,6 +292,7 @@ describe("DocumentsClient", () => {
             outputLanguage: "outputLanguage",
         };
         const rawResponseBody = { key: "value" };
+
         server
             .mockEndpoint()
             .post("/interactions/id/documents/")
@@ -347,6 +354,7 @@ describe("DocumentsClient", () => {
             outputLanguage: "outputLanguage",
         };
         const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
+
         server
             .mockEndpoint()
             .post("/interactions/id/documents/")
@@ -408,6 +416,7 @@ describe("DocumentsClient", () => {
             outputLanguage: "outputLanguage",
         };
         const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
+
         server
             .mockEndpoint()
             .post("/interactions/id/documents/")
@@ -469,6 +478,7 @@ describe("DocumentsClient", () => {
             outputLanguage: "outputLanguage",
         };
         const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
+
         server
             .mockEndpoint()
             .post("/interactions/id/documents/")
@@ -542,6 +552,7 @@ describe("DocumentsClient", () => {
             outputLanguage: "outputLanguage",
             usageInfo: { creditsConsumed: 1.1 },
         };
+
         server
             .mockEndpoint()
             .get("/interactions/f47ac10b-58cc-4372-a567-0e02b2c3d479/documents/f47ac10b-58cc-4372-a567-0e02b2c3d479")
@@ -591,6 +602,7 @@ describe("DocumentsClient", () => {
         });
 
         const rawResponseBody = { key: "value" };
+
         server
             .mockEndpoint()
             .get("/interactions/id/documents/documentId")
@@ -617,6 +629,7 @@ describe("DocumentsClient", () => {
         });
 
         const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
+
         server
             .mockEndpoint()
             .get("/interactions/id/documents/documentId")
@@ -643,6 +656,7 @@ describe("DocumentsClient", () => {
         });
 
         const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
+
         server
             .mockEndpoint()
             .get("/interactions/id/documents/documentId")
@@ -669,6 +683,7 @@ describe("DocumentsClient", () => {
         });
 
         const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
+
         server
             .mockEndpoint()
             .get("/interactions/id/documents/documentId")
@@ -721,6 +736,7 @@ describe("DocumentsClient", () => {
         });
 
         const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
+
         server
             .mockEndpoint()
             .delete("/interactions/id/documents/documentId")
@@ -747,6 +763,7 @@ describe("DocumentsClient", () => {
         });
 
         const rawResponseBody = { key: "value" };
+
         server
             .mockEndpoint()
             .delete("/interactions/id/documents/documentId")
@@ -773,6 +790,7 @@ describe("DocumentsClient", () => {
         });
 
         const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
+
         server
             .mockEndpoint()
             .delete("/interactions/id/documents/documentId")
@@ -799,6 +817,7 @@ describe("DocumentsClient", () => {
         });
 
         const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
+
         server
             .mockEndpoint()
             .delete("/interactions/id/documents/documentId")
@@ -844,6 +863,7 @@ describe("DocumentsClient", () => {
             outputLanguage: "outputLanguage",
             usageInfo: { creditsConsumed: 1.1 },
         };
+
         server
             .mockEndpoint()
             .patch("/interactions/f47ac10b-58cc-4372-a567-0e02b2c3d479/documents/f47ac10b-58cc-4372-a567-0e02b2c3d479")
@@ -894,6 +914,7 @@ describe("DocumentsClient", () => {
         });
         const rawRequestBody = {};
         const rawResponseBody = { key: "value" };
+
         server
             .mockEndpoint()
             .patch("/interactions/id/documents/documentId")
@@ -921,6 +942,7 @@ describe("DocumentsClient", () => {
         });
         const rawRequestBody = {};
         const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
+
         server
             .mockEndpoint()
             .patch("/interactions/id/documents/documentId")
@@ -948,6 +970,7 @@ describe("DocumentsClient", () => {
         });
         const rawRequestBody = {};
         const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
+
         server
             .mockEndpoint()
             .patch("/interactions/id/documents/documentId")
@@ -975,6 +998,7 @@ describe("DocumentsClient", () => {
         });
         const rawRequestBody = {};
         const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
+
         server
             .mockEndpoint()
             .patch("/interactions/id/documents/documentId")

@@ -19,6 +19,7 @@ describe("RecordingsClient", () => {
         });
 
         const rawResponseBody = { recordings: ["f47ac10b-58cc-4372-a567-0e02b2c3d479"] };
+
         server
             .mockEndpoint()
             .get("/interactions/f47ac10b-58cc-4372-a567-0e02b2c3d479/recordings/")
@@ -46,6 +47,7 @@ describe("RecordingsClient", () => {
         });
 
         const rawResponseBody = { key: "value" };
+
         server
             .mockEndpoint()
             .get("/interactions/id/recordings/")
@@ -72,6 +74,7 @@ describe("RecordingsClient", () => {
         });
 
         const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
+
         server
             .mockEndpoint()
             .get("/interactions/id/recordings/")
@@ -98,6 +101,7 @@ describe("RecordingsClient", () => {
         });
 
         const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
+
         server
             .mockEndpoint()
             .get("/interactions/id/recordings/")
@@ -124,6 +128,7 @@ describe("RecordingsClient", () => {
         });
 
         const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
+
         server
             .mockEndpoint()
             .get("/interactions/id/recordings/")
@@ -178,6 +183,7 @@ describe("RecordingsClient", () => {
         });
 
         const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
+
         server
             .mockEndpoint()
             .delete("/interactions/id/recordings/recordingId")
@@ -204,6 +210,7 @@ describe("RecordingsClient", () => {
         });
 
         const rawResponseBody = { key: "value" };
+
         server
             .mockEndpoint()
             .delete("/interactions/id/recordings/recordingId")
@@ -230,6 +237,7 @@ describe("RecordingsClient", () => {
         });
 
         const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
+
         server
             .mockEndpoint()
             .delete("/interactions/id/recordings/recordingId")
@@ -256,6 +264,7 @@ describe("RecordingsClient", () => {
         });
 
         const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
+
         server
             .mockEndpoint()
             .delete("/interactions/id/recordings/recordingId")

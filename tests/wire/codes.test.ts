@@ -41,6 +41,7 @@ describe("CodesClient", () => {
             ],
             usageInfo: { creditsConsumed: 1.1 },
         };
+
         server
             .mockEndpoint()
             .post("/tools/coding/")
@@ -112,6 +113,7 @@ describe("CodesClient", () => {
             ],
         };
         const rawResponseBody = { key: "value" };
+
         server
             .mockEndpoint()
             .post("/tools/coding/")
@@ -157,6 +159,7 @@ describe("CodesClient", () => {
             ],
         };
         const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
+
         server
             .mockEndpoint()
             .post("/tools/coding/")
@@ -202,6 +205,7 @@ describe("CodesClient", () => {
             ],
         };
         const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
+
         server
             .mockEndpoint()
             .post("/tools/coding/")
@@ -247,6 +251,7 @@ describe("CodesClient", () => {
             ],
         };
         const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
+
         server
             .mockEndpoint()
             .post("/tools/coding/")
@@ -292,6 +297,7 @@ describe("CodesClient", () => {
             ],
         };
         const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
+
         server
             .mockEndpoint()
             .post("/tools/coding/")
