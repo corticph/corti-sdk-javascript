@@ -5,6 +5,10 @@ import * as core from "../core/index.js";
 import { buildTokenRequestBody } from "./utils/buildTokenRequestBody.js";
 import { getEnvironment, type Environment } from "./utils/environment.js";
 
+interface Options {
+    skipRedirect?: boolean;
+}
+
 export declare namespace CortiAuth {
     /** Auth (clientId/clientSecret or token) is optional; credentials can be passed to getToken() instead. */
     export type Options = Omit<AuthClient.Options, "clientId" | "clientSecret" | "token" | "environment"> &
@@ -31,6 +35,23 @@ export declare namespace CortiAuth {
         clientId: string;
         refreshToken: string;
         clientSecret?: string;
+        scopes?: string[];
+    }
+
+    /** Authorization code grant request for getCodeFlowToken. */
+    export interface GetCodeFlowTokenRequest {
+        clientId: string;
+        clientSecret: string;
+        redirectUri: string;
+        code: string;
+        scopes?: string[];
+    }
+
+    /** Parameters for authorizeUrl — builds the Keycloak authorization endpoint URL. */
+    export interface AuthorizationCodeClient {
+        clientId: string;
+        redirectUri: string;
+        codeChallenge?: string;
         scopes?: string[];
     }
 }
@@ -73,7 +94,11 @@ export class CortiAuth extends AuthClient {
     }
 
     private async _getTokenWithTenant(
-        request: CortiAuth.GetTokenRequest | CortiAuth.GetRopcFlowTokenRequest | CortiAuth.RefreshTokenRequest,
+        request:
+            | CortiAuth.GetTokenRequest
+            | CortiAuth.GetRopcFlowTokenRequest
+            | CortiAuth.RefreshTokenRequest
+            | CortiAuth.GetCodeFlowTokenRequest,
         requestOptions: AuthClient.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.AuthTokenResponse>> {
         const authRequest = buildTokenRequestBody(request);
@@ -111,5 +136,64 @@ export class CortiAuth extends AuthClient {
         requestOptions?: AuthClient.RequestOptions,
     ): core.HttpResponsePromise<Corti.AuthTokenResponse> {
         return core.HttpResponsePromise.fromPromise(this._getTokenWithTenant(request, requestOptions ?? {}));
+    }
+
+    /** Exchange an authorization code for an access token (authorization_code grant). */
+    public getCodeFlowToken(
+        request: CortiAuth.GetCodeFlowTokenRequest,
+        requestOptions?: AuthClient.RequestOptions,
+    ): core.HttpResponsePromise<Corti.AuthTokenResponse> {
+        return core.HttpResponsePromise.fromPromise(this._getTokenWithTenant(request, requestOptions ?? {}));
+    }
+
+    /**
+     * Build the Keycloak authorization endpoint URL for the authorization code flow.
+     * In a browser environment, redirects to the URL unless skipRedirect is true.
+     * In a server environment (no window), always returns the URL string.
+     *
+     * @param client - clientId, redirectUri, and optional codeChallenge/scopes
+     * @param options - { skipRedirect?: boolean }
+     */
+    public async authorizeUrl(
+        { clientId, redirectUri, codeChallenge, scopes }: CortiAuth.AuthorizationCodeClient,
+        options?: Options,
+    ): Promise<string> {
+        const envUrls = await core.Supplier.get(this._options.environment);
+        const tenantName = await core.Supplier.get(this._options.tenantName);
+
+        const authUrl = new URL(
+            core.url.join(
+                envUrls.login,
+                tenantName,
+                "protocol/openid-connect/auth",
+            ),
+        );
+
+        authUrl.searchParams.set("response_type", "code");
+
+        const allScopes = ["openid", "profile", ...(scopes ?? [])];
+        authUrl.searchParams.set("scope", [...new Set(allScopes)].join(" "));
+
+        if (clientId !== undefined) {
+            authUrl.searchParams.set("client_id", clientId);
+        }
+
+        if (redirectUri !== undefined) {
+            authUrl.searchParams.set("redirect_uri", redirectUri);
+        }
+
+        if (codeChallenge !== undefined) {
+            authUrl.searchParams.set("code_challenge", codeChallenge);
+            authUrl.searchParams.set("code_challenge_method", "S256");
+        }
+
+        const authUrlString = authUrl.toString();
+
+        if (typeof window !== "undefined" && !options?.skipRedirect) {
+            window.location.href = authUrlString;
+            return authUrlString;
+        }
+
+        return authUrlString;
     }
 }

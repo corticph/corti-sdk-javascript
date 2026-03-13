@@ -41,6 +41,7 @@ export declare namespace CortiClient {
               clientId?: string;
           }
         | { clientId: string; username: string; password: string }
+        | { clientId: string; clientSecret: string; code: string; redirectUri: string }
         | {
               refreshAccessToken: OAuthAuthProvider.RefreshAccessTokenFunction;
               accessToken?: string;
@@ -51,9 +52,12 @@ export declare namespace CortiClient {
           };
 
     export type Options =
-        // CC / ROPC — tenantName and environment always required
+        // CC / ROPC / AuthCode — tenantName and environment always required
         | (OptionsBase & {
-              auth: { clientId: string; clientSecret: string } | { clientId: string; username: string; password: string };
+              auth:
+                  | { clientId: string; clientSecret: string }
+                  | { clientId: string; username: string; password: string }
+                  | { clientId: string; clientSecret: string; code: string; redirectUri: string };
               tenantName: string;
               environment: Environment;
           })

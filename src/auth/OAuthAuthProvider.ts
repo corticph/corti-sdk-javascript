@@ -8,28 +8,35 @@ import {
     BUFFER_IN_MINUTES,
     CLIENT_ID_PARAM,
     CLIENT_ID_REQUIRED_ERROR_MESSAGE,
+    CLIENT_SECRET_PARAM,
+    CLIENT_SECRET_REQUIRED_ERROR_MESSAGE,
+    CODE_PARAM,
     getExpiresAt,
     PASSWORD_PARAM,
+    REDIRECT_URI_PARAM,
     USERNAME_PARAM,
 } from "../custom/utils/oauthAuthHelpers.js";
 import * as errors from "../errors/index.js";
 import { OAuthRopcAuthProvider } from "../custom/OAuthRopcAuthProvider.js";
+import { OAuthAuthCodeAuthProvider } from "../custom/OAuthAuthCodeAuthProvider.js";
 
-/** Patch: Re-export for consumers; implementation shared with OAuthRopcAuthProvider. */
+/** Patch: Re-export for consumers; implementation shared with OAuthRopcAuthProvider and OAuthAuthCodeAuthProvider. */
 export {
     BUFFER_IN_MINUTES,
     CLIENT_ID_PARAM,
     CLIENT_ID_REQUIRED_ERROR_MESSAGE,
+    CLIENT_SECRET_PARAM,
+    CLIENT_SECRET_REQUIRED_ERROR_MESSAGE,
+    CODE_PARAM,
     getExpiresAt,
     PASSWORD_PARAM,
     PASSWORD_REQUIRED_ERROR_MESSAGE,
+    REDIRECT_URI_PARAM,
     USERNAME_PARAM,
     USERNAME_REQUIRED_ERROR_MESSAGE,
 } from "../custom/utils/oauthAuthHelpers.js";
 
-const CLIENT_SECRET_PARAM = "clientSecret" as const;
 const TOKEN_PARAM = "token" as const;
-const CLIENT_SECRET_REQUIRED_ERROR_MESSAGE = `${CLIENT_SECRET_PARAM} is required` as const;
 const TOKEN_PARAM_REQUIRED_ERROR_MESSAGE = `${TOKEN_PARAM} is required. Please provide it in options.` as const;
 
 export class OAuthAuthProvider implements core.AuthProvider {
@@ -301,8 +308,15 @@ export namespace OAuthAuthProvider {
         [USERNAME_PARAM]: core.Supplier<string>;
         [PASSWORD_PARAM]: core.Supplier<string>;
     };
-    /** Patch: Include RopcCredentials so CortiClient can use ROPC auth. */
-    export type AuthOptions = ClientCredentials | TokenOverride | RopcCredentials;
+    /** Patch: Authorization code credentials (clientId + clientSecret + code + redirectUri) */
+    export type AuthCodeCredentials = {
+        [CLIENT_ID_PARAM]: core.Supplier<string>;
+        [CLIENT_SECRET_PARAM]: core.Supplier<string>;
+        [CODE_PARAM]: core.Supplier<string>;
+        [REDIRECT_URI_PARAM]: core.Supplier<string>;
+    };
+    /** Patch: Include RopcCredentials and AuthCodeCredentials so CortiClient can use those auth flows. */
+    export type AuthOptions = ClientCredentials | TokenOverride | RopcCredentials | AuthCodeCredentials;
     export type Options = BaseClientOptions & AuthOptions;
 
     export function createInstance(options: Options): core.AuthProvider {
@@ -313,11 +327,15 @@ export namespace OAuthAuthProvider {
         if (OAuthRopcAuthProvider.canCreate(options)) {
             return new OAuthRopcAuthProvider(options);
         }
+        /** Patch: Auth code provider before client credentials — both have clientId+clientSecret, code+redirectUri distinguishes auth code. */
+        if (OAuthAuthCodeAuthProvider.canCreate(options)) {
+            return new OAuthAuthCodeAuthProvider(options);
+        }
         if (OAuthAuthProvider.canCreate(options)) {
             return new OAuthAuthProvider(options);
         }
         /** Patch: No credentials provided — proxy/passthrough mode; requests are sent without an Authorization header. */
-        const partialOptions = options as Partial<ClientCredentials & TokenOverride & RopcCredentials>;
+        const partialOptions = options as Partial<ClientCredentials & TokenOverride & RopcCredentials & AuthCodeCredentials>;
         const hasNoCredentials =
             partialOptions[CLIENT_ID_PARAM] == null &&
             partialOptions[CLIENT_SECRET_PARAM] == null &&
