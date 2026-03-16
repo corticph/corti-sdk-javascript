@@ -3,17 +3,16 @@
 import type * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
 import type * as serializers from "../index.js";
-import { TranscribeFlushMessageType } from "./TranscribeFlushMessageType.js";
 
 export const TranscribeFlushMessage: core.serialization.ObjectSchema<
     serializers.TranscribeFlushMessage.Raw,
     Corti.TranscribeFlushMessage
 > = core.serialization.object({
-    type: TranscribeFlushMessageType,
+    type: core.serialization.stringLiteral("flush"),
 });
 
 export declare namespace TranscribeFlushMessage {
     export interface Raw {
-        type: TranscribeFlushMessageType.Raw;
+        type: "flush";
     }
 }

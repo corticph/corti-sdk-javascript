@@ -4,19 +4,18 @@ import type * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
 import type * as serializers from "../index.js";
 import { StreamFact } from "./StreamFact.js";
-import { StreamFactsMessageType } from "./StreamFactsMessageType.js";
 
 export const StreamFactsMessage: core.serialization.ObjectSchema<
     serializers.StreamFactsMessage.Raw,
     Corti.StreamFactsMessage
 > = core.serialization.object({
-    type: StreamFactsMessageType,
+    type: core.serialization.stringLiteral("facts"),
     fact: core.serialization.list(StreamFact),
 });
 
 export declare namespace StreamFactsMessage {
     export interface Raw {
-        type: StreamFactsMessageType.Raw;
+        type: "facts";
         fact: StreamFact.Raw[];
     }
 }

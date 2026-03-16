@@ -3,6 +3,6 @@
 import type * as Corti from "../index.js";
 
 export interface TranscribeTranscriptMessage {
-    type: Corti.TranscribeTranscriptMessageType;
+    type: "transcript";
     data: Corti.TranscribeTranscriptData;
 }
