@@ -5,6 +5,8 @@
 export interface FactsExtractResponseFactsItem {
     /** The fact group key the fact belongs to. */
     group: string;
-    /** An individual, atomic fact. */
+    /** (deprecated) An individual, atomic fact. */
     value: string;
+    /** An individual, atomic fact. */
+    text: string;
 }
