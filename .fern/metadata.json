@@ -14,6 +14,6 @@
             "@faker-js/faker": "^9.9.0"
         }
     },
-    "originGitCommit": "f0db2d3ccf2df86b6e280d780ec4994ddbf48e7e",
+    "originGitCommit": "01b7b92ce929e7048dfdf994f224fdd7aff17e32",
     "sdkVersion": "0.10.1"
 }
