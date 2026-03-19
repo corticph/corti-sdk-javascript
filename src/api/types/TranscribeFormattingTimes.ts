@@ -5,9 +5,10 @@
 /**
  * Formatting for times.
  */
-export type TranscribeFormattingTimes = "as_dictated" | "h12" | "h24";
+export type TranscribeFormattingTimes = "locale" | "h24" | "h12" | "as_dictated";
 export const TranscribeFormattingTimes = {
-    AsDictated: "as_dictated",
-    H12: "h12",
+    Locale: "locale",
     H24: "h24",
+    H12: "h12",
+    AsDictated: "as_dictated",
 } as const;
