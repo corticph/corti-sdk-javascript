@@ -3,16 +3,17 @@
 import type * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
 import type * as serializers from "../index.js";
+import { StreamFlushedMessageType } from "./StreamFlushedMessageType.js";
 
 export const StreamFlushedMessage: core.serialization.ObjectSchema<
     serializers.StreamFlushedMessage.Raw,
     Corti.StreamFlushedMessage
 > = core.serialization.object({
-    type: core.serialization.stringLiteral("flushed"),
+    type: StreamFlushedMessageType,
 });
 
 export declare namespace StreamFlushedMessage {
     export interface Raw {
-        type: "flushed";
+        type: StreamFlushedMessageType.Raw;
     }
 }

@@ -4,18 +4,19 @@ import type * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
 import type * as serializers from "../index.js";
 import { TranscribeCommandData } from "./TranscribeCommandData.js";
+import { TranscribeCommandMessageType } from "./TranscribeCommandMessageType.js";
 
 export const TranscribeCommandMessage: core.serialization.ObjectSchema<
     serializers.TranscribeCommandMessage.Raw,
     Corti.TranscribeCommandMessage
 > = core.serialization.object({
-    type: core.serialization.stringLiteral("command"),
+    type: TranscribeCommandMessageType,
     data: TranscribeCommandData,
 });
 
 export declare namespace TranscribeCommandMessage {
     export interface Raw {
-        type: "command";
+        type: TranscribeCommandMessageType.Raw;
         data: TranscribeCommandData.Raw;
     }
 }

@@ -3,20 +3,21 @@
 import type * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
 import type * as serializers from "../index.js";
+import { TranscribeCommandVariableType } from "./TranscribeCommandVariableType.js";
 
 export const TranscribeCommandVariable: core.serialization.ObjectSchema<
     serializers.TranscribeCommandVariable.Raw,
     Corti.TranscribeCommandVariable
 > = core.serialization.object({
     key: core.serialization.string(),
-    type: core.serialization.stringLiteral("enum"),
+    type: TranscribeCommandVariableType,
     enum: core.serialization.list(core.serialization.string()),
 });
 
 export declare namespace TranscribeCommandVariable {
     export interface Raw {
         key: string;
-        type: "enum";
+        type: TranscribeCommandVariableType.Raw;
         enum: string[];
     }
 }
