@@ -62,6 +62,19 @@ export class Codes {
      *                 text: "Short arm splint applied in ED for pain control."
      *             }]
      *     })
+     *
+     * @example
+     *     await client.codes.predict({
+     *         system: ["icd10cm-outpatient"],
+     *         context: [{
+     *                 type: "text",
+     *                 text: "Patient presents with uncontrolled type 2 diabetes."
+     *             }],
+     *         filter: {
+     *             include: ["E11"],
+     *             exclude: ["exclude"]
+     *         }
+     *     })
      */
     public predict(
         request: Corti.CodesGeneralPredictRequest,

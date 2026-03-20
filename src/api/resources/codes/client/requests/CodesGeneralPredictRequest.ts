@@ -13,6 +13,19 @@ import * as Corti from "../../../../index.js";
  *                 text: "Short arm splint applied in ED for pain control."
  *             }]
  *     }
+ *
+ * @example
+ *     {
+ *         system: ["icd10cm-outpatient"],
+ *         context: [{
+ *                 type: "text",
+ *                 text: "Patient presents with uncontrolled type 2 diabetes."
+ *             }],
+ *         filter: {
+ *             include: ["E11"],
+ *             exclude: ["exclude"]
+ *         }
+ *     }
  */
 export interface CodesGeneralPredictRequest {
     /** List of coding systems for prediction */
