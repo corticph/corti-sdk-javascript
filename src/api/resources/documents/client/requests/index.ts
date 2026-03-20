@@ -1,1 +1,1 @@
-export { type DocumentsUpdateRequest } from "./DocumentsUpdateRequest.js";
+export type { DocumentsUpdateRequest } from "./DocumentsUpdateRequest.js";
