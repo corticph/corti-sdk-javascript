@@ -1,0 +1,19 @@
+{
+    "cliVersion": "4.37.11",
+    "generatorName": "fernapi/fern-typescript-node-sdk",
+    "generatorVersion": "3.54.0",
+    "generatorConfig": {
+        "namespaceExport": "Corti",
+        "noSerdeLayer": false,
+        "enableInlineTypes": false,
+        "streamType": "web",
+        "shouldGenerateWebsocketClients": true,
+        "generateSubpackageExports": true,
+        "inlinePathParameters": false,
+        "extraDevDependencies": {
+            "@faker-js/faker": "^9.9.0"
+        }
+    },
+    "originGitCommit": "5856a914a1bcbd83b09328d153da4b4ebe45151d",
+    "sdkVersion": "0.10.1"
+}
