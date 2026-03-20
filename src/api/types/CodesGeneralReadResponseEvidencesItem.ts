@@ -7,4 +7,8 @@ export interface CodesGeneralReadResponseEvidencesItem {
     contextIndex?: number;
     /** Part of input text */
     text?: string;
+    /** 0-based start character offset of the evidence span (inclusive) */
+    start?: number;
+    /** 0-based end character offset of the evidence span (exclusive) */
+    end?: number;
 }

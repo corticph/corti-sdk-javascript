@@ -12,11 +12,15 @@ export const CodesGeneralReadResponseEvidencesItem: core.serialization.ObjectSch
 > = core.serialization.object({
     contextIndex: core.serialization.number().optional(),
     text: core.serialization.string().optional(),
+    start: core.serialization.number().optional(),
+    end: core.serialization.number().optional(),
 });
 
 export declare namespace CodesGeneralReadResponseEvidencesItem {
     export interface Raw {
         contextIndex?: number | null;
         text?: string | null;
+        start?: number | null;
+        end?: number | null;
     }
 }

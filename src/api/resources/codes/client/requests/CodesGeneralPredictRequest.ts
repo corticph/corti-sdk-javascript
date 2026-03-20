@@ -19,4 +19,6 @@ export interface CodesGeneralPredictRequest {
     system: Corti.CommonCodingSystemEnum[];
     /** Select either `text` or `documentId` as input context to the model for code prediction. Evidence indices in the response map to this array. */
     context: Corti.CommonAiContext[];
+    /** Optional filter to restrict predicted codes. */
+    filter?: Corti.CodesFilter;
 }

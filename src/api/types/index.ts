@@ -44,6 +44,7 @@ export * from "./CodesGeneralResponse.js";
 export * from "./CodesGeneralReadResponseEvidencesItem.js";
 export * from "./CodesGeneralReadResponseAlternativesItem.js";
 export * from "./CodesGeneralReadResponse.js";
+export * from "./CodesFilter.js";
 export * from "./FactsExtractResponseFactsItem.js";
 export * from "./FactsExtractResponse.js";
 export * from "./InteractionsGetResponse.js";
