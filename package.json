@@ -51,6 +51,7 @@
         "dist",
         "README.md",
         "LICENSE",
+        {},
         "reference.md"
     ],
     "scripts": {

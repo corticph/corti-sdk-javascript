@@ -27,7 +27,7 @@
                     }
                 }
             },
-            "files": ["dist", "README.md", "LICENSE"]
+            "files": ["dist", "README.md", "LICENSE", {}]
         }
     },
     "originGitCommit": "b65028318c7dcfa19781e31d39aacdf5b592885c",
