@@ -12,6 +12,22 @@
         "inlinePathParameters": false,
         "extraDevDependencies": {
             "@faker-js/faker": "^9.9.0"
+        },
+        "packageJson": {
+            "exports": {
+                "./utils": {
+                    "default": "./dist/cjs/custom/utils/index.js",
+                    "import": {
+                        "types": "./dist/esm/custom/utils/index.d.mts",
+                        "default": "./dist/esm/custom/utils/index.mjs"
+                    },
+                    "require": {
+                        "types": "./dist/cjs/custom/utils/index.d.ts",
+                        "default": "./dist/cjs/custom/utils/index.js"
+                    }
+                }
+            },
+            "files": ["dist", "README.md", "LICENSE"]
         }
     },
     "originGitCommit": "b65028318c7dcfa19781e31d39aacdf5b592885c",

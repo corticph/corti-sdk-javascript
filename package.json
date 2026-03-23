@@ -34,13 +34,24 @@
             },
             "default": "./dist/cjs/serialization/index.js"
         },
-        "./package.json": "./package.json"
+        "./package.json": "./package.json",
+        "./utils": {
+            "default": "./dist/cjs/custom/utils/index.js",
+            "import": {
+                "types": "./dist/esm/custom/utils/index.d.mts",
+                "default": "./dist/esm/custom/utils/index.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/custom/utils/index.d.ts",
+                "default": "./dist/cjs/custom/utils/index.js"
+            }
+        }
     },
     "files": [
         "dist",
-        "reference.md",
         "README.md",
-        "LICENSE"
+        "LICENSE",
+        "reference.md"
     ],
     "scripts": {
         "format": "biome format --write --skip-parse-errors --no-errors-on-unmatched --max-diagnostics=none",
