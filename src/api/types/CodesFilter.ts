@@ -3,10 +3,10 @@
  */
 
 /**
- * Optional filter to restrict the universe of codes the model can predict.
+ * Optional filter to restrict the set of codes the model can predict.
  */
 export interface CodesFilter {
-    /** Codes or categories to include. When empty, the full universe of codes for the requested systems is used. */
+    /** Codes or categories to include. When empty, the full set of codes for the requested systems is used. */
     include?: string[];
     /** Codes or categories to subtract from the include set. */
     exclude?: string[];
