@@ -49,10 +49,9 @@
     },
     "files": [
         "dist",
+        "reference.md",
         "README.md",
-        "LICENSE",
-        {},
-        "reference.md"
+        "LICENSE"
     ],
     "scripts": {
         "format": "biome format --write --skip-parse-errors --no-errors-on-unmatched --max-diagnostics=none",
