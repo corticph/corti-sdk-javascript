@@ -18,7 +18,6 @@ The Corti TypeScript library provides convenient access to the Corti APIs from T
 - [Binary Response](#binary-response)
 - [Pagination](#pagination)
 - [Advanced](#advanced)
-  - [Subpackage Exports](#subpackage-exports)
   - [Additional Headers](#additional-headers)
   - [Additional Query String Parameters](#additional-query-string-parameters)
   - [Retries](#retries)
@@ -51,9 +50,12 @@ Instantiate and use the client with the following:
 import { CortiClient, CortiEnvironment } from "@corti/sdk";
 
 const client = new CortiClient({ environment: CortiEnvironment.Eu, clientId: "YOUR_CLIENT_ID", clientSecret: "YOUR_CLIENT_SECRET", tenantName: "YOUR_TENANT_NAME" });
-await client.auth.getToken({
-    clientId: "client_id",
-    clientSecret: "client_secret"
+await client.interactions.create({
+    encounter: {
+        identifier: "identifier",
+        status: "planned",
+        type: "first_consultation"
+    }
 });
 ```
 
@@ -110,7 +112,7 @@ will be thrown.
 import { CortiError } from "@corti/sdk";
 
 try {
-    await client.auth.getToken(...);
+    await client.interactions.create(...);
 } catch (err) {
     if (err instanceof CortiError) {
         console.log(err.statusCode);
@@ -580,16 +582,6 @@ const response = page.response;
 
 ## Advanced
 
-### Subpackage Exports
-
-This SDK supports direct imports of subpackage clients, which allows JavaScript bundlers to tree-shake and include only the imported subpackage code. This results in much smaller bundle sizes.
-
-```typescript
-import { AuthClient } from '@corti/sdk/auth';
-
-const client = new AuthClient({...});
-```
-
 ### Additional Headers
 
 If you would like to send additional headers as part of the request, use the `headers` request option.
@@ -604,7 +596,7 @@ const client = new CortiClient({
     }
 });
 
-const response = await client.auth.getToken(..., {
+const response = await client.interactions.create(..., {
     headers: {
         'X-Custom-Header': 'custom value'
     }
@@ -616,7 +608,7 @@ const response = await client.auth.getToken(..., {
 If you would like to send additional query string parameters as part of the request, use the `queryParams` request option.
 
 ```typescript
-const response = await client.auth.getToken(..., {
+const response = await client.interactions.create(..., {
     queryParams: {
         'customQueryParamKey': 'custom query param value'
     }
@@ -638,7 +630,7 @@ A request is deemed retryable when any of the following HTTP status codes is ret
 Use the `maxRetries` request option to configure this behavior.
 
 ```typescript
-const response = await client.auth.getToken(..., {
+const response = await client.interactions.create(..., {
     maxRetries: 0 // override maxRetries at the request level
 });
 ```
@@ -648,7 +640,7 @@ const response = await client.auth.getToken(..., {
 The SDK defaults to a 60 second timeout. Use the `timeoutInSeconds` option to configure this behavior.
 
 ```typescript
-const response = await client.auth.getToken(..., {
+const response = await client.interactions.create(..., {
     timeoutInSeconds: 30 // override timeout to 30s
 });
 ```
@@ -659,7 +651,7 @@ The SDK allows users to abort requests at any point by passing in an abort signa
 
 ```typescript
 const controller = new AbortController();
-const response = await client.auth.getToken(..., {
+const response = await client.interactions.create(..., {
     abortSignal: controller.signal
 });
 controller.abort(); // aborts the request
@@ -671,7 +663,7 @@ The SDK provides access to raw response data, including headers, through the `.w
 The `.withRawResponse()` method returns a promise that results to an object with a `data` and a `rawResponse` property.
 
 ```typescript
-const { data, rawResponse } = await client.auth.getToken(...).withRawResponse();
+const { data, rawResponse } = await client.interactions.create(...).withRawResponse();
 
 console.log(data);
 console.log(rawResponse.headers['X-My-Header']);
