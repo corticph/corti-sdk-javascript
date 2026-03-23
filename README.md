@@ -7,6 +7,7 @@ The Corti TypeScript library provides convenient access to the Corti APIs from T
 
 ## Table of Contents
 
+- [Documentation](#documentation)
 - [Installation](#installation)
 - [Reference](#reference)
 - [Usage](#usage)
@@ -27,6 +28,10 @@ The Corti TypeScript library provides convenient access to the Corti APIs from T
   - [Logging](#logging)
   - [Runtime Compatibility](#runtime-compatibility)
 - [Contributing](#contributing)
+
+## Documentation
+
+API reference documentation is available [here](https://docs.corti.ai/api-reference).
 
 ## Installation
 
