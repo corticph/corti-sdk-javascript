@@ -5,8 +5,8 @@
 /**
  * Formatting for numeric ranges.
  */
-export type TranscribeFormattingNumericRanges = "as_dictated" | "numerals";
+export type TranscribeFormattingNumericRanges = "numerals" | "as_dictated";
 export const TranscribeFormattingNumericRanges = {
-    AsDictated: "as_dictated",
     Numerals: "numerals",
+    AsDictated: "as_dictated",
 } as const;

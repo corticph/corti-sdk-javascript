@@ -9,8 +9,8 @@ import * as core from "../../core/index.js";
 export const TranscribeFormattingNumbers: core.serialization.Schema<
     serializers.TranscribeFormattingNumbers.Raw,
     Corti.TranscribeFormattingNumbers
-> = core.serialization.enum_(["as_dictated", "numerals", "numerals_above_nine"]);
+> = core.serialization.enum_(["numerals_above_nine", "numerals", "as_dictated"]);
 
 export declare namespace TranscribeFormattingNumbers {
-    export type Raw = "as_dictated" | "numerals" | "numerals_above_nine";
+    export type Raw = "numerals_above_nine" | "numerals" | "as_dictated";
 }
