@@ -29,7 +29,10 @@ The Corti JavaScript library provides convenient access to the Corti APIs from J
 
 ## Documentation
 
-API reference documentation is available [here](https://docs.corti.ai/api-reference).
+- [Documentation](https://docs.corti.ai/)
+- [API Reference](https://docs.corti.ai/api-reference)
+- [Console](https://console.corti.app/) — get your credentials here
+- [Examples](https://github.com/corticph/corti-examples)
 
 ## Installation
 
