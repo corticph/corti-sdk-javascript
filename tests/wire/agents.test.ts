@@ -232,6 +232,37 @@ describe("AgentsClient", () => {
         }).rejects.toThrow(Corti.UnauthorizedError);
     });
 
+    test("create (4)", async () => {
+        const server = mockServerPool.createServer();
+        mockOAuth(server);
+
+        const client = new CortiClient({
+            maxRetries: 0,
+            clientId: "client_id",
+            clientSecret: "client_secret",
+            tenantName: "test",
+            environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
+        });
+        const rawRequestBody = { name: "name", description: "description" };
+        const rawResponseBody = { code: "code", description: "description" };
+
+        server
+            .mockEndpoint()
+            .post("/agents")
+            .jsonBody(rawRequestBody)
+            .respondWith()
+            .statusCode(422)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.agents.create({
+                name: "name",
+                description: "description",
+            });
+        }).rejects.toThrow(Corti.UnprocessableEntityError);
+    });
+
     test("get (1)", async () => {
         const server = mockServerPool.createServer();
         mockOAuth(server);
@@ -596,6 +627,34 @@ describe("AgentsClient", () => {
         await expect(async () => {
             return await client.agents.update("id");
         }).rejects.toThrow(Corti.NotFoundError);
+    });
+
+    test("update (5)", async () => {
+        const server = mockServerPool.createServer();
+        mockOAuth(server);
+
+        const client = new CortiClient({
+            maxRetries: 0,
+            clientId: "client_id",
+            clientSecret: "client_secret",
+            tenantName: "test",
+            environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
+        });
+        const rawRequestBody = {};
+        const rawResponseBody = { code: "code", description: "description" };
+
+        server
+            .mockEndpoint()
+            .patch("/agents/id")
+            .jsonBody(rawRequestBody)
+            .respondWith()
+            .statusCode(422)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.agents.update("id");
+        }).rejects.toThrow(Corti.UnprocessableEntityError);
     });
 
     test("getCard (1)", async () => {
@@ -1121,6 +1180,60 @@ describe("AgentsClient", () => {
         }).rejects.toThrow(Corti.NotFoundError);
     });
 
+    test("messageSend (5)", async () => {
+        const server = mockServerPool.createServer();
+        mockOAuth(server);
+
+        const client = new CortiClient({
+            maxRetries: 0,
+            clientId: "client_id",
+            clientSecret: "client_secret",
+            tenantName: "test",
+            environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
+        });
+        const rawRequestBody = {
+            message: {
+                role: "user",
+                parts: [
+                    { kind: "text", text: "text" },
+                    { kind: "text", text: "text" },
+                ],
+                messageId: "messageId",
+                kind: "message",
+            },
+        };
+        const rawResponseBody = { code: "code", description: "description" };
+
+        server
+            .mockEndpoint()
+            .post("/agents/id/v1/message:send")
+            .jsonBody(rawRequestBody)
+            .respondWith()
+            .statusCode(422)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.agents.messageSend("id", {
+                message: {
+                    role: "user",
+                    parts: [
+                        {
+                            kind: "text",
+                            text: "text",
+                        },
+                        {
+                            kind: "text",
+                            text: "text",
+                        },
+                    ],
+                    messageId: "messageId",
+                    kind: "message",
+                },
+            });
+        }).rejects.toThrow(Corti.UnprocessableEntityError);
+    });
+
     test("getTask (1)", async () => {
         const server = mockServerPool.createServer();
         mockOAuth(server);
@@ -1601,5 +1714,32 @@ describe("AgentsClient", () => {
         await expect(async () => {
             return await client.agents.getRegistryExperts();
         }).rejects.toThrow(Corti.UnauthorizedError);
+    });
+
+    test("getRegistryExperts (4)", async () => {
+        const server = mockServerPool.createServer();
+        mockOAuth(server);
+
+        const client = new CortiClient({
+            maxRetries: 0,
+            clientId: "client_id",
+            clientSecret: "client_secret",
+            tenantName: "test",
+            environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
+        });
+
+        const rawResponseBody = { code: "code", description: "description" };
+
+        server
+            .mockEndpoint()
+            .get("/agents/registry/experts")
+            .respondWith()
+            .statusCode(422)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.agents.getRegistryExperts();
+        }).rejects.toThrow(Corti.UnprocessableEntityError);
     });
 });

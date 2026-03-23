@@ -13,30 +13,30 @@ import { TranscribeUsageMessage } from "../../../../types/TranscribeUsageMessage
 
 export const TranscribeSocketResponse: core.serialization.Schema<
     serializers.TranscribeSocketResponse.Raw,
-    | Corti.TranscribeConfigStatusMessage
     | Corti.TranscribeUsageMessage
     | Corti.TranscribeFlushedMessage
     | Corti.TranscribeEndedMessage
     | Corti.TranscribeErrorMessage
     | Corti.TranscribeTranscriptMessage
     | Corti.TranscribeCommandMessage
+    | Corti.TranscribeConfigStatusMessage
 > = core.serialization.undiscriminatedUnion([
-    TranscribeConfigStatusMessage,
     TranscribeUsageMessage,
     TranscribeFlushedMessage,
     TranscribeEndedMessage,
     TranscribeErrorMessage,
     TranscribeTranscriptMessage,
     TranscribeCommandMessage,
+    TranscribeConfigStatusMessage,
 ]);
 
 export declare namespace TranscribeSocketResponse {
     export type Raw =
-        | TranscribeConfigStatusMessage.Raw
         | TranscribeUsageMessage.Raw
         | TranscribeFlushedMessage.Raw
         | TranscribeEndedMessage.Raw
         | TranscribeErrorMessage.Raw
         | TranscribeTranscriptMessage.Raw
-        | TranscribeCommandMessage.Raw;
+        | TranscribeCommandMessage.Raw
+        | TranscribeConfigStatusMessage.Raw;
 }

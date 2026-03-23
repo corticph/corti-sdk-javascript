@@ -14,13 +14,13 @@ export declare namespace TranscribeSocket {
     }
 
     export type Response =
-        | Corti.TranscribeConfigStatusMessage
         | Corti.TranscribeUsageMessage
         | Corti.TranscribeFlushedMessage
         | Corti.TranscribeEndedMessage
         | Corti.TranscribeErrorMessage
         | Corti.TranscribeTranscriptMessage
-        | Corti.TranscribeCommandMessage;
+        | Corti.TranscribeCommandMessage
+        | Corti.TranscribeConfigStatusMessage;
     type EventHandlers = {
         open?: () => void;
         message?: (message: Response) => void;

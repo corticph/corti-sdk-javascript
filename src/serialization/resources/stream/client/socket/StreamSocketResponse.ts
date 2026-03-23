@@ -13,30 +13,30 @@ import { StreamUsageMessage } from "../../../../types/StreamUsageMessage.js";
 
 export const StreamSocketResponse: core.serialization.Schema<
     serializers.StreamSocketResponse.Raw,
-    | Corti.StreamConfigStatusMessage
     | Corti.StreamTranscriptMessage
     | Corti.StreamFactsMessage
     | Corti.StreamFlushedMessage
     | Corti.StreamEndedMessage
     | Corti.StreamUsageMessage
     | Corti.StreamErrorMessage
+    | Corti.StreamConfigStatusMessage
 > = core.serialization.undiscriminatedUnion([
-    StreamConfigStatusMessage,
     StreamTranscriptMessage,
     StreamFactsMessage,
     StreamFlushedMessage,
     StreamEndedMessage,
     StreamUsageMessage,
     StreamErrorMessage,
+    StreamConfigStatusMessage,
 ]);
 
 export declare namespace StreamSocketResponse {
     export type Raw =
-        | StreamConfigStatusMessage.Raw
         | StreamTranscriptMessage.Raw
         | StreamFactsMessage.Raw
         | StreamFlushedMessage.Raw
         | StreamEndedMessage.Raw
         | StreamUsageMessage.Raw
-        | StreamErrorMessage.Raw;
+        | StreamErrorMessage.Raw
+        | StreamConfigStatusMessage.Raw;
 }

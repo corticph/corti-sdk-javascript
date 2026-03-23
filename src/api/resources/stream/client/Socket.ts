@@ -14,13 +14,13 @@ export declare namespace StreamSocket {
     }
 
     export type Response =
-        | Corti.StreamConfigStatusMessage
         | Corti.StreamTranscriptMessage
         | Corti.StreamFactsMessage
         | Corti.StreamFlushedMessage
         | Corti.StreamEndedMessage
         | Corti.StreamUsageMessage
-        | Corti.StreamErrorMessage;
+        | Corti.StreamErrorMessage
+        | Corti.StreamConfigStatusMessage;
     type EventHandlers = {
         open?: () => void;
         message?: (message: Response) => void;
