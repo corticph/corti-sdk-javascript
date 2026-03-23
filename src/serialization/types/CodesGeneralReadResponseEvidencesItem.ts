@@ -10,17 +10,17 @@ export const CodesGeneralReadResponseEvidencesItem: core.serialization.ObjectSch
     serializers.CodesGeneralReadResponseEvidencesItem.Raw,
     Corti.CodesGeneralReadResponseEvidencesItem
 > = core.serialization.object({
-    contextIndex: core.serialization.number().optional(),
-    text: core.serialization.string().optional(),
-    start: core.serialization.number().optional(),
-    end: core.serialization.number().optional(),
+    contextIndex: core.serialization.number(),
+    text: core.serialization.string(),
+    start: core.serialization.number(),
+    end: core.serialization.number(),
 });
 
 export declare namespace CodesGeneralReadResponseEvidencesItem {
     export interface Raw {
-        contextIndex?: number | null;
-        text?: string | null;
-        start?: number | null;
-        end?: number | null;
+        contextIndex: number;
+        text: string;
+        start: number;
+        end: number;
     }
 }
