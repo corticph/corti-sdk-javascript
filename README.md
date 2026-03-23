@@ -1,15 +1,14 @@
-# Corti TypeScript Library
+# Corti JavaScript Library
 
 [![fern shield](https://img.shields.io/badge/%F0%9F%8C%BF-Built%20with%20Fern-brightgreen)](https://buildwithfern.com?utm_source=github&utm_medium=github&utm_campaign=readme&utm_source=https%3A%2F%2Fgithub.com%2Fcorticph%2Fcorti-sdk-javascript)
 [![npm shield](https://img.shields.io/npm/v/@corti/sdk)](https://www.npmjs.com/package/@corti/sdk)
 
-The Corti TypeScript library provides convenient access to the Corti APIs from TypeScript.
+The Corti JavaScript library provides convenient access to the Corti APIs from JavaScript and TypeScript.
 
 ## Table of Contents
 
 - [Documentation](#documentation)
 - [Installation](#installation)
-- [Reference](#reference)
 - [Usage](#usage)
 - [Authentication](#authentication)
 - [Request and Response Types](#request-and-response-types)
@@ -38,18 +37,18 @@ API reference documentation is available [here](https://docs.corti.ai/api-refere
 npm i -s @corti/sdk
 ```
 
-## Reference
-
-A full reference for this library is available [here](https://github.com/corticph/corti-sdk-javascript/blob/HEAD/./reference.md).
-
 ## Usage
 
 Instantiate and use the client with the following:
 
 ```typescript
-import { CortiClient, CortiEnvironment } from "@corti/sdk";
+import { CortiClient } from "@corti/sdk";
 
-const client = new CortiClient({ environment: CortiEnvironment.Eu, clientId: "YOUR_CLIENT_ID", clientSecret: "YOUR_CLIENT_SECRET", tenantName: "YOUR_TENANT_NAME" });
+const client = new CortiClient({
+    tenantName: "YOUR_TENANT_NAME",
+    environment: "YOUR_ENVIRONMENT_ID",
+    auth: { clientId: "YOUR_CLIENT_ID", clientSecret: "YOUR_CLIENT_SECRET" },
+});
 await client.interactions.create({
     encounter: {
         identifier: "identifier",
@@ -61,32 +60,97 @@ await client.interactions.create({
 
 ## Authentication
 
-The SDK supports OAuth authentication with two options:
+The SDK supports several OAuth 2.0 flows. In all cases the SDK manages tokens in memory — before each request it checks whether the stored access token is still valid, and if not, calls the appropriate token endpoint transparently. No manual token management is needed.
 
-**Option 1: OAuth Client Credentials Flow**
+### Client Credentials (recommended for server-side apps)
 
-Use this when you want the SDK to automatically handle OAuth token retrieval and refreshing:
+The SDK fetches and refreshes tokens automatically using your client credentials.
 
 ```typescript
 import { CortiClient } from "@corti/sdk";
 
 const client = new CortiClient({
-    clientId: "YOUR_CLIENT_ID",
-    clientSecret: "YOUR_CLIENT_SECRET",
-    ...
+    tenantName: "YOUR_TENANT_NAME",
+    environment: "YOUR_ENVIRONMENT_ID",
+    auth: { clientId: "YOUR_CLIENT_ID", clientSecret: "YOUR_CLIENT_SECRET" },
 });
 ```
 
-**Option 2: Token Override**
+### Bearer token (pre-obtained)
 
-Use this when you already have a valid bearer token and want to skip the OAuth flow:
+Use when you already have a valid access token. Pass `refreshToken` + `clientId` to enable automatic renewal when the token expires.
 
 ```typescript
-import { CortiClient } from "@corti/sdk";
-
+// Static token — no automatic renewal
 const client = new CortiClient({
-    token: "my-pre-generated-bearer-token",
-    ...
+    auth: { accessToken: "YOUR_ACCESS_TOKEN" },
+});
+
+// Token with automatic refresh via stored refresh token
+const client = new CortiClient({
+    auth: {
+        accessToken: "YOUR_ACCESS_TOKEN",
+        clientId: "YOUR_CLIENT_ID",
+        refreshToken: "YOUR_REFRESH_TOKEN",
+        expiresIn: 300,         // seconds until access token expires
+        refreshExpiresIn: 1800, // seconds until refresh token expires
+    },
+});
+```
+
+### Bearer token with custom refresh
+
+Use when your application manages token renewal (e.g. via a proxy or an external identity provider). The SDK calls `refreshAccessToken` whenever the stored token expires.
+
+```typescript
+const client = new CortiClient({
+    auth: {
+        accessToken: "YOUR_ACCESS_TOKEN",
+        refreshAccessToken: async (refreshToken) => {
+            // call your own token endpoint and return the new token
+            return { accessToken: "NEW_TOKEN", expiresIn: 300 };
+        },
+    },
+});
+```
+
+### Resource Owner Password Credentials (ROPC)
+
+```typescript
+const client = new CortiClient({
+    tenantName: "YOUR_TENANT_NAME",
+    environment: "YOUR_ENVIRONMENT_ID",
+    auth: { clientId: "YOUR_CLIENT_ID", username: "USERNAME", password: "PASSWORD" },
+});
+```
+
+### Authorization Code
+
+```typescript
+const client = new CortiClient({
+    tenantName: "YOUR_TENANT_NAME",
+    environment: "YOUR_ENVIRONMENT_ID",
+    auth: {
+        clientId: "YOUR_CLIENT_ID",
+        clientSecret: "YOUR_CLIENT_SECRET",
+        code: "AUTH_CODE",
+        redirectUri: "YOUR_REDIRECT_URI",
+    },
+});
+```
+
+### PKCE
+
+```typescript
+const client = new CortiClient({
+    tenantName: "YOUR_TENANT_NAME",
+    environment: "YOUR_ENVIRONMENT_ID",
+    auth: {
+        clientId: "YOUR_CLIENT_ID",
+        code: "AUTH_CODE",
+        redirectUri: "YOUR_REDIRECT_URI",
+        codeVerifier: "YOUR_CODE_VERIFIER",
+    },
 });
 ```
 
@@ -562,9 +626,13 @@ const text = new TextDecoder().decode(bytes);
 List endpoints are paginated. The SDK provides an iterator so that you can simply loop over the items:
 
 ```typescript
-import { CortiClient, CortiEnvironment } from "@corti/sdk";
+import { CortiClient } from "@corti/sdk";
 
-const client = new CortiClient({ environment: CortiEnvironment.Eu, clientId: "YOUR_CLIENT_ID", clientSecret: "YOUR_CLIENT_SECRET", tenantName: "YOUR_TENANT_NAME" });
+const client = new CortiClient({
+    tenantName: "YOUR_TENANT_NAME",
+    environment: "YOUR_ENVIRONMENT_ID",
+    auth: { clientId: "YOUR_CLIENT_ID", clientSecret: "YOUR_CLIENT_SECRET" },
+});
 const pageableResponse = await client.interactions.list();
 for await (const item of pageableResponse) {
     console.log(item);
