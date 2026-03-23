@@ -7,6 +7,4 @@ export * as serialization from "../serialization/index.js";
 // Custom additions / replacements
 export { CortiAuth } from "./CortiAuth.js";
 export { CortiClient } from "./CortiClient.js";
-export { decodeToken } from "./utils/decodeToken.js";
-export { type CortiInternalEnvironment, type Environment, getEnvironment } from "./utils/environment.js";
-export { generateCodeChallenge, generateCodeVerifier } from "./utils/pkceHelpers.js";
+export { type CortiInternalEnvironment, type Environment } from "./utils/environment.js";
