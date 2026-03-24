@@ -1,6 +1,6 @@
-import { TranscribeClient } from "../api/resources/transcribe/client/Client.js";
-import type { TranscribeSocket } from "../api/resources/transcribe/client/Socket.js";
-import * as core from "../core/index.js";
+import { TranscribeClient } from "../../api/resources/transcribe/client/Client.js";
+import type { TranscribeSocket } from "../../api/resources/transcribe/client/Socket.js";
+import * as core from "../../core/index.js";
 
 export type CustomTranscribeConnectArgs = Partial<Omit<TranscribeClient.ConnectArgs, "tenantName" | "token">>;
 

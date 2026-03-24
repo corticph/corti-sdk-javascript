@@ -1,10 +1,10 @@
-import type * as Corti from "../api/index.js";
-import type { BaseClientOptions } from "../BaseClient.js";
-import * as core from "../core/index.js";
-import { CortiAuth } from "./CortiAuth.js";
-import { OAuthAuthCodeAuthProvider } from "./OAuthAuthCodeAuthProvider.js";
-import { OAuthPkceAuthProvider } from "./OAuthPkceAuthProvider.js";
-import { OAuthRopcAuthProvider } from "./OAuthRopcAuthProvider.js";
+import type * as Corti from "../../api/index.js";
+import type { BaseClientOptions } from "../../BaseClient.js";
+import * as core from "../../core/index.js";
+import { CortiAuth } from "../auth/CortiAuth.js";
+import { OAuthAuthCodeAuthProvider } from "../auth/OAuthAuthCodeAuthProvider.js";
+import { OAuthPkceAuthProvider } from "../auth/OAuthPkceAuthProvider.js";
+import { OAuthRopcAuthProvider } from "../auth/OAuthRopcAuthProvider.js";
 import {
     BUFFER_IN_MINUTES,
     CLIENT_ID_PARAM,
@@ -17,8 +17,8 @@ import {
     PASSWORD_PARAM,
     REDIRECT_URI_PARAM,
     USERNAME_PARAM,
-} from "./utils/oauthAuthHelpers.js";
-import * as errors from "../errors/index.js";
+} from "../utils/oauthAuthHelpers.js";
+import * as errors from "../../errors/index.js";
 
 /** Patch: Re-export for consumers; implementation shared with OAuthRopcAuthProvider, OAuthAuthCodeAuthProvider and OAuthPkceAuthProvider. */
 export {
@@ -35,7 +35,7 @@ export {
     REDIRECT_URI_PARAM,
     USERNAME_PARAM,
     USERNAME_REQUIRED_ERROR_MESSAGE,
-} from "./utils/oauthAuthHelpers.js";
+} from "../utils/oauthAuthHelpers.js";
 
 const TOKEN_PARAM = "token" as const;
 const TOKEN_PARAM_REQUIRED_ERROR_MESSAGE = `${TOKEN_PARAM} is required. Please provide it in options.` as const;

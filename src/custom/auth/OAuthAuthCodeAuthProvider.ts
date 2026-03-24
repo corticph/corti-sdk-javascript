@@ -1,8 +1,8 @@
-import type * as Corti from "../api/index.js";
-import type { OAuthAuthProvider } from "../auth/OAuthAuthProvider.js";
-import type { BaseClientOptions } from "../BaseClient.js";
-import * as core from "../core/index.js";
-import * as errors from "../errors/index.js";
+import type * as Corti from "../../api/index.js";
+import type { OAuthAuthProvider } from "../../auth/OAuthAuthProvider.js";
+import type { BaseClientOptions } from "../../BaseClient.js";
+import * as core from "../../core/index.js";
+import * as errors from "../../errors/index.js";
 import { CortiAuth } from "./CortiAuth.js";
 import {
     BUFFER_IN_MINUTES,
@@ -15,7 +15,7 @@ import {
     getExpiresAt,
     REDIRECT_URI_PARAM,
     REDIRECT_URI_REQUIRED_ERROR_MESSAGE,
-} from "./utils/oauthAuthHelpers.js";
+} from "../utils/oauthAuthHelpers.js";
 
 export class OAuthAuthCodeAuthProvider implements core.AuthProvider {
     private readonly options: BaseClientOptions & OAuthAuthProvider.AuthCodeCredentials;

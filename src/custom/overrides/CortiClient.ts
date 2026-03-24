@@ -1,13 +1,13 @@
-import type { OAuthAuthProvider } from "../auth/OAuthAuthProvider.js";
-import { CortiClient as BaseCortiClient } from "../Client.js";
-import type * as environments from "../environments.js";
-import { CortiAuth } from "./CortiAuth.js";
-import { CustomStream } from "./CustomStream.js";
-import { CustomTranscribe } from "./CustomTranscribe.js";
-import { authToBaseOptions } from "./utils/authToBaseOptions.js";
-import { setDefaultWithCredentials } from "./utils/withCredentialsConfig.js";
-import { type Environment, getEnvironment } from "./utils/environment.js";
-import { resolveClientOptions } from "./utils/resolveClientOptions.js";
+import type { OAuthAuthProvider } from "../../auth/OAuthAuthProvider.js";
+import { CortiClient as BaseCortiClient } from "../../Client.js";
+import type * as environments from "../../environments.js";
+import { CortiAuth } from "../auth/CortiAuth.js";
+import { CustomStream } from "../stream/CustomStream.js";
+import { CustomTranscribe } from "../transcribe/CustomTranscribe.js";
+import { authToBaseOptions } from "../utils/authToBaseOptions.js";
+import { setDefaultWithCredentials } from "../utils/withCredentialsConfig.js";
+import { type Environment, getEnvironment } from "../utils/environment.js";
+import { resolveClientOptions } from "../utils/resolveClientOptions.js";
 
 type TokenDerivableAuth =
     | {

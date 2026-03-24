@@ -1,6 +1,6 @@
-import { StreamClient } from "../api/resources/stream/client/Client.js";
-import type { StreamSocket } from "../api/resources/stream/client/Socket.js";
-import * as core from "../core/index.js";
+import { StreamClient } from "../../api/resources/stream/client/Client.js";
+import type { StreamSocket } from "../../api/resources/stream/client/Socket.js";
+import * as core from "../../core/index.js";
 
 export type CustomStreamConnectArgs = { id: string } & Partial<
     Omit<StreamClient.ConnectArgs, "id" | "tenantName" | "token">

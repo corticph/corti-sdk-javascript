@@ -1,12 +1,12 @@
-import type * as Corti from "../api/index.js";
-import { AuthClient } from "../api/resources/auth/client/Client.js";
-import type { OAuthAuthProvider } from "../auth/OAuthAuthProvider.js";
-import * as core from "../core/index.js";
-import { ParseError } from "../core/schemas/index.js";
-import { buildTokenRequestBody } from "./utils/buildTokenRequestBody.js";
-import { type Environment, getEnvironment } from "./utils/environment.js";
-import { CODE_VERIFIER_KEY, getLocalStorageItem, setLocalStorageItem } from "./utils/localStorageHelpers.js";
-import { generateCodeChallenge, generateCodeVerifier } from "./utils/pkceHelpers.js";
+import type * as Corti from "../../api/index.js";
+import { AuthClient } from "../../api/resources/auth/client/Client.js";
+import type { OAuthAuthProvider } from "../../auth/OAuthAuthProvider.js";
+import * as core from "../../core/index.js";
+import { ParseError } from "../../core/schemas/index.js";
+import { buildTokenRequestBody } from "../utils/buildTokenRequestBody.js";
+import { type Environment, getEnvironment } from "../utils/environment.js";
+import { CODE_VERIFIER_KEY, getLocalStorageItem, setLocalStorageItem } from "../utils/localStorageHelpers.js";
+import { generateCodeChallenge, generateCodeVerifier } from "../utils/pkceHelpers.js";
 
 interface Options {
     skipRedirect?: boolean;
