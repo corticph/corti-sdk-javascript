@@ -84,6 +84,8 @@ export declare namespace CortiClient {
 
 export class CortiClient extends BaseCortiClient {
     protected override _auth: CortiAuth | undefined;
+    protected override _stream: CustomStream | undefined;
+    protected override _transcribe: CustomTranscribe | undefined;
 
     constructor(options: CortiClient.Options) {
         const opts = options as {
