@@ -5,6 +5,7 @@ import { CortiAuth } from "./CortiAuth.js";
 import { CustomStream } from "./CustomStream.js";
 import { CustomTranscribe } from "./CustomTranscribe.js";
 import { authToBaseOptions } from "./utils/authToBaseOptions.js";
+import { setDefaultWithCredentials } from "./utils/withCredentialsConfig.js";
 import { type Environment, getEnvironment } from "./utils/environment.js";
 import { resolveClientOptions } from "./utils/resolveClientOptions.js";
 
@@ -29,7 +30,9 @@ type TokenDerivableAuth =
 type OptionsBase = Omit<
     BaseCortiClient.Options,
     "clientId" | "clientSecret" | "token" | "environment" | "tenantName" | "baseUrl"
->;
+> & {
+    withCredentials?: boolean;
+};
 
 export declare namespace CortiClient {
     export type Auth =
@@ -98,6 +101,8 @@ export class CortiClient extends BaseCortiClient {
         } as Parameters<typeof authToBaseOptions>[1];
 
         super(authToBaseOptions(opts.auth, restOptions));
+
+        setDefaultWithCredentials((options as OptionsBase).withCredentials);
     }
 
     public override get auth(): CortiAuth {

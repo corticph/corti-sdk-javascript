@@ -12,3 +12,6 @@ src/index.ts
 
 # Thin re-export wrapper — custom logic lives in src/custom/OAuthAuthProvider.ts
 src/auth/OAuthAuthProvider.ts
+
+# Fetcher barrel re-exports from custom/ where fetcher injects global withCredentials default.
+src/core/fetcher/index.ts
