@@ -2,7 +2,7 @@ import type { OAuthAuthProvider } from "../../auth/OAuthAuthProvider.js";
 import type * as core from "../../core/index.js";
 import { ParseError } from "../../core/schemas/index.js";
 import type * as environments from "../../environments.js";
-import type { CortiClient } from "../overrides/CortiClient.js";
+import type { CortiClient } from "../CortiClient.js";
 import { decodeToken } from "./decodeToken.js";
 import { type Environment, getEnvironment } from "./environment.js";
 
