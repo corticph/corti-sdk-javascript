@@ -4,7 +4,11 @@
 
 export interface CodesGeneralReadResponseEvidencesItem {
     /** Index from the context input array */
-    contextIndex?: number;
+    contextIndex: number;
     /** Part of input text */
-    text?: string;
+    text: string;
+    /** 0-based start character offset of the evidence span (inclusive) */
+    start: number;
+    /** 0-based end character offset of the evidence span (exclusive) */
+    end: number;
 }
