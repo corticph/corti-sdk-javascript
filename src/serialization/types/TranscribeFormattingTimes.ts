@@ -9,8 +9,8 @@ import * as core from "../../core/index.js";
 export const TranscribeFormattingTimes: core.serialization.Schema<
     serializers.TranscribeFormattingTimes.Raw,
     Corti.TranscribeFormattingTimes
-> = core.serialization.enum_(["as_dictated", "h12", "h24"]);
+> = core.serialization.enum_(["locale", "h24", "h12", "as_dictated"]);
 
 export declare namespace TranscribeFormattingTimes {
-    export type Raw = "as_dictated" | "h12" | "h24";
+    export type Raw = "locale" | "h24" | "h12" | "as_dictated";
 }

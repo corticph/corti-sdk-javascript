@@ -9,8 +9,8 @@ import * as core from "../../core/index.js";
 export const CommonCodingSystemEnum: core.serialization.Schema<
     serializers.CommonCodingSystemEnum.Raw,
     Corti.CommonCodingSystemEnum
-> = core.serialization.enum_(["icd10cm", "icd10pcs", "cpt"]);
+> = core.serialization.enum_(["icd10cm-inpatient", "icd10cm-outpatient", "icd10pcs", "cpt"]);
 
 export declare namespace CommonCodingSystemEnum {
-    export type Raw = "icd10cm" | "icd10pcs" | "cpt";
+    export type Raw = "icd10cm-inpatient" | "icd10cm-outpatient" | "icd10pcs" | "cpt";
 }

@@ -16,4 +16,6 @@ export interface CodesGeneralReadResponse {
     display: string;
     /** The evidence for the prediction */
     evidences?: Corti.CodesGeneralReadResponseEvidencesItem[];
+    /** Codes the model also considered for this prediction. */
+    alternatives?: Corti.CodesGeneralReadResponseAlternativesItem[];
 }

@@ -5,9 +5,9 @@
 import * as Corti from "../index.js";
 
 export interface CodesGeneralResponse {
-    /** Highest confidence bundle of codes, preselected by the code prediction model */
+    /** Codes predicted by the model. */
     codes: Corti.CodesGeneralReadResponse[];
-    /** Full list of candidate codes as predicted by the model, rank sorted by model confidence */
+    /** Lower-confidence codes the model considered potentially relevant but excluded from the predicted set. */
     candidates: Corti.CodesGeneralReadResponse[];
-    usageInfo?: Corti.CommonUsageInfo;
+    usageInfo: Corti.CommonUsageInfo;
 }
