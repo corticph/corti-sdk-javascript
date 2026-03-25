@@ -98,8 +98,11 @@ jobs:
           VERSION="${{ steps.version.outputs.version }}"
           npm version "$VERSION" --no-git-tag-version
           sed -i "s/SDK_VERSION = \"[^\"]*\"/SDK_VERSION = \"${VERSION}\"/" src/version.ts
-          echo "package.json version: $(node -p "require('./package.json').version")"
-          echo "src/version.ts: $(cat src/version.ts)"
+          sed -i "s/\"X-Fern-SDK-Version\": \"[^\"]*\"/\"X-Fern-SDK-Version\": \"${VERSION}\"/" src/BaseClient.ts
+          sed -i "s|\"User-Agent\": \"@corti/sdk/[^\"]*\"|\"User-Agent\": \"@corti/sdk/${VERSION}\"|" src/BaseClient.ts
+          echo "package.json: $(node -p "require('./package.json').version")"
+          echo "version.ts: $(cat src/version.ts)"
+          echo "BaseClient.ts: $(grep -E 'SDK-Version|User-Agent' src/BaseClient.ts | xargs)"
 
       - name: Set up node
         uses: actions/setup-node@v6
