@@ -1,10 +1,10 @@
-import { CortiClient } from "../../src";
 import { faker } from "@faker-js/faker";
-import { createTestCortiClient, createTestInteraction, cleanupInteractions, setupConsoleWarnSpy } from "./testUtils";
+import type { CortiClient } from "../../src";
+import { cleanupInteractions, createTestCortiClient, createTestInteraction, setupConsoleWarnSpy } from "./testUtils";
 
 describe("cortiClient.interactions.update", () => {
     let cortiClient: CortiClient;
-    let consoleWarnSpy: jest.SpyInstance;
+    let consoleWarnSpy: ReturnType<typeof setupConsoleWarnSpy>;
     let createdInteractionIds: string[] = [];
 
     beforeAll(() => {
@@ -22,7 +22,7 @@ describe("cortiClient.interactions.update", () => {
         createdInteractionIds = [];
     });
 
-    describe("should update interaction with minimal fields", () => {
+    describe("should update interaction with only required values", () => {
         it("should update interaction with empty request (no changes) without errors or warnings", async () => {
             expect.assertions(2);
 
@@ -313,37 +313,47 @@ describe("cortiClient.interactions.update", () => {
         });
     });
 
-    it("should update interaction with all optional parameters without errors or warnings", async () => {
-        expect.assertions(2);
+    describe("should update interaction with all optional values", () => {
+        it("should update interaction with all optional parameters without errors or warnings", async () => {
+            expect.assertions(2);
 
-        const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
-        const startDate = faker.date.recent();
-        const endDate = faker.date.future({ refDate: startDate });
-        const birthDate = faker.date.birthdate({ min: 18, max: 100, mode: "age" });
+            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const startDate = faker.date.recent();
+            const endDate = faker.date.future({ refDate: startDate });
+            const birthDate = faker.date.birthdate({ min: 18, max: 100, mode: "age" });
 
-        const result = await cortiClient.interactions.update(interactionId, {
-            assignedUserId: faker.string.uuid(),
-            encounter: {
-                identifier: faker.string.alphanumeric(20),
-                status: "in-progress",
-                type: "consultation",
-                title: faker.lorem.sentence(),
-                period: {
-                    startedAt: startDate,
-                    endedAt: endDate,
+            const result = await cortiClient.interactions.update(interactionId, {
+                assignedUserId: faker.string.uuid(),
+                encounter: {
+                    identifier: faker.string.alphanumeric(20),
+                    status: "in-progress",
+                    type: "consultation",
+                    title: faker.lorem.sentence(),
+                    period: {
+                        startedAt: startDate,
+                        endedAt: endDate,
+                    },
                 },
-            },
-            patient: {
-                identifier: faker.string.alphanumeric(15),
-                name: faker.person.fullName(),
-                gender: "male",
-                birthDate: birthDate,
-                pronouns: faker.helpers.arrayElement(["he/him", "she/her", "they/them"]),
-            },
-        });
+                patient: {
+                    identifier: faker.string.alphanumeric(15),
+                    name: faker.person.fullName(),
+                    gender: "male",
+                    birthDate: birthDate,
+                    pronouns: faker.helpers.arrayElement(["he/him", "she/her", "they/them"]),
+                },
+            });
 
-        expect(result).toBeDefined();
-        expect(consoleWarnSpy).not.toHaveBeenCalled();
+            expect(result).toBeDefined();
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
+    });
+
+    describe("should throw error when required parameters are missing", () => {
+        it("should throw error when interaction ID is undefined", async () => {
+            expect.assertions(1);
+
+            await expect(cortiClient.interactions.update(undefined as any, {})).rejects.toThrow();
+        });
     });
 
     describe("should throw error when invalid parameters are provided", () => {

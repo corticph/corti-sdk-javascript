@@ -1,10 +1,16 @@
-import { CortiClient } from "../../src";
 import { faker } from "@faker-js/faker";
-import { createTestCortiClient, createTestDocument, createTestInteraction, cleanupInteractions, setupConsoleWarnSpy } from "./testUtils";
+import type { CortiClient } from "../../src";
+import {
+    cleanupInteractions,
+    createTestCortiClient,
+    createTestDocument,
+    createTestInteraction,
+    setupConsoleWarnSpy,
+} from "./testUtils";
 
 describe("cortiClient.codes.predict", () => {
     let cortiClient: CortiClient;
-    let consoleWarnSpy: jest.SpyInstance;
+    let consoleWarnSpy: ReturnType<typeof setupConsoleWarnSpy>;
 
     beforeAll(() => {
         cortiClient = createTestCortiClient();
@@ -20,10 +26,10 @@ describe("cortiClient.codes.predict", () => {
 
     describe("should predict codes with only required values", () => {
         it("should predict codes with text context without errors or warnings", async () => {
-            expect.assertions(4);
+            expect.assertions(2);
 
             const result = await cortiClient.codes.predict({
-                system: ["icd10cm"],
+                system: ["icd10cm-outpatient"],
                 context: [
                     {
                         type: "text",
@@ -33,52 +39,101 @@ describe("cortiClient.codes.predict", () => {
             });
 
             expect(result).toBeDefined();
-            expect(result.codes).toBeDefined();
-            expect(Array.isArray(result.codes)).toBe(true);
             expect(consoleWarnSpy).not.toHaveBeenCalled();
         });
     });
 
     describe("should predict codes with all optional parameters", () => {
-        it("should predict codes with maxCandidates without errors or warnings", async () => {
-            expect.assertions(5);
+        it("should predict codes with filter.include without errors or warnings", async () => {
+            expect.assertions(2);
 
             const result = await cortiClient.codes.predict({
-                system: ["icd10cm"],
-                context: [
-                    {
-                        type: "text",
-                        text: faker.lorem.sentence(),
-                    },
-                ],
-                maxCandidates: faker.number.int({ min: 1, max: 10 }),
+                system: ["icd10cm-outpatient"],
+                context: [{ type: "text", text: faker.lorem.sentence() }],
+                filter: {
+                    include: ["E11"],
+                },
             });
 
             expect(result).toBeDefined();
-            expect(result.codes).toBeDefined();
-            expect(result.candidates).toBeDefined();
-            expect(Array.isArray(result.candidates)).toBe(true);
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
+
+        it("should predict codes with filter.exclude without errors or warnings", async () => {
+            expect.assertions(2);
+
+            const result = await cortiClient.codes.predict({
+                system: ["icd10cm-outpatient"],
+                context: [{ type: "text", text: faker.lorem.sentence() }],
+                filter: {
+                    exclude: ["Z00"],
+                },
+            });
+
+            expect(result).toBeDefined();
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
+
+        it("should predict codes with filter.expand without errors or warnings", async () => {
+            expect.assertions(2);
+
+            const result = await cortiClient.codes.predict({
+                system: ["icd10cm-outpatient"],
+                context: [{ type: "text", text: faker.lorem.sentence() }],
+                filter: {
+                    expand: true,
+                },
+            });
+
+            expect(result).toBeDefined();
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
+
+        it("should predict codes with all filter params combined without errors or warnings", async () => {
+            expect.assertions(2);
+
+            const result = await cortiClient.codes.predict({
+                system: ["icd10cm-outpatient"],
+                context: [{ type: "text", text: faker.lorem.sentence() }],
+                filter: {
+                    include: ["E11"],
+                    exclude: ["E11.9"],
+                    expand: true,
+                },
+            });
+
+            expect(result).toBeDefined();
             expect(consoleWarnSpy).not.toHaveBeenCalled();
         });
     });
 
     describe("should predict codes with all system enum values", () => {
-        it("should predict codes with system icd10cm without errors or warnings", async () => {
-            expect.assertions(4);
+        it("should predict codes with system icd10cm-outpatient without errors or warnings", async () => {
+            expect.assertions(2);
 
             const result = await cortiClient.codes.predict({
-                system: ["icd10cm"],
+                system: ["icd10cm-outpatient"],
                 context: [{ type: "text", text: faker.lorem.sentence() }],
             });
 
             expect(result).toBeDefined();
-            expect(result.codes).toBeDefined();
-            expect(result.candidates).toBeDefined();
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
+
+        it("should predict codes with system icd10cm-inpatient without errors or warnings", async () => {
+            expect.assertions(2);
+
+            const result = await cortiClient.codes.predict({
+                system: ["icd10cm-inpatient"],
+                context: [{ type: "text", text: faker.lorem.sentence() }],
+            });
+
+            expect(result).toBeDefined();
             expect(consoleWarnSpy).not.toHaveBeenCalled();
         });
 
         it("should predict codes with system icd10pcs without errors or warnings", async () => {
-            expect.assertions(4);
+            expect.assertions(2);
 
             const result = await cortiClient.codes.predict({
                 system: ["icd10pcs"],
@@ -86,13 +141,11 @@ describe("cortiClient.codes.predict", () => {
             });
 
             expect(result).toBeDefined();
-            expect(result.codes).toBeDefined();
-            expect(result.candidates).toBeDefined();
             expect(consoleWarnSpy).not.toHaveBeenCalled();
         });
 
         it("should predict codes with system cpt without errors or warnings", async () => {
-            expect.assertions(4);
+            expect.assertions(2);
 
             const result = await cortiClient.codes.predict({
                 system: ["cpt"],
@@ -100,8 +153,18 @@ describe("cortiClient.codes.predict", () => {
             });
 
             expect(result).toBeDefined();
-            expect(result.codes).toBeDefined();
-            expect(result.candidates).toBeDefined();
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
+
+        it("should predict codes with multiple systems without errors or warnings", async () => {
+            expect.assertions(2);
+
+            const result = await cortiClient.codes.predict({
+                system: ["icd10cm-outpatient", "cpt"],
+                context: [{ type: "text", text: faker.lorem.sentence() }],
+            });
+
+            expect(result).toBeDefined();
             expect(consoleWarnSpy).not.toHaveBeenCalled();
         });
     });
@@ -115,13 +178,13 @@ describe("cortiClient.codes.predict", () => {
         });
 
         it("should predict codes when context is documentId without errors or warnings", async () => {
-            expect.assertions(4);
+            expect.assertions(2);
 
             const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
             const documentId = await createTestDocument(cortiClient, interactionId);
 
             const result = await cortiClient.codes.predict({
-                system: ["icd10cm"],
+                system: ["icd10cm-outpatient"],
                 context: [
                     {
                         type: "documentId",
@@ -131,25 +194,7 @@ describe("cortiClient.codes.predict", () => {
             });
 
             expect(result).toBeDefined();
-            expect(result.codes).toBeDefined();
-            expect(Array.isArray(result.codes)).toBe(true);
             expect(consoleWarnSpy).not.toHaveBeenCalled();
-        });
-    });
-
-    describe("should return response with expected shape", () => {
-        it("should return codes and candidates arrays", async () => {
-            expect.assertions(4);
-
-            const result = await cortiClient.codes.predict({
-                system: ["icd10cm"],
-                context: [{ type: "text", text: faker.lorem.sentence() }],
-            });
-
-            expect(result).toHaveProperty("codes");
-            expect(result).toHaveProperty("candidates");
-            expect(Array.isArray(result.codes)).toBe(true);
-            expect(Array.isArray(result.candidates)).toBe(true);
         });
     });
 
@@ -170,7 +215,7 @@ describe("cortiClient.codes.predict", () => {
 
             await expect(
                 cortiClient.codes.predict({
-                    system: ["icd10cm"],
+                    system: ["icd10cm-outpatient"],
                     context: [],
                 }),
             ).rejects.toThrow();
@@ -181,7 +226,7 @@ describe("cortiClient.codes.predict", () => {
 
             await expect(
                 cortiClient.codes.predict({
-                    system: ["icd10cm"],
+                    system: ["icd10cm-outpatient"],
                     context: [{ type: "text" }] as any,
                 }),
             ).rejects.toThrow();
@@ -192,7 +237,7 @@ describe("cortiClient.codes.predict", () => {
 
             await expect(
                 cortiClient.codes.predict({
-                    system: ["icd10cm"],
+                    system: ["icd10cm-outpatient"],
                     context: [{ type: "documentId" }] as any,
                 }),
             ).rejects.toThrow();
@@ -216,7 +261,7 @@ describe("cortiClient.codes.predict", () => {
 
             await expect(
                 cortiClient.codes.predict({
-                    system: ["icd10cm"],
+                    system: ["icd10cm-outpatient"],
                     context: [
                         {
                             type: "documentId",

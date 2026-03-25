@@ -1,18 +1,17 @@
-import { CortiClient } from "../../src";
 import { faker } from "@faker-js/faker";
-import { createReadStream, readFileSync, createWriteStream } from "fs";
-import { Readable } from "stream";
+import { readFileSync } from "fs";
+import type { CortiClient } from "../../src";
 import {
+    cleanupInteractions,
     createTestCortiClient,
     createTestInteraction,
     createTestRecording,
-    cleanupInteractions,
     setupConsoleWarnSpy,
 } from "./testUtils";
 
 describe("cortiClient.recordings.get", () => {
     let cortiClient: CortiClient;
-    let consoleWarnSpy: jest.SpyInstance;
+    let consoleWarnSpy: ReturnType<typeof setupConsoleWarnSpy>;
     let createdInteractionIds: string[] = [];
 
     beforeAll(() => {
@@ -30,7 +29,7 @@ describe("cortiClient.recordings.get", () => {
         createdInteractionIds = [];
     });
 
-    describe("should get recording from server-side", () => {
+    describe("should get recording with only required values", () => {
         it("should get recording using stream() method without errors or warnings", async () => {
             expect.assertions(4);
 
@@ -100,41 +99,7 @@ describe("cortiClient.recordings.get", () => {
         });
     });
 
-    describe("should handle get errors", () => {
-        it("should throw error when interaction ID is invalid format", async () => {
-            expect.assertions(1);
-
-            await expect(cortiClient.recordings.get("invalid-uuid", faker.string.uuid())).rejects.toThrow(
-                "Status code: 400",
-            );
-        });
-
-        it("should throw error when recording ID is invalid format", async () => {
-            expect.assertions(1);
-
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
-
-            await expect(cortiClient.recordings.get(interactionId, "invalid-uuid")).rejects.toThrow("Status code: 400");
-        });
-
-        it("should throw error when interaction ID does not exist", async () => {
-            expect.assertions(1);
-
-            await expect(cortiClient.recordings.get(faker.string.uuid(), faker.string.uuid())).rejects.toThrow(
-                "Status code: 404",
-            );
-        });
-
-        it("should throw error when recording ID does not exist", async () => {
-            expect.assertions(1);
-
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
-
-            await expect(cortiClient.recordings.get(interactionId, faker.string.uuid())).rejects.toThrow(
-                "Status code: 404",
-            );
-        });
-
+    describe("should throw error when required parameters are missing", () => {
         it("should throw error when interaction ID is null", async () => {
             expect.assertions(1);
 
@@ -168,6 +133,42 @@ describe("cortiClient.recordings.get", () => {
 
             await expect(cortiClient.recordings.get(interactionId, undefined as any)).rejects.toThrow(
                 "Expected string. Received undefined.",
+            );
+        });
+    });
+
+    describe("should throw error when invalid parameters are provided", () => {
+        it("should throw error when interaction ID is invalid format", async () => {
+            expect.assertions(1);
+
+            await expect(cortiClient.recordings.get("invalid-uuid", faker.string.uuid())).rejects.toThrow(
+                "Status code: 400",
+            );
+        });
+
+        it("should throw error when recording ID is invalid format", async () => {
+            expect.assertions(1);
+
+            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+
+            await expect(cortiClient.recordings.get(interactionId, "invalid-uuid")).rejects.toThrow("Status code: 400");
+        });
+
+        it("should throw error when interaction ID does not exist", async () => {
+            expect.assertions(1);
+
+            await expect(cortiClient.recordings.get(faker.string.uuid(), faker.string.uuid())).rejects.toThrow(
+                "Status code: 404",
+            );
+        });
+
+        it("should throw error when recording ID does not exist", async () => {
+            expect.assertions(1);
+
+            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+
+            await expect(cortiClient.recordings.get(interactionId, faker.string.uuid())).rejects.toThrow(
+                "Status code: 404",
             );
         });
     });

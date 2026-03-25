@@ -1,18 +1,18 @@
-import { CortiClient } from "../../src";
 import { faker } from "@faker-js/faker";
+import type { CortiClient } from "../../src";
 import {
+    cleanupInteractions,
     createTestCortiClient,
     createTestInteraction,
     createTestRecording,
     createTestTranscript,
     setupConsoleWarnSpy,
-    cleanupInteractions,
 } from "./testUtils";
 
 describe("cortiClient.transcripts.list", () => {
     let cortiClient: CortiClient;
-    let consoleWarnSpy: jest.SpyInstance;
-    const createdInteractionIds: string[] = [];
+    let consoleWarnSpy: ReturnType<typeof setupConsoleWarnSpy>;
+    let createdInteractionIds: string[] = [];
 
     beforeAll(() => {
         cortiClient = createTestCortiClient();
@@ -20,57 +20,60 @@ describe("cortiClient.transcripts.list", () => {
 
     beforeEach(() => {
         consoleWarnSpy = setupConsoleWarnSpy();
+        createdInteractionIds = [];
     });
 
     afterEach(async () => {
         consoleWarnSpy.mockRestore();
         await cleanupInteractions(cortiClient, createdInteractionIds);
-        createdInteractionIds.length = 0;
+        createdInteractionIds = [];
     });
 
-    it("should return empty list when interaction has no transcripts", async () => {
-        expect.assertions(2);
+    describe("should list transcripts with only required values", () => {
+        it("should return empty list when interaction has no transcripts", async () => {
+            expect.assertions(2);
 
-        const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
 
-        const result = await cortiClient.transcripts.list(interactionId);
+            const result = await cortiClient.transcripts.list(interactionId);
 
-        expect(result.transcripts).toBe(null);
-        expect(consoleWarnSpy).not.toHaveBeenCalled();
+            expect(result.transcripts).toBe(null);
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
+
+        it("should return transcripts when interaction has transcripts", async () => {
+            expect.assertions(3);
+
+            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const recordingId = await createTestRecording(cortiClient, interactionId);
+            const transcriptId = await createTestTranscript(cortiClient, interactionId, recordingId);
+
+            const result = await cortiClient.transcripts.list(interactionId);
+
+            expect(result.transcripts?.length || 0).toBeGreaterThan(0);
+            expect(result.transcripts?.some((transcript) => transcript.id === transcriptId)).toBe(true);
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
+
+        it("should return multiple transcripts when interaction has multiple transcripts", async () => {
+            expect.assertions(4);
+
+            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const recordingId1 = await createTestRecording(cortiClient, interactionId);
+            const recordingId2 = await createTestRecording(cortiClient, interactionId);
+            const transcriptId1 = await createTestTranscript(cortiClient, interactionId, recordingId1);
+            const transcriptId2 = await createTestTranscript(cortiClient, interactionId, recordingId2);
+
+            const result = await cortiClient.transcripts.list(interactionId);
+
+            expect(result.transcripts?.length || 0).toBeGreaterThanOrEqual(2);
+            expect(result.transcripts?.some((transcript) => transcript.id === transcriptId1)).toBe(true);
+            expect(result.transcripts?.some((transcript) => transcript.id === transcriptId2)).toBe(true);
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
     });
 
-    it("should return transcripts when interaction has transcripts", async () => {
-        expect.assertions(3);
-
-        const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
-        const recordingId = await createTestRecording(cortiClient, interactionId);
-        const transcriptId = await createTestTranscript(cortiClient, interactionId, recordingId);
-
-        const result = await cortiClient.transcripts.list(interactionId);
-
-        expect(result.transcripts?.length || 0).toBeGreaterThan(0);
-        expect(result.transcripts?.some((transcript) => transcript.id === transcriptId)).toBe(true);
-        expect(consoleWarnSpy).not.toHaveBeenCalled();
-    });
-
-    it("should return multiple transcripts when interaction has multiple transcripts", async () => {
-        expect.assertions(4);
-
-        const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
-        const recordingId1 = await createTestRecording(cortiClient, interactionId);
-        const recordingId2 = await createTestRecording(cortiClient, interactionId);
-        const transcriptId1 = await createTestTranscript(cortiClient, interactionId, recordingId1);
-        const transcriptId2 = await createTestTranscript(cortiClient, interactionId, recordingId2);
-
-        const result = await cortiClient.transcripts.list(interactionId);
-
-        expect(result.transcripts?.length || 0).toBeGreaterThanOrEqual(2);
-        expect(result.transcripts?.some((transcript) => transcript.id === transcriptId1)).toBe(true);
-        expect(result.transcripts?.some((transcript) => transcript.id === transcriptId2)).toBe(true);
-        expect(consoleWarnSpy).not.toHaveBeenCalled();
-    });
-
-    describe("full parameter tests", () => {
+    describe("should list transcripts with all optional values", () => {
         it("should return transcripts with full parameter set to true", async () => {
             expect.assertions(3);
 
@@ -117,19 +120,7 @@ describe("cortiClient.transcripts.list", () => {
         });
     });
 
-    describe("should throw error when invalid parameters are provided", () => {
-        it("should throw error when interaction ID is invalid format", async () => {
-            expect.assertions(1);
-
-            await expect(cortiClient.transcripts.list("invalid-uuid")).rejects.toThrow("Status code: 400");
-        });
-
-        it("should throw error when interaction ID does not exist", async () => {
-            expect.assertions(1);
-
-            await expect(cortiClient.transcripts.list(faker.string.uuid())).rejects.toThrow("Status code: 404");
-        });
-
+    describe("should throw error when required parameters are missing", () => {
         it("should throw error when interaction ID is null", async () => {
             expect.assertions(1);
 
@@ -142,6 +133,20 @@ describe("cortiClient.transcripts.list", () => {
             await expect(cortiClient.transcripts.list(undefined as any)).rejects.toThrow(
                 "Expected string. Received undefined.",
             );
+        });
+    });
+
+    describe("should throw error when invalid parameters are provided", () => {
+        it("should throw error when interaction ID is invalid format", async () => {
+            expect.assertions(1);
+
+            await expect(cortiClient.transcripts.list("invalid-uuid")).rejects.toThrow("Status code: 400");
+        });
+
+        it("should throw error when interaction ID does not exist", async () => {
+            expect.assertions(1);
+
+            await expect(cortiClient.transcripts.list(faker.string.uuid())).rejects.toThrow("Status code: 404");
         });
     });
 });

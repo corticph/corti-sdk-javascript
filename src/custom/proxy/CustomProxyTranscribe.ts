@@ -1,39 +1,26 @@
+import type * as Corti from "../../api/index.js";
+import { CortiEnvironment } from "../../environments.js";
+import { CustomTranscribe } from "../transcribe/CustomTranscribe.js";
+import type { CustomTranscribeSocket } from "../transcribe/CustomTranscribeSocket.js";
+import type { ProxyOptions } from "../utils/encodeHeadersAsWsProtocols.js";
+
 /**
- * Patch: Proxy-specific Transcribe wrapper that enforces `proxy` as required.
- *
- * Reuses the underlying CustomTranscribe class to preserve the logic we added on top
- * of generated sockets (e.g., sending configuration messages, handling responses).
+ * Lightweight proxy transcribe client — no CortiClient or auth needed.
+ * Pass a proxy URL (and optionally protocols/queryParameters) directly in connect().
  */
-
-import * as environments from "../../environments.js";
-import * as api from "../../api/index.js";
-import { Transcribe } from "../CustomTranscribe.js";
-import { TranscribeSocket } from "../CustomTranscribeSocket.js";
-import type { CortiClient } from "../CortiClient.js";
-
-export type ProxyOptions = {
-    url: string;
-    /** Array passed as-is to WS; object encoded like headers (name, encodeURIComponent(value), ...). */
-    protocols?: string[] | CortiClient.HeadersRecord;
-    queryParameters?: Record<string, string>;
-};
-
 export class CustomProxyTranscribe {
-    private _transcribe: Transcribe;
-
-    constructor() {
-        this._transcribe = new Transcribe({
-            environment: environments.CortiEnvironment.Eu,
-            tenantName: "",
-        });
-    }
+    private readonly _transcribe = new CustomTranscribe({
+        environment: CortiEnvironment.Eu,
+        tenantName: "",
+    });
 
     public connect(args: {
         proxy: ProxyOptions;
-        configuration?: api.TranscribeConfig;
+        configuration?: Corti.TranscribeConfig;
+        awaitConfiguration?: boolean;
         debug?: boolean;
         reconnectAttempts?: number;
-    }): Promise<TranscribeSocket> {
+    }): Promise<CustomTranscribeSocket> {
         return this._transcribe.connect(args);
     }
 }

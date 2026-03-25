@@ -1,105 +1,92 @@
-import * as core from "../../core/index.js";
-import { decodeToken } from "./decodeToken.js";
-import { CortiClient } from "../CortiClient.js";
+import type { OAuthAuthProvider } from "../../auth/OAuthAuthProvider.js";
+import type * as core from "../../core/index.js";
 import { ParseError } from "../../core/schemas/index.js";
-import { Environment, getEnvironment } from "./getEnvironmentFromString.js";
-import { ExpectedTokenResponse } from "../RefreshBearerProvider.js";
+import type * as environments from "../../environments.js";
+import type { CortiClient } from "../CortiClient.js";
+import { decodeToken } from "./decodeToken.js";
+import { type Environment, getEnvironment } from "./environment.js";
 
-type ResolvedClientOptions = {
+export type ResolvedClientOptions = {
     environment: Environment;
     tenantName: core.Supplier<string>;
-    initialTokenResponse?: Promise<ExpectedTokenResponse>;
+    /** Seeded token response from the discovery call — passed to the provider to avoid a second refreshAccessToken call. */
+    initialTokenResponse?: Promise<OAuthAuthProvider.ExpectedTokenResponse>;
 };
 
-function isClientCredentialsOptions(options: CortiClient.Options): options is CortiClient.OptionsWithClientCredentials {
-    return !!options.auth && "clientId" in options.auth;
+// Proxy mode: baseUrl or a full CortiEnvironmentUrls object — decode errors are silently ignored
+function isProxyMode(options: { baseUrl?: string; environment?: Environment }): boolean {
+    return !!(
+        options.baseUrl ||
+        (options.environment && typeof options.environment === "object" && !("then" in (options.environment as object)))
+    );
+}
+
+function isCcOrRopcAuth(auth: CortiClient.Auth): boolean {
+    return "clientSecret" in auth || "username" in auth;
 }
 
 export function resolveClientOptions(options: CortiClient.Options): ResolvedClientOptions {
-    if (isClientCredentialsOptions(options)) {
+    const opts = options as {
+        auth?: CortiClient.Auth;
+        tenantName?: string;
+        environment?: Environment;
+        baseUrl?: string;
+    };
+
+    // CC / ROPC — tenantName and environment are required by the Options type for this auth shape
+    if (opts.auth && isCcOrRopcAuth(opts.auth)) {
         return {
-            tenantName: options.tenantName,
-            environment: options.environment,
+            tenantName: opts.tenantName as string,
+            environment: opts.environment as Environment,
         };
     }
 
-    // When auth is not provided (baseUrl-only or environment-object scenario), use provided values or defaults
-    if (!options.auth) {
+    // Both already explicit — skip all JWT parsing regardless of auth variant
+    if (opts.tenantName && opts.environment) {
+        return { tenantName: opts.tenantName, environment: opts.environment };
+    }
+
+    // No auth (baseUrl-only or CortiEnvironmentUrls scenario)
+    if (!opts.auth) {
+        return { tenantName: opts.tenantName || "", environment: opts.environment || "" };
+    }
+
+    // accessToken present — decode to fill in whichever of tenantName/environment is still missing
+    if ("accessToken" in opts.auth) {
+        const decoded = decodeToken((opts.auth as { accessToken?: string }).accessToken || "");
+        if (!decoded && !isProxyMode(opts)) {
+            throw new ParseError([{ path: ["auth", "accessToken"], message: "Invalid access token format" }]);
+        }
         return {
-            tenantName: options.tenantName || "",
-            environment: options.environment || "",
+            tenantName: opts.tenantName || decoded?.tenantName || "",
+            environment: opts.environment || decoded?.environment || "",
         };
     }
 
-    if ("accessToken" in options.auth) {
-        const decoded = decodeToken(options.auth.accessToken || "");
-
-        /**
-         * Do not throw an error when we have some proxying:
-         *  baseUrl is set
-         *  or
-         *  environment is explicitly provided (not string-generated)
-         */
-        if (!decoded && !options.baseUrl && typeof options.environment !== "object") {
+    // Only refreshAccessToken — fire once, share the same promise for tenant/env discovery AND
+    // as the seed token for the provider (avoids a second refreshAccessToken call on first API request).
+    const auth = opts.auth as {
+        refreshAccessToken: OAuthAuthProvider.RefreshAccessTokenFunction;
+        refreshToken?: string;
+    };
+    const discoveryPromise = (async () => {
+        const tokenResponse = await auth.refreshAccessToken(auth.refreshToken);
+        const decoded = decodeToken(tokenResponse.accessToken ?? "");
+        if (!decoded && !isProxyMode(opts)) {
             throw new ParseError([
-                {
-                    path: ["auth", "accessToken"],
-                    message: "Invalid access token format",
-                },
+                { path: ["auth", "refreshAccessToken"], message: "Returned invalid access token format" },
             ]);
         }
-
-        return {
-            tenantName: options.tenantName || decoded?.tenantName || "",
-            environment: options.environment || decoded?.environment || "",
-        };
-    }
-
-    /**
-     * This branch -- is when we have "refreshAccessToken" defined but no accessToken.
-     * Trying to avoid initial request at all cost
-     */
-    if (options.tenantName && options.environment) {
-        return {
-            tenantName: options.tenantName,
-            environment: options.environment,
-        };
-    }
-
-    // At this point, auth exists and has refreshAccessToken (BearerOptions without accessToken)
-    const auth = options.auth as { refreshAccessToken: () => Promise<ExpectedTokenResponse> };
-
-    const tokenResponsePromise = (async () => {
-        const tokenResponse = await core.Supplier.get(auth.refreshAccessToken);
-        const decoded = decodeToken(tokenResponse.accessToken);
-
-        /**
-         * Do not throw an error when we have some proxying:
-         *  baseUrl is set
-         *  or
-         *  environment is explicitly provided (not string-generated)
-         */
-        if (!decoded && !options.baseUrl && typeof options.environment !== "object") {
-            throw new ParseError([
-                {
-                    path: ["auth", "refreshAccessToken"],
-                    message: "Returned invalid access token format",
-                },
-            ]);
-        }
-
-        return {
-            tokenResponse,
-            tenantName: decoded?.tenantName || "",
-            environment: decoded?.environment || "",
-        };
+        return { tokenResponse, tenantName: decoded?.tenantName || "", environment: decoded?.environment || "" };
     })();
 
     return {
-        tenantName: options.tenantName || tokenResponsePromise.then(({ tenantName }) => tenantName),
+        tenantName: opts.tenantName || discoveryPromise.then(({ tenantName }) => tenantName),
+        // Must convert the decoded string region → CortiEnvironmentUrls; Promise<CortiEnvironmentUrls>
+        // is a valid Supplier<CortiEnvironment | CortiEnvironmentUrls>.
         environment:
-            options.environment ||
-            tokenResponsePromise.then(({ environment }) => core.Supplier.get(getEnvironment(environment))),
-        initialTokenResponse: tokenResponsePromise.then((result) => result.tokenResponse),
+            opts.environment ||
+            discoveryPromise.then(({ environment: env }) => getEnvironment(env) as environments.CortiEnvironmentUrls),
+        initialTokenResponse: discoveryPromise.then(({ tokenResponse }) => tokenResponse),
     };
 }

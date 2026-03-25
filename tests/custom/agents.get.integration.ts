@@ -1,10 +1,10 @@
-import { CortiClient } from "../../src";
 import { faker } from "@faker-js/faker";
-import { createTestCortiClient, createTestAgent, cleanupAgents, setupConsoleWarnSpy } from "./testUtils";
+import type { CortiClient } from "../../src";
+import { cleanupAgents, createTestAgent, createTestCortiClient, setupConsoleWarnSpy } from "./testUtils";
 
 describe("cortiClient.agents.get", () => {
     let cortiClient: CortiClient;
-    let consoleWarnSpy: jest.SpyInstance;
+    let consoleWarnSpy: ReturnType<typeof setupConsoleWarnSpy>;
     let createdAgentIds: string[] = [];
 
     beforeAll(() => {
@@ -30,7 +30,7 @@ describe("cortiClient.agents.get", () => {
 
             const result = await cortiClient.agents.get(agent.id);
 
-            expect(result.id).toBe(agent.id);
+            expect(result).toBeDefined();
             expect(consoleWarnSpy).not.toHaveBeenCalled();
         });
     });

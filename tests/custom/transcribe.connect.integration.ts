@@ -1,12 +1,12 @@
-import { CortiClient } from "../../src/custom/CortiClient";
 import { faker } from "@faker-js/faker";
 import * as fs from "fs";
 import * as path from "path";
+import type { CortiClient } from "../../src/custom/CortiClient";
 import { createTestCortiClient, setupConsoleWarnSpy, waitForWebSocketMessage } from "./testUtils";
 
 describe("cortiClient.transcribe.connect", () => {
     let cortiClient: CortiClient;
-    let consoleWarnSpy: jest.SpyInstance;
+    let consoleWarnSpy: ReturnType<typeof setupConsoleWarnSpy>;
     let activeSockets: any[] = [];
 
     beforeAll(async () => {
@@ -19,12 +19,11 @@ describe("cortiClient.transcribe.connect", () => {
     });
 
     afterEach(() => {
-        // Close all active sockets to ensure cleanup
         activeSockets.forEach((socket) => {
             if (socket && typeof socket.close === "function") {
                 try {
                     socket.close();
-                } catch (error) {
+                } catch (_error) {
                     // Ignore errors during cleanup
                 }
             }
@@ -34,29 +33,24 @@ describe("cortiClient.transcribe.connect", () => {
 
     describe("should connect with minimal configuration", () => {
         it("should connect with minimal configuration passed to connect", async () => {
-            expect.assertions(4);
+            expect.assertions(2);
 
             const transcribeSocket = await cortiClient.transcribe.connect({
+                awaitConfiguration: false,
                 configuration: {
                     primaryLanguage: "en",
                 },
             });
             activeSockets.push(transcribeSocket);
 
-            const messages: any[] = [];
-            await waitForWebSocketMessage(transcribeSocket, "CONFIG_ACCEPTED", {
-                messages,
-                rejectOnWrongMessage: true,
-            });
+            await waitForWebSocketMessage(transcribeSocket, "CONFIG_ACCEPTED", { rejectOnWrongMessage: true });
 
-            expect(transcribeSocket).toBeDefined();
-            expect(transcribeSocket.socket).toBeDefined();
             expect(transcribeSocket.socket.readyState).toBe(1); // OPEN
             expect(consoleWarnSpy).not.toHaveBeenCalled();
         });
 
         it("should connect and send configuration manually on open event", async () => {
-            expect.assertions(4);
+            expect.assertions(2);
 
             const transcribeSocket = await cortiClient.transcribe.connect();
             activeSockets.push(transcribeSocket);
@@ -72,8 +66,6 @@ describe("cortiClient.transcribe.connect", () => {
 
             await waitForWebSocketMessage(transcribeSocket, "CONFIG_ACCEPTED", { rejectOnWrongMessage: true });
 
-            expect(transcribeSocket).toBeDefined();
-            expect(transcribeSocket.socket).toBeDefined();
             expect(transcribeSocket.socket.readyState).toBe(1); // OPEN
             expect(consoleWarnSpy).not.toHaveBeenCalled();
         });
@@ -81,9 +73,10 @@ describe("cortiClient.transcribe.connect", () => {
 
     describe("should connect with full configuration", () => {
         it("should connect with full configuration passed to connect", async () => {
-            expect.assertions(4);
+            expect.assertions(2);
 
             const transcribeSocket = await cortiClient.transcribe.connect({
+                awaitConfiguration: false,
                 configuration: {
                     primaryLanguage: "en",
                     interimResults: true,
@@ -99,20 +92,14 @@ describe("cortiClient.transcribe.connect", () => {
             });
             activeSockets.push(transcribeSocket);
 
-            const messages: any[] = [];
-            await waitForWebSocketMessage(transcribeSocket, "CONFIG_ACCEPTED", {
-                messages,
-                rejectOnWrongMessage: true,
-            });
+            await waitForWebSocketMessage(transcribeSocket, "CONFIG_ACCEPTED", { rejectOnWrongMessage: true });
 
-            expect(transcribeSocket).toBeDefined();
-            expect(transcribeSocket.socket).toBeDefined();
             expect(transcribeSocket.socket.readyState).toBe(1); // OPEN
             expect(consoleWarnSpy).not.toHaveBeenCalled();
         });
 
         it("should connect and send full configuration manually on open event", async () => {
-            expect.assertions(4);
+            expect.assertions(2);
 
             const transcribeSocket = await cortiClient.transcribe.connect();
             activeSockets.push(transcribeSocket);
@@ -137,16 +124,15 @@ describe("cortiClient.transcribe.connect", () => {
 
             await waitForWebSocketMessage(transcribeSocket, "CONFIG_ACCEPTED", { rejectOnWrongMessage: true });
 
-            expect(transcribeSocket).toBeDefined();
-            expect(transcribeSocket.socket).toBeDefined();
             expect(transcribeSocket.socket.readyState).toBe(1); // OPEN
             expect(consoleWarnSpy).not.toHaveBeenCalled();
         });
 
         it("should connect with full configuration including command variables", async () => {
-            expect.assertions(4);
+            expect.assertions(2);
 
             const transcribeSocket = await cortiClient.transcribe.connect({
+                awaitConfiguration: false,
                 configuration: {
                     primaryLanguage: "en",
                     interimResults: true,
@@ -169,14 +155,8 @@ describe("cortiClient.transcribe.connect", () => {
             });
             activeSockets.push(transcribeSocket);
 
-            const messages: any[] = [];
-            await waitForWebSocketMessage(transcribeSocket, "CONFIG_ACCEPTED", {
-                messages,
-                rejectOnWrongMessage: true,
-            });
+            await waitForWebSocketMessage(transcribeSocket, "CONFIG_ACCEPTED", { rejectOnWrongMessage: true });
 
-            expect(transcribeSocket).toBeDefined();
-            expect(transcribeSocket.socket).toBeDefined();
             expect(transcribeSocket.socket.readyState).toBe(1); // OPEN
             expect(consoleWarnSpy).not.toHaveBeenCalled();
         });
@@ -187,6 +167,7 @@ describe("cortiClient.transcribe.connect", () => {
             expect.assertions(1);
 
             const transcribeSocket = await cortiClient.transcribe.connect({
+                awaitConfiguration: false,
                 configuration: {
                     primaryLanguage: "en",
                 },
@@ -226,6 +207,7 @@ describe("cortiClient.transcribe.connect", () => {
             expect.assertions(2);
 
             const transcribeSocket = await cortiClient.transcribe.connect({
+                awaitConfiguration: false,
                 configuration: {
                     primaryLanguage: "invalid_language",
                 },
@@ -259,6 +241,7 @@ describe("cortiClient.transcribe.connect", () => {
             expect.assertions(2);
 
             const transcribeSocket = await cortiClient.transcribe.connect({
+                awaitConfiguration: false,
                 configuration: {
                     primaryLanguage: "en",
                     commands: [
@@ -281,31 +264,28 @@ describe("cortiClient.transcribe.connect", () => {
 
     describe("should connect with formatting configuration", () => {
         it("should connect with dates formatting", async () => {
-            expect.assertions(3);
+            expect.assertions(2);
 
             const transcribeSocket = await cortiClient.transcribe.connect({
+                awaitConfiguration: false,
                 configuration: {
                     primaryLanguage: "en",
-                    formatting: { dates: "long_text" },
+                    formatting: { dates: "locale:long" },
                 },
             });
             activeSockets.push(transcribeSocket);
 
-            const messages: any[] = [];
-            await waitForWebSocketMessage(transcribeSocket, "CONFIG_ACCEPTED", {
-                messages,
-                rejectOnWrongMessage: true,
-            });
+            await waitForWebSocketMessage(transcribeSocket, "CONFIG_ACCEPTED", { rejectOnWrongMessage: true });
 
-            expect(transcribeSocket).toBeDefined();
-            expect(transcribeSocket.socket.readyState).toBe(1);
+            expect(transcribeSocket.socket.readyState).toBe(1); // OPEN
             expect(consoleWarnSpy).not.toHaveBeenCalled();
         });
 
         it("should connect with times formatting", async () => {
-            expect.assertions(3);
+            expect.assertions(2);
 
             const transcribeSocket = await cortiClient.transcribe.connect({
+                awaitConfiguration: false,
                 configuration: {
                     primaryLanguage: "en",
                     formatting: { times: "h12" },
@@ -313,21 +293,17 @@ describe("cortiClient.transcribe.connect", () => {
             });
             activeSockets.push(transcribeSocket);
 
-            const messages: any[] = [];
-            await waitForWebSocketMessage(transcribeSocket, "CONFIG_ACCEPTED", {
-                messages,
-                rejectOnWrongMessage: true,
-            });
+            await waitForWebSocketMessage(transcribeSocket, "CONFIG_ACCEPTED", { rejectOnWrongMessage: true });
 
-            expect(transcribeSocket).toBeDefined();
-            expect(transcribeSocket.socket.readyState).toBe(1);
+            expect(transcribeSocket.socket.readyState).toBe(1); // OPEN
             expect(consoleWarnSpy).not.toHaveBeenCalled();
         });
 
         it("should connect with numbers formatting", async () => {
-            expect.assertions(3);
+            expect.assertions(2);
 
             const transcribeSocket = await cortiClient.transcribe.connect({
+                awaitConfiguration: false,
                 configuration: {
                     primaryLanguage: "en",
                     formatting: { numbers: "numerals" },
@@ -335,21 +311,17 @@ describe("cortiClient.transcribe.connect", () => {
             });
             activeSockets.push(transcribeSocket);
 
-            const messages: any[] = [];
-            await waitForWebSocketMessage(transcribeSocket, "CONFIG_ACCEPTED", {
-                messages,
-                rejectOnWrongMessage: true,
-            });
+            await waitForWebSocketMessage(transcribeSocket, "CONFIG_ACCEPTED", { rejectOnWrongMessage: true });
 
-            expect(transcribeSocket).toBeDefined();
-            expect(transcribeSocket.socket.readyState).toBe(1);
+            expect(transcribeSocket.socket.readyState).toBe(1); // OPEN
             expect(consoleWarnSpy).not.toHaveBeenCalled();
         });
 
         it("should connect with measurements formatting", async () => {
-            expect.assertions(3);
+            expect.assertions(2);
 
             const transcribeSocket = await cortiClient.transcribe.connect({
+                awaitConfiguration: false,
                 configuration: {
                     primaryLanguage: "en",
                     formatting: { measurements: "abbreviated" },
@@ -357,21 +329,17 @@ describe("cortiClient.transcribe.connect", () => {
             });
             activeSockets.push(transcribeSocket);
 
-            const messages: any[] = [];
-            await waitForWebSocketMessage(transcribeSocket, "CONFIG_ACCEPTED", {
-                messages,
-                rejectOnWrongMessage: true,
-            });
+            await waitForWebSocketMessage(transcribeSocket, "CONFIG_ACCEPTED", { rejectOnWrongMessage: true });
 
-            expect(transcribeSocket).toBeDefined();
-            expect(transcribeSocket.socket.readyState).toBe(1);
+            expect(transcribeSocket.socket.readyState).toBe(1); // OPEN
             expect(consoleWarnSpy).not.toHaveBeenCalled();
         });
 
         it("should connect with numeric ranges formatting", async () => {
-            expect.assertions(3);
+            expect.assertions(2);
 
             const transcribeSocket = await cortiClient.transcribe.connect({
+                awaitConfiguration: false,
                 configuration: {
                     primaryLanguage: "en",
                     formatting: { numericRanges: "numerals" },
@@ -379,21 +347,17 @@ describe("cortiClient.transcribe.connect", () => {
             });
             activeSockets.push(transcribeSocket);
 
-            const messages: any[] = [];
-            await waitForWebSocketMessage(transcribeSocket, "CONFIG_ACCEPTED", {
-                messages,
-                rejectOnWrongMessage: true,
-            });
+            await waitForWebSocketMessage(transcribeSocket, "CONFIG_ACCEPTED", { rejectOnWrongMessage: true });
 
-            expect(transcribeSocket).toBeDefined();
-            expect(transcribeSocket.socket.readyState).toBe(1);
+            expect(transcribeSocket.socket.readyState).toBe(1); // OPEN
             expect(consoleWarnSpy).not.toHaveBeenCalled();
         });
 
         it("should connect with ordinals formatting", async () => {
-            expect.assertions(3);
+            expect.assertions(2);
 
             const transcribeSocket = await cortiClient.transcribe.connect({
+                awaitConfiguration: false,
                 configuration: {
                     primaryLanguage: "en",
                     formatting: { ordinals: "numerals" },
@@ -401,25 +365,21 @@ describe("cortiClient.transcribe.connect", () => {
             });
             activeSockets.push(transcribeSocket);
 
-            const messages: any[] = [];
-            await waitForWebSocketMessage(transcribeSocket, "CONFIG_ACCEPTED", {
-                messages,
-                rejectOnWrongMessage: true,
-            });
+            await waitForWebSocketMessage(transcribeSocket, "CONFIG_ACCEPTED", { rejectOnWrongMessage: true });
 
-            expect(transcribeSocket).toBeDefined();
-            expect(transcribeSocket.socket.readyState).toBe(1);
+            expect(transcribeSocket.socket.readyState).toBe(1); // OPEN
             expect(consoleWarnSpy).not.toHaveBeenCalled();
         });
 
         it("should connect with full formatting configuration", async () => {
-            expect.assertions(3);
+            expect.assertions(2);
 
             const transcribeSocket = await cortiClient.transcribe.connect({
+                awaitConfiguration: false,
                 configuration: {
                     primaryLanguage: "en",
                     formatting: {
-                        dates: "long_text",
+                        dates: "locale:long",
                         times: "h12",
                         numbers: "numerals",
                         measurements: "abbreviated",
@@ -430,14 +390,9 @@ describe("cortiClient.transcribe.connect", () => {
             });
             activeSockets.push(transcribeSocket);
 
-            const messages: any[] = [];
-            await waitForWebSocketMessage(transcribeSocket, "CONFIG_ACCEPTED", {
-                messages,
-                rejectOnWrongMessage: true,
-            });
+            await waitForWebSocketMessage(transcribeSocket, "CONFIG_ACCEPTED", { rejectOnWrongMessage: true });
 
-            expect(transcribeSocket).toBeDefined();
-            expect(transcribeSocket.socket.readyState).toBe(1);
+            expect(transcribeSocket.socket.readyState).toBe(1); // OPEN
             expect(consoleWarnSpy).not.toHaveBeenCalled();
         });
     });

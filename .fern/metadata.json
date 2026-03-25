@@ -1,0 +1,37 @@
+{
+    "cliVersion": "4.45.0",
+    "generatorName": "fernapi/fern-typescript-node-sdk",
+    "generatorVersion": "3.54.0",
+    "generatorConfig": {
+        "namespaceExport": "Corti",
+        "noSerdeLayer": false,
+        "enableInlineTypes": false,
+        "streamType": "web",
+        "shouldGenerateWebsocketClients": true,
+        "generateSubpackageExports": false,
+        "inlinePathParameters": false,
+        "extraDevDependencies": {
+            "@faker-js/faker": "^9.9.0"
+        },
+        "packageJson": {
+            "scripts": {
+                "test:integration": "vitest --config vitest.integration.config.mts"
+            },
+            "exports": {
+                "./utils": {
+                    "import": {
+                        "types": "./dist/esm/custom/utils/index.d.mts",
+                        "default": "./dist/esm/custom/utils/index.mjs"
+                    },
+                    "require": {
+                        "types": "./dist/cjs/custom/utils/index.d.ts",
+                        "default": "./dist/cjs/custom/utils/index.js"
+                    },
+                    "default": "./dist/cjs/custom/utils/index.js"
+                }
+            }
+        }
+    },
+    "originGitCommit": "a10a5808b34f02e12be5f5040cbb5085b6357ad6",
+    "sdkVersion": "0.0.0-dev"
+}

@@ -1,40 +1,23 @@
+import type * as Corti from "../../api/index.js";
+import { CortiEnvironment } from "../../environments.js";
+import { CustomStream } from "../stream/CustomStream.js";
+import type { CustomStreamSocket } from "../stream/CustomStreamSocket.js";
+import type { ProxyOptions } from "../utils/encodeHeadersAsWsProtocols.js";
+
 /**
- * Patch: Proxy-specific Stream wrapper that enforces `proxy` as required.
- *
- * Reuses the underlying CustomStream class to preserve the logic we added on top
- * of generated sockets (e.g., sending configuration messages, handling responses).
+ * Lightweight proxy stream client — no CortiClient or auth needed.
+ * Pass a proxy URL (and optionally protocols/queryParameters) directly in connect().
  */
-
-import * as environments from "../../environments.js";
-import * as api from "../../api/index.js";
-import { Stream } from "../CustomStream.js";
-import { StreamSocket } from "../CustomStreamSocket.js";
-import type { CortiClient } from "../CortiClient.js";
-
-export type ProxyOptions = {
-    url: string;
-    /** Array passed as-is to WS; object encoded like headers (name, encodeURIComponent(value), ...). */
-    protocols?: string[] | CortiClient.HeadersRecord;
-    queryParameters?: Record<string, string>;
-};
-
 export class CustomProxyStream {
-    private _stream: Stream;
-
-    constructor() {
-        this._stream = new Stream({
-            environment: environments.CortiEnvironment.Eu,
-            tenantName: "",
-        });
-    }
+    private readonly _stream = new CustomStream({ environment: CortiEnvironment.Eu, tenantName: "" });
 
     public connect(args: {
         proxy: ProxyOptions;
-        configuration?: api.StreamConfig;
+        configuration?: Corti.StreamConfig;
+        awaitConfiguration?: boolean;
         debug?: boolean;
         reconnectAttempts?: number;
-    }): Promise<StreamSocket> {
-        // id is not used in proxy mode, but required by the underlying type
+    }): Promise<CustomStreamSocket> {
         return this._stream.connect({ ...args, id: "" });
     }
 }

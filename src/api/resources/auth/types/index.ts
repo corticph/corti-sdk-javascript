@@ -1,1 +1,1 @@
-export * from "./GetTokenResponse.js";
+export * from "./AuthTokenRequestBody.js";

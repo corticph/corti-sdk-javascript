@@ -1,16 +1,16 @@
-import { CortiClient } from "../../src";
 import { faker } from "@faker-js/faker";
+import type { CortiClient } from "../../src";
 import {
+    cleanupInteractions,
     createTestCortiClient,
     createTestInteraction,
     createTestRecording,
-    cleanupInteractions,
     setupConsoleWarnSpy,
 } from "./testUtils";
 
 describe("cortiClient.transcripts.create", () => {
     let cortiClient: CortiClient;
-    let consoleWarnSpy: jest.SpyInstance;
+    let consoleWarnSpy: ReturnType<typeof setupConsoleWarnSpy>;
     let createdInteractionIds: string[] = [];
 
     beforeAll(() => {
@@ -135,34 +135,36 @@ describe("cortiClient.transcripts.create", () => {
         });
     });
 
-    it("should create transcript with all optional parameters without errors or warnings", async () => {
-        expect.assertions(2);
+    describe("should create transcript with all optional values", () => {
+        it("should create transcript with all optional parameters without errors or warnings", async () => {
+            expect.assertions(2);
 
-        const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
-        const recordingId = await createTestRecording(cortiClient, interactionId);
+            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const recordingId = await createTestRecording(cortiClient, interactionId);
 
-        const isMultichannel = faker.datatype.boolean();
-        const diarize = isMultichannel ? faker.datatype.boolean() : false; // diarize can only be true if isMultichannel is true
+            const isMultichannel = faker.datatype.boolean();
+            const diarize = isMultichannel ? faker.datatype.boolean() : false; // diarize can only be true if isMultichannel is true
 
-        const result = await cortiClient.transcripts.create(interactionId, {
-            recordingId,
-            primaryLanguage: "en",
-            isDictation: faker.datatype.boolean(),
-            isMultichannel,
-            diarize,
-            participants: [
-                {
-                    channel: faker.number.int({ min: 0, max: 1 }),
-                    role: faker.helpers.arrayElement(["doctor", "patient", "multiple"]),
-                },
-            ],
+            const result = await cortiClient.transcripts.create(interactionId, {
+                recordingId,
+                primaryLanguage: "en",
+                isDictation: faker.datatype.boolean(),
+                isMultichannel,
+                diarize,
+                participants: [
+                    {
+                        channel: faker.number.int({ min: 0, max: 1 }),
+                        role: faker.helpers.arrayElement(["doctor", "patient", "multiple"]),
+                    },
+                ],
+            });
+
+            expect(result).toBeDefined();
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
         });
-
-        expect(result).toBeDefined();
-        expect(consoleWarnSpy).not.toHaveBeenCalled();
     });
 
-    describe("should throw error when required fields are missing", () => {
+    describe("should throw error when required parameters are missing", () => {
         it("should throw error when recordingId is missing", async () => {
             expect.assertions(1);
 
@@ -225,15 +227,15 @@ describe("cortiClient.transcripts.create", () => {
                 }),
             ).rejects.toThrow('Missing required key "role"');
         });
+    });
 
+    describe("should throw error when invalid parameters are provided", () => {
         it("should throw error when interaction ID is invalid format", async () => {
             expect.assertions(1);
 
-            const recordingId = faker.string.uuid();
-
             await expect(
                 cortiClient.transcripts.create("invalid-uuid", {
-                    recordingId,
+                    recordingId: faker.string.uuid(),
                     primaryLanguage: "en",
                 }),
             ).rejects.toThrow("Status code: 400");
@@ -242,11 +244,9 @@ describe("cortiClient.transcripts.create", () => {
         it("should throw error when interaction ID does not exist", async () => {
             expect.assertions(1);
 
-            const recordingId = faker.string.uuid();
-
             await expect(
                 cortiClient.transcripts.create(faker.string.uuid(), {
-                    recordingId,
+                    recordingId: faker.string.uuid(),
                     primaryLanguage: "en",
                 }),
             ).rejects.toThrow("Status code: 404");

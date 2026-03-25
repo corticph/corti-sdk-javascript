@@ -1,16 +1,16 @@
-import { CortiClient } from "../../src";
 import { faker } from "@faker-js/faker";
+import type { CortiClient } from "../../src";
 import {
+    cleanupInteractions,
     createTestCortiClient,
     createTestInteraction,
-    cleanupInteractions,
-    setupConsoleWarnSpy,
     getValidFactGroups,
+    setupConsoleWarnSpy,
 } from "./testUtils";
 
 describe("cortiClient.facts.create", () => {
     let cortiClient: CortiClient;
-    let consoleWarnSpy: jest.SpyInstance;
+    let consoleWarnSpy: ReturnType<typeof setupConsoleWarnSpy>;
     let createdInteractionIds: string[] = [];
     let validFactGroups: string[] = [];
 
@@ -26,15 +26,11 @@ describe("cortiClient.facts.create", () => {
 
     afterEach(async () => {
         consoleWarnSpy.mockRestore();
-
         await cleanupInteractions(cortiClient, createdInteractionIds);
-
         createdInteractionIds = [];
     });
 
-    const getValidFactGroup = (): string => {
-        return faker.helpers.arrayElement(validFactGroups);
-    };
+    const getValidFactGroup = (): string => faker.helpers.arrayElement(validFactGroups);
 
     describe("should create facts with only required values", () => {
         it("should create single fact with only required fields without errors or warnings", async () => {
@@ -62,18 +58,9 @@ describe("cortiClient.facts.create", () => {
 
             const result = await cortiClient.facts.create(interactionId, {
                 facts: [
-                    {
-                        text: faker.lorem.sentence(),
-                        group: getValidFactGroup(),
-                    },
-                    {
-                        text: faker.lorem.sentence(),
-                        group: getValidFactGroup(),
-                    },
-                    {
-                        text: faker.lorem.sentence(),
-                        group: getValidFactGroup(),
-                    },
+                    { text: faker.lorem.sentence(), group: getValidFactGroup() },
+                    { text: faker.lorem.sentence(), group: getValidFactGroup() },
+                    { text: faker.lorem.sentence(), group: getValidFactGroup() },
                 ],
             });
 
@@ -83,56 +70,56 @@ describe("cortiClient.facts.create", () => {
     });
 
     describe("should create facts with all source enum values", () => {
-        it('should create fact with source "core"', async () => {
+        it('should create fact with source "core" without errors or warnings', async () => {
             expect.assertions(2);
 
             const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
 
             const result = await cortiClient.facts.create(interactionId, {
-                facts: [
-                    {
-                        text: faker.lorem.sentence(),
-                        group: getValidFactGroup(),
-                        source: "core",
-                    },
-                ],
+                facts: [{ text: faker.lorem.sentence(), group: getValidFactGroup(), source: "core" }],
             });
 
             expect(result).toBeDefined();
             expect(consoleWarnSpy).not.toHaveBeenCalled();
         });
 
-        it('should create fact with source "system"', async () => {
+        it('should create fact with source "system" without errors or warnings', async () => {
             expect.assertions(2);
 
             const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
 
             const result = await cortiClient.facts.create(interactionId, {
-                facts: [
-                    {
-                        text: faker.lorem.sentence(),
-                        group: getValidFactGroup(),
-                        source: "system",
-                    },
-                ],
+                facts: [{ text: faker.lorem.sentence(), group: getValidFactGroup(), source: "system" }],
             });
 
             expect(result).toBeDefined();
             expect(consoleWarnSpy).not.toHaveBeenCalled();
         });
 
-        it('should create fact with source "user"', async () => {
+        it('should create fact with source "user" without errors or warnings', async () => {
+            expect.assertions(2);
+
+            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+
+            const result = await cortiClient.facts.create(interactionId, {
+                facts: [{ text: faker.lorem.sentence(), group: getValidFactGroup(), source: "user" }],
+            });
+
+            expect(result).toBeDefined();
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
+    });
+
+    describe("should create facts with all optional values", () => {
+        it("should create facts with all optional parameters combined without errors or warnings", async () => {
             expect.assertions(2);
 
             const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
 
             const result = await cortiClient.facts.create(interactionId, {
                 facts: [
-                    {
-                        text: faker.lorem.sentence(),
-                        group: getValidFactGroup(),
-                        source: "user",
-                    },
+                    { text: faker.lorem.paragraph(), group: getValidFactGroup(), source: "user" },
+                    { text: faker.lorem.paragraph(), group: getValidFactGroup(), source: "system" },
                 ],
             });
 
@@ -141,31 +128,17 @@ describe("cortiClient.facts.create", () => {
         });
     });
 
-    it("should create facts with all optional parameters without errors or warnings", async () => {
-        expect.assertions(2);
+    describe("should throw error when required parameters are missing", () => {
+        it("should throw error when interaction ID is missing", async () => {
+            expect.assertions(1);
 
-        const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
-
-        const result = await cortiClient.facts.create(interactionId, {
-            facts: [
-                {
-                    text: faker.lorem.paragraph(),
-                    group: getValidFactGroup(),
-                    source: "user",
-                },
-                {
-                    text: faker.lorem.paragraph(),
-                    group: getValidFactGroup(),
-                    source: "system",
-                },
-            ],
+            await expect(
+                cortiClient.facts.create(undefined as any, {
+                    facts: [{ text: faker.lorem.sentence(), group: getValidFactGroup() }],
+                }),
+            ).rejects.toThrow();
         });
 
-        expect(result).toBeDefined();
-        expect(consoleWarnSpy).not.toHaveBeenCalled();
-    });
-
-    describe("should throw error when required fields are missing", () => {
         it("should throw error when facts array is missing", async () => {
             expect.assertions(1);
 
@@ -191,11 +164,7 @@ describe("cortiClient.facts.create", () => {
 
             await expect(
                 cortiClient.facts.create(interactionId, {
-                    facts: [
-                        {
-                            group: getValidFactGroup(),
-                        } as any,
-                    ],
+                    facts: [{ group: getValidFactGroup() } as any],
                 }),
             ).rejects.toThrow('Missing required key "text"');
         });
@@ -207,26 +176,19 @@ describe("cortiClient.facts.create", () => {
 
             await expect(
                 cortiClient.facts.create(interactionId, {
-                    facts: [
-                        {
-                            text: faker.lorem.sentence(),
-                        } as any,
-                    ],
+                    facts: [{ text: faker.lorem.sentence() } as any],
                 }),
             ).rejects.toThrow('Missing required key "group"');
         });
+    });
 
-        it("should throw error when interaction ID is invalid", async () => {
+    describe("should throw error when invalid parameters are provided", () => {
+        it("should throw error when interaction ID is invalid format", async () => {
             expect.assertions(1);
 
             await expect(
                 cortiClient.facts.create("invalid-uuid", {
-                    facts: [
-                        {
-                            text: faker.lorem.sentence(),
-                            group: getValidFactGroup(),
-                        },
-                    ],
+                    facts: [{ text: faker.lorem.sentence(), group: getValidFactGroup() }],
                 }),
             ).rejects.toThrow("Status code: 400");
         });
@@ -236,12 +198,7 @@ describe("cortiClient.facts.create", () => {
 
             await expect(
                 cortiClient.facts.create(faker.string.uuid(), {
-                    facts: [
-                        {
-                            text: faker.lorem.sentence(),
-                            group: getValidFactGroup(),
-                        },
-                    ],
+                    facts: [{ text: faker.lorem.sentence(), group: getValidFactGroup() }],
                 }),
             ).rejects.toThrow("Status code: 404");
         });

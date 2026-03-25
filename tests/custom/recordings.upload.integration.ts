@@ -1,11 +1,11 @@
-import { CortiClient } from "../../src";
 import { faker } from "@faker-js/faker";
 import { createReadStream, readFileSync } from "fs";
-import { createTestCortiClient, createTestInteraction, cleanupInteractions, setupConsoleWarnSpy } from "./testUtils";
+import type { CortiClient } from "../../src";
+import { cleanupInteractions, createTestCortiClient, createTestInteraction, setupConsoleWarnSpy } from "./testUtils";
 
 describe("cortiClient.recordings.upload", () => {
     let cortiClient: CortiClient;
-    let consoleWarnSpy: jest.SpyInstance;
+    let consoleWarnSpy: ReturnType<typeof setupConsoleWarnSpy>;
     let createdInteractionIds: string[] = [];
 
     beforeAll(() => {
@@ -23,7 +23,7 @@ describe("cortiClient.recordings.upload", () => {
         createdInteractionIds = [];
     });
 
-    describe("should upload recording from server-side file stream", () => {
+    describe("should upload recording with only required values", () => {
         it("should upload trouble-breathing.mp3 using createReadStream without errors or warnings", async () => {
             expect.assertions(2);
 
@@ -46,7 +46,6 @@ describe("cortiClient.recordings.upload", () => {
 
             const fileBuffer = readFileSync("tests/custom/trouble-breathing.mp3");
 
-            // Create a File object (simulating browser environment)
             const file = new File([fileBuffer], "trouble-breathing.mp3", {
                 type: "audio/mpeg",
             });
@@ -58,31 +57,7 @@ describe("cortiClient.recordings.upload", () => {
         });
     });
 
-    describe("should handle upload errors", () => {
-        it("should throw error when uploading to non-existent interaction", async () => {
-            expect.assertions(1);
-
-            const nonExistentInteractionId = faker.string.uuid();
-            const file = createReadStream("tests/custom/trouble-breathing.mp3", {
-                autoClose: true,
-            });
-
-            await expect(cortiClient.recordings.upload(file, nonExistentInteractionId)).rejects.toThrow(
-                "Status code: 404",
-            );
-        });
-
-        it("should throw error when uploading with invalid interaction ID format", async () => {
-            expect.assertions(1);
-
-            const invalidInteractionId = "invalid-uuid-format";
-            const file = createReadStream("tests/custom/trouble-breathing.mp3", {
-                autoClose: true,
-            });
-
-            await expect(cortiClient.recordings.upload(file, invalidInteractionId)).rejects.toThrow("Status code: 400");
-        });
-
+    describe("should throw error when required parameters are missing", () => {
         it("should throw error when uploading with null interaction ID", async () => {
             expect.assertions(1);
 
@@ -104,6 +79,30 @@ describe("cortiClient.recordings.upload", () => {
 
             await expect(cortiClient.recordings.upload(file, undefined as any)).rejects.toThrow(
                 "Expected string. Received undefined.",
+            );
+        });
+    });
+
+    describe("should throw error when invalid parameters are provided", () => {
+        it("should throw error when uploading to non-existent interaction", async () => {
+            expect.assertions(1);
+
+            const file = createReadStream("tests/custom/trouble-breathing.mp3", {
+                autoClose: true,
+            });
+
+            await expect(cortiClient.recordings.upload(file, faker.string.uuid())).rejects.toThrow("Status code: 404");
+        });
+
+        it("should throw error when uploading with invalid interaction ID format", async () => {
+            expect.assertions(1);
+
+            const file = createReadStream("tests/custom/trouble-breathing.mp3", {
+                autoClose: true,
+            });
+
+            await expect(cortiClient.recordings.upload(file, "invalid-uuid-format")).rejects.toThrow(
+                "Status code: 400",
             );
         });
     });

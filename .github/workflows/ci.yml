@@ -2,85 +2,136 @@ name: ci
 
 on: [push]
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
 jobs:
-    compile:
-        runs-on: ubuntu-latest
-        steps:
-            - name: Checkout repo
-              uses: actions/checkout@v4
+  compile:
+    runs-on: ubuntu-latest
 
-            - name: Set up node
-              uses: actions/setup-node@v4
-            #              with:
-            #                  node-version: "18.18.0"
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v6
 
-            - name: Setup yarn
-              run: npm install -g yarn
+      - name: Set up node
+        uses: actions/setup-node@v6
 
-            - name: Install dependencies
-              run: yarn install
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
 
-            - name: Compile
-              run: yarn build
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
 
-    test:
-        runs-on: ubuntu-latest
-        steps:
-            - name: Checkout repo
-              uses: actions/checkout@v4
+      - name: Compile
+        run: pnpm build
 
-            - name: Set up node
-              uses: actions/setup-node@v4
-            #              with:
-            #                  node-version: "18.18.0"
+  lint:
+    runs-on: ubuntu-latest
 
-            - name: Setup yarn
-              run: npm install -g yarn
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v6
 
-            - name: Install dependencies
-              run: yarn install
+      - name: Set up node
+        uses: actions/setup-node@v6
 
-#            - name: Check for formatting issues
-#              run: yarn prettier . --check --ignore-unknown
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
 
-            - name: Run tests
-              run: yarn test
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
 
-    publish:
-        needs: [compile, test]
-        if: github.event_name == 'push' && contains(github.ref, 'refs/tags/')
-        runs-on: ubuntu-latest
-        permissions:
-            id-token: write
-        steps:
-            - name: Checkout repo
-              uses: actions/checkout@v4
+      - name: Lint
+        run: pnpm check
 
-            - name: Set up node
-              uses: actions/setup-node@v4
-            #              with:
-            #                  node-version: "18.18.0"
+  test:
+    runs-on: ubuntu-latest
 
-            - name: Setup yarn
-              run: npm install -g yarn
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v6
 
-            - name: Install dependencies
-              run: yarn install
+      - name: Set up node
+        uses: actions/setup-node@v6
+                
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
 
-            - name: Build
-              run: yarn build
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
 
-            - name: Publish to npm
-              run: |
-                  publish() {
-                    npx -y npm@latest publish "$@"
-                  }
-                  if [[ ${GITHUB_REF} == *alpha* ]]; then
-                    publish --access public --tag alpha
-                  elif [[ ${GITHUB_REF} == *beta* ]]; then
-                    publish --access public --tag beta
-                  elif [[ ${GITHUB_REF} == *rc* ]]; then
-                    publish --tag rc
-                  else
-                    publish --access public
-                  fi
+      - name: Test
+        run: pnpm test
+
+  publish:
+    needs: [compile, lint, test]
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v6
+
+      - name: Extract version from tag
+        id: version
+        run: |
+          TAG="${GITHUB_REF_NAME}"
+          VERSION="${TAG#v}"
+          if [[ "$VERSION" == *-* ]]; then
+            PRERELEASE="${VERSION#*-}"   # e.g. "alpha.1" from "1.2.3-alpha.1"
+            SUFFIX="${PRERELEASE%%.*}"   # strip ".1" → "alpha" (npm dist-tag)
+          else
+            SUFFIX=""
+          fi
+          echo "tag=$TAG"
+          echo "version=$VERSION"
+          echo "suffix=$SUFFIX"
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "suffix=$SUFFIX" >> $GITHUB_OUTPUT
+
+      - name: Set version
+        run: |
+          VERSION="${{ steps.version.outputs.version }}"
+          npm version "$VERSION" --no-git-tag-version
+          sed -i "s/SDK_VERSION = \"[^\"]*\"/SDK_VERSION = \"${VERSION}\"/" src/version.ts
+          sed -i "s/\"X-Fern-SDK-Version\": \"[^\"]*\"/\"X-Fern-SDK-Version\": \"${VERSION}\"/" src/BaseClient.ts
+          sed -i "s|\"User-Agent\": \"@corti/sdk/[^\"]*\"|\"User-Agent\": \"@corti/sdk/${VERSION}\"|" src/BaseClient.ts
+          echo "package.json: $(node -p "require('./package.json').version")"
+          echo "version.ts: $(cat src/version.ts)"
+          echo "BaseClient.ts: $(grep -E 'SDK-Version|User-Agent' src/BaseClient.ts | xargs)"
+
+      - name: Set up node
+        uses: actions/setup-node@v6
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build
+        run: pnpm build
+
+      - name: Publish to npm
+        run: |
+          publish() {  # use latest npm to ensure OIDC support
+            npx -y npm@latest publish "$@"
+          }
+          SUFFIX="${{ steps.version.outputs.suffix }}"
+          if [[ -n "$SUFFIX" ]]; then
+            publish --access public --tag "$SUFFIX"
+          else
+            PKG_NAME=$(node -p "require('./package.json').name")
+            PKG_VERSION=$(node -p "require('./package.json').version")
+            CURRENT_LATEST=$(npm view "${PKG_NAME}" dist-tags.latest 2>/dev/null || echo "0.0.0")
+            if npx -y semver "${PKG_VERSION}" -r "<${CURRENT_LATEST}" > /dev/null 2>&1; then
+              echo "Publishing ${PKG_VERSION} with --tag backport (current latest is ${CURRENT_LATEST})"
+              publish --access public --tag backport
+            else
+              publish --access public
+            fi
+          fi

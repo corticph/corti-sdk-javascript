@@ -1,9 +1,9 @@
-import { CortiClient } from "../../src";
+import type { CortiClient } from "../../src";
 import { createTestCortiClient, setupConsoleWarnSpy } from "./testUtils";
 
 describe("cortiClient.facts.factGroupsList", () => {
     let cortiClient: CortiClient;
-    let consoleWarnSpy: jest.SpyInstance;
+    let consoleWarnSpy: ReturnType<typeof setupConsoleWarnSpy>;
 
     beforeAll(() => {
         cortiClient = createTestCortiClient();

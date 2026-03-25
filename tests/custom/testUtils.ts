@@ -1,8 +1,8 @@
-import { CortiClient } from "../../src";
 import { faker } from "@faker-js/faker";
 import { createReadStream } from "fs";
-import { StreamSocket } from "../../src/custom/CustomStreamSocket";
-import { TranscribeSocket } from "../../src/custom/CustomTranscribeSocket";
+import { CortiClient } from "../../src";
+import type { StreamSocket } from "../../src/custom/CustomStreamSocket";
+import type { TranscribeSocket } from "../../src/custom/CustomTranscribeSocket";
 
 /**
  * Creates a CortiClient instance configured for testing
@@ -82,8 +82,8 @@ export async function cleanupInteractions(cortiClient: CortiClient, interactionI
 /**
  * Sets up console.warn spy for tests
  */
-export function setupConsoleWarnSpy(): jest.SpyInstance {
-    return jest.spyOn(console, "warn").mockImplementation(() => {});
+export function setupConsoleWarnSpy(): ReturnType<typeof vi.spyOn> {
+    return vi.spyOn(console, "warn").mockImplementation(() => {});
 }
 
 /**
@@ -222,8 +222,10 @@ export async function createTestTranscript(
     interactionId: string,
     recordingId: string,
 ): Promise<string> {
-    // Note: Using a supported language/model combination
-    // This may need to be updated based on actual supported languages
+    // Wait for the backend to finish processing the uploaded recording before
+    // requesting transcription — 1 s (from createTestRecording) is not enough.
+    await pause(5000);
+
     const transcriptResult = await cortiClient.transcripts.create(interactionId, {
         recordingId,
         primaryLanguage: "en",

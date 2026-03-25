@@ -1,10 +1,10 @@
-import { CortiClient } from "../../src";
-import { createTestCortiClient, setupConsoleWarnSpy, cleanupInteractions, createTestInteraction } from "./testUtils";
 import { faker } from "@faker-js/faker";
+import type { CortiClient } from "../../src";
+import { cleanupInteractions, createTestCortiClient, createTestInteraction, setupConsoleWarnSpy } from "./testUtils";
 
 describe("cortiClient.interactions.list", () => {
     let cortiClient: CortiClient;
-    let consoleWarnSpy: jest.SpyInstance;
+    let consoleWarnSpy: ReturnType<typeof setupConsoleWarnSpy>;
     const createdInteractionIds: string[] = [];
 
     beforeAll(() => {
@@ -22,21 +22,11 @@ describe("cortiClient.interactions.list", () => {
     });
 
     describe("should list interactions with only required values", () => {
-        it("should return empty result when no interactions exist", async () => {
+        it("should return empty data array (not null) when no interactions match the filter", async () => {
             expect.assertions(3);
 
-            const response = await cortiClient.interactions.list();
-            const interactionIds: string[] = [];
-
-            for await (const interaction of response) {
-                interactionIds.push(interaction.id);
-            }
-
-            if (interactionIds.length > 0) {
-                await cleanupInteractions(cortiClient, interactionIds);
-            }
-
-            const result = await cortiClient.interactions.list();
+            const nonExistentPatientId = faker.string.uuid();
+            const result = await cortiClient.interactions.list({ patient: nonExistentPatientId });
 
             expect(result.data).toEqual([]);
             expect(result.hasNextPage()).toBe(false);
@@ -95,7 +85,7 @@ describe("cortiClient.interactions.list", () => {
         });
 
         it("should return empty result for non-existent patient", async () => {
-            expect.assertions(3);
+            expect.assertions(2);
 
             await createTestInteraction(cortiClient, createdInteractionIds, {
                 patient: { identifier: faker.string.alphanumeric(15) },
@@ -108,7 +98,6 @@ describe("cortiClient.interactions.list", () => {
             const nonExistentPatientId = faker.string.alphanumeric(15);
             const result = await cortiClient.interactions.list({ patient: nonExistentPatientId });
 
-            expect(result.data).toEqual([]);
             expect(result.data.length).toBe(0);
             expect(consoleWarnSpy).not.toHaveBeenCalled();
         });
@@ -543,8 +532,8 @@ describe("cortiClient.interactions.list", () => {
             it("should sort by patient desc", async () => {
                 expect.assertions(4);
 
-                const patientA = "a-" + faker.string.alphanumeric(15);
-                const patientB = "b-" + faker.string.alphanumeric(15);
+                const patientA = `a-${faker.string.alphanumeric(15)}`;
+                const patientB = `b-${faker.string.alphanumeric(15)}`;
 
                 const interactionA = await createTestInteraction(cortiClient, createdInteractionIds, {
                     patient: { identifier: patientA },
@@ -576,8 +565,8 @@ describe("cortiClient.interactions.list", () => {
             it("should sort by patient asc", async () => {
                 expect.assertions(4);
 
-                const patientA = "a-" + faker.string.alphanumeric(15);
-                const patientB = "b-" + faker.string.alphanumeric(15);
+                const patientA = `a-${faker.string.alphanumeric(15)}`;
+                const patientB = `b-${faker.string.alphanumeric(15)}`;
 
                 const interactionA = await createTestInteraction(cortiClient, createdInteractionIds, {
                     patient: { identifier: patientA },

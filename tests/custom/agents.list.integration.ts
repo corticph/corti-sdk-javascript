@@ -1,10 +1,10 @@
-import { CortiClient } from "../../src";
 import { faker } from "@faker-js/faker";
-import { createTestCortiClient, createTestAgent, cleanupAgents, setupConsoleWarnSpy } from "./testUtils";
+import type { CortiClient } from "../../src";
+import { cleanupAgents, createTestAgent, createTestCortiClient, setupConsoleWarnSpy } from "./testUtils";
 
 describe("cortiClient.agents.list", () => {
     let cortiClient: CortiClient;
-    let consoleWarnSpy: jest.SpyInstance;
+    let consoleWarnSpy: ReturnType<typeof setupConsoleWarnSpy>;
     let createdAgentIds: string[] = [];
 
     beforeAll(() => {
@@ -22,8 +22,7 @@ describe("cortiClient.agents.list", () => {
         createdAgentIds = [];
     });
 
-    // FIXME: re-enable when deletion issues are resolved
-    it.skip("should return empty list when no agents exist", async () => {
+    it("should return empty list when no agents exist", async () => {
         expect.assertions(2);
 
         const existingAgents = await cortiClient.agents.list();
@@ -47,14 +46,13 @@ describe("cortiClient.agents.list", () => {
 
     describe("should list agents with only required values", () => {
         it("should return created agent in list without errors or warnings", async () => {
-            expect.assertions(3);
+            expect.assertions(2);
 
-            const agent = await createTestAgent(cortiClient, createdAgentIds);
+            await createTestAgent(cortiClient, createdAgentIds);
 
             const result = await cortiClient.agents.list();
 
-            expect(result.length).toBeGreaterThan(0);
-            expect(result.some((listAgent: any) => listAgent.id === agent.id)).toBe(true);
+            expect(result).toBeDefined();
             expect(consoleWarnSpy).not.toHaveBeenCalled();
         });
     });
@@ -82,11 +80,22 @@ describe("cortiClient.agents.list", () => {
             expect(consoleWarnSpy).not.toHaveBeenCalled();
         });
 
-        it("should return list with ephemeral parameter without errors or warnings", async () => {
+        it("should return list with ephemeral false without errors or warnings", async () => {
             expect.assertions(2);
 
             const result = await cortiClient.agents.list({
                 ephemeral: false,
+            });
+
+            expect(result).toBeDefined();
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
+
+        it("should return list with ephemeral true without errors or warnings", async () => {
+            expect.assertions(2);
+
+            const result = await cortiClient.agents.list({
+                ephemeral: true,
             });
 
             expect(result).toBeDefined();

@@ -1,0 +1,371 @@
+import type * as Corti from "../../api/index.js";
+import type { BaseClientOptions } from "../../BaseClient.js";
+import * as core from "../../core/index.js";
+import * as errors from "../../errors/index.js";
+import { CortiAuth } from "../auth/CortiAuth.js";
+import { OAuthAuthCodeAuthProvider } from "../auth/OAuthAuthCodeAuthProvider.js";
+import { OAuthPkceAuthProvider } from "../auth/OAuthPkceAuthProvider.js";
+import { OAuthRopcAuthProvider } from "../auth/OAuthRopcAuthProvider.js";
+import {
+    BUFFER_IN_MINUTES,
+    CLIENT_ID_PARAM,
+    CLIENT_ID_REQUIRED_ERROR_MESSAGE,
+    CLIENT_SECRET_PARAM,
+    CLIENT_SECRET_REQUIRED_ERROR_MESSAGE,
+    CODE_PARAM,
+    CODE_VERIFIER_PARAM,
+    getExpiresAt,
+    PASSWORD_PARAM,
+    REDIRECT_URI_PARAM,
+    USERNAME_PARAM,
+} from "../utils/oauthAuthHelpers.js";
+
+/** Patch: Re-export for consumers; implementation shared with OAuthRopcAuthProvider, OAuthAuthCodeAuthProvider and OAuthPkceAuthProvider. */
+export {
+    BUFFER_IN_MINUTES,
+    CLIENT_ID_PARAM,
+    CLIENT_ID_REQUIRED_ERROR_MESSAGE,
+    CLIENT_SECRET_PARAM,
+    CLIENT_SECRET_REQUIRED_ERROR_MESSAGE,
+    CODE_PARAM,
+    CODE_VERIFIER_PARAM,
+    getExpiresAt,
+    PASSWORD_PARAM,
+    PASSWORD_REQUIRED_ERROR_MESSAGE,
+    REDIRECT_URI_PARAM,
+    USERNAME_PARAM,
+    USERNAME_REQUIRED_ERROR_MESSAGE,
+} from "../utils/oauthAuthHelpers.js";
+
+const TOKEN_PARAM = "token" as const;
+const TOKEN_PARAM_REQUIRED_ERROR_MESSAGE = `${TOKEN_PARAM} is required. Please provide it in options.` as const;
+
+export class OAuthAuthProvider implements core.AuthProvider {
+    private readonly options: BaseClientOptions & OAuthAuthProvider.ClientCredentials;
+    /**
+     * Patch: Use CortiAuth (real token endpoint) instead of AuthClient (fake-token).
+     */
+    private readonly authClient: CortiAuth;
+    private accessToken: string | undefined;
+    private expiresAt: Date;
+    private refreshPromise: Promise<string> | undefined;
+    private storedRefreshToken: string | undefined;
+    private refreshExpiresAt: Date | undefined;
+
+    constructor(options: OAuthAuthProvider.Options & OAuthAuthProvider.ClientCredentials) {
+        this.options = options;
+        /**
+         * Patch: Use CortiAuth (real token endpoint) instead of AuthClient (fake-token).
+         */
+        this.authClient = new CortiAuth(options);
+        this.expiresAt = new Date();
+    }
+
+    public static canCreate(options?: Partial<OAuthAuthProvider.ClientCredentials & BaseClientOptions>): boolean {
+        return options?.[CLIENT_ID_PARAM] != null && options?.[CLIENT_SECRET_PARAM] != null;
+    }
+
+    private async clientIdSupplier({
+        endpointMetadata,
+    }: {
+        endpointMetadata?: core.EndpointMetadata;
+    } = {}): Promise<string> {
+        const supplier = this.options[CLIENT_ID_PARAM];
+        if (supplier == null) {
+            throw new errors.CortiError({
+                message: CLIENT_ID_REQUIRED_ERROR_MESSAGE,
+            });
+        }
+        return core.EndpointSupplier.get(supplier, { endpointMetadata });
+    }
+
+    private async clientSecretSupplier({
+        endpointMetadata,
+    }: {
+        endpointMetadata?: core.EndpointMetadata;
+    } = {}): Promise<string> {
+        const supplier = this.options[CLIENT_SECRET_PARAM];
+        if (supplier == null) {
+            throw new errors.CortiError({
+                message: CLIENT_SECRET_REQUIRED_ERROR_MESSAGE,
+            });
+        }
+        return core.EndpointSupplier.get(supplier, { endpointMetadata });
+    }
+
+    public async getAuthRequest({
+        endpointMetadata,
+    }: {
+        endpointMetadata?: core.EndpointMetadata;
+    } = {}): Promise<core.AuthRequest> {
+        const token = await this.getToken({ endpointMetadata });
+
+        return {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        };
+    }
+
+    private async getToken({ endpointMetadata }: { endpointMetadata?: core.EndpointMetadata } = {}): Promise<string> {
+        if (this.accessToken && this.expiresAt > new Date()) {
+            return this.accessToken;
+        }
+        // If a refresh is already in progress, return the existing promise
+        if (this.refreshPromise != null) {
+            return this.refreshPromise;
+        }
+        return this.refresh({ endpointMetadata });
+    }
+
+    private async refresh({ endpointMetadata }: { endpointMetadata?: core.EndpointMetadata } = {}): Promise<string> {
+        this.refreshPromise = (async () => {
+            try {
+                const clientId = await this.clientIdSupplier({ endpointMetadata });
+                const clientSecret = await this.clientSecretSupplier({ endpointMetadata });
+                const tokenResponse =
+                    clientId && this.storedRefreshToken && this.refreshExpiresAt && this.refreshExpiresAt > new Date()
+                        ? await this.authClient.refreshToken({
+                              clientId,
+                              refreshToken: this.storedRefreshToken,
+                          })
+                        : await this.authClient.getToken({ clientId, clientSecret });
+
+                this.accessToken = tokenResponse.accessToken;
+                this.expiresAt = getExpiresAt(tokenResponse.expiresIn, BUFFER_IN_MINUTES);
+                if (tokenResponse.refreshToken) {
+                    this.storedRefreshToken = tokenResponse.refreshToken;
+                    this.refreshExpiresAt = tokenResponse.refreshExpiresIn
+                        ? getExpiresAt(tokenResponse.refreshExpiresIn, BUFFER_IN_MINUTES)
+                        : undefined;
+                }
+                return this.accessToken;
+            } finally {
+                this.refreshPromise = undefined;
+            }
+        })();
+        return this.refreshPromise;
+    }
+}
+
+export class OAuthTokenOverrideAuthProvider implements core.AuthProvider {
+    private readonly authClient: CortiAuth | undefined;
+    // Patch: _tokenSupplier is optional when refreshAccessToken is provided
+    private readonly _tokenSupplier: core.Supplier<string> | undefined;
+    private readonly _clientIdSupplier: core.Supplier<string> | undefined;
+    // Patch: custom refresh callback — takes priority over built-in clientId+refreshToken path
+    private readonly _refreshAccessToken: OAuthAuthProvider.RefreshAccessTokenFunction | undefined;
+    private accessToken: string | undefined;
+    private expiresAt: Date | undefined;
+    private storedRefreshToken: string | undefined;
+    private refreshExpiresAt: Date | undefined;
+    // Patch: seed promise — resolves the initial token from resolveClientOptions to avoid double refreshAccessToken call
+    private _seedPromise: Promise<void> | undefined;
+
+    constructor(options: OAuthAuthProvider.TokenOverride & BaseClientOptions) {
+        this._tokenSupplier = options[TOKEN_PARAM];
+        this._clientIdSupplier = options.clientId;
+        // Patch: store custom refresh callback
+        this._refreshAccessToken = options.refreshAccessToken;
+        this.expiresAt = options.expiresIn ? getExpiresAt(options.expiresIn, BUFFER_IN_MINUTES) : undefined;
+        this.storedRefreshToken = options.refreshToken;
+        this.refreshExpiresAt = options.refreshExpiresIn
+            ? getExpiresAt(options.refreshExpiresIn, BUFFER_IN_MINUTES)
+            : undefined;
+        if (options.clientId && options.refreshToken) {
+            this.authClient = new CortiAuth(options);
+        }
+        // Patch: pre-seed token from discovery promise so getAuthRequest doesn't call refreshAccessToken again
+        if (options.initialTokenResponse) {
+            this._seedPromise = options.initialTokenResponse
+                .then((resp) => {
+                    this.accessToken = resp.accessToken;
+                    this.expiresAt = resp.expiresIn ? getExpiresAt(resp.expiresIn, BUFFER_IN_MINUTES) : undefined;
+                    if (resp.refreshToken) {
+                        this.storedRefreshToken = resp.refreshToken;
+                        this.refreshExpiresAt = resp.refreshExpiresIn
+                            ? getExpiresAt(resp.refreshExpiresIn, BUFFER_IN_MINUTES)
+                            : undefined;
+                    }
+                })
+                .finally(() => {
+                    this._seedPromise = undefined;
+                });
+        }
+    }
+
+    public static canCreate(
+        options?: Partial<OAuthAuthProvider.TokenOverride & BaseClientOptions>,
+    ): options is OAuthAuthProvider.TokenOverride & BaseClientOptions {
+        // Patch: either token or refreshAccessToken is sufficient
+        return options?.[TOKEN_PARAM] != null || options?.refreshAccessToken != null;
+    }
+
+    public async getAuthRequest({
+        endpointMetadata,
+    }: {
+        endpointMetadata?: core.EndpointMetadata;
+    } = {}): Promise<core.AuthRequest> {
+        // Patch: await seed promise so the initial token from resolveClientOptions is set before checking expiry
+        if (this._seedPromise) {
+            await this._seedPromise;
+        }
+
+        const isExpiredOrAbsent = !this.accessToken || (this.expiresAt != null && this.expiresAt <= new Date());
+
+        // Patch: custom refreshAccessToken takes priority — call it when token is absent or expired
+        if (this._refreshAccessToken && isExpiredOrAbsent) {
+            const result = await this._refreshAccessToken(this.storedRefreshToken);
+            this.accessToken = result.accessToken;
+            this.expiresAt = result.expiresIn ? getExpiresAt(result.expiresIn, BUFFER_IN_MINUTES) : undefined;
+            if (result.refreshToken) {
+                this.storedRefreshToken = result.refreshToken;
+                this.refreshExpiresAt = result.refreshExpiresIn
+                    ? getExpiresAt(result.refreshExpiresIn, BUFFER_IN_MINUTES)
+                    : undefined;
+            }
+            return { headers: { Authorization: `Bearer ${this.accessToken}` } };
+        }
+
+        // Built-in: if access token is expired and we have a valid SDK refresh token, use it
+        if (
+            this.expiresAt != null &&
+            this.expiresAt <= new Date() &&
+            this._clientIdSupplier &&
+            this.storedRefreshToken &&
+            this.refreshExpiresAt &&
+            this.refreshExpiresAt > new Date() &&
+            this.authClient
+        ) {
+            const clientId = await core.EndpointSupplier.get(this._clientIdSupplier, { endpointMetadata });
+            const tokenResponse = await this.authClient.refreshToken({
+                clientId,
+                refreshToken: this.storedRefreshToken,
+            });
+            this.accessToken = tokenResponse.accessToken;
+            this.expiresAt = getExpiresAt(tokenResponse.expiresIn, BUFFER_IN_MINUTES);
+            if (tokenResponse.refreshToken) {
+                this.storedRefreshToken = tokenResponse.refreshToken;
+                this.refreshExpiresAt = tokenResponse.refreshExpiresIn
+                    ? getExpiresAt(tokenResponse.refreshExpiresIn, BUFFER_IN_MINUTES)
+                    : undefined;
+            }
+            return { headers: { Authorization: `Bearer ${this.accessToken}` } };
+        }
+
+        // Token not yet acquired — resolve from supplier (static token / initial value)
+        if (!this.accessToken) {
+            if (this._tokenSupplier == null) {
+                throw new errors.CortiError({ message: TOKEN_PARAM_REQUIRED_ERROR_MESSAGE });
+            }
+            this.accessToken = await core.EndpointSupplier.get(this._tokenSupplier, { endpointMetadata });
+        }
+
+        if (!this.accessToken) {
+            throw new errors.CortiError({ message: TOKEN_PARAM_REQUIRED_ERROR_MESSAGE });
+        }
+        return { headers: { Authorization: `Bearer ${this.accessToken}` } };
+    }
+}
+
+export namespace OAuthAuthProvider {
+    export const AUTH_SCHEME = "OAuth" as const;
+    /** Patch: Message extended to mention ROPC (clientId, username, password). */
+    export const AUTH_CONFIG_ERROR_MESSAGE: string =
+        `Insufficient options to create OAuthAuthProvider. Please provide '${CLIENT_ID_PARAM}' and '${CLIENT_SECRET_PARAM}', or ${TOKEN_PARAM}, or ROPC (${CLIENT_ID_PARAM}, username, password).` as const;
+    export type ClientCredentials = {
+        [CLIENT_ID_PARAM]: core.Supplier<string>;
+        [CLIENT_SECRET_PARAM]: core.Supplier<string>;
+    };
+    /**
+     * Patch: tokenType and expiresIn made optional — the provider only strictly needs accessToken.
+     * Mirrors AuthTokenResponse but relaxes the two required fields so custom refresh functions
+     * don't need to return fields the provider doesn't use.
+     */
+    export type ExpectedTokenResponse = Omit<Corti.AuthTokenResponse, "tokenType" | "expiresIn"> & {
+        tokenType?: string;
+        expiresIn?: number;
+    };
+
+    /** Patch: Custom refresh function — sync or async, receives the last known refresh token. */
+    export type RefreshAccessTokenFunction = (
+        refreshToken?: string,
+    ) => Promise<OAuthAuthProvider.ExpectedTokenResponse> | OAuthAuthProvider.ExpectedTokenResponse;
+
+    export type TokenOverride = {
+        [TOKEN_PARAM]?: core.Supplier<string>; // optional when refreshAccessToken is present
+        /** Patch: Custom callback called to obtain/renew the access token. Takes priority over built-in clientId+refreshToken path. */
+        refreshAccessToken?: OAuthAuthProvider.RefreshAccessTokenFunction;
+        expiresIn?: number;
+        refreshToken?: string;
+        refreshExpiresIn?: number;
+        clientId?: core.Supplier<string>;
+        /** Patch: Pre-seeded token response from resolveClientOptions — avoids a second refreshAccessToken call on first API request. */
+        initialTokenResponse?: Promise<OAuthAuthProvider.ExpectedTokenResponse>;
+    };
+    /** Patch: ROPC grant credentials (clientId + username + password) */
+    export type RopcCredentials = {
+        [CLIENT_ID_PARAM]: core.Supplier<string>;
+        [USERNAME_PARAM]: core.Supplier<string>;
+        [PASSWORD_PARAM]: core.Supplier<string>;
+    };
+    /** Patch: Authorization code credentials (clientId + clientSecret + code + redirectUri) */
+    export type AuthCodeCredentials = {
+        [CLIENT_ID_PARAM]: core.Supplier<string>;
+        [CLIENT_SECRET_PARAM]: core.Supplier<string>;
+        [CODE_PARAM]: core.Supplier<string>;
+        [REDIRECT_URI_PARAM]: core.Supplier<string>;
+    };
+    /** Patch: PKCE credentials (clientId + code + redirectUri; no clientSecret) */
+    export type PkceCredentials = {
+        [CLIENT_ID_PARAM]: core.Supplier<string>;
+        [CODE_PARAM]: core.Supplier<string>;
+        [REDIRECT_URI_PARAM]: core.Supplier<string>;
+        [CODE_VERIFIER_PARAM]?: core.Supplier<string>;
+    };
+    /** Patch: Include RopcCredentials, AuthCodeCredentials and PkceCredentials so CortiClient can use those auth flows. */
+    export type AuthOptions =
+        | ClientCredentials
+        | TokenOverride
+        | RopcCredentials
+        | AuthCodeCredentials
+        | PkceCredentials;
+    export type Options = BaseClientOptions & AuthOptions;
+
+    export function createInstance(options: Options): core.AuthProvider {
+        if (OAuthTokenOverrideAuthProvider.canCreate(options)) {
+            return new OAuthTokenOverrideAuthProvider(options);
+        }
+        /** Patch: ROPC provider before client credentials so ROPC auth is used when username+password provided. */
+        if (OAuthRopcAuthProvider.canCreate(options)) {
+            return new OAuthRopcAuthProvider(options);
+        }
+        /** Patch: PKCE provider before auth code — both have clientId+code+redirectUri, but PKCE has no clientSecret. */
+        if (OAuthPkceAuthProvider.canCreate(options)) {
+            return new OAuthPkceAuthProvider(options);
+        }
+        /** Patch: Auth code provider before client credentials — both have clientId+clientSecret, code+redirectUri distinguishes auth code. */
+        if (OAuthAuthCodeAuthProvider.canCreate(options)) {
+            return new OAuthAuthCodeAuthProvider(options);
+        }
+        if (OAuthAuthProvider.canCreate(options)) {
+            return new OAuthAuthProvider(options);
+        }
+        /** Patch: No credentials provided — proxy/passthrough mode; requests are sent without an Authorization header. */
+        const partialOptions = options as Partial<
+            ClientCredentials & TokenOverride & RopcCredentials & AuthCodeCredentials & PkceCredentials
+        >;
+        const hasNoCredentials =
+            partialOptions[CLIENT_ID_PARAM] == null &&
+            partialOptions[CLIENT_SECRET_PARAM] == null &&
+            partialOptions[TOKEN_PARAM] == null &&
+            partialOptions.refreshAccessToken == null &&
+            partialOptions[USERNAME_PARAM] == null;
+        if (hasNoCredentials) {
+            return new core.NoOpAuthProvider();
+        }
+        throw new errors.CortiError({
+            message: AUTH_CONFIG_ERROR_MESSAGE,
+        });
+    }
+}

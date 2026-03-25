@@ -1,16 +1,16 @@
-import { CortiClient } from "../../src";
 import { faker } from "@faker-js/faker";
+import type { CortiClient } from "../../src";
 import {
-    createTestCortiClient,
-    createTestAgent,
     cleanupAgents,
-    setupConsoleWarnSpy,
+    createTestAgent,
+    createTestCortiClient,
     sendTestMessage,
+    setupConsoleWarnSpy,
 } from "./testUtils";
 
 describe("cortiClient.agents.getTask", () => {
     let cortiClient: CortiClient;
-    let consoleWarnSpy: jest.SpyInstance;
+    let consoleWarnSpy: ReturnType<typeof setupConsoleWarnSpy>;
     let createdAgentIds: string[] = [];
 
     beforeAll(() => {
@@ -28,41 +28,60 @@ describe("cortiClient.agents.getTask", () => {
         createdAgentIds = [];
     });
 
-    it("should successfully retrieve a task without errors or warnings", async () => {
-        expect.assertions(2);
+    describe("should retrieve task with only required values", () => {
+        it("should successfully retrieve a task without errors or warnings", async () => {
+            expect.assertions(2);
 
-        const agent = await createTestAgent(cortiClient, createdAgentIds);
-        const messageResponse = await sendTestMessage(cortiClient, agent.id);
+            const agent = await createTestAgent(cortiClient, createdAgentIds);
+            const messageResponse = await sendTestMessage(cortiClient, agent.id);
+            const taskId = messageResponse.task?.id;
 
-        const taskId = messageResponse.task?.id;
+            if (!taskId) {
+                throw new Error("No task ID returned from message send");
+            }
 
-        if (!taskId) {
-            throw new Error("No task ID returned from message send");
-        }
+            const result = await cortiClient.agents.getTask(agent.id, taskId);
 
-        const result = await cortiClient.agents.getTask(agent.id, taskId);
-
-        expect(result).toBeDefined();
-        expect(consoleWarnSpy).not.toHaveBeenCalled();
+            expect(result).toBeDefined();
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
     });
 
-    it("should retrieve task with historyLength parameter without errors or warnings", async () => {
-        expect.assertions(2);
+    describe("should retrieve task with optional parameters", () => {
+        it("should retrieve task with historyLength parameter without errors or warnings", async () => {
+            expect.assertions(2);
 
-        const agent = await createTestAgent(cortiClient, createdAgentIds);
-        const messageResponse = await sendTestMessage(cortiClient, agent.id);
-        const taskId = messageResponse.task?.id;
+            const agent = await createTestAgent(cortiClient, createdAgentIds);
+            const messageResponse = await sendTestMessage(cortiClient, agent.id);
+            const taskId = messageResponse.task?.id;
 
-        if (!taskId) {
-            throw new Error("No task ID returned from message send");
-        }
+            if (!taskId) {
+                throw new Error("No task ID returned from message send");
+            }
 
-        const result = await cortiClient.agents.getTask(agent.id, taskId, {
-            historyLength: faker.number.int({ min: 1, max: 100 }),
+            const result = await cortiClient.agents.getTask(agent.id, taskId, {
+                historyLength: faker.number.int({ min: 1, max: 100 }),
+            });
+
+            expect(result).toBeDefined();
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
+    });
+
+    describe("should throw error when required parameters are missing", () => {
+        it("should throw error when agent ID is missing", async () => {
+            expect.assertions(1);
+
+            await expect(cortiClient.agents.getTask(undefined as any, faker.string.uuid())).rejects.toThrow();
         });
 
-        expect(result).toBeDefined();
-        expect(consoleWarnSpy).not.toHaveBeenCalled();
+        it("should throw error when task ID is missing", async () => {
+            expect.assertions(1);
+
+            const agent = await createTestAgent(cortiClient, createdAgentIds);
+
+            await expect(cortiClient.agents.getTask(agent.id, undefined as any)).rejects.toThrow();
+        });
     });
 
     describe("should throw error when invalid parameters are provided", () => {

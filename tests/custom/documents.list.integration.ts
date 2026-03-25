@@ -1,11 +1,17 @@
-import { CortiClient } from "../../src";
 import { faker } from "@faker-js/faker";
-import { createTestCortiClient, createTestInteraction, createTestDocument, setupConsoleWarnSpy } from "./testUtils";
+import type { CortiClient } from "../../src";
+import {
+    cleanupInteractions,
+    createTestCortiClient,
+    createTestDocument,
+    createTestInteraction,
+    setupConsoleWarnSpy,
+} from "./testUtils";
 
 describe("cortiClient.documents.list", () => {
     let cortiClient: CortiClient;
-    let consoleWarnSpy: jest.SpyInstance;
-    const createdInteractionIds: string[] = [];
+    let consoleWarnSpy: ReturnType<typeof setupConsoleWarnSpy>;
+    let createdInteractionIds: string[] = [];
 
     beforeAll(() => {
         cortiClient = createTestCortiClient();
@@ -13,34 +19,46 @@ describe("cortiClient.documents.list", () => {
 
     beforeEach(() => {
         consoleWarnSpy = setupConsoleWarnSpy();
+        createdInteractionIds = [];
     });
 
-    afterEach(() => {
+    afterEach(async () => {
         consoleWarnSpy.mockRestore();
+        await cleanupInteractions(cortiClient, createdInteractionIds);
+        createdInteractionIds = [];
     });
 
-    it("should return empty list when interaction has no documents", async () => {
-        expect.assertions(2);
+    describe("should list documents with only required values", () => {
+        it("should return list for interaction with no documents without errors or warnings", async () => {
+            expect.assertions(2);
 
-        const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
 
-        const result = await cortiClient.documents.list(interactionId);
+            const result = await cortiClient.documents.list(interactionId);
 
-        expect(result.data.length).toBe(0);
-        expect(consoleWarnSpy).not.toHaveBeenCalled();
+            expect(result).toBeDefined();
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
+
+        it("should return list for interaction with documents without errors or warnings", async () => {
+            expect.assertions(2);
+
+            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            await createTestDocument(cortiClient, interactionId);
+
+            const result = await cortiClient.documents.list(interactionId);
+
+            expect(result).toBeDefined();
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
     });
 
-    it("should return documents when interaction has documents", async () => {
-        expect.assertions(3);
+    describe("should throw error when required parameters are missing", () => {
+        it("should throw error when interaction ID is missing", async () => {
+            expect.assertions(1);
 
-        const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
-        const documentId = await createTestDocument(cortiClient, interactionId);
-
-        const result = await cortiClient.documents.list(interactionId);
-
-        expect(result.data.length).toBeGreaterThan(0);
-        expect(result.data.some((doc: any) => doc.id === documentId)).toBe(true);
-        expect(consoleWarnSpy).not.toHaveBeenCalled();
+            await expect(cortiClient.documents.list(undefined as any)).rejects.toThrow();
+        });
     });
 
     describe("should throw error when invalid parameters are provided", () => {

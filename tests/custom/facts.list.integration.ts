@@ -1,11 +1,17 @@
-import { CortiClient } from "../../src";
 import { faker } from "@faker-js/faker";
-import { createTestCortiClient, createTestInteraction, createTestFacts, setupConsoleWarnSpy } from "./testUtils";
+import type { CortiClient } from "../../src";
+import {
+    cleanupInteractions,
+    createTestCortiClient,
+    createTestFacts,
+    createTestInteraction,
+    setupConsoleWarnSpy,
+} from "./testUtils";
 
 describe("cortiClient.facts.list", () => {
     let cortiClient: CortiClient;
-    let consoleWarnSpy: jest.SpyInstance;
-    const createdInteractionIds: string[] = [];
+    let consoleWarnSpy: ReturnType<typeof setupConsoleWarnSpy>;
+    let createdInteractionIds: string[] = [];
 
     beforeAll(() => {
         cortiClient = createTestCortiClient();
@@ -13,35 +19,47 @@ describe("cortiClient.facts.list", () => {
 
     beforeEach(() => {
         consoleWarnSpy = setupConsoleWarnSpy();
+        createdInteractionIds = [];
     });
 
-    afterEach(() => {
+    afterEach(async () => {
         consoleWarnSpy.mockRestore();
+        await cleanupInteractions(cortiClient, createdInteractionIds);
+        createdInteractionIds = [];
     });
 
-    it("should return empty list when interaction has no facts", async () => {
-        expect.assertions(2);
+    describe("should list facts with only required values", () => {
+        it("should return empty list for interaction with no facts without errors or warnings", async () => {
+            expect.assertions(2);
 
-        const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
 
-        const result = await cortiClient.facts.list(interactionId);
+            const result = await cortiClient.facts.list(interactionId);
 
-        expect(result.facts.length).toBe(0);
-        expect(consoleWarnSpy).not.toHaveBeenCalled();
+            expect(result.facts.length).toBe(0);
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
+
+        it("should return facts for interaction with facts without errors or warnings", async () => {
+            expect.assertions(3);
+
+            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const factIds = await createTestFacts(cortiClient, interactionId, 1);
+
+            const result = await cortiClient.facts.list(interactionId);
+
+            expect(result.facts.length).toBeGreaterThan(0);
+            expect(result.facts.some((fact) => fact.id === factIds[0])).toBe(true);
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
     });
 
-    it("should return facts when interaction has facts", async () => {
-        expect.assertions(3);
+    describe("should throw error when required parameters are missing", () => {
+        it("should throw error when interaction ID is missing", async () => {
+            expect.assertions(1);
 
-        const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
-        const factIds = await createTestFacts(cortiClient, interactionId, 1);
-        const factId = factIds[0];
-
-        const result = await cortiClient.facts.list(interactionId);
-
-        expect(result.facts.length).toBeGreaterThan(0);
-        expect(result.facts.some((fact: any) => fact.id === factId)).toBe(true);
-        expect(consoleWarnSpy).not.toHaveBeenCalled();
+            await expect(cortiClient.facts.list(undefined as any)).rejects.toThrow();
+        });
     });
 
     describe("should throw error when invalid parameters are provided", () => {

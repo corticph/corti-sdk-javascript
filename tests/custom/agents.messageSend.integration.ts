@@ -1,10 +1,10 @@
-import { CortiClient } from "../../src";
 import { faker } from "@faker-js/faker";
-import { createTestCortiClient, createTestAgent, cleanupAgents, setupConsoleWarnSpy } from "./testUtils";
+import type { CortiClient } from "../../src";
+import { cleanupAgents, createTestAgent, createTestCortiClient, setupConsoleWarnSpy } from "./testUtils";
 
 describe("cortiClient.agents.messageSend", () => {
     let cortiClient: CortiClient;
-    let consoleWarnSpy: jest.SpyInstance;
+    let consoleWarnSpy: ReturnType<typeof setupConsoleWarnSpy>;
     let createdAgentIds: string[] = [];
 
     beforeAll(() => {
@@ -236,6 +236,134 @@ describe("cortiClient.agents.messageSend", () => {
                 metadata: {
                     testMetadata: faker.lorem.word(),
                 },
+            });
+
+            expect(result).toBeDefined();
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
+    });
+
+    describe("should send message with all part kinds", () => {
+        it("should send message with file part (uri) without errors or warnings", async () => {
+            expect.assertions(2);
+
+            const agent = await createTestAgent(cortiClient, createdAgentIds);
+
+            const result = await cortiClient.agents.messageSend(agent.id, {
+                message: {
+                    role: "user",
+                    parts: [
+                        {
+                            kind: "file",
+                            file: { uri: "https://example.com/file.pdf", mimeType: "application/pdf" },
+                        },
+                    ],
+                    messageId: faker.string.uuid(),
+                    kind: "message",
+                },
+            });
+
+            expect(result).toBeDefined();
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
+
+        it("should send message with data part without errors or warnings", async () => {
+            expect.assertions(2);
+
+            const agent = await createTestAgent(cortiClient, createdAgentIds);
+
+            const result = await cortiClient.agents.messageSend(agent.id, {
+                message: {
+                    role: "user",
+                    parts: [
+                        {
+                            kind: "data",
+                            data: { key: faker.lorem.word() },
+                        },
+                    ],
+                    messageId: faker.string.uuid(),
+                    kind: "message",
+                },
+            });
+
+            expect(result).toBeDefined();
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
+    });
+
+    describe("should send message with configuration fields", () => {
+        it("should send message with configuration.acceptedOutputModes without errors or warnings", async () => {
+            expect.assertions(2);
+
+            const agent = await createTestAgent(cortiClient, createdAgentIds);
+
+            const result = await cortiClient.agents.messageSend(agent.id, {
+                message: {
+                    role: "user",
+                    parts: [{ kind: "text", text: faker.lorem.sentence() }],
+                    messageId: faker.string.uuid(),
+                    kind: "message",
+                },
+                configuration: { acceptedOutputModes: ["text/plain"] },
+            });
+
+            expect(result).toBeDefined();
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
+
+        it("should send message with configuration.historyLength without errors or warnings", async () => {
+            expect.assertions(2);
+
+            const agent = await createTestAgent(cortiClient, createdAgentIds);
+
+            const result = await cortiClient.agents.messageSend(agent.id, {
+                message: {
+                    role: "user",
+                    parts: [{ kind: "text", text: faker.lorem.sentence() }],
+                    messageId: faker.string.uuid(),
+                    kind: "message",
+                },
+                configuration: { historyLength: faker.number.int({ min: 1, max: 10 }) },
+            });
+
+            expect(result).toBeDefined();
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
+
+        it("should send message with configuration.blocking false without errors or warnings", async () => {
+            expect.assertions(2);
+
+            const agent = await createTestAgent(cortiClient, createdAgentIds);
+
+            const result = await cortiClient.agents.messageSend(agent.id, {
+                message: {
+                    role: "user",
+                    parts: [{ kind: "text", text: faker.lorem.sentence() }],
+                    messageId: faker.string.uuid(),
+                    kind: "message",
+                },
+                configuration: { blocking: false },
+            });
+
+            expect(result).toBeDefined();
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
+    });
+
+    describe("should send message with top-level metadata", () => {
+        it("should send message with metadata without errors or warnings", async () => {
+            expect.assertions(2);
+
+            const agent = await createTestAgent(cortiClient, createdAgentIds);
+
+            const result = await cortiClient.agents.messageSend(agent.id, {
+                message: {
+                    role: "user",
+                    parts: [{ kind: "text", text: faker.lorem.sentence() }],
+                    messageId: faker.string.uuid(),
+                    kind: "message",
+                },
+                metadata: { testKey: faker.lorem.word() },
             });
 
             expect(result).toBeDefined();

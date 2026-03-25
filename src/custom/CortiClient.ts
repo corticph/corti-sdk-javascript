@@ -1,315 +1,136 @@
-/**
- * This file is the custom implementation of the main CortiClient class (src/Client.ts)
- *
- * It's (almost) handwritten, and it replaces the auto-generated version, and here is why:
- *
- * 1. The auto-generated version uses direct client imports -> we can not always easily replace them without a patch in Main client
- * 2. The auto-generated version produces TypeScript error when initializes authClient in `_oauthTokenProvider`
- * 3. `_oauthTokenProvider` is a private field in the auto-generated version,
- *   so we cannot easily rewrite it in the custom implementation. We can use another field for OAuthProvider,
- *   but then we need to rewrite all the methods anyway => it will be easier to forget,
- *   since it would exist in the class, but not properly implemented
- *
- * => Must be manually synced with src/Client.ts (which is auto-generated).
- *
- * All the patches marked with `// Patch: ...` comments.
- */
-
-import * as environments from "../environments.js";
-import * as core from "../core/index.js";
-/**
- * Patch: changed import to custom Auth implementation
- */
-import { Auth } from "./CortiAuth.js";
-import { mergeHeaders } from "../core/headers.js";
-import { Interactions } from "../api/resources/interactions/client/Client.js";
-import { Recordings } from "../api/resources/recordings/client/Client.js";
-import { Transcripts } from "../api/resources/transcripts/client/Client.js";
-import { Facts } from "../api/resources/facts/client/Client.js";
-import { Documents } from "../api/resources/documents/client/Client.js";
-import { Templates } from "../api/resources/templates/client/Client.js";
-import { Agents } from "../api/resources/agents/client/Client.js";
-import { Codes } from "../api/resources/codes/client/Client.js";
-
-/**
- * Patch: changed import to custom Stream and Transcribe implementations
- */
-import { Stream } from "./CustomStream.js";
-import { Transcribe } from "./CustomTranscribe.js";
-
-/**
- * Patch: added SDK_VERSION import and custom code imports
- */
-import { SDK_VERSION } from "../version.js";
-import { getEnvironment, Environment, CortiInternalEnvironment } from "./utils/getEnvironmentFromString.js";
+import type { OAuthAuthProvider } from "../auth/OAuthAuthProvider.js";
+import { CortiClient as BaseCortiClient } from "../Client.js";
+import type * as environments from "../environments.js";
+import { CortiAuth } from "./auth/CortiAuth.js";
+import { CustomStream } from "./stream/CustomStream.js";
+import { CustomTranscribe } from "./transcribe/CustomTranscribe.js";
+import { authToBaseOptions } from "./utils/authToBaseOptions.js";
+import { type Environment, getEnvironment } from "./utils/environment.js";
 import { resolveClientOptions } from "./utils/resolveClientOptions.js";
-import { BearerOptions, RefreshBearerProvider } from "./RefreshBearerProvider.js";
 import { setDefaultWithCredentials } from "./utils/withCredentialsConfig.js";
 
-export declare namespace CortiClient {
+type TokenDerivableAuth =
+    | {
+          accessToken: string;
+          refreshAccessToken?: OAuthAuthProvider.RefreshAccessTokenFunction;
+          expiresIn?: number;
+          refreshToken?: string;
+          refreshExpiresIn?: number;
+          clientId?: string;
+      }
+    | {
+          refreshAccessToken: OAuthAuthProvider.RefreshAccessTokenFunction;
+          accessToken?: string;
+          expiresIn?: number;
+          refreshToken?: string;
+          refreshExpiresIn?: number;
+          clientId?: string;
+      };
+
+type OptionsBase = Omit<
+    BaseCortiClient.Options,
+    "clientId" | "clientSecret" | "token" | "environment" | "tenantName" | "baseUrl"
+> & {
+    withCredentials?: boolean;
     /**
-     * Patch: added new public type for `Options` + internal interfaces to create it
+     * When true, encodes the client's auth headers as WebSocket subprotocol pairs instead of
+     * HTTP headers on every WebSocket connection. Useful when connecting through a gateway
+     * that strips HTTP headers but passes WS protocols through.
      */
+    encodeHeadersAsWsProtocols?: boolean;
+};
 
-    /** Patch: exported headers type for options.headers and WS protocol encoding. */
-    export type HeadersRecord = Record<string, string | core.Supplier<string | undefined> | undefined>;
-
-    interface ClientCredentials {
-        clientId: core.Supplier<string>;
-        clientSecret: core.Supplier<string>;
-    }
-
-    interface BaseOptions {
-        /** Additional headers to include in requests. */
-        headers?: HeadersRecord;
-        /** Specify a custom URL to connect the client to. */
-        baseUrl?: core.Supplier<string>;
-        /** Patch: added new option to encode headers as WebSocket protocols for streaming resources (for proxy scenarios) */
-        encodeHeadersAsWsProtocols?: boolean;
-        /** Patch: when true, fetcher sends credentials (cookies, auth headers) on cross-origin requests; sets global default used by core fetcher when not passed per-request */
-        withCredentials?: boolean;
-    }
-
-    interface OptionsWithClientCredentials extends BaseOptions {
-        /**
-         * Patch: allow to pass a custom string-based environment
-         * */
-        environment: Environment;
-        /** Override the Tenant-Name header */
-        tenantName: core.Supplier<string>;
-        auth: ClientCredentials;
-    }
-
-    interface OptionsWithBearerToken extends BaseOptions {
-        /**
-         * Patch: allow to pass a custom string-based environment
-         * */
-        environment?: Environment;
-        /** Override the Tenant-Name header */
-        tenantName?: core.Supplier<string>;
-        auth: BearerOptions;
-    }
-
-    // When baseUrl is provided, auth becomes optional (for proxying scenarios)
-    interface OptionsWithBaseUrl extends BaseOptions {
-        baseUrl: core.Supplier<string>;
-        environment?: Environment;
-        tenantName?: core.Supplier<string>;
-        auth?: ClientCredentials | BearerOptions;
-    }
-
-    // When environment is an object, auth becomes optional (for proxying scenarios)
-    interface OptionsWithObjectEnvironment extends BaseOptions {
-        environment: CortiInternalEnvironment;
-        tenantName?: core.Supplier<string>;
-        auth?: ClientCredentials | BearerOptions;
-    }
+export declare namespace CortiClient {
+    export type Auth =
+        | { clientId: string; clientSecret: string }
+        | {
+              accessToken: string;
+              refreshAccessToken?: OAuthAuthProvider.RefreshAccessTokenFunction;
+              expiresIn?: number;
+              refreshToken?: string;
+              refreshExpiresIn?: number;
+              clientId?: string;
+          }
+        | { clientId: string; username: string; password: string }
+        | { clientId: string; clientSecret: string; code: string; redirectUri: string }
+        | { clientId: string; code: string; redirectUri: string; codeVerifier?: string }
+        | {
+              refreshAccessToken: OAuthAuthProvider.RefreshAccessTokenFunction;
+              accessToken?: string;
+              expiresIn?: number;
+              refreshToken?: string;
+              refreshExpiresIn?: number;
+              clientId?: string;
+          };
 
     export type Options =
-        | OptionsWithClientCredentials
-        | OptionsWithBearerToken
-        | OptionsWithBaseUrl
-        | OptionsWithObjectEnvironment;
+        // CC / ROPC / AuthCode / PKCE — tenantName and environment always required
+        | (OptionsBase & {
+              auth:
+                  | { clientId: string; clientSecret: string }
+                  | { clientId: string; username: string; password: string }
+                  | { clientId: string; clientSecret: string; code: string; redirectUri: string }
+                  | { clientId: string; code: string; redirectUri: string; codeVerifier?: string };
+              tenantName: string;
+              environment: Environment;
+          })
+        // Bearer / refresh — tenantName and environment derived from JWT when omitted
+        | (OptionsBase & { auth: TokenDerivableAuth; tenantName?: string; environment?: Environment })
+        // baseUrl set — fully custom endpoint, standard fields optional
+        | (OptionsBase & { baseUrl: string; auth?: CortiClient.Auth; tenantName?: string; environment?: Environment })
+        // Full CortiEnvironmentUrls object — explicit URLs, tenantName optional
+        | (OptionsBase & {
+              environment: environments.CortiEnvironmentUrls;
+              auth?: CortiClient.Auth;
+              tenantName?: string;
+          });
 
-    /**
-     * Patch:
-     *  - renamed `Options` to `InternalOptions`
-     *  - added `token` field to support BearerProvider
-     *  - made clientId and clientSecret optional
-     *  - updated environment type to CortiInternalEnvironment
-     *  - added `encodeHeadersAsWsProtocols`
-     *  - added `withCredentials`
-     */
-    interface InternalOptions {
-        environment: CortiInternalEnvironment;
-        /** Specify a custom URL to connect the client to. */
-        baseUrl?: core.Supplier<string>;
-        clientId?: core.Supplier<string>;
-        clientSecret?: core.Supplier<string>;
-        token?: core.Supplier<string>;
-        /** Override the Tenant-Name header */
-        tenantName: core.Supplier<string>;
-        /** Additional headers to include in requests. */
-        headers?: HeadersRecord;
-        encodeHeadersAsWsProtocols?: boolean;
-        withCredentials?: boolean;
-    }
-
-    export interface RequestOptions {
-        /** The maximum time to wait for a response in seconds. */
-        timeoutInSeconds?: number;
-        /** The number of times to retry the request. Defaults to 2. */
-        maxRetries?: number;
-        /** A hook to abort the request. */
-        abortSignal?: AbortSignal;
-        /** Override the Tenant-Name header */
-        tenantName?: string;
-        /** Additional headers to include in the request. */
-        headers?: HeadersRecord;
-    }
+    export interface RequestOptions extends BaseCortiClient.RequestOptions {}
 }
 
-export class CortiClient {
-    /**
-     * Patch: this._options is now of type `CortiClient.InternalOptions` (which matches generated implementation)
-     */
-    protected readonly _options: CortiClient.InternalOptions;
-    /**
-     * Patch: extended `_oauthTokenProvider` to support both `RefreshBearerProvider` and `OAuthTokenProvider` options
-     * Optional - not created when auth is not provided (proxying scenarios)
-     */
-    private readonly _oauthTokenProvider?: core.OAuthTokenProvider | RefreshBearerProvider;
-    protected _interactions: Interactions | undefined;
-    protected _recordings: Recordings | undefined;
-    protected _transcripts: Transcripts | undefined;
-    protected _facts: Facts | undefined;
-    protected _templates: Templates | undefined;
-    protected _documents: Documents | undefined;
-    protected _agents: Agents | undefined;
-    /**
-     * Patch: removed `auth` field
-     * `_oauthTokenProvider` uses Auth module directly to get the token,
-     *   and our client also don't need to use it within the main client.
-     *   For other cases they can use `CortiAuth` module directly.
-     */
-    protected _stream: Stream | undefined;
-    protected _transcribe: Transcribe | undefined;
-    protected _codes: Codes | undefined;
+export class CortiClient extends BaseCortiClient {
+    protected override _auth: CortiAuth | undefined;
+    protected override _stream: CustomStream | undefined;
+    protected override _transcribe: CustomTranscribe | undefined;
 
-    constructor(_options: CortiClient.Options) {
-        /**
-         * Patch: resolve tenantName and environment from options or token
-         */
-        const { tenantName, environment, initialTokenResponse } = resolveClientOptions(_options);
+    private readonly _encodeHeadersAsWsProtocols: boolean | undefined;
 
-        /**
-         * Patch: redefining options based on new schema
-         */
-        this._options = {
-            ..._options,
-            headers: mergeHeaders(
-                {
-                    "Tenant-Name": tenantName,
-                    "X-Fern-Language": "JavaScript",
-                    "X-Fern-SDK-Name": "@corti/sdk",
-                    /**
-                     * Patch: replaced hardcoded SDK version with imported one
-                     */
-                    "X-Fern-SDK-Version": SDK_VERSION,
-                    "User-Agent": `@corti/sdk/${SDK_VERSION}`,
-                    "X-Fern-Runtime": core.RUNTIME.type,
-                    "X-Fern-Runtime-Version": core.RUNTIME.version,
-                },
-                _options?.headers,
-            ),
-            clientId: _options.auth && "clientId" in _options.auth ? _options.auth.clientId : undefined,
-            clientSecret: _options.auth && "clientSecret" in _options.auth ? _options.auth.clientSecret : undefined,
-            token: _options.auth && "accessToken" in _options.auth ? _options.auth.accessToken : undefined,
-            tenantName,
-            environment: getEnvironment(environment),
-            withCredentials: _options.withCredentials,
+    constructor(options: CortiClient.Options) {
+        const opts = options as {
+            auth?: CortiClient.Auth;
+            environment?: Environment;
+            tenantName?: string;
+            baseUrl?: string;
         };
+        const ctx = resolveClientOptions(options);
+        const restOptions = {
+            ...opts,
+            tenantName: ctx.tenantName,
+            environment: getEnvironment(ctx.environment),
+            ...(ctx.initialTokenResponse != null ? { initialTokenResponse: ctx.initialTokenResponse } : {}),
+        } as Parameters<typeof authToBaseOptions>[1];
 
-        /**
-         * Patch: set global default for fetcher withCredentials when passed on CortiClient
-         */
-        if (_options.withCredentials !== undefined) {
-            setDefaultWithCredentials(_options.withCredentials);
-        }
+        super(authToBaseOptions(opts.auth, restOptions));
 
-        /**
-         * Patch: if `clientId` is provided, use OAuthTokenProvider, otherwise use BearerProvider
-         * Only create token provider when auth is provided
-         */
-        if (_options.auth) {
-            this._oauthTokenProvider =
-                "clientId" in _options.auth
-                    ? new core.OAuthTokenProvider({
-                          clientId: _options.auth.clientId,
-                          clientSecret: _options.auth.clientSecret,
-                          /**
-                           * Patch: provide whole `options` object to the Auth client, since it depends on both tenantName and environment
-                           */
-                          authClient: new Auth(this._options),
-                      })
-                    : new RefreshBearerProvider({
-                          ..._options.auth,
-                          initialTokenResponse,
-                      });
-        }
+        setDefaultWithCredentials((options as OptionsBase).withCredentials);
+        this._encodeHeadersAsWsProtocols = (options as OptionsBase).encodeHeadersAsWsProtocols;
     }
 
-    public get interactions(): Interactions {
-        return (this._interactions ??= new Interactions({
+    public override get auth(): CortiAuth {
+        return (this._auth ??= new CortiAuth(this._options));
+    }
+
+    public override get stream(): CustomStream {
+        return (this._stream ??= new CustomStream({
             ...this._options,
-            token: this._oauthTokenProvider ? async () => await this._oauthTokenProvider!.getToken() : undefined,
+            encodeHeadersAsWsProtocols: this._encodeHeadersAsWsProtocols,
         }));
     }
 
-    public get recordings(): Recordings {
-        return (this._recordings ??= new Recordings({
+    public override get transcribe(): CustomTranscribe {
+        return (this._transcribe ??= new CustomTranscribe({
             ...this._options,
-            token: this._oauthTokenProvider ? async () => await this._oauthTokenProvider!.getToken() : undefined,
+            encodeHeadersAsWsProtocols: this._encodeHeadersAsWsProtocols,
         }));
     }
-
-    public get transcripts(): Transcripts {
-        return (this._transcripts ??= new Transcripts({
-            ...this._options,
-            token: this._oauthTokenProvider ? async () => await this._oauthTokenProvider!.getToken() : undefined,
-        }));
-    }
-
-    public get facts(): Facts {
-        return (this._facts ??= new Facts({
-            ...this._options,
-            token: this._oauthTokenProvider ? async () => await this._oauthTokenProvider!.getToken() : undefined,
-        }));
-    }
-
-    public get documents(): Documents {
-        return (this._documents ??= new Documents({
-            ...this._options,
-            token: this._oauthTokenProvider ? async () => await this._oauthTokenProvider!.getToken() : undefined,
-        }));
-    }
-
-    public get templates(): Templates {
-        return (this._templates ??= new Templates({
-            ...this._options,
-            token: this._oauthTokenProvider ? async () => await this._oauthTokenProvider!.getToken() : undefined,
-        }));
-    }
-
-    public get agents(): Agents {
-        return (this._agents ??= new Agents({
-            ...this._options,
-            token: this._oauthTokenProvider ? async () => await this._oauthTokenProvider!.getToken() : undefined,
-        }));
-    }
-
-    public get stream(): Stream {
-        return (this._stream ??= new Stream({
-            ...this._options,
-            token: this._oauthTokenProvider ? async () => await this._oauthTokenProvider!.getToken() : undefined,
-        }));
-    }
-
-    public get transcribe(): Transcribe {
-        return (this._transcribe ??= new Transcribe({
-            ...this._options,
-            token: this._oauthTokenProvider ? async () => await this._oauthTokenProvider!.getToken() : undefined,
-        }));
-    }
-
-    public get codes(): Codes {
-        return (this._codes ??= new Codes({
-            ...this._options,
-            token: this._oauthTokenProvider ? async () => await this._oauthTokenProvider!.getToken() : undefined,
-        }));
-    }
-
-    /**
-     * Patch: removed `auth` getter
-     */
 }
