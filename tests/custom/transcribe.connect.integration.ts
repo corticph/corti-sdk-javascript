@@ -1,7 +1,7 @@
-import { CortiClient } from "../../src/custom/CortiClient";
 import { faker } from "@faker-js/faker";
 import * as fs from "fs";
 import * as path from "path";
+import type { CortiClient } from "../../src/custom/CortiClient";
 import { createTestCortiClient, setupConsoleWarnSpy, waitForWebSocketMessage } from "./testUtils";
 
 describe("cortiClient.transcribe.connect", () => {
@@ -24,7 +24,7 @@ describe("cortiClient.transcribe.connect", () => {
             if (socket && typeof socket.close === "function") {
                 try {
                     socket.close();
-                } catch (error) {
+                } catch (_error) {
                     // Ignore errors during cleanup
                 }
             }

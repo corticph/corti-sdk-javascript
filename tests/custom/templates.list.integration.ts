@@ -1,4 +1,4 @@
-import { CortiClient } from "../../src";
+import type { CortiClient } from "../../src";
 import { createTestCortiClient, setupConsoleWarnSpy } from "./testUtils";
 
 describe("cortiClient.templates.list", () => {

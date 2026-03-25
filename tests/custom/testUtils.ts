@@ -1,8 +1,8 @@
-import { CortiClient } from "../../src";
 import { faker } from "@faker-js/faker";
 import { createReadStream } from "fs";
-import { StreamSocket } from "../../src/custom/CustomStreamSocket";
-import { TranscribeSocket } from "../../src/custom/CustomTranscribeSocket";
+import { CortiClient } from "../../src";
+import type { StreamSocket } from "../../src/custom/CustomStreamSocket";
+import type { TranscribeSocket } from "../../src/custom/CustomTranscribeSocket";
 
 /**
  * Creates a CortiClient instance configured for testing

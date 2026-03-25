@@ -1,7 +1,7 @@
-import { CortiClient } from "../../src";
 import { faker } from "@faker-js/faker";
 import { createReadStream, readFileSync } from "fs";
-import { createTestCortiClient, createTestInteraction, cleanupInteractions, setupConsoleWarnSpy } from "./testUtils";
+import type { CortiClient } from "../../src";
+import { cleanupInteractions, createTestCortiClient, createTestInteraction, setupConsoleWarnSpy } from "./testUtils";
 
 describe("cortiClient.recordings.upload", () => {
     let cortiClient: CortiClient;

@@ -1,11 +1,11 @@
-import { CortiClient } from "../../src/custom/CortiClient";
 import { faker } from "@faker-js/faker";
 import fs from "fs";
 import path from "path";
+import type { CortiClient } from "../../src/custom/CortiClient";
 import {
+    cleanupInteractions,
     createTestCortiClient,
     createTestInteraction,
-    cleanupInteractions,
     setupConsoleWarnSpy,
     waitForWebSocketMessage,
 } from "./testUtils";
@@ -32,7 +32,7 @@ describe("cortiClient.stream.connect", () => {
             if (socket && typeof socket.close === "function") {
                 try {
                     socket.close();
-                } catch (error) {
+                } catch (_error) {
                     // Ignore errors during cleanup
                 }
             }
@@ -225,7 +225,7 @@ describe("cortiClient.stream.connect", () => {
                     },
                     mode: {
                         type: "facts",
-                        outputLocale: "en"
+                        outputLocale: "en",
                     },
                 },
             });
@@ -258,7 +258,7 @@ describe("cortiClient.stream.connect", () => {
                     },
                     mode: {
                         type: "facts",
-                        outputLocale: "en"
+                        outputLocale: "en",
                     },
                 },
             });
@@ -291,7 +291,7 @@ describe("cortiClient.stream.connect", () => {
                     },
                     mode: {
                         type: "facts",
-                        outputLocale: "en"
+                        outputLocale: "en",
                     },
                 },
             });
@@ -326,7 +326,7 @@ describe("cortiClient.stream.connect", () => {
                     },
                     mode: {
                         type: "facts",
-                        outputLocale: "en"
+                        outputLocale: "en",
                     },
                 },
             });

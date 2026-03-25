@@ -1,11 +1,11 @@
-import { CortiClient } from "../../src";
 import { faker } from "@faker-js/faker";
+import type { CortiClient } from "../../src";
 import {
-    createTestCortiClient,
-    createTestAgent,
     cleanupAgents,
-    setupConsoleWarnSpy,
+    createTestAgent,
+    createTestCortiClient,
     sendTestMessage,
+    setupConsoleWarnSpy,
 } from "./testUtils";
 
 describe("cortiClient.agents.getContext", () => {

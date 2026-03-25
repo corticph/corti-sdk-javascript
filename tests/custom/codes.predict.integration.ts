@@ -1,6 +1,12 @@
-import { CortiClient } from "../../src";
 import { faker } from "@faker-js/faker";
-import { createTestCortiClient, createTestDocument, createTestInteraction, cleanupInteractions, setupConsoleWarnSpy } from "./testUtils";
+import type { CortiClient } from "../../src";
+import {
+    cleanupInteractions,
+    createTestCortiClient,
+    createTestDocument,
+    createTestInteraction,
+    setupConsoleWarnSpy,
+} from "./testUtils";
 
 describe("cortiClient.codes.predict", () => {
     let cortiClient: CortiClient;

@@ -1,5 +1,5 @@
-import { CortiClient } from "../../src";
 import { faker } from "@faker-js/faker";
+import type { CortiClient } from "../../src";
 import { createTestCortiClient, getValidTemplateKeyAndLanguage, setupConsoleWarnSpy } from "./testUtils";
 
 describe("cortiClient.templates.get", () => {

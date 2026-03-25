@@ -1,12 +1,11 @@
-import { CortiClient } from "../../src";
 import { faker } from "@faker-js/faker";
-import { createReadStream, readFileSync, createWriteStream } from "fs";
-import { Readable } from "stream";
+import { readFileSync } from "fs";
+import type { CortiClient } from "../../src";
 import {
+    cleanupInteractions,
     createTestCortiClient,
     createTestInteraction,
     createTestRecording,
-    cleanupInteractions,
     setupConsoleWarnSpy,
 } from "./testUtils";
 

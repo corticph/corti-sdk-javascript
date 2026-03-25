@@ -1,13 +1,13 @@
-import { CortiClient } from "../../src";
 import { faker } from "@faker-js/faker";
+import type { CortiClient } from "../../src";
 import {
+    cleanupInteractions,
     createTestCortiClient,
     createTestInteraction,
-    cleanupInteractions,
-    setupConsoleWarnSpy,
-    getValidTemplateKeyAndLanguage,
     getValidFactGroups,
     getValidSectionKeys,
+    getValidTemplateKeyAndLanguage,
+    setupConsoleWarnSpy,
 } from "./testUtils";
 
 describe("cortiClient.documents.create", () => {
@@ -15,7 +15,7 @@ describe("cortiClient.documents.create", () => {
     let consoleWarnSpy: jest.SpyInstance;
     let createdInteractionIds: string[] = [];
     let templateKey: string;
-    let outputLanguage: string;
+    let _outputLanguage: string;
     let validFactGroups: string[] = [];
     let validSectionKeys: string[] = [];
 
@@ -23,7 +23,7 @@ describe("cortiClient.documents.create", () => {
         cortiClient = createTestCortiClient();
         const templateData = await getValidTemplateKeyAndLanguage(cortiClient);
         templateKey = templateData.templateKey;
-        outputLanguage = templateData.outputLanguage;
+        _outputLanguage = templateData.outputLanguage;
         validFactGroups = await getValidFactGroups(cortiClient);
         validSectionKeys = await getValidSectionKeys(cortiClient);
     });
@@ -1068,9 +1068,7 @@ describe("cortiClient.documents.create", () => {
                         },
                     ],
                     template: {
-                        sections: [
-                            {} as any,
-                        ],
+                        sections: [{} as any],
                     },
                     outputLanguage: "en",
                 }),

@@ -1,6 +1,6 @@
-import { CortiClient } from "../../src";
 import { faker } from "@faker-js/faker";
-import { createTestCortiClient, createTestInteraction, createTestFacts, setupConsoleWarnSpy } from "./testUtils";
+import type { CortiClient } from "../../src";
+import { createTestCortiClient, createTestFacts, createTestInteraction, setupConsoleWarnSpy } from "./testUtils";
 
 describe("cortiClient.facts.list", () => {
     let cortiClient: CortiClient;

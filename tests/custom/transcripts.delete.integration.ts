@@ -1,12 +1,12 @@
-import { CortiClient } from "../../src";
 import { faker } from "@faker-js/faker";
+import type { CortiClient } from "../../src";
 import {
+    cleanupInteractions,
     createTestCortiClient,
     createTestInteraction,
     createTestRecording,
     createTestTranscript,
     setupConsoleWarnSpy,
-    cleanupInteractions,
 } from "./testUtils";
 
 describe("cortiClient.transcripts.delete", () => {

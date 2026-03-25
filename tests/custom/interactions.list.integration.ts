@@ -1,6 +1,6 @@
-import { CortiClient } from "../../src";
-import { createTestCortiClient, setupConsoleWarnSpy, cleanupInteractions, createTestInteraction } from "./testUtils";
 import { faker } from "@faker-js/faker";
+import type { CortiClient } from "../../src";
+import { cleanupInteractions, createTestCortiClient, createTestInteraction, setupConsoleWarnSpy } from "./testUtils";
 
 describe("cortiClient.interactions.list", () => {
     let cortiClient: CortiClient;
@@ -543,8 +543,8 @@ describe("cortiClient.interactions.list", () => {
             it("should sort by patient desc", async () => {
                 expect.assertions(4);
 
-                const patientA = "a-" + faker.string.alphanumeric(15);
-                const patientB = "b-" + faker.string.alphanumeric(15);
+                const patientA = `a-${faker.string.alphanumeric(15)}`;
+                const patientB = `b-${faker.string.alphanumeric(15)}`;
 
                 const interactionA = await createTestInteraction(cortiClient, createdInteractionIds, {
                     patient: { identifier: patientA },
@@ -576,8 +576,8 @@ describe("cortiClient.interactions.list", () => {
             it("should sort by patient asc", async () => {
                 expect.assertions(4);
 
-                const patientA = "a-" + faker.string.alphanumeric(15);
-                const patientB = "b-" + faker.string.alphanumeric(15);
+                const patientA = `a-${faker.string.alphanumeric(15)}`;
+                const patientB = `b-${faker.string.alphanumeric(15)}`;
 
                 const interactionA = await createTestInteraction(cortiClient, createdInteractionIds, {
                     patient: { identifier: patientA },
