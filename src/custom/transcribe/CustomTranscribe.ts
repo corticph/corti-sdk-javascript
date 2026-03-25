@@ -4,6 +4,7 @@ import * as Corti from "../../api/index.js";
 import { ErrorEvent } from "../../core/websocket/events.js";
 import { parseTranscribeResponseType } from "./parseTranscribeResponseType.js";
 import * as core from "../../core/index.js";
+import { type ProxyOptions, resolveProxyProtocols } from "../utils/encodeHeadersAsWsProtocols.js";
 
 const TRANSCRIBE_CONFIG_REJECTION_TYPES: readonly string[] = [
     Corti.TranscribeConfigStatusMessageType.ConfigDenied,
@@ -18,18 +19,37 @@ export type CustomTranscribeConnectArgs = {
      * When false, returns socket immediately; config errors are dispatched as ErrorEvent.
      */
     awaitConfiguration?: boolean;
+    /**
+     * When provided, bypasses normal URL construction and auth. The WebSocket connects
+     * directly to proxy.url. Useful for proxy backends that handle auth themselves.
+     */
+    proxy?: ProxyOptions;
 } & Partial<Omit<TranscribeClient.ConnectArgs, "tenantName" | "token">>;
 
 export class CustomTranscribe extends TranscribeClient {
     public override async connect(args?: CustomTranscribeConnectArgs): Promise<CustomTranscribeSocket> {
-        const { configuration, awaitConfiguration = true, ...rest } = args ?? {};
+        const { configuration, awaitConfiguration = true, proxy, ...rest } = args ?? {};
 
-        const tenantName = await core.Supplier.get(this._options.tenantName);
-        const authRequest = await this._options.authProvider?.getAuthRequest();
-        const token = authRequest?.headers.Authorization ?? authRequest?.headers.authorization ?? "";
+        let ws: core.ReconnectingWebSocket;
 
-        const rawSocket = await super.connect({ ...rest, tenantName, token });
-        const socket = new CustomTranscribeSocket({ socket: rawSocket.socket });
+        if (proxy) {
+            ws = new core.ReconnectingWebSocket({
+                url: proxy.url,
+                protocols: resolveProxyProtocols(proxy.protocols),
+                queryParameters: proxy.queryParameters ?? {},
+                headers: rest.headers ?? {},
+                options: { debug: rest.debug ?? false, maxRetries: rest.reconnectAttempts ?? 30 },
+            });
+        } else {
+            const tenantName = await core.Supplier.get(this._options.tenantName);
+            const authRequest = await this._options.authProvider?.getAuthRequest();
+            const token = authRequest?.headers.Authorization ?? authRequest?.headers.authorization ?? "";
+            const rawSocket = await super.connect({ ...rest, tenantName, token });
+
+            ws = rawSocket.socket;
+        }
+
+        const socket = new CustomTranscribeSocket({ socket: ws });
 
         if (!configuration) {
             return socket;
