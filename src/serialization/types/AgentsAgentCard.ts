@@ -21,9 +21,9 @@ export const AgentsAgentCard: core.serialization.ObjectSchema<serializers.Agents
         additionalInterfaces: core.serialization.list(AgentsAgentInterface).optionalNullable(),
         iconUrl: core.serialization.string().optionalNullable(),
         documentationUrl: core.serialization.string().optionalNullable(),
-        provider: AgentsAgentProvider.optional(),
+        provider: AgentsAgentProvider.optionalNullable(),
         version: core.serialization.string(),
-        capabilities: AgentsAgentCapabilities,
+        capabilities: AgentsAgentCapabilities.optionalNullable(),
         securitySchemes: core.serialization
             .record(core.serialization.string(), core.serialization.unknown())
             .optionalNullable(),
@@ -47,9 +47,9 @@ export declare namespace AgentsAgentCard {
         additionalInterfaces?: (AgentsAgentInterface.Raw[] | null) | null;
         iconUrl?: (string | null) | null;
         documentationUrl?: (string | null) | null;
-        provider?: AgentsAgentProvider.Raw | null;
+        provider?: (AgentsAgentProvider.Raw | null) | null;
         version: string;
-        capabilities: AgentsAgentCapabilities.Raw;
+        capabilities?: (AgentsAgentCapabilities.Raw | null) | null;
         securitySchemes?: (Record<string, unknown> | null) | null;
         security?: (Record<string, unknown> | null) | null;
         defaultInputModes: string[];
