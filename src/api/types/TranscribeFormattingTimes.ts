@@ -2,8 +2,9 @@
 
 /** Formatting for times. */
 export const TranscribeFormattingTimes = {
-    AsDictated: "as_dictated",
-    H12: "h12",
+    Locale: "locale",
     H24: "h24",
+    H12: "h12",
+    AsDictated: "as_dictated",
 } as const;
 export type TranscribeFormattingTimes = (typeof TranscribeFormattingTimes)[keyof typeof TranscribeFormattingTimes];

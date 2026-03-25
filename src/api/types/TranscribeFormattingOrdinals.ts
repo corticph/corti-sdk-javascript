@@ -2,6 +2,7 @@
 
 /** Formatting for ordinals. */
 export const TranscribeFormattingOrdinals = {
+    NumeralsAboveNine: "numerals_above_nine",
     AsDictated: "as_dictated",
     Numerals: "numerals",
 } as const;

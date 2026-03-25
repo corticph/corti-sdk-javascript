@@ -18,25 +18,34 @@ describe("CodesClient", () => {
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
         const rawRequestBody = {
-            system: ["icd10cm", "cpt"],
+            system: ["icd10cm-outpatient", "cpt"],
             context: [{ type: "text", text: "Short arm splint applied in ED for pain control." }],
-            maxCandidates: 5,
         };
         const rawResponseBody = {
             codes: [
                 {
-                    system: "icd10cm",
+                    system: "icd10cm-outpatient",
                     code: "R1030",
                     display: "Lower abdominal pain, unspecified",
-                    evidences: [{ contextIndex: 0, text: "Example text mentioning lower abdominal pain" }],
+                    evidences: [
+                        { contextIndex: 0, text: "Example text mentioning lower abdominal pain", start: 0, end: 44 },
+                    ],
+                    alternatives: [
+                        { code: "R1010", display: "Upper abdominal pain, unspecified" },
+                        { code: "R1032", display: "Left lower quadrant pain" },
+                    ],
                 },
             ],
             candidates: [
                 {
-                    system: "icd10cm",
+                    system: "icd10cm-outpatient",
                     code: "R509",
                     display: "Fever, unspecified",
-                    evidences: [{ contextIndex: 1, text: "Example text mentioning fever" }],
+                    evidences: [{ contextIndex: 1, text: "Example text mentioning fever", start: 0, end: 29 }],
+                    alternatives: [
+                        { code: "R502", display: "Drug induced fever" },
+                        { code: "R5082", display: "Postprocedural fever" },
+                    ],
                 },
             ],
             usageInfo: { creditsConsumed: 1.1 },
@@ -52,38 +61,61 @@ describe("CodesClient", () => {
             .build();
 
         const response = await client.codes.predict({
-            system: ["icd10cm", "cpt"],
+            system: ["icd10cm-outpatient", "cpt"],
             context: [
                 {
                     type: "text",
                     text: "Short arm splint applied in ED for pain control.",
                 },
             ],
-            maxCandidates: 5,
         });
         expect(response).toEqual({
             codes: [
                 {
-                    system: "icd10cm",
+                    system: "icd10cm-outpatient",
                     code: "R1030",
                     display: "Lower abdominal pain, unspecified",
                     evidences: [
                         {
                             contextIndex: 0,
                             text: "Example text mentioning lower abdominal pain",
+                            start: 0,
+                            end: 44,
+                        },
+                    ],
+                    alternatives: [
+                        {
+                            code: "R1010",
+                            display: "Upper abdominal pain, unspecified",
+                        },
+                        {
+                            code: "R1032",
+                            display: "Left lower quadrant pain",
                         },
                     ],
                 },
             ],
             candidates: [
                 {
-                    system: "icd10cm",
+                    system: "icd10cm-outpatient",
                     code: "R509",
                     display: "Fever, unspecified",
                     evidences: [
                         {
                             contextIndex: 1,
                             text: "Example text mentioning fever",
+                            start: 0,
+                            end: 29,
+                        },
+                    ],
+                    alternatives: [
+                        {
+                            code: "R502",
+                            display: "Drug induced fever",
+                        },
+                        {
+                            code: "R5082",
+                            display: "Postprocedural fever",
                         },
                     ],
                 },
@@ -106,7 +138,132 @@ describe("CodesClient", () => {
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
         const rawRequestBody = {
-            system: ["icd10cm", "icd10cm"],
+            system: ["icd10cm-outpatient"],
+            context: [{ type: "text", text: "Patient presents with uncontrolled type 2 diabetes." }],
+            filter: { include: ["E11"], exclude: ["exclude"] },
+        };
+        const rawResponseBody = {
+            codes: [
+                {
+                    system: "icd10cm-outpatient",
+                    code: "R1030",
+                    display: "Lower abdominal pain, unspecified",
+                    evidences: [
+                        { contextIndex: 0, text: "Example text mentioning lower abdominal pain", start: 0, end: 44 },
+                    ],
+                    alternatives: [
+                        { code: "R1010", display: "Upper abdominal pain, unspecified" },
+                        { code: "R1032", display: "Left lower quadrant pain" },
+                    ],
+                },
+            ],
+            candidates: [
+                {
+                    system: "icd10cm-outpatient",
+                    code: "R509",
+                    display: "Fever, unspecified",
+                    evidences: [{ contextIndex: 1, text: "Example text mentioning fever", start: 0, end: 29 }],
+                    alternatives: [
+                        { code: "R502", display: "Drug induced fever" },
+                        { code: "R5082", display: "Postprocedural fever" },
+                    ],
+                },
+            ],
+            usageInfo: { creditsConsumed: 1.1 },
+        };
+
+        server
+            .mockEndpoint()
+            .post("/tools/coding/")
+            .jsonBody(rawRequestBody)
+            .respondWith()
+            .statusCode(200)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        const response = await client.codes.predict({
+            system: ["icd10cm-outpatient"],
+            context: [
+                {
+                    type: "text",
+                    text: "Patient presents with uncontrolled type 2 diabetes.",
+                },
+            ],
+            filter: {
+                include: ["E11"],
+                exclude: ["exclude"],
+            },
+        });
+        expect(response).toEqual({
+            codes: [
+                {
+                    system: "icd10cm-outpatient",
+                    code: "R1030",
+                    display: "Lower abdominal pain, unspecified",
+                    evidences: [
+                        {
+                            contextIndex: 0,
+                            text: "Example text mentioning lower abdominal pain",
+                            start: 0,
+                            end: 44,
+                        },
+                    ],
+                    alternatives: [
+                        {
+                            code: "R1010",
+                            display: "Upper abdominal pain, unspecified",
+                        },
+                        {
+                            code: "R1032",
+                            display: "Left lower quadrant pain",
+                        },
+                    ],
+                },
+            ],
+            candidates: [
+                {
+                    system: "icd10cm-outpatient",
+                    code: "R509",
+                    display: "Fever, unspecified",
+                    evidences: [
+                        {
+                            contextIndex: 1,
+                            text: "Example text mentioning fever",
+                            start: 0,
+                            end: 29,
+                        },
+                    ],
+                    alternatives: [
+                        {
+                            code: "R502",
+                            display: "Drug induced fever",
+                        },
+                        {
+                            code: "R5082",
+                            display: "Postprocedural fever",
+                        },
+                    ],
+                },
+            ],
+            usageInfo: {
+                creditsConsumed: 1.1,
+            },
+        });
+    });
+
+    test("predict (3)", async () => {
+        const server = mockServerPool.createServer();
+        mockOAuth(server);
+
+        const client = new CortiClient({
+            maxRetries: 0,
+            clientId: "client_id",
+            clientSecret: "client_secret",
+            tenantName: "test",
+            environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
+        });
+        const rawRequestBody = {
+            system: ["icd10cm-inpatient", "icd10cm-inpatient"],
             context: [
                 { type: "text", text: "text" },
                 { type: "text", text: "text" },
@@ -125,7 +282,7 @@ describe("CodesClient", () => {
 
         await expect(async () => {
             return await client.codes.predict({
-                system: ["icd10cm", "icd10cm"],
+                system: ["icd10cm-inpatient", "icd10cm-inpatient"],
                 context: [
                     {
                         type: "text",
@@ -140,7 +297,7 @@ describe("CodesClient", () => {
         }).rejects.toThrow(Corti.BadRequestError);
     });
 
-    test("predict (3)", async () => {
+    test("predict (4)", async () => {
         const server = mockServerPool.createServer();
         mockOAuth(server);
 
@@ -152,13 +309,13 @@ describe("CodesClient", () => {
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
         const rawRequestBody = {
-            system: ["icd10cm", "icd10cm"],
+            system: ["icd10cm-inpatient", "icd10cm-inpatient"],
             context: [
                 { type: "text", text: "text" },
                 { type: "text", text: "text" },
             ],
         };
-        const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
+        const rawResponseBody = { key: "value" };
 
         server
             .mockEndpoint()
@@ -171,7 +328,7 @@ describe("CodesClient", () => {
 
         await expect(async () => {
             return await client.codes.predict({
-                system: ["icd10cm", "icd10cm"],
+                system: ["icd10cm-inpatient", "icd10cm-inpatient"],
                 context: [
                     {
                         type: "text",
@@ -186,7 +343,7 @@ describe("CodesClient", () => {
         }).rejects.toThrow(Corti.ForbiddenError);
     });
 
-    test("predict (4)", async () => {
+    test("predict (5)", async () => {
         const server = mockServerPool.createServer();
         mockOAuth(server);
 
@@ -198,7 +355,7 @@ describe("CodesClient", () => {
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
         const rawRequestBody = {
-            system: ["icd10cm", "icd10cm"],
+            system: ["icd10cm-inpatient", "icd10cm-inpatient"],
             context: [
                 { type: "text", text: "text" },
                 { type: "text", text: "text" },
@@ -217,7 +374,7 @@ describe("CodesClient", () => {
 
         await expect(async () => {
             return await client.codes.predict({
-                system: ["icd10cm", "icd10cm"],
+                system: ["icd10cm-inpatient", "icd10cm-inpatient"],
                 context: [
                     {
                         type: "text",
@@ -232,7 +389,7 @@ describe("CodesClient", () => {
         }).rejects.toThrow(Corti.InternalServerError);
     });
 
-    test("predict (5)", async () => {
+    test("predict (6)", async () => {
         const server = mockServerPool.createServer();
         mockOAuth(server);
 
@@ -244,7 +401,7 @@ describe("CodesClient", () => {
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
         const rawRequestBody = {
-            system: ["icd10cm", "icd10cm"],
+            system: ["icd10cm-inpatient", "icd10cm-inpatient"],
             context: [
                 { type: "text", text: "text" },
                 { type: "text", text: "text" },
@@ -263,7 +420,7 @@ describe("CodesClient", () => {
 
         await expect(async () => {
             return await client.codes.predict({
-                system: ["icd10cm", "icd10cm"],
+                system: ["icd10cm-inpatient", "icd10cm-inpatient"],
                 context: [
                     {
                         type: "text",
@@ -278,7 +435,7 @@ describe("CodesClient", () => {
         }).rejects.toThrow(Corti.BadGatewayError);
     });
 
-    test("predict (6)", async () => {
+    test("predict (7)", async () => {
         const server = mockServerPool.createServer();
         mockOAuth(server);
 
@@ -290,7 +447,7 @@ describe("CodesClient", () => {
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
         const rawRequestBody = {
-            system: ["icd10cm", "icd10cm"],
+            system: ["icd10cm-inpatient", "icd10cm-inpatient"],
             context: [
                 { type: "text", text: "text" },
                 { type: "text", text: "text" },
@@ -309,7 +466,7 @@ describe("CodesClient", () => {
 
         await expect(async () => {
             return await client.codes.predict({
-                system: ["icd10cm", "icd10cm"],
+                system: ["icd10cm-inpatient", "icd10cm-inpatient"],
                 context: [
                     {
                         type: "text",

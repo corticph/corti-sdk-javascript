@@ -2,10 +2,10 @@
 
 /** Formatting for dates. */
 export const TranscribeFormattingDates = {
+    LocaleLong: "locale:long",
+    LocaleMedium: "locale:medium",
+    LocaleShort: "locale:short",
     AsDictated: "as_dictated",
-    EuSlash: "eu_slash",
-    IsoCompact: "iso_compact",
-    LongText: "long_text",
-    UsSlash: "us_slash",
+    Iso: "iso",
 } as const;
 export type TranscribeFormattingDates = (typeof TranscribeFormattingDates)[keyof typeof TranscribeFormattingDates];

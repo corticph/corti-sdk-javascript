@@ -87,16 +87,7 @@ export class DocumentsClient {
                 case 400:
                     throw new Corti.BadRequestError(_response.error.body, _response.rawResponse);
                 case 403:
-                    throw new Corti.ForbiddenError(
-                        serializers.ErrorResponse.parseOrThrow(_response.error.body, {
-                            unrecognizedObjectKeys: "passthrough",
-                            allowUnrecognizedUnionMembers: true,
-                            allowUnrecognizedEnumValues: true,
-                            skipValidation: true,
-                            breadcrumbsPrefix: ["response"],
-                        }),
-                        _response.rawResponse,
-                    );
+                    throw new Corti.ForbiddenError(_response.error.body, _response.rawResponse);
                 case 500:
                     throw new Corti.InternalServerError(
                         serializers.ErrorResponse.parseOrThrow(_response.error.body, {
@@ -214,16 +205,7 @@ export class DocumentsClient {
                 case 400:
                     throw new Corti.BadRequestError(_response.error.body, _response.rawResponse);
                 case 403:
-                    throw new Corti.ForbiddenError(
-                        serializers.ErrorResponse.parseOrThrow(_response.error.body, {
-                            unrecognizedObjectKeys: "passthrough",
-                            allowUnrecognizedUnionMembers: true,
-                            allowUnrecognizedEnumValues: true,
-                            skipValidation: true,
-                            breadcrumbsPrefix: ["response"],
-                        }),
-                        _response.rawResponse,
-                    );
+                    throw new Corti.ForbiddenError(_response.error.body, _response.rawResponse);
                 case 500:
                     throw new Corti.InternalServerError(
                         serializers.ErrorResponse.parseOrThrow(_response.error.body, {
@@ -331,16 +313,7 @@ export class DocumentsClient {
                 case 400:
                     throw new Corti.BadRequestError(_response.error.body, _response.rawResponse);
                 case 403:
-                    throw new Corti.ForbiddenError(
-                        serializers.ErrorResponse.parseOrThrow(_response.error.body, {
-                            unrecognizedObjectKeys: "passthrough",
-                            allowUnrecognizedUnionMembers: true,
-                            allowUnrecognizedEnumValues: true,
-                            skipValidation: true,
-                            breadcrumbsPrefix: ["response"],
-                        }),
-                        _response.rawResponse,
-                    );
+                    throw new Corti.ForbiddenError(_response.error.body, _response.rawResponse);
                 case 500:
                     throw new Corti.InternalServerError(
                         serializers.ErrorResponse.parseOrThrow(_response.error.body, {
@@ -435,16 +408,7 @@ export class DocumentsClient {
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 403:
-                    throw new Corti.ForbiddenError(
-                        serializers.ErrorResponse.parseOrThrow(_response.error.body, {
-                            unrecognizedObjectKeys: "passthrough",
-                            allowUnrecognizedUnionMembers: true,
-                            allowUnrecognizedEnumValues: true,
-                            skipValidation: true,
-                            breadcrumbsPrefix: ["response"],
-                        }),
-                        _response.rawResponse,
-                    );
+                    throw new Corti.ForbiddenError(_response.error.body, _response.rawResponse);
                 case 404:
                     throw new Corti.NotFoundError(_response.error.body, _response.rawResponse);
                 case 500:
@@ -561,16 +525,7 @@ export class DocumentsClient {
                 case 400:
                     throw new Corti.BadRequestError(_response.error.body, _response.rawResponse);
                 case 403:
-                    throw new Corti.ForbiddenError(
-                        serializers.ErrorResponse.parseOrThrow(_response.error.body, {
-                            unrecognizedObjectKeys: "passthrough",
-                            allowUnrecognizedUnionMembers: true,
-                            allowUnrecognizedEnumValues: true,
-                            skipValidation: true,
-                            breadcrumbsPrefix: ["response"],
-                        }),
-                        _response.rawResponse,
-                    );
+                    throw new Corti.ForbiddenError(_response.error.body, _response.rawResponse);
                 case 500:
                     throw new Corti.InternalServerError(
                         serializers.ErrorResponse.parseOrThrow(_response.error.body, {

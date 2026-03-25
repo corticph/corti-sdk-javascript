@@ -539,6 +539,7 @@ export class AgentsClient {
      *
      * @throws {@link Corti.BadRequestError}
      * @throws {@link Corti.UnauthorizedError}
+     * @throws {@link Corti.ForbiddenError}
      * @throws {@link Corti.NotFoundError}
      * @throws {@link Corti.UnprocessableEntityError}
      *
@@ -615,6 +616,8 @@ export class AgentsClient {
                     throw new Corti.BadRequestError(_response.error.body, _response.rawResponse);
                 case 401:
                     throw new Corti.UnauthorizedError(_response.error.body, _response.rawResponse);
+                case 403:
+                    throw new Corti.ForbiddenError(_response.error.body, _response.rawResponse);
                 case 404:
                     throw new Corti.NotFoundError(_response.error.body, _response.rawResponse);
                 case 422:
@@ -650,6 +653,7 @@ export class AgentsClient {
      *
      * @throws {@link Corti.BadRequestError}
      * @throws {@link Corti.UnauthorizedError}
+     * @throws {@link Corti.ForbiddenError}
      * @throws {@link Corti.NotFoundError}
      *
      * @example
@@ -715,6 +719,8 @@ export class AgentsClient {
                     throw new Corti.BadRequestError(_response.error.body, _response.rawResponse);
                 case 401:
                     throw new Corti.UnauthorizedError(_response.error.body, _response.rawResponse);
+                case 403:
+                    throw new Corti.ForbiddenError(_response.error.body, _response.rawResponse);
                 case 404:
                     throw new Corti.NotFoundError(_response.error.body, _response.rawResponse);
                 default:

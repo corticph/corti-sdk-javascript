@@ -7,8 +7,8 @@ import type * as serializers from "../index.js";
 export const TranscribeFormattingNumericRanges: core.serialization.Schema<
     serializers.TranscribeFormattingNumericRanges.Raw,
     Corti.TranscribeFormattingNumericRanges
-> = core.serialization.enum_(["as_dictated", "numerals"]);
+> = core.serialization.enum_(["numerals", "as_dictated"]);
 
 export declare namespace TranscribeFormattingNumericRanges {
-    export type Raw = "as_dictated" | "numerals";
+    export type Raw = "numerals" | "as_dictated";
 }

@@ -2,9 +2,9 @@
 
 /** Formatting for numbers. */
 export const TranscribeFormattingNumbers = {
-    AsDictated: "as_dictated",
-    Numerals: "numerals",
     NumeralsAboveNine: "numerals_above_nine",
+    Numerals: "numerals",
+    AsDictated: "as_dictated",
 } as const;
 export type TranscribeFormattingNumbers =
     (typeof TranscribeFormattingNumbers)[keyof typeof TranscribeFormattingNumbers];

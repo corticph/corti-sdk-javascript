@@ -1155,6 +1155,60 @@ describe("AgentsClient", () => {
             .post("/agents/id/v1/message:send")
             .jsonBody(rawRequestBody)
             .respondWith()
+            .statusCode(403)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.agents.messageSend("id", {
+                message: {
+                    role: "user",
+                    parts: [
+                        {
+                            kind: "text",
+                            text: "text",
+                        },
+                        {
+                            kind: "text",
+                            text: "text",
+                        },
+                    ],
+                    messageId: "messageId",
+                    kind: "message",
+                },
+            });
+        }).rejects.toThrow(Corti.ForbiddenError);
+    });
+
+    test("messageSend (5)", async () => {
+        const server = mockServerPool.createServer();
+        mockOAuth(server);
+
+        const client = new CortiClient({
+            maxRetries: 0,
+            clientId: "client_id",
+            clientSecret: "client_secret",
+            tenantName: "test",
+            environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
+        });
+        const rawRequestBody = {
+            message: {
+                role: "user",
+                parts: [
+                    { kind: "text", text: "text" },
+                    { kind: "text", text: "text" },
+                ],
+                messageId: "messageId",
+                kind: "message",
+            },
+        };
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .post("/agents/id/v1/message:send")
+            .jsonBody(rawRequestBody)
+            .respondWith()
             .statusCode(404)
             .jsonBody(rawResponseBody)
             .build();
@@ -1180,7 +1234,7 @@ describe("AgentsClient", () => {
         }).rejects.toThrow(Corti.NotFoundError);
     });
 
-    test("messageSend (5)", async () => {
+    test("messageSend (6)", async () => {
         const server = mockServerPool.createServer();
         mockOAuth(server);
 
@@ -1424,6 +1478,33 @@ describe("AgentsClient", () => {
     });
 
     test("getTask (4)", async () => {
+        const server = mockServerPool.createServer();
+        mockOAuth(server);
+
+        const client = new CortiClient({
+            maxRetries: 0,
+            clientId: "client_id",
+            clientSecret: "client_secret",
+            tenantName: "test",
+            environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
+        });
+
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .get("/agents/id/v1/tasks/taskId")
+            .respondWith()
+            .statusCode(403)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.agents.getTask("id", "taskId");
+        }).rejects.toThrow(Corti.ForbiddenError);
+    });
+
+    test("getTask (5)", async () => {
         const server = mockServerPool.createServer();
         mockOAuth(server);
 

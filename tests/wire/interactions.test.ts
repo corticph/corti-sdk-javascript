@@ -91,7 +91,7 @@ describe("InteractionsClient", () => {
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
-        const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
+        const rawResponseBody = { key: "value" };
 
         server
             .mockEndpoint({ once: false })
@@ -221,7 +221,7 @@ describe("InteractionsClient", () => {
         const rawRequestBody = {
             encounter: { identifier: "identifier", status: "planned", type: "first_consultation" },
         };
-        const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
+        const rawResponseBody = { key: "value" };
 
         server
             .mockEndpoint()
@@ -400,7 +400,7 @@ describe("InteractionsClient", () => {
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
-        const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
+        const rawResponseBody = { key: "value" };
 
         server.mockEndpoint().get("/interactions/id").respondWith().statusCode(403).jsonBody(rawResponseBody).build();
 
@@ -465,7 +465,7 @@ describe("InteractionsClient", () => {
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
-        const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
+        const rawResponseBody = { key: "value" };
 
         server
             .mockEndpoint()
@@ -593,7 +593,7 @@ describe("InteractionsClient", () => {
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
         const rawRequestBody = {};
-        const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
+        const rawResponseBody = { key: "value" };
 
         server
             .mockEndpoint()

@@ -5,12 +5,24 @@ import type * as Corti from "../../../../index.js";
 /**
  * @example
  *     {
- *         system: ["icd10cm", "cpt"],
+ *         system: ["icd10cm-outpatient", "cpt"],
  *         context: [{
  *                 type: "text",
  *                 text: "Short arm splint applied in ED for pain control."
+ *             }]
+ *     }
+ *
+ * @example
+ *     {
+ *         system: ["icd10cm-outpatient"],
+ *         context: [{
+ *                 type: "text",
+ *                 text: "Patient presents with uncontrolled type 2 diabetes."
  *             }],
- *         maxCandidates: 5
+ *         filter: {
+ *             include: ["E11"],
+ *             exclude: ["exclude"]
+ *         }
  *     }
  */
 export interface CodesGeneralPredictRequest {
@@ -18,6 +30,6 @@ export interface CodesGeneralPredictRequest {
     system: Corti.CommonCodingSystemEnum[];
     /** Select either `text` or `documentId` as input context to the model for code prediction. Evidence indices in the response map to this array. */
     context: Corti.CommonAiContext[];
-    /** Maximum number of code candidates to include in the response (per system). */
-    maxCandidates?: number;
+    /** Optional filter to restrict predicted codes. */
+    filter?: Corti.CodesFilter;
 }

@@ -3,6 +3,7 @@
 import type * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
 import type * as serializers from "../index.js";
+import { CodesGeneralReadResponseAlternativesItem } from "./CodesGeneralReadResponseAlternativesItem.js";
 import { CodesGeneralReadResponseEvidencesItem } from "./CodesGeneralReadResponseEvidencesItem.js";
 import { CommonCodingSystemEnum } from "./CommonCodingSystemEnum.js";
 
@@ -14,6 +15,7 @@ export const CodesGeneralReadResponse: core.serialization.ObjectSchema<
     code: core.serialization.string(),
     display: core.serialization.string(),
     evidences: core.serialization.list(CodesGeneralReadResponseEvidencesItem).optional(),
+    alternatives: core.serialization.list(CodesGeneralReadResponseAlternativesItem).optional(),
 });
 
 export declare namespace CodesGeneralReadResponse {
@@ -22,5 +24,6 @@ export declare namespace CodesGeneralReadResponse {
         code: string;
         display: string;
         evidences?: CodesGeneralReadResponseEvidencesItem.Raw[] | null;
+        alternatives?: CodesGeneralReadResponseAlternativesItem.Raw[] | null;
     }
 }
