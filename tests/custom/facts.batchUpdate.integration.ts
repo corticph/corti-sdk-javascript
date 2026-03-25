@@ -253,9 +253,7 @@ describe("cortiClient.facts.batchUpdate", () => {
 
             const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
 
-            await expect(
-                cortiClient.facts.batchUpdate(interactionId, { facts: [] }),
-            ).rejects.toThrow();
+            await expect(cortiClient.facts.batchUpdate(interactionId, { facts: [] })).rejects.toThrow();
         });
     });
 });

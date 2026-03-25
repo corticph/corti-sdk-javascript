@@ -48,9 +48,9 @@ describe("cortiClient.transcripts.getStatus", () => {
         it("should throw error when interaction ID is null", async () => {
             expect.assertions(1);
 
-            await expect(
-                cortiClient.transcripts.getStatus(null as any, faker.string.uuid()),
-            ).rejects.toThrow("Expected string. Received null.");
+            await expect(cortiClient.transcripts.getStatus(null as any, faker.string.uuid())).rejects.toThrow(
+                "Expected string. Received null.",
+            );
         });
 
         it("should throw error when transcript ID is null", async () => {
@@ -58,17 +58,17 @@ describe("cortiClient.transcripts.getStatus", () => {
 
             const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
 
-            await expect(
-                cortiClient.transcripts.getStatus(interactionId, null as any),
-            ).rejects.toThrow("Expected string. Received null.");
+            await expect(cortiClient.transcripts.getStatus(interactionId, null as any)).rejects.toThrow(
+                "Expected string. Received null.",
+            );
         });
 
         it("should throw error when interaction ID is undefined", async () => {
             expect.assertions(1);
 
-            await expect(
-                cortiClient.transcripts.getStatus(undefined as any, faker.string.uuid()),
-            ).rejects.toThrow("Expected string. Received undefined.");
+            await expect(cortiClient.transcripts.getStatus(undefined as any, faker.string.uuid())).rejects.toThrow(
+                "Expected string. Received undefined.",
+            );
         });
 
         it("should throw error when transcript ID is undefined", async () => {
@@ -76,9 +76,9 @@ describe("cortiClient.transcripts.getStatus", () => {
 
             const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
 
-            await expect(
-                cortiClient.transcripts.getStatus(interactionId, undefined as any),
-            ).rejects.toThrow("Expected string. Received undefined.");
+            await expect(cortiClient.transcripts.getStatus(interactionId, undefined as any)).rejects.toThrow(
+                "Expected string. Received undefined.",
+            );
         });
     });
 
@@ -86,9 +86,9 @@ describe("cortiClient.transcripts.getStatus", () => {
         it("should throw error when interaction ID is invalid format", async () => {
             expect.assertions(1);
 
-            await expect(
-                cortiClient.transcripts.getStatus("invalid-uuid", faker.string.uuid()),
-            ).rejects.toThrow("Status code: 400");
+            await expect(cortiClient.transcripts.getStatus("invalid-uuid", faker.string.uuid())).rejects.toThrow(
+                "Status code: 400",
+            );
         });
 
         it("should throw error when transcript ID is invalid format", async () => {
@@ -96,17 +96,17 @@ describe("cortiClient.transcripts.getStatus", () => {
 
             const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
 
-            await expect(
-                cortiClient.transcripts.getStatus(interactionId, "invalid-uuid"),
-            ).rejects.toThrow("Status code: 400");
+            await expect(cortiClient.transcripts.getStatus(interactionId, "invalid-uuid")).rejects.toThrow(
+                "Status code: 400",
+            );
         });
 
         it("should throw error when interaction ID does not exist", async () => {
             expect.assertions(1);
 
-            await expect(
-                cortiClient.transcripts.getStatus(faker.string.uuid(), faker.string.uuid()),
-            ).rejects.toThrow("Status code: 404");
+            await expect(cortiClient.transcripts.getStatus(faker.string.uuid(), faker.string.uuid())).rejects.toThrow(
+                "Status code: 404",
+            );
         });
 
         it("should throw error when transcript ID does not exist", async () => {
@@ -114,9 +114,9 @@ describe("cortiClient.transcripts.getStatus", () => {
 
             const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
 
-            await expect(
-                cortiClient.transcripts.getStatus(interactionId, faker.string.uuid()),
-            ).rejects.toThrow("Status code: 404");
+            await expect(cortiClient.transcripts.getStatus(interactionId, faker.string.uuid())).rejects.toThrow(
+                "Status code: 404",
+            );
         });
     });
 });

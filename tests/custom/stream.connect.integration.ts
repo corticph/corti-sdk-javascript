@@ -97,25 +97,25 @@ describe("cortiClient.stream.connect", () => {
                     configuration: {
                         transcription: {
                             primaryLanguage: "en",
-                        isDiarization: true,
-                        isMultichannel: true,
-                        participants: [
-                            {
-                                channel: 0,
-                                role: "doctor",
-                            },
-                            {
-                                channel: 1,
-                                role: "patient",
-                            },
-                        ],
+                            isDiarization: true,
+                            isMultichannel: true,
+                            participants: [
+                                {
+                                    channel: 0,
+                                    role: "doctor",
+                                },
+                                {
+                                    channel: 1,
+                                    role: "patient",
+                                },
+                            ],
+                        },
+                        mode: {
+                            type: "facts",
+                            outputLocale: "en-US",
+                        },
                     },
-                    mode: {
-                        type: "facts",
-                        outputLocale: "en-US",
-                    },
-                },
-            });
+                });
             });
 
             await waitForWebSocketMessage(streamSocket, "CONFIG_ACCEPTED", { rejectOnWrongMessage: true });

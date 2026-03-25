@@ -101,7 +101,9 @@ describe("cortiClient.recordings.upload", () => {
                 autoClose: true,
             });
 
-            await expect(cortiClient.recordings.upload(file, "invalid-uuid-format")).rejects.toThrow("Status code: 400");
+            await expect(cortiClient.recordings.upload(file, "invalid-uuid-format")).rejects.toThrow(
+                "Status code: 400",
+            );
         });
     });
 });

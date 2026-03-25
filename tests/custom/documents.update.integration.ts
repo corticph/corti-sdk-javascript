@@ -165,9 +165,7 @@ describe("cortiClient.documents.update", () => {
         it("should throw error when interaction ID is missing", async () => {
             expect.assertions(1);
 
-            await expect(
-                cortiClient.documents.update(undefined as any, faker.string.uuid(), {}),
-            ).rejects.toThrow();
+            await expect(cortiClient.documents.update(undefined as any, faker.string.uuid(), {})).rejects.toThrow();
         });
 
         it("should throw error when document ID is missing", async () => {
@@ -175,9 +173,7 @@ describe("cortiClient.documents.update", () => {
 
             const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
 
-            await expect(
-                cortiClient.documents.update(interactionId, undefined as any, {}),
-            ).rejects.toThrow();
+            await expect(cortiClient.documents.update(interactionId, undefined as any, {})).rejects.toThrow();
         });
     });
 

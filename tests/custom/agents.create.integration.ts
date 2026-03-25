@@ -178,7 +178,6 @@ describe("cortiClient.agents.create", () => {
             expect(result).toBeDefined();
             expect(consoleWarnSpy).not.toHaveBeenCalled();
         });
-
     });
 
     describe("should throw error when invalid parameters are provided", () => {
