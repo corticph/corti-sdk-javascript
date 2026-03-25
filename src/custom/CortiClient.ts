@@ -32,6 +32,12 @@ type OptionsBase = Omit<
     "clientId" | "clientSecret" | "token" | "environment" | "tenantName" | "baseUrl"
 > & {
     withCredentials?: boolean;
+    /**
+     * When true, encodes the client's auth headers as WebSocket subprotocol pairs instead of
+     * HTTP headers on every WebSocket connection. Useful when connecting through a gateway
+     * that strips HTTP headers but passes WS protocols through.
+     */
+    encodeHeadersAsWsProtocols?: boolean;
 };
 
 export declare namespace CortiClient {
@@ -87,6 +93,8 @@ export class CortiClient extends BaseCortiClient {
     protected override _stream: CustomStream | undefined;
     protected override _transcribe: CustomTranscribe | undefined;
 
+    private readonly _encodeHeadersAsWsProtocols: boolean | undefined;
+
     constructor(options: CortiClient.Options) {
         const opts = options as {
             auth?: CortiClient.Auth;
@@ -105,6 +113,7 @@ export class CortiClient extends BaseCortiClient {
         super(authToBaseOptions(opts.auth, restOptions));
 
         setDefaultWithCredentials((options as OptionsBase).withCredentials);
+        this._encodeHeadersAsWsProtocols = (options as OptionsBase).encodeHeadersAsWsProtocols;
     }
 
     public override get auth(): CortiAuth {
@@ -112,10 +121,16 @@ export class CortiClient extends BaseCortiClient {
     }
 
     public override get stream(): CustomStream {
-        return (this._stream ??= new CustomStream(this._options));
+        return (this._stream ??= new CustomStream({
+            ...this._options,
+            encodeHeadersAsWsProtocols: this._encodeHeadersAsWsProtocols,
+        }));
     }
 
     public override get transcribe(): CustomTranscribe {
-        return (this._transcribe ??= new CustomTranscribe(this._options));
+        return (this._transcribe ??= new CustomTranscribe({
+            ...this._options,
+            encodeHeadersAsWsProtocols: this._encodeHeadersAsWsProtocols,
+        }));
     }
 }

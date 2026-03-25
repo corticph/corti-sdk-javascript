@@ -4,7 +4,7 @@ import * as Corti from "../../api/index.js";
 import { ErrorEvent } from "../../core/websocket/events.js";
 import { parseStreamResponseType } from "./parseStreamResponseType.js";
 import * as core from "../../core/index.js";
-import { type ProxyOptions, resolveProxyProtocols } from "../utils/encodeHeadersAsWsProtocols.js";
+import { type ProxyOptions, getWsProtocols } from "../utils/encodeHeadersAsWsProtocols.js";
 
 const STREAM_CONFIG_REJECTION_TYPES: readonly string[] = [
     Corti.StreamConfigStatusMessageType.ConfigDenied,
@@ -30,39 +30,55 @@ export type CustomStreamConnectArgs = {
 } & Partial<Omit<StreamClient.ConnectArgs, "id" | "tenantName" | "token">>;
 
 export class CustomStream extends StreamClient {
+    private readonly _encodeHeadersAsWsProtocols: boolean | undefined;
+
+    constructor(options: StreamClient.Options & { encodeHeadersAsWsProtocols?: boolean }) {
+        super(options);
+        this._encodeHeadersAsWsProtocols = options.encodeHeadersAsWsProtocols;
+    }
+
     public override async connect(args: CustomStreamConnectArgs): Promise<CustomStreamSocket> {
         const { configuration, awaitConfiguration = true, proxy, ...rest } = args;
 
-        let ws: core.ReconnectingWebSocket;
+        const useProxyPath = proxy || this._encodeHeadersAsWsProtocols;
+        const protocols = await getWsProtocols(
+            { ...this._options, encodeHeadersAsWsProtocols: this._encodeHeadersAsWsProtocols },
+            proxy?.protocols,
+        );
 
-        if (proxy) {
-            ws = new core.ReconnectingWebSocket({
-                url: proxy.url,
-                protocols: resolveProxyProtocols(proxy.protocols),
-                queryParameters: proxy.queryParameters ?? {},
-                headers: rest.headers ?? {},
-                options: { debug: rest.debug ?? false, maxRetries: rest.reconnectAttempts ?? 30 },
-            });
-        } else {
-            const tenantName = await core.Supplier.get(this._options.tenantName);
-            const authRequest = await this._options.authProvider?.getAuthRequest();
-            const token = authRequest?.headers.Authorization ?? authRequest?.headers.authorization ?? "";
-            const rawSocket = await super.connect({ ...rest, tenantName, token });
+        const socket = useProxyPath
+            ? new core.ReconnectingWebSocket({
+                  url:
+                      proxy?.url ??
+                      core.url.join(
+                          (await core.Supplier.get(this._options.baseUrl)) ??
+                              (await core.Supplier.get(this._options.environment)).wss,
+                          `/interactions/${core.url.encodePathParam(rest.id)}/streams`,
+                      ),
+                  protocols,
+                  queryParameters: proxy?.queryParameters ?? {},
+                  headers: rest.headers ?? {},
+                  options: { debug: rest.debug ?? false, maxRetries: rest.reconnectAttempts ?? 30 },
+              })
+            : (
+                  await super.connect({
+                      ...rest,
+                      token: (await this._options.authProvider?.getAuthRequest())?.headers.Authorization || "",
+                      tenantName: await core.Supplier.get(this._options.tenantName),
+                  })
+              ).socket;
 
-            ws = rawSocket.socket;
-        }
-
-        const socket = new CustomStreamSocket({ socket: ws });
+        const ws = new CustomStreamSocket({ socket });
 
         if (!configuration) {
-            return socket;
+            return ws;
         }
 
         if (awaitConfiguration) {
-            return this._connectWithConfigAck(socket, configuration);
+            return this._connectWithConfigAck(ws, configuration);
         }
 
-        return this._connectWithConfigListeners(socket, configuration);
+        return this._connectWithConfigListeners(ws, configuration);
     }
 
     /**
