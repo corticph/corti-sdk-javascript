@@ -1,5 +1,5 @@
 import { TranscribeClient } from "../../api/resources/transcribe/client/Client.js";
-import type { TranscribeSocket } from "../../api/resources/transcribe/client/Socket.js";
+import { CustomTranscribeSocket } from "./CustomTranscribeSocket.js";
 import * as Corti from "../../api/index.js";
 import { ErrorEvent } from "../../core/websocket/events.js";
 import { parseTranscribeResponseType } from "./parseTranscribeResponseType.js";
@@ -21,14 +21,15 @@ export type CustomTranscribeConnectArgs = {
 } & Partial<Omit<TranscribeClient.ConnectArgs, "tenantName" | "token">>;
 
 export class CustomTranscribe extends TranscribeClient {
-    public override async connect(args?: CustomTranscribeConnectArgs): Promise<TranscribeSocket> {
+    public override async connect(args?: CustomTranscribeConnectArgs): Promise<CustomTranscribeSocket> {
         const { configuration, awaitConfiguration = true, ...rest } = args ?? {};
 
         const tenantName = await core.Supplier.get(this._options.tenantName);
         const authRequest = await this._options.authProvider?.getAuthRequest();
         const token = authRequest?.headers.Authorization ?? authRequest?.headers.authorization ?? "";
 
-        const socket = await super.connect({ ...rest, tenantName, token });
+        const rawSocket = await super.connect({ ...rest, tenantName, token });
+        const socket = new CustomTranscribeSocket({ socket: rawSocket.socket });
 
         if (!configuration) {
             return socket;
@@ -47,9 +48,9 @@ export class CustomTranscribe extends TranscribeClient {
      * connection error / ended.
      */
     private async _connectWithConfigAck(
-        socket: TranscribeSocket,
+        socket: CustomTranscribeSocket,
         configuration: Corti.TranscribeConfig,
-    ): Promise<TranscribeSocket> {
+    ): Promise<CustomTranscribeSocket> {
         const configAck = this._buildConfigAckPromise(socket);
 
         await socket.waitForOpen();
@@ -76,9 +77,9 @@ export class CustomTranscribe extends TranscribeClient {
      * Config errors are dispatched as ErrorEvent and the socket is closed.
      */
     private _connectWithConfigListeners(
-        socket: TranscribeSocket,
+        socket: CustomTranscribeSocket,
         configuration: Corti.TranscribeConfig,
-    ): TranscribeSocket {
+    ): CustomTranscribeSocket {
         socket.socket.addEventListener("open", () => {
             socket.sendConfiguration({ type: "config", configuration });
         });
@@ -102,7 +103,7 @@ export class CustomTranscribe extends TranscribeClient {
     }
 
     /** Resolves on CONFIG_ACCEPTED; rejects on rejection types, socket error, or ended. */
-    private _buildConfigAckPromise(socket: TranscribeSocket): Promise<void> {
+    private _buildConfigAckPromise(socket: CustomTranscribeSocket): Promise<void> {
         return new Promise<void>((resolve, reject) => {
             const cleanup = () => {
                 socket.socket.removeEventListener("message", onMessage);

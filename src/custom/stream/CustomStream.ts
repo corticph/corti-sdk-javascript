@@ -1,5 +1,5 @@
 import { StreamClient } from "../../api/resources/stream/client/Client.js";
-import type { StreamSocket } from "../../api/resources/stream/client/Socket.js";
+import { CustomStreamSocket } from "./CustomStreamSocket.js";
 import * as Corti from "../../api/index.js";
 import { ErrorEvent } from "../../core/websocket/events.js";
 import { parseStreamResponseType } from "./parseStreamResponseType.js";
@@ -24,14 +24,15 @@ export type CustomStreamConnectArgs = {
 } & Partial<Omit<StreamClient.ConnectArgs, "id" | "tenantName" | "token">>;
 
 export class CustomStream extends StreamClient {
-    public override async connect(args: CustomStreamConnectArgs): Promise<StreamSocket> {
+    public override async connect(args: CustomStreamConnectArgs): Promise<CustomStreamSocket> {
         const { configuration, awaitConfiguration = true, ...rest } = args;
 
         const tenantName = await core.Supplier.get(this._options.tenantName);
         const authRequest = await this._options.authProvider?.getAuthRequest();
         const token = authRequest?.headers.Authorization ?? authRequest?.headers.authorization ?? "";
 
-        const socket = await super.connect({ ...rest, tenantName, token });
+        const rawSocket = await super.connect({ ...rest, tenantName, token });
+        const socket = new CustomStreamSocket({ socket: rawSocket.socket });
 
         if (!configuration) {
             return socket;
@@ -50,9 +51,9 @@ export class CustomStream extends StreamClient {
      * CONFIG_NOT_PROVIDED / connection error / ENDED.
      */
     private async _connectWithConfigAck(
-        socket: StreamSocket,
+        socket: CustomStreamSocket,
         configuration: Corti.StreamConfig,
-    ): Promise<StreamSocket> {
+    ): Promise<CustomStreamSocket> {
         const configAck = this._buildConfigAckPromise(socket);
 
         await socket.waitForOpen();
@@ -79,9 +80,9 @@ export class CustomStream extends StreamClient {
      * Config errors are dispatched as ErrorEvent and the socket is closed.
      */
     private _connectWithConfigListeners(
-        socket: StreamSocket,
+        socket: CustomStreamSocket,
         configuration: Corti.StreamConfig,
-    ): StreamSocket {
+    ): CustomStreamSocket {
         socket.socket.addEventListener("open", () => {
             socket.sendConfiguration({ type: "config", configuration });
         });
@@ -105,7 +106,7 @@ export class CustomStream extends StreamClient {
     }
 
     /** Resolves on CONFIG_ACCEPTED; rejects on rejection types, socket error, or ENDED. */
-    private _buildConfigAckPromise(socket: StreamSocket): Promise<void> {
+    private _buildConfigAckPromise(socket: CustomStreamSocket): Promise<void> {
         return new Promise<void>((resolve, reject) => {
             const cleanup = () => {
                 socket.socket.removeEventListener("message", onMessage);
