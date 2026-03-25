@@ -19,5 +19,5 @@ src/core/fetcher/index.ts
 # Wire tests authentication
 tests/wire/mockAuth.ts
 
-# CI/release workflows — hand-maintained, Fern must not overwrite
-.github/workflows
+# CI/release workflows and GitHub config — hand-maintained, Fern must not overwrite
+.github/
