@@ -33,5 +33,5 @@
         }
     },
     "originGitCommit": "3d383f6d26c0206a6e3607cd2cc4a0e1b6efab11",
-    "sdkVersion": "0.10.2"
+    "sdkVersion": "0.0.0-dev"
 }
