@@ -19,5 +19,5 @@ src/core/fetcher/index.ts
 # Wire tests authentication
 tests/wire/mockAuth.ts
 
-# CI workflow — publish step removed; Fern must not restore it
-.github/workflows
+# CI/release workflows — hand-maintained, Fern must not overwrite
+# .github/workflows
