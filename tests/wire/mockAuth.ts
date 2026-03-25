@@ -14,5 +14,7 @@ export function mockOAuth(server: MockServer): void {
         scope: "scope",
         session_state: "session_state",
     };
-    server.mockEndpoint().post("/fake-token").respondWith().statusCode(200).jsonBody(rawResponseBody).build();
+    /** Patch: mocking endpoints properly **/
+    server.mockEndpoint({ once: false }).post("/fake-token").respondWith().statusCode(200).jsonBody(rawResponseBody).build();
+    server.mockEndpoint({ once: false }).post("/test/protocol/openid-connect/token").respondWith().statusCode(200).jsonBody(rawResponseBody).build();
 }
