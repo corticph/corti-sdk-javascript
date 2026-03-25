@@ -2,10 +2,7 @@ import { StreamSocket } from "../../api/resources/stream/client/Socket.js";
 
 export class CustomStreamSocket extends StreamSocket {
     /** Remove the handler for an event. If callback is supplied, only removes if it matches. */
-    public off<T extends keyof StreamSocket.EventHandlers>(
-        event: T,
-        callback?: StreamSocket.EventHandlers[T],
-    ): void {
+    public off<T extends keyof StreamSocket.EventHandlers>(event: T, callback?: StreamSocket.EventHandlers[T]): void {
         if (callback === undefined || this.eventHandlers[event] === callback) {
             this.eventHandlers[event] = undefined;
         }

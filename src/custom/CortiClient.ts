@@ -5,9 +5,9 @@ import { CortiAuth } from "./auth/CortiAuth.js";
 import { CustomStream } from "./stream/CustomStream.js";
 import { CustomTranscribe } from "./transcribe/CustomTranscribe.js";
 import { authToBaseOptions } from "./utils/authToBaseOptions.js";
-import { setDefaultWithCredentials } from "./utils/withCredentialsConfig.js";
 import { type Environment, getEnvironment } from "./utils/environment.js";
 import { resolveClientOptions } from "./utils/resolveClientOptions.js";
+import { setDefaultWithCredentials } from "./utils/withCredentialsConfig.js";
 
 type TokenDerivableAuth =
     | {

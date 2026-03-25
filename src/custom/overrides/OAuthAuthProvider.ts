@@ -1,6 +1,7 @@
 import type * as Corti from "../../api/index.js";
 import type { BaseClientOptions } from "../../BaseClient.js";
 import * as core from "../../core/index.js";
+import * as errors from "../../errors/index.js";
 import { CortiAuth } from "../auth/CortiAuth.js";
 import { OAuthAuthCodeAuthProvider } from "../auth/OAuthAuthCodeAuthProvider.js";
 import { OAuthPkceAuthProvider } from "../auth/OAuthPkceAuthProvider.js";
@@ -18,7 +19,6 @@ import {
     REDIRECT_URI_PARAM,
     USERNAME_PARAM,
 } from "../utils/oauthAuthHelpers.js";
-import * as errors from "../../errors/index.js";
 
 /** Patch: Re-export for consumers; implementation shared with OAuthRopcAuthProvider, OAuthAuthCodeAuthProvider and OAuthPkceAuthProvider. */
 export {

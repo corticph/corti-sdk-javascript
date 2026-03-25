@@ -1,10 +1,10 @@
-import { TranscribeClient } from "../../api/resources/transcribe/client/Client.js";
-import { CustomTranscribeSocket } from "./CustomTranscribeSocket.js";
 import * as Corti from "../../api/index.js";
-import { ErrorEvent } from "../../core/websocket/events.js";
-import { parseTranscribeResponseType } from "./parseTranscribeResponseType.js";
+import { TranscribeClient } from "../../api/resources/transcribe/client/Client.js";
 import * as core from "../../core/index.js";
-import { type ProxyOptions, getWsProtocols } from "../utils/encodeHeadersAsWsProtocols.js";
+import { ErrorEvent } from "../../core/websocket/events.js";
+import { getWsProtocols, type ProxyOptions } from "../utils/encodeHeadersAsWsProtocols.js";
+import { CustomTranscribeSocket } from "./CustomTranscribeSocket.js";
+import { parseTranscribeResponseType } from "./parseTranscribeResponseType.js";
 
 const TRANSCRIBE_CONFIG_REJECTION_TYPES: readonly string[] = [
     Corti.TranscribeConfigStatusMessageType.ConfigDenied,

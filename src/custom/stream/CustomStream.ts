@@ -1,10 +1,10 @@
-import { StreamClient } from "../../api/resources/stream/client/Client.js";
-import { CustomStreamSocket } from "./CustomStreamSocket.js";
 import * as Corti from "../../api/index.js";
-import { ErrorEvent } from "../../core/websocket/events.js";
-import { parseStreamResponseType } from "./parseStreamResponseType.js";
+import { StreamClient } from "../../api/resources/stream/client/Client.js";
 import * as core from "../../core/index.js";
-import { type ProxyOptions, getWsProtocols } from "../utils/encodeHeadersAsWsProtocols.js";
+import { ErrorEvent } from "../../core/websocket/events.js";
+import { getWsProtocols, type ProxyOptions } from "../utils/encodeHeadersAsWsProtocols.js";
+import { CustomStreamSocket } from "./CustomStreamSocket.js";
+import { parseStreamResponseType } from "./parseStreamResponseType.js";
 
 const STREAM_CONFIG_REJECTION_TYPES: readonly string[] = [
     Corti.StreamConfigStatusMessageType.ConfigDenied,

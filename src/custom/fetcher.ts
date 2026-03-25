@@ -1,4 +1,4 @@
-import { fetcherImpl, type FetchFunction } from "../core/fetcher/Fetcher.js";
+import { type FetchFunction, fetcherImpl } from "../core/fetcher/Fetcher.js";
 import { getDefaultWithCredentials } from "./utils/withCredentialsConfig.js";
 
 /** Patch: withCredentials - wrap fetcherImpl to inject global default when not passed per-request */

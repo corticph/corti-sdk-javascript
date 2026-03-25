@@ -1,4 +1,4 @@
-import * as Corti from "../../api/index.js";
+import type * as Corti from "../../api/index.js";
 import { CortiEnvironment } from "../../environments.js";
 import { CustomStream } from "../stream/CustomStream.js";
 import type { CustomStreamSocket } from "../stream/CustomStreamSocket.js";

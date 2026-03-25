@@ -1,4 +1,4 @@
-import * as Corti from "../../api/index.js";
+import type * as Corti from "../../api/index.js";
 import { CortiEnvironment } from "../../environments.js";
 import { CustomTranscribe } from "../transcribe/CustomTranscribe.js";
 import type { CustomTranscribeSocket } from "../transcribe/CustomTranscribeSocket.js";
