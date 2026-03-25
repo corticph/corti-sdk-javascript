@@ -59,7 +59,7 @@ export declare namespace CortiAuth {
         scopes?: string[];
     }
 
-    /** Parameters for authorizeUrl — builds the Keycloak authorization endpoint URL. */
+    /** Parameters for authorizeURL — builds the Keycloak authorization endpoint URL. */
     export interface AuthorizationCodeClient {
         clientId: string;
         redirectUri: string;
@@ -205,7 +205,7 @@ export class CortiAuth extends AuthClient {
 
         const codeChallenge = await generateCodeChallenge(verifier);
 
-        return this.authorizeUrl({ clientId, redirectUri, codeChallenge, scopes }, options);
+        return this.authorizeURL({ clientId, redirectUri, codeChallenge, scopes }, options);
     }
 
     /** Read the PKCE code verifier stored in localStorage by authorizePkceUrl. Returns null if not found. */
@@ -221,7 +221,7 @@ export class CortiAuth extends AuthClient {
      * @param client - clientId, redirectUri, and optional codeChallenge/scopes
      * @param options - { skipRedirect?: boolean }
      */
-    public async authorizeUrl(
+    public async authorizeURL(
         { clientId, redirectUri, codeChallenge, scopes }: CortiAuth.AuthorizationCodeClient,
         options?: Options,
     ): Promise<string> {
