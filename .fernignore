@@ -20,4 +20,4 @@ src/core/fetcher/index.ts
 tests/wire/mockAuth.ts
 
 # CI workflow — publish step removed; Fern must not restore it
-.github/workflows/ci.yml
+.github/workflows
