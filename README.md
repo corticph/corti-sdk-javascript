@@ -176,16 +176,30 @@ When the API returns a non-success status code (4xx or 5xx response), a subclass
 will be thrown.
 
 ```typescript
-import { CortiError } from "@corti/sdk";
+import { CortiError, CortiSDKError, CortiSDKErrorCodes, ParseError, JsonError } from "@corti/sdk";
 
 try {
     await client.interactions.create(...);
 } catch (err) {
     if (err instanceof CortiError) {
+        // HTTP API error (4xx / 5xx)
         console.log(err.statusCode);
         console.log(err.message);
         console.log(err.body);
         console.log(err.rawResponse);
+    } else if (err instanceof CortiSDKError) {
+        // SDK infrastructure error (e.g. localStorage unavailable)
+        console.log(err.code);    // e.g. CortiSDKErrorCodes.LOCAL_STORAGE_ERROR
+        console.log(err.message);
+        console.log(err.cause);   // original Error, if any
+    } else if (err instanceof ParseError) {
+        // Input validation failed (e.g. missing PKCE verifier, invalid JWT)
+        console.log(err.errors);  // ValidationError[]
+        console.log(err.message);
+    } else if (err instanceof JsonError) {
+        // Response body could not be parsed as JSON
+        console.log(err.errors);  // ValidationError[]
+        console.log(err.message);
     }
 }
 ```

@@ -1,34 +1,39 @@
-import { CortiError } from "../../errors/index.js";
+import { CortiSDKError, CortiSDKErrorCodes } from "../CortiSDKError.js";
 
 export const CODE_VERIFIER_KEY = "corti_pkce_code_verifier" as const;
 
 export const requireLocalStorage = (): Storage => {
     if (typeof window === "undefined" || !window.localStorage) {
-        throw new CortiError({
-            message: "LocalStorage operation failed: storage is not available in this environment.",
+        throw new CortiSDKError("LocalStorage operation failed: storage is not available in this environment.", {
+            code: CortiSDKErrorCodes.LOCAL_STORAGE_ERROR,
         });
     }
+
     return window.localStorage;
 };
 
 export const setLocalStorageItem = (key: string, value: string): void => {
     const storage = requireLocalStorage();
+
     try {
         storage.setItem(key, value);
-    } catch (_error) {
-        throw new CortiError({
-            message: "LocalStorage set operation failed.",
+    } catch (error) {
+        throw new CortiSDKError("LocalStorage set operation failed.", {
+            code: CortiSDKErrorCodes.LOCAL_STORAGE_ERROR,
+            cause: error,
         });
     }
 };
 
 export const getLocalStorageItem = (key: string): string | null => {
     const storage = requireLocalStorage();
+
     try {
         return storage.getItem(key);
-    } catch (_error) {
-        throw new CortiError({
-            message: "LocalStorage get operation failed.",
+    } catch (error) {
+        throw new CortiSDKError("LocalStorage get operation failed.", {
+            code: CortiSDKErrorCodes.LOCAL_STORAGE_ERROR,
+            cause: error,
         });
     }
 };
