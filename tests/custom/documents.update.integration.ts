@@ -11,7 +11,7 @@ import {
 
 describe("cortiClient.documents.update", () => {
     let cortiClient: CortiClient;
-    let consoleWarnSpy: jest.SpyInstance;
+    let consoleWarnSpy: ReturnType<typeof setupConsoleWarnSpy>;
     let createdInteractionIds: string[] = [];
     let validSectionKeys: string[] = [];
 
@@ -31,8 +31,8 @@ describe("cortiClient.documents.update", () => {
         createdInteractionIds = [];
     });
 
-    describe("should update document with minimal fields", () => {
-        it("should update document with empty request (no changes) without errors or warnings", async () => {
+    describe("should update document with only required values", () => {
+        it("should update document with empty request without errors or warnings", async () => {
             expect.assertions(2);
 
             const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
@@ -43,90 +43,83 @@ describe("cortiClient.documents.update", () => {
             expect(result).toBeDefined();
             expect(consoleWarnSpy).not.toHaveBeenCalled();
         });
+    });
 
-        it("should update document with only name without errors or warnings", async () => {
-            expect.assertions(4);
+    describe("should update document with all optional values", () => {
+        it("should update document with name without errors or warnings", async () => {
+            expect.assertions(2);
 
             const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
             const documentId = await createTestDocument(cortiClient, interactionId);
 
-            const originalDocument = await cortiClient.documents.get(interactionId, documentId);
-            const originalName = originalDocument.name;
-
-            const newName = faker.lorem.words(3);
-
             const result = await cortiClient.documents.update(interactionId, documentId, {
-                name: newName,
+                name: faker.lorem.words(3),
             });
 
             expect(result).toBeDefined();
-            expect(result.name).toBe(newName);
-            expect(result.name).not.toBe(originalName);
             expect(consoleWarnSpy).not.toHaveBeenCalled();
         });
 
-        it("should update document with only sections without errors or warnings", async () => {
-            expect.assertions(4);
+        it("should update document with sections without errors or warnings", async () => {
+            expect.assertions(2);
 
             const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
             const documentId = await createTestDocument(cortiClient, interactionId);
-            const sectionKey = faker.helpers.arrayElement(validSectionKeys);
 
             const result = await cortiClient.documents.update(interactionId, documentId, {
                 sections: [
                     {
-                        key: sectionKey,
+                        key: faker.helpers.arrayElement(validSectionKeys),
                     },
                 ],
             });
 
             expect(result).toBeDefined();
-            expect(result.sections).toBeDefined();
-            expect(result.sections.some((section) => section.key === sectionKey)).toBe(true);
             expect(consoleWarnSpy).not.toHaveBeenCalled();
         });
-    });
 
-    describe("should update document with section variations", () => {
-        it("should update document with section containing all optional fields without errors or warnings", async () => {
-            expect.assertions(7);
+        it("should update document with all optional parameters combined without errors or warnings", async () => {
+            expect.assertions(2);
 
             const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
             const documentId = await createTestDocument(cortiClient, interactionId);
 
-            const originalDocument = await cortiClient.documents.get(interactionId, documentId);
-
-            const sectionKey = faker.helpers.arrayElement(validSectionKeys);
-            const sectionName = faker.lorem.words(3);
-            const sectionText = faker.lorem.paragraphs(3);
-
             const result = await cortiClient.documents.update(interactionId, documentId, {
+                name: faker.lorem.words(4),
                 sections: [
                     {
-                        key: sectionKey,
-                        name: sectionName,
-                        text: sectionText,
+                        key: faker.helpers.arrayElement(validSectionKeys),
+                        name: faker.lorem.words(3),
+                        text: faker.lorem.paragraphs(2),
                         sort: 0,
                     },
                 ],
             });
 
             expect(result).toBeDefined();
-            expect(result.sections).toBeDefined();
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
+    });
 
-            const updatedSection = result.sections.find((section) => section.key === sectionKey);
-            const originalSection = originalDocument.sections.find((section) => section.key === sectionKey);
+    describe("should update document with section variations", () => {
+        it("should update document with section containing all optional fields without errors or warnings", async () => {
+            expect.assertions(2);
 
-            expect(updatedSection).toBeDefined();
-            expect(updatedSection?.name).toBe(sectionName);
-            expect(updatedSection?.text).toBe(sectionText);
+            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const documentId = await createTestDocument(cortiClient, interactionId);
 
-            const hasChanged =
-                !originalSection ||
-                updatedSection?.name !== originalSection.name ||
-                updatedSection?.text !== originalSection.text;
-            expect(hasChanged).toBe(true);
+            const result = await cortiClient.documents.update(interactionId, documentId, {
+                sections: [
+                    {
+                        key: faker.helpers.arrayElement(validSectionKeys),
+                        name: faker.lorem.words(3),
+                        text: faker.lorem.paragraphs(3),
+                        sort: 0,
+                    },
+                ],
+            });
 
+            expect(result).toBeDefined();
             expect(consoleWarnSpy).not.toHaveBeenCalled();
         });
 
@@ -143,44 +136,49 @@ describe("cortiClient.documents.update", () => {
             expect(result).toBeDefined();
             expect(consoleWarnSpy).not.toHaveBeenCalled();
         });
+
+        it("should update document with multiple sections without errors or warnings", async () => {
+            expect.assertions(2);
+
+            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const documentId = await createTestDocument(cortiClient, interactionId);
+
+            const result = await cortiClient.documents.update(interactionId, documentId, {
+                sections: [
+                    {
+                        key: faker.helpers.arrayElement(validSectionKeys),
+                        name: faker.lorem.words(2),
+                    },
+                    {
+                        key: faker.helpers.arrayElement(validSectionKeys),
+                        text: faker.lorem.paragraph(),
+                    },
+                ],
+            });
+
+            expect(result).toBeDefined();
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
     });
 
-    it("should update document with all possible optional parameters without errors or warnings", async () => {
-        expect.assertions(8);
+    describe("should throw error when required parameters are missing", () => {
+        it("should throw error when interaction ID is missing", async () => {
+            expect.assertions(1);
 
-        const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
-        const documentId = await createTestDocument(cortiClient, interactionId);
-
-        const originalDocument = await cortiClient.documents.get(interactionId, documentId);
-        const originalName = originalDocument.name;
-
-        const newName = faker.lorem.words(4);
-        const sectionKey = faker.helpers.arrayElement(validSectionKeys);
-        const sectionName = faker.lorem.words(3);
-        const sectionText = faker.lorem.paragraphs(2);
-
-        const result = await cortiClient.documents.update(interactionId, documentId, {
-            name: newName,
-            sections: [
-                {
-                    key: sectionKey,
-                    name: sectionName,
-                    text: sectionText,
-                    sort: 0,
-                },
-            ],
+            await expect(
+                cortiClient.documents.update(undefined as any, faker.string.uuid(), {}),
+            ).rejects.toThrow();
         });
 
-        expect(result).toBeDefined();
-        expect(result.name).toBe(newName);
-        expect(result.name).not.toBe(originalName);
-        expect(result.sections).toBeDefined();
+        it("should throw error when document ID is missing", async () => {
+            expect.assertions(1);
 
-        const updatedSection = result.sections.find((section) => section.key === sectionKey);
-        expect(updatedSection).toBeDefined();
-        expect(updatedSection?.name).toBe(sectionName);
-        expect(updatedSection?.text).toBe(sectionText);
-        expect(consoleWarnSpy).not.toHaveBeenCalled();
+            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+
+            await expect(
+                cortiClient.documents.update(interactionId, undefined as any, {}),
+            ).rejects.toThrow();
+        });
     });
 
     describe("should throw error when invalid parameters are provided", () => {

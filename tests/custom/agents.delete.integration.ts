@@ -4,7 +4,7 @@ import { cleanupAgents, createTestAgent, createTestCortiClient, setupConsoleWarn
 
 describe("cortiClient.agents.delete", () => {
     let cortiClient: CortiClient;
-    let consoleWarnSpy: jest.SpyInstance;
+    let consoleWarnSpy: ReturnType<typeof setupConsoleWarnSpy>;
     let createdAgentIds: string[] = [];
 
     beforeAll(() => {

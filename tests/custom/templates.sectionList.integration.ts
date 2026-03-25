@@ -3,7 +3,7 @@ import { createTestCortiClient, setupConsoleWarnSpy } from "./testUtils";
 
 describe("cortiClient.templates.sectionList", () => {
     let cortiClient: CortiClient;
-    let consoleWarnSpy: jest.SpyInstance;
+    let consoleWarnSpy: ReturnType<typeof setupConsoleWarnSpy>;
 
     beforeAll(() => {
         cortiClient = createTestCortiClient();
@@ -17,13 +17,15 @@ describe("cortiClient.templates.sectionList", () => {
         consoleWarnSpy.mockRestore();
     });
 
-    it("should retrieve template sections without parameters", async () => {
-        expect.assertions(2);
+    describe("should list template sections with only required values", () => {
+        it("should retrieve template sections without parameters without errors or warnings", async () => {
+            expect.assertions(2);
 
-        const result = await cortiClient.templates.sectionList();
+            const result = await cortiClient.templates.sectionList();
 
-        expect(result.data.length).toBeGreaterThan(0);
-        expect(consoleWarnSpy).not.toHaveBeenCalled();
+            expect(result.data.length).toBeGreaterThan(0);
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
     });
 
     describe("language filtering (lang parameter)", () => {

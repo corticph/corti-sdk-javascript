@@ -4,7 +4,7 @@ import { cleanupAgents, createTestAgent, createTestCortiClient, setupConsoleWarn
 
 describe("cortiClient.agents.getCard", () => {
     let cortiClient: CortiClient;
-    let consoleWarnSpy: jest.SpyInstance;
+    let consoleWarnSpy: ReturnType<typeof setupConsoleWarnSpy>;
     let createdAgentIds: string[] = [];
 
     beforeAll(() => {
@@ -22,16 +22,25 @@ describe("cortiClient.agents.getCard", () => {
         createdAgentIds = [];
     });
 
-    it("should successfully retrieve an agent card without errors or warnings", async () => {
-        expect.assertions(3);
+    describe("should retrieve agent card with only required values", () => {
+        it("should successfully retrieve an agent card without errors or warnings", async () => {
+            expect.assertions(2);
 
-        const agent = await createTestAgent(cortiClient, createdAgentIds);
+            const agent = await createTestAgent(cortiClient, createdAgentIds);
 
-        const result = await cortiClient.agents.getCard(agent.id);
+            const result = await cortiClient.agents.getCard(agent.id);
 
-        expect(result).toBeDefined();
-        expect(result.name).toBeDefined();
-        expect(consoleWarnSpy).not.toHaveBeenCalled();
+            expect(result).toBeDefined();
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
+    });
+
+    describe("should throw error when required parameters are missing", () => {
+        it("should throw error when agent ID is missing", async () => {
+            expect.assertions(1);
+
+            await expect(cortiClient.agents.getCard(undefined as any)).rejects.toThrow();
+        });
     });
 
     describe("should throw error when invalid parameters are provided", () => {

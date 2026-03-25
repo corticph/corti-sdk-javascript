@@ -1,11 +1,11 @@
 import { faker } from "@faker-js/faker";
 import type { CortiClient } from "../../src";
-import { createTestCortiClient, createTestInteraction, setupConsoleWarnSpy } from "./testUtils";
+import { cleanupInteractions, createTestCortiClient, createTestInteraction, setupConsoleWarnSpy } from "./testUtils";
 
 describe("cortiClient.interactions.get", () => {
     let cortiClient: CortiClient;
-    let consoleWarnSpy: jest.SpyInstance;
-    const createdInteractionIds: string[] = [];
+    let consoleWarnSpy: ReturnType<typeof setupConsoleWarnSpy>;
+    let createdInteractionIds: string[] = [];
 
     beforeAll(() => {
         cortiClient = createTestCortiClient();
@@ -13,21 +13,34 @@ describe("cortiClient.interactions.get", () => {
 
     beforeEach(() => {
         consoleWarnSpy = setupConsoleWarnSpy();
+        createdInteractionIds = [];
     });
 
-    afterEach(() => {
+    afterEach(async () => {
         consoleWarnSpy.mockRestore();
+        await cleanupInteractions(cortiClient, createdInteractionIds);
+        createdInteractionIds = [];
     });
 
-    it("should successfully retrieve an existing interaction without errors or warnings", async () => {
-        expect.assertions(2);
+    describe("should get interaction with only required values", () => {
+        it("should successfully retrieve an existing interaction without errors or warnings", async () => {
+            expect.assertions(2);
 
-        const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
 
-        const result = await cortiClient.interactions.get(interactionId);
+            const result = await cortiClient.interactions.get(interactionId);
 
-        expect(result.id).toBe(interactionId);
-        expect(consoleWarnSpy).not.toHaveBeenCalled();
+            expect(result.id).toBe(interactionId);
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
+    });
+
+    describe("should throw error when required parameters are missing", () => {
+        it("should throw error when interaction ID is undefined", async () => {
+            expect.assertions(1);
+
+            await expect(cortiClient.interactions.get(undefined as any)).rejects.toThrow();
+        });
     });
 
     describe("should throw error when invalid parameters are provided", () => {

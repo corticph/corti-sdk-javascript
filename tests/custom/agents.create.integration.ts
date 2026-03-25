@@ -4,7 +4,7 @@ import { cleanupAgents, createTestCortiClient, setupConsoleWarnSpy } from "./tes
 
 describe("cortiClient.agents.create", () => {
     let cortiClient: CortiClient;
-    let consoleWarnSpy: jest.SpyInstance;
+    let consoleWarnSpy: ReturnType<typeof setupConsoleWarnSpy>;
     let createdAgentIds: string[] = [];
 
     beforeAll(() => {
@@ -77,12 +77,121 @@ describe("cortiClient.agents.create", () => {
                 description: faker.lorem.sentence(),
                 systemPrompt: faker.lorem.paragraph(),
                 ephemeral: false,
+                agentType: "orchestrator",
+                experts: [],
             });
 
             createdAgentIds.push(result.id);
 
             expect(result).toBeDefined();
             expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
+    });
+
+    describe("should create agent with all agentType enum values", () => {
+        it("should create agent with agentType expert without errors or warnings", async () => {
+            expect.assertions(2);
+
+            const result = await cortiClient.agents.create({
+                name: faker.lorem.words(3),
+                description: faker.lorem.sentence(),
+                agentType: "expert",
+            });
+
+            createdAgentIds.push(result.id);
+
+            expect(result).toBeDefined();
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
+
+        it("should create agent with agentType orchestrator without errors or warnings", async () => {
+            expect.assertions(2);
+
+            const result = await cortiClient.agents.create({
+                name: faker.lorem.words(3),
+                description: faker.lorem.sentence(),
+                agentType: "orchestrator",
+            });
+
+            createdAgentIds.push(result.id);
+
+            expect(result).toBeDefined();
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
+
+        it("should create agent with agentType interviewing-expert without errors or warnings", async () => {
+            expect.assertions(2);
+
+            const result = await cortiClient.agents.create({
+                name: faker.lorem.words(3),
+                description: faker.lorem.sentence(),
+                agentType: "interviewing-expert",
+            });
+
+            createdAgentIds.push(result.id);
+
+            expect(result).toBeDefined();
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
+    });
+
+    describe("should create agent with experts", () => {
+        it("should create agent with an expert reference by name without errors or warnings", async () => {
+            const registry = await cortiClient.agents.getRegistryExperts({ limit: 1 });
+            const expertName = registry.experts?.[0]?.name;
+            if (!expertName) {
+                console.warn("Skipping: no registry experts available");
+                return;
+            }
+            expect.assertions(2);
+
+            const result = await cortiClient.agents.create({
+                name: faker.lorem.words(3),
+                description: faker.lorem.sentence(),
+                experts: [{ type: "reference", name: expertName }],
+            });
+
+            createdAgentIds.push(result.id);
+
+            expect(result).toBeDefined();
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
+
+        it("should create agent with a new inline expert without errors or warnings", async () => {
+            expect.assertions(2);
+
+            const result = await cortiClient.agents.create({
+                name: faker.lorem.words(3),
+                description: faker.lorem.sentence(),
+                experts: [
+                    {
+                        type: "new",
+                        name: faker.string.alphanumeric(10),
+                        description: faker.lorem.sentence(),
+                        systemPrompt: faker.lorem.paragraph(),
+                    },
+                ],
+            });
+
+            createdAgentIds.push(result.id);
+
+            expect(result).toBeDefined();
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
+
+    });
+
+    describe("should throw error when invalid parameters are provided", () => {
+        it("should throw error when expert reference name does not exist in registry", async () => {
+            expect.assertions(1);
+
+            await expect(
+                cortiClient.agents.create({
+                    name: faker.lorem.words(3),
+                    description: faker.lorem.sentence(),
+                    experts: [{ type: "reference", name: faker.string.alphanumeric(10) }],
+                }),
+            ).rejects.toThrow("Status code: 400");
         });
     });
 

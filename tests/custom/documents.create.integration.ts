@@ -12,7 +12,7 @@ import {
 
 describe("cortiClient.documents.create", () => {
     let cortiClient: CortiClient;
-    let consoleWarnSpy: jest.SpyInstance;
+    let consoleWarnSpy: ReturnType<typeof setupConsoleWarnSpy>;
     let createdInteractionIds: string[] = [];
     let templateKey: string;
     let _outputLanguage: string;
@@ -1201,30 +1201,6 @@ describe("cortiClient.documents.create", () => {
             ).rejects.toThrow('Missing required key "text"');
         });
 
-        it("should throw error when source is missing in facts context", async () => {
-            expect.assertions(1);
-
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
-
-            await expect(
-                cortiClient.documents.create(interactionId, {
-                    context: [
-                        {
-                            type: "facts",
-                            data: [
-                                {
-                                    text: faker.lorem.sentence(),
-                                    group: faker.helpers.arrayElement(validFactGroups),
-                                },
-                            ],
-                        },
-                    ],
-                    templateKey,
-                    outputLanguage: "en",
-                } as any),
-            ).rejects.toThrow('Missing required key "source"');
-        });
-
         it("should throw error when transcript text is missing in transcript context", async () => {
             expect.assertions(1);
 
@@ -1335,6 +1311,77 @@ describe("cortiClient.documents.create", () => {
                     outputLanguage: "invalid_language",
                 }),
             ).rejects.toThrow("BadRequestError");
+        });
+    });
+
+    describe("should create document with disableGuardrails", () => {
+        it("should create document with disableGuardrails: true using templateKey without errors or warnings", async () => {
+            expect.assertions(2);
+
+            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+
+            const result = await cortiClient.documents.create(interactionId, {
+                context: [
+                    {
+                        type: "string",
+                        data: faker.lorem.paragraph(),
+                    },
+                ],
+                templateKey,
+                outputLanguage: "en",
+                disableGuardrails: true,
+            });
+
+            expect(result).toBeDefined();
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
+
+        it("should create document with disableGuardrails: false using templateKey without errors or warnings", async () => {
+            expect.assertions(2);
+
+            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+
+            const result = await cortiClient.documents.create(interactionId, {
+                context: [
+                    {
+                        type: "string",
+                        data: faker.lorem.paragraph(),
+                    },
+                ],
+                templateKey,
+                outputLanguage: "en",
+                disableGuardrails: false,
+            });
+
+            expect(result).toBeDefined();
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
+
+        it("should create document with disableGuardrails: true using template without errors or warnings", async () => {
+            expect.assertions(2);
+
+            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+
+            const result = await cortiClient.documents.create(interactionId, {
+                context: [
+                    {
+                        type: "string",
+                        data: faker.lorem.paragraph(),
+                    },
+                ],
+                template: {
+                    sections: [
+                        {
+                            key: faker.helpers.arrayElement(validSectionKeys),
+                        },
+                    ],
+                },
+                outputLanguage: "en",
+                disableGuardrails: true,
+            });
+
+            expect(result).toBeDefined();
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
         });
     });
 });

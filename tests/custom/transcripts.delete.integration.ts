@@ -11,8 +11,8 @@ import {
 
 describe("cortiClient.transcripts.delete", () => {
     let cortiClient: CortiClient;
-    let consoleWarnSpy: jest.SpyInstance;
-    const createdInteractionIds: string[] = [];
+    let consoleWarnSpy: ReturnType<typeof setupConsoleWarnSpy>;
+    let createdInteractionIds: string[] = [];
 
     beforeAll(() => {
         cortiClient = createTestCortiClient();
@@ -20,54 +20,31 @@ describe("cortiClient.transcripts.delete", () => {
 
     beforeEach(() => {
         consoleWarnSpy = setupConsoleWarnSpy();
+        createdInteractionIds = [];
     });
 
     afterEach(async () => {
         consoleWarnSpy.mockRestore();
         await cleanupInteractions(cortiClient, createdInteractionIds);
-        createdInteractionIds.length = 0;
+        createdInteractionIds = [];
     });
 
-    it("should successfully delete an existing transcript without errors or warnings", async () => {
-        expect.assertions(2);
-
-        const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
-        const recordingId = await createTestRecording(cortiClient, interactionId);
-        const transcriptId = await createTestTranscript(cortiClient, interactionId, recordingId);
-
-        const result = await cortiClient.transcripts.delete(interactionId, transcriptId);
-
-        expect(result).toBeUndefined();
-        expect(consoleWarnSpy).not.toHaveBeenCalled();
-    });
-
-    describe("should throw error when invalid parameters are provided", () => {
-        it("should throw error when interaction ID is invalid format", async () => {
-            expect.assertions(1);
-
-            await expect(cortiClient.transcripts.delete("invalid-uuid", faker.string.uuid())).rejects.toThrow(
-                "Status code: 400",
-            );
-        });
-
-        it("should throw error when transcript ID is invalid format", async () => {
-            expect.assertions(1);
+    describe("should delete transcript with only required values", () => {
+        it("should successfully delete an existing transcript without errors or warnings", async () => {
+            expect.assertions(2);
 
             const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const recordingId = await createTestRecording(cortiClient, interactionId);
+            const transcriptId = await createTestTranscript(cortiClient, interactionId, recordingId);
 
-            await expect(cortiClient.transcripts.delete(interactionId, "invalid-uuid")).rejects.toThrow(
-                "Status code: 400",
-            );
+            const result = await cortiClient.transcripts.delete(interactionId, transcriptId);
+
+            expect(result).toBeUndefined();
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
         });
+    });
 
-        it("should throw error when interaction ID does not exist", async () => {
-            expect.assertions(1);
-
-            await expect(cortiClient.transcripts.delete(faker.string.uuid(), faker.string.uuid())).rejects.toThrow(
-                "Status code: 404",
-            );
-        });
-
+    describe("should throw error when required parameters are missing", () => {
         it("should throw error when interaction ID is null", async () => {
             expect.assertions(1);
 
@@ -101,6 +78,34 @@ describe("cortiClient.transcripts.delete", () => {
 
             await expect(cortiClient.transcripts.delete(interactionId, undefined as any)).rejects.toThrow(
                 "Expected string. Received undefined.",
+            );
+        });
+    });
+
+    describe("should throw error when invalid parameters are provided", () => {
+        it("should throw error when interaction ID is invalid format", async () => {
+            expect.assertions(1);
+
+            await expect(cortiClient.transcripts.delete("invalid-uuid", faker.string.uuid())).rejects.toThrow(
+                "Status code: 400",
+            );
+        });
+
+        it("should throw error when transcript ID is invalid format", async () => {
+            expect.assertions(1);
+
+            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+
+            await expect(cortiClient.transcripts.delete(interactionId, "invalid-uuid")).rejects.toThrow(
+                "Status code: 400",
+            );
+        });
+
+        it("should throw error when interaction ID does not exist", async () => {
+            expect.assertions(1);
+
+            await expect(cortiClient.transcripts.delete(faker.string.uuid(), faker.string.uuid())).rejects.toThrow(
+                "Status code: 404",
             );
         });
 

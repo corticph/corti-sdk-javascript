@@ -1,11 +1,17 @@
 import { faker } from "@faker-js/faker";
 import type { CortiClient } from "../../src";
-import { createTestCortiClient, createTestDocument, createTestInteraction, setupConsoleWarnSpy } from "./testUtils";
+import {
+    cleanupInteractions,
+    createTestCortiClient,
+    createTestDocument,
+    createTestInteraction,
+    setupConsoleWarnSpy,
+} from "./testUtils";
 
 describe("cortiClient.documents.get", () => {
     let cortiClient: CortiClient;
-    let consoleWarnSpy: jest.SpyInstance;
-    const createdInteractionIds: string[] = [];
+    let consoleWarnSpy: ReturnType<typeof setupConsoleWarnSpy>;
+    let createdInteractionIds: string[] = [];
 
     beforeAll(() => {
         cortiClient = createTestCortiClient();
@@ -13,22 +19,43 @@ describe("cortiClient.documents.get", () => {
 
     beforeEach(() => {
         consoleWarnSpy = setupConsoleWarnSpy();
+        createdInteractionIds = [];
     });
 
-    afterEach(() => {
+    afterEach(async () => {
         consoleWarnSpy.mockRestore();
+        await cleanupInteractions(cortiClient, createdInteractionIds);
+        createdInteractionIds = [];
     });
 
-    it("should successfully retrieve an existing document without errors or warnings", async () => {
-        expect.assertions(2);
+    describe("should retrieve document with only required values", () => {
+        it("should successfully retrieve an existing document without errors or warnings", async () => {
+            expect.assertions(2);
 
-        const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
-        const documentId = await createTestDocument(cortiClient, interactionId);
+            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const documentId = await createTestDocument(cortiClient, interactionId);
 
-        const result = await cortiClient.documents.get(interactionId, documentId);
+            const result = await cortiClient.documents.get(interactionId, documentId);
 
-        expect(result.id).toBe(documentId);
-        expect(consoleWarnSpy).not.toHaveBeenCalled();
+            expect(result).toBeDefined();
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
+    });
+
+    describe("should throw error when required parameters are missing", () => {
+        it("should throw error when interaction ID is missing", async () => {
+            expect.assertions(1);
+
+            await expect(cortiClient.documents.get(undefined as any, faker.string.uuid())).rejects.toThrow();
+        });
+
+        it("should throw error when document ID is missing", async () => {
+            expect.assertions(1);
+
+            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+
+            await expect(cortiClient.documents.get(interactionId, undefined as any)).rejects.toThrow();
+        });
     });
 
     describe("should throw error when invalid parameters are provided", () => {

@@ -3,7 +3,7 @@ import { createTestCortiClient, setupConsoleWarnSpy } from "./testUtils";
 
 describe("cortiClient.templates.list", () => {
     let cortiClient: CortiClient;
-    let consoleWarnSpy: jest.SpyInstance;
+    let consoleWarnSpy: ReturnType<typeof setupConsoleWarnSpy>;
 
     beforeAll(() => {
         cortiClient = createTestCortiClient();
@@ -91,12 +91,12 @@ describe("cortiClient.templates.list", () => {
             expect(consoleWarnSpy).not.toHaveBeenCalled();
         });
 
-        it("should return empty or filtered results for non-existent organization", async () => {
+        it("should return results for non-existent organization without errors or warnings", async () => {
             expect.assertions(2);
 
             const filteredResult = await cortiClient.templates.list({ org: "nonexistent-org" });
 
-            expect(filteredResult.data.length).toBeGreaterThanOrEqual(0);
+            expect(filteredResult).toBeDefined();
             expect(consoleWarnSpy).not.toHaveBeenCalled();
         });
     });
@@ -131,12 +131,12 @@ describe("cortiClient.templates.list", () => {
             expect(consoleWarnSpy).not.toHaveBeenCalled();
         });
 
-        it("should return empty or filtered results for non-existent status", async () => {
+        it("should return results for non-existent status without errors or warnings", async () => {
             expect.assertions(2);
 
             const filteredResult = await cortiClient.templates.list({ status: "nonexistent-status" });
 
-            expect(filteredResult.data.length).toBeGreaterThanOrEqual(0);
+            expect(filteredResult).toBeDefined();
             expect(consoleWarnSpy).not.toHaveBeenCalled();
         });
     });

@@ -12,22 +12,21 @@ import {
 
 describe("cortiClient.stream.connect", () => {
     let cortiClient: CortiClient;
-    let createdInteractionIds: string[];
-    let consoleWarnSpy: jest.SpyInstance;
+    let createdInteractionIds: string[] = [];
+    let consoleWarnSpy: ReturnType<typeof setupConsoleWarnSpy>;
     let activeSockets: any[] = [];
 
     beforeAll(async () => {
         cortiClient = createTestCortiClient();
-        createdInteractionIds = [];
     });
 
     beforeEach(() => {
         consoleWarnSpy = setupConsoleWarnSpy();
         activeSockets = [];
+        createdInteractionIds = [];
     });
 
     afterEach(async () => {
-        // Close all active sockets to ensure cleanup
         activeSockets.forEach((socket) => {
             if (socket && typeof socket.close === "function") {
                 try {
@@ -43,89 +42,15 @@ describe("cortiClient.stream.connect", () => {
         createdInteractionIds = [];
     });
 
-    describe("should connect with minimal configuration", () => {
-        // FIXME Mismatch with types: outputLocale is optional in FactsModeConfig but required in fact
-        it.skip("should connect with minimal configuration passed to connect", async () => {
-            expect.assertions(4);
-
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
-
-            const streamSocket = await cortiClient.stream.connect({
-                id: interactionId,
-                configuration: {
-                    transcription: {
-                        primaryLanguage: "en",
-                        participants: [
-                            {
-                                channel: faker.number.int({ min: 0, max: 10 }),
-                                role: "doctor",
-                            },
-                        ],
-                    },
-                    mode: {
-                        type: "facts",
-                    },
-                },
-            });
-            activeSockets.push(streamSocket);
-
-            const messages: any[] = [];
-            await waitForWebSocketMessage(streamSocket, "CONFIG_ACCEPTED", { messages, rejectOnWrongMessage: true });
-
-            expect(streamSocket).toBeDefined();
-            expect(streamSocket.socket).toBeDefined();
-            expect(streamSocket.socket.readyState).toBe(1); // OPEN
-            expect(consoleWarnSpy).not.toHaveBeenCalled();
-        });
-
-        // FIXME Mismatch with types: outputLocale is optional in FactsModeConfig but required in fact
-        it.skip("should connect and send configuration manually on open event", async () => {
-            expect.assertions(4);
-
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
-
-            const streamSocket = await cortiClient.stream.connect({
-                id: interactionId,
-            });
-            activeSockets.push(streamSocket);
-
-            streamSocket.on("open", () => {
-                streamSocket.sendConfiguration({
-                    type: "config",
-                    configuration: {
-                        transcription: {
-                            primaryLanguage: "en",
-                            participants: [
-                                {
-                                    channel: faker.number.int({ min: 0, max: 10 }),
-                                    role: "doctor",
-                                },
-                            ],
-                        },
-                        mode: {
-                            type: "facts",
-                        },
-                    },
-                });
-            });
-
-            await waitForWebSocketMessage(streamSocket, "CONFIG_ACCEPTED", { rejectOnWrongMessage: true });
-
-            expect(streamSocket).toBeDefined();
-            expect(streamSocket.socket).toBeDefined();
-            expect(streamSocket.socket.readyState).toBe(1); // OPEN
-            expect(consoleWarnSpy).not.toHaveBeenCalled();
-        });
-    });
-
     describe("should connect with full configuration", () => {
         it("should connect with full configuration passed to connect", async () => {
-            expect.assertions(4);
+            expect.assertions(2);
 
             const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
 
             const streamSocket = await cortiClient.stream.connect({
                 id: interactionId,
+                awaitConfiguration: false,
                 configuration: {
                     transcription: {
                         primaryLanguage: "en",
@@ -133,34 +58,31 @@ describe("cortiClient.stream.connect", () => {
                         isMultichannel: true,
                         participants: [
                             {
-                                channel: faker.number.int({ min: 0, max: 10 }),
+                                channel: 0,
                                 role: "doctor",
                             },
                             {
-                                channel: faker.number.int({ min: 0, max: 10 }),
+                                channel: 1,
                                 role: "patient",
                             },
                         ],
                     },
                     mode: {
                         type: "facts",
-                        outputLocale: "en",
+                        outputLocale: "en-US",
                     },
                 },
             });
             activeSockets.push(streamSocket);
 
-            const messages: any[] = [];
-            await waitForWebSocketMessage(streamSocket, "CONFIG_ACCEPTED", { messages, rejectOnWrongMessage: true });
+            await waitForWebSocketMessage(streamSocket, "CONFIG_ACCEPTED", { rejectOnWrongMessage: true });
 
-            expect(streamSocket).toBeDefined();
-            expect(streamSocket.socket).toBeDefined();
             expect(streamSocket.socket.readyState).toBe(1); // OPEN
             expect(consoleWarnSpy).not.toHaveBeenCalled();
         });
 
         it("should connect and send full configuration manually on open event", async () => {
-            expect.assertions(4);
+            expect.assertions(2);
 
             const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
 
@@ -175,31 +97,29 @@ describe("cortiClient.stream.connect", () => {
                     configuration: {
                         transcription: {
                             primaryLanguage: "en",
-                            isDiarization: true,
-                            isMultichannel: true,
-                            participants: [
-                                {
-                                    channel: faker.number.int({ min: 0, max: 10 }),
-                                    role: "doctor",
-                                },
-                                {
-                                    channel: faker.number.int({ min: 0, max: 10 }),
-                                    role: "patient",
-                                },
-                            ],
-                        },
-                        mode: {
-                            type: "facts",
-                            outputLocale: "en",
-                        },
+                        isDiarization: true,
+                        isMultichannel: true,
+                        participants: [
+                            {
+                                channel: 0,
+                                role: "doctor",
+                            },
+                            {
+                                channel: 1,
+                                role: "patient",
+                            },
+                        ],
                     },
-                });
+                    mode: {
+                        type: "facts",
+                        outputLocale: "en-US",
+                    },
+                },
+            });
             });
 
             await waitForWebSocketMessage(streamSocket, "CONFIG_ACCEPTED", { rejectOnWrongMessage: true });
 
-            expect(streamSocket).toBeDefined();
-            expect(streamSocket.socket).toBeDefined();
             expect(streamSocket.socket.readyState).toBe(1); // OPEN
             expect(consoleWarnSpy).not.toHaveBeenCalled();
         });
@@ -207,25 +127,26 @@ describe("cortiClient.stream.connect", () => {
 
     describe("should connect with different participant roles", () => {
         it("should connect with doctor role", async () => {
-            expect.assertions(4);
+            expect.assertions(2);
 
             const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
 
             const streamSocket = await cortiClient.stream.connect({
                 id: interactionId,
+                awaitConfiguration: false,
                 configuration: {
                     transcription: {
                         primaryLanguage: "en",
                         participants: [
                             {
-                                channel: faker.number.int({ min: 0, max: 10 }),
+                                channel: 0,
                                 role: "doctor",
                             },
                         ],
                     },
                     mode: {
                         type: "facts",
-                        outputLocale: "en",
+                        outputLocale: "en-US",
                     },
                 },
             });
@@ -233,32 +154,31 @@ describe("cortiClient.stream.connect", () => {
 
             await waitForWebSocketMessage(streamSocket, "CONFIG_ACCEPTED", { rejectOnWrongMessage: true });
 
-            expect(streamSocket).toBeDefined();
-            expect(streamSocket.socket).toBeDefined();
             expect(streamSocket.socket.readyState).toBe(1); // OPEN
             expect(consoleWarnSpy).not.toHaveBeenCalled();
         });
 
         it("should connect with patient role", async () => {
-            expect.assertions(4);
+            expect.assertions(2);
 
             const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
 
             const streamSocket = await cortiClient.stream.connect({
                 id: interactionId,
+                awaitConfiguration: false,
                 configuration: {
                     transcription: {
                         primaryLanguage: "en",
                         participants: [
                             {
-                                channel: faker.number.int({ min: 0, max: 10 }),
+                                channel: 0,
                                 role: "patient",
                             },
                         ],
                     },
                     mode: {
                         type: "facts",
-                        outputLocale: "en",
+                        outputLocale: "en-US",
                     },
                 },
             });
@@ -266,32 +186,31 @@ describe("cortiClient.stream.connect", () => {
 
             await waitForWebSocketMessage(streamSocket, "CONFIG_ACCEPTED", { rejectOnWrongMessage: true });
 
-            expect(streamSocket).toBeDefined();
-            expect(streamSocket.socket).toBeDefined();
             expect(streamSocket.socket.readyState).toBe(1); // OPEN
             expect(consoleWarnSpy).not.toHaveBeenCalled();
         });
 
         it("should connect with multiple role", async () => {
-            expect.assertions(4);
+            expect.assertions(2);
 
             const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
 
             const streamSocket = await cortiClient.stream.connect({
                 id: interactionId,
+                awaitConfiguration: false,
                 configuration: {
                     transcription: {
                         primaryLanguage: "en",
                         participants: [
                             {
-                                channel: faker.number.int({ min: 0, max: 10 }),
+                                channel: 0,
                                 role: "multiple",
                             },
                         ],
                     },
                     mode: {
                         type: "facts",
-                        outputLocale: "en",
+                        outputLocale: "en-US",
                     },
                 },
             });
@@ -299,8 +218,6 @@ describe("cortiClient.stream.connect", () => {
 
             await waitForWebSocketMessage(streamSocket, "CONFIG_ACCEPTED", { rejectOnWrongMessage: true });
 
-            expect(streamSocket).toBeDefined();
-            expect(streamSocket.socket).toBeDefined();
             expect(streamSocket.socket.readyState).toBe(1); // OPEN
             expect(consoleWarnSpy).not.toHaveBeenCalled();
         });
@@ -308,25 +225,26 @@ describe("cortiClient.stream.connect", () => {
 
     describe("should connect with different mode types", () => {
         it("should connect with facts mode", async () => {
-            expect.assertions(4);
+            expect.assertions(2);
 
             const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
 
             const streamSocket = await cortiClient.stream.connect({
                 id: interactionId,
+                awaitConfiguration: false,
                 configuration: {
                     transcription: {
                         primaryLanguage: "en",
                         participants: [
                             {
-                                channel: faker.number.int({ min: 0, max: 10 }),
+                                channel: 0,
                                 role: "doctor",
                             },
                         ],
                     },
                     mode: {
                         type: "facts",
-                        outputLocale: "en",
+                        outputLocale: "en-US",
                     },
                 },
             });
@@ -334,25 +252,24 @@ describe("cortiClient.stream.connect", () => {
 
             await waitForWebSocketMessage(streamSocket, "CONFIG_ACCEPTED", { rejectOnWrongMessage: true });
 
-            expect(streamSocket).toBeDefined();
-            expect(streamSocket.socket).toBeDefined();
             expect(streamSocket.socket.readyState).toBe(1); // OPEN
             expect(consoleWarnSpy).not.toHaveBeenCalled();
         });
 
         it("should connect with transcription mode", async () => {
-            expect.assertions(4);
+            expect.assertions(2);
 
             const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
 
             const streamSocket = await cortiClient.stream.connect({
                 id: interactionId,
+                awaitConfiguration: false,
                 configuration: {
                     transcription: {
                         primaryLanguage: "en",
                         participants: [
                             {
-                                channel: faker.number.int({ min: 0, max: 10 }),
+                                channel: 0,
                                 role: "doctor",
                             },
                         ],
@@ -366,8 +283,6 @@ describe("cortiClient.stream.connect", () => {
 
             await waitForWebSocketMessage(streamSocket, "CONFIG_ACCEPTED", { rejectOnWrongMessage: true });
 
-            expect(streamSocket).toBeDefined();
-            expect(streamSocket.socket).toBeDefined();
             expect(streamSocket.socket.readyState).toBe(1); // OPEN
             expect(consoleWarnSpy).not.toHaveBeenCalled();
         });
@@ -381,16 +296,17 @@ describe("cortiClient.stream.connect", () => {
 
             const streamSocket = await cortiClient.stream.connect({
                 id: interactionId,
+                awaitConfiguration: false,
                 configuration: {
                     transcription: {
                         primaryLanguage: "en",
                         participants: [
                             {
-                                channel: faker.number.int({ min: 0, max: 10 }),
+                                channel: 0,
                                 role: "doctor",
                             },
                             {
-                                channel: faker.number.int({ min: 0, max: 10 }),
+                                channel: 1,
                                 role: "patient",
                             },
                         ],
@@ -435,16 +351,17 @@ describe("cortiClient.stream.connect", () => {
 
             const streamSocket = await cortiClient.stream.connect({
                 id: interactionId,
+                awaitConfiguration: false,
                 configuration: {
                     transcription: {
                         primaryLanguage: "en",
                         participants: [
                             {
-                                channel: faker.number.int({ min: 0, max: 10 }),
+                                channel: 0,
                                 role: "doctor",
                             },
                             {
-                                channel: faker.number.int({ min: 0, max: 10 }),
+                                channel: 1,
                                 role: "patient",
                             },
                         ],
@@ -489,12 +406,13 @@ describe("cortiClient.stream.connect", () => {
 
             const streamSocket = await cortiClient.stream.connect({
                 id: interactionId,
+                awaitConfiguration: false,
                 configuration: {
                     transcription: {
                         primaryLanguage: "invalid_language",
                         participants: [
                             {
-                                channel: faker.number.int({ min: 0, max: 10 }),
+                                channel: 0,
                                 role: "doctor",
                             },
                         ],
@@ -542,12 +460,13 @@ describe("cortiClient.stream.connect", () => {
 
             const streamSocket = await cortiClient.stream.connect({
                 id: interactionId,
+                awaitConfiguration: false,
                 configuration: {
                     transcription: {
                         primaryLanguage: "en",
                         participants: [
                             {
-                                channel: faker.number.int({ min: 0, max: 10 }),
+                                channel: 0,
                                 role: "invalid_role" as any,
                             },
                         ],

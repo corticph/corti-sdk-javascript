@@ -4,7 +4,7 @@ import { cleanupInteractions, createTestCortiClient, setupConsoleWarnSpy } from 
 
 describe("cortiClient.interactions.create", () => {
     let cortiClient: CortiClient;
-    let consoleWarnSpy: jest.SpyInstance;
+    let consoleWarnSpy: ReturnType<typeof setupConsoleWarnSpy>;
     let createdInteractionIds: string[] = [];
 
     beforeAll(() => {
@@ -338,41 +338,43 @@ describe("cortiClient.interactions.create", () => {
         });
     });
 
-    it("should create interaction with all optional parameters without errors or warnings", async () => {
-        expect.assertions(2);
+    describe("should create interaction with all optional values", () => {
+        it("should create interaction with all optional parameters without errors or warnings", async () => {
+            expect.assertions(2);
 
-        const startDate = faker.date.recent();
-        const endDate = faker.date.future({ refDate: startDate });
-        const birthDate = faker.date.birthdate({ min: 18, max: 100, mode: "age" });
+            const startDate = faker.date.recent();
+            const endDate = faker.date.future({ refDate: startDate });
+            const birthDate = faker.date.birthdate({ min: 18, max: 100, mode: "age" });
 
-        const result = await cortiClient.interactions.create({
-            assignedUserId: faker.string.uuid(),
-            encounter: {
-                identifier: faker.string.alphanumeric(20),
-                status: "in-progress",
-                type: "consultation",
-                title: faker.lorem.sentence(),
-                period: {
-                    startedAt: startDate,
-                    endedAt: endDate,
+            const result = await cortiClient.interactions.create({
+                assignedUserId: faker.string.uuid(),
+                encounter: {
+                    identifier: faker.string.alphanumeric(20),
+                    status: "in-progress",
+                    type: "consultation",
+                    title: faker.lorem.sentence(),
+                    period: {
+                        startedAt: startDate,
+                        endedAt: endDate,
+                    },
                 },
-            },
-            patient: {
-                identifier: faker.string.alphanumeric(15),
-                name: faker.person.fullName(),
-                gender: "male",
-                birthDate: birthDate,
-                pronouns: faker.helpers.arrayElement(["he/him", "she/her", "they/them"]),
-            },
+                patient: {
+                    identifier: faker.string.alphanumeric(15),
+                    name: faker.person.fullName(),
+                    gender: "male",
+                    birthDate: birthDate,
+                    pronouns: faker.helpers.arrayElement(["he/him", "she/her", "they/them"]),
+                },
+            });
+
+            createdInteractionIds.push(result.interactionId);
+
+            expect(result).toBeDefined();
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
         });
-
-        createdInteractionIds.push(result.interactionId);
-
-        expect(result).toBeDefined();
-        expect(consoleWarnSpy).not.toHaveBeenCalled();
     });
 
-    describe("should throw error when required fields are missing", () => {
+    describe("should throw error when required parameters are missing", () => {
         it("should throw error when encounter is missing", async () => {
             expect.assertions(1);
 

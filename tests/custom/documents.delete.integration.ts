@@ -1,11 +1,17 @@
 import { faker } from "@faker-js/faker";
 import type { CortiClient } from "../../src";
-import { createTestCortiClient, createTestDocument, createTestInteraction, setupConsoleWarnSpy } from "./testUtils";
+import {
+    cleanupInteractions,
+    createTestCortiClient,
+    createTestDocument,
+    createTestInteraction,
+    setupConsoleWarnSpy,
+} from "./testUtils";
 
 describe("cortiClient.documents.delete", () => {
     let cortiClient: CortiClient;
-    let consoleWarnSpy: jest.SpyInstance;
-    const createdInteractionIds: string[] = [];
+    let consoleWarnSpy: ReturnType<typeof setupConsoleWarnSpy>;
+    let createdInteractionIds: string[] = [];
 
     beforeAll(() => {
         cortiClient = createTestCortiClient();
@@ -13,22 +19,43 @@ describe("cortiClient.documents.delete", () => {
 
     beforeEach(() => {
         consoleWarnSpy = setupConsoleWarnSpy();
+        createdInteractionIds = [];
     });
 
-    afterEach(() => {
+    afterEach(async () => {
         consoleWarnSpy.mockRestore();
+        await cleanupInteractions(cortiClient, createdInteractionIds);
+        createdInteractionIds = [];
     });
 
-    it("should successfully delete an existing document without errors or warnings", async () => {
-        expect.assertions(2);
+    describe("should delete document with only required values", () => {
+        it("should successfully delete an existing document without errors or warnings", async () => {
+            expect.assertions(2);
 
-        const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
-        const documentId = await createTestDocument(cortiClient, interactionId);
+            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const documentId = await createTestDocument(cortiClient, interactionId);
 
-        const result = await cortiClient.documents.delete(interactionId, documentId);
+            const result = await cortiClient.documents.delete(interactionId, documentId);
 
-        expect(result).toBeUndefined();
-        expect(consoleWarnSpy).not.toHaveBeenCalled();
+            expect(result).toBeUndefined();
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
+    });
+
+    describe("should throw error when required parameters are missing", () => {
+        it("should throw error when interaction ID is missing", async () => {
+            expect.assertions(1);
+
+            await expect(cortiClient.documents.delete(undefined as any, faker.string.uuid())).rejects.toThrow();
+        });
+
+        it("should throw error when document ID is missing", async () => {
+            expect.assertions(1);
+
+            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+
+            await expect(cortiClient.documents.delete(interactionId, undefined as any)).rejects.toThrow();
+        });
     });
 
     describe("should throw error when invalid parameters are provided", () => {
@@ -54,6 +81,16 @@ describe("cortiClient.documents.delete", () => {
             expect.assertions(1);
 
             await expect(cortiClient.documents.delete(faker.string.uuid(), faker.string.uuid())).rejects.toThrow(
+                "Status code: 404",
+            );
+        });
+
+        it("should throw error when document ID does not exist", async () => {
+            expect.assertions(1);
+
+            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+
+            await expect(cortiClient.documents.delete(interactionId, faker.string.uuid())).rejects.toThrow(
                 "Status code: 404",
             );
         });

@@ -10,8 +10,8 @@ import {
 
 describe("cortiClient.recordings.list", () => {
     let cortiClient: CortiClient;
-    let consoleWarnSpy: jest.SpyInstance;
-    const createdInteractionIds: string[] = [];
+    let consoleWarnSpy: ReturnType<typeof setupConsoleWarnSpy>;
+    let createdInteractionIds: string[] = [];
 
     beforeAll(() => {
         cortiClient = createTestCortiClient();
@@ -19,51 +19,70 @@ describe("cortiClient.recordings.list", () => {
 
     beforeEach(() => {
         consoleWarnSpy = setupConsoleWarnSpy();
+        createdInteractionIds = [];
     });
 
     afterEach(async () => {
         consoleWarnSpy.mockRestore();
         await cleanupInteractions(cortiClient, createdInteractionIds);
-        createdInteractionIds.length = 0;
+        createdInteractionIds = [];
     });
 
-    it("should return empty list when interaction has no recordings", async () => {
-        expect.assertions(2);
+    describe("should list recordings with only required values", () => {
+        it("should return empty list when interaction has no recordings", async () => {
+            expect.assertions(2);
 
-        const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
 
-        const result = await cortiClient.recordings.list(interactionId);
+            const result = await cortiClient.recordings.list(interactionId);
 
-        expect(result.recordings.length).toBe(0);
-        expect(consoleWarnSpy).not.toHaveBeenCalled();
+            expect(result.recordings.length).toBe(0);
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
+
+        it("should return recordings when interaction has recordings", async () => {
+            expect.assertions(3);
+
+            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const recordingId = await createTestRecording(cortiClient, interactionId);
+
+            const result = await cortiClient.recordings.list(interactionId);
+
+            expect(result.recordings.length).toBeGreaterThan(0);
+            expect(result.recordings.includes(recordingId)).toBe(true);
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
+
+        it("should return multiple recordings when interaction has multiple recordings", async () => {
+            expect.assertions(4);
+
+            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const recordingId1 = await createTestRecording(cortiClient, interactionId);
+            const recordingId2 = await createTestRecording(cortiClient, interactionId);
+
+            const result = await cortiClient.recordings.list(interactionId);
+
+            expect(result.recordings.length).toBeGreaterThanOrEqual(2);
+            expect(result.recordings.includes(recordingId1)).toBe(true);
+            expect(result.recordings.includes(recordingId2)).toBe(true);
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
     });
 
-    it("should return recordings when interaction has recordings", async () => {
-        expect.assertions(3);
+    describe("should throw error when required parameters are missing", () => {
+        it("should throw error when interaction ID is null", async () => {
+            expect.assertions(1);
 
-        const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
-        const recordingId = await createTestRecording(cortiClient, interactionId);
+            await expect(cortiClient.recordings.list(null as any)).rejects.toThrow("Expected string. Received null.");
+        });
 
-        const result = await cortiClient.recordings.list(interactionId);
+        it("should throw error when interaction ID is undefined", async () => {
+            expect.assertions(1);
 
-        expect(result.recordings.length).toBeGreaterThan(0);
-        expect(result.recordings.includes(recordingId)).toBe(true);
-        expect(consoleWarnSpy).not.toHaveBeenCalled();
-    });
-
-    it("should return multiple recordings when interaction has multiple recordings", async () => {
-        expect.assertions(4);
-
-        const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
-        const recordingId1 = await createTestRecording(cortiClient, interactionId);
-        const recordingId2 = await createTestRecording(cortiClient, interactionId);
-
-        const result = await cortiClient.recordings.list(interactionId);
-
-        expect(result.recordings.length).toBeGreaterThanOrEqual(2);
-        expect(result.recordings.includes(recordingId1)).toBe(true);
-        expect(result.recordings.includes(recordingId2)).toBe(true);
-        expect(consoleWarnSpy).not.toHaveBeenCalled();
+            await expect(cortiClient.recordings.list(undefined as any)).rejects.toThrow(
+                "Expected string. Received undefined.",
+            );
+        });
     });
 
     describe("should throw error when invalid parameters are provided", () => {
@@ -77,20 +96,6 @@ describe("cortiClient.recordings.list", () => {
             expect.assertions(1);
 
             await expect(cortiClient.recordings.list(faker.string.uuid())).rejects.toThrow("Status code: 404");
-        });
-
-        it("should throw error when interaction ID is null", async () => {
-            expect.assertions(1);
-
-            await expect(cortiClient.recordings.list(null as any)).rejects.toThrow("Expected string. Received null.");
-        });
-
-        it("should throw error when interaction ID is undefined", async () => {
-            expect.assertions(1);
-
-            await expect(cortiClient.recordings.list(undefined as any)).rejects.toThrow(
-                "Expected string. Received undefined.",
-            );
         });
     });
 });
