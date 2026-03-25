@@ -14,6 +14,9 @@
             "@faker-js/faker": "^9.9.0"
         },
         "packageJson": {
+            "scripts": {
+                "test:integration": "vitest --config vitest.integration.config.mts"
+            },
             "exports": {
                 "./utils": {
                     "import": {
@@ -30,5 +33,5 @@
         }
     },
     "originGitCommit": "3d383f6d26c0206a6e3607cd2cc4a0e1b6efab11",
-    "sdkVersion": "0.0.0-dev"
+    "sdkVersion": "0.10.2"
 }
