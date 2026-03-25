@@ -1,0 +1,32 @@
+name: integration-tests
+
+on: [pull_request]
+
+concurrency:
+  group: integration-tests
+  cancel-in-progress: true
+
+jobs:
+  integration-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v6
+
+      - name: Set up node
+        uses: actions/setup-node@v6
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run integration tests
+        run: pnpm test:integration
+        env:
+          CORTI_ENVIRONMENT: ${{ vars.CORTI_ENVIRONMENT }}
+          CORTI_TENANT_NAME: ${{ vars.CORTI_TENANT_NAME }}
+          CORTI_CLIENT_ID: ${{ vars.CORTI_CLIENT_ID }}
+          CORTI_CLIENT_SECRET: ${{ secrets.CORTI_CLIENT_SECRET }}

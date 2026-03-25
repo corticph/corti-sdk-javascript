@@ -19,5 +19,11 @@ src/core/fetcher/index.ts
 # Wire tests authentication
 tests/wire/mockAuth.ts
 
+# Integration tests — hand-maintained, not generated
+tests/custom/
+
+# Integration test vitest config
+vitest.integration.config.mts
+
 # CI/release workflows and GitHub config — hand-maintained, Fern must not overwrite
 .github/
