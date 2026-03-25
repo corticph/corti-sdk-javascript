@@ -16,7 +16,6 @@
         "packageJson": {
             "exports": {
                 "./utils": {
-                    "default": "./dist/cjs/custom/utils/index.js",
                     "import": {
                         "types": "./dist/esm/custom/utils/index.d.mts",
                         "default": "./dist/esm/custom/utils/index.mjs"
@@ -24,11 +23,12 @@
                     "require": {
                         "types": "./dist/cjs/custom/utils/index.d.ts",
                         "default": "./dist/cjs/custom/utils/index.js"
-                    }
+                    },
+                    "default": "./dist/cjs/custom/utils/index.js"
                 }
             }
         }
     },
     "originGitCommit": "db8b795c16d8affac1c9eca2afb536a829c6e979",
-    "sdkVersion": "1.0.0-alpha.1"
+    "sdkVersion": "0.10.2"
 }
