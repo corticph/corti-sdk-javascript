@@ -1,8 +1,8 @@
 import { faker } from "@faker-js/faker";
 import { createReadStream } from "fs";
 import { CortiClient } from "../../src";
-import type { StreamSocket } from "../../src/custom/CustomStreamSocket";
-import type { TranscribeSocket } from "../../src/custom/CustomTranscribeSocket";
+import type { CustomStreamSocket as StreamSocket } from "../../src/custom/stream/CustomStreamSocket";
+import type { CustomTranscribeSocket as TranscribeSocket } from "../../src/custom/transcribe/CustomTranscribeSocket";
 
 /**
  * Creates a CortiClient instance configured for testing
@@ -254,16 +254,32 @@ export function waitForWebSocketMessage(
     } = {},
 ): Promise<void> {
     return new Promise<void>((resolve, reject) => {
-        const { messages = [], rejectOnWrongMessage = false, timeoutMs = 10000 } = options;
+        const { messages = [], rejectOnWrongMessage = false, timeoutMs = 30000 } = options;
+
+        const cleanup = () => {
+            streamSocket.off("message");
+            streamSocket.off("error");
+        };
+
+        const finishResolve = () => {
+            clearTimeout(timeout);
+            cleanup();
+            resolve();
+        };
+
+        const finishReject = (error: Error) => {
+            clearTimeout(timeout);
+            cleanup();
+            reject(error);
+        };
 
         const timeout = setTimeout(() => {
-            reject(new Error(`Timeout waiting for message type: ${expectedMessageType}`));
+            finishReject(new Error(`Timeout waiting for message type: ${expectedMessageType}`));
         }, timeoutMs);
 
         // Check if message already exists in the array
         if (messages.some((msg: any) => msg.type === expectedMessageType)) {
-            clearTimeout(timeout);
-            resolve();
+            finishResolve();
             return;
         }
 
@@ -274,20 +290,18 @@ export function waitForWebSocketMessage(
             messages.push(data);
 
             if (data.type === expectedMessageType) {
-                clearTimeout(timeout);
-                resolve();
+                finishResolve();
             } else if (rejectOnWrongMessage) {
-                clearTimeout(timeout);
-                reject(new Error(`Unexpected message type: ${data.type}, expected: ${expectedMessageType}`));
+                finishReject(new Error(`Unexpected message type: ${data.type}, expected: ${expectedMessageType}`));
             }
         };
 
-        streamSocket.on("message", messageHandler);
+        const errorHandler = (error: any) => {
+            finishReject(new Error(`WebSocket error: ${error.message}`));
+        };
 
-        streamSocket.on("error", (error: any) => {
-            clearTimeout(timeout);
-            reject(new Error(`WebSocket error: ${error.message}`));
-        });
+        streamSocket.on("message", messageHandler);
+        streamSocket.on("error", errorHandler);
     });
 }
 

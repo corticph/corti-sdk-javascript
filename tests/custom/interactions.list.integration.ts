@@ -268,16 +268,23 @@ describe("cortiClient.interactions.list", () => {
     describe("sorting", () => {
         it("should sort by default (createdAt desc) when no sort parameters provided", async () => {
             expect.assertions(3);
+            const testPatientId = `sort-default-${faker.string.alphanumeric(15)}`;
 
-            const firstId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const firstId = await createTestInteraction(cortiClient, createdInteractionIds, {
+                patient: { identifier: testPatientId },
+            });
             await new Promise((resolve) => setTimeout(resolve, 100));
 
-            const secondId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const secondId = await createTestInteraction(cortiClient, createdInteractionIds, {
+                patient: { identifier: testPatientId },
+            });
             await new Promise((resolve) => setTimeout(resolve, 100));
 
-            const thirdId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const thirdId = await createTestInteraction(cortiClient, createdInteractionIds, {
+                patient: { identifier: testPatientId },
+            });
 
-            const result = await cortiClient.interactions.list();
+            const result = await cortiClient.interactions.list({ patient: testPatientId });
 
             const ourInteractions = result.data.filter((interaction) =>
                 [firstId, secondId, thirdId].includes(interaction.id),
@@ -291,18 +298,26 @@ describe("cortiClient.interactions.list", () => {
         describe("sort by createdAt", () => {
             it("should sort by createdAt desc", async () => {
                 expect.assertions(4);
+                const testPatientId = `sort-createdAt-desc-${faker.string.alphanumeric(15)}`;
 
-                const firstId = await createTestInteraction(cortiClient, createdInteractionIds);
+                const firstId = await createTestInteraction(cortiClient, createdInteractionIds, {
+                    patient: { identifier: testPatientId },
+                });
                 await new Promise((resolve) => setTimeout(resolve, 100));
 
-                const secondId = await createTestInteraction(cortiClient, createdInteractionIds);
+                const secondId = await createTestInteraction(cortiClient, createdInteractionIds, {
+                    patient: { identifier: testPatientId },
+                });
                 await new Promise((resolve) => setTimeout(resolve, 100));
 
-                const thirdId = await createTestInteraction(cortiClient, createdInteractionIds);
+                const thirdId = await createTestInteraction(cortiClient, createdInteractionIds, {
+                    patient: { identifier: testPatientId },
+                });
 
                 const result = await cortiClient.interactions.list({
                     sort: "createdAt",
                     direction: "desc",
+                    patient: testPatientId,
                 });
 
                 const ourInteractions = result.data.filter((interaction) =>
@@ -317,18 +332,26 @@ describe("cortiClient.interactions.list", () => {
 
             it("should sort by createdAt asc", async () => {
                 expect.assertions(4);
+                const testPatientId = `sort-createdAt-asc-${faker.string.alphanumeric(15)}`;
 
-                const firstId = await createTestInteraction(cortiClient, createdInteractionIds);
+                const firstId = await createTestInteraction(cortiClient, createdInteractionIds, {
+                    patient: { identifier: testPatientId },
+                });
                 await new Promise((resolve) => setTimeout(resolve, 100));
 
-                const secondId = await createTestInteraction(cortiClient, createdInteractionIds);
+                const secondId = await createTestInteraction(cortiClient, createdInteractionIds, {
+                    patient: { identifier: testPatientId },
+                });
                 await new Promise((resolve) => setTimeout(resolve, 100));
 
-                const thirdId = await createTestInteraction(cortiClient, createdInteractionIds);
+                const thirdId = await createTestInteraction(cortiClient, createdInteractionIds, {
+                    patient: { identifier: testPatientId },
+                });
 
                 const result = await cortiClient.interactions.list({
                     sort: "createdAt",
                     direction: "asc",
+                    patient: testPatientId,
                 });
 
                 const ourInteractions = result.data.filter((interaction) =>
@@ -343,13 +366,18 @@ describe("cortiClient.interactions.list", () => {
 
             it("should sort by createdAt with default direction (desc) when direction not specified", async () => {
                 expect.assertions(3);
+                const testPatientId = `sort-createdAt-default-${faker.string.alphanumeric(15)}`;
 
-                const firstId = await createTestInteraction(cortiClient, createdInteractionIds);
+                const firstId = await createTestInteraction(cortiClient, createdInteractionIds, {
+                    patient: { identifier: testPatientId },
+                });
                 await new Promise((resolve) => setTimeout(resolve, 100));
 
-                const secondId = await createTestInteraction(cortiClient, createdInteractionIds);
+                const secondId = await createTestInteraction(cortiClient, createdInteractionIds, {
+                    patient: { identifier: testPatientId },
+                });
 
-                const result = await cortiClient.interactions.list({ sort: "createdAt" });
+                const result = await cortiClient.interactions.list({ sort: "createdAt", patient: testPatientId });
 
                 const ourInteractions = result.data.filter((interaction) =>
                     [firstId, secondId].includes(interaction.id),
@@ -364,18 +392,26 @@ describe("cortiClient.interactions.list", () => {
         describe("sort by updatedAt", () => {
             it("should sort by updatedAt desc", async () => {
                 expect.assertions(4);
+                const testPatientId = `sort-updatedAt-desc-${faker.string.alphanumeric(15)}`;
 
-                const firstId = await createTestInteraction(cortiClient, createdInteractionIds);
+                const firstId = await createTestInteraction(cortiClient, createdInteractionIds, {
+                    patient: { identifier: testPatientId },
+                });
                 await new Promise((resolve) => setTimeout(resolve, 100));
 
-                const secondId = await createTestInteraction(cortiClient, createdInteractionIds);
+                const secondId = await createTestInteraction(cortiClient, createdInteractionIds, {
+                    patient: { identifier: testPatientId },
+                });
                 await new Promise((resolve) => setTimeout(resolve, 100));
 
-                const thirdId = await createTestInteraction(cortiClient, createdInteractionIds);
+                const thirdId = await createTestInteraction(cortiClient, createdInteractionIds, {
+                    patient: { identifier: testPatientId },
+                });
 
                 const result = await cortiClient.interactions.list({
                     sort: "updatedAt",
                     direction: "desc",
+                    patient: testPatientId,
                 });
 
                 const ourInteractions = result.data.filter((interaction) =>
@@ -390,18 +426,26 @@ describe("cortiClient.interactions.list", () => {
 
             it("should sort by updatedAt asc", async () => {
                 expect.assertions(4);
+                const testPatientId = `sort-updatedAt-asc-${faker.string.alphanumeric(15)}`;
 
-                const firstId = await createTestInteraction(cortiClient, createdInteractionIds);
+                const firstId = await createTestInteraction(cortiClient, createdInteractionIds, {
+                    patient: { identifier: testPatientId },
+                });
                 await new Promise((resolve) => setTimeout(resolve, 100));
 
-                const secondId = await createTestInteraction(cortiClient, createdInteractionIds);
+                const secondId = await createTestInteraction(cortiClient, createdInteractionIds, {
+                    patient: { identifier: testPatientId },
+                });
                 await new Promise((resolve) => setTimeout(resolve, 100));
 
-                const thirdId = await createTestInteraction(cortiClient, createdInteractionIds);
+                const thirdId = await createTestInteraction(cortiClient, createdInteractionIds, {
+                    patient: { identifier: testPatientId },
+                });
 
                 const result = await cortiClient.interactions.list({
                     sort: "updatedAt",
                     direction: "asc",
+                    patient: testPatientId,
                 });
 
                 const ourInteractions = result.data.filter((interaction) =>
@@ -418,13 +462,19 @@ describe("cortiClient.interactions.list", () => {
         describe("sort by id", () => {
             it("should sort by id desc", async () => {
                 expect.assertions(4);
+                const testPatientId = `sort-id-desc-${faker.string.alphanumeric(15)}`;
 
-                const firstId = await createTestInteraction(cortiClient, createdInteractionIds);
-                const secondId = await createTestInteraction(cortiClient, createdInteractionIds);
+                const firstId = await createTestInteraction(cortiClient, createdInteractionIds, {
+                    patient: { identifier: testPatientId },
+                });
+                const secondId = await createTestInteraction(cortiClient, createdInteractionIds, {
+                    patient: { identifier: testPatientId },
+                });
 
                 const result = await cortiClient.interactions.list({
                     sort: "id",
                     direction: "desc",
+                    patient: testPatientId,
                 });
 
                 const ourInteractions = result.data.filter((interaction) =>
@@ -441,13 +491,19 @@ describe("cortiClient.interactions.list", () => {
 
             it("should sort by id asc", async () => {
                 expect.assertions(4);
+                const testPatientId = `sort-id-asc-${faker.string.alphanumeric(15)}`;
 
-                const firstId = await createTestInteraction(cortiClient, createdInteractionIds);
-                const secondId = await createTestInteraction(cortiClient, createdInteractionIds);
+                const firstId = await createTestInteraction(cortiClient, createdInteractionIds, {
+                    patient: { identifier: testPatientId },
+                });
+                const secondId = await createTestInteraction(cortiClient, createdInteractionIds, {
+                    patient: { identifier: testPatientId },
+                });
 
                 const result = await cortiClient.interactions.list({
                     sort: "id",
                     direction: "asc",
+                    patient: testPatientId,
                 });
 
                 const ourInteractions = result.data.filter((interaction) =>
@@ -466,21 +522,25 @@ describe("cortiClient.interactions.list", () => {
         describe("sort by assignedUserId", () => {
             it("should sort by assignedUserId desc", async () => {
                 expect.assertions(4);
+                const testPatientId = `sort-assigned-desc-${faker.string.alphanumeric(15)}`;
 
                 const userA = faker.string.uuid();
                 const userB = faker.string.uuid();
 
                 const interactionA = await createTestInteraction(cortiClient, createdInteractionIds, {
                     assignedUserId: userA,
+                    patient: { identifier: testPatientId },
                 });
 
                 const interactionB = await createTestInteraction(cortiClient, createdInteractionIds, {
                     assignedUserId: userB,
+                    patient: { identifier: testPatientId },
                 });
 
                 const result = await cortiClient.interactions.list({
                     sort: "assignedUserId",
                     direction: "desc",
+                    patient: testPatientId,
                 });
 
                 const ourInteractions = result.data.filter((interaction) =>
@@ -497,21 +557,25 @@ describe("cortiClient.interactions.list", () => {
 
             it("should sort by assignedUserId asc", async () => {
                 expect.assertions(4);
+                const testPatientId = `sort-assigned-asc-${faker.string.alphanumeric(15)}`;
 
                 const userA = faker.string.uuid();
                 const userB = faker.string.uuid();
 
                 const interactionA = await createTestInteraction(cortiClient, createdInteractionIds, {
                     assignedUserId: userA,
+                    patient: { identifier: testPatientId },
                 });
 
                 const interactionB = await createTestInteraction(cortiClient, createdInteractionIds, {
                     assignedUserId: userB,
+                    patient: { identifier: testPatientId },
                 });
 
                 const result = await cortiClient.interactions.list({
                     sort: "assignedUserId",
                     direction: "asc",
+                    patient: testPatientId,
                 });
 
                 const ourInteractions = result.data.filter((interaction) =>
