@@ -2,7 +2,8 @@
 
 import type * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
-import * as serializers from "../index.js";
+import type * as serializers from "../index.js";
+import { AgentsErrorResponse } from "./AgentsErrorResponse.js";
 import { AgentsValidationError } from "./AgentsValidationError.js";
 
 export const AgentsValidationErrorResponse: core.serialization.ObjectSchema<
@@ -12,10 +13,10 @@ export const AgentsValidationErrorResponse: core.serialization.ObjectSchema<
     .object({
         detail: core.serialization.list(AgentsValidationError).optional(),
     })
-    .extend(core.serialization.lazyObject(() => serializers.AgentsErrorResponse));
+    .extend(AgentsErrorResponse);
 
 export declare namespace AgentsValidationErrorResponse {
-    export interface Raw extends serializers.AgentsErrorResponse.Raw {
+    export interface Raw extends AgentsErrorResponse.Raw {
         detail?: AgentsValidationError.Raw[] | null;
     }
 }
