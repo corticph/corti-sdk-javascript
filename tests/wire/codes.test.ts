@@ -48,7 +48,7 @@ describe("CodesClient", () => {
                     ],
                 },
             ],
-            usageInfo: { creditsConsumed: 1.1 },
+            usageInfo: { creditsConsumed: 123 },
         };
 
         server
@@ -121,7 +121,7 @@ describe("CodesClient", () => {
                 },
             ],
             usageInfo: {
-                creditsConsumed: 1.1,
+                creditsConsumed: 123,
             },
         });
     });
@@ -169,7 +169,7 @@ describe("CodesClient", () => {
                     ],
                 },
             ],
-            usageInfo: { creditsConsumed: 1.1 },
+            usageInfo: { creditsConsumed: 123 },
         };
 
         server
@@ -246,7 +246,7 @@ describe("CodesClient", () => {
                 },
             ],
             usageInfo: {
-                creditsConsumed: 1.1,
+                creditsConsumed: 123,
             },
         });
     });
