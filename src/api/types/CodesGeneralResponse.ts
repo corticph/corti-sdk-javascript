@@ -7,5 +7,5 @@ export interface CodesGeneralResponse {
     codes: Corti.CodesGeneralReadResponse[];
     /** Lower-confidence codes the model considered potentially relevant but excluded from the predicted set. */
     candidates: Corti.CodesGeneralReadResponse[];
-    usageInfo?: Corti.CommonUsageInfo;
+    usageInfo: Corti.CommonUsageInfo;
 }

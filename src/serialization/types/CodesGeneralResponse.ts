@@ -12,13 +12,13 @@ export const CodesGeneralResponse: core.serialization.ObjectSchema<
 > = core.serialization.object({
     codes: core.serialization.list(CodesGeneralReadResponse),
     candidates: core.serialization.list(CodesGeneralReadResponse),
-    usageInfo: CommonUsageInfo.optional(),
+    usageInfo: CommonUsageInfo,
 });
 
 export declare namespace CodesGeneralResponse {
     export interface Raw {
         codes: CodesGeneralReadResponse.Raw[];
         candidates: CodesGeneralReadResponse.Raw[];
-        usageInfo?: CommonUsageInfo.Raw | null;
+        usageInfo: CommonUsageInfo.Raw;
     }
 }
