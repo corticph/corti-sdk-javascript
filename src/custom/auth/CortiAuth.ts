@@ -85,7 +85,8 @@ export class CortiAuth extends AuthClient {
         const { environment, tenantName, ...rest } = options;
         super({
             ...rest,
-            tenantName: "",
+            // @ts-expect-error it suppose to be required, but we need to filter out header without rewriting too much
+            tenantName: null,
             environment: getEnvironment(environment),
             token: options.token ?? (() => ""),
         });
