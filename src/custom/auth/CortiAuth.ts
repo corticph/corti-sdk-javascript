@@ -7,6 +7,7 @@ import { buildTokenRequestBody } from "../utils/buildTokenRequestBody.js";
 import { type Environment, getEnvironment } from "../utils/environment.js";
 import { CODE_VERIFIER_KEY, getLocalStorageItem, setLocalStorageItem } from "../utils/localStorageHelpers.js";
 import { generateCodeChallenge, generateCodeVerifier } from "../utils/pkceHelpers.js";
+import { stripFernNormalizedHeaders } from "../utils/stripFernNormalizedHeaders.js";
 
 interface Options {
     skipRedirect?: boolean;
@@ -77,16 +78,23 @@ export declare namespace CortiAuth {
 }
 
 export class CortiAuth extends AuthClient {
+    private readonly _tenantName: core.Supplier<string>;
+
     /** No-op auth provider so super.token() does not trigger OAuth refresh. When auth is omitted, a dummy token is passed so the base constructor does not throw. */
     constructor(options: CortiAuth.Options) {
-        const { environment, ...rest } = options;
+        const { environment, tenantName, ...rest } = options;
         super({
             ...rest,
+            tenantName: "",
             environment: getEnvironment(environment),
             token: options.token ?? (() => ""),
         });
 
+        this._tenantName = tenantName;
         this._options.authProvider = new core.NoOpAuthProvider();
+
+        /** Stripping Fern headers to bypass CORS on authentication requests */
+        this._options.headers = stripFernNormalizedHeaders(this._options.headers);
     }
 
     /**
@@ -123,7 +131,7 @@ export class CortiAuth extends AuthClient {
         requestOptions: AuthClient.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.AuthTokenResponse>> {
         const authRequest = buildTokenRequestBody(request);
-        const tenantName = await core.Supplier.get(this._options.tenantName);
+        const tenantName = await core.Supplier.get(this._tenantName);
 
         return this.token(tenantName, authRequest, requestOptions).withRawResponse();
     }
