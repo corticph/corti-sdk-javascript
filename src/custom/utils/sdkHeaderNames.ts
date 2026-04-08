@@ -7,4 +7,3 @@ export const SDK_HEADER_NAMES: ReadonlySet<string> = new Set([
     "X-Fern-Runtime",
     "X-Fern-Runtime-Version",
 ]);
-
