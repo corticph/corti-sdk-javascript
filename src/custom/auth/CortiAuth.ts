@@ -234,7 +234,7 @@ export class CortiAuth extends AuthClient {
         options?: Options,
     ): Promise<string> {
         const envUrls = await core.Supplier.get(this._options.environment);
-        const tenantName = await core.Supplier.get(this._options.tenantName);
+        const tenantName = await core.Supplier.get(this._tenantName);
 
         const authUrl = new URL(core.url.join(envUrls.login, tenantName, "protocol/openid-connect/auth"));
 
