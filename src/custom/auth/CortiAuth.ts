@@ -60,6 +60,34 @@ export declare namespace CortiAuth {
         scopes?: string[];
     }
 
+    /**
+     * Auth shapes used by `CortiClient` when passing `auth: ...`.
+     */
+    export type AuthClientCredentials = { clientId: string; clientSecret: string };
+    export type AuthRopc = Omit<GetRopcFlowTokenRequest, "scopes">;
+    export type AuthCode = Omit<GetCodeFlowTokenRequest, "scopes">;
+    export type AuthPkce = Omit<GetPkceFlowTokenRequest, "scopes">;
+
+    export type AuthTokenDerivable =
+        | {
+              accessToken: string;
+              refreshAccessToken?: OAuthAuthProvider.RefreshAccessTokenFunction;
+              expiresIn?: number;
+              refreshToken?: string;
+              refreshExpiresIn?: number;
+              clientId?: string;
+          }
+        | {
+              refreshAccessToken: OAuthAuthProvider.RefreshAccessTokenFunction;
+              accessToken?: string;
+              expiresIn?: number;
+              refreshToken?: string;
+              refreshExpiresIn?: number;
+              clientId?: string;
+          };
+
+    export type AuthServer = AuthClientCredentials | AuthRopc | AuthCode | AuthPkce;
+
     /** Parameters for authorizeURL — builds the Keycloak authorization endpoint URL. */
     export interface AuthorizationCodeClient {
         clientId: string;
