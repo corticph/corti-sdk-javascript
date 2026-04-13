@@ -4,19 +4,9 @@
  */
 
 import * as core from "../../core/index.js";
+import { SDK_HEADER_NAMES } from "./sdkHeaderNames.js";
 
 export type HeadersRecord = Record<string, string | core.Supplier<string | null | undefined> | null | undefined>;
-
-/** Headers added by the SDK; exclude these when filterSdkHeaders is true (e.g. merged client headers). */
-const SDK_HEADER_NAMES = new Set([
-    "Tenant-Name",
-    "X-Fern-Language",
-    "X-Fern-SDK-Name",
-    "X-Fern-SDK-Version",
-    "User-Agent",
-    "X-Fern-Runtime",
-    "X-Fern-Runtime-Version",
-]);
 
 /**
  * Resolves header values (including suppliers/functions) and returns a flat array
