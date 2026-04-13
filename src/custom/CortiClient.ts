@@ -1,10 +1,12 @@
 import { CortiClient as BaseCortiClient } from "../Client.js";
 import type * as environments from "../environments.js";
 import { CortiAuth } from "./auth/CortiAuth.js";
+import { CustomAgents } from "./agents/CustomAgents.js";
 import { CustomStream } from "./stream/CustomStream.js";
 import { CustomTranscribe } from "./transcribe/CustomTranscribe.js";
 import { authToBaseOptions } from "./utils/authToBaseOptions.js";
 import { type Environment, getEnvironment } from "./utils/environment.js";
+
 import { resolveClientOptions } from "./utils/resolveClientOptions.js";
 import { setDefaultWithCredentials } from "./utils/withCredentialsConfig.js";
 
@@ -41,6 +43,7 @@ export class CortiClient extends BaseCortiClient {
     protected override _auth: CortiAuth | undefined;
     protected override _stream: CustomStream | undefined;
     protected override _transcribe: CustomTranscribe | undefined;
+    protected override _agents: CustomAgents | undefined;
 
     private readonly _encodeHeadersAsWsProtocols: boolean | undefined;
 
@@ -81,5 +84,9 @@ export class CortiClient extends BaseCortiClient {
             ...this._options,
             encodeHeadersAsWsProtocols: this._encodeHeadersAsWsProtocols,
         }));
+    }
+
+    public override get agents(): CustomAgents {
+        return (this._agents ??= new CustomAgents(this._options));
     }
 }
