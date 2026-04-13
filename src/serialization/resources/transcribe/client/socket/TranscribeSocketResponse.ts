@@ -3,6 +3,7 @@
 import type * as Corti from "../../../../../api/index.js";
 import * as core from "../../../../../core/index.js";
 import type * as serializers from "../../../../index.js";
+import { TranscribeAudioEventMessage } from "../../../../types/TranscribeAudioEventMessage.js";
 import { TranscribeCommandMessage } from "../../../../types/TranscribeCommandMessage.js";
 import { TranscribeConfigStatusMessage } from "../../../../types/TranscribeConfigStatusMessage.js";
 import { TranscribeEndedMessage } from "../../../../types/TranscribeEndedMessage.js";
@@ -20,6 +21,7 @@ export const TranscribeSocketResponse: core.serialization.Schema<
     | Corti.TranscribeTranscriptMessage
     | Corti.TranscribeCommandMessage
     | Corti.TranscribeConfigStatusMessage
+    | Corti.TranscribeAudioEventMessage
 > = core.serialization.undiscriminatedUnion([
     TranscribeUsageMessage,
     TranscribeFlushedMessage,
@@ -28,6 +30,7 @@ export const TranscribeSocketResponse: core.serialization.Schema<
     TranscribeTranscriptMessage,
     TranscribeCommandMessage,
     TranscribeConfigStatusMessage,
+    TranscribeAudioEventMessage,
 ]);
 
 export declare namespace TranscribeSocketResponse {
@@ -38,5 +41,6 @@ export declare namespace TranscribeSocketResponse {
         | TranscribeErrorMessage.Raw
         | TranscribeTranscriptMessage.Raw
         | TranscribeCommandMessage.Raw
-        | TranscribeConfigStatusMessage.Raw;
+        | TranscribeConfigStatusMessage.Raw
+        | TranscribeAudioEventMessage.Raw;
 }
