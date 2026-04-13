@@ -2,7 +2,7 @@
 
 import type * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
-import * as serializers from "../index.js";
+import type * as serializers from "../index.js";
 
 export const AgentsErrorResponse: core.serialization.ObjectSchema<
     serializers.AgentsErrorResponse.Raw,
@@ -12,7 +12,7 @@ export const AgentsErrorResponse: core.serialization.ObjectSchema<
     description: core.serialization.string(),
     howToFix: core.serialization.string().optional(),
     details: core.serialization.record(core.serialization.string(), core.serialization.unknown()).optional(),
-    cause: core.serialization.lazyObject(() => serializers.AgentsErrorResponse).optional(),
+    cause: core.serialization.record(core.serialization.string(), core.serialization.unknown()).optional(),
 });
 
 export declare namespace AgentsErrorResponse {
@@ -21,6 +21,6 @@ export declare namespace AgentsErrorResponse {
         description: string;
         howToFix?: string | null;
         details?: Record<string, unknown> | null;
-        cause?: serializers.AgentsErrorResponse.Raw | null;
+        cause?: Record<string, unknown> | null;
     }
 }

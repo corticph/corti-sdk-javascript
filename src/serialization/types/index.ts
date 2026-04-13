@@ -135,6 +135,7 @@ export * from "./StreamConfigParticipantRole.js";
 export * from "./StreamConfigStatusMessage.js";
 export * from "./StreamConfigStatusMessageType.js";
 export * from "./StreamConfigTranscription.js";
+export * from "./StreamConfigXCortiRetentionPolicy.js";
 export * from "./StreamEndedMessage.js";
 export * from "./StreamEndMessage.js";
 export * from "./StreamErrorDetail.js";
