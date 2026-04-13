@@ -3,6 +3,7 @@
 import type * as Corti from "../../../../../api/index.js";
 import * as core from "../../../../../core/index.js";
 import type * as serializers from "../../../../index.js";
+import { StreamAudioEventMessage } from "../../../../types/StreamAudioEventMessage.js";
 import { StreamConfigStatusMessage } from "../../../../types/StreamConfigStatusMessage.js";
 import { StreamEndedMessage } from "../../../../types/StreamEndedMessage.js";
 import { StreamErrorMessage } from "../../../../types/StreamErrorMessage.js";
@@ -20,6 +21,7 @@ export const StreamSocketResponse: core.serialization.Schema<
     | Corti.StreamUsageMessage
     | Corti.StreamErrorMessage
     | Corti.StreamConfigStatusMessage
+    | Corti.StreamAudioEventMessage
 > = core.serialization.undiscriminatedUnion([
     StreamTranscriptMessage,
     StreamFactsMessage,
@@ -28,6 +30,7 @@ export const StreamSocketResponse: core.serialization.Schema<
     StreamUsageMessage,
     StreamErrorMessage,
     StreamConfigStatusMessage,
+    StreamAudioEventMessage,
 ]);
 
 export declare namespace StreamSocketResponse {
@@ -38,5 +41,6 @@ export declare namespace StreamSocketResponse {
         | StreamEndedMessage.Raw
         | StreamUsageMessage.Raw
         | StreamErrorMessage.Raw
-        | StreamConfigStatusMessage.Raw;
+        | StreamConfigStatusMessage.Raw
+        | StreamAudioEventMessage.Raw;
 }
