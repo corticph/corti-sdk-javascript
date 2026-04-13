@@ -1,8 +1,8 @@
 import { CortiClient as BaseCortiClient } from "../Client.js";
-import type * as environments from "../environments.js";
 import * as core from "../core/index.js";
-import { CortiAuth } from "./auth/CortiAuth.js";
+import type * as environments from "../environments.js";
 import { CustomAgents } from "./agents/CustomAgents.js";
+import { CortiAuth } from "./auth/CortiAuth.js";
 import { CustomStream } from "./stream/CustomStream.js";
 import { CustomTranscribe } from "./transcribe/CustomTranscribe.js";
 import { authToBaseOptions } from "./utils/authToBaseOptions.js";
@@ -93,14 +93,10 @@ export class CortiClient extends BaseCortiClient {
 
     public getAuthHeaders = async (): Promise<Headers> => {
         const req = await this._options.authProvider.getAuthRequest();
-        
+
         return new Headers({
             ...(req.headers ?? {}),
             "Tenant-Name": await core.Supplier.get(this._options.tenantName),
         });
     };
-
-    /**
-     * Patch: removed `auth` getter
-     */
 }

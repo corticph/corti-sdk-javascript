@@ -6,7 +6,7 @@
  * All the patches marked with `// Patch: ...` comments.
  */
 
-import { AgentsClient  } from "../../api/resources/agents/client/Client.js";
+import { AgentsClient } from "../../api/resources/agents/client/Client.js";
 import * as core from "../../core/index.js";
 
 export class CustomAgents extends AgentsClient {
@@ -15,12 +15,17 @@ export class CustomAgents extends AgentsClient {
      *
      * Returns the URL for the agent card JSON file.
      *
-     * @param {string} agentId - The ID of the agentW
+     * @param {string} agentId - The ID of the agent
      * @returns {Promise<URL>} The URL for the agent card
      *
      * @example
      *     const url = await client.agents.getAgentCardUrl("agent-123");
      */
-    public getCardUrl = async (agentId: string): Promise<URL> =>
-        new URL(`/agents/${agentId}/agent-card.json`, (await core.Supplier.get(this._options.environment)).agents);
+    public getCardUrl = async (agentId: string): Promise<URL> => {
+        const encodedAgentId = encodeURIComponent(agentId);
+        return new URL(
+            `/agents/${encodedAgentId}/agent-card.json`,
+            (await core.Supplier.get(this._options.environment)).agents,
+        );
+    };
 }
