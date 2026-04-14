@@ -11,12 +11,10 @@ import * as core from "../../core/index.js";
 
 export class CustomAgents extends AgentsClient {
     /**
-     * Patch: added helper method to get agent card URL
-     *
      * Returns the URL for the agent card JSON file.
      *
      * @param {string} agentId - The ID of the agent
-     * @returns {Promise<URL>} The URL for the agent card
+     * @returns {Promise<URL>} A Promise that resolves to the URL for the agent card
      *
      * @example
      *     const url = await client.agents.getAgentCardUrl("agent-123");

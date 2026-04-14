@@ -91,6 +91,22 @@ export class CortiClient extends BaseCortiClient {
         return (this._agents ??= new CustomAgents(this._options));
     }
 
+    /**
+     * Retrieves authentication headers for API requests.
+     *
+     * This method returns a Headers object containing the Authorization header with a valid
+     * bearer token and the Tenant-Name header. The token is automatically refreshed if needed.
+     *
+     * @returns A Promise that resolves to a Headers object with Authorization and Tenant-Name headers
+     *
+     * @example
+     * ```typescript
+     * const client = new CortiClient({ ... });
+     * const headers = await client.getAuthHeaders();
+     * console.log(headers.get("Authorization")); // "Bearer ..."
+     * console.log(headers.get("Tenant-Name")); // "your-tenant"
+     * ```
+     */
     public getAuthHeaders = async (): Promise<Headers> => {
         const req = await this._options.authProvider.getAuthRequest();
 
