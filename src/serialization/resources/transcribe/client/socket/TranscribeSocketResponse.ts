@@ -5,6 +5,7 @@ import * as core from "../../../../../core/index.js";
 import type * as serializers from "../../../../index.js";
 import { TranscribeCommandMessage } from "../../../../types/TranscribeCommandMessage.js";
 import { TranscribeConfigStatusMessage } from "../../../../types/TranscribeConfigStatusMessage.js";
+import { TranscribeDeltaUsageMessage } from "../../../../types/TranscribeDeltaUsageMessage.js";
 import { TranscribeEndedMessage } from "../../../../types/TranscribeEndedMessage.js";
 import { TranscribeErrorMessage } from "../../../../types/TranscribeErrorMessage.js";
 import { TranscribeFlushedMessage } from "../../../../types/TranscribeFlushedMessage.js";
@@ -15,6 +16,7 @@ export const TranscribeSocketResponse: core.serialization.Schema<
     serializers.TranscribeSocketResponse.Raw,
     | Corti.TranscribeUsageMessage
     | Corti.TranscribeFlushedMessage
+    | Corti.TranscribeDeltaUsageMessage
     | Corti.TranscribeEndedMessage
     | Corti.TranscribeErrorMessage
     | Corti.TranscribeTranscriptMessage
@@ -23,6 +25,7 @@ export const TranscribeSocketResponse: core.serialization.Schema<
 > = core.serialization.undiscriminatedUnion([
     TranscribeUsageMessage,
     TranscribeFlushedMessage,
+    TranscribeDeltaUsageMessage,
     TranscribeEndedMessage,
     TranscribeErrorMessage,
     TranscribeTranscriptMessage,
@@ -34,6 +37,7 @@ export declare namespace TranscribeSocketResponse {
     export type Raw =
         | TranscribeUsageMessage.Raw
         | TranscribeFlushedMessage.Raw
+        | TranscribeDeltaUsageMessage.Raw
         | TranscribeEndedMessage.Raw
         | TranscribeErrorMessage.Raw
         | TranscribeTranscriptMessage.Raw

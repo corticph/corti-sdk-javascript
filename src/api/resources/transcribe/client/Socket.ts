@@ -16,6 +16,7 @@ export declare namespace TranscribeSocket {
     export type Response =
         | Corti.TranscribeUsageMessage
         | Corti.TranscribeFlushedMessage
+        | Corti.TranscribeDeltaUsageMessage
         | Corti.TranscribeEndedMessage
         | Corti.TranscribeErrorMessage
         | Corti.TranscribeTranscriptMessage
