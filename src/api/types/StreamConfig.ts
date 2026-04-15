@@ -7,4 +7,6 @@ export interface StreamConfig {
     mode: Corti.StreamConfigMode;
     /** Optional parameter to specify data retention policy for the generated transcripts and facts. Use value 'none' to indicate data should not be stored in the database. Use value 'retain' to indicate that the data should be retained according to standard retention policies. If configuration is not provided, then the default retention policy will apply. */
     xCortiRetentionPolicy?: Corti.StreamConfigXCortiRetentionPolicy;
+    /** The audio format of the incoming audio stream */
+    audioFormat?: string;
 }

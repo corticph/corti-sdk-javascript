@@ -15,6 +15,7 @@ export const StreamConfig: core.serialization.ObjectSchema<serializers.StreamCon
             "X-Corti-Retention-Policy",
             StreamConfigXCortiRetentionPolicy.optional(),
         ),
+        audioFormat: core.serialization.string().optional(),
     });
 
 export declare namespace StreamConfig {
@@ -22,5 +23,6 @@ export declare namespace StreamConfig {
         transcription: StreamConfigTranscription.Raw;
         mode: StreamConfigMode.Raw;
         "X-Corti-Retention-Policy"?: StreamConfigXCortiRetentionPolicy.Raw | null;
+        audioFormat?: string | null;
     }
 }
