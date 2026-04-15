@@ -17,7 +17,6 @@ export const TranscribeConfig: core.serialization.ObjectSchema<
     automaticPunctuation: core.serialization.boolean().optional(),
     commands: core.serialization.list(TranscribeCommand).optional(),
     formatting: TranscribeFormatting.optional(),
-    audioFormat: core.serialization.string().optional(),
 });
 
 export declare namespace TranscribeConfig {
@@ -28,6 +27,5 @@ export declare namespace TranscribeConfig {
         automaticPunctuation?: boolean | null;
         commands?: TranscribeCommand.Raw[] | null;
         formatting?: TranscribeFormatting.Raw | null;
-        audioFormat?: string | null;
     }
 }
