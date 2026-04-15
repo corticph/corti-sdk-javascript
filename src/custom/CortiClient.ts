@@ -1,10 +1,13 @@
 import { CortiClient as BaseCortiClient } from "../Client.js";
+import * as core from "../core/index.js";
 import type * as environments from "../environments.js";
+import { CustomAgents } from "./agents/CustomAgents.js";
 import { CortiAuth } from "./auth/CortiAuth.js";
 import { CustomStream } from "./stream/CustomStream.js";
 import { CustomTranscribe } from "./transcribe/CustomTranscribe.js";
 import { authToBaseOptions } from "./utils/authToBaseOptions.js";
 import { type Environment, getEnvironment } from "./utils/environment.js";
+
 import { resolveClientOptions } from "./utils/resolveClientOptions.js";
 import { setDefaultWithCredentials } from "./utils/withCredentialsConfig.js";
 
@@ -41,6 +44,7 @@ export class CortiClient extends BaseCortiClient {
     protected override _auth: CortiAuth | undefined;
     protected override _stream: CustomStream | undefined;
     protected override _transcribe: CustomTranscribe | undefined;
+    protected override _agents: CustomAgents | undefined;
 
     private readonly _encodeHeadersAsWsProtocols: boolean | undefined;
 
@@ -82,4 +86,33 @@ export class CortiClient extends BaseCortiClient {
             encodeHeadersAsWsProtocols: this._encodeHeadersAsWsProtocols,
         }));
     }
+
+    public override get agents(): CustomAgents {
+        return (this._agents ??= new CustomAgents(this._options));
+    }
+
+    /**
+     * Retrieves authentication headers for API requests.
+     *
+     * This method returns a Headers object containing the Authorization header with a valid
+     * bearer token and the Tenant-Name header. The token is automatically refreshed if needed.
+     *
+     * @returns A Promise that resolves to a Headers object with Authorization and Tenant-Name headers
+     *
+     * @example
+     * ```typescript
+     * const client = new CortiClient({ ... });
+     * const headers = await client.getAuthHeaders();
+     * console.log(headers.get("Authorization")); // "Bearer ..."
+     * console.log(headers.get("Tenant-Name")); // "your-tenant"
+     * ```
+     */
+    public getAuthHeaders = async (): Promise<Headers> => {
+        const req = await this._options.authProvider.getAuthRequest();
+
+        return new Headers({
+            ...(req.headers ?? {}),
+            "Tenant-Name": await core.Supplier.get(this._options.tenantName),
+        });
+    };
 }
