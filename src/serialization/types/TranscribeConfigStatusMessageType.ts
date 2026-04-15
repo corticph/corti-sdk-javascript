@@ -7,8 +7,19 @@ import type * as serializers from "../index.js";
 export const TranscribeConfigStatusMessageType: core.serialization.Schema<
     serializers.TranscribeConfigStatusMessageType.Raw,
     Corti.TranscribeConfigStatusMessageType
-> = core.serialization.enum_(["CONFIG_ACCEPTED", "CONFIG_DENIED", "CONFIG_TIMEOUT"]);
+> = core.serialization.enum_([
+    "CONFIG_ACCEPTED",
+    "CONFIG_DENIED",
+    "CONFIG_TIMEOUT",
+    "CONFIG_ALREADY_RECEIVED",
+    "CONFIG_MISSING",
+]);
 
 export declare namespace TranscribeConfigStatusMessageType {
-    export type Raw = "CONFIG_ACCEPTED" | "CONFIG_DENIED" | "CONFIG_TIMEOUT";
+    export type Raw =
+        | "CONFIG_ACCEPTED"
+        | "CONFIG_DENIED"
+        | "CONFIG_TIMEOUT"
+        | "CONFIG_ALREADY_RECEIVED"
+        | "CONFIG_MISSING";
 }

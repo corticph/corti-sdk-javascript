@@ -3,6 +3,7 @@
 import type * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
 import type * as serializers from "../index.js";
+import { TranscribeConfig } from "./TranscribeConfig.js";
 import { TranscribeConfigStatusMessageType } from "./TranscribeConfigStatusMessageType.js";
 
 export const TranscribeConfigStatusMessage: core.serialization.ObjectSchema<
@@ -12,6 +13,7 @@ export const TranscribeConfigStatusMessage: core.serialization.ObjectSchema<
     type: TranscribeConfigStatusMessageType,
     reason: core.serialization.string().optional(),
     sessionId: core.serialization.string(),
+    configuration: TranscribeConfig.optional(),
 });
 
 export declare namespace TranscribeConfigStatusMessage {
@@ -19,5 +21,6 @@ export declare namespace TranscribeConfigStatusMessage {
         type: TranscribeConfigStatusMessageType.Raw;
         reason?: string | null;
         sessionId: string;
+        configuration?: TranscribeConfig.Raw | null;
     }
 }

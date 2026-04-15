@@ -9,4 +9,6 @@ export interface TranscribeConfigStatusMessage {
     reason?: string;
     /** Session identifier returned when configuration is accepted */
     sessionId: string;
+    /** The resolved configuration, returned when configuration is accepted */
+    configuration?: Corti.TranscribeConfig;
 }
