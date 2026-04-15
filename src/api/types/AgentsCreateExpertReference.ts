@@ -8,7 +8,7 @@ import type * as Corti from "../index.js";
 export interface AgentsCreateExpertReference {
     type: Corti.AgentsCreateExpertReferenceType;
     /** The unique identifier of the expert. */
-    id?: string;
+    id: string;
     /** The name of the expert. */
     name?: string;
     /** Optional. Additional system instructions appended to the default system prompt when creating an expert from the registry, extending the expert's behavior. */
