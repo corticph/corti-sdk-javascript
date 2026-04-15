@@ -8,5 +8,5 @@ export interface TranscribeConfigStatusMessage {
     /** Optional reason for rejection */
     reason?: string;
     /** Session identifier returned when configuration is accepted */
-    sessionId?: string;
+    sessionId: string;
 }

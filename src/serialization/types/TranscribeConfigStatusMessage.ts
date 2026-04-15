@@ -11,13 +11,13 @@ export const TranscribeConfigStatusMessage: core.serialization.ObjectSchema<
 > = core.serialization.object({
     type: TranscribeConfigStatusMessageType,
     reason: core.serialization.string().optional(),
-    sessionId: core.serialization.string().optional(),
+    sessionId: core.serialization.string(),
 });
 
 export declare namespace TranscribeConfigStatusMessage {
     export interface Raw {
         type: TranscribeConfigStatusMessageType.Raw;
         reason?: string | null;
-        sessionId?: string | null;
+        sessionId: string;
     }
 }
