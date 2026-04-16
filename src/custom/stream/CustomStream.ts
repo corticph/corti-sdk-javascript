@@ -9,7 +9,6 @@ import { parseStreamResponseType } from "./parseStreamResponseType.js";
 const STREAM_CONFIG_REJECTION_TYPES: readonly string[] = [
     Corti.StreamConfigStatusMessageType.ConfigDenied,
     Corti.StreamConfigStatusMessageType.ConfigMissing,
-    Corti.StreamConfigStatusMessageType.ConfigTimeout,
     Corti.StreamConfigStatusMessageType.ConfigNotProvided,
 ];
 
@@ -126,7 +125,11 @@ export class CustomStream extends StreamClient {
         socket.socket.addEventListener("message", (event) => {
             const type = parseStreamResponseType(event.data);
 
-            if (type == null || type === Corti.StreamConfigStatusMessageType.ConfigAccepted) {
+            if (
+                type == null ||
+                type === Corti.StreamConfigStatusMessageType.ConfigAccepted ||
+                type === Corti.StreamConfigStatusMessageType.ConfigAlreadyReceived
+            ) {
                 return;
             }
 
@@ -158,7 +161,10 @@ export class CustomStream extends StreamClient {
                 const type = parseStreamResponseType(event.data);
                 if (type == null) return;
 
-                if (type === Corti.StreamConfigStatusMessageType.ConfigAccepted) {
+                if (
+                    type === Corti.StreamConfigStatusMessageType.ConfigAccepted ||
+                    type === Corti.StreamConfigStatusMessageType.ConfigAlreadyReceived
+                ) {
                     cleanup();
                     resolve();
                 } else if (STREAM_CONFIG_REJECTION_TYPES.includes(type)) {
