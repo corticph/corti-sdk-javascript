@@ -10,7 +10,7 @@ export const AgentsCreateExpertReference: core.serialization.ObjectSchema<
     Corti.AgentsCreateExpertReference
 > = core.serialization.object({
     type: AgentsCreateExpertReferenceType,
-    id: core.serialization.string(),
+    id: core.serialization.string().optional(),
     name: core.serialization.string().optional(),
     systemPrompt: core.serialization.string().optional(),
 });
@@ -18,7 +18,7 @@ export const AgentsCreateExpertReference: core.serialization.ObjectSchema<
 export declare namespace AgentsCreateExpertReference {
     export interface Raw {
         type: AgentsCreateExpertReferenceType.Raw;
-        id: string;
+        id?: string | null;
         name?: string | null;
         systemPrompt?: string | null;
     }
