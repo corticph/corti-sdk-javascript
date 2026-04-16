@@ -4,17 +4,14 @@ import type * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
 import type * as serializers from "../index.js";
 import { StreamConfigMode } from "./StreamConfigMode.js";
+import { StreamConfigRetentionPolicy } from "./StreamConfigRetentionPolicy.js";
 import { StreamConfigTranscription } from "./StreamConfigTranscription.js";
-import { StreamConfigXCortiRetentionPolicy } from "./StreamConfigXCortiRetentionPolicy.js";
 
 export const StreamConfig: core.serialization.ObjectSchema<serializers.StreamConfig.Raw, Corti.StreamConfig> =
     core.serialization.object({
         transcription: StreamConfigTranscription,
         mode: StreamConfigMode,
-        xCortiRetentionPolicy: core.serialization.property(
-            "X-Corti-Retention-Policy",
-            StreamConfigXCortiRetentionPolicy.optional(),
-        ),
+        retentionPolicy: StreamConfigRetentionPolicy.optional(),
         audioFormat: core.serialization.string().optional(),
     });
 
@@ -22,7 +19,7 @@ export declare namespace StreamConfig {
     export interface Raw {
         transcription: StreamConfigTranscription.Raw;
         mode: StreamConfigMode.Raw;
-        "X-Corti-Retention-Policy"?: StreamConfigXCortiRetentionPolicy.Raw | null;
+        retentionPolicy?: StreamConfigRetentionPolicy.Raw | null;
         audioFormat?: string | null;
     }
 }
