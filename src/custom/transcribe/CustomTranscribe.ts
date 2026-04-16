@@ -9,6 +9,7 @@ import { parseTranscribeResponseType } from "./parseTranscribeResponseType.js";
 const TRANSCRIBE_CONFIG_REJECTION_TYPES: readonly string[] = [
     Corti.TranscribeConfigStatusMessageType.ConfigDenied,
     Corti.TranscribeConfigStatusMessageType.ConfigTimeout,
+    Corti.TranscribeConfigStatusMessageType.ConfigMissing,
 ];
 
 export type CustomTranscribeConnectArgs = {
@@ -123,7 +124,11 @@ export class CustomTranscribe extends TranscribeClient {
         socket.socket.addEventListener("message", (event) => {
             const type = parseTranscribeResponseType(event.data);
 
-            if (type == null || type === Corti.TranscribeConfigStatusMessageType.ConfigAccepted) {
+            if (
+                type == null ||
+                type === Corti.TranscribeConfigStatusMessageType.ConfigAccepted ||
+                type === Corti.TranscribeConfigStatusMessageType.ConfigAlreadyReceived
+            ) {
                 return;
             }
 
@@ -155,7 +160,10 @@ export class CustomTranscribe extends TranscribeClient {
                 const type = parseTranscribeResponseType(event.data);
                 if (type == null) return;
 
-                if (type === Corti.TranscribeConfigStatusMessageType.ConfigAccepted) {
+                if (
+                    type === Corti.TranscribeConfigStatusMessageType.ConfigAccepted ||
+                    type === Corti.TranscribeConfigStatusMessageType.ConfigAlreadyReceived
+                ) {
                     cleanup();
                     resolve();
                 } else if (TRANSCRIBE_CONFIG_REJECTION_TYPES.includes(type)) {

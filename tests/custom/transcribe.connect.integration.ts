@@ -162,6 +162,40 @@ describe("cortiClient.transcribe.connect", () => {
         });
     });
 
+    describe("should handle configuration status messages", () => {
+        it("should return CONFIG_ALREADY_RECEIVED when configuration is sent twice", async () => {
+            expect.assertions(2);
+
+            const transcribeSocket = await cortiClient.transcribe.connect();
+            activeSockets.push(transcribeSocket);
+
+            const configuration = {
+                primaryLanguage: "en" as const,
+                interimResults: true,
+            };
+
+            transcribeSocket.on("open", () => {
+                transcribeSocket.sendConfiguration({
+                    type: "config",
+                    configuration,
+                });
+            });
+
+            const messages: any[] = [];
+            await waitForWebSocketMessage(transcribeSocket, "CONFIG_ACCEPTED", { messages });
+
+            transcribeSocket.sendConfiguration({
+                type: "config",
+                configuration,
+            });
+
+            await waitForWebSocketMessage(transcribeSocket, "CONFIG_ALREADY_RECEIVED", { messages });
+
+            expect(messages.some((message) => message.type === "CONFIG_ALREADY_RECEIVED")).toBe(true);
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
+    });
+
     describe("should handle transcription scenario with audio", () => {
         it("should process audio and receive transcription messages", async () => {
             expect.assertions(1);

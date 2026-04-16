@@ -126,6 +126,56 @@ describe("cortiClient.stream.connect", () => {
         });
     });
 
+    describe("should handle configuration status messages", () => {
+        it("should return CONFIG_ALREADY_RECEIVED when configuration is sent twice", async () => {
+            expect.assertions(2);
+
+            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+
+            const streamSocket = await cortiClient.stream.connect({
+                id: interactionId,
+            });
+            activeSockets.push(streamSocket);
+
+            const configuration = {
+                xCortiRetentionPolicy: "retain" as const,
+                transcription: {
+                    primaryLanguage: "en",
+                    participants: [
+                        {
+                            channel: 0,
+                            role: "doctor" as const,
+                        },
+                    ],
+                },
+                mode: {
+                    type: "facts" as const,
+                    outputLocale: "en-US",
+                },
+            };
+
+            streamSocket.on("open", () => {
+                streamSocket.sendConfiguration({
+                    type: "config",
+                    configuration,
+                });
+            });
+
+            const messages: any[] = [];
+            await waitForWebSocketMessage(streamSocket, "CONFIG_ACCEPTED", { messages });
+
+            streamSocket.sendConfiguration({
+                type: "config",
+                configuration,
+            });
+
+            await waitForWebSocketMessage(streamSocket, "CONFIG_ALREADY_RECEIVED", { messages });
+
+            expect(messages.some((message) => message.type === "CONFIG_ALREADY_RECEIVED")).toBe(true);
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
+    });
+
     describe("should connect with all xCortiRetentionPolicy enum values", () => {
         it("should connect with xCortiRetentionPolicy retain without errors or warnings", async () => {
             expect.assertions(2);
