@@ -10,14 +10,14 @@ export const TranscribeAudioEventData: core.serialization.ObjectSchema<
     Corti.TranscribeAudioEventData
 > = core.serialization.object({
     event: TranscribeAudioEventDataEvent,
-    channelId: core.serialization.number(),
+    channel: core.serialization.number(),
     startTimeMs: core.serialization.number(),
 });
 
 export declare namespace TranscribeAudioEventData {
     export interface Raw {
         event: TranscribeAudioEventDataEvent.Raw;
-        channelId: number;
+        channel: number;
         startTimeMs: number;
     }
 }

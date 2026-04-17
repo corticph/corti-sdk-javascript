@@ -6,7 +6,7 @@ export interface TranscribeAudioEventData {
     /** The type of audio quality or speech activity event */
     event: Corti.TranscribeAudioEventDataEvent;
     /** Audio channel identifier */
-    channelId: number;
+    channel: number;
     /** Start time of the event in milliseconds */
     startTimeMs: number;
 }
