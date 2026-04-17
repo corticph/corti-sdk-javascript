@@ -6,7 +6,7 @@ export interface StreamAudioEventData {
     /** The type of audio quality or speech activity event */
     event: Corti.StreamAudioEventDataEvent;
     /** Audio channel identifier */
-    channelId: number;
+    channel: number;
     /** Start time of the event in milliseconds */
     startTimeMs: number;
 }

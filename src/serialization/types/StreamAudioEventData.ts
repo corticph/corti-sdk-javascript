@@ -10,14 +10,14 @@ export const StreamAudioEventData: core.serialization.ObjectSchema<
     Corti.StreamAudioEventData
 > = core.serialization.object({
     event: StreamAudioEventDataEvent,
-    channelId: core.serialization.number(),
+    channel: core.serialization.number(),
     startTimeMs: core.serialization.number(),
 });
 
 export declare namespace StreamAudioEventData {
     export interface Raw {
         event: StreamAudioEventDataEvent.Raw;
-        channelId: number;
+        channel: number;
         startTimeMs: number;
     }
 }
