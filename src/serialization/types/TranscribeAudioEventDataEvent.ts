@@ -8,16 +8,16 @@ export const TranscribeAudioEventDataEvent: core.serialization.Schema<
     serializers.TranscribeAudioEventDataEvent.Raw,
     Corti.TranscribeAudioEventDataEvent
 > = core.serialization.enum_([
-    "SPEECH_QUALITY_ASSESSMENT_BAD_TO_GOOD_QUALITY",
-    "SPEECH_QUALITY_ASSESSMENT_GOOD_TO_BAD_QUALITY",
-    "SPEECH_QUALITY_ASSESSMENT_SPEECH_TO_LONG_SILENCE",
-    "SPEECH_QUALITY_ASSESSMENT_LONG_SILENCE_TO_SPEECH",
+    "speechQualityIssueDetected",
+    "speechQualityIssueRecovered",
+    "longSilenceDetected",
+    "longSilenceRecovered",
 ]);
 
 export declare namespace TranscribeAudioEventDataEvent {
     export type Raw =
-        | "SPEECH_QUALITY_ASSESSMENT_BAD_TO_GOOD_QUALITY"
-        | "SPEECH_QUALITY_ASSESSMENT_GOOD_TO_BAD_QUALITY"
-        | "SPEECH_QUALITY_ASSESSMENT_SPEECH_TO_LONG_SILENCE"
-        | "SPEECH_QUALITY_ASSESSMENT_LONG_SILENCE_TO_SPEECH";
+        | "speechQualityIssueDetected"
+        | "speechQualityIssueRecovered"
+        | "longSilenceDetected"
+        | "longSilenceRecovered";
 }

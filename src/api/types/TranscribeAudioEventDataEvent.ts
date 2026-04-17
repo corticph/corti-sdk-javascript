@@ -2,10 +2,10 @@
 
 /** The type of audio quality or speech activity event */
 export const TranscribeAudioEventDataEvent = {
-    SpeechQualityAssessmentBadToGoodQuality: "SPEECH_QUALITY_ASSESSMENT_BAD_TO_GOOD_QUALITY",
-    SpeechQualityAssessmentGoodToBadQuality: "SPEECH_QUALITY_ASSESSMENT_GOOD_TO_BAD_QUALITY",
-    SpeechQualityAssessmentSpeechToLongSilence: "SPEECH_QUALITY_ASSESSMENT_SPEECH_TO_LONG_SILENCE",
-    SpeechQualityAssessmentLongSilenceToSpeech: "SPEECH_QUALITY_ASSESSMENT_LONG_SILENCE_TO_SPEECH",
+    SpeechQualityIssueDetected: "speechQualityIssueDetected",
+    SpeechQualityIssueRecovered: "speechQualityIssueRecovered",
+    LongSilenceDetected: "longSilenceDetected",
+    LongSilenceRecovered: "longSilenceRecovered",
 } as const;
 export type TranscribeAudioEventDataEvent =
     (typeof TranscribeAudioEventDataEvent)[keyof typeof TranscribeAudioEventDataEvent];
