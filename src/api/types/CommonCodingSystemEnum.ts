@@ -9,5 +9,10 @@ export const CommonCodingSystemEnum = {
     Icd10IntOutpatient: "icd10int-outpatient",
     Icd10UkInpatient: "icd10uk-inpatient",
     Icd10UkOutpatient: "icd10uk-outpatient",
+    Cim10FrInpatient: "cim10fr-inpatient",
+    Cim10FrOutpatient: "cim10fr-outpatient",
+    Icd10GmInpatient: "icd10gm-inpatient",
+    Icd10GmOutpatient: "icd10gm-outpatient",
+    Opcs4: "opcs4",
 } as const;
 export type CommonCodingSystemEnum = (typeof CommonCodingSystemEnum)[keyof typeof CommonCodingSystemEnum];
