@@ -52,6 +52,7 @@ export * from "./AgentsTaskStatus.js";
 export * from "./AgentsTaskStatusState.js";
 export * from "./AgentsTextPart.js";
 export * from "./AgentsTextPartKind.js";
+export * from "./AgentsUpdateExpertReference.js";
 export * from "./AgentsValidationError.js";
 export * from "./AgentsValidationErrorErrorsItem.js";
 export * from "./AgentsValidationErrorResponse.js";

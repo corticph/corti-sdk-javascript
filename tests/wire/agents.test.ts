@@ -33,6 +33,7 @@ describe("AgentsClient", () => {
                         systemPrompt: "systemPrompt",
                     },
                 ],
+                mcpServers: [{ id: "id", name: "name", transportType: "stdio", authorizationType: "none", url: "url" }],
             },
         ];
 
@@ -52,6 +53,15 @@ describe("AgentsClient", () => {
                         name: "name",
                         description: "description",
                         systemPrompt: "systemPrompt",
+                    },
+                ],
+                mcpServers: [
+                    {
+                        id: "id",
+                        name: "name",
+                        transportType: "stdio",
+                        authorizationType: "none",
+                        url: "url",
                     },
                 ],
             },
@@ -129,6 +139,17 @@ describe("AgentsClient", () => {
                     ],
                 },
             ],
+            mcpServers: [
+                {
+                    id: "id",
+                    name: "name",
+                    transportType: "stdio",
+                    authorizationType: "none",
+                    authorizationScope: "authorizationScope",
+                    url: "url",
+                    redirectUrl: "redirectUrl",
+                },
+            ],
         };
 
         server
@@ -165,6 +186,17 @@ describe("AgentsClient", () => {
                             url: "url",
                         },
                     ],
+                },
+            ],
+            mcpServers: [
+                {
+                    id: "id",
+                    name: "name",
+                    transportType: "stdio",
+                    authorizationType: "none",
+                    authorizationScope: "authorizationScope",
+                    url: "url",
+                    redirectUrl: "redirectUrl",
                 },
             ],
         });
@@ -292,6 +324,17 @@ describe("AgentsClient", () => {
                     ],
                 },
             ],
+            mcpServers: [
+                {
+                    id: "id",
+                    name: "name",
+                    transportType: "stdio",
+                    authorizationType: "none",
+                    authorizationScope: "authorizationScope",
+                    url: "url",
+                    redirectUrl: "redirectUrl",
+                },
+            ],
         };
 
         server
@@ -324,6 +367,17 @@ describe("AgentsClient", () => {
                             url: "url",
                         },
                     ],
+                },
+            ],
+            mcpServers: [
+                {
+                    id: "id",
+                    name: "name",
+                    transportType: "stdio",
+                    authorizationType: "none",
+                    authorizationScope: "authorizationScope",
+                    url: "url",
+                    redirectUrl: "redirectUrl",
                 },
             ],
         });
@@ -507,6 +561,17 @@ describe("AgentsClient", () => {
                     ],
                 },
             ],
+            mcpServers: [
+                {
+                    id: "id",
+                    name: "name",
+                    transportType: "stdio",
+                    authorizationType: "none",
+                    authorizationScope: "authorizationScope",
+                    url: "url",
+                    redirectUrl: "redirectUrl",
+                },
+            ],
         };
 
         server
@@ -540,6 +605,17 @@ describe("AgentsClient", () => {
                             url: "url",
                         },
                     ],
+                },
+            ],
+            mcpServers: [
+                {
+                    id: "id",
+                    name: "name",
+                    transportType: "stdio",
+                    authorizationType: "none",
+                    authorizationScope: "authorizationScope",
+                    url: "url",
+                    redirectUrl: "redirectUrl",
                 },
             ],
         });
@@ -1711,7 +1787,13 @@ describe("AgentsClient", () => {
 
         const rawResponseBody = {
             experts: [
-                { name: "name", description: "description", mcpServers: [{ name: "name", authorizationType: "none" }] },
+                {
+                    name: "name",
+                    displayName: "displayName",
+                    displayDescription: "displayDescription",
+                    description: "description",
+                    mcpServers: [{ name: "name", authorizationType: "none" }],
+                },
             ],
         };
 
@@ -1731,6 +1813,8 @@ describe("AgentsClient", () => {
             experts: [
                 {
                     name: "name",
+                    displayName: "displayName",
+                    displayDescription: "displayDescription",
                     description: "description",
                     mcpServers: [
                         {

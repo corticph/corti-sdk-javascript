@@ -10,6 +10,8 @@ export const AgentsRegistryExpert: core.serialization.ObjectSchema<
     Corti.AgentsRegistryExpert
 > = core.serialization.object({
     name: core.serialization.string(),
+    displayName: core.serialization.string().optional(),
+    displayDescription: core.serialization.string().optional(),
     description: core.serialization.string(),
     mcpServers: core.serialization.list(AgentsRegistryMcpServer).optional(),
 });
@@ -17,6 +19,8 @@ export const AgentsRegistryExpert: core.serialization.ObjectSchema<
 export declare namespace AgentsRegistryExpert {
     export interface Raw {
         name: string;
+        displayName?: string | null;
+        displayDescription?: string | null;
         description: string;
         mcpServers?: AgentsRegistryMcpServer.Raw[] | null;
     }
