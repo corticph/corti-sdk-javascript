@@ -16,6 +16,13 @@ export const CommonCodingSystemEnum: core.serialization.Schema<
     "icd10int-outpatient",
     "icd10uk-inpatient",
     "icd10uk-outpatient",
+    "cim10fr-inpatient",
+    "cim10fr-outpatient",
+    "icd10gm-inpatient",
+    "icd10gm-outpatient",
+    "opcs4",
+    "ops",
+    "ccam",
 ]);
 
 export declare namespace CommonCodingSystemEnum {
@@ -27,5 +34,12 @@ export declare namespace CommonCodingSystemEnum {
         | "icd10int-inpatient"
         | "icd10int-outpatient"
         | "icd10uk-inpatient"
-        | "icd10uk-outpatient";
+        | "icd10uk-outpatient"
+        | "cim10fr-inpatient"
+        | "cim10fr-outpatient"
+        | "icd10gm-inpatient"
+        | "icd10gm-outpatient"
+        | "opcs4"
+        | "ops"
+        | "ccam";
 }
