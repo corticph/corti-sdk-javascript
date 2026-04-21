@@ -1789,7 +1789,8 @@ describe("AgentsClient", () => {
             experts: [
                 {
                     name: "name",
-                    display_name: "display_name",
+                    displayName: "displayName",
+                    displayDescription: "displayDescription",
                     description: "description",
                     mcpServers: [{ name: "name", authorizationType: "none" }],
                 },
@@ -1812,7 +1813,8 @@ describe("AgentsClient", () => {
             experts: [
                 {
                     name: "name",
-                    displayName: "display_name",
+                    displayName: "displayName",
+                    displayDescription: "displayDescription",
                     description: "description",
                     mcpServers: [
                         {

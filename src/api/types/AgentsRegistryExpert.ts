@@ -7,6 +7,8 @@ export interface AgentsRegistryExpert {
     name: string;
     /** An optional human-readable display name for the expert. */
     displayName?: string;
+    /** An optional human-readable display description for the expert. */
+    displayDescription?: string;
     /** A brief description of the expert's capabilities. */
     description: string;
     /** A list of MCP servers the expert can call, including their authorization types. */
