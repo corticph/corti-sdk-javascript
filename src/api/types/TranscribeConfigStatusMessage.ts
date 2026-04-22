@@ -7,6 +7,8 @@ export interface TranscribeConfigStatusMessage {
     type: Corti.TranscribeConfigStatusMessageType;
     /** Optional reason for rejection */
     reason?: string;
-    /** Session identifier returned when configuration is accepted */
-    sessionId: string;
+    /** Session identifier. Only present when type is CONFIG_ACCEPTED. */
+    sessionId?: string;
+    /** The resolved configuration. Only present when type is CONFIG_ACCEPTED. */
+    configuration?: Corti.TranscribeConfig;
 }

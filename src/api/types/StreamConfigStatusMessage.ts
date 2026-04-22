@@ -7,4 +7,6 @@ export interface StreamConfigStatusMessage {
     type: Corti.StreamConfigStatusMessageType;
     /** Optional reason for rejection (e.g., 'language unavailable') */
     reason?: string;
+    /** The resolved configuration. Only present when type is CONFIG_ACCEPTED. */
+    configuration?: Corti.StreamConfig;
 }
