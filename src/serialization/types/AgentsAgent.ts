@@ -4,6 +4,7 @@ import type * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
 import type * as serializers from "../index.js";
 import { AgentsAgentExpertsItem } from "./AgentsAgentExpertsItem.js";
+import { AgentsMcpServer } from "./AgentsMcpServer.js";
 
 export const AgentsAgent: core.serialization.ObjectSchema<serializers.AgentsAgent.Raw, Corti.AgentsAgent> =
     core.serialization.object({
@@ -12,6 +13,7 @@ export const AgentsAgent: core.serialization.ObjectSchema<serializers.AgentsAgen
         description: core.serialization.string(),
         systemPrompt: core.serialization.string(),
         experts: core.serialization.list(AgentsAgentExpertsItem).optional(),
+        mcpServers: core.serialization.list(AgentsMcpServer).optional(),
     });
 
 export declare namespace AgentsAgent {
@@ -21,5 +23,6 @@ export declare namespace AgentsAgent {
         description: string;
         systemPrompt: string;
         experts?: AgentsAgentExpertsItem.Raw[] | null;
+        mcpServers?: AgentsMcpServer.Raw[] | null;
     }
 }

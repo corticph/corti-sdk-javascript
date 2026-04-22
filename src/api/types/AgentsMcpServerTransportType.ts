@@ -4,6 +4,7 @@
 export const AgentsMcpServerTransportType = {
     Stdio: "stdio",
     StreamableHttp: "streamable_http",
+    Sse: "sse",
 } as const;
 export type AgentsMcpServerTransportType =
     (typeof AgentsMcpServerTransportType)[keyof typeof AgentsMcpServerTransportType];
