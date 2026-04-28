@@ -5,6 +5,10 @@ import type * as Corti from "../index.js";
 export interface AgentsRegistryExpert {
     /** The name of the expert. */
     name: string;
+    /** An optional human-readable display name for the expert. */
+    displayName?: string;
+    /** An optional human-readable display description for the expert. */
+    displayDescription?: string;
     /** A brief description of the expert's capabilities. */
     description: string;
     /** A list of MCP servers the expert can call, including their authorization types. */

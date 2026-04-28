@@ -3,6 +3,7 @@
 import type * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
 import type * as serializers from "../index.js";
+import { StreamConfig } from "./StreamConfig.js";
 import { StreamConfigStatusMessageType } from "./StreamConfigStatusMessageType.js";
 
 export const StreamConfigStatusMessage: core.serialization.ObjectSchema<
@@ -11,11 +12,13 @@ export const StreamConfigStatusMessage: core.serialization.ObjectSchema<
 > = core.serialization.object({
     type: StreamConfigStatusMessageType,
     reason: core.serialization.string().optional(),
+    configuration: StreamConfig.optional(),
 });
 
 export declare namespace StreamConfigStatusMessage {
     export interface Raw {
         type: StreamConfigStatusMessageType.Raw;
         reason?: string | null;
+        configuration?: StreamConfig.Raw | null;
     }
 }
