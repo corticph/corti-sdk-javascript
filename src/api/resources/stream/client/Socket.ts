@@ -17,7 +17,6 @@ export declare namespace StreamSocket {
         | Corti.StreamTranscriptMessage
         | Corti.StreamFactsMessage
         | Corti.StreamFlushedMessage
-        | Corti.StreamDeltaUsageMessage
         | Corti.StreamEndedMessage
         | Corti.StreamUsageMessage
         | Corti.StreamErrorMessage

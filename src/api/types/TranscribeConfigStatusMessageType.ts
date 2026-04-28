@@ -5,8 +5,6 @@ export const TranscribeConfigStatusMessageType = {
     ConfigAccepted: "CONFIG_ACCEPTED",
     ConfigDenied: "CONFIG_DENIED",
     ConfigTimeout: "CONFIG_TIMEOUT",
-    ConfigAlreadyReceived: "CONFIG_ALREADY_RECEIVED",
-    ConfigMissing: "CONFIG_MISSING",
 } as const;
 export type TranscribeConfigStatusMessageType =
     (typeof TranscribeConfigStatusMessageType)[keyof typeof TranscribeConfigStatusMessageType];

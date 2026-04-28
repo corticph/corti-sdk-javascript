@@ -7,8 +7,8 @@ import type * as serializers from "../index.js";
 export const AgentsMcpServerTransportType: core.serialization.Schema<
     serializers.AgentsMcpServerTransportType.Raw,
     Corti.AgentsMcpServerTransportType
-> = core.serialization.enum_(["stdio", "streamable_http", "sse"]);
+> = core.serialization.enum_(["stdio", "streamable_http"]);
 
 export declare namespace AgentsMcpServerTransportType {
-    export type Raw = "stdio" | "streamable_http" | "sse";
+    export type Raw = "stdio" | "streamable_http";
 }

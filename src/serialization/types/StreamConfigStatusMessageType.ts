@@ -13,6 +13,7 @@ export const StreamConfigStatusMessageType: core.serialization.Schema<
     "CONFIG_MISSING",
     "CONFIG_NOT_PROVIDED",
     "CONFIG_ALREADY_RECEIVED",
+    "CONFIG_TIMEOUT",
 ]);
 
 export declare namespace StreamConfigStatusMessageType {
@@ -21,5 +22,6 @@ export declare namespace StreamConfigStatusMessageType {
         | "CONFIG_DENIED"
         | "CONFIG_MISSING"
         | "CONFIG_NOT_PROVIDED"
-        | "CONFIG_ALREADY_RECEIVED";
+        | "CONFIG_ALREADY_RECEIVED"
+        | "CONFIG_TIMEOUT";
 }

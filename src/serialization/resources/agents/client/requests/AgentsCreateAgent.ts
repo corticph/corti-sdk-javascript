@@ -3,7 +3,6 @@
 import type * as Corti from "../../../../../api/index.js";
 import * as core from "../../../../../core/index.js";
 import type * as serializers from "../../../../index.js";
-import { AgentsCreateMcpServer } from "../../../../types/AgentsCreateMcpServer.js";
 import { AgentsCreateAgentAgentType } from "../../types/AgentsCreateAgentAgentType.js";
 import { AgentsCreateAgentExpertsItem } from "../../types/AgentsCreateAgentExpertsItem.js";
 
@@ -16,7 +15,6 @@ export const AgentsCreateAgent: core.serialization.Schema<
     systemPrompt: core.serialization.string().optional(),
     description: core.serialization.string(),
     experts: core.serialization.list(AgentsCreateAgentExpertsItem).optional(),
-    mcpServers: core.serialization.list(AgentsCreateMcpServer).optional(),
 });
 
 export declare namespace AgentsCreateAgent {
@@ -26,6 +24,5 @@ export declare namespace AgentsCreateAgent {
         systemPrompt?: string | null;
         description: string;
         experts?: AgentsCreateAgentExpertsItem.Raw[] | null;
-        mcpServers?: AgentsCreateMcpServer.Raw[] | null;
     }
 }

@@ -7,6 +7,7 @@ export const StreamConfigStatusMessageType = {
     ConfigMissing: "CONFIG_MISSING",
     ConfigNotProvided: "CONFIG_NOT_PROVIDED",
     ConfigAlreadyReceived: "CONFIG_ALREADY_RECEIVED",
+    ConfigTimeout: "CONFIG_TIMEOUT",
 } as const;
 export type StreamConfigStatusMessageType =
     (typeof StreamConfigStatusMessageType)[keyof typeof StreamConfigStatusMessageType];

@@ -12,6 +12,4 @@ export interface AgentsAgent {
     /** The system prompt that defines the overall agents behavior and expectations. */
     systemPrompt: string;
     experts?: Corti.AgentsAgentExpertsItem[];
-    /** A list of MCP servers that the agent can call. If omitted, the agent can't call any MCP servers. */
-    mcpServers?: Corti.AgentsMcpServer[];
 }

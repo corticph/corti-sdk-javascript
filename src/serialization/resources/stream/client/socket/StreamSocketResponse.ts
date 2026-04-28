@@ -4,7 +4,6 @@ import type * as Corti from "../../../../../api/index.js";
 import * as core from "../../../../../core/index.js";
 import type * as serializers from "../../../../index.js";
 import { StreamConfigStatusMessage } from "../../../../types/StreamConfigStatusMessage.js";
-import { StreamDeltaUsageMessage } from "../../../../types/StreamDeltaUsageMessage.js";
 import { StreamEndedMessage } from "../../../../types/StreamEndedMessage.js";
 import { StreamErrorMessage } from "../../../../types/StreamErrorMessage.js";
 import { StreamFactsMessage } from "../../../../types/StreamFactsMessage.js";
@@ -17,7 +16,6 @@ export const StreamSocketResponse: core.serialization.Schema<
     | Corti.StreamTranscriptMessage
     | Corti.StreamFactsMessage
     | Corti.StreamFlushedMessage
-    | Corti.StreamDeltaUsageMessage
     | Corti.StreamEndedMessage
     | Corti.StreamUsageMessage
     | Corti.StreamErrorMessage
@@ -26,7 +24,6 @@ export const StreamSocketResponse: core.serialization.Schema<
     StreamTranscriptMessage,
     StreamFactsMessage,
     StreamFlushedMessage,
-    StreamDeltaUsageMessage,
     StreamEndedMessage,
     StreamUsageMessage,
     StreamErrorMessage,
@@ -38,7 +35,6 @@ export declare namespace StreamSocketResponse {
         | StreamTranscriptMessage.Raw
         | StreamFactsMessage.Raw
         | StreamFlushedMessage.Raw
-        | StreamDeltaUsageMessage.Raw
         | StreamEndedMessage.Raw
         | StreamUsageMessage.Raw
         | StreamErrorMessage.Raw

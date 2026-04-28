@@ -21,6 +21,4 @@ export interface AgentsCreateAgent {
     /** A brief description of the agent's capabilities. */
     description: string;
     experts?: Corti.AgentsCreateAgentExpertsItem[];
-    /** A list of MCP servers that the agent can call. If omitted, the agent can't call any MCP servers. */
-    mcpServers?: Corti.AgentsCreateMcpServer[];
 }
