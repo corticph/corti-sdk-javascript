@@ -6,6 +6,10 @@ import { CodesClient } from "./api/resources/codes/client/Client.js";
 import { DocumentsClient } from "./api/resources/documents/client/Client.js";
 import { FactsClient } from "./api/resources/facts/client/Client.js";
 import { InteractionsClient } from "./api/resources/interactions/client/Client.js";
+import { NewSectionsClient } from "./api/resources/newSections/client/Client.js";
+import { NewSectionVersionsClient } from "./api/resources/newSectionVersions/client/Client.js";
+import { NewTemplatesClient } from "./api/resources/newTemplates/client/Client.js";
+import { NewTemplateVersionsClient } from "./api/resources/newTemplateVersions/client/Client.js";
 import { RecordingsClient } from "./api/resources/recordings/client/Client.js";
 import { StreamClient } from "./api/resources/stream/client/Client.js";
 import { TemplatesClient } from "./api/resources/templates/client/Client.js";
@@ -30,6 +34,10 @@ export class CortiClient {
     protected _documents: DocumentsClient | undefined;
     protected _templates: TemplatesClient | undefined;
     protected _codes: CodesClient | undefined;
+    protected _newTemplates: NewTemplatesClient | undefined;
+    protected _newTemplateVersions: NewTemplateVersionsClient | undefined;
+    protected _newSections: NewSectionsClient | undefined;
+    protected _newSectionVersions: NewSectionVersionsClient | undefined;
     protected _agents: AgentsClient | undefined;
     protected _stream: StreamClient | undefined;
     protected _transcribe: TranscribeClient | undefined;
@@ -68,6 +76,22 @@ export class CortiClient {
 
     public get codes(): CodesClient {
         return (this._codes ??= new CodesClient(this._options));
+    }
+
+    public get newTemplates(): NewTemplatesClient {
+        return (this._newTemplates ??= new NewTemplatesClient(this._options));
+    }
+
+    public get newTemplateVersions(): NewTemplateVersionsClient {
+        return (this._newTemplateVersions ??= new NewTemplateVersionsClient(this._options));
+    }
+
+    public get newSections(): NewSectionsClient {
+        return (this._newSections ??= new NewSectionsClient(this._options));
+    }
+
+    public get newSectionVersions(): NewSectionVersionsClient {
+        return (this._newSectionVersions ??= new NewSectionVersionsClient(this._options));
     }
 
     public get agents(): AgentsClient {

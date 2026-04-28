@@ -112,7 +112,7 @@ export class CortiClient extends BaseCortiClient {
 
         return new Headers({
             ...(req.headers ?? {}),
-            "Tenant-Name": await core.Supplier.get(this._options.tenantName),
+            "Tenant-Name": (await core.Supplier.get(this._options.tenantName)) ?? "",
         });
     };
 }
