@@ -3,6 +3,7 @@
 import type * as Corti from "../index.js";
 
 export interface SectionVersion {
+    /** The UUID of the section version. */
     id: string;
     /** Starts a 0 and auto-increments. */
     versionNumber: number;

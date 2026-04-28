@@ -25,7 +25,7 @@ export interface CreateSectionRequest {
     description?: string;
     /** Labels work as query param filter in the LIST /sections endpoint. */
     labels?: string[];
-    /** Reference to the section to inherit instructions and outputSchema from. Inherits from published version unless fields are changed or overridden in the POST /documents request. */
+    /** Reference to the section to inherit generation configuration from. Inherits from published version unless fields are changed or overridden in the POST /documents request. */
     inheritFromId?: string | null;
     generation: Corti.CreateSectionVersionRequest;
     /** Defaults to true when omitted. Set this to false if you do not want the section to automatically show up in LIST /sections. */

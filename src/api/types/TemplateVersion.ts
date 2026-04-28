@@ -3,7 +3,9 @@
 import type * as Corti from "../index.js";
 
 export interface TemplateVersion {
+    /** The UUID of the version. */
     id: string;
+    /** Starts a 0 and auto-increments. */
     versionNumber: number;
     instructions: Corti.TemplateInstructions;
     /** Populated only on GET /new/templates/{id}/versions/{versionID} */

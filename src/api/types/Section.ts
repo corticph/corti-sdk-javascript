@@ -3,14 +3,22 @@
 import type * as Corti from "../index.js";
 
 export interface Section {
+    /** The UUID of the section. */
     id: string;
+    /** Reference to the section to inherit generation configuration from. Inherits from published version by default. */
     inheritedFromId?: string | null;
+    /** The name of the section. */
     name: string;
+    /** The intended language for outputs as BCP 47 tag. */
     language: string;
+    /** The description for the section. */
     description?: string;
+    /** The labels available to use as query param filter in the LIST /sections endpoint. */
     labels: string[];
     /** Shows the currently published version of this section. */
     publishedVersion?: Corti.SectionVersion;
+    /** The original timestamp when the section was created. */
     createdAt: Date;
+    /** The original timestamp when the section was last updated. */
     updatedAt: Date;
 }
