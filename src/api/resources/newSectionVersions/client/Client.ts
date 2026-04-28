@@ -9,38 +9,38 @@ import * as errors from "../../../../errors/index.js";
 import * as serializers from "../../../../serialization/index.js";
 import * as Corti from "../../../index.js";
 
-export declare namespace SectionVersionsClient {
+export declare namespace NewSectionVersionsClient {
     export type Options = BaseClientOptions;
 
     export interface RequestOptions extends BaseRequestOptions {}
 }
 
-export class SectionVersionsClient {
-    protected readonly _options: NormalizedClientOptionsWithAuth<SectionVersionsClient.Options>;
+export class NewSectionVersionsClient {
+    protected readonly _options: NormalizedClientOptionsWithAuth<NewSectionVersionsClient.Options>;
 
-    constructor(options: SectionVersionsClient.Options) {
+    constructor(options: NewSectionVersionsClient.Options) {
         this._options = normalizeClientOptionsWithAuth(options);
     }
 
     /**
      * @param {string} sectionID
-     * @param {SectionVersionsClient.RequestOptions} requestOptions - Request-specific configuration.
+     * @param {NewSectionVersionsClient.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Corti.NotFoundError}
      *
      * @example
-     *     await client.sectionVersions.list("sectionID")
+     *     await client.newSectionVersions.list("sectionID")
      */
     public list(
         sectionID: string,
-        requestOptions?: SectionVersionsClient.RequestOptions,
+        requestOptions?: NewSectionVersionsClient.RequestOptions,
     ): core.HttpResponsePromise<Corti.SectionVersion[]> {
         return core.HttpResponsePromise.fromPromise(this.__list(sectionID, requestOptions));
     }
 
     private async __list(
         sectionID: string,
-        requestOptions?: SectionVersionsClient.RequestOptions,
+        requestOptions?: NewSectionVersionsClient.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.SectionVersion[]>> {
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
@@ -66,7 +66,7 @@ export class SectionVersionsClient {
         });
         if (_response.ok) {
             return {
-                data: serializers.sectionVersions.list.Response.parseOrThrow(_response.body, {
+                data: serializers.newSectionVersions.list.Response.parseOrThrow(_response.body, {
                     unrecognizedObjectKeys: "passthrough",
                     allowUnrecognizedUnionMembers: true,
                     allowUnrecognizedEnumValues: true,
@@ -101,13 +101,13 @@ export class SectionVersionsClient {
     /**
      * @param {string} sectionID
      * @param {Corti.CreateSectionVersionRequest} request
-     * @param {SectionVersionsClient.RequestOptions} requestOptions - Request-specific configuration.
+     * @param {NewSectionVersionsClient.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Corti.BadRequestError}
      * @throws {@link Corti.NotFoundError}
      *
      * @example
-     *     await client.sectionVersions.create("sectionID", {
+     *     await client.newSectionVersions.create("sectionID", {
      *         title: "title",
      *         instructions: {
      *             contentPrompt: "contentPrompt",
@@ -118,7 +118,7 @@ export class SectionVersionsClient {
     public create(
         sectionID: string,
         request: Corti.CreateSectionVersionRequest,
-        requestOptions?: SectionVersionsClient.RequestOptions,
+        requestOptions?: NewSectionVersionsClient.RequestOptions,
     ): core.HttpResponsePromise<Corti.SectionVersion> {
         return core.HttpResponsePromise.fromPromise(this.__create(sectionID, request, requestOptions));
     }
@@ -126,7 +126,7 @@ export class SectionVersionsClient {
     private async __create(
         sectionID: string,
         request: Corti.CreateSectionVersionRequest,
-        requestOptions?: SectionVersionsClient.RequestOptions,
+        requestOptions?: NewSectionVersionsClient.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.SectionVersion>> {
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
@@ -195,17 +195,17 @@ export class SectionVersionsClient {
     /**
      * @param {string} sectionID
      * @param {string} versionID
-     * @param {SectionVersionsClient.RequestOptions} requestOptions - Request-specific configuration.
+     * @param {NewSectionVersionsClient.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Corti.NotFoundError}
      *
      * @example
-     *     await client.sectionVersions.get("sectionID", "versionID")
+     *     await client.newSectionVersions.get("sectionID", "versionID")
      */
     public get(
         sectionID: string,
         versionID: string,
-        requestOptions?: SectionVersionsClient.RequestOptions,
+        requestOptions?: NewSectionVersionsClient.RequestOptions,
     ): core.HttpResponsePromise<Corti.SectionVersion> {
         return core.HttpResponsePromise.fromPromise(this.__get(sectionID, versionID, requestOptions));
     }
@@ -213,7 +213,7 @@ export class SectionVersionsClient {
     private async __get(
         sectionID: string,
         versionID: string,
-        requestOptions?: SectionVersionsClient.RequestOptions,
+        requestOptions?: NewSectionVersionsClient.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.SectionVersion>> {
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
@@ -274,17 +274,17 @@ export class SectionVersionsClient {
     /**
      * @param {string} sectionID
      * @param {string} versionID
-     * @param {SectionVersionsClient.RequestOptions} requestOptions - Request-specific configuration.
+     * @param {NewSectionVersionsClient.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Corti.NotFoundError}
      *
      * @example
-     *     await client.sectionVersions.delete("sectionID", "versionID")
+     *     await client.newSectionVersions.delete("sectionID", "versionID")
      */
     public delete(
         sectionID: string,
         versionID: string,
-        requestOptions?: SectionVersionsClient.RequestOptions,
+        requestOptions?: NewSectionVersionsClient.RequestOptions,
     ): core.HttpResponsePromise<void> {
         return core.HttpResponsePromise.fromPromise(this.__delete(sectionID, versionID, requestOptions));
     }
@@ -292,7 +292,7 @@ export class SectionVersionsClient {
     private async __delete(
         sectionID: string,
         versionID: string,
-        requestOptions?: SectionVersionsClient.RequestOptions,
+        requestOptions?: NewSectionVersionsClient.RequestOptions,
     ): Promise<core.WithRawResponse<void>> {
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
@@ -346,17 +346,17 @@ export class SectionVersionsClient {
      *
      * @param {string} sectionID
      * @param {string} versionID
-     * @param {SectionVersionsClient.RequestOptions} requestOptions - Request-specific configuration.
+     * @param {NewSectionVersionsClient.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Corti.NotFoundError}
      *
      * @example
-     *     await client.sectionVersions.publish("sectionID", "versionID")
+     *     await client.newSectionVersions.publish("sectionID", "versionID")
      */
     public publish(
         sectionID: string,
         versionID: string,
-        requestOptions?: SectionVersionsClient.RequestOptions,
+        requestOptions?: NewSectionVersionsClient.RequestOptions,
     ): core.HttpResponsePromise<Corti.StatusResponse> {
         return core.HttpResponsePromise.fromPromise(this.__publish(sectionID, versionID, requestOptions));
     }
@@ -364,7 +364,7 @@ export class SectionVersionsClient {
     private async __publish(
         sectionID: string,
         versionID: string,
-        requestOptions?: SectionVersionsClient.RequestOptions,
+        requestOptions?: NewSectionVersionsClient.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.StatusResponse>> {
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(

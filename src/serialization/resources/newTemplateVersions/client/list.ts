@@ -6,7 +6,7 @@ import type * as serializers from "../../../index.js";
 import { TemplateVersion } from "../../../types/TemplateVersion.js";
 
 export const Response: core.serialization.Schema<
-    serializers.templateVersions.list.Response.Raw,
+    serializers.newTemplateVersions.list.Response.Raw,
     Corti.TemplateVersion[]
 > = core.serialization.list(TemplateVersion);
 

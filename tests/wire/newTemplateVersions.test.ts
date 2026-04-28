@@ -5,7 +5,7 @@ import { CortiClient } from "../../src/Client";
 import { mockServerPool } from "../mock-server/MockServerPool";
 import { mockOAuth } from "./mockAuth";
 
-describe("SectionVersionsClient", () => {
+describe("NewTemplateVersionsClient", () => {
     test("list (1)", async () => {
         const server = mockServerPool.createServer();
         mockOAuth(server);
@@ -22,43 +22,65 @@ describe("SectionVersionsClient", () => {
             {
                 id: "id",
                 versionNumber: 1,
-                title: "title",
-                instructions: { contentPrompt: "contentPrompt", writingStylePrompt: "writingStylePrompt" },
-                outputSchema: {
-                    type: "string",
-                    description: "description",
-                    default: "default",
-                    enum: ["enum"],
-                    pattern: "pattern",
-                },
+                instructions: { prompt: "prompt" },
+                sections: [
+                    {
+                        id: "id",
+                        name: "name",
+                        language: "language",
+                        labels: ["labels"],
+                        publishedVersion: {
+                            id: "id",
+                            versionNumber: 1,
+                            title: "title",
+                            instructions: { contentPrompt: "contentPrompt", writingStylePrompt: "writingStylePrompt" },
+                            outputSchema: { type: "string" },
+                        },
+                        createdAt: "2024-01-15T09:30:00Z",
+                        updatedAt: "2024-01-15T09:30:00Z",
+                    },
+                ],
             },
         ];
 
         server
             .mockEndpoint()
-            .get("/new/sections/sectionID/versions")
+            .get("/new/templates/templateId/versions")
             .respondWith()
             .statusCode(200)
             .jsonBody(rawResponseBody)
             .build();
 
-        const response = await client.sectionVersions.list("sectionID");
+        const response = await client.newTemplateVersions.list("templateId");
         expect(response).toEqual([
             {
                 id: "id",
                 versionNumber: 1,
-                title: "title",
                 instructions: {
-                    contentPrompt: "contentPrompt",
-                    writingStylePrompt: "writingStylePrompt",
+                    prompt: "prompt",
                 },
-                outputSchema: {
-                    type: "string",
-                    description: "description",
-                    default: "default",
-                    enum: ["enum"],
-                    pattern: "pattern",
-                },
+                sections: [
+                    {
+                        id: "id",
+                        name: "name",
+                        language: "language",
+                        labels: ["labels"],
+                        publishedVersion: {
+                            id: "id",
+                            versionNumber: 1,
+                            title: "title",
+                            instructions: {
+                                contentPrompt: "contentPrompt",
+                                writingStylePrompt: "writingStylePrompt",
+                            },
+                            outputSchema: {
+                                type: "string",
+                            },
+                        },
+                        createdAt: new Date("2024-01-15T09:30:00.000Z"),
+                        updatedAt: new Date("2024-01-15T09:30:00.000Z"),
+                    },
+                ],
             },
         ]);
     });
@@ -79,14 +101,14 @@ describe("SectionVersionsClient", () => {
 
         server
             .mockEndpoint()
-            .get("/new/sections/sectionID/versions")
+            .get("/new/templates/templateId/versions")
             .respondWith()
             .statusCode(404)
             .jsonBody(rawResponseBody)
             .build();
 
         await expect(async () => {
-            return await client.sectionVersions.list("sectionID");
+            return await client.newTemplateVersions.list("templateId");
         }).rejects.toThrow(Corti.NotFoundError);
     });
 
@@ -101,55 +123,72 @@ describe("SectionVersionsClient", () => {
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
-        const rawRequestBody = {
-            title: "title",
-            instructions: { contentPrompt: "contentPrompt", writingStylePrompt: "writingStylePrompt" },
-        };
+        const rawRequestBody = {};
         const rawResponseBody = {
             id: "id",
             versionNumber: 1,
-            title: "title",
-            instructions: { contentPrompt: "contentPrompt", writingStylePrompt: "writingStylePrompt" },
-            outputSchema: {
-                type: "string",
-                description: "description",
-                default: "default",
-                enum: ["enum"],
-                pattern: "pattern",
-            },
+            instructions: { prompt: "prompt" },
+            sections: [
+                {
+                    id: "id",
+                    inheritedFromId: "inheritedFromId",
+                    name: "name",
+                    language: "language",
+                    description: "description",
+                    labels: ["labels"],
+                    publishedVersion: {
+                        id: "id",
+                        versionNumber: 1,
+                        title: "title",
+                        instructions: { contentPrompt: "contentPrompt", writingStylePrompt: "writingStylePrompt" },
+                        outputSchema: { type: "string" },
+                    },
+                    createdAt: "2024-01-15T09:30:00Z",
+                    updatedAt: "2024-01-15T09:30:00Z",
+                },
+            ],
         };
 
         server
             .mockEndpoint()
-            .post("/new/sections/sectionID/versions")
+            .post("/new/templates/templateId/versions")
             .jsonBody(rawRequestBody)
             .respondWith()
             .statusCode(200)
             .jsonBody(rawResponseBody)
             .build();
 
-        const response = await client.sectionVersions.create("sectionID", {
-            title: "title",
-            instructions: {
-                contentPrompt: "contentPrompt",
-                writingStylePrompt: "writingStylePrompt",
-            },
-        });
+        const response = await client.newTemplateVersions.create("templateId");
         expect(response).toEqual({
             id: "id",
             versionNumber: 1,
-            title: "title",
             instructions: {
-                contentPrompt: "contentPrompt",
-                writingStylePrompt: "writingStylePrompt",
+                prompt: "prompt",
             },
-            outputSchema: {
-                type: "string",
-                description: "description",
-                default: "default",
-                enum: ["enum"],
-                pattern: "pattern",
-            },
+            sections: [
+                {
+                    id: "id",
+                    inheritedFromId: "inheritedFromId",
+                    name: "name",
+                    language: "language",
+                    description: "description",
+                    labels: ["labels"],
+                    publishedVersion: {
+                        id: "id",
+                        versionNumber: 1,
+                        title: "title",
+                        instructions: {
+                            contentPrompt: "contentPrompt",
+                            writingStylePrompt: "writingStylePrompt",
+                        },
+                        outputSchema: {
+                            type: "string",
+                        },
+                    },
+                    createdAt: new Date("2024-01-15T09:30:00.000Z"),
+                    updatedAt: new Date("2024-01-15T09:30:00.000Z"),
+                },
+            ],
         });
     });
 
@@ -164,15 +203,12 @@ describe("SectionVersionsClient", () => {
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
-        const rawRequestBody = {
-            title: "title",
-            instructions: { contentPrompt: "contentPrompt", writingStylePrompt: "writingStylePrompt" },
-        };
+        const rawRequestBody = {};
         const rawResponseBody = { key: "value" };
 
         server
             .mockEndpoint()
-            .post("/new/sections/sectionID/versions")
+            .post("/new/templates/templateId/versions")
             .jsonBody(rawRequestBody)
             .respondWith()
             .statusCode(400)
@@ -180,13 +216,7 @@ describe("SectionVersionsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.sectionVersions.create("sectionID", {
-                title: "title",
-                instructions: {
-                    contentPrompt: "contentPrompt",
-                    writingStylePrompt: "writingStylePrompt",
-                },
-            });
+            return await client.newTemplateVersions.create("templateId");
         }).rejects.toThrow(Corti.BadRequestError);
     });
 
@@ -201,15 +231,12 @@ describe("SectionVersionsClient", () => {
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
-        const rawRequestBody = {
-            title: "title",
-            instructions: { contentPrompt: "contentPrompt", writingStylePrompt: "writingStylePrompt" },
-        };
+        const rawRequestBody = {};
         const rawResponseBody = { key: "value" };
 
         server
             .mockEndpoint()
-            .post("/new/sections/sectionID/versions")
+            .post("/new/templates/templateId/versions")
             .jsonBody(rawRequestBody)
             .respondWith()
             .statusCode(404)
@@ -217,13 +244,7 @@ describe("SectionVersionsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.sectionVersions.create("sectionID", {
-                title: "title",
-                instructions: {
-                    contentPrompt: "contentPrompt",
-                    writingStylePrompt: "writingStylePrompt",
-                },
-            });
+            return await client.newTemplateVersions.create("templateId");
         }).rejects.toThrow(Corti.NotFoundError);
     });
 
@@ -242,41 +263,67 @@ describe("SectionVersionsClient", () => {
         const rawResponseBody = {
             id: "id",
             versionNumber: 1,
-            title: "title",
-            instructions: { contentPrompt: "contentPrompt", writingStylePrompt: "writingStylePrompt" },
-            outputSchema: {
-                type: "string",
-                description: "description",
-                default: "default",
-                enum: ["enum"],
-                pattern: "pattern",
-            },
+            instructions: { prompt: "prompt" },
+            sections: [
+                {
+                    id: "id",
+                    inheritedFromId: "inheritedFromId",
+                    name: "name",
+                    language: "language",
+                    description: "description",
+                    labels: ["labels"],
+                    publishedVersion: {
+                        id: "id",
+                        versionNumber: 1,
+                        title: "title",
+                        instructions: { contentPrompt: "contentPrompt", writingStylePrompt: "writingStylePrompt" },
+                        outputSchema: { type: "string" },
+                    },
+                    createdAt: "2024-01-15T09:30:00Z",
+                    updatedAt: "2024-01-15T09:30:00Z",
+                },
+            ],
         };
 
         server
             .mockEndpoint()
-            .get("/new/sections/sectionID/versions/versionID")
+            .get("/new/templates/templateId/versions/versionID")
             .respondWith()
             .statusCode(200)
             .jsonBody(rawResponseBody)
             .build();
 
-        const response = await client.sectionVersions.get("sectionID", "versionID");
+        const response = await client.newTemplateVersions.get("templateId", "versionID");
         expect(response).toEqual({
             id: "id",
             versionNumber: 1,
-            title: "title",
             instructions: {
-                contentPrompt: "contentPrompt",
-                writingStylePrompt: "writingStylePrompt",
+                prompt: "prompt",
             },
-            outputSchema: {
-                type: "string",
-                description: "description",
-                default: "default",
-                enum: ["enum"],
-                pattern: "pattern",
-            },
+            sections: [
+                {
+                    id: "id",
+                    inheritedFromId: "inheritedFromId",
+                    name: "name",
+                    language: "language",
+                    description: "description",
+                    labels: ["labels"],
+                    publishedVersion: {
+                        id: "id",
+                        versionNumber: 1,
+                        title: "title",
+                        instructions: {
+                            contentPrompt: "contentPrompt",
+                            writingStylePrompt: "writingStylePrompt",
+                        },
+                        outputSchema: {
+                            type: "string",
+                        },
+                    },
+                    createdAt: new Date("2024-01-15T09:30:00.000Z"),
+                    updatedAt: new Date("2024-01-15T09:30:00.000Z"),
+                },
+            ],
         });
     });
 
@@ -296,14 +343,14 @@ describe("SectionVersionsClient", () => {
 
         server
             .mockEndpoint()
-            .get("/new/sections/sectionID/versions/versionID")
+            .get("/new/templates/templateId/versions/versionID")
             .respondWith()
             .statusCode(404)
             .jsonBody(rawResponseBody)
             .build();
 
         await expect(async () => {
-            return await client.sectionVersions.get("sectionID", "versionID");
+            return await client.newTemplateVersions.get("templateId", "versionID");
         }).rejects.toThrow(Corti.NotFoundError);
     });
 
@@ -321,12 +368,12 @@ describe("SectionVersionsClient", () => {
 
         server
             .mockEndpoint()
-            .delete("/new/sections/sectionID/versions/versionID")
+            .delete("/new/templates/templateId/versions/versionID")
             .respondWith()
             .statusCode(200)
             .build();
 
-        const response = await client.sectionVersions.delete("sectionID", "versionID");
+        const response = await client.newTemplateVersions.delete("templateId", "versionID");
         expect(response).toEqual(undefined);
     });
 
@@ -346,14 +393,14 @@ describe("SectionVersionsClient", () => {
 
         server
             .mockEndpoint()
-            .delete("/new/sections/sectionID/versions/versionID")
+            .delete("/new/templates/templateId/versions/versionID")
             .respondWith()
             .statusCode(404)
             .jsonBody(rawResponseBody)
             .build();
 
         await expect(async () => {
-            return await client.sectionVersions.delete("sectionID", "versionID");
+            return await client.newTemplateVersions.delete("templateId", "versionID");
         }).rejects.toThrow(Corti.NotFoundError);
     });
 
@@ -373,13 +420,13 @@ describe("SectionVersionsClient", () => {
 
         server
             .mockEndpoint()
-            .post("/new/sections/sectionID/versions/versionID/publish")
+            .post("/new/templates/templateId/versions/versionID/publish")
             .respondWith()
             .statusCode(200)
             .jsonBody(rawResponseBody)
             .build();
 
-        const response = await client.sectionVersions.publish("sectionID", "versionID");
+        const response = await client.newTemplateVersions.publish("templateId", "versionID");
         expect(response).toEqual({
             status: "published",
         });
@@ -401,14 +448,14 @@ describe("SectionVersionsClient", () => {
 
         server
             .mockEndpoint()
-            .post("/new/sections/sectionID/versions/versionID/publish")
+            .post("/new/templates/templateId/versions/versionID/publish")
             .respondWith()
             .statusCode(404)
             .jsonBody(rawResponseBody)
             .build();
 
         await expect(async () => {
-            return await client.sectionVersions.publish("sectionID", "versionID");
+            return await client.newTemplateVersions.publish("templateId", "versionID");
         }).rejects.toThrow(Corti.NotFoundError);
     });
 });

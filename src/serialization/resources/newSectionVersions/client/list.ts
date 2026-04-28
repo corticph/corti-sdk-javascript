@@ -6,7 +6,7 @@ import type * as serializers from "../../../index.js";
 import { SectionVersion } from "../../../types/SectionVersion.js";
 
 export const Response: core.serialization.Schema<
-    serializers.sectionVersions.list.Response.Raw,
+    serializers.newSectionVersions.list.Response.Raw,
     Corti.SectionVersion[]
 > = core.serialization.list(SectionVersion);
 

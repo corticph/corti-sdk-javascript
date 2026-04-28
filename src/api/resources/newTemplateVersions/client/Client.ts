@@ -9,38 +9,38 @@ import * as errors from "../../../../errors/index.js";
 import * as serializers from "../../../../serialization/index.js";
 import * as Corti from "../../../index.js";
 
-export declare namespace TemplateVersionsClient {
+export declare namespace NewTemplateVersionsClient {
     export type Options = BaseClientOptions;
 
     export interface RequestOptions extends BaseRequestOptions {}
 }
 
-export class TemplateVersionsClient {
-    protected readonly _options: NormalizedClientOptionsWithAuth<TemplateVersionsClient.Options>;
+export class NewTemplateVersionsClient {
+    protected readonly _options: NormalizedClientOptionsWithAuth<NewTemplateVersionsClient.Options>;
 
-    constructor(options: TemplateVersionsClient.Options) {
+    constructor(options: NewTemplateVersionsClient.Options) {
         this._options = normalizeClientOptionsWithAuth(options);
     }
 
     /**
      * @param {string} templateId
-     * @param {TemplateVersionsClient.RequestOptions} requestOptions - Request-specific configuration.
+     * @param {NewTemplateVersionsClient.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Corti.NotFoundError}
      *
      * @example
-     *     await client.templateVersions.list("templateId")
+     *     await client.newTemplateVersions.list("templateId")
      */
     public list(
         templateId: string,
-        requestOptions?: TemplateVersionsClient.RequestOptions,
+        requestOptions?: NewTemplateVersionsClient.RequestOptions,
     ): core.HttpResponsePromise<Corti.TemplateVersion[]> {
         return core.HttpResponsePromise.fromPromise(this.__list(templateId, requestOptions));
     }
 
     private async __list(
         templateId: string,
-        requestOptions?: TemplateVersionsClient.RequestOptions,
+        requestOptions?: NewTemplateVersionsClient.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.TemplateVersion[]>> {
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
@@ -66,7 +66,7 @@ export class TemplateVersionsClient {
         });
         if (_response.ok) {
             return {
-                data: serializers.templateVersions.list.Response.parseOrThrow(_response.body, {
+                data: serializers.newTemplateVersions.list.Response.parseOrThrow(_response.body, {
                     unrecognizedObjectKeys: "passthrough",
                     allowUnrecognizedUnionMembers: true,
                     allowUnrecognizedEnumValues: true,
@@ -101,18 +101,18 @@ export class TemplateVersionsClient {
     /**
      * @param {string} templateId
      * @param {Corti.CreateTemplateVersionRequest} request
-     * @param {TemplateVersionsClient.RequestOptions} requestOptions - Request-specific configuration.
+     * @param {NewTemplateVersionsClient.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Corti.BadRequestError}
      * @throws {@link Corti.NotFoundError}
      *
      * @example
-     *     await client.templateVersions.create("templateId")
+     *     await client.newTemplateVersions.create("templateId")
      */
     public create(
         templateId: string,
         request: Corti.CreateTemplateVersionRequest = {},
-        requestOptions?: TemplateVersionsClient.RequestOptions,
+        requestOptions?: NewTemplateVersionsClient.RequestOptions,
     ): core.HttpResponsePromise<Corti.TemplateVersion> {
         return core.HttpResponsePromise.fromPromise(this.__create(templateId, request, requestOptions));
     }
@@ -120,7 +120,7 @@ export class TemplateVersionsClient {
     private async __create(
         templateId: string,
         request: Corti.CreateTemplateVersionRequest = {},
-        requestOptions?: TemplateVersionsClient.RequestOptions,
+        requestOptions?: NewTemplateVersionsClient.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.TemplateVersion>> {
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
@@ -189,17 +189,17 @@ export class TemplateVersionsClient {
     /**
      * @param {string} templateId
      * @param {string} versionID
-     * @param {TemplateVersionsClient.RequestOptions} requestOptions - Request-specific configuration.
+     * @param {NewTemplateVersionsClient.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Corti.NotFoundError}
      *
      * @example
-     *     await client.templateVersions.get("templateId", "versionID")
+     *     await client.newTemplateVersions.get("templateId", "versionID")
      */
     public get(
         templateId: string,
         versionID: string,
-        requestOptions?: TemplateVersionsClient.RequestOptions,
+        requestOptions?: NewTemplateVersionsClient.RequestOptions,
     ): core.HttpResponsePromise<Corti.TemplateVersion> {
         return core.HttpResponsePromise.fromPromise(this.__get(templateId, versionID, requestOptions));
     }
@@ -207,7 +207,7 @@ export class TemplateVersionsClient {
     private async __get(
         templateId: string,
         versionID: string,
-        requestOptions?: TemplateVersionsClient.RequestOptions,
+        requestOptions?: NewTemplateVersionsClient.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.TemplateVersion>> {
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
@@ -268,17 +268,17 @@ export class TemplateVersionsClient {
     /**
      * @param {string} templateId
      * @param {string} versionID
-     * @param {TemplateVersionsClient.RequestOptions} requestOptions - Request-specific configuration.
+     * @param {NewTemplateVersionsClient.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Corti.NotFoundError}
      *
      * @example
-     *     await client.templateVersions.delete("templateId", "versionID")
+     *     await client.newTemplateVersions.delete("templateId", "versionID")
      */
     public delete(
         templateId: string,
         versionID: string,
-        requestOptions?: TemplateVersionsClient.RequestOptions,
+        requestOptions?: NewTemplateVersionsClient.RequestOptions,
     ): core.HttpResponsePromise<void> {
         return core.HttpResponsePromise.fromPromise(this.__delete(templateId, versionID, requestOptions));
     }
@@ -286,7 +286,7 @@ export class TemplateVersionsClient {
     private async __delete(
         templateId: string,
         versionID: string,
-        requestOptions?: TemplateVersionsClient.RequestOptions,
+        requestOptions?: NewTemplateVersionsClient.RequestOptions,
     ): Promise<core.WithRawResponse<void>> {
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
@@ -340,17 +340,17 @@ export class TemplateVersionsClient {
      *
      * @param {string} templateId
      * @param {string} versionID
-     * @param {TemplateVersionsClient.RequestOptions} requestOptions - Request-specific configuration.
+     * @param {NewTemplateVersionsClient.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Corti.NotFoundError}
      *
      * @example
-     *     await client.templateVersions.publish("templateId", "versionID")
+     *     await client.newTemplateVersions.publish("templateId", "versionID")
      */
     public publish(
         templateId: string,
         versionID: string,
-        requestOptions?: TemplateVersionsClient.RequestOptions,
+        requestOptions?: NewTemplateVersionsClient.RequestOptions,
     ): core.HttpResponsePromise<Corti.StatusResponse> {
         return core.HttpResponsePromise.fromPromise(this.__publish(templateId, versionID, requestOptions));
     }
@@ -358,7 +358,7 @@ export class TemplateVersionsClient {
     private async __publish(
         templateId: string,
         versionID: string,
-        requestOptions?: TemplateVersionsClient.RequestOptions,
+        requestOptions?: NewTemplateVersionsClient.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.StatusResponse>> {
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
