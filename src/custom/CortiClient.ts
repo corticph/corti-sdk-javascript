@@ -1,31 +1,15 @@
-import type { OAuthAuthProvider } from "../auth/OAuthAuthProvider.js";
 import { CortiClient as BaseCortiClient } from "../Client.js";
+import * as core from "../core/index.js";
 import type * as environments from "../environments.js";
+import { CustomAgents } from "./agents/CustomAgents.js";
 import { CortiAuth } from "./auth/CortiAuth.js";
 import { CustomStream } from "./stream/CustomStream.js";
 import { CustomTranscribe } from "./transcribe/CustomTranscribe.js";
 import { authToBaseOptions } from "./utils/authToBaseOptions.js";
 import { type Environment, getEnvironment } from "./utils/environment.js";
+
 import { resolveClientOptions } from "./utils/resolveClientOptions.js";
 import { setDefaultWithCredentials } from "./utils/withCredentialsConfig.js";
-
-type TokenDerivableAuth =
-    | {
-          accessToken: string;
-          refreshAccessToken?: OAuthAuthProvider.RefreshAccessTokenFunction;
-          expiresIn?: number;
-          refreshToken?: string;
-          refreshExpiresIn?: number;
-          clientId?: string;
-      }
-    | {
-          refreshAccessToken: OAuthAuthProvider.RefreshAccessTokenFunction;
-          accessToken?: string;
-          expiresIn?: number;
-          refreshToken?: string;
-          refreshExpiresIn?: number;
-          clientId?: string;
-      };
 
 type OptionsBase = Omit<
     BaseCortiClient.Options,
@@ -41,49 +25,17 @@ type OptionsBase = Omit<
 };
 
 export declare namespace CortiClient {
-    export type Auth =
-        | { clientId: string; clientSecret: string }
-        | {
-              accessToken: string;
-              refreshAccessToken?: OAuthAuthProvider.RefreshAccessTokenFunction;
-              expiresIn?: number;
-              refreshToken?: string;
-              refreshExpiresIn?: number;
-              clientId?: string;
-          }
-        | { clientId: string; username: string; password: string }
-        | { clientId: string; clientSecret: string; code: string; redirectUri: string }
-        | { clientId: string; code: string; redirectUri: string; codeVerifier?: string }
-        | {
-              refreshAccessToken: OAuthAuthProvider.RefreshAccessTokenFunction;
-              accessToken?: string;
-              expiresIn?: number;
-              refreshToken?: string;
-              refreshExpiresIn?: number;
-              clientId?: string;
-          };
+    export type Auth = CortiAuth.AuthServer | CortiAuth.AuthTokenDerivable;
 
     export type Options =
         // CC / ROPC / AuthCode / PKCE — tenantName and environment always required
-        | (OptionsBase & {
-              auth:
-                  | { clientId: string; clientSecret: string }
-                  | { clientId: string; username: string; password: string }
-                  | { clientId: string; clientSecret: string; code: string; redirectUri: string }
-                  | { clientId: string; code: string; redirectUri: string; codeVerifier?: string };
-              tenantName: string;
-              environment: Environment;
-          })
+        | (OptionsBase & { auth: CortiAuth.AuthServer; tenantName: string; environment: Environment })
         // Bearer / refresh — tenantName and environment derived from JWT when omitted
-        | (OptionsBase & { auth: TokenDerivableAuth; tenantName?: string; environment?: Environment })
+        | (OptionsBase & { auth: CortiAuth.AuthTokenDerivable; tenantName?: string; environment?: Environment })
         // baseUrl set — fully custom endpoint, standard fields optional
-        | (OptionsBase & { baseUrl: string; auth?: CortiClient.Auth; tenantName?: string; environment?: Environment })
+        | (OptionsBase & { baseUrl: string; auth?: Auth; tenantName?: string; environment?: Environment })
         // Full CortiEnvironmentUrls object — explicit URLs, tenantName optional
-        | (OptionsBase & {
-              environment: environments.CortiEnvironmentUrls;
-              auth?: CortiClient.Auth;
-              tenantName?: string;
-          });
+        | (OptionsBase & { environment: environments.CortiEnvironmentUrls; auth?: Auth; tenantName?: string });
 
     export interface RequestOptions extends BaseCortiClient.RequestOptions {}
 }
@@ -92,6 +44,7 @@ export class CortiClient extends BaseCortiClient {
     protected override _auth: CortiAuth | undefined;
     protected override _stream: CustomStream | undefined;
     protected override _transcribe: CustomTranscribe | undefined;
+    protected override _agents: CustomAgents | undefined;
 
     private readonly _encodeHeadersAsWsProtocols: boolean | undefined;
 
@@ -133,4 +86,33 @@ export class CortiClient extends BaseCortiClient {
             encodeHeadersAsWsProtocols: this._encodeHeadersAsWsProtocols,
         }));
     }
+
+    public override get agents(): CustomAgents {
+        return (this._agents ??= new CustomAgents(this._options));
+    }
+
+    /**
+     * Retrieves authentication headers for API requests.
+     *
+     * This method returns a Headers object containing the Authorization header with a valid
+     * bearer token and the Tenant-Name header. The token is automatically refreshed if needed.
+     *
+     * @returns A Promise that resolves to a Headers object with Authorization and Tenant-Name headers
+     *
+     * @example
+     * ```typescript
+     * const client = new CortiClient({ ... });
+     * const headers = await client.getAuthHeaders();
+     * console.log(headers.get("Authorization")); // "Bearer ..."
+     * console.log(headers.get("Tenant-Name")); // "your-tenant"
+     * ```
+     */
+    public getAuthHeaders = async (): Promise<Headers> => {
+        const req = await this._options.authProvider.getAuthRequest();
+
+        return new Headers({
+            ...(req.headers ?? {}),
+            "Tenant-Name": await core.Supplier.get(this._options.tenantName),
+        });
+    };
 }

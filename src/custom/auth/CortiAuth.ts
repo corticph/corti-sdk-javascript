@@ -7,6 +7,7 @@ import { buildTokenRequestBody } from "../utils/buildTokenRequestBody.js";
 import { type Environment, getEnvironment } from "../utils/environment.js";
 import { CODE_VERIFIER_KEY, getLocalStorageItem, setLocalStorageItem } from "../utils/localStorageHelpers.js";
 import { generateCodeChallenge, generateCodeVerifier } from "../utils/pkceHelpers.js";
+import { stripFernNormalizedHeaders } from "../utils/stripFernNormalizedHeaders.js";
 
 interface Options {
     skipRedirect?: boolean;
@@ -59,6 +60,34 @@ export declare namespace CortiAuth {
         scopes?: string[];
     }
 
+    /**
+     * Auth shapes used by `CortiClient` when passing `auth: ...`.
+     */
+    export type AuthClientCredentials = { clientId: string; clientSecret: string };
+    export type AuthRopc = Omit<GetRopcFlowTokenRequest, "scopes">;
+    export type AuthCode = Omit<GetCodeFlowTokenRequest, "scopes">;
+    export type AuthPkce = Omit<GetPkceFlowTokenRequest, "scopes">;
+
+    export type AuthTokenDerivable =
+        | {
+              accessToken: string;
+              refreshAccessToken?: OAuthAuthProvider.RefreshAccessTokenFunction;
+              expiresIn?: number;
+              refreshToken?: string;
+              refreshExpiresIn?: number;
+              clientId?: string;
+          }
+        | {
+              refreshAccessToken: OAuthAuthProvider.RefreshAccessTokenFunction;
+              accessToken?: string;
+              expiresIn?: number;
+              refreshToken?: string;
+              refreshExpiresIn?: number;
+              clientId?: string;
+          };
+
+    export type AuthServer = AuthClientCredentials | AuthRopc | AuthCode | AuthPkce;
+
     /** Parameters for authorizeURL — builds the Keycloak authorization endpoint URL. */
     export interface AuthorizationCodeClient {
         clientId: string;
@@ -77,16 +106,24 @@ export declare namespace CortiAuth {
 }
 
 export class CortiAuth extends AuthClient {
+    private readonly _tenantName: core.Supplier<string>;
+
     /** No-op auth provider so super.token() does not trigger OAuth refresh. When auth is omitted, a dummy token is passed so the base constructor does not throw. */
     constructor(options: CortiAuth.Options) {
-        const { environment, ...rest } = options;
+        const { environment, tenantName, ...rest } = options;
         super({
             ...rest,
+            // @ts-expect-error it suppose to be required, but we need to filter out header without rewriting too much
+            tenantName: null,
             environment: getEnvironment(environment),
             token: options.token ?? (() => ""),
         });
 
+        this._tenantName = tenantName;
         this._options.authProvider = new core.NoOpAuthProvider();
+
+        /** Stripping Fern headers to bypass CORS on authentication requests */
+        this._options.headers = stripFernNormalizedHeaders(this._options.headers);
     }
 
     /**
@@ -123,7 +160,7 @@ export class CortiAuth extends AuthClient {
         requestOptions: AuthClient.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.AuthTokenResponse>> {
         const authRequest = buildTokenRequestBody(request);
-        const tenantName = await core.Supplier.get(this._options.tenantName);
+        const tenantName = await core.Supplier.get(this._tenantName);
 
         return this.token(tenantName, authRequest, requestOptions).withRawResponse();
     }
@@ -226,7 +263,7 @@ export class CortiAuth extends AuthClient {
         options?: Options,
     ): Promise<string> {
         const envUrls = await core.Supplier.get(this._options.environment);
-        const tenantName = await core.Supplier.get(this._options.tenantName);
+        const tenantName = await core.Supplier.get(this._tenantName);
 
         const authUrl = new URL(core.url.join(envUrls.login, tenantName, "protocol/openid-connect/auth"));
 

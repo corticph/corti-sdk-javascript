@@ -156,6 +156,54 @@ describe("cortiClient.codes.predict", () => {
             expect(consoleWarnSpy).not.toHaveBeenCalled();
         });
 
+        it("should predict codes with system icd10int-outpatient without errors or warnings", async () => {
+            expect.assertions(2);
+
+            const result = await cortiClient.codes.predict({
+                system: ["icd10int-outpatient"],
+                context: [{ type: "text", text: faker.lorem.sentence() }],
+            });
+
+            expect(result).toBeDefined();
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
+
+        it("should predict codes with system icd10int-inpatient without errors or warnings", async () => {
+            expect.assertions(2);
+
+            const result = await cortiClient.codes.predict({
+                system: ["icd10int-inpatient"],
+                context: [{ type: "text", text: faker.lorem.sentence() }],
+            });
+
+            expect(result).toBeDefined();
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
+
+        it("should predict codes with system icd10uk-outpatient without errors or warnings", async () => {
+            expect.assertions(2);
+
+            const result = await cortiClient.codes.predict({
+                system: ["icd10uk-outpatient"],
+                context: [{ type: "text", text: faker.lorem.sentence() }],
+            });
+
+            expect(result).toBeDefined();
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
+
+        it("should predict codes with system icd10uk-inpatient without errors or warnings", async () => {
+            expect.assertions(2);
+
+            const result = await cortiClient.codes.predict({
+                system: ["icd10uk-inpatient"],
+                context: [{ type: "text", text: faker.lorem.sentence() }],
+            });
+
+            expect(result).toBeDefined();
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
+
         it("should predict codes with multiple systems without errors or warnings", async () => {
             expect.assertions(2);
 

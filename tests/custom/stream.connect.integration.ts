@@ -1,4 +1,3 @@
-import { faker } from "@faker-js/faker";
 import fs from "fs";
 import path from "path";
 import type { CortiClient } from "../../src/custom/CortiClient";
@@ -52,6 +51,7 @@ describe("cortiClient.stream.connect", () => {
                 id: interactionId,
                 awaitConfiguration: false,
                 configuration: {
+                    xCortiRetentionPolicy: "retain",
                     transcription: {
                         primaryLanguage: "en",
                         isDiarization: true,
@@ -95,6 +95,7 @@ describe("cortiClient.stream.connect", () => {
                 streamSocket.sendConfiguration({
                     type: "config",
                     configuration: {
+                        xCortiRetentionPolicy: "retain",
                         transcription: {
                             primaryLanguage: "en",
                             isDiarization: true,
@@ -117,6 +118,124 @@ describe("cortiClient.stream.connect", () => {
                     },
                 });
             });
+
+            await waitForWebSocketMessage(streamSocket, "CONFIG_ACCEPTED", { rejectOnWrongMessage: true });
+
+            expect(streamSocket.socket.readyState).toBe(1); // OPEN
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
+    });
+
+    describe("should handle configuration status messages", () => {
+        it("should return CONFIG_ALREADY_RECEIVED when configuration is sent twice", async () => {
+            expect.assertions(2);
+
+            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+
+            const streamSocket = await cortiClient.stream.connect({
+                id: interactionId,
+            });
+            activeSockets.push(streamSocket);
+
+            const configuration = {
+                xCortiRetentionPolicy: "retain" as const,
+                transcription: {
+                    primaryLanguage: "en",
+                    participants: [
+                        {
+                            channel: 0,
+                            role: "doctor" as const,
+                        },
+                    ],
+                },
+                mode: {
+                    type: "facts" as const,
+                    outputLocale: "en-US",
+                },
+            };
+
+            streamSocket.on("open", () => {
+                streamSocket.sendConfiguration({
+                    type: "config",
+                    configuration,
+                });
+            });
+
+            const messages: any[] = [];
+            await waitForWebSocketMessage(streamSocket, "CONFIG_ACCEPTED", { messages });
+
+            streamSocket.sendConfiguration({
+                type: "config",
+                configuration,
+            });
+
+            await waitForWebSocketMessage(streamSocket, "CONFIG_ALREADY_RECEIVED", { messages });
+
+            expect(messages.some((message) => message.type === "CONFIG_ALREADY_RECEIVED")).toBe(true);
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
+    });
+
+    describe("should connect with all xCortiRetentionPolicy enum values", () => {
+        it("should connect with xCortiRetentionPolicy retain without errors or warnings", async () => {
+            expect.assertions(2);
+
+            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+
+            const streamSocket = await cortiClient.stream.connect({
+                id: interactionId,
+                awaitConfiguration: false,
+                configuration: {
+                    xCortiRetentionPolicy: "retain",
+                    transcription: {
+                        primaryLanguage: "en",
+                        participants: [
+                            {
+                                channel: 0,
+                                role: "doctor",
+                            },
+                        ],
+                    },
+                    mode: {
+                        type: "facts",
+                        outputLocale: "en-US",
+                    },
+                },
+            });
+            activeSockets.push(streamSocket);
+
+            await waitForWebSocketMessage(streamSocket, "CONFIG_ACCEPTED", { rejectOnWrongMessage: true });
+
+            expect(streamSocket.socket.readyState).toBe(1); // OPEN
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
+
+        it("should connect with xCortiRetentionPolicy none without errors or warnings", async () => {
+            expect.assertions(2);
+
+            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+
+            const streamSocket = await cortiClient.stream.connect({
+                id: interactionId,
+                awaitConfiguration: false,
+                configuration: {
+                    xCortiRetentionPolicy: "none",
+                    transcription: {
+                        primaryLanguage: "en",
+                        participants: [
+                            {
+                                channel: 0,
+                                role: "doctor",
+                            },
+                        ],
+                    },
+                    mode: {
+                        type: "facts",
+                        outputLocale: "en-US",
+                    },
+                },
+            });
+            activeSockets.push(streamSocket);
 
             await waitForWebSocketMessage(streamSocket, "CONFIG_ACCEPTED", { rejectOnWrongMessage: true });
 
