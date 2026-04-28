@@ -9,305 +9,39 @@ import * as errors from "../../../../errors/index.js";
 import * as serializers from "../../../../serialization/index.js";
 import * as Corti from "../../../index.js";
 
-export declare namespace TemplatesClient {
+export declare namespace TemplateVersionsClient {
     export type Options = BaseClientOptions;
 
     export interface RequestOptions extends BaseRequestOptions {}
 }
 
-export class TemplatesClient {
-    protected readonly _options: NormalizedClientOptionsWithAuth<TemplatesClient.Options>;
+export class TemplateVersionsClient {
+    protected readonly _options: NormalizedClientOptionsWithAuth<TemplateVersionsClient.Options>;
 
-    constructor(options: TemplatesClient.Options) {
+    constructor(options: TemplateVersionsClient.Options) {
         this._options = normalizeClientOptionsWithAuth(options);
     }
 
     /**
-     * Retrieves a list of template sections with optional filters for organization and language.
-     *
-     * @param {Corti.TemplatesSectionListRequest} request
-     * @param {TemplatesClient.RequestOptions} requestOptions - Request-specific configuration.
-     *
-     * @throws {@link Corti.UnauthorizedError}
-     * @throws {@link Corti.InternalServerError}
-     *
-     * @example
-     *     await client.templates.sectionList()
-     */
-    public sectionList(
-        request: Corti.TemplatesSectionListRequest = {},
-        requestOptions?: TemplatesClient.RequestOptions,
-    ): core.HttpResponsePromise<Corti.TemplatesSectionListResponse> {
-        return core.HttpResponsePromise.fromPromise(this.__sectionList(request, requestOptions));
-    }
-
-    private async __sectionList(
-        request: Corti.TemplatesSectionListRequest = {},
-        requestOptions?: TemplatesClient.RequestOptions,
-    ): Promise<core.WithRawResponse<Corti.TemplatesSectionListResponse>> {
-        const { org, lang } = request;
-        const _queryParams: Record<string, unknown> = {
-            org,
-            lang,
-        };
-        const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
-        const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
-            _authRequest.headers,
-            this._options?.headers,
-            mergeOnlyDefinedHeaders({ "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName }),
-            requestOptions?.headers,
-        );
-        const _response = await core.fetcher({
-            url: core.url.join(
-                (await core.Supplier.get(this._options.baseUrl)) ??
-                    (await core.Supplier.get(this._options.environment)).base,
-                "templateSections/",
-            ),
-            method: "GET",
-            headers: _headers,
-            queryParameters: { ..._queryParams, ...requestOptions?.queryParams },
-            timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
-            maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
-            abortSignal: requestOptions?.abortSignal,
-            fetchFn: this._options?.fetch,
-            logging: this._options.logging,
-        });
-        if (_response.ok) {
-            return {
-                data: serializers.TemplatesSectionListResponse.parseOrThrow(_response.body, {
-                    unrecognizedObjectKeys: "passthrough",
-                    allowUnrecognizedUnionMembers: true,
-                    allowUnrecognizedEnumValues: true,
-                    skipValidation: true,
-                    breadcrumbsPrefix: ["response"],
-                }),
-                rawResponse: _response.rawResponse,
-            };
-        }
-
-        if (_response.error.reason === "status-code") {
-            switch (_response.error.statusCode) {
-                case 401:
-                    throw new Corti.UnauthorizedError(_response.error.body, _response.rawResponse);
-                case 500:
-                    throw new Corti.InternalServerError(
-                        serializers.ErrorResponse.parseOrThrow(_response.error.body, {
-                            unrecognizedObjectKeys: "passthrough",
-                            allowUnrecognizedUnionMembers: true,
-                            allowUnrecognizedEnumValues: true,
-                            skipValidation: true,
-                            breadcrumbsPrefix: ["response"],
-                        }),
-                        _response.rawResponse,
-                    );
-                default:
-                    throw new errors.CortiError({
-                        statusCode: _response.error.statusCode,
-                        body: _response.error.body,
-                        rawResponse: _response.rawResponse,
-                    });
-            }
-        }
-
-        return handleNonStatusCodeError(_response.error, _response.rawResponse, "GET", "/templateSections/");
-    }
-
-    /**
-     * Retrieves a list of templates with optional filters for organization, language, and status.
-     *
-     * @param {Corti.TemplatesListRequest} request
-     * @param {TemplatesClient.RequestOptions} requestOptions - Request-specific configuration.
-     *
-     * @throws {@link Corti.UnauthorizedError}
-     * @throws {@link Corti.InternalServerError}
-     *
-     * @example
-     *     await client.templates.list()
-     */
-    public list(
-        request: Corti.TemplatesListRequest = {},
-        requestOptions?: TemplatesClient.RequestOptions,
-    ): core.HttpResponsePromise<Corti.TemplatesListResponse> {
-        return core.HttpResponsePromise.fromPromise(this.__list(request, requestOptions));
-    }
-
-    private async __list(
-        request: Corti.TemplatesListRequest = {},
-        requestOptions?: TemplatesClient.RequestOptions,
-    ): Promise<core.WithRawResponse<Corti.TemplatesListResponse>> {
-        const { org, lang, status } = request;
-        const _queryParams: Record<string, unknown> = {
-            org,
-            lang,
-            status,
-        };
-        const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
-        const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
-            _authRequest.headers,
-            this._options?.headers,
-            mergeOnlyDefinedHeaders({ "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName }),
-            requestOptions?.headers,
-        );
-        const _response = await core.fetcher({
-            url: core.url.join(
-                (await core.Supplier.get(this._options.baseUrl)) ??
-                    (await core.Supplier.get(this._options.environment)).base,
-                "templates/",
-            ),
-            method: "GET",
-            headers: _headers,
-            queryParameters: { ..._queryParams, ...requestOptions?.queryParams },
-            timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
-            maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
-            abortSignal: requestOptions?.abortSignal,
-            fetchFn: this._options?.fetch,
-            logging: this._options.logging,
-        });
-        if (_response.ok) {
-            return {
-                data: serializers.TemplatesListResponse.parseOrThrow(_response.body, {
-                    unrecognizedObjectKeys: "passthrough",
-                    allowUnrecognizedUnionMembers: true,
-                    allowUnrecognizedEnumValues: true,
-                    skipValidation: true,
-                    breadcrumbsPrefix: ["response"],
-                }),
-                rawResponse: _response.rawResponse,
-            };
-        }
-
-        if (_response.error.reason === "status-code") {
-            switch (_response.error.statusCode) {
-                case 401:
-                    throw new Corti.UnauthorizedError(_response.error.body, _response.rawResponse);
-                case 500:
-                    throw new Corti.InternalServerError(
-                        serializers.ErrorResponse.parseOrThrow(_response.error.body, {
-                            unrecognizedObjectKeys: "passthrough",
-                            allowUnrecognizedUnionMembers: true,
-                            allowUnrecognizedEnumValues: true,
-                            skipValidation: true,
-                            breadcrumbsPrefix: ["response"],
-                        }),
-                        _response.rawResponse,
-                    );
-                default:
-                    throw new errors.CortiError({
-                        statusCode: _response.error.statusCode,
-                        body: _response.error.body,
-                        rawResponse: _response.rawResponse,
-                    });
-            }
-        }
-
-        return handleNonStatusCodeError(_response.error, _response.rawResponse, "GET", "/templates/");
-    }
-
-    /**
-     * Retrieves template by key.
-     *
-     * @param {string} key - The key of the template
-     * @param {TemplatesClient.RequestOptions} requestOptions - Request-specific configuration.
-     *
-     * @throws {@link Corti.UnauthorizedError}
-     * @throws {@link Corti.InternalServerError}
-     *
-     * @example
-     *     await client.templates.get("key")
-     */
-    public get(
-        key: string,
-        requestOptions?: TemplatesClient.RequestOptions,
-    ): core.HttpResponsePromise<Corti.TemplatesItem> {
-        return core.HttpResponsePromise.fromPromise(this.__get(key, requestOptions));
-    }
-
-    private async __get(
-        key: string,
-        requestOptions?: TemplatesClient.RequestOptions,
-    ): Promise<core.WithRawResponse<Corti.TemplatesItem>> {
-        const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
-        const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
-            _authRequest.headers,
-            this._options?.headers,
-            mergeOnlyDefinedHeaders({ "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName }),
-            requestOptions?.headers,
-        );
-        const _response = await core.fetcher({
-            url: core.url.join(
-                (await core.Supplier.get(this._options.baseUrl)) ??
-                    (await core.Supplier.get(this._options.environment)).base,
-                `templates/${core.url.encodePathParam(key)}`,
-            ),
-            method: "GET",
-            headers: _headers,
-            queryParameters: requestOptions?.queryParams,
-            timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
-            maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
-            abortSignal: requestOptions?.abortSignal,
-            fetchFn: this._options?.fetch,
-            logging: this._options.logging,
-        });
-        if (_response.ok) {
-            return {
-                data: serializers.TemplatesItem.parseOrThrow(_response.body, {
-                    unrecognizedObjectKeys: "passthrough",
-                    allowUnrecognizedUnionMembers: true,
-                    allowUnrecognizedEnumValues: true,
-                    skipValidation: true,
-                    breadcrumbsPrefix: ["response"],
-                }),
-                rawResponse: _response.rawResponse,
-            };
-        }
-
-        if (_response.error.reason === "status-code") {
-            switch (_response.error.statusCode) {
-                case 401:
-                    throw new Corti.UnauthorizedError(_response.error.body, _response.rawResponse);
-                case 500:
-                    throw new Corti.InternalServerError(
-                        serializers.ErrorResponse.parseOrThrow(_response.error.body, {
-                            unrecognizedObjectKeys: "passthrough",
-                            allowUnrecognizedUnionMembers: true,
-                            allowUnrecognizedEnumValues: true,
-                            skipValidation: true,
-                            breadcrumbsPrefix: ["response"],
-                        }),
-                        _response.rawResponse,
-                    );
-                default:
-                    throw new errors.CortiError({
-                        statusCode: _response.error.statusCode,
-                        body: _response.error.body,
-                        rawResponse: _response.rawResponse,
-                    });
-            }
-        }
-
-        return handleNonStatusCodeError(_response.error, _response.rawResponse, "GET", "/templates/{key}");
-    }
-
-    /**
      * @param {string} templateId
-     * @param {TemplatesClient.RequestOptions} requestOptions - Request-specific configuration.
+     * @param {TemplateVersionsClient.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Corti.NotFoundError}
      *
      * @example
-     *     await client.templates.newTemplatesGet("templateId")
+     *     await client.templateVersions.list("templateId")
      */
-    public newTemplatesGet(
+    public list(
         templateId: string,
-        requestOptions?: TemplatesClient.RequestOptions,
-    ): core.HttpResponsePromise<Corti.Template> {
-        return core.HttpResponsePromise.fromPromise(this.__newTemplatesGet(templateId, requestOptions));
+        requestOptions?: TemplateVersionsClient.RequestOptions,
+    ): core.HttpResponsePromise<Corti.TemplateVersion[]> {
+        return core.HttpResponsePromise.fromPromise(this.__list(templateId, requestOptions));
     }
 
-    private async __newTemplatesGet(
+    private async __list(
         templateId: string,
-        requestOptions?: TemplatesClient.RequestOptions,
-    ): Promise<core.WithRawResponse<Corti.Template>> {
+        requestOptions?: TemplateVersionsClient.RequestOptions,
+    ): Promise<core.WithRawResponse<Corti.TemplateVersion[]>> {
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
@@ -319,7 +53,7 @@ export class TemplatesClient {
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
                     (await core.Supplier.get(this._options.environment)).base,
-                `new/templates/${core.url.encodePathParam(templateId)}`,
+                `new/templates/${core.url.encodePathParam(templateId)}/versions`,
             ),
             method: "GET",
             headers: _headers,
@@ -332,7 +66,7 @@ export class TemplatesClient {
         });
         if (_response.ok) {
             return {
-                data: serializers.Template.parseOrThrow(_response.body, {
+                data: serializers.templateVersions.list.Response.parseOrThrow(_response.body, {
                     unrecognizedObjectKeys: "passthrough",
                     allowUnrecognizedUnionMembers: true,
                     allowUnrecognizedEnumValues: true,
@@ -356,28 +90,203 @@ export class TemplatesClient {
             }
         }
 
-        return handleNonStatusCodeError(_response.error, _response.rawResponse, "GET", "/new/templates/{templateId}");
+        return handleNonStatusCodeError(
+            _response.error,
+            _response.rawResponse,
+            "GET",
+            "/new/templates/{templateId}/versions",
+        );
     }
 
     /**
      * @param {string} templateId
-     * @param {TemplatesClient.RequestOptions} requestOptions - Request-specific configuration.
+     * @param {Corti.CreateTemplateVersionRequest} request
+     * @param {TemplateVersionsClient.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link Corti.BadRequestError}
+     * @throws {@link Corti.NotFoundError}
+     *
+     * @example
+     *     await client.templateVersions.create("templateId")
+     */
+    public create(
+        templateId: string,
+        request: Corti.CreateTemplateVersionRequest = {},
+        requestOptions?: TemplateVersionsClient.RequestOptions,
+    ): core.HttpResponsePromise<Corti.TemplateVersion> {
+        return core.HttpResponsePromise.fromPromise(this.__create(templateId, request, requestOptions));
+    }
+
+    private async __create(
+        templateId: string,
+        request: Corti.CreateTemplateVersionRequest = {},
+        requestOptions?: TemplateVersionsClient.RequestOptions,
+    ): Promise<core.WithRawResponse<Corti.TemplateVersion>> {
+        const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
+        const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+            _authRequest.headers,
+            this._options?.headers,
+            mergeOnlyDefinedHeaders({ "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName }),
+            requestOptions?.headers,
+        );
+        const _response = await core.fetcher({
+            url: core.url.join(
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)).base,
+                `new/templates/${core.url.encodePathParam(templateId)}/versions`,
+            ),
+            method: "POST",
+            headers: _headers,
+            contentType: "application/json",
+            queryParameters: requestOptions?.queryParams,
+            requestType: "json",
+            body: serializers.CreateTemplateVersionRequest.jsonOrThrow(request, {
+                unrecognizedObjectKeys: "strip",
+                omitUndefined: true,
+            }),
+            timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
+            maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
+            abortSignal: requestOptions?.abortSignal,
+            fetchFn: this._options?.fetch,
+            logging: this._options.logging,
+        });
+        if (_response.ok) {
+            return {
+                data: serializers.TemplateVersion.parseOrThrow(_response.body, {
+                    unrecognizedObjectKeys: "passthrough",
+                    allowUnrecognizedUnionMembers: true,
+                    allowUnrecognizedEnumValues: true,
+                    skipValidation: true,
+                    breadcrumbsPrefix: ["response"],
+                }),
+                rawResponse: _response.rawResponse,
+            };
+        }
+
+        if (_response.error.reason === "status-code") {
+            switch (_response.error.statusCode) {
+                case 400:
+                    throw new Corti.BadRequestError(_response.error.body, _response.rawResponse);
+                case 404:
+                    throw new Corti.NotFoundError(_response.error.body, _response.rawResponse);
+                default:
+                    throw new errors.CortiError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                        rawResponse: _response.rawResponse,
+                    });
+            }
+        }
+
+        return handleNonStatusCodeError(
+            _response.error,
+            _response.rawResponse,
+            "POST",
+            "/new/templates/{templateId}/versions",
+        );
+    }
+
+    /**
+     * @param {string} templateId
+     * @param {string} versionID
+     * @param {TemplateVersionsClient.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Corti.NotFoundError}
      *
      * @example
-     *     await client.templates.newTemplatesDelete("templateId")
+     *     await client.templateVersions.get("templateId", "versionID")
      */
-    public newTemplatesDelete(
+    public get(
         templateId: string,
-        requestOptions?: TemplatesClient.RequestOptions,
-    ): core.HttpResponsePromise<void> {
-        return core.HttpResponsePromise.fromPromise(this.__newTemplatesDelete(templateId, requestOptions));
+        versionID: string,
+        requestOptions?: TemplateVersionsClient.RequestOptions,
+    ): core.HttpResponsePromise<Corti.TemplateVersion> {
+        return core.HttpResponsePromise.fromPromise(this.__get(templateId, versionID, requestOptions));
     }
 
-    private async __newTemplatesDelete(
+    private async __get(
         templateId: string,
-        requestOptions?: TemplatesClient.RequestOptions,
+        versionID: string,
+        requestOptions?: TemplateVersionsClient.RequestOptions,
+    ): Promise<core.WithRawResponse<Corti.TemplateVersion>> {
+        const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
+        const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+            _authRequest.headers,
+            this._options?.headers,
+            mergeOnlyDefinedHeaders({ "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName }),
+            requestOptions?.headers,
+        );
+        const _response = await core.fetcher({
+            url: core.url.join(
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)).base,
+                `new/templates/${core.url.encodePathParam(templateId)}/versions/${core.url.encodePathParam(versionID)}`,
+            ),
+            method: "GET",
+            headers: _headers,
+            queryParameters: requestOptions?.queryParams,
+            timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
+            maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
+            abortSignal: requestOptions?.abortSignal,
+            fetchFn: this._options?.fetch,
+            logging: this._options.logging,
+        });
+        if (_response.ok) {
+            return {
+                data: serializers.TemplateVersion.parseOrThrow(_response.body, {
+                    unrecognizedObjectKeys: "passthrough",
+                    allowUnrecognizedUnionMembers: true,
+                    allowUnrecognizedEnumValues: true,
+                    skipValidation: true,
+                    breadcrumbsPrefix: ["response"],
+                }),
+                rawResponse: _response.rawResponse,
+            };
+        }
+
+        if (_response.error.reason === "status-code") {
+            switch (_response.error.statusCode) {
+                case 404:
+                    throw new Corti.NotFoundError(_response.error.body, _response.rawResponse);
+                default:
+                    throw new errors.CortiError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                        rawResponse: _response.rawResponse,
+                    });
+            }
+        }
+
+        return handleNonStatusCodeError(
+            _response.error,
+            _response.rawResponse,
+            "GET",
+            "/new/templates/{templateId}/versions/{versionID}",
+        );
+    }
+
+    /**
+     * @param {string} templateId
+     * @param {string} versionID
+     * @param {TemplateVersionsClient.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link Corti.NotFoundError}
+     *
+     * @example
+     *     await client.templateVersions.delete("templateId", "versionID")
+     */
+    public delete(
+        templateId: string,
+        versionID: string,
+        requestOptions?: TemplateVersionsClient.RequestOptions,
+    ): core.HttpResponsePromise<void> {
+        return core.HttpResponsePromise.fromPromise(this.__delete(templateId, versionID, requestOptions));
+    }
+
+    private async __delete(
+        templateId: string,
+        versionID: string,
+        requestOptions?: TemplateVersionsClient.RequestOptions,
     ): Promise<core.WithRawResponse<void>> {
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
@@ -390,7 +299,7 @@ export class TemplatesClient {
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
                     (await core.Supplier.get(this._options.environment)).base,
-                `new/templates/${core.url.encodePathParam(templateId)}`,
+                `new/templates/${core.url.encodePathParam(templateId)}/versions/${core.url.encodePathParam(versionID)}`,
             ),
             method: "DELETE",
             headers: _headers,
@@ -422,34 +331,35 @@ export class TemplatesClient {
             _response.error,
             _response.rawResponse,
             "DELETE",
-            "/new/templates/{templateId}",
+            "/new/templates/{templateId}/versions/{versionID}",
         );
     }
 
     /**
-     * @param {string} templateId
-     * @param {Corti.UpdateTemplateRequest} request
-     * @param {TemplatesClient.RequestOptions} requestOptions - Request-specific configuration.
+     * Sets this version as the published version of the template.
      *
-     * @throws {@link Corti.BadRequestError}
+     * @param {string} templateId
+     * @param {string} versionID
+     * @param {TemplateVersionsClient.RequestOptions} requestOptions - Request-specific configuration.
+     *
      * @throws {@link Corti.NotFoundError}
      *
      * @example
-     *     await client.templates.newTemplatesPatch("templateId")
+     *     await client.templateVersions.publish("templateId", "versionID")
      */
-    public newTemplatesPatch(
+    public publish(
         templateId: string,
-        request: Corti.UpdateTemplateRequest = {},
-        requestOptions?: TemplatesClient.RequestOptions,
-    ): core.HttpResponsePromise<Corti.Template> {
-        return core.HttpResponsePromise.fromPromise(this.__newTemplatesPatch(templateId, request, requestOptions));
+        versionID: string,
+        requestOptions?: TemplateVersionsClient.RequestOptions,
+    ): core.HttpResponsePromise<Corti.StatusResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__publish(templateId, versionID, requestOptions));
     }
 
-    private async __newTemplatesPatch(
+    private async __publish(
         templateId: string,
-        request: Corti.UpdateTemplateRequest = {},
-        requestOptions?: TemplatesClient.RequestOptions,
-    ): Promise<core.WithRawResponse<Corti.Template>> {
+        versionID: string,
+        requestOptions?: TemplateVersionsClient.RequestOptions,
+    ): Promise<core.WithRawResponse<Corti.StatusResponse>> {
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
@@ -461,17 +371,11 @@ export class TemplatesClient {
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
                     (await core.Supplier.get(this._options.environment)).base,
-                `new/templates/${core.url.encodePathParam(templateId)}`,
+                `new/templates/${core.url.encodePathParam(templateId)}/versions/${core.url.encodePathParam(versionID)}/publish`,
             ),
-            method: "PATCH",
+            method: "POST",
             headers: _headers,
-            contentType: "application/json",
             queryParameters: requestOptions?.queryParams,
-            requestType: "json",
-            body: serializers.UpdateTemplateRequest.jsonOrThrow(request, {
-                unrecognizedObjectKeys: "strip",
-                omitUndefined: true,
-            }),
             timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
             maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
             abortSignal: requestOptions?.abortSignal,
@@ -480,7 +384,7 @@ export class TemplatesClient {
         });
         if (_response.ok) {
             return {
-                data: serializers.Template.parseOrThrow(_response.body, {
+                data: serializers.StatusResponse.parseOrThrow(_response.body, {
                     unrecognizedObjectKeys: "passthrough",
                     allowUnrecognizedUnionMembers: true,
                     allowUnrecognizedEnumValues: true,
@@ -493,8 +397,6 @@ export class TemplatesClient {
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
-                case 400:
-                    throw new Corti.BadRequestError(_response.error.body, _response.rawResponse);
                 case 404:
                     throw new Corti.NotFoundError(_response.error.body, _response.rawResponse);
                 default:
@@ -506,6 +408,11 @@ export class TemplatesClient {
             }
         }
 
-        return handleNonStatusCodeError(_response.error, _response.rawResponse, "PATCH", "/new/templates/{templateId}");
+        return handleNonStatusCodeError(
+            _response.error,
+            _response.rawResponse,
+            "POST",
+            "/new/templates/{templateId}/versions/{versionID}/publish",
+        );
     }
 }

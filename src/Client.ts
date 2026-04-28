@@ -7,12 +7,19 @@ import { DocumentsClient } from "./api/resources/documents/client/Client.js";
 import { FactsClient } from "./api/resources/facts/client/Client.js";
 import { InteractionsClient } from "./api/resources/interactions/client/Client.js";
 import { RecordingsClient } from "./api/resources/recordings/client/Client.js";
+import { SectionsClient } from "./api/resources/sections/client/Client.js";
+import { SectionVersionsClient } from "./api/resources/sectionVersions/client/Client.js";
 import { StreamClient } from "./api/resources/stream/client/Client.js";
 import { TemplatesClient } from "./api/resources/templates/client/Client.js";
+import { TemplateVersionsClient } from "./api/resources/templateVersions/client/Client.js";
 import { TranscribeClient } from "./api/resources/transcribe/client/Client.js";
 import { TranscriptsClient } from "./api/resources/transcripts/client/Client.js";
 import type { BaseClientOptions, BaseRequestOptions } from "./BaseClient.js";
 import { type NormalizedClientOptionsWithAuth, normalizeClientOptionsWithAuth } from "./BaseClient.js";
+import { mergeHeaders, mergeOnlyDefinedHeaders } from "./core/headers.js";
+import * as core from "./core/index.js";
+import { handleNonStatusCodeError } from "./errors/handleNonStatusCodeError.js";
+import * as errors from "./errors/index.js";
 
 export declare namespace CortiClient {
     export type Options = BaseClientOptions;
@@ -30,6 +37,9 @@ export class CortiClient {
     protected _documents: DocumentsClient | undefined;
     protected _templates: TemplatesClient | undefined;
     protected _codes: CodesClient | undefined;
+    protected _templateVersions: TemplateVersionsClient | undefined;
+    protected _sections: SectionsClient | undefined;
+    protected _sectionVersions: SectionVersionsClient | undefined;
     protected _agents: AgentsClient | undefined;
     protected _stream: StreamClient | undefined;
     protected _transcribe: TranscribeClient | undefined;
@@ -70,6 +80,18 @@ export class CortiClient {
         return (this._codes ??= new CodesClient(this._options));
     }
 
+    public get templateVersions(): TemplateVersionsClient {
+        return (this._templateVersions ??= new TemplateVersionsClient(this._options));
+    }
+
+    public get sections(): SectionsClient {
+        return (this._sections ??= new SectionsClient(this._options));
+    }
+
+    public get sectionVersions(): SectionVersionsClient {
+        return (this._sectionVersions ??= new SectionVersionsClient(this._options));
+    }
+
     public get agents(): AgentsClient {
         return (this._agents ??= new AgentsClient(this._options));
     }
@@ -80,5 +102,197 @@ export class CortiClient {
 
     public get transcribe(): TranscribeClient {
         return (this._transcribe ??= new TranscribeClient(this._options));
+    }
+
+    /**
+     * @param {CortiClient.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @example
+     *     await client.getNewTemplates()
+     */
+    public getNewTemplates(requestOptions?: CortiClient.RequestOptions): core.HttpResponsePromise<void> {
+        return core.HttpResponsePromise.fromPromise(this.__getNewTemplates(requestOptions));
+    }
+
+    private async __getNewTemplates(requestOptions?: CortiClient.RequestOptions): Promise<core.WithRawResponse<void>> {
+        const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
+        const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+            _authRequest.headers,
+            this._options?.headers,
+            mergeOnlyDefinedHeaders({ "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName }),
+            requestOptions?.headers,
+        );
+        const _response = await core.fetcher({
+            url: core.url.join(
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)).base,
+                "new/templates/",
+            ),
+            method: "GET",
+            headers: _headers,
+            queryParameters: requestOptions?.queryParams,
+            timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
+            maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
+            abortSignal: requestOptions?.abortSignal,
+            fetchFn: this._options?.fetch,
+            logging: this._options.logging,
+        });
+        if (_response.ok) {
+            return { data: undefined, rawResponse: _response.rawResponse };
+        }
+
+        if (_response.error.reason === "status-code") {
+            throw new errors.CortiError({
+                statusCode: _response.error.statusCode,
+                body: _response.error.body,
+                rawResponse: _response.rawResponse,
+            });
+        }
+
+        return handleNonStatusCodeError(_response.error, _response.rawResponse, "GET", "/new/templates/");
+    }
+
+    /**
+     * @param {CortiClient.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @example
+     *     await client.postNewTemplates()
+     */
+    public postNewTemplates(requestOptions?: CortiClient.RequestOptions): core.HttpResponsePromise<void> {
+        return core.HttpResponsePromise.fromPromise(this.__postNewTemplates(requestOptions));
+    }
+
+    private async __postNewTemplates(requestOptions?: CortiClient.RequestOptions): Promise<core.WithRawResponse<void>> {
+        const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
+        const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+            _authRequest.headers,
+            this._options?.headers,
+            mergeOnlyDefinedHeaders({ "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName }),
+            requestOptions?.headers,
+        );
+        const _response = await core.fetcher({
+            url: core.url.join(
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)).base,
+                "new/templates/",
+            ),
+            method: "POST",
+            headers: _headers,
+            queryParameters: requestOptions?.queryParams,
+            timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
+            maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
+            abortSignal: requestOptions?.abortSignal,
+            fetchFn: this._options?.fetch,
+            logging: this._options.logging,
+        });
+        if (_response.ok) {
+            return { data: undefined, rawResponse: _response.rawResponse };
+        }
+
+        if (_response.error.reason === "status-code") {
+            throw new errors.CortiError({
+                statusCode: _response.error.statusCode,
+                body: _response.error.body,
+                rawResponse: _response.rawResponse,
+            });
+        }
+
+        return handleNonStatusCodeError(_response.error, _response.rawResponse, "POST", "/new/templates/");
+    }
+
+    /**
+     * @param {CortiClient.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @example
+     *     await client.getNewSections()
+     */
+    public getNewSections(requestOptions?: CortiClient.RequestOptions): core.HttpResponsePromise<void> {
+        return core.HttpResponsePromise.fromPromise(this.__getNewSections(requestOptions));
+    }
+
+    private async __getNewSections(requestOptions?: CortiClient.RequestOptions): Promise<core.WithRawResponse<void>> {
+        const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
+        const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+            _authRequest.headers,
+            this._options?.headers,
+            mergeOnlyDefinedHeaders({ "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName }),
+            requestOptions?.headers,
+        );
+        const _response = await core.fetcher({
+            url: core.url.join(
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)).base,
+                "new/sections/",
+            ),
+            method: "GET",
+            headers: _headers,
+            queryParameters: requestOptions?.queryParams,
+            timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
+            maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
+            abortSignal: requestOptions?.abortSignal,
+            fetchFn: this._options?.fetch,
+            logging: this._options.logging,
+        });
+        if (_response.ok) {
+            return { data: undefined, rawResponse: _response.rawResponse };
+        }
+
+        if (_response.error.reason === "status-code") {
+            throw new errors.CortiError({
+                statusCode: _response.error.statusCode,
+                body: _response.error.body,
+                rawResponse: _response.rawResponse,
+            });
+        }
+
+        return handleNonStatusCodeError(_response.error, _response.rawResponse, "GET", "/new/sections/");
+    }
+
+    /**
+     * @param {CortiClient.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @example
+     *     await client.postNewSections()
+     */
+    public postNewSections(requestOptions?: CortiClient.RequestOptions): core.HttpResponsePromise<void> {
+        return core.HttpResponsePromise.fromPromise(this.__postNewSections(requestOptions));
+    }
+
+    private async __postNewSections(requestOptions?: CortiClient.RequestOptions): Promise<core.WithRawResponse<void>> {
+        const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
+        const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+            _authRequest.headers,
+            this._options?.headers,
+            mergeOnlyDefinedHeaders({ "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName }),
+            requestOptions?.headers,
+        );
+        const _response = await core.fetcher({
+            url: core.url.join(
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)).base,
+                "new/sections/",
+            ),
+            method: "POST",
+            headers: _headers,
+            queryParameters: requestOptions?.queryParams,
+            timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
+            maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
+            abortSignal: requestOptions?.abortSignal,
+            fetchFn: this._options?.fetch,
+            logging: this._options.logging,
+        });
+        if (_response.ok) {
+            return { data: undefined, rawResponse: _response.rawResponse };
+        }
+
+        if (_response.error.reason === "status-code") {
+            throw new errors.CortiError({
+                statusCode: _response.error.statusCode,
+                body: _response.error.body,
+                rawResponse: _response.rawResponse,
+            });
+        }
+
+        return handleNonStatusCodeError(_response.error, _response.rawResponse, "POST", "/new/sections/");
     }
 }
