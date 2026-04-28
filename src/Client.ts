@@ -6,6 +6,8 @@ import { CodesClient } from "./api/resources/codes/client/Client.js";
 import { DocumentsClient } from "./api/resources/documents/client/Client.js";
 import { FactsClient } from "./api/resources/facts/client/Client.js";
 import { InteractionsClient } from "./api/resources/interactions/client/Client.js";
+import { NewSectionsClient } from "./api/resources/newSections/client/Client.js";
+import { NewTemplatesClient } from "./api/resources/newTemplates/client/Client.js";
 import { RecordingsClient } from "./api/resources/recordings/client/Client.js";
 import { SectionsClient } from "./api/resources/sections/client/Client.js";
 import { SectionVersionsClient } from "./api/resources/sectionVersions/client/Client.js";
@@ -37,8 +39,10 @@ export class CortiClient {
     protected _documents: DocumentsClient | undefined;
     protected _templates: TemplatesClient | undefined;
     protected _codes: CodesClient | undefined;
+    protected _newTemplates: NewTemplatesClient | undefined;
     protected _templateVersions: TemplateVersionsClient | undefined;
     protected _sections: SectionsClient | undefined;
+    protected _newSections: NewSectionsClient | undefined;
     protected _sectionVersions: SectionVersionsClient | undefined;
     protected _agents: AgentsClient | undefined;
     protected _stream: StreamClient | undefined;
@@ -80,12 +84,20 @@ export class CortiClient {
         return (this._codes ??= new CodesClient(this._options));
     }
 
+    public get newTemplates(): NewTemplatesClient {
+        return (this._newTemplates ??= new NewTemplatesClient(this._options));
+    }
+
     public get templateVersions(): TemplateVersionsClient {
         return (this._templateVersions ??= new TemplateVersionsClient(this._options));
     }
 
     public get sections(): SectionsClient {
         return (this._sections ??= new SectionsClient(this._options));
+    }
+
+    public get newSections(): NewSectionsClient {
+        return (this._newSections ??= new NewSectionsClient(this._options));
     }
 
     public get sectionVersions(): SectionVersionsClient {

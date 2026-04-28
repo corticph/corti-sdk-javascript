@@ -5,8 +5,8 @@ import { CortiClient } from "../../src/Client";
 import { mockServerPool } from "../mock-server/MockServerPool";
 import { mockOAuth } from "./mockAuth";
 
-describe("SectionsClient", () => {
-    test("get (1)", async () => {
+describe("NewSectionsClient", () => {
+    test("update (1)", async () => {
         const server = mockServerPool.createServer();
         mockOAuth(server);
 
@@ -17,7 +17,7 @@ describe("SectionsClient", () => {
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
-
+        const rawRequestBody = {};
         const rawResponseBody = {
             id: "id",
             inheritedFromId: "inheritedFromId",
@@ -44,13 +44,14 @@ describe("SectionsClient", () => {
 
         server
             .mockEndpoint()
-            .get("/new/sections/sectionID")
+            .patch("/new/sections/sectionID")
+            .jsonBody(rawRequestBody)
             .respondWith()
             .statusCode(200)
             .jsonBody(rawResponseBody)
             .build();
 
-        const response = await client.sections.get("sectionID");
+        const response = await client.newSections.update("sectionID");
         expect(response).toEqual({
             id: "id",
             inheritedFromId: "inheritedFromId",
@@ -79,7 +80,7 @@ describe("SectionsClient", () => {
         });
     });
 
-    test("get (2)", async () => {
+    test("update (2)", async () => {
         const server = mockServerPool.createServer();
         mockOAuth(server);
 
@@ -90,64 +91,48 @@ describe("SectionsClient", () => {
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
-
+        const rawRequestBody = {};
         const rawResponseBody = { key: "value" };
 
         server
             .mockEndpoint()
-            .get("/new/sections/sectionID")
+            .patch("/new/sections/sectionID")
+            .jsonBody(rawRequestBody)
+            .respondWith()
+            .statusCode(400)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.newSections.update("sectionID");
+        }).rejects.toThrow(Corti.BadRequestError);
+    });
+
+    test("update (3)", async () => {
+        const server = mockServerPool.createServer();
+        mockOAuth(server);
+
+        const client = new CortiClient({
+            maxRetries: 0,
+            clientId: "client_id",
+            clientSecret: "client_secret",
+            tenantName: "test",
+            environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
+        });
+        const rawRequestBody = {};
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .patch("/new/sections/sectionID")
+            .jsonBody(rawRequestBody)
             .respondWith()
             .statusCode(404)
             .jsonBody(rawResponseBody)
             .build();
 
         await expect(async () => {
-            return await client.sections.get("sectionID");
-        }).rejects.toThrow(Corti.NotFoundError);
-    });
-
-    test("delete (1)", async () => {
-        const server = mockServerPool.createServer();
-        mockOAuth(server);
-
-        const client = new CortiClient({
-            maxRetries: 0,
-            clientId: "client_id",
-            clientSecret: "client_secret",
-            tenantName: "test",
-            environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
-        });
-
-        server.mockEndpoint().delete("/new/sections/sectionID").respondWith().statusCode(200).build();
-
-        const response = await client.sections.delete("sectionID");
-        expect(response).toEqual(undefined);
-    });
-
-    test("delete (2)", async () => {
-        const server = mockServerPool.createServer();
-        mockOAuth(server);
-
-        const client = new CortiClient({
-            maxRetries: 0,
-            clientId: "client_id",
-            clientSecret: "client_secret",
-            tenantName: "test",
-            environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
-        });
-
-        const rawResponseBody = { key: "value" };
-
-        server
-            .mockEndpoint()
-            .delete("/new/sections/sectionID")
-            .respondWith()
-            .statusCode(404)
-            .jsonBody(rawResponseBody)
-            .build();
-
-        await expect(async () => {
-            return await client.sections.delete("sectionID");
+            return await client.newSections.update("sectionID");
         }).rejects.toThrow(Corti.NotFoundError);
     });
 });
