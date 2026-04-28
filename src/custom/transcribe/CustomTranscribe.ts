@@ -62,7 +62,7 @@ export class CustomTranscribe extends TranscribeClient {
                   await super.connect({
                       ...rest,
                       token: (await this._options.authProvider?.getAuthRequest())?.headers.Authorization || "",
-                      tenantName: await core.Supplier.get(this._options.tenantName),
+                      tenantName: (await core.Supplier.get(this._options.tenantName)) ?? "base",
                   })
               ).socket;
 

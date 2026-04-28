@@ -106,7 +106,7 @@ export declare namespace CortiAuth {
 }
 
 export class CortiAuth extends AuthClient {
-    private readonly _tenantName: core.Supplier<string>;
+    private readonly _tenantName: core.Supplier<string | undefined>;
 
     /** No-op auth provider so super.token() does not trigger OAuth refresh. When auth is omitted, a dummy token is passed so the base constructor does not throw. */
     constructor(options: CortiAuth.Options) {
@@ -162,7 +162,7 @@ export class CortiAuth extends AuthClient {
         const authRequest = buildTokenRequestBody(request);
         const tenantName = await core.Supplier.get(this._tenantName);
 
-        return this.token(tenantName, authRequest, requestOptions).withRawResponse();
+        return this.token(tenantName ?? "base", authRequest, requestOptions).withRawResponse();
     }
 
     /** Exchange username/password for access token via ROPC (resource owner password credentials). */
@@ -265,7 +265,7 @@ export class CortiAuth extends AuthClient {
         const envUrls = await core.Supplier.get(this._options.environment);
         const tenantName = await core.Supplier.get(this._tenantName);
 
-        const authUrl = new URL(core.url.join(envUrls.login, tenantName, "protocol/openid-connect/auth"));
+        const authUrl = new URL(core.url.join(envUrls.login, tenantName ?? "", "protocol/openid-connect/auth"));
 
         authUrl.searchParams.set("response_type", "code");
 
