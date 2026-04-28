@@ -14,6 +14,7 @@ export const AgentsRegistryExpert: core.serialization.ObjectSchema<
     displayDescription: core.serialization.string().optional(),
     description: core.serialization.string(),
     mcpServers: core.serialization.list(AgentsRegistryMcpServer).optional(),
+    configSchema: core.serialization.record(core.serialization.string(), core.serialization.unknown()).optional(),
 });
 
 export declare namespace AgentsRegistryExpert {
@@ -23,5 +24,6 @@ export declare namespace AgentsRegistryExpert {
         displayDescription?: string | null;
         description: string;
         mcpServers?: AgentsRegistryMcpServer.Raw[] | null;
+        configSchema?: Record<string, unknown> | null;
     }
 }

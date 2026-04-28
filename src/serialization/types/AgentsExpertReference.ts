@@ -13,6 +13,7 @@ export const AgentsExpertReference: core.serialization.ObjectSchema<
     id: core.serialization.string(),
     name: core.serialization.string(),
     systemPrompt: core.serialization.string().optional(),
+    resolvedConfig: core.serialization.record(core.serialization.string(), core.serialization.unknown()).optional(),
 });
 
 export declare namespace AgentsExpertReference {
@@ -21,5 +22,6 @@ export declare namespace AgentsExpertReference {
         id: string;
         name: string;
         systemPrompt?: string | null;
+        resolvedConfig?: Record<string, unknown> | null;
     }
 }

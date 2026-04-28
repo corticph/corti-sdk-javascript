@@ -1793,6 +1793,7 @@ describe("AgentsClient", () => {
                     displayDescription: "displayDescription",
                     description: "description",
                     mcpServers: [{ name: "name", authorizationType: "none" }],
+                    configSchema: { key: "value" },
                 },
             ],
         };
@@ -1822,6 +1823,9 @@ describe("AgentsClient", () => {
                             authorizationType: "none",
                         },
                     ],
+                    configSchema: {
+                        key: "value",
+                    },
                 },
             ],
         });

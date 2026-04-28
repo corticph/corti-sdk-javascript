@@ -13,4 +13,6 @@ export interface AgentsCreateExpertReference {
     name?: string;
     /** Optional. Additional system instructions appended to the default system prompt when creating an expert from the registry, extending the expert's behavior. */
     systemPrompt?: string;
+    /** Optional configuration override for the registry expert. Values provided here are deep-merged with the schema defaults declared on the registry expert and validated against its `configSchema`. Ignored when the registry expert has no schema. */
+    config?: Record<string, unknown>;
 }
