@@ -6,6 +6,203 @@ import { mockServerPool } from "../mock-server/MockServerPool";
 import { mockOAuth } from "./mockAuth";
 
 describe("NewSectionsClient", () => {
+    test("list", async () => {
+        const server = mockServerPool.createServer();
+        mockOAuth(server);
+
+        const client = new CortiClient({
+            maxRetries: 0,
+            clientId: "client_id",
+            clientSecret: "client_secret",
+            tenantName: "test",
+            environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
+        });
+
+        const rawResponseBody = [
+            {
+                id: "id",
+                inheritedFromId: "inheritedFromId",
+                name: "name",
+                language: "language",
+                description: "description",
+                labels: ["labels"],
+                publishedVersion: {
+                    id: "id",
+                    versionNumber: 1,
+                    title: "title",
+                    instructions: { contentPrompt: "contentPrompt", writingStylePrompt: "writingStylePrompt" },
+                    outputSchema: { type: "string" },
+                },
+                createdAt: "2024-01-15T09:30:00Z",
+                updatedAt: "2024-01-15T09:30:00Z",
+            },
+        ];
+
+        server.mockEndpoint().get("/new/sections").respondWith().statusCode(200).jsonBody(rawResponseBody).build();
+
+        const response = await client.newSections.list();
+        expect(response).toEqual([
+            {
+                id: "id",
+                inheritedFromId: "inheritedFromId",
+                name: "name",
+                language: "language",
+                description: "description",
+                labels: ["labels"],
+                publishedVersion: {
+                    id: "id",
+                    versionNumber: 1,
+                    title: "title",
+                    instructions: {
+                        contentPrompt: "contentPrompt",
+                        writingStylePrompt: "writingStylePrompt",
+                    },
+                    outputSchema: {
+                        type: "string",
+                    },
+                },
+                createdAt: new Date("2024-01-15T09:30:00.000Z"),
+                updatedAt: new Date("2024-01-15T09:30:00.000Z"),
+            },
+        ]);
+    });
+
+    test("create (1)", async () => {
+        const server = mockServerPool.createServer();
+        mockOAuth(server);
+
+        const client = new CortiClient({
+            maxRetries: 0,
+            clientId: "client_id",
+            clientSecret: "client_secret",
+            tenantName: "test",
+            environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
+        });
+        const rawRequestBody = {
+            name: "name",
+            language: "language",
+            generation: {
+                title: "title",
+                instructions: { contentPrompt: "contentPrompt", writingStylePrompt: "writingStylePrompt" },
+            },
+        };
+        const rawResponseBody = {
+            id: "id",
+            inheritedFromId: "inheritedFromId",
+            name: "name",
+            language: "language",
+            description: "description",
+            labels: ["labels"],
+            publishedVersion: {
+                id: "id",
+                versionNumber: 1,
+                title: "title",
+                instructions: { contentPrompt: "contentPrompt", writingStylePrompt: "writingStylePrompt" },
+                outputSchema: {
+                    type: "string",
+                    description: "description",
+                    default: "default",
+                    enum: ["enum"],
+                    pattern: "pattern",
+                },
+            },
+            createdAt: "2024-01-15T09:30:00Z",
+            updatedAt: "2024-01-15T09:30:00Z",
+        };
+
+        server
+            .mockEndpoint()
+            .post("/new/sections")
+            .jsonBody(rawRequestBody)
+            .respondWith()
+            .statusCode(200)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        const response = await client.newSections.create({
+            name: "name",
+            language: "language",
+            generation: {
+                title: "title",
+                instructions: {
+                    contentPrompt: "contentPrompt",
+                    writingStylePrompt: "writingStylePrompt",
+                },
+            },
+        });
+        expect(response).toEqual({
+            id: "id",
+            inheritedFromId: "inheritedFromId",
+            name: "name",
+            language: "language",
+            description: "description",
+            labels: ["labels"],
+            publishedVersion: {
+                id: "id",
+                versionNumber: 1,
+                title: "title",
+                instructions: {
+                    contentPrompt: "contentPrompt",
+                    writingStylePrompt: "writingStylePrompt",
+                },
+                outputSchema: {
+                    type: "string",
+                    description: "description",
+                    default: "default",
+                    enum: ["enum"],
+                    pattern: "pattern",
+                },
+            },
+            createdAt: new Date("2024-01-15T09:30:00.000Z"),
+            updatedAt: new Date("2024-01-15T09:30:00.000Z"),
+        });
+    });
+
+    test("create (2)", async () => {
+        const server = mockServerPool.createServer();
+        mockOAuth(server);
+
+        const client = new CortiClient({
+            maxRetries: 0,
+            clientId: "client_id",
+            clientSecret: "client_secret",
+            tenantName: "test",
+            environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
+        });
+        const rawRequestBody = {
+            name: "name",
+            language: "language",
+            generation: {
+                title: "title",
+                instructions: { contentPrompt: "contentPrompt", writingStylePrompt: "writingStylePrompt" },
+            },
+        };
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .post("/new/sections")
+            .jsonBody(rawRequestBody)
+            .respondWith()
+            .statusCode(400)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.newSections.create({
+                name: "name",
+                language: "language",
+                generation: {
+                    title: "title",
+                    instructions: {
+                        contentPrompt: "contentPrompt",
+                        writingStylePrompt: "writingStylePrompt",
+                    },
+                },
+            });
+        }).rejects.toThrow(Corti.BadRequestError);
+    });
+
     test("get (1)", async () => {
         const server = mockServerPool.createServer();
         mockOAuth(server);
@@ -279,41 +476,5 @@ describe("NewSectionsClient", () => {
         await expect(async () => {
             return await client.newSections.update("sectionID");
         }).rejects.toThrow(Corti.NotFoundError);
-    });
-
-    test("list", async () => {
-        const server = mockServerPool.createServer();
-        mockOAuth(server);
-
-        const client = new CortiClient({
-            maxRetries: 0,
-            clientId: "client_id",
-            clientSecret: "client_secret",
-            tenantName: "test",
-            environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
-        });
-
-        server.mockEndpoint().get("/new/sections/").respondWith().statusCode(200).build();
-
-        const response = await client.newSections.list();
-        expect(response).toEqual(undefined);
-    });
-
-    test("create", async () => {
-        const server = mockServerPool.createServer();
-        mockOAuth(server);
-
-        const client = new CortiClient({
-            maxRetries: 0,
-            clientId: "client_id",
-            clientSecret: "client_secret",
-            tenantName: "test",
-            environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
-        });
-
-        server.mockEndpoint().post("/new/sections/").respondWith().statusCode(200).build();
-
-        const response = await client.newSections.create();
-        expect(response).toEqual(undefined);
     });
 });
