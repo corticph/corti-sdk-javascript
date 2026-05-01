@@ -63,6 +63,40 @@ function collectRejectedDeleteFailures(
     return failures;
 }
 
+const AGENTS_LIST_PAGE_SIZE = 100;
+
+/**
+ * Agents.list has no Page iterator — walk **`limit`** / **`offset`** manually in case the service caps page size.
+ */
+async function mergeAgentIdsFromPagedLists(
+    cortiClient: CortiClient,
+    ephemeral: boolean,
+    into: Set<string>,
+): Promise<void> {
+    let offset = 0;
+
+    while (true) {
+        const batch = await cortiClient.agents.list({
+            limit: AGENTS_LIST_PAGE_SIZE,
+            offset,
+            ephemeral,
+        });
+
+        for (const agent of batch) {
+            const { id } = agent;
+            if (id != null) {
+                into.add(id);
+            }
+        }
+
+        if (batch.length === 0 || batch.length < AGENTS_LIST_PAGE_SIZE) {
+            break;
+        }
+
+        offset += batch.length;
+    }
+}
+
 /**
  * Creates a test interaction using faker data.
  * Optionally pass overrides for the interaction payload shape.
@@ -100,8 +134,8 @@ export async function createTestInteraction(cortiClient: CortiClient, overrideDa
  * Interactions: collect ids via `for await` over `interactions.list()`, then delete all in parallel with
  * `Promise.allSettled`. Failures are logged after that batch settles.
  *
- * Agents: merge ids from `list({ ephemeral: false })` and `list({ ephemeral: true })` (deduped),
- * parallel `Promise.allSettled` deletes; optional `id` omitted on references. Same batch logging behaviour.
+ * Agents: for each **`ephemeral`** (`false` then `true`), walk **`agents.list({ limit, offset })`** until a page
+ * is shorter than **`limit`** (or empty); merge ids then **`Promise.allSettled`** delete. References without **`id`** are skipped.
  */
 export async function purgeIntegrationTenant(cortiClient: CortiClient): Promise<void> {
     const failedDeletes: string[] = [];
@@ -125,17 +159,8 @@ export async function purgeIntegrationTenant(cortiClient: CortiClient): Promise<
 
     try {
         const agentIds = new Set<string>();
-        const agentListRequests = [{ ephemeral: false }, { ephemeral: true }] as const;
-
-        for (const request of agentListRequests) {
-            const agents = await cortiClient.agents.list(request);
-            for (const agent of agents) {
-                const { id } = agent;
-                if (id != null) {
-                    agentIds.add(id);
-                }
-            }
-        }
+        await mergeAgentIdsFromPagedLists(cortiClient, false, agentIds);
+        await mergeAgentIdsFromPagedLists(cortiClient, true, agentIds);
 
         const agentIdList = [...agentIds];
         const agentResults = await Promise.allSettled(agentIdList.map((id) => cortiClient.agents.delete(id)));
