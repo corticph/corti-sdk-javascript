@@ -117,9 +117,7 @@ export async function purgeIntegrationTenant(cortiClient: CortiClient): Promise<
         const interactionResults = await Promise.allSettled(
             interactionIds.map((id) => cortiClient.interactions.delete(id)),
         );
-        failedDeletes.push(
-            ...collectRejectedDeleteFailures("interaction", interactionIds, interactionResults),
-        );
+        failedDeletes.push(...collectRejectedDeleteFailures("interaction", interactionIds, interactionResults));
     } catch (error) {
         console.error("purgeIntegrationTenant: interactions phase failed:", error);
         rethrowWithContext("purgeIntegrationTenant interactions phase failed", error);
@@ -140,9 +138,7 @@ export async function purgeIntegrationTenant(cortiClient: CortiClient): Promise<
         }
 
         const agentIdList = [...agentIds];
-        const agentResults = await Promise.allSettled(
-            agentIdList.map((id) => cortiClient.agents.delete(id)),
-        );
+        const agentResults = await Promise.allSettled(agentIdList.map((id) => cortiClient.agents.delete(id)));
         failedDeletes.push(...collectRejectedDeleteFailures("agent", agentIdList, agentResults));
     } catch (error) {
         console.error("purgeIntegrationTenant: agents phase failed:", error);
