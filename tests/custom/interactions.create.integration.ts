@@ -1,11 +1,10 @@
 import { faker } from "@faker-js/faker";
 import type { CortiClient } from "../../src";
-import { cleanupInteractions, createTestCortiClient, setupConsoleWarnSpy } from "./testUtils";
+import { createTestCortiClient, setupConsoleWarnSpy } from "./testUtils";
 
 describe("cortiClient.interactions.create", () => {
     let cortiClient: CortiClient;
     let consoleWarnSpy: ReturnType<typeof setupConsoleWarnSpy>;
-    let createdInteractionIds: string[] = [];
 
     beforeAll(() => {
         cortiClient = createTestCortiClient();
@@ -13,13 +12,10 @@ describe("cortiClient.interactions.create", () => {
 
     beforeEach(() => {
         consoleWarnSpy = setupConsoleWarnSpy();
-        createdInteractionIds = [];
     });
 
-    afterEach(async () => {
+    afterEach(() => {
         consoleWarnSpy.mockRestore();
-        await cleanupInteractions(cortiClient, createdInteractionIds);
-        createdInteractionIds = [];
     });
 
     describe("should create interaction with only required values", () => {
@@ -33,8 +29,6 @@ describe("cortiClient.interactions.create", () => {
                     type: "first_consultation",
                 },
             });
-
-            createdInteractionIds.push(result.interactionId);
 
             expect(result).toBeDefined();
             expect(consoleWarnSpy).not.toHaveBeenCalled();
@@ -54,8 +48,6 @@ describe("cortiClient.interactions.create", () => {
                 },
             });
 
-            createdInteractionIds.push(result.interactionId);
-
             expect(result).toBeDefined();
             expect(consoleWarnSpy).not.toHaveBeenCalled();
         });
@@ -73,8 +65,6 @@ describe("cortiClient.interactions.create", () => {
                 },
             });
 
-            createdInteractionIds.push(result.interactionId);
-
             expect(result).toBeDefined();
             expect(consoleWarnSpy).not.toHaveBeenCalled();
         });
@@ -89,8 +79,6 @@ describe("cortiClient.interactions.create", () => {
                     type: "first_consultation",
                 },
             });
-
-            createdInteractionIds.push(result.interactionId);
 
             expect(result).toBeDefined();
             expect(consoleWarnSpy).not.toHaveBeenCalled();
@@ -107,8 +95,6 @@ describe("cortiClient.interactions.create", () => {
                 },
             });
 
-            createdInteractionIds.push(result.interactionId);
-
             expect(result).toBeDefined();
             expect(consoleWarnSpy).not.toHaveBeenCalled();
         });
@@ -123,8 +109,6 @@ describe("cortiClient.interactions.create", () => {
                     type: "first_consultation",
                 },
             });
-
-            createdInteractionIds.push(result.interactionId);
 
             expect(result).toBeDefined();
             expect(consoleWarnSpy).not.toHaveBeenCalled();
@@ -141,8 +125,6 @@ describe("cortiClient.interactions.create", () => {
                 },
             });
 
-            createdInteractionIds.push(result.interactionId);
-
             expect(result).toBeDefined();
             expect(consoleWarnSpy).not.toHaveBeenCalled();
         });
@@ -157,8 +139,6 @@ describe("cortiClient.interactions.create", () => {
                     type: "first_consultation",
                 },
             });
-
-            createdInteractionIds.push(result.interactionId);
 
             expect(result).toBeDefined();
             expect(consoleWarnSpy).not.toHaveBeenCalled();
@@ -177,8 +157,6 @@ describe("cortiClient.interactions.create", () => {
                 },
             });
 
-            createdInteractionIds.push(result.interactionId);
-
             expect(result).toBeDefined();
             expect(consoleWarnSpy).not.toHaveBeenCalled();
         });
@@ -193,8 +171,6 @@ describe("cortiClient.interactions.create", () => {
                     type: "consultation",
                 },
             });
-
-            createdInteractionIds.push(result.interactionId);
 
             expect(result).toBeDefined();
             expect(consoleWarnSpy).not.toHaveBeenCalled();
@@ -211,8 +187,6 @@ describe("cortiClient.interactions.create", () => {
                 },
             });
 
-            createdInteractionIds.push(result.interactionId);
-
             expect(result).toBeDefined();
             expect(consoleWarnSpy).not.toHaveBeenCalled();
         });
@@ -228,8 +202,6 @@ describe("cortiClient.interactions.create", () => {
                 },
             });
 
-            createdInteractionIds.push(result.interactionId);
-
             expect(result).toBeDefined();
             expect(consoleWarnSpy).not.toHaveBeenCalled();
         });
@@ -244,8 +216,6 @@ describe("cortiClient.interactions.create", () => {
                     type: "outpatient",
                 },
             });
-
-            createdInteractionIds.push(result.interactionId);
 
             expect(result).toBeDefined();
             expect(consoleWarnSpy).not.toHaveBeenCalled();
@@ -268,8 +238,6 @@ describe("cortiClient.interactions.create", () => {
                 },
             });
 
-            createdInteractionIds.push(result.interactionId);
-
             expect(result).toBeDefined();
             expect(consoleWarnSpy).not.toHaveBeenCalled();
         });
@@ -288,8 +256,6 @@ describe("cortiClient.interactions.create", () => {
                     gender: "female",
                 },
             });
-
-            createdInteractionIds.push(result.interactionId);
 
             expect(result).toBeDefined();
             expect(consoleWarnSpy).not.toHaveBeenCalled();
@@ -310,8 +276,6 @@ describe("cortiClient.interactions.create", () => {
                 },
             });
 
-            createdInteractionIds.push(result.interactionId);
-
             expect(result).toBeDefined();
             expect(consoleWarnSpy).not.toHaveBeenCalled();
         });
@@ -330,8 +294,6 @@ describe("cortiClient.interactions.create", () => {
                     gender: "other",
                 },
             });
-
-            createdInteractionIds.push(result.interactionId);
 
             expect(result).toBeDefined();
             expect(consoleWarnSpy).not.toHaveBeenCalled();
@@ -366,8 +328,6 @@ describe("cortiClient.interactions.create", () => {
                     pronouns: faker.helpers.arrayElement(["he/him", "she/her", "they/them"]),
                 },
             });
-
-            createdInteractionIds.push(result.interactionId);
 
             expect(result).toBeDefined();
             expect(consoleWarnSpy).not.toHaveBeenCalled();

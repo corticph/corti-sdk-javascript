@@ -1,12 +1,6 @@
 import { faker } from "@faker-js/faker";
 import type { CortiClient } from "../../src";
-import {
-    cleanupInteractions,
-    createTestCortiClient,
-    createTestDocument,
-    createTestInteraction,
-    setupConsoleWarnSpy,
-} from "./testUtils";
+import { createTestCortiClient, createTestDocument, createTestInteraction, setupConsoleWarnSpy } from "./testUtils";
 
 describe("cortiClient.codes.predict", () => {
     let cortiClient: CortiClient;
@@ -218,17 +212,10 @@ describe("cortiClient.codes.predict", () => {
     });
 
     describe("should predict codes with documentId context", () => {
-        const createdInteractionIds: string[] = [];
-
-        afterEach(async () => {
-            await cleanupInteractions(cortiClient, createdInteractionIds);
-            createdInteractionIds.length = 0;
-        });
-
         it("should predict codes when context is documentId without errors or warnings", async () => {
             expect.assertions(2);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
             const documentId = await createTestDocument(cortiClient, interactionId);
 
             const result = await cortiClient.codes.predict({

@@ -2,7 +2,6 @@ import fs from "fs";
 import path from "path";
 import type { CortiClient } from "../../src/custom/CortiClient";
 import {
-    cleanupInteractions,
     createTestCortiClient,
     createTestInteraction,
     setupConsoleWarnSpy,
@@ -11,7 +10,6 @@ import {
 
 describe("cortiClient.stream.connect", () => {
     let cortiClient: CortiClient;
-    let createdInteractionIds: string[] = [];
     let consoleWarnSpy: ReturnType<typeof setupConsoleWarnSpy>;
     let activeSockets: any[] = [];
 
@@ -22,10 +20,9 @@ describe("cortiClient.stream.connect", () => {
     beforeEach(() => {
         consoleWarnSpy = setupConsoleWarnSpy();
         activeSockets = [];
-        createdInteractionIds = [];
     });
 
-    afterEach(async () => {
+    afterEach(() => {
         activeSockets.forEach((socket) => {
             if (socket && typeof socket.close === "function") {
                 try {
@@ -36,22 +33,20 @@ describe("cortiClient.stream.connect", () => {
             }
         });
         activeSockets = [];
-
-        await cleanupInteractions(cortiClient, createdInteractionIds);
-        createdInteractionIds = [];
     });
 
     describe("should connect with full configuration", () => {
         it("should connect with full configuration passed to connect", async () => {
             expect.assertions(2);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
 
             const streamSocket = await cortiClient.stream.connect({
                 id: interactionId,
                 awaitConfiguration: false,
                 configuration: {
-                    xCortiRetentionPolicy: "retain",
+                    retentionPolicy: "retain",
+                    audioFormat: "audio/mp3",
                     transcription: {
                         primaryLanguage: "en",
                         isDiarization: true,
@@ -84,7 +79,7 @@ describe("cortiClient.stream.connect", () => {
         it("should connect and send full configuration manually on open event", async () => {
             expect.assertions(2);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
 
             const streamSocket = await cortiClient.stream.connect({
                 id: interactionId,
@@ -95,7 +90,8 @@ describe("cortiClient.stream.connect", () => {
                 streamSocket.sendConfiguration({
                     type: "config",
                     configuration: {
-                        xCortiRetentionPolicy: "retain",
+                        retentionPolicy: "retain",
+                        audioFormat: "audio/mpeg",
                         transcription: {
                             primaryLanguage: "en",
                             isDiarization: true,
@@ -130,7 +126,7 @@ describe("cortiClient.stream.connect", () => {
         it("should return CONFIG_ALREADY_RECEIVED when configuration is sent twice", async () => {
             expect.assertions(2);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
 
             const streamSocket = await cortiClient.stream.connect({
                 id: interactionId,
@@ -138,7 +134,7 @@ describe("cortiClient.stream.connect", () => {
             activeSockets.push(streamSocket);
 
             const configuration = {
-                xCortiRetentionPolicy: "retain" as const,
+                retentionPolicy: "retain" as const,
                 transcription: {
                     primaryLanguage: "en",
                     participants: [
@@ -176,17 +172,17 @@ describe("cortiClient.stream.connect", () => {
         });
     });
 
-    describe("should connect with all xCortiRetentionPolicy enum values", () => {
-        it("should connect with xCortiRetentionPolicy retain without errors or warnings", async () => {
+    describe("should connect with all retentionPolicy enum values", () => {
+        it("should connect with retentionPolicy retain without errors or warnings", async () => {
             expect.assertions(2);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
 
             const streamSocket = await cortiClient.stream.connect({
                 id: interactionId,
                 awaitConfiguration: false,
                 configuration: {
-                    xCortiRetentionPolicy: "retain",
+                    retentionPolicy: "retain",
                     transcription: {
                         primaryLanguage: "en",
                         participants: [
@@ -210,16 +206,51 @@ describe("cortiClient.stream.connect", () => {
             expect(consoleWarnSpy).not.toHaveBeenCalled();
         });
 
-        it("should connect with xCortiRetentionPolicy none without errors or warnings", async () => {
+        it("should connect with retentionPolicy none without errors or warnings", async () => {
             expect.assertions(2);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
 
             const streamSocket = await cortiClient.stream.connect({
                 id: interactionId,
                 awaitConfiguration: false,
                 configuration: {
-                    xCortiRetentionPolicy: "none",
+                    retentionPolicy: "none",
+                    transcription: {
+                        primaryLanguage: "en",
+                        participants: [
+                            {
+                                channel: 0,
+                                role: "doctor",
+                            },
+                        ],
+                    },
+                    mode: {
+                        type: "facts",
+                        outputLocale: "en-US",
+                    },
+                },
+            });
+            activeSockets.push(streamSocket);
+
+            await waitForWebSocketMessage(streamSocket, "CONFIG_ACCEPTED", { rejectOnWrongMessage: true });
+
+            expect(streamSocket.socket.readyState).toBe(1); // OPEN
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
+    });
+
+    describe("should connect with audioFormat only among StreamConfig optionals", () => {
+        it("should connect with audioFormat without errors or warnings", async () => {
+            expect.assertions(2);
+
+            const interactionId = await createTestInteraction(cortiClient);
+
+            const streamSocket = await cortiClient.stream.connect({
+                id: interactionId,
+                awaitConfiguration: false,
+                configuration: {
+                    audioFormat: "audio/mp3",
                     transcription: {
                         primaryLanguage: "en",
                         participants: [
@@ -248,7 +279,7 @@ describe("cortiClient.stream.connect", () => {
         it("should connect with doctor role", async () => {
             expect.assertions(2);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
 
             const streamSocket = await cortiClient.stream.connect({
                 id: interactionId,
@@ -280,7 +311,7 @@ describe("cortiClient.stream.connect", () => {
         it("should connect with patient role", async () => {
             expect.assertions(2);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
 
             const streamSocket = await cortiClient.stream.connect({
                 id: interactionId,
@@ -312,7 +343,7 @@ describe("cortiClient.stream.connect", () => {
         it("should connect with multiple role", async () => {
             expect.assertions(2);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
 
             const streamSocket = await cortiClient.stream.connect({
                 id: interactionId,
@@ -346,7 +377,7 @@ describe("cortiClient.stream.connect", () => {
         it("should connect with facts mode", async () => {
             expect.assertions(2);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
 
             const streamSocket = await cortiClient.stream.connect({
                 id: interactionId,
@@ -378,7 +409,7 @@ describe("cortiClient.stream.connect", () => {
         it("should connect with transcription mode", async () => {
             expect.assertions(2);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
 
             const streamSocket = await cortiClient.stream.connect({
                 id: interactionId,
@@ -411,12 +442,13 @@ describe("cortiClient.stream.connect", () => {
         it("should process audio and receive transcription messages", async () => {
             expect.assertions(2);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
 
             const streamSocket = await cortiClient.stream.connect({
                 id: interactionId,
                 awaitConfiguration: false,
                 configuration: {
+                    audioFormat: "audio/mp3",
                     transcription: {
                         primaryLanguage: "en",
                         participants: [
@@ -466,7 +498,7 @@ describe("cortiClient.stream.connect", () => {
         it.skip("should process audio and receive facts messages", async () => {
             expect.assertions(2);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
 
             const streamSocket = await cortiClient.stream.connect({
                 id: interactionId,
@@ -521,7 +553,7 @@ describe("cortiClient.stream.connect", () => {
         it("should reject invalid configuration", async () => {
             expect.assertions(2);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
 
             const streamSocket = await cortiClient.stream.connect({
                 id: interactionId,
@@ -554,7 +586,7 @@ describe("cortiClient.stream.connect", () => {
         it.skip("should reject missing configuration", async () => {
             expect.assertions(2);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
 
             const streamSocket = await cortiClient.stream.connect({
                 id: interactionId,
@@ -575,7 +607,7 @@ describe("cortiClient.stream.connect", () => {
         it("should reject configuration with invalid participant role", async () => {
             expect.assertions(2);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
 
             const streamSocket = await cortiClient.stream.connect({
                 id: interactionId,
@@ -587,6 +619,39 @@ describe("cortiClient.stream.connect", () => {
                             {
                                 channel: 0,
                                 role: "invalid_role" as any,
+                            },
+                        ],
+                    },
+                    mode: {
+                        type: "transcription",
+                    },
+                },
+            });
+            activeSockets.push(streamSocket);
+
+            const messages: any[] = [];
+            await waitForWebSocketMessage(streamSocket, "CONFIG_DENIED", { messages, rejectOnWrongMessage: true });
+
+            expect([2, 3]).toContain(streamSocket.socket.readyState); // CLOSING or CLOSED
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
+
+        it("should reject configuration when audioFormat is invalid", async () => {
+            expect.assertions(2);
+
+            const interactionId = await createTestInteraction(cortiClient);
+
+            const streamSocket = await cortiClient.stream.connect({
+                id: interactionId,
+                awaitConfiguration: false,
+                configuration: {
+                    audioFormat: "application/json",
+                    transcription: {
+                        primaryLanguage: "en",
+                        participants: [
+                            {
+                                channel: 0,
+                                role: "doctor",
                             },
                         ],
                     },

@@ -17,6 +17,12 @@ export function createTestCortiClient(): CortiClient {
         throw new Error("Missing required environment variables for CortiClient");
     }
 
+    console.log("Connecting to Corti API with:", {
+        environment: process.env.CORTI_ENVIRONMENT,
+        tenantName: process.env.CORTI_TENANT_NAME,
+        clientId: process.env.CORTI_CLIENT_ID,
+    });
+
     return new CortiClient({
         environment: process.env.CORTI_ENVIRONMENT,
         tenantName: process.env.CORTI_TENANT_NAME,
@@ -27,16 +33,75 @@ export function createTestCortiClient(): CortiClient {
     });
 }
 
+/** Rethrow with a readable prefix; attach original error as `cause` when available. */
+export function rethrowWithContext(context: string, error: unknown): never {
+    const inner = error instanceof Error ? error.message : String(error);
+    const wrapped = new Error(`${context}: ${inner}`);
+    Object.defineProperty(wrapped, "cause", { value: error, enumerable: false });
+    throw wrapped;
+}
+
+function collectRejectedDeleteFailures(
+    kind: string,
+    ids: string[],
+    results: PromiseSettledResult<unknown>[],
+): string[] {
+    const failures: string[] = [];
+    for (let i = 0; i < results.length; i++) {
+        const r = results[i];
+        if (r.status !== "rejected") {
+            continue;
+        }
+
+        const id = ids[i];
+        const reason = r.reason;
+        const detail = reason instanceof Error ? reason.message : String(reason);
+        const msg = `Failed to delete ${kind} ${id}: ${detail}`;
+        console.warn(msg, reason);
+        failures.push(msg);
+    }
+    return failures;
+}
+
+const AGENTS_LIST_PAGE_SIZE = 100;
+
 /**
- * Creates a test interaction using faker data
- * Optionally pushes the created interactionId to the provided array
- * Allows overriding default interaction data
+ * Agents.list has no Page iterator — walk **`limit`** / **`offset`** manually in case the service caps page size.
  */
-export async function createTestInteraction(
+async function mergeAgentIdsFromPagedLists(
     cortiClient: CortiClient,
-    createdInteractionIds?: string[],
-    overrideData?: any,
-): Promise<string> {
+    ephemeral: boolean,
+    into: Set<string>,
+): Promise<void> {
+    let offset = 0;
+
+    while (true) {
+        const batch = await cortiClient.agents.list({
+            limit: AGENTS_LIST_PAGE_SIZE,
+            offset,
+            ephemeral,
+        });
+
+        for (const agent of batch) {
+            const { id } = agent;
+            if (id != null) {
+                into.add(id);
+            }
+        }
+
+        if (batch.length === 0 || batch.length < AGENTS_LIST_PAGE_SIZE) {
+            break;
+        }
+
+        offset += batch.length;
+    }
+}
+
+/**
+ * Creates a test interaction using faker data.
+ * Optionally pass overrides for the interaction payload shape.
+ */
+export async function createTestInteraction(cortiClient: CortiClient, overrideData?: any): Promise<string> {
     const defaultData = {
         encounter: {
             identifier: faker.string.alphanumeric(20),
@@ -57,25 +122,58 @@ export async function createTestInteraction(
 
     const interaction = await cortiClient.interactions.create(interactionData);
 
-    if (createdInteractionIds) {
-        createdInteractionIds.push(interaction.interactionId);
-    }
-
     await pause();
 
     return interaction.interactionId;
 }
 
 /**
- * Cleans up interactions by deleting them (this will cascade delete all associated resources)
+ * Deletes all interactions and agents in the current tenant.
+ * Used by the empty-state integration suite (see tests/custom/empty-state.ts).
+ *
+ * Interactions: collect ids via `for await` over `interactions.list()`, then delete all in parallel with
+ * `Promise.allSettled`. Failures are logged after that batch settles.
+ *
+ * Agents: for each **`ephemeral`** (`false` then `true`), walk **`agents.list({ limit, offset })`** until a page
+ * is shorter than **`limit`** (or empty); merge ids then **`Promise.allSettled`** delete. References without **`id`** are skipped.
  */
-export async function cleanupInteractions(cortiClient: CortiClient, interactionIds: string[]): Promise<void> {
-    for (const interactionId of interactionIds) {
-        try {
-            await cortiClient.interactions.delete(interactionId);
-        } catch (error) {
-            console.warn(`Failed to clean up interaction ${interactionId}:`, error);
+export async function purgeIntegrationTenant(cortiClient: CortiClient): Promise<void> {
+    const failedDeletes: string[] = [];
+
+    try {
+        const page = await cortiClient.interactions.list();
+        const interactionIds: string[] = [];
+
+        for await (const row of page) {
+            interactionIds.push(String(row.id));
         }
+
+        const interactionResults = await Promise.allSettled(
+            interactionIds.map((id) => cortiClient.interactions.delete(id)),
+        );
+        failedDeletes.push(...collectRejectedDeleteFailures("interaction", interactionIds, interactionResults));
+    } catch (error) {
+        console.error("purgeIntegrationTenant: interactions phase failed:", error);
+        rethrowWithContext("purgeIntegrationTenant interactions phase failed", error);
+    }
+
+    try {
+        const agentIds = new Set<string>();
+        await mergeAgentIdsFromPagedLists(cortiClient, false, agentIds);
+        await mergeAgentIdsFromPagedLists(cortiClient, true, agentIds);
+
+        const agentIdList = [...agentIds];
+        const agentResults = await Promise.allSettled(agentIdList.map((id) => cortiClient.agents.delete(id)));
+        failedDeletes.push(...collectRejectedDeleteFailures("agent", agentIdList, agentResults));
+    } catch (error) {
+        console.error("purgeIntegrationTenant: agents phase failed:", error);
+        rethrowWithContext("purgeIntegrationTenant agents phase failed", error);
+    }
+
+    if (failedDeletes.length > 0) {
+        throw new Error(
+            `purgeIntegrationTenant: ${failedDeletes.length} delete(s) failed — ${failedDeletes.join(" | ")}`,
+        );
     }
 }
 
@@ -306,11 +404,9 @@ export function waitForWebSocketMessage(
 }
 
 /**
- * Creates a test agent using faker data and returns its ID
- * Optionally pushes the created agentId to the provided array
- * Used for testing agents functionality
+ * Creates a test agent using faker data and returns the created agent.
  */
-export async function createTestAgent(cortiClient: CortiClient, createdAgentIds?: string[]): Promise<any> {
+export async function createTestAgent(cortiClient: CortiClient): Promise<any> {
     const agent = await cortiClient.agents.create({
         name: faker.lorem.words(3),
         description: faker.lorem.sentence(),
@@ -320,27 +416,9 @@ export async function createTestAgent(cortiClient: CortiClient, createdAgentIds?
         throw new Error("Agent creation failed - no ID returned.");
     }
 
-    if (createdAgentIds) {
-        createdAgentIds.push(agent.id);
-    }
-
     await pause();
 
     return agent;
-}
-
-/**
- * Cleans up agents by deleting them
- */
-export async function cleanupAgents(cortiClient: CortiClient, agentIds: string[]): Promise<void> {
-    for (const agentId of agentIds) {
-        try {
-            console.log(`Cleanup agent ${agentId}`);
-            await cortiClient.agents.delete(agentId);
-        } catch (error) {
-            console.warn(`Failed to clean up agent ${agentId}:`, error);
-        }
-    }
 }
 
 /**

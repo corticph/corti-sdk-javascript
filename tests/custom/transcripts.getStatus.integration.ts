@@ -1,7 +1,6 @@
 import { faker } from "@faker-js/faker";
 import type { CortiClient } from "../../src";
 import {
-    cleanupInteractions,
     createTestCortiClient,
     createTestInteraction,
     createTestRecording,
@@ -12,7 +11,6 @@ import {
 describe("cortiClient.transcripts.getStatus", () => {
     let cortiClient: CortiClient;
     let consoleWarnSpy: ReturnType<typeof setupConsoleWarnSpy>;
-    let createdInteractionIds: string[] = [];
 
     beforeAll(() => {
         cortiClient = createTestCortiClient();
@@ -20,20 +18,17 @@ describe("cortiClient.transcripts.getStatus", () => {
 
     beforeEach(() => {
         consoleWarnSpy = setupConsoleWarnSpy();
-        createdInteractionIds = [];
     });
 
-    afterEach(async () => {
+    afterEach(() => {
         consoleWarnSpy.mockRestore();
-        await cleanupInteractions(cortiClient, createdInteractionIds);
-        createdInteractionIds = [];
     });
 
     describe("should get transcript status with only required values", () => {
         it("should return a valid status for an existing transcript", async () => {
             expect.assertions(2);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
             const recordingId = await createTestRecording(cortiClient, interactionId);
             const transcriptId = await createTestTranscript(cortiClient, interactionId, recordingId);
 
@@ -56,7 +51,7 @@ describe("cortiClient.transcripts.getStatus", () => {
         it("should throw error when transcript ID is null", async () => {
             expect.assertions(1);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
 
             await expect(cortiClient.transcripts.getStatus(interactionId, null as any)).rejects.toThrow(
                 "Expected string. Received null.",
@@ -74,7 +69,7 @@ describe("cortiClient.transcripts.getStatus", () => {
         it("should throw error when transcript ID is undefined", async () => {
             expect.assertions(1);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
 
             await expect(cortiClient.transcripts.getStatus(interactionId, undefined as any)).rejects.toThrow(
                 "Expected string. Received undefined.",
@@ -94,7 +89,7 @@ describe("cortiClient.transcripts.getStatus", () => {
         it("should throw error when transcript ID is invalid format", async () => {
             expect.assertions(1);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
 
             await expect(cortiClient.transcripts.getStatus(interactionId, "invalid-uuid")).rejects.toThrow(
                 "Status code: 400",
@@ -112,7 +107,7 @@ describe("cortiClient.transcripts.getStatus", () => {
         it("should throw error when transcript ID does not exist", async () => {
             expect.assertions(1);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
 
             await expect(cortiClient.transcripts.getStatus(interactionId, faker.string.uuid())).rejects.toThrow(
                 "Status code: 404",

@@ -4,11 +4,11 @@ import type * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
 import type * as serializers from "../index.js";
 
-export const StreamConfigXCortiRetentionPolicy: core.serialization.Schema<
-    serializers.StreamConfigXCortiRetentionPolicy.Raw,
-    Corti.StreamConfigXCortiRetentionPolicy
+export const StreamConfigRetentionPolicy: core.serialization.Schema<
+    serializers.StreamConfigRetentionPolicy.Raw,
+    Corti.StreamConfigRetentionPolicy
 > = core.serialization.enum_(["retain", "none"]);
 
-export declare namespace StreamConfigXCortiRetentionPolicy {
+export declare namespace StreamConfigRetentionPolicy {
     export type Raw = "retain" | "none";
 }
