@@ -17,7 +17,7 @@ export function createTestCortiClient(): CortiClient {
         throw new Error("Missing required environment variables for CortiClient");
     }
 
-    console.log('Connecting to Corti API with:', {
+    console.log("Connecting to Corti API with:", {
         environment: process.env.CORTI_ENVIRONMENT,
         tenantName: process.env.CORTI_TENANT_NAME,
         clientId: process.env.CORTI_CLIENT_ID,
