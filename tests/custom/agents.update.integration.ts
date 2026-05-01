@@ -1,11 +1,10 @@
 import { faker } from "@faker-js/faker";
 import type { CortiClient } from "../../src";
-import { cleanupAgents, createTestAgent, createTestCortiClient, setupConsoleWarnSpy } from "./testUtils";
+import { createTestAgent, createTestCortiClient, setupConsoleWarnSpy } from "./testUtils";
 
 describe("cortiClient.agents.update", () => {
     let cortiClient: CortiClient;
     let consoleWarnSpy: ReturnType<typeof setupConsoleWarnSpy>;
-    let createdAgentIds: string[] = [];
 
     beforeAll(() => {
         cortiClient = createTestCortiClient();
@@ -13,20 +12,17 @@ describe("cortiClient.agents.update", () => {
 
     beforeEach(() => {
         consoleWarnSpy = setupConsoleWarnSpy();
-        createdAgentIds = [];
     });
 
-    afterEach(async () => {
+    afterEach(() => {
         consoleWarnSpy.mockRestore();
-        await cleanupAgents(cortiClient, createdAgentIds);
-        createdAgentIds = [];
     });
 
     describe("should update agent with only required values", () => {
         it("should update agent with empty body without errors or warnings", async () => {
             expect.assertions(2);
 
-            const agent = await createTestAgent(cortiClient, createdAgentIds);
+            const agent = await createTestAgent(cortiClient);
 
             const result = await cortiClient.agents.update(agent.id, {});
 
@@ -39,7 +35,7 @@ describe("cortiClient.agents.update", () => {
         it("should update agent with name without errors or warnings", async () => {
             expect.assertions(2);
 
-            const agent = await createTestAgent(cortiClient, createdAgentIds);
+            const agent = await createTestAgent(cortiClient);
 
             const result = await cortiClient.agents.update(agent.id, {
                 name: faker.lorem.words(3),
@@ -52,7 +48,7 @@ describe("cortiClient.agents.update", () => {
         it("should update agent with description without errors or warnings", async () => {
             expect.assertions(2);
 
-            const agent = await createTestAgent(cortiClient, createdAgentIds);
+            const agent = await createTestAgent(cortiClient);
 
             const result = await cortiClient.agents.update(agent.id, {
                 description: faker.lorem.sentence(),
@@ -65,7 +61,7 @@ describe("cortiClient.agents.update", () => {
         it("should update agent with systemPrompt without errors or warnings", async () => {
             expect.assertions(2);
 
-            const agent = await createTestAgent(cortiClient, createdAgentIds);
+            const agent = await createTestAgent(cortiClient);
 
             const result = await cortiClient.agents.update(agent.id, {
                 systemPrompt: faker.lorem.paragraph(),
@@ -78,7 +74,7 @@ describe("cortiClient.agents.update", () => {
         it("should update agent with inline expert without errors or warnings", async () => {
             expect.assertions(2);
 
-            const agent = await createTestAgent(cortiClient, createdAgentIds);
+            const agent = await createTestAgent(cortiClient);
 
             const result = await cortiClient.agents.update(agent.id, {
                 experts: [
@@ -97,7 +93,7 @@ describe("cortiClient.agents.update", () => {
         it("should update agent with all optional parameters without errors or warnings", async () => {
             expect.assertions(2);
 
-            const agent = await createTestAgent(cortiClient, createdAgentIds);
+            const agent = await createTestAgent(cortiClient);
 
             const result = await cortiClient.agents.update(agent.id, {
                 name: faker.lorem.words(3),

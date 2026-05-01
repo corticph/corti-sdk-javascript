@@ -1,11 +1,10 @@
 import { faker } from "@faker-js/faker";
 import type { CortiClient } from "../../src";
-import { cleanupAgents, createTestAgent, createTestCortiClient, setupConsoleWarnSpy } from "./testUtils";
+import { createTestAgent, createTestCortiClient, setupConsoleWarnSpy } from "./testUtils";
 
 describe("cortiClient.agents.delete", () => {
     let cortiClient: CortiClient;
     let consoleWarnSpy: ReturnType<typeof setupConsoleWarnSpy>;
-    let createdAgentIds: string[] = [];
 
     beforeAll(() => {
         cortiClient = createTestCortiClient();
@@ -13,20 +12,17 @@ describe("cortiClient.agents.delete", () => {
 
     beforeEach(() => {
         consoleWarnSpy = setupConsoleWarnSpy();
-        createdAgentIds = [];
     });
 
-    afterEach(async () => {
+    afterEach(() => {
         consoleWarnSpy.mockRestore();
-        await cleanupAgents(cortiClient, createdAgentIds);
-        createdAgentIds = [];
     });
 
     describe("should delete agent with only required values", () => {
         it("should successfully delete an existing agent without errors or warnings", async () => {
             expect.assertions(2);
 
-            const agent = await createTestAgent(cortiClient, createdAgentIds);
+            const agent = await createTestAgent(cortiClient);
 
             const result = await cortiClient.agents.delete(agent.id);
 

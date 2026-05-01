@@ -1,11 +1,10 @@
 import { faker } from "@faker-js/faker";
 import type { CortiClient } from "../../src";
-import { cleanupAgents, createTestAgent, createTestCortiClient, setupConsoleWarnSpy } from "./testUtils";
+import { createTestAgent, createTestCortiClient, setupConsoleWarnSpy } from "./testUtils";
 
 describe("cortiClient.agents.getCard", () => {
     let cortiClient: CortiClient;
     let consoleWarnSpy: ReturnType<typeof setupConsoleWarnSpy>;
-    let createdAgentIds: string[] = [];
 
     beforeAll(() => {
         cortiClient = createTestCortiClient();
@@ -13,20 +12,17 @@ describe("cortiClient.agents.getCard", () => {
 
     beforeEach(() => {
         consoleWarnSpy = setupConsoleWarnSpy();
-        createdAgentIds = [];
     });
 
-    afterEach(async () => {
+    afterEach(() => {
         consoleWarnSpy.mockRestore();
-        await cleanupAgents(cortiClient, createdAgentIds);
-        createdAgentIds = [];
     });
 
     describe("should retrieve agent card with only required values", () => {
         it("should successfully retrieve an agent card without errors or warnings", async () => {
             expect.assertions(2);
 
-            const agent = await createTestAgent(cortiClient, createdAgentIds);
+            const agent = await createTestAgent(cortiClient);
 
             const result = await cortiClient.agents.getCard(agent.id);
 

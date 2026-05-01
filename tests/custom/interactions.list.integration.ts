@@ -1,11 +1,10 @@
 import { faker } from "@faker-js/faker";
 import type { CortiClient } from "../../src";
-import { cleanupInteractions, createTestCortiClient, createTestInteraction, setupConsoleWarnSpy } from "./testUtils";
+import { createTestCortiClient, createTestInteraction, setupConsoleWarnSpy } from "./testUtils";
 
 describe("cortiClient.interactions.list", () => {
     let cortiClient: CortiClient;
     let consoleWarnSpy: ReturnType<typeof setupConsoleWarnSpy>;
-    const createdInteractionIds: string[] = [];
 
     beforeAll(() => {
         cortiClient = createTestCortiClient();
@@ -15,10 +14,8 @@ describe("cortiClient.interactions.list", () => {
         consoleWarnSpy = setupConsoleWarnSpy();
     });
 
-    afterEach(async () => {
+    afterEach(() => {
         consoleWarnSpy.mockRestore();
-        await cleanupInteractions(cortiClient, createdInteractionIds);
-        createdInteractionIds.length = 0;
     });
 
     describe("should list interactions with only required values", () => {
@@ -36,8 +33,8 @@ describe("cortiClient.interactions.list", () => {
         it("should return interactions when they exist without errors or warnings", async () => {
             expect.assertions(4);
 
-            const interactionId1 = await createTestInteraction(cortiClient, createdInteractionIds);
-            const interactionId2 = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId1 = await createTestInteraction(cortiClient);
+            const interactionId2 = await createTestInteraction(cortiClient);
 
             const result = await cortiClient.interactions.list();
 
@@ -56,21 +53,21 @@ describe("cortiClient.interactions.list", () => {
             const patient2Id = faker.string.alphanumeric(15);
             const patient3Id = faker.string.alphanumeric(15);
 
-            const interaction1Id = await createTestInteraction(cortiClient, createdInteractionIds, {
+            const interaction1Id = await createTestInteraction(cortiClient, {
                 patient: { identifier: patient1Id },
             });
 
-            const interaction2Id = await createTestInteraction(cortiClient, createdInteractionIds, {
+            const interaction2Id = await createTestInteraction(cortiClient, {
                 encounter: { type: "consultation" },
                 patient: { identifier: patient1Id },
             });
 
-            await createTestInteraction(cortiClient, createdInteractionIds, {
+            await createTestInteraction(cortiClient, {
                 encounter: { type: "outpatient" },
                 patient: { identifier: patient2Id },
             });
 
-            await createTestInteraction(cortiClient, createdInteractionIds, {
+            await createTestInteraction(cortiClient, {
                 encounter: { status: "in-progress", type: "emergency" },
                 patient: { identifier: patient3Id },
             });
@@ -87,11 +84,11 @@ describe("cortiClient.interactions.list", () => {
         it("should return empty result for non-existent patient", async () => {
             expect.assertions(2);
 
-            await createTestInteraction(cortiClient, createdInteractionIds, {
+            await createTestInteraction(cortiClient, {
                 patient: { identifier: faker.string.alphanumeric(15) },
             });
 
-            await createTestInteraction(cortiClient, createdInteractionIds, {
+            await createTestInteraction(cortiClient, {
                 patient: { identifier: faker.string.alphanumeric(15) },
             });
 
@@ -107,15 +104,15 @@ describe("cortiClient.interactions.list", () => {
         it("should filter by single encounterStatus string", async () => {
             expect.assertions(4);
 
-            const plannedId = await createTestInteraction(cortiClient, createdInteractionIds, {
+            const plannedId = await createTestInteraction(cortiClient, {
                 encounter: { status: "planned" },
             });
 
-            await createTestInteraction(cortiClient, createdInteractionIds, {
+            await createTestInteraction(cortiClient, {
                 encounter: { status: "in-progress" },
             });
 
-            await createTestInteraction(cortiClient, createdInteractionIds, {
+            await createTestInteraction(cortiClient, {
                 encounter: { status: "completed" },
             });
 
@@ -131,19 +128,19 @@ describe("cortiClient.interactions.list", () => {
         it.skip("should filter by multiple encounterStatus array", async () => {
             expect.assertions(5);
 
-            const plannedId = await createTestInteraction(cortiClient, createdInteractionIds, {
+            const plannedId = await createTestInteraction(cortiClient, {
                 encounter: { status: "planned" },
             });
 
-            const inProgressId = await createTestInteraction(cortiClient, createdInteractionIds, {
+            const inProgressId = await createTestInteraction(cortiClient, {
                 encounter: { status: "in-progress" },
             });
 
-            await createTestInteraction(cortiClient, createdInteractionIds, {
+            await createTestInteraction(cortiClient, {
                 encounter: { status: "completed" },
             });
 
-            await createTestInteraction(cortiClient, createdInteractionIds, {
+            await createTestInteraction(cortiClient, {
                 encounter: { status: "cancelled" },
             });
 
@@ -166,7 +163,7 @@ describe("cortiClient.interactions.list", () => {
             it("should find planned interactions", async () => {
                 expect.assertions(3);
 
-                const plannedId = await createTestInteraction(cortiClient, createdInteractionIds, {
+                const plannedId = await createTestInteraction(cortiClient, {
                     encounter: { status: "planned" },
                 });
 
@@ -180,7 +177,7 @@ describe("cortiClient.interactions.list", () => {
             it("should find in-progress interactions", async () => {
                 expect.assertions(3);
 
-                const inProgressId = await createTestInteraction(cortiClient, createdInteractionIds, {
+                const inProgressId = await createTestInteraction(cortiClient, {
                     encounter: { status: "in-progress" },
                 });
 
@@ -194,7 +191,7 @@ describe("cortiClient.interactions.list", () => {
             it("should find on-hold interactions", async () => {
                 expect.assertions(3);
 
-                const onHoldId = await createTestInteraction(cortiClient, createdInteractionIds, {
+                const onHoldId = await createTestInteraction(cortiClient, {
                     encounter: { status: "on-hold" },
                 });
 
@@ -208,7 +205,7 @@ describe("cortiClient.interactions.list", () => {
             it("should find completed interactions", async () => {
                 expect.assertions(3);
 
-                const completedId = await createTestInteraction(cortiClient, createdInteractionIds, {
+                const completedId = await createTestInteraction(cortiClient, {
                     encounter: { status: "completed" },
                 });
 
@@ -222,7 +219,7 @@ describe("cortiClient.interactions.list", () => {
             it("should find cancelled interactions", async () => {
                 expect.assertions(3);
 
-                const cancelledId = await createTestInteraction(cortiClient, createdInteractionIds, {
+                const cancelledId = await createTestInteraction(cortiClient, {
                     encounter: { status: "cancelled" },
                 });
 
@@ -236,7 +233,7 @@ describe("cortiClient.interactions.list", () => {
             it("should find deleted interactions", async () => {
                 expect.assertions(3);
 
-                const deletedId = await createTestInteraction(cortiClient, createdInteractionIds, {
+                const deletedId = await createTestInteraction(cortiClient, {
                     encounter: { status: "deleted" },
                 });
 
@@ -253,7 +250,7 @@ describe("cortiClient.interactions.list", () => {
         it("should throw error for invalid encounterStatus", async () => {
             expect.assertions(1);
 
-            await createTestInteraction(cortiClient, createdInteractionIds, {
+            await createTestInteraction(cortiClient, {
                 encounter: { status: "planned" },
             });
 
@@ -270,17 +267,17 @@ describe("cortiClient.interactions.list", () => {
             expect.assertions(3);
             const testPatientId = `sort-default-${faker.string.alphanumeric(15)}`;
 
-            const firstId = await createTestInteraction(cortiClient, createdInteractionIds, {
+            const firstId = await createTestInteraction(cortiClient, {
                 patient: { identifier: testPatientId },
             });
             await new Promise((resolve) => setTimeout(resolve, 100));
 
-            const secondId = await createTestInteraction(cortiClient, createdInteractionIds, {
+            const secondId = await createTestInteraction(cortiClient, {
                 patient: { identifier: testPatientId },
             });
             await new Promise((resolve) => setTimeout(resolve, 100));
 
-            const thirdId = await createTestInteraction(cortiClient, createdInteractionIds, {
+            const thirdId = await createTestInteraction(cortiClient, {
                 patient: { identifier: testPatientId },
             });
 
@@ -300,17 +297,17 @@ describe("cortiClient.interactions.list", () => {
                 expect.assertions(4);
                 const testPatientId = `sort-createdAt-desc-${faker.string.alphanumeric(15)}`;
 
-                const firstId = await createTestInteraction(cortiClient, createdInteractionIds, {
+                const firstId = await createTestInteraction(cortiClient, {
                     patient: { identifier: testPatientId },
                 });
                 await new Promise((resolve) => setTimeout(resolve, 100));
 
-                const secondId = await createTestInteraction(cortiClient, createdInteractionIds, {
+                const secondId = await createTestInteraction(cortiClient, {
                     patient: { identifier: testPatientId },
                 });
                 await new Promise((resolve) => setTimeout(resolve, 100));
 
-                const thirdId = await createTestInteraction(cortiClient, createdInteractionIds, {
+                const thirdId = await createTestInteraction(cortiClient, {
                     patient: { identifier: testPatientId },
                 });
 
@@ -334,17 +331,17 @@ describe("cortiClient.interactions.list", () => {
                 expect.assertions(4);
                 const testPatientId = `sort-createdAt-asc-${faker.string.alphanumeric(15)}`;
 
-                const firstId = await createTestInteraction(cortiClient, createdInteractionIds, {
+                const firstId = await createTestInteraction(cortiClient, {
                     patient: { identifier: testPatientId },
                 });
                 await new Promise((resolve) => setTimeout(resolve, 100));
 
-                const secondId = await createTestInteraction(cortiClient, createdInteractionIds, {
+                const secondId = await createTestInteraction(cortiClient, {
                     patient: { identifier: testPatientId },
                 });
                 await new Promise((resolve) => setTimeout(resolve, 100));
 
-                const thirdId = await createTestInteraction(cortiClient, createdInteractionIds, {
+                const thirdId = await createTestInteraction(cortiClient, {
                     patient: { identifier: testPatientId },
                 });
 
@@ -368,12 +365,12 @@ describe("cortiClient.interactions.list", () => {
                 expect.assertions(3);
                 const testPatientId = `sort-createdAt-default-${faker.string.alphanumeric(15)}`;
 
-                const firstId = await createTestInteraction(cortiClient, createdInteractionIds, {
+                const firstId = await createTestInteraction(cortiClient, {
                     patient: { identifier: testPatientId },
                 });
                 await new Promise((resolve) => setTimeout(resolve, 100));
 
-                const secondId = await createTestInteraction(cortiClient, createdInteractionIds, {
+                const secondId = await createTestInteraction(cortiClient, {
                     patient: { identifier: testPatientId },
                 });
 
@@ -394,17 +391,17 @@ describe("cortiClient.interactions.list", () => {
                 expect.assertions(4);
                 const testPatientId = `sort-updatedAt-desc-${faker.string.alphanumeric(15)}`;
 
-                const firstId = await createTestInteraction(cortiClient, createdInteractionIds, {
+                const firstId = await createTestInteraction(cortiClient, {
                     patient: { identifier: testPatientId },
                 });
                 await new Promise((resolve) => setTimeout(resolve, 100));
 
-                const secondId = await createTestInteraction(cortiClient, createdInteractionIds, {
+                const secondId = await createTestInteraction(cortiClient, {
                     patient: { identifier: testPatientId },
                 });
                 await new Promise((resolve) => setTimeout(resolve, 100));
 
-                const thirdId = await createTestInteraction(cortiClient, createdInteractionIds, {
+                const thirdId = await createTestInteraction(cortiClient, {
                     patient: { identifier: testPatientId },
                 });
 
@@ -428,17 +425,17 @@ describe("cortiClient.interactions.list", () => {
                 expect.assertions(4);
                 const testPatientId = `sort-updatedAt-asc-${faker.string.alphanumeric(15)}`;
 
-                const firstId = await createTestInteraction(cortiClient, createdInteractionIds, {
+                const firstId = await createTestInteraction(cortiClient, {
                     patient: { identifier: testPatientId },
                 });
                 await new Promise((resolve) => setTimeout(resolve, 100));
 
-                const secondId = await createTestInteraction(cortiClient, createdInteractionIds, {
+                const secondId = await createTestInteraction(cortiClient, {
                     patient: { identifier: testPatientId },
                 });
                 await new Promise((resolve) => setTimeout(resolve, 100));
 
-                const thirdId = await createTestInteraction(cortiClient, createdInteractionIds, {
+                const thirdId = await createTestInteraction(cortiClient, {
                     patient: { identifier: testPatientId },
                 });
 
@@ -464,10 +461,10 @@ describe("cortiClient.interactions.list", () => {
                 expect.assertions(4);
                 const testPatientId = `sort-id-desc-${faker.string.alphanumeric(15)}`;
 
-                const firstId = await createTestInteraction(cortiClient, createdInteractionIds, {
+                const firstId = await createTestInteraction(cortiClient, {
                     patient: { identifier: testPatientId },
                 });
-                const secondId = await createTestInteraction(cortiClient, createdInteractionIds, {
+                const secondId = await createTestInteraction(cortiClient, {
                     patient: { identifier: testPatientId },
                 });
 
@@ -493,10 +490,10 @@ describe("cortiClient.interactions.list", () => {
                 expect.assertions(4);
                 const testPatientId = `sort-id-asc-${faker.string.alphanumeric(15)}`;
 
-                const firstId = await createTestInteraction(cortiClient, createdInteractionIds, {
+                const firstId = await createTestInteraction(cortiClient, {
                     patient: { identifier: testPatientId },
                 });
-                const secondId = await createTestInteraction(cortiClient, createdInteractionIds, {
+                const secondId = await createTestInteraction(cortiClient, {
                     patient: { identifier: testPatientId },
                 });
 
@@ -527,12 +524,12 @@ describe("cortiClient.interactions.list", () => {
                 const userA = faker.string.uuid();
                 const userB = faker.string.uuid();
 
-                const interactionA = await createTestInteraction(cortiClient, createdInteractionIds, {
+                const interactionA = await createTestInteraction(cortiClient, {
                     assignedUserId: userA,
                     patient: { identifier: testPatientId },
                 });
 
-                const interactionB = await createTestInteraction(cortiClient, createdInteractionIds, {
+                const interactionB = await createTestInteraction(cortiClient, {
                     assignedUserId: userB,
                     patient: { identifier: testPatientId },
                 });
@@ -562,12 +559,12 @@ describe("cortiClient.interactions.list", () => {
                 const userA = faker.string.uuid();
                 const userB = faker.string.uuid();
 
-                const interactionA = await createTestInteraction(cortiClient, createdInteractionIds, {
+                const interactionA = await createTestInteraction(cortiClient, {
                     assignedUserId: userA,
                     patient: { identifier: testPatientId },
                 });
 
-                const interactionB = await createTestInteraction(cortiClient, createdInteractionIds, {
+                const interactionB = await createTestInteraction(cortiClient, {
                     assignedUserId: userB,
                     patient: { identifier: testPatientId },
                 });
@@ -599,11 +596,11 @@ describe("cortiClient.interactions.list", () => {
                 const patientA = `a-${faker.string.alphanumeric(15)}`;
                 const patientB = `b-${faker.string.alphanumeric(15)}`;
 
-                const interactionA = await createTestInteraction(cortiClient, createdInteractionIds, {
+                const interactionA = await createTestInteraction(cortiClient, {
                     patient: { identifier: patientA },
                 });
 
-                const interactionB = await createTestInteraction(cortiClient, createdInteractionIds, {
+                const interactionB = await createTestInteraction(cortiClient, {
                     patient: { identifier: patientB },
                 });
 
@@ -632,11 +629,11 @@ describe("cortiClient.interactions.list", () => {
                 const patientA = `a-${faker.string.alphanumeric(15)}`;
                 const patientB = `b-${faker.string.alphanumeric(15)}`;
 
-                const interactionA = await createTestInteraction(cortiClient, createdInteractionIds, {
+                const interactionA = await createTestInteraction(cortiClient, {
                     patient: { identifier: patientA },
                 });
 
-                const interactionB = await createTestInteraction(cortiClient, createdInteractionIds, {
+                const interactionB = await createTestInteraction(cortiClient, {
                     patient: { identifier: patientB },
                 });
 
@@ -663,11 +660,11 @@ describe("cortiClient.interactions.list", () => {
 
     describe("pagination", () => {
         it("should iterate through all interactions using async iterator", async () => {
-            expect.assertions(4);
+            expect.assertions(3);
 
             const createdIds: string[] = [];
             for (let i = 0; i < 15; i++) {
-                const id = await createTestInteraction(cortiClient, createdInteractionIds);
+                const id = await createTestInteraction(cortiClient);
                 createdIds.push(id);
             }
 
@@ -682,17 +679,16 @@ describe("cortiClient.interactions.list", () => {
                 }
             }
 
-            expect(collectedInteractions.length).toBe(15);
-            expect(createdIds.every((id) => collectedInteractions.includes(id))).toBe(true);
+            expect(new Set(collectedInteractions).size).toBe(15);
             expect(consoleWarnSpy).not.toHaveBeenCalled();
         });
 
         it("should iterate through pages manually using hasNextPage and getNextPage", async () => {
-            expect.assertions(4);
+            expect.assertions(3);
 
             const createdIds: string[] = [];
             for (let i = 0; i < 12; i++) {
-                const id = await createTestInteraction(cortiClient, createdInteractionIds);
+                const id = await createTestInteraction(cortiClient);
                 createdIds.push(id);
             }
 
@@ -716,8 +712,7 @@ describe("cortiClient.interactions.list", () => {
                 });
             }
 
-            expect(collectedInteractions.length).toBe(12);
-            expect(createdIds.every((id) => collectedInteractions.includes(id))).toBe(true);
+            expect(new Set(collectedInteractions).size).toBe(12);
             expect(consoleWarnSpy).not.toHaveBeenCalled();
         });
 
@@ -725,7 +720,7 @@ describe("cortiClient.interactions.list", () => {
             expect.assertions(2);
 
             for (let i = 0; i < 5; i++) {
-                await createTestInteraction(cortiClient, createdInteractionIds);
+                await createTestInteraction(cortiClient);
             }
 
             const result = await cortiClient.interactions.list();

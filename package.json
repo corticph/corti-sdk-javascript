@@ -66,7 +66,9 @@
         "test": "vitest",
         "test:unit": "vitest --project unit",
         "test:wire": "vitest --project wire",
-        "test:integration": "vitest --config vitest.integration.config.mts"
+        "test:integration": "pnpm test:integration:main && pnpm test:integration:empty-state",
+        "test:integration:main": "vitest run --config vitest.integration.config.mts --project integration",
+        "test:integration:empty-state": "vitest run --config vitest.integration.config.mts --project integration-empty-state"
     },
     "dependencies": {
         "ws": "^8.16.0"

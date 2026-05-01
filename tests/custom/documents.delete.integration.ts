@@ -1,17 +1,10 @@
 import { faker } from "@faker-js/faker";
 import type { CortiClient } from "../../src";
-import {
-    cleanupInteractions,
-    createTestCortiClient,
-    createTestDocument,
-    createTestInteraction,
-    setupConsoleWarnSpy,
-} from "./testUtils";
+import { createTestCortiClient, createTestDocument, createTestInteraction, setupConsoleWarnSpy } from "./testUtils";
 
 describe("cortiClient.documents.delete", () => {
     let cortiClient: CortiClient;
     let consoleWarnSpy: ReturnType<typeof setupConsoleWarnSpy>;
-    let createdInteractionIds: string[] = [];
 
     beforeAll(() => {
         cortiClient = createTestCortiClient();
@@ -19,20 +12,17 @@ describe("cortiClient.documents.delete", () => {
 
     beforeEach(() => {
         consoleWarnSpy = setupConsoleWarnSpy();
-        createdInteractionIds = [];
     });
 
-    afterEach(async () => {
+    afterEach(() => {
         consoleWarnSpy.mockRestore();
-        await cleanupInteractions(cortiClient, createdInteractionIds);
-        createdInteractionIds = [];
     });
 
     describe("should delete document with only required values", () => {
         it("should successfully delete an existing document without errors or warnings", async () => {
             expect.assertions(2);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
             const documentId = await createTestDocument(cortiClient, interactionId);
 
             const result = await cortiClient.documents.delete(interactionId, documentId);
@@ -52,7 +42,7 @@ describe("cortiClient.documents.delete", () => {
         it("should throw error when document ID is missing", async () => {
             expect.assertions(1);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
 
             await expect(cortiClient.documents.delete(interactionId, undefined as any)).rejects.toThrow();
         });
@@ -70,7 +60,7 @@ describe("cortiClient.documents.delete", () => {
         it("should throw error when document ID is invalid format", async () => {
             expect.assertions(1);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
 
             await expect(cortiClient.documents.delete(interactionId, "invalid-uuid")).rejects.toThrow(
                 "Status code: 400",
@@ -88,7 +78,7 @@ describe("cortiClient.documents.delete", () => {
         it("should throw error when document ID does not exist", async () => {
             expect.assertions(1);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
 
             await expect(cortiClient.documents.delete(interactionId, faker.string.uuid())).rejects.toThrow(
                 "Status code: 404",

@@ -1,17 +1,10 @@
 import { faker } from "@faker-js/faker";
 import type { CortiClient } from "../../src";
-import {
-    cleanupAgents,
-    createTestAgent,
-    createTestCortiClient,
-    sendTestMessage,
-    setupConsoleWarnSpy,
-} from "./testUtils";
+import { createTestAgent, createTestCortiClient, sendTestMessage, setupConsoleWarnSpy } from "./testUtils";
 
 describe("cortiClient.agents.getTask", () => {
     let cortiClient: CortiClient;
     let consoleWarnSpy: ReturnType<typeof setupConsoleWarnSpy>;
-    let createdAgentIds: string[] = [];
 
     beforeAll(() => {
         cortiClient = createTestCortiClient();
@@ -19,20 +12,17 @@ describe("cortiClient.agents.getTask", () => {
 
     beforeEach(() => {
         consoleWarnSpy = setupConsoleWarnSpy();
-        createdAgentIds = [];
     });
 
-    afterEach(async () => {
+    afterEach(() => {
         consoleWarnSpy.mockRestore();
-        await cleanupAgents(cortiClient, createdAgentIds);
-        createdAgentIds = [];
     });
 
     describe("should retrieve task with only required values", () => {
         it("should successfully retrieve a task without errors or warnings", async () => {
             expect.assertions(2);
 
-            const agent = await createTestAgent(cortiClient, createdAgentIds);
+            const agent = await createTestAgent(cortiClient);
             const messageResponse = await sendTestMessage(cortiClient, agent.id);
             const taskId = messageResponse.task?.id;
 
@@ -51,7 +41,7 @@ describe("cortiClient.agents.getTask", () => {
         it("should retrieve task with historyLength parameter without errors or warnings", async () => {
             expect.assertions(2);
 
-            const agent = await createTestAgent(cortiClient, createdAgentIds);
+            const agent = await createTestAgent(cortiClient);
             const messageResponse = await sendTestMessage(cortiClient, agent.id);
             const taskId = messageResponse.task?.id;
 
@@ -78,7 +68,7 @@ describe("cortiClient.agents.getTask", () => {
         it("should throw error when task ID is missing", async () => {
             expect.assertions(1);
 
-            const agent = await createTestAgent(cortiClient, createdAgentIds);
+            const agent = await createTestAgent(cortiClient);
 
             await expect(cortiClient.agents.getTask(agent.id, undefined as any)).rejects.toThrow();
         });
@@ -89,7 +79,7 @@ describe("cortiClient.agents.getTask", () => {
         it.skip("should throw error when agent ID is invalid format", async () => {
             expect.assertions(1);
 
-            const agent = await createTestAgent(cortiClient, createdAgentIds);
+            const agent = await createTestAgent(cortiClient);
             const messageResponse = await sendTestMessage(cortiClient, agent.id);
             const taskId = messageResponse.task?.id;
 
@@ -103,7 +93,7 @@ describe("cortiClient.agents.getTask", () => {
         it("should throw error when task ID is invalid format", async () => {
             expect.assertions(1);
 
-            const agent = await createTestAgent(cortiClient, createdAgentIds);
+            const agent = await createTestAgent(cortiClient);
 
             await expect(cortiClient.agents.getTask(agent.id, "invalid-uuid")).rejects.toThrow("Status code: 400");
         });
@@ -112,7 +102,7 @@ describe("cortiClient.agents.getTask", () => {
         it.skip("should throw error when agent ID does not exist", async () => {
             expect.assertions(1);
 
-            const agent = await createTestAgent(cortiClient, createdAgentIds);
+            const agent = await createTestAgent(cortiClient);
             const messageResponse = await sendTestMessage(cortiClient, agent.id);
             const taskId = messageResponse.task?.id;
 
@@ -126,7 +116,7 @@ describe("cortiClient.agents.getTask", () => {
         it("should throw error when task ID does not exist", async () => {
             expect.assertions(1);
 
-            const agent = await createTestAgent(cortiClient, createdAgentIds);
+            const agent = await createTestAgent(cortiClient);
 
             await expect(cortiClient.agents.getTask(agent.id, faker.string.uuid())).rejects.toThrow("Status code: 404");
         });
