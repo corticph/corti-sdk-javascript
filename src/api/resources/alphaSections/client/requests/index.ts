@@ -1,3 +1,3 @@
 export type { CreateSectionRequest } from "./CreateSectionRequest.js";
-export type { ListNewSectionsRequest } from "./ListNewSectionsRequest.js";
+export type { ListAlphaSectionsRequest } from "./ListAlphaSectionsRequest.js";
 export type { UpdateSectionRequest } from "./UpdateSectionRequest.js";

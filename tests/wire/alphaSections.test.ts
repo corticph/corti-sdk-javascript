@@ -5,7 +5,7 @@ import { CortiClient } from "../../src/Client";
 import { mockServerPool } from "../mock-server/MockServerPool";
 import { mockOAuth } from "./mockAuth";
 
-describe("NewSectionsClient", () => {
+describe("AlphaSectionsClient", () => {
     test("list", async () => {
         const server = mockServerPool.createServer();
         mockOAuth(server);
@@ -43,7 +43,7 @@ describe("NewSectionsClient", () => {
 
         server.mockEndpoint().get("/alpha/sections").respondWith().statusCode(200).jsonBody(rawResponseBody).build();
 
-        const response = await client.newSections.list();
+        const response = await client.alphaSections.list();
         expect(response).toEqual([
             {
                 id: "id",
@@ -123,7 +123,7 @@ describe("NewSectionsClient", () => {
             .jsonBody(rawResponseBody)
             .build();
 
-        const response = await client.newSections.create({
+        const response = await client.alphaSections.create({
             name: "name",
             language: "language",
             generation: {
@@ -196,7 +196,7 @@ describe("NewSectionsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.newSections.create({
+            return await client.alphaSections.create({
                 name: "name",
                 language: "language",
                 generation: {
@@ -254,7 +254,7 @@ describe("NewSectionsClient", () => {
             .jsonBody(rawResponseBody)
             .build();
 
-        const response = await client.newSections.get("sectionID");
+        const response = await client.alphaSections.get("sectionID");
         expect(response).toEqual({
             id: "id",
             inheritedFromId: "inheritedFromId",
@@ -305,7 +305,7 @@ describe("NewSectionsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.newSections.get("sectionID");
+            return await client.alphaSections.get("sectionID");
         }).rejects.toThrow(Corti.NotFoundError);
     });
 
@@ -323,7 +323,7 @@ describe("NewSectionsClient", () => {
 
         server.mockEndpoint().delete("/alpha/sections/sectionID").respondWith().statusCode(200).build();
 
-        const response = await client.newSections.delete("sectionID");
+        const response = await client.alphaSections.delete("sectionID");
         expect(response).toEqual(undefined);
     });
 
@@ -350,7 +350,7 @@ describe("NewSectionsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.newSections.delete("sectionID");
+            return await client.alphaSections.delete("sectionID");
         }).rejects.toThrow(Corti.NotFoundError);
     });
 
@@ -396,7 +396,7 @@ describe("NewSectionsClient", () => {
             .jsonBody(rawResponseBody)
             .build();
 
-        const response = await client.newSections.update("sectionID");
+        const response = await client.alphaSections.update("sectionID");
         expect(response).toEqual({
             id: "id",
             inheritedFromId: "inheritedFromId",
@@ -448,7 +448,7 @@ describe("NewSectionsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.newSections.update("sectionID");
+            return await client.alphaSections.update("sectionID");
         }).rejects.toThrow(Corti.BadRequestError);
     });
 
@@ -476,7 +476,7 @@ describe("NewSectionsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.newSections.update("sectionID");
+            return await client.alphaSections.update("sectionID");
         }).rejects.toThrow(Corti.NotFoundError);
     });
 });

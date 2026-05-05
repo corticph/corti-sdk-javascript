@@ -3,11 +3,11 @@
 import type * as Corti from "../../../../api/index.js";
 import * as core from "../../../../core/index.js";
 import type * as serializers from "../../../index.js";
-import { Section } from "../../../types/Section.js";
+import { Template } from "../../../types/Template.js";
 
-export const Response: core.serialization.Schema<serializers.newSections.list.Response.Raw, Corti.Section[]> =
-    core.serialization.list(Section);
+export const Response: core.serialization.Schema<serializers.alphaTemplates.list.Response.Raw, Corti.Template[]> =
+    core.serialization.list(Template);
 
 export declare namespace Response {
-    export type Raw = Section.Raw[];
+    export type Raw = Template.Raw[];
 }

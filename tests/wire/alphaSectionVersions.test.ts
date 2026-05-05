@@ -5,7 +5,7 @@ import { CortiClient } from "../../src/Client";
 import { mockServerPool } from "../mock-server/MockServerPool";
 import { mockOAuth } from "./mockAuth";
 
-describe("NewSectionVersionsClient", () => {
+describe("AlphaSectionVersionsClient", () => {
     test("list (1)", async () => {
         const server = mockServerPool.createServer();
         mockOAuth(server);
@@ -38,7 +38,7 @@ describe("NewSectionVersionsClient", () => {
             .jsonBody(rawResponseBody)
             .build();
 
-        const response = await client.newSectionVersions.list("sectionID");
+        const response = await client.alphaSectionVersions.list("sectionID");
         expect(response).toEqual([
             {
                 id: "id",
@@ -80,7 +80,7 @@ describe("NewSectionVersionsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.newSectionVersions.list("sectionID");
+            return await client.alphaSectionVersions.list("sectionID");
         }).rejects.toThrow(Corti.NotFoundError);
     });
 
@@ -125,7 +125,7 @@ describe("NewSectionVersionsClient", () => {
             .jsonBody(rawResponseBody)
             .build();
 
-        const response = await client.newSectionVersions.create("sectionID", {
+        const response = await client.alphaSectionVersions.create("sectionID", {
             title: "title",
             instructions: {
                 contentPrompt: "contentPrompt",
@@ -183,7 +183,7 @@ describe("NewSectionVersionsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.newSectionVersions.create("sectionID", {
+            return await client.alphaSectionVersions.create("sectionID", {
                 title: "title",
                 instructions: {
                     contentPrompt: "contentPrompt",
@@ -224,7 +224,7 @@ describe("NewSectionVersionsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.newSectionVersions.create("sectionID", {
+            return await client.alphaSectionVersions.create("sectionID", {
                 title: "title",
                 instructions: {
                     contentPrompt: "contentPrompt",
@@ -273,7 +273,7 @@ describe("NewSectionVersionsClient", () => {
             .jsonBody(rawResponseBody)
             .build();
 
-        const response = await client.newSectionVersions.get("sectionID", "versionID");
+        const response = await client.alphaSectionVersions.get("sectionID", "versionID");
         expect(response).toEqual({
             id: "id",
             versionNumber: 1,
@@ -317,7 +317,7 @@ describe("NewSectionVersionsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.newSectionVersions.get("sectionID", "versionID");
+            return await client.alphaSectionVersions.get("sectionID", "versionID");
         }).rejects.toThrow(Corti.NotFoundError);
     });
 
@@ -340,7 +340,7 @@ describe("NewSectionVersionsClient", () => {
             .statusCode(200)
             .build();
 
-        const response = await client.newSectionVersions.delete("sectionID", "versionID");
+        const response = await client.alphaSectionVersions.delete("sectionID", "versionID");
         expect(response).toEqual(undefined);
     });
 
@@ -367,7 +367,7 @@ describe("NewSectionVersionsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.newSectionVersions.delete("sectionID", "versionID");
+            return await client.alphaSectionVersions.delete("sectionID", "versionID");
         }).rejects.toThrow(Corti.NotFoundError);
     });
 
@@ -393,7 +393,7 @@ describe("NewSectionVersionsClient", () => {
             .jsonBody(rawResponseBody)
             .build();
 
-        const response = await client.newSectionVersions.publish("sectionID", "versionID");
+        const response = await client.alphaSectionVersions.publish("sectionID", "versionID");
         expect(response).toEqual({
             status: "published",
         });
@@ -422,7 +422,7 @@ describe("NewSectionVersionsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.newSectionVersions.publish("sectionID", "versionID");
+            return await client.alphaSectionVersions.publish("sectionID", "versionID");
         }).rejects.toThrow(Corti.NotFoundError);
     });
 });

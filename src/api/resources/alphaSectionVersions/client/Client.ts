@@ -9,43 +9,39 @@ import * as errors from "../../../../errors/index.js";
 import * as serializers from "../../../../serialization/index.js";
 import * as Corti from "../../../index.js";
 
-export declare namespace NewTemplatesClient {
+export declare namespace AlphaSectionVersionsClient {
     export type Options = BaseClientOptions;
 
     export interface RequestOptions extends BaseRequestOptions {}
 }
 
-export class NewTemplatesClient {
-    protected readonly _options: NormalizedClientOptionsWithAuth<NewTemplatesClient.Options>;
+export class AlphaSectionVersionsClient {
+    protected readonly _options: NormalizedClientOptionsWithAuth<AlphaSectionVersionsClient.Options>;
 
-    constructor(options: NewTemplatesClient.Options) {
+    constructor(options: AlphaSectionVersionsClient.Options) {
         this._options = normalizeClientOptionsWithAuth(options);
     }
 
     /**
-     * @param {Corti.ListNewTemplatesRequest} request
-     * @param {NewTemplatesClient.RequestOptions} requestOptions - Request-specific configuration.
+     * @param {string} sectionID
+     * @param {AlphaSectionVersionsClient.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link Corti.NotFoundError}
      *
      * @example
-     *     await client.newTemplates.list()
+     *     await client.alphaSectionVersions.list("sectionID")
      */
     public list(
-        request: Corti.ListNewTemplatesRequest = {},
-        requestOptions?: NewTemplatesClient.RequestOptions,
-    ): core.HttpResponsePromise<Corti.Template[]> {
-        return core.HttpResponsePromise.fromPromise(this.__list(request, requestOptions));
+        sectionID: string,
+        requestOptions?: AlphaSectionVersionsClient.RequestOptions,
+    ): core.HttpResponsePromise<Corti.SectionVersion[]> {
+        return core.HttpResponsePromise.fromPromise(this.__list(sectionID, requestOptions));
     }
 
     private async __list(
-        request: Corti.ListNewTemplatesRequest = {},
-        requestOptions?: NewTemplatesClient.RequestOptions,
-    ): Promise<core.WithRawResponse<Corti.Template[]>> {
-        const { lang, label, published } = request;
-        const _queryParams: Record<string, unknown> = {
-            lang,
-            label,
-            published,
-        };
+        sectionID: string,
+        requestOptions?: AlphaSectionVersionsClient.RequestOptions,
+    ): Promise<core.WithRawResponse<Corti.SectionVersion[]>> {
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
@@ -57,11 +53,11 @@ export class NewTemplatesClient {
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
                     (await core.Supplier.get(this._options.environment)).base,
-                "alpha/templates",
+                `alpha/sections/${core.url.encodePathParam(sectionID)}/versions`,
             ),
             method: "GET",
             headers: _headers,
-            queryParameters: { ..._queryParams, ...requestOptions?.queryParams },
+            queryParameters: requestOptions?.queryParams,
             timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
             maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
             abortSignal: requestOptions?.abortSignal,
@@ -70,7 +66,7 @@ export class NewTemplatesClient {
         });
         if (_response.ok) {
             return {
-                data: serializers.newTemplates.list.Response.parseOrThrow(_response.body, {
+                data: serializers.alphaSectionVersions.list.Response.parseOrThrow(_response.body, {
                     unrecognizedObjectKeys: "passthrough",
                     allowUnrecognizedUnionMembers: true,
                     allowUnrecognizedEnumValues: true,
@@ -82,44 +78,59 @@ export class NewTemplatesClient {
         }
 
         if (_response.error.reason === "status-code") {
-            throw new errors.CortiError({
-                statusCode: _response.error.statusCode,
-                body: _response.error.body,
-                rawResponse: _response.rawResponse,
-            });
+            switch (_response.error.statusCode) {
+                case 404:
+                    throw new Corti.NotFoundError(_response.error.body, _response.rawResponse);
+                default:
+                    throw new errors.CortiError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                        rawResponse: _response.rawResponse,
+                    });
+            }
         }
 
-        return handleNonStatusCodeError(_response.error, _response.rawResponse, "GET", "/alpha/templates");
+        return handleNonStatusCodeError(
+            _response.error,
+            _response.rawResponse,
+            "GET",
+            "/alpha/sections/{sectionID}/versions",
+        );
     }
 
     /**
-     * @param {Corti.CreateTemplateRequest} request
-     * @param {NewTemplatesClient.RequestOptions} requestOptions - Request-specific configuration.
+     * @param {string} sectionID
+     * @param {Corti.SectionGeneration} request
+     * @param {AlphaSectionVersionsClient.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Corti.BadRequestError}
+     * @throws {@link Corti.NotFoundError}
      *
      * @example
-     *     await client.newTemplates.create({
-     *         name: "name",
-     *         language: "language",
-     *         generation: {
-     *             instructions: {
-     *                 prompt: "prompt"
-     *             }
+     *     await client.alphaSectionVersions.create("sectionID", {
+     *         title: "title",
+     *         instructions: {
+     *             contentPrompt: "contentPrompt",
+     *             writingStylePrompt: "writingStylePrompt"
+     *         },
+     *         outputSchema: {
+     *             type: "string"
      *         }
      *     })
      */
     public create(
-        request: Corti.CreateTemplateRequest,
-        requestOptions?: NewTemplatesClient.RequestOptions,
-    ): core.HttpResponsePromise<Corti.Template> {
-        return core.HttpResponsePromise.fromPromise(this.__create(request, requestOptions));
+        sectionID: string,
+        request: Corti.SectionGeneration,
+        requestOptions?: AlphaSectionVersionsClient.RequestOptions,
+    ): core.HttpResponsePromise<Corti.SectionVersion> {
+        return core.HttpResponsePromise.fromPromise(this.__create(sectionID, request, requestOptions));
     }
 
     private async __create(
-        request: Corti.CreateTemplateRequest,
-        requestOptions?: NewTemplatesClient.RequestOptions,
-    ): Promise<core.WithRawResponse<Corti.Template>> {
+        sectionID: string,
+        request: Corti.SectionGeneration,
+        requestOptions?: AlphaSectionVersionsClient.RequestOptions,
+    ): Promise<core.WithRawResponse<Corti.SectionVersion>> {
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
@@ -131,14 +142,14 @@ export class NewTemplatesClient {
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
                     (await core.Supplier.get(this._options.environment)).base,
-                "alpha/templates",
+                `alpha/sections/${core.url.encodePathParam(sectionID)}/versions`,
             ),
             method: "POST",
             headers: _headers,
             contentType: "application/json",
             queryParameters: requestOptions?.queryParams,
             requestType: "json",
-            body: serializers.CreateTemplateRequest.jsonOrThrow(request, {
+            body: serializers.SectionGeneration.jsonOrThrow(request, {
                 unrecognizedObjectKeys: "strip",
                 omitUndefined: true,
             }),
@@ -150,7 +161,7 @@ export class NewTemplatesClient {
         });
         if (_response.ok) {
             return {
-                data: serializers.Template.parseOrThrow(_response.body, {
+                data: serializers.SectionVersion.parseOrThrow(_response.body, {
                     unrecognizedObjectKeys: "passthrough",
                     allowUnrecognizedUnionMembers: true,
                     allowUnrecognizedEnumValues: true,
@@ -165,6 +176,8 @@ export class NewTemplatesClient {
             switch (_response.error.statusCode) {
                 case 400:
                     throw new Corti.BadRequestError(_response.error.body, _response.rawResponse);
+                case 404:
+                    throw new Corti.NotFoundError(_response.error.body, _response.rawResponse);
                 default:
                     throw new errors.CortiError({
                         statusCode: _response.error.statusCode,
@@ -174,24 +187,37 @@ export class NewTemplatesClient {
             }
         }
 
-        return handleNonStatusCodeError(_response.error, _response.rawResponse, "POST", "/alpha/templates");
+        return handleNonStatusCodeError(
+            _response.error,
+            _response.rawResponse,
+            "POST",
+            "/alpha/sections/{sectionID}/versions",
+        );
     }
 
     /**
-     * @param {string} templateId
-     * @param {NewTemplatesClient.RequestOptions} requestOptions - Request-specific configuration.
+     * @param {string} sectionID
+     * @param {string} versionID
+     * @param {AlphaSectionVersionsClient.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link Corti.NotFoundError}
      *
      * @example
-     *     await client.newTemplates.get("templateId")
+     *     await client.alphaSectionVersions.get("sectionID", "versionID")
      */
-    public get(templateId: string, requestOptions?: NewTemplatesClient.RequestOptions): core.HttpResponsePromise<void> {
-        return core.HttpResponsePromise.fromPromise(this.__get(templateId, requestOptions));
+    public get(
+        sectionID: string,
+        versionID: string,
+        requestOptions?: AlphaSectionVersionsClient.RequestOptions,
+    ): core.HttpResponsePromise<Corti.SectionVersion> {
+        return core.HttpResponsePromise.fromPromise(this.__get(sectionID, versionID, requestOptions));
     }
 
     private async __get(
-        templateId: string,
-        requestOptions?: NewTemplatesClient.RequestOptions,
-    ): Promise<core.WithRawResponse<void>> {
+        sectionID: string,
+        versionID: string,
+        requestOptions?: AlphaSectionVersionsClient.RequestOptions,
+    ): Promise<core.WithRawResponse<Corti.SectionVersion>> {
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
@@ -203,7 +229,7 @@ export class NewTemplatesClient {
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
                     (await core.Supplier.get(this._options.environment)).base,
-                `alpha/templates/${core.url.encodePathParam(templateId)}`,
+                `alpha/sections/${core.url.encodePathParam(sectionID)}/versions/${core.url.encodePathParam(versionID)}`,
             ),
             method: "GET",
             headers: _headers,
@@ -215,37 +241,61 @@ export class NewTemplatesClient {
             logging: this._options.logging,
         });
         if (_response.ok) {
-            return { data: undefined, rawResponse: _response.rawResponse };
+            return {
+                data: serializers.SectionVersion.parseOrThrow(_response.body, {
+                    unrecognizedObjectKeys: "passthrough",
+                    allowUnrecognizedUnionMembers: true,
+                    allowUnrecognizedEnumValues: true,
+                    skipValidation: true,
+                    breadcrumbsPrefix: ["response"],
+                }),
+                rawResponse: _response.rawResponse,
+            };
         }
 
         if (_response.error.reason === "status-code") {
-            throw new errors.CortiError({
-                statusCode: _response.error.statusCode,
-                body: _response.error.body,
-                rawResponse: _response.rawResponse,
-            });
+            switch (_response.error.statusCode) {
+                case 404:
+                    throw new Corti.NotFoundError(_response.error.body, _response.rawResponse);
+                default:
+                    throw new errors.CortiError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                        rawResponse: _response.rawResponse,
+                    });
+            }
         }
 
-        return handleNonStatusCodeError(_response.error, _response.rawResponse, "GET", "/alpha/templates/{templateId}");
+        return handleNonStatusCodeError(
+            _response.error,
+            _response.rawResponse,
+            "GET",
+            "/alpha/sections/{sectionID}/versions/{versionID}",
+        );
     }
 
     /**
-     * @param {string} templateId
-     * @param {NewTemplatesClient.RequestOptions} requestOptions - Request-specific configuration.
+     * @param {string} sectionID
+     * @param {string} versionID
+     * @param {AlphaSectionVersionsClient.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link Corti.NotFoundError}
      *
      * @example
-     *     await client.newTemplates.delete("templateId")
+     *     await client.alphaSectionVersions.delete("sectionID", "versionID")
      */
     public delete(
-        templateId: string,
-        requestOptions?: NewTemplatesClient.RequestOptions,
+        sectionID: string,
+        versionID: string,
+        requestOptions?: AlphaSectionVersionsClient.RequestOptions,
     ): core.HttpResponsePromise<void> {
-        return core.HttpResponsePromise.fromPromise(this.__delete(templateId, requestOptions));
+        return core.HttpResponsePromise.fromPromise(this.__delete(sectionID, versionID, requestOptions));
     }
 
     private async __delete(
-        templateId: string,
-        requestOptions?: NewTemplatesClient.RequestOptions,
+        sectionID: string,
+        versionID: string,
+        requestOptions?: AlphaSectionVersionsClient.RequestOptions,
     ): Promise<core.WithRawResponse<void>> {
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
@@ -258,7 +308,7 @@ export class NewTemplatesClient {
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
                     (await core.Supplier.get(this._options.environment)).base,
-                `alpha/templates/${core.url.encodePathParam(templateId)}`,
+                `alpha/sections/${core.url.encodePathParam(sectionID)}/versions/${core.url.encodePathParam(versionID)}`,
             ),
             method: "DELETE",
             headers: _headers,
@@ -274,39 +324,51 @@ export class NewTemplatesClient {
         }
 
         if (_response.error.reason === "status-code") {
-            throw new errors.CortiError({
-                statusCode: _response.error.statusCode,
-                body: _response.error.body,
-                rawResponse: _response.rawResponse,
-            });
+            switch (_response.error.statusCode) {
+                case 404:
+                    throw new Corti.NotFoundError(_response.error.body, _response.rawResponse);
+                default:
+                    throw new errors.CortiError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                        rawResponse: _response.rawResponse,
+                    });
+            }
         }
 
         return handleNonStatusCodeError(
             _response.error,
             _response.rawResponse,
             "DELETE",
-            "/alpha/templates/{templateId}",
+            "/alpha/sections/{sectionID}/versions/{versionID}",
         );
     }
 
     /**
-     * @param {string} templateId
-     * @param {NewTemplatesClient.RequestOptions} requestOptions - Request-specific configuration.
+     * Sets this version as the published version of the section.
+     *
+     * @param {string} sectionID
+     * @param {string} versionID
+     * @param {AlphaSectionVersionsClient.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link Corti.NotFoundError}
      *
      * @example
-     *     await client.newTemplates.update("templateId")
+     *     await client.alphaSectionVersions.publish("sectionID", "versionID")
      */
-    public update(
-        templateId: string,
-        requestOptions?: NewTemplatesClient.RequestOptions,
-    ): core.HttpResponsePromise<void> {
-        return core.HttpResponsePromise.fromPromise(this.__update(templateId, requestOptions));
+    public publish(
+        sectionID: string,
+        versionID: string,
+        requestOptions?: AlphaSectionVersionsClient.RequestOptions,
+    ): core.HttpResponsePromise<Corti.StatusResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__publish(sectionID, versionID, requestOptions));
     }
 
-    private async __update(
-        templateId: string,
-        requestOptions?: NewTemplatesClient.RequestOptions,
-    ): Promise<core.WithRawResponse<void>> {
+    private async __publish(
+        sectionID: string,
+        versionID: string,
+        requestOptions?: AlphaSectionVersionsClient.RequestOptions,
+    ): Promise<core.WithRawResponse<Corti.StatusResponse>> {
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
@@ -318,9 +380,9 @@ export class NewTemplatesClient {
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
                     (await core.Supplier.get(this._options.environment)).base,
-                `alpha/templates/${core.url.encodePathParam(templateId)}`,
+                `alpha/sections/${core.url.encodePathParam(sectionID)}/versions/${core.url.encodePathParam(versionID)}/publish`,
             ),
-            method: "PATCH",
+            method: "POST",
             headers: _headers,
             queryParameters: requestOptions?.queryParams,
             timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
@@ -330,22 +392,36 @@ export class NewTemplatesClient {
             logging: this._options.logging,
         });
         if (_response.ok) {
-            return { data: undefined, rawResponse: _response.rawResponse };
+            return {
+                data: serializers.StatusResponse.parseOrThrow(_response.body, {
+                    unrecognizedObjectKeys: "passthrough",
+                    allowUnrecognizedUnionMembers: true,
+                    allowUnrecognizedEnumValues: true,
+                    skipValidation: true,
+                    breadcrumbsPrefix: ["response"],
+                }),
+                rawResponse: _response.rawResponse,
+            };
         }
 
         if (_response.error.reason === "status-code") {
-            throw new errors.CortiError({
-                statusCode: _response.error.statusCode,
-                body: _response.error.body,
-                rawResponse: _response.rawResponse,
-            });
+            switch (_response.error.statusCode) {
+                case 404:
+                    throw new Corti.NotFoundError(_response.error.body, _response.rawResponse);
+                default:
+                    throw new errors.CortiError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                        rawResponse: _response.rawResponse,
+                    });
+            }
         }
 
         return handleNonStatusCodeError(
             _response.error,
             _response.rawResponse,
-            "PATCH",
-            "/alpha/templates/{templateId}",
+            "POST",
+            "/alpha/sections/{sectionID}/versions/{versionID}/publish",
         );
     }
 }

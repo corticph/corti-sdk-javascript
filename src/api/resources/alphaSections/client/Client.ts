@@ -9,36 +9,36 @@ import * as errors from "../../../../errors/index.js";
 import * as serializers from "../../../../serialization/index.js";
 import * as Corti from "../../../index.js";
 
-export declare namespace NewSectionsClient {
+export declare namespace AlphaSectionsClient {
     export type Options = BaseClientOptions;
 
     export interface RequestOptions extends BaseRequestOptions {}
 }
 
-export class NewSectionsClient {
-    protected readonly _options: NormalizedClientOptionsWithAuth<NewSectionsClient.Options>;
+export class AlphaSectionsClient {
+    protected readonly _options: NormalizedClientOptionsWithAuth<AlphaSectionsClient.Options>;
 
-    constructor(options: NewSectionsClient.Options) {
+    constructor(options: AlphaSectionsClient.Options) {
         this._options = normalizeClientOptionsWithAuth(options);
     }
 
     /**
-     * @param {Corti.ListNewSectionsRequest} request
-     * @param {NewSectionsClient.RequestOptions} requestOptions - Request-specific configuration.
+     * @param {Corti.ListAlphaSectionsRequest} request
+     * @param {AlphaSectionsClient.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @example
-     *     await client.newSections.list()
+     *     await client.alphaSections.list()
      */
     public list(
-        request: Corti.ListNewSectionsRequest = {},
-        requestOptions?: NewSectionsClient.RequestOptions,
+        request: Corti.ListAlphaSectionsRequest = {},
+        requestOptions?: AlphaSectionsClient.RequestOptions,
     ): core.HttpResponsePromise<Corti.Section[]> {
         return core.HttpResponsePromise.fromPromise(this.__list(request, requestOptions));
     }
 
     private async __list(
-        request: Corti.ListNewSectionsRequest = {},
-        requestOptions?: NewSectionsClient.RequestOptions,
+        request: Corti.ListAlphaSectionsRequest = {},
+        requestOptions?: AlphaSectionsClient.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.Section[]>> {
         const { lang, label, published } = request;
         const _queryParams: Record<string, unknown> = {
@@ -70,7 +70,7 @@ export class NewSectionsClient {
         });
         if (_response.ok) {
             return {
-                data: serializers.newSections.list.Response.parseOrThrow(_response.body, {
+                data: serializers.alphaSections.list.Response.parseOrThrow(_response.body, {
                     unrecognizedObjectKeys: "passthrough",
                     allowUnrecognizedUnionMembers: true,
                     allowUnrecognizedEnumValues: true,
@@ -94,12 +94,12 @@ export class NewSectionsClient {
 
     /**
      * @param {Corti.CreateSectionRequest} request
-     * @param {NewSectionsClient.RequestOptions} requestOptions - Request-specific configuration.
+     * @param {AlphaSectionsClient.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Corti.BadRequestError}
      *
      * @example
-     *     await client.newSections.create({
+     *     await client.alphaSections.create({
      *         name: "name",
      *         language: "language",
      *         generation: {
@@ -116,14 +116,14 @@ export class NewSectionsClient {
      */
     public create(
         request: Corti.CreateSectionRequest,
-        requestOptions?: NewSectionsClient.RequestOptions,
+        requestOptions?: AlphaSectionsClient.RequestOptions,
     ): core.HttpResponsePromise<Corti.Section> {
         return core.HttpResponsePromise.fromPromise(this.__create(request, requestOptions));
     }
 
     private async __create(
         request: Corti.CreateSectionRequest,
-        requestOptions?: NewSectionsClient.RequestOptions,
+        requestOptions?: AlphaSectionsClient.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.Section>> {
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
@@ -184,23 +184,23 @@ export class NewSectionsClient {
 
     /**
      * @param {string} sectionID
-     * @param {NewSectionsClient.RequestOptions} requestOptions - Request-specific configuration.
+     * @param {AlphaSectionsClient.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Corti.NotFoundError}
      *
      * @example
-     *     await client.newSections.get("sectionID")
+     *     await client.alphaSections.get("sectionID")
      */
     public get(
         sectionID: string,
-        requestOptions?: NewSectionsClient.RequestOptions,
+        requestOptions?: AlphaSectionsClient.RequestOptions,
     ): core.HttpResponsePromise<Corti.Section> {
         return core.HttpResponsePromise.fromPromise(this.__get(sectionID, requestOptions));
     }
 
     private async __get(
         sectionID: string,
-        requestOptions?: NewSectionsClient.RequestOptions,
+        requestOptions?: AlphaSectionsClient.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.Section>> {
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
@@ -255,23 +255,23 @@ export class NewSectionsClient {
 
     /**
      * @param {string} sectionID
-     * @param {NewSectionsClient.RequestOptions} requestOptions - Request-specific configuration.
+     * @param {AlphaSectionsClient.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Corti.NotFoundError}
      *
      * @example
-     *     await client.newSections.delete("sectionID")
+     *     await client.alphaSections.delete("sectionID")
      */
     public delete(
         sectionID: string,
-        requestOptions?: NewSectionsClient.RequestOptions,
+        requestOptions?: AlphaSectionsClient.RequestOptions,
     ): core.HttpResponsePromise<void> {
         return core.HttpResponsePromise.fromPromise(this.__delete(sectionID, requestOptions));
     }
 
     private async __delete(
         sectionID: string,
-        requestOptions?: NewSectionsClient.RequestOptions,
+        requestOptions?: AlphaSectionsClient.RequestOptions,
     ): Promise<core.WithRawResponse<void>> {
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
@@ -323,18 +323,18 @@ export class NewSectionsClient {
     /**
      * @param {string} sectionID
      * @param {Corti.UpdateSectionRequest} request
-     * @param {NewSectionsClient.RequestOptions} requestOptions - Request-specific configuration.
+     * @param {AlphaSectionsClient.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Corti.BadRequestError}
      * @throws {@link Corti.NotFoundError}
      *
      * @example
-     *     await client.newSections.update("sectionID")
+     *     await client.alphaSections.update("sectionID")
      */
     public update(
         sectionID: string,
         request: Corti.UpdateSectionRequest = {},
-        requestOptions?: NewSectionsClient.RequestOptions,
+        requestOptions?: AlphaSectionsClient.RequestOptions,
     ): core.HttpResponsePromise<Corti.Section> {
         return core.HttpResponsePromise.fromPromise(this.__update(sectionID, request, requestOptions));
     }
@@ -342,7 +342,7 @@ export class NewSectionsClient {
     private async __update(
         sectionID: string,
         request: Corti.UpdateSectionRequest = {},
-        requestOptions?: NewSectionsClient.RequestOptions,
+        requestOptions?: AlphaSectionsClient.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.Section>> {
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(

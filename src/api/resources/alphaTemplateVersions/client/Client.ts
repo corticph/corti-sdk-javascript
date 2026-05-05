@@ -7,36 +7,36 @@ import * as core from "../../../../core/index.js";
 import { handleNonStatusCodeError } from "../../../../errors/handleNonStatusCodeError.js";
 import * as errors from "../../../../errors/index.js";
 
-export declare namespace NewTemplateVersionsClient {
+export declare namespace AlphaTemplateVersionsClient {
     export type Options = BaseClientOptions;
 
     export interface RequestOptions extends BaseRequestOptions {}
 }
 
-export class NewTemplateVersionsClient {
-    protected readonly _options: NormalizedClientOptionsWithAuth<NewTemplateVersionsClient.Options>;
+export class AlphaTemplateVersionsClient {
+    protected readonly _options: NormalizedClientOptionsWithAuth<AlphaTemplateVersionsClient.Options>;
 
-    constructor(options: NewTemplateVersionsClient.Options) {
+    constructor(options: AlphaTemplateVersionsClient.Options) {
         this._options = normalizeClientOptionsWithAuth(options);
     }
 
     /**
      * @param {string} templateId
-     * @param {NewTemplateVersionsClient.RequestOptions} requestOptions - Request-specific configuration.
+     * @param {AlphaTemplateVersionsClient.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @example
-     *     await client.newTemplateVersions.list("templateId")
+     *     await client.alphaTemplateVersions.list("templateId")
      */
     public list(
         templateId: string,
-        requestOptions?: NewTemplateVersionsClient.RequestOptions,
+        requestOptions?: AlphaTemplateVersionsClient.RequestOptions,
     ): core.HttpResponsePromise<void> {
         return core.HttpResponsePromise.fromPromise(this.__list(templateId, requestOptions));
     }
 
     private async __list(
         templateId: string,
-        requestOptions?: NewTemplateVersionsClient.RequestOptions,
+        requestOptions?: AlphaTemplateVersionsClient.RequestOptions,
     ): Promise<core.WithRawResponse<void>> {
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
@@ -82,21 +82,21 @@ export class NewTemplateVersionsClient {
 
     /**
      * @param {string} templateId
-     * @param {NewTemplateVersionsClient.RequestOptions} requestOptions - Request-specific configuration.
+     * @param {AlphaTemplateVersionsClient.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @example
-     *     await client.newTemplateVersions.create("templateId")
+     *     await client.alphaTemplateVersions.create("templateId")
      */
     public create(
         templateId: string,
-        requestOptions?: NewTemplateVersionsClient.RequestOptions,
+        requestOptions?: AlphaTemplateVersionsClient.RequestOptions,
     ): core.HttpResponsePromise<void> {
         return core.HttpResponsePromise.fromPromise(this.__create(templateId, requestOptions));
     }
 
     private async __create(
         templateId: string,
-        requestOptions?: NewTemplateVersionsClient.RequestOptions,
+        requestOptions?: AlphaTemplateVersionsClient.RequestOptions,
     ): Promise<core.WithRawResponse<void>> {
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
@@ -143,15 +143,15 @@ export class NewTemplateVersionsClient {
     /**
      * @param {string} templateId
      * @param {string} versionID
-     * @param {NewTemplateVersionsClient.RequestOptions} requestOptions - Request-specific configuration.
+     * @param {AlphaTemplateVersionsClient.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @example
-     *     await client.newTemplateVersions.get("templateId", "versionID")
+     *     await client.alphaTemplateVersions.get("templateId", "versionID")
      */
     public get(
         templateId: string,
         versionID: string,
-        requestOptions?: NewTemplateVersionsClient.RequestOptions,
+        requestOptions?: AlphaTemplateVersionsClient.RequestOptions,
     ): core.HttpResponsePromise<void> {
         return core.HttpResponsePromise.fromPromise(this.__get(templateId, versionID, requestOptions));
     }
@@ -159,7 +159,7 @@ export class NewTemplateVersionsClient {
     private async __get(
         templateId: string,
         versionID: string,
-        requestOptions?: NewTemplateVersionsClient.RequestOptions,
+        requestOptions?: AlphaTemplateVersionsClient.RequestOptions,
     ): Promise<core.WithRawResponse<void>> {
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
@@ -206,15 +206,15 @@ export class NewTemplateVersionsClient {
     /**
      * @param {string} templateId
      * @param {string} versionID
-     * @param {NewTemplateVersionsClient.RequestOptions} requestOptions - Request-specific configuration.
+     * @param {AlphaTemplateVersionsClient.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @example
-     *     await client.newTemplateVersions.delete("templateId", "versionID")
+     *     await client.alphaTemplateVersions.delete("templateId", "versionID")
      */
     public delete(
         templateId: string,
         versionID: string,
-        requestOptions?: NewTemplateVersionsClient.RequestOptions,
+        requestOptions?: AlphaTemplateVersionsClient.RequestOptions,
     ): core.HttpResponsePromise<void> {
         return core.HttpResponsePromise.fromPromise(this.__delete(templateId, versionID, requestOptions));
     }
@@ -222,7 +222,7 @@ export class NewTemplateVersionsClient {
     private async __delete(
         templateId: string,
         versionID: string,
-        requestOptions?: NewTemplateVersionsClient.RequestOptions,
+        requestOptions?: AlphaTemplateVersionsClient.RequestOptions,
     ): Promise<core.WithRawResponse<void>> {
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
@@ -269,15 +269,15 @@ export class NewTemplateVersionsClient {
     /**
      * @param {string} templateId
      * @param {string} versionID
-     * @param {NewTemplateVersionsClient.RequestOptions} requestOptions - Request-specific configuration.
+     * @param {AlphaTemplateVersionsClient.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @example
-     *     await client.newTemplateVersions.publish("templateId", "versionID")
+     *     await client.alphaTemplateVersions.publish("templateId", "versionID")
      */
     public publish(
         templateId: string,
         versionID: string,
-        requestOptions?: NewTemplateVersionsClient.RequestOptions,
+        requestOptions?: AlphaTemplateVersionsClient.RequestOptions,
     ): core.HttpResponsePromise<void> {
         return core.HttpResponsePromise.fromPromise(this.__publish(templateId, versionID, requestOptions));
     }
@@ -285,7 +285,7 @@ export class NewTemplateVersionsClient {
     private async __publish(
         templateId: string,
         versionID: string,
-        requestOptions?: NewTemplateVersionsClient.RequestOptions,
+        requestOptions?: AlphaTemplateVersionsClient.RequestOptions,
     ): Promise<core.WithRawResponse<void>> {
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(

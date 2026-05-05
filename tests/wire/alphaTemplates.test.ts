@@ -5,7 +5,7 @@ import { CortiClient } from "../../src/Client";
 import { mockServerPool } from "../mock-server/MockServerPool";
 import { mockOAuth } from "./mockAuth";
 
-describe("NewTemplatesClient", () => {
+describe("AlphaTemplatesClient", () => {
     test("list", async () => {
         const server = mockServerPool.createServer();
         mockOAuth(server);
@@ -63,7 +63,7 @@ describe("NewTemplatesClient", () => {
 
         server.mockEndpoint().get("/alpha/templates").respondWith().statusCode(200).jsonBody(rawResponseBody).build();
 
-        const response = await client.newTemplates.list();
+        const response = await client.alphaTemplates.list();
         expect(response).toEqual([
             {
                 id: "id",
@@ -178,7 +178,7 @@ describe("NewTemplatesClient", () => {
             .jsonBody(rawResponseBody)
             .build();
 
-        const response = await client.newTemplates.create({
+        const response = await client.alphaTemplates.create({
             name: "name",
             language: "language",
             generation: {
@@ -261,7 +261,7 @@ describe("NewTemplatesClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.newTemplates.create({
+            return await client.alphaTemplates.create({
                 name: "name",
                 language: "language",
                 generation: {
@@ -287,7 +287,7 @@ describe("NewTemplatesClient", () => {
 
         server.mockEndpoint().get("/alpha/templates/templateId").respondWith().statusCode(200).build();
 
-        const response = await client.newTemplates.get("templateId");
+        const response = await client.alphaTemplates.get("templateId");
         expect(response).toEqual(undefined);
     });
 
@@ -305,7 +305,7 @@ describe("NewTemplatesClient", () => {
 
         server.mockEndpoint().delete("/alpha/templates/templateId").respondWith().statusCode(200).build();
 
-        const response = await client.newTemplates.delete("templateId");
+        const response = await client.alphaTemplates.delete("templateId");
         expect(response).toEqual(undefined);
     });
 
@@ -323,7 +323,7 @@ describe("NewTemplatesClient", () => {
 
         server.mockEndpoint().patch("/alpha/templates/templateId").respondWith().statusCode(200).build();
 
-        const response = await client.newTemplates.update("templateId");
+        const response = await client.alphaTemplates.update("templateId");
         expect(response).toEqual(undefined);
     });
 });

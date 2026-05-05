@@ -4,7 +4,7 @@ import { CortiClient } from "../../src/Client";
 import { mockServerPool } from "../mock-server/MockServerPool";
 import { mockOAuth } from "./mockAuth";
 
-describe("NewTemplateVersionsClient", () => {
+describe("AlphaTemplateVersionsClient", () => {
     test("list", async () => {
         const server = mockServerPool.createServer();
         mockOAuth(server);
@@ -19,7 +19,7 @@ describe("NewTemplateVersionsClient", () => {
 
         server.mockEndpoint().get("/alpha/templates/templateId/versions").respondWith().statusCode(200).build();
 
-        const response = await client.newTemplateVersions.list("templateId");
+        const response = await client.alphaTemplateVersions.list("templateId");
         expect(response).toEqual(undefined);
     });
 
@@ -37,7 +37,7 @@ describe("NewTemplateVersionsClient", () => {
 
         server.mockEndpoint().post("/alpha/templates/templateId/versions").respondWith().statusCode(200).build();
 
-        const response = await client.newTemplateVersions.create("templateId");
+        const response = await client.alphaTemplateVersions.create("templateId");
         expect(response).toEqual(undefined);
     });
 
@@ -60,7 +60,7 @@ describe("NewTemplateVersionsClient", () => {
             .statusCode(200)
             .build();
 
-        const response = await client.newTemplateVersions.get("templateId", "versionID");
+        const response = await client.alphaTemplateVersions.get("templateId", "versionID");
         expect(response).toEqual(undefined);
     });
 
@@ -83,7 +83,7 @@ describe("NewTemplateVersionsClient", () => {
             .statusCode(200)
             .build();
 
-        const response = await client.newTemplateVersions.delete("templateId", "versionID");
+        const response = await client.alphaTemplateVersions.delete("templateId", "versionID");
         expect(response).toEqual(undefined);
     });
 
@@ -106,7 +106,7 @@ describe("NewTemplateVersionsClient", () => {
             .statusCode(200)
             .build();
 
-        const response = await client.newTemplateVersions.publish("templateId", "versionID");
+        const response = await client.alphaTemplateVersions.publish("templateId", "versionID");
         expect(response).toEqual(undefined);
     });
 });

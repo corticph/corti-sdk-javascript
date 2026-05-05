@@ -4,7 +4,7 @@
  * @example
  *     {}
  */
-export interface ListNewSectionsRequest {
+export interface ListAlphaSectionsRequest {
     /** Filter sections by language (BCP 47 tag). Repeatable. */
     lang?: string | string[];
     /** Filter sections by label. Repeatable; matches sections that have any of the given labels. */

@@ -4,7 +4,7 @@
  * @example
  *     {}
  */
-export interface ListNewTemplatesRequest {
+export interface ListAlphaTemplatesRequest {
     /** Filter templates by language (BCP 47 tag). Repeatable. */
     lang?: string | string[];
     /** Filter templates by label. Repeatable; matches templates that have any of the given labels. */
