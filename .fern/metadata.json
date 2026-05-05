@@ -1,5 +1,5 @@
 {
-    "cliVersion": "4.86.1",
+    "cliVersion": "4.105.0",
     "generatorName": "fernapi/fern-typescript-node-sdk",
     "generatorVersion": "3.54.0",
     "generatorConfig": {
@@ -15,7 +15,9 @@
         },
         "packageJson": {
             "scripts": {
-                "test:integration": "vitest --config vitest.integration.config.mts"
+                "test:integration": "pnpm test:integration:main && pnpm test:integration:empty-state",
+                "test:integration:main": "vitest run --config vitest.integration.config.mts --project integration",
+                "test:integration:empty-state": "vitest run --config vitest.integration.config.mts --project integration-empty-state"
             },
             "exports": {
                 "./utils": {
@@ -32,6 +34,6 @@
             }
         }
     },
-    "originGitCommit": "23bce53307f0836f2dcd50e82ef0aba136e7ec2f",
+    "originGitCommit": "be3271c05b5455732a9f279e8d21681bd421f2a8",
     "sdkVersion": "0.0.0-dev"
 }
