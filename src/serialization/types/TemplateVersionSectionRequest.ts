@@ -9,14 +9,12 @@ export const TemplateVersionSectionRequest: core.serialization.ObjectSchema<
     Corti.TemplateVersionSectionRequest
 > = core.serialization.object({
     sectionId: core.serialization.string(),
-    pinnedVersionId: core.serialization.string().optionalNullable(),
     orderIndex: core.serialization.number().optional(),
 });
 
 export declare namespace TemplateVersionSectionRequest {
     export interface Raw {
         sectionId: string;
-        pinnedVersionId?: (string | null | undefined) | null;
         orderIndex?: number | null;
     }
 }

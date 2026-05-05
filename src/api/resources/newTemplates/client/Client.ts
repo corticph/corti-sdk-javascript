@@ -57,7 +57,7 @@ export class NewTemplatesClient {
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
                     (await core.Supplier.get(this._options.environment)).base,
-                "new/templates",
+                "alpha/templates",
             ),
             method: "GET",
             headers: _headers,
@@ -89,7 +89,7 @@ export class NewTemplatesClient {
             });
         }
 
-        return handleNonStatusCodeError(_response.error, _response.rawResponse, "GET", "/new/templates");
+        return handleNonStatusCodeError(_response.error, _response.rawResponse, "GET", "/alpha/templates");
     }
 
     /**
@@ -101,7 +101,12 @@ export class NewTemplatesClient {
      * @example
      *     await client.newTemplates.create({
      *         name: "name",
-     *         language: "language"
+     *         language: "language",
+     *         generation: {
+     *             instructions: {
+     *                 prompt: "prompt"
+     *             }
+     *         }
      *     })
      */
     public create(
@@ -126,7 +131,7 @@ export class NewTemplatesClient {
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
                     (await core.Supplier.get(this._options.environment)).base,
-                "new/templates",
+                "alpha/templates",
             ),
             method: "POST",
             headers: _headers,
@@ -169,29 +174,24 @@ export class NewTemplatesClient {
             }
         }
 
-        return handleNonStatusCodeError(_response.error, _response.rawResponse, "POST", "/new/templates");
+        return handleNonStatusCodeError(_response.error, _response.rawResponse, "POST", "/alpha/templates");
     }
 
     /**
      * @param {string} templateId
      * @param {NewTemplatesClient.RequestOptions} requestOptions - Request-specific configuration.
      *
-     * @throws {@link Corti.NotFoundError}
-     *
      * @example
      *     await client.newTemplates.get("templateId")
      */
-    public get(
-        templateId: string,
-        requestOptions?: NewTemplatesClient.RequestOptions,
-    ): core.HttpResponsePromise<Corti.Template> {
+    public get(templateId: string, requestOptions?: NewTemplatesClient.RequestOptions): core.HttpResponsePromise<void> {
         return core.HttpResponsePromise.fromPromise(this.__get(templateId, requestOptions));
     }
 
     private async __get(
         templateId: string,
         requestOptions?: NewTemplatesClient.RequestOptions,
-    ): Promise<core.WithRawResponse<Corti.Template>> {
+    ): Promise<core.WithRawResponse<void>> {
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
@@ -203,7 +203,7 @@ export class NewTemplatesClient {
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
                     (await core.Supplier.get(this._options.environment)).base,
-                `new/templates/${core.url.encodePathParam(templateId)}`,
+                `alpha/templates/${core.url.encodePathParam(templateId)}`,
             ),
             method: "GET",
             headers: _headers,
@@ -215,39 +215,23 @@ export class NewTemplatesClient {
             logging: this._options.logging,
         });
         if (_response.ok) {
-            return {
-                data: serializers.Template.parseOrThrow(_response.body, {
-                    unrecognizedObjectKeys: "passthrough",
-                    allowUnrecognizedUnionMembers: true,
-                    allowUnrecognizedEnumValues: true,
-                    skipValidation: true,
-                    breadcrumbsPrefix: ["response"],
-                }),
-                rawResponse: _response.rawResponse,
-            };
+            return { data: undefined, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
-            switch (_response.error.statusCode) {
-                case 404:
-                    throw new Corti.NotFoundError(_response.error.body, _response.rawResponse);
-                default:
-                    throw new errors.CortiError({
-                        statusCode: _response.error.statusCode,
-                        body: _response.error.body,
-                        rawResponse: _response.rawResponse,
-                    });
-            }
+            throw new errors.CortiError({
+                statusCode: _response.error.statusCode,
+                body: _response.error.body,
+                rawResponse: _response.rawResponse,
+            });
         }
 
-        return handleNonStatusCodeError(_response.error, _response.rawResponse, "GET", "/new/templates/{templateId}");
+        return handleNonStatusCodeError(_response.error, _response.rawResponse, "GET", "/alpha/templates/{templateId}");
     }
 
     /**
      * @param {string} templateId
      * @param {NewTemplatesClient.RequestOptions} requestOptions - Request-specific configuration.
-     *
-     * @throws {@link Corti.NotFoundError}
      *
      * @example
      *     await client.newTemplates.delete("templateId")
@@ -274,7 +258,7 @@ export class NewTemplatesClient {
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
                     (await core.Supplier.get(this._options.environment)).base,
-                `new/templates/${core.url.encodePathParam(templateId)}`,
+                `alpha/templates/${core.url.encodePathParam(templateId)}`,
             ),
             method: "DELETE",
             headers: _headers,
@@ -290,50 +274,39 @@ export class NewTemplatesClient {
         }
 
         if (_response.error.reason === "status-code") {
-            switch (_response.error.statusCode) {
-                case 404:
-                    throw new Corti.NotFoundError(_response.error.body, _response.rawResponse);
-                default:
-                    throw new errors.CortiError({
-                        statusCode: _response.error.statusCode,
-                        body: _response.error.body,
-                        rawResponse: _response.rawResponse,
-                    });
-            }
+            throw new errors.CortiError({
+                statusCode: _response.error.statusCode,
+                body: _response.error.body,
+                rawResponse: _response.rawResponse,
+            });
         }
 
         return handleNonStatusCodeError(
             _response.error,
             _response.rawResponse,
             "DELETE",
-            "/new/templates/{templateId}",
+            "/alpha/templates/{templateId}",
         );
     }
 
     /**
      * @param {string} templateId
-     * @param {Corti.UpdateTemplateRequest} request
      * @param {NewTemplatesClient.RequestOptions} requestOptions - Request-specific configuration.
-     *
-     * @throws {@link Corti.BadRequestError}
-     * @throws {@link Corti.NotFoundError}
      *
      * @example
      *     await client.newTemplates.update("templateId")
      */
     public update(
         templateId: string,
-        request: Corti.UpdateTemplateRequest = {},
         requestOptions?: NewTemplatesClient.RequestOptions,
-    ): core.HttpResponsePromise<Corti.Template> {
-        return core.HttpResponsePromise.fromPromise(this.__update(templateId, request, requestOptions));
+    ): core.HttpResponsePromise<void> {
+        return core.HttpResponsePromise.fromPromise(this.__update(templateId, requestOptions));
     }
 
     private async __update(
         templateId: string,
-        request: Corti.UpdateTemplateRequest = {},
         requestOptions?: NewTemplatesClient.RequestOptions,
-    ): Promise<core.WithRawResponse<Corti.Template>> {
+    ): Promise<core.WithRawResponse<void>> {
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
@@ -345,17 +318,11 @@ export class NewTemplatesClient {
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
                     (await core.Supplier.get(this._options.environment)).base,
-                `new/templates/${core.url.encodePathParam(templateId)}`,
+                `alpha/templates/${core.url.encodePathParam(templateId)}`,
             ),
             method: "PATCH",
             headers: _headers,
-            contentType: "application/json",
             queryParameters: requestOptions?.queryParams,
-            requestType: "json",
-            body: serializers.UpdateTemplateRequest.jsonOrThrow(request, {
-                unrecognizedObjectKeys: "strip",
-                omitUndefined: true,
-            }),
             timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
             maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
             abortSignal: requestOptions?.abortSignal,
@@ -363,33 +330,22 @@ export class NewTemplatesClient {
             logging: this._options.logging,
         });
         if (_response.ok) {
-            return {
-                data: serializers.Template.parseOrThrow(_response.body, {
-                    unrecognizedObjectKeys: "passthrough",
-                    allowUnrecognizedUnionMembers: true,
-                    allowUnrecognizedEnumValues: true,
-                    skipValidation: true,
-                    breadcrumbsPrefix: ["response"],
-                }),
-                rawResponse: _response.rawResponse,
-            };
+            return { data: undefined, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
-            switch (_response.error.statusCode) {
-                case 400:
-                    throw new Corti.BadRequestError(_response.error.body, _response.rawResponse);
-                case 404:
-                    throw new Corti.NotFoundError(_response.error.body, _response.rawResponse);
-                default:
-                    throw new errors.CortiError({
-                        statusCode: _response.error.statusCode,
-                        body: _response.error.body,
-                        rawResponse: _response.rawResponse,
-                    });
-            }
+            throw new errors.CortiError({
+                statusCode: _response.error.statusCode,
+                body: _response.error.body,
+                rawResponse: _response.rawResponse,
+            });
         }
 
-        return handleNonStatusCodeError(_response.error, _response.rawResponse, "PATCH", "/new/templates/{templateId}");
+        return handleNonStatusCodeError(
+            _response.error,
+            _response.rawResponse,
+            "PATCH",
+            "/alpha/templates/{templateId}",
+        );
     }
 }

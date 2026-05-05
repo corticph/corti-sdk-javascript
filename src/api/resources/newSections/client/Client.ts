@@ -57,7 +57,7 @@ export class NewSectionsClient {
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
                     (await core.Supplier.get(this._options.environment)).base,
-                "new/sections",
+                "alpha/sections",
             ),
             method: "GET",
             headers: _headers,
@@ -89,7 +89,7 @@ export class NewSectionsClient {
             });
         }
 
-        return handleNonStatusCodeError(_response.error, _response.rawResponse, "GET", "/new/sections");
+        return handleNonStatusCodeError(_response.error, _response.rawResponse, "GET", "/alpha/sections");
     }
 
     /**
@@ -107,6 +107,9 @@ export class NewSectionsClient {
      *             instructions: {
      *                 contentPrompt: "contentPrompt",
      *                 writingStylePrompt: "writingStylePrompt"
+     *             },
+     *             outputSchema: {
+     *                 type: "string"
      *             }
      *         }
      *     })
@@ -133,7 +136,7 @@ export class NewSectionsClient {
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
                     (await core.Supplier.get(this._options.environment)).base,
-                "new/sections",
+                "alpha/sections",
             ),
             method: "POST",
             headers: _headers,
@@ -176,7 +179,7 @@ export class NewSectionsClient {
             }
         }
 
-        return handleNonStatusCodeError(_response.error, _response.rawResponse, "POST", "/new/sections");
+        return handleNonStatusCodeError(_response.error, _response.rawResponse, "POST", "/alpha/sections");
     }
 
     /**
@@ -210,7 +213,7 @@ export class NewSectionsClient {
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
                     (await core.Supplier.get(this._options.environment)).base,
-                `new/sections/${core.url.encodePathParam(sectionID)}`,
+                `alpha/sections/${core.url.encodePathParam(sectionID)}`,
             ),
             method: "GET",
             headers: _headers,
@@ -247,7 +250,7 @@ export class NewSectionsClient {
             }
         }
 
-        return handleNonStatusCodeError(_response.error, _response.rawResponse, "GET", "/new/sections/{sectionID}");
+        return handleNonStatusCodeError(_response.error, _response.rawResponse, "GET", "/alpha/sections/{sectionID}");
     }
 
     /**
@@ -281,7 +284,7 @@ export class NewSectionsClient {
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
                     (await core.Supplier.get(this._options.environment)).base,
-                `new/sections/${core.url.encodePathParam(sectionID)}`,
+                `alpha/sections/${core.url.encodePathParam(sectionID)}`,
             ),
             method: "DELETE",
             headers: _headers,
@@ -309,7 +312,12 @@ export class NewSectionsClient {
             }
         }
 
-        return handleNonStatusCodeError(_response.error, _response.rawResponse, "DELETE", "/new/sections/{sectionID}");
+        return handleNonStatusCodeError(
+            _response.error,
+            _response.rawResponse,
+            "DELETE",
+            "/alpha/sections/{sectionID}",
+        );
     }
 
     /**
@@ -347,7 +355,7 @@ export class NewSectionsClient {
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
                     (await core.Supplier.get(this._options.environment)).base,
-                `new/sections/${core.url.encodePathParam(sectionID)}`,
+                `alpha/sections/${core.url.encodePathParam(sectionID)}`,
             ),
             method: "PATCH",
             headers: _headers,
@@ -392,6 +400,6 @@ export class NewSectionsClient {
             }
         }
 
-        return handleNonStatusCodeError(_response.error, _response.rawResponse, "PATCH", "/new/sections/{sectionID}");
+        return handleNonStatusCodeError(_response.error, _response.rawResponse, "PATCH", "/alpha/sections/{sectionID}");
     }
 }

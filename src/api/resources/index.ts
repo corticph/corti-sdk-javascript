@@ -17,7 +17,7 @@ export * as newSections from "./newSections/index.js";
 export * as newSectionVersions from "./newSectionVersions/index.js";
 export * from "./newTemplates/client/requests/index.js";
 export * as newTemplates from "./newTemplates/index.js";
-export * from "./newTemplateVersions/client/requests/index.js";
+export * from "./newTemplates/types/index.js";
 export * as newTemplateVersions from "./newTemplateVersions/index.js";
 export * as recordings from "./recordings/index.js";
 export * as stream from "./stream/index.js";

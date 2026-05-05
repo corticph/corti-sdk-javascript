@@ -3,8 +3,7 @@
 import type * as Corti from "../../../../../api/index.js";
 import * as core from "../../../../../core/index.js";
 import type * as serializers from "../../../../index.js";
-import { TemplateInstructions } from "../../../../types/TemplateInstructions.js";
-import { TemplateVersionSectionRequest } from "../../../../types/TemplateVersionSectionRequest.js";
+import { CreateTemplateRequestGeneration } from "../../types/CreateTemplateRequestGeneration.js";
 
 export const CreateTemplateRequest: core.serialization.Schema<
     serializers.CreateTemplateRequest.Raw,
@@ -15,8 +14,7 @@ export const CreateTemplateRequest: core.serialization.Schema<
     language: core.serialization.string(),
     labels: core.serialization.list(core.serialization.string()).optional(),
     inheritFromId: core.serialization.string().optionalNullable(),
-    instructions: TemplateInstructions.optional(),
-    sections: core.serialization.list(TemplateVersionSectionRequest).optional(),
+    generation: CreateTemplateRequestGeneration,
     publish: core.serialization.boolean().optional(),
 });
 
@@ -27,8 +25,7 @@ export declare namespace CreateTemplateRequest {
         language: string;
         labels?: string[] | null;
         inheritFromId?: (string | null | undefined) | null;
-        instructions?: TemplateInstructions.Raw | null;
-        sections?: TemplateVersionSectionRequest.Raw[] | null;
+        generation: CreateTemplateRequestGeneration.Raw;
         publish?: boolean | null;
     }
 }

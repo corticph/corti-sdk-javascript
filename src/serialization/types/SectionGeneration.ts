@@ -5,19 +5,19 @@ import * as core from "../../core/index.js";
 import * as serializers from "../index.js";
 import { SectionInstructions } from "./SectionInstructions.js";
 
-export const CreateSectionVersionRequest: core.serialization.ObjectSchema<
-    serializers.CreateSectionVersionRequest.Raw,
-    Corti.CreateSectionVersionRequest
+export const SectionGeneration: core.serialization.ObjectSchema<
+    serializers.SectionGeneration.Raw,
+    Corti.SectionGeneration
 > = core.serialization.object({
     title: core.serialization.string(),
     instructions: SectionInstructions,
-    outputSchema: core.serialization.lazy(() => serializers.OutputSchema).optional(),
+    outputSchema: core.serialization.lazy(() => serializers.OutputSchema),
 });
 
-export declare namespace CreateSectionVersionRequest {
+export declare namespace SectionGeneration {
     export interface Raw {
         title: string;
         instructions: SectionInstructions.Raw;
-        outputSchema?: serializers.OutputSchema.Raw | null;
+        outputSchema: serializers.OutputSchema.Raw;
     }
 }

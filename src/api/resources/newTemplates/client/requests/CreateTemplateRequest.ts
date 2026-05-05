@@ -6,7 +6,12 @@ import type * as Corti from "../../../../index.js";
  * @example
  *     {
  *         name: "name",
- *         language: "language"
+ *         language: "language",
+ *         generation: {
+ *             instructions: {
+ *                 prompt: "prompt"
+ *             }
+ *         }
  *     }
  */
 export interface CreateTemplateRequest {
@@ -20,8 +25,7 @@ export interface CreateTemplateRequest {
     labels?: string[];
     /** Reference to the template to inherit template instructions and sections from. Inherits from published version unless fields are changed or overridden in the POST /documents request. */
     inheritFromId?: string | null;
-    instructions?: Corti.TemplateInstructions;
-    sections?: Corti.TemplateVersionSectionRequest[];
+    generation: Corti.CreateTemplateRequestGeneration;
     /** Defaults to true when omitted. Set this to false if you do not want the template to automatically show up in LIST templates. */
     publish?: boolean;
 }

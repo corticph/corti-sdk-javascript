@@ -3,22 +3,19 @@
 import type * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
 import type * as serializers from "../index.js";
-import { Section } from "./Section.js";
-import { TemplateInstructions } from "./TemplateInstructions.js";
+import { TemplateGeneration } from "./TemplateGeneration.js";
 
 export const TemplateVersion: core.serialization.ObjectSchema<serializers.TemplateVersion.Raw, Corti.TemplateVersion> =
     core.serialization.object({
         id: core.serialization.string(),
         versionNumber: core.serialization.number(),
-        instructions: TemplateInstructions,
-        sections: core.serialization.list(Section).optional(),
+        generation: TemplateGeneration,
     });
 
 export declare namespace TemplateVersion {
     export interface Raw {
         id: string;
         versionNumber: number;
-        instructions: TemplateInstructions.Raw;
-        sections?: Section.Raw[] | null;
+        generation: TemplateGeneration.Raw;
     }
 }

@@ -22,21 +22,17 @@ describe("NewSectionVersionsClient", () => {
             {
                 id: "id",
                 versionNumber: 1,
-                title: "title",
-                instructions: { contentPrompt: "contentPrompt", writingStylePrompt: "writingStylePrompt" },
-                outputSchema: {
-                    type: "string",
-                    description: "description",
-                    default: "default",
-                    enum: ["enum"],
-                    pattern: "pattern",
+                generation: {
+                    title: "title",
+                    instructions: { contentPrompt: "contentPrompt", writingStylePrompt: "writingStylePrompt" },
+                    outputSchema: { type: "string" },
                 },
             },
         ];
 
         server
             .mockEndpoint()
-            .get("/new/sections/sectionID/versions")
+            .get("/alpha/sections/sectionID/versions")
             .respondWith()
             .statusCode(200)
             .jsonBody(rawResponseBody)
@@ -47,17 +43,15 @@ describe("NewSectionVersionsClient", () => {
             {
                 id: "id",
                 versionNumber: 1,
-                title: "title",
-                instructions: {
-                    contentPrompt: "contentPrompt",
-                    writingStylePrompt: "writingStylePrompt",
-                },
-                outputSchema: {
-                    type: "string",
-                    description: "description",
-                    default: "default",
-                    enum: ["enum"],
-                    pattern: "pattern",
+                generation: {
+                    title: "title",
+                    instructions: {
+                        contentPrompt: "contentPrompt",
+                        writingStylePrompt: "writingStylePrompt",
+                    },
+                    outputSchema: {
+                        type: "string",
+                    },
                 },
             },
         ]);
@@ -79,7 +73,7 @@ describe("NewSectionVersionsClient", () => {
 
         server
             .mockEndpoint()
-            .get("/new/sections/sectionID/versions")
+            .get("/alpha/sections/sectionID/versions")
             .respondWith()
             .statusCode(404)
             .jsonBody(rawResponseBody)
@@ -104,24 +98,27 @@ describe("NewSectionVersionsClient", () => {
         const rawRequestBody = {
             title: "title",
             instructions: { contentPrompt: "contentPrompt", writingStylePrompt: "writingStylePrompt" },
+            outputSchema: { type: "string" },
         };
         const rawResponseBody = {
             id: "id",
             versionNumber: 1,
-            title: "title",
-            instructions: { contentPrompt: "contentPrompt", writingStylePrompt: "writingStylePrompt" },
-            outputSchema: {
-                type: "string",
-                description: "description",
-                default: "default",
-                enum: ["enum"],
-                pattern: "pattern",
+            generation: {
+                title: "title",
+                instructions: { contentPrompt: "contentPrompt", writingStylePrompt: "writingStylePrompt" },
+                outputSchema: {
+                    type: "string",
+                    description: "description",
+                    default: "default",
+                    enum: ["enum"],
+                    pattern: "pattern",
+                },
             },
         };
 
         server
             .mockEndpoint()
-            .post("/new/sections/sectionID/versions")
+            .post("/alpha/sections/sectionID/versions")
             .jsonBody(rawRequestBody)
             .respondWith()
             .statusCode(200)
@@ -134,21 +131,26 @@ describe("NewSectionVersionsClient", () => {
                 contentPrompt: "contentPrompt",
                 writingStylePrompt: "writingStylePrompt",
             },
+            outputSchema: {
+                type: "string",
+            },
         });
         expect(response).toEqual({
             id: "id",
             versionNumber: 1,
-            title: "title",
-            instructions: {
-                contentPrompt: "contentPrompt",
-                writingStylePrompt: "writingStylePrompt",
-            },
-            outputSchema: {
-                type: "string",
-                description: "description",
-                default: "default",
-                enum: ["enum"],
-                pattern: "pattern",
+            generation: {
+                title: "title",
+                instructions: {
+                    contentPrompt: "contentPrompt",
+                    writingStylePrompt: "writingStylePrompt",
+                },
+                outputSchema: {
+                    type: "string",
+                    description: "description",
+                    default: "default",
+                    enum: ["enum"],
+                    pattern: "pattern",
+                },
             },
         });
     });
@@ -167,12 +169,13 @@ describe("NewSectionVersionsClient", () => {
         const rawRequestBody = {
             title: "title",
             instructions: { contentPrompt: "contentPrompt", writingStylePrompt: "writingStylePrompt" },
+            outputSchema: { type: "string" },
         };
         const rawResponseBody = { key: "value" };
 
         server
             .mockEndpoint()
-            .post("/new/sections/sectionID/versions")
+            .post("/alpha/sections/sectionID/versions")
             .jsonBody(rawRequestBody)
             .respondWith()
             .statusCode(400)
@@ -185,6 +188,9 @@ describe("NewSectionVersionsClient", () => {
                 instructions: {
                     contentPrompt: "contentPrompt",
                     writingStylePrompt: "writingStylePrompt",
+                },
+                outputSchema: {
+                    type: "string",
                 },
             });
         }).rejects.toThrow(Corti.BadRequestError);
@@ -204,12 +210,13 @@ describe("NewSectionVersionsClient", () => {
         const rawRequestBody = {
             title: "title",
             instructions: { contentPrompt: "contentPrompt", writingStylePrompt: "writingStylePrompt" },
+            outputSchema: { type: "string" },
         };
         const rawResponseBody = { key: "value" };
 
         server
             .mockEndpoint()
-            .post("/new/sections/sectionID/versions")
+            .post("/alpha/sections/sectionID/versions")
             .jsonBody(rawRequestBody)
             .respondWith()
             .statusCode(404)
@@ -222,6 +229,9 @@ describe("NewSectionVersionsClient", () => {
                 instructions: {
                     contentPrompt: "contentPrompt",
                     writingStylePrompt: "writingStylePrompt",
+                },
+                outputSchema: {
+                    type: "string",
                 },
             });
         }).rejects.toThrow(Corti.NotFoundError);
@@ -242,20 +252,22 @@ describe("NewSectionVersionsClient", () => {
         const rawResponseBody = {
             id: "id",
             versionNumber: 1,
-            title: "title",
-            instructions: { contentPrompt: "contentPrompt", writingStylePrompt: "writingStylePrompt" },
-            outputSchema: {
-                type: "string",
-                description: "description",
-                default: "default",
-                enum: ["enum"],
-                pattern: "pattern",
+            generation: {
+                title: "title",
+                instructions: { contentPrompt: "contentPrompt", writingStylePrompt: "writingStylePrompt" },
+                outputSchema: {
+                    type: "string",
+                    description: "description",
+                    default: "default",
+                    enum: ["enum"],
+                    pattern: "pattern",
+                },
             },
         };
 
         server
             .mockEndpoint()
-            .get("/new/sections/sectionID/versions/versionID")
+            .get("/alpha/sections/sectionID/versions/versionID")
             .respondWith()
             .statusCode(200)
             .jsonBody(rawResponseBody)
@@ -265,17 +277,19 @@ describe("NewSectionVersionsClient", () => {
         expect(response).toEqual({
             id: "id",
             versionNumber: 1,
-            title: "title",
-            instructions: {
-                contentPrompt: "contentPrompt",
-                writingStylePrompt: "writingStylePrompt",
-            },
-            outputSchema: {
-                type: "string",
-                description: "description",
-                default: "default",
-                enum: ["enum"],
-                pattern: "pattern",
+            generation: {
+                title: "title",
+                instructions: {
+                    contentPrompt: "contentPrompt",
+                    writingStylePrompt: "writingStylePrompt",
+                },
+                outputSchema: {
+                    type: "string",
+                    description: "description",
+                    default: "default",
+                    enum: ["enum"],
+                    pattern: "pattern",
+                },
             },
         });
     });
@@ -296,7 +310,7 @@ describe("NewSectionVersionsClient", () => {
 
         server
             .mockEndpoint()
-            .get("/new/sections/sectionID/versions/versionID")
+            .get("/alpha/sections/sectionID/versions/versionID")
             .respondWith()
             .statusCode(404)
             .jsonBody(rawResponseBody)
@@ -321,7 +335,7 @@ describe("NewSectionVersionsClient", () => {
 
         server
             .mockEndpoint()
-            .delete("/new/sections/sectionID/versions/versionID")
+            .delete("/alpha/sections/sectionID/versions/versionID")
             .respondWith()
             .statusCode(200)
             .build();
@@ -346,7 +360,7 @@ describe("NewSectionVersionsClient", () => {
 
         server
             .mockEndpoint()
-            .delete("/new/sections/sectionID/versions/versionID")
+            .delete("/alpha/sections/sectionID/versions/versionID")
             .respondWith()
             .statusCode(404)
             .jsonBody(rawResponseBody)
@@ -373,7 +387,7 @@ describe("NewSectionVersionsClient", () => {
 
         server
             .mockEndpoint()
-            .post("/new/sections/sectionID/versions/versionID/publish")
+            .post("/alpha/sections/sectionID/versions/versionID/publish")
             .respondWith()
             .statusCode(200)
             .jsonBody(rawResponseBody)
@@ -401,7 +415,7 @@ describe("NewSectionVersionsClient", () => {
 
         server
             .mockEndpoint()
-            .post("/new/sections/sectionID/versions/versionID/publish")
+            .post("/alpha/sections/sectionID/versions/versionID/publish")
             .respondWith()
             .statusCode(404)
             .jsonBody(rawResponseBody)

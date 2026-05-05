@@ -53,7 +53,7 @@ export class NewSectionVersionsClient {
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
                     (await core.Supplier.get(this._options.environment)).base,
-                `new/sections/${core.url.encodePathParam(sectionID)}/versions`,
+                `alpha/sections/${core.url.encodePathParam(sectionID)}/versions`,
             ),
             method: "GET",
             headers: _headers,
@@ -94,13 +94,13 @@ export class NewSectionVersionsClient {
             _response.error,
             _response.rawResponse,
             "GET",
-            "/new/sections/{sectionID}/versions",
+            "/alpha/sections/{sectionID}/versions",
         );
     }
 
     /**
      * @param {string} sectionID
-     * @param {Corti.CreateSectionVersionRequest} request
+     * @param {Corti.SectionGeneration} request
      * @param {NewSectionVersionsClient.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Corti.BadRequestError}
@@ -112,12 +112,15 @@ export class NewSectionVersionsClient {
      *         instructions: {
      *             contentPrompt: "contentPrompt",
      *             writingStylePrompt: "writingStylePrompt"
+     *         },
+     *         outputSchema: {
+     *             type: "string"
      *         }
      *     })
      */
     public create(
         sectionID: string,
-        request: Corti.CreateSectionVersionRequest,
+        request: Corti.SectionGeneration,
         requestOptions?: NewSectionVersionsClient.RequestOptions,
     ): core.HttpResponsePromise<Corti.SectionVersion> {
         return core.HttpResponsePromise.fromPromise(this.__create(sectionID, request, requestOptions));
@@ -125,7 +128,7 @@ export class NewSectionVersionsClient {
 
     private async __create(
         sectionID: string,
-        request: Corti.CreateSectionVersionRequest,
+        request: Corti.SectionGeneration,
         requestOptions?: NewSectionVersionsClient.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.SectionVersion>> {
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
@@ -139,14 +142,14 @@ export class NewSectionVersionsClient {
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
                     (await core.Supplier.get(this._options.environment)).base,
-                `new/sections/${core.url.encodePathParam(sectionID)}/versions`,
+                `alpha/sections/${core.url.encodePathParam(sectionID)}/versions`,
             ),
             method: "POST",
             headers: _headers,
             contentType: "application/json",
             queryParameters: requestOptions?.queryParams,
             requestType: "json",
-            body: serializers.CreateSectionVersionRequest.jsonOrThrow(request, {
+            body: serializers.SectionGeneration.jsonOrThrow(request, {
                 unrecognizedObjectKeys: "strip",
                 omitUndefined: true,
             }),
@@ -188,7 +191,7 @@ export class NewSectionVersionsClient {
             _response.error,
             _response.rawResponse,
             "POST",
-            "/new/sections/{sectionID}/versions",
+            "/alpha/sections/{sectionID}/versions",
         );
     }
 
@@ -226,7 +229,7 @@ export class NewSectionVersionsClient {
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
                     (await core.Supplier.get(this._options.environment)).base,
-                `new/sections/${core.url.encodePathParam(sectionID)}/versions/${core.url.encodePathParam(versionID)}`,
+                `alpha/sections/${core.url.encodePathParam(sectionID)}/versions/${core.url.encodePathParam(versionID)}`,
             ),
             method: "GET",
             headers: _headers,
@@ -267,7 +270,7 @@ export class NewSectionVersionsClient {
             _response.error,
             _response.rawResponse,
             "GET",
-            "/new/sections/{sectionID}/versions/{versionID}",
+            "/alpha/sections/{sectionID}/versions/{versionID}",
         );
     }
 
@@ -305,7 +308,7 @@ export class NewSectionVersionsClient {
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
                     (await core.Supplier.get(this._options.environment)).base,
-                `new/sections/${core.url.encodePathParam(sectionID)}/versions/${core.url.encodePathParam(versionID)}`,
+                `alpha/sections/${core.url.encodePathParam(sectionID)}/versions/${core.url.encodePathParam(versionID)}`,
             ),
             method: "DELETE",
             headers: _headers,
@@ -337,7 +340,7 @@ export class NewSectionVersionsClient {
             _response.error,
             _response.rawResponse,
             "DELETE",
-            "/new/sections/{sectionID}/versions/{versionID}",
+            "/alpha/sections/{sectionID}/versions/{versionID}",
         );
     }
 
@@ -377,7 +380,7 @@ export class NewSectionVersionsClient {
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
                     (await core.Supplier.get(this._options.environment)).base,
-                `new/sections/${core.url.encodePathParam(sectionID)}/versions/${core.url.encodePathParam(versionID)}/publish`,
+                `alpha/sections/${core.url.encodePathParam(sectionID)}/versions/${core.url.encodePathParam(versionID)}/publish`,
             ),
             method: "POST",
             headers: _headers,
@@ -418,7 +421,7 @@ export class NewSectionVersionsClient {
             _response.error,
             _response.rawResponse,
             "POST",
-            "/new/sections/{sectionID}/versions/{versionID}/publish",
+            "/alpha/sections/{sectionID}/versions/{versionID}/publish",
         );
     }
 }

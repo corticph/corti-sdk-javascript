@@ -3,7 +3,7 @@
 import type * as Corti from "../../../../../api/index.js";
 import * as core from "../../../../../core/index.js";
 import type * as serializers from "../../../../index.js";
-import { CreateSectionVersionRequest } from "../../../../types/CreateSectionVersionRequest.js";
+import { SectionGeneration } from "../../../../types/SectionGeneration.js";
 
 export const CreateSectionRequest: core.serialization.Schema<
     serializers.CreateSectionRequest.Raw,
@@ -14,7 +14,7 @@ export const CreateSectionRequest: core.serialization.Schema<
     description: core.serialization.string().optional(),
     labels: core.serialization.list(core.serialization.string()).optional(),
     inheritFromId: core.serialization.string().optionalNullable(),
-    generation: CreateSectionVersionRequest,
+    generation: SectionGeneration,
     publish: core.serialization.boolean().optional(),
 });
 
@@ -25,7 +25,7 @@ export declare namespace CreateSectionRequest {
         description?: string | null;
         labels?: string[] | null;
         inheritFromId?: (string | null | undefined) | null;
-        generation: CreateSectionVersionRequest.Raw;
+        generation: SectionGeneration.Raw;
         publish?: boolean | null;
     }
 }

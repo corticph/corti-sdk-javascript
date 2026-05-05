@@ -30,34 +30,38 @@ describe("NewTemplatesClient", () => {
                 publishedVersion: {
                     id: "id",
                     versionNumber: 1,
-                    instructions: { prompt: "prompt" },
-                    sections: [
-                        {
-                            id: "id",
-                            name: "name",
-                            language: "language",
-                            labels: ["labels"],
-                            publishedVersion: {
+                    generation: {
+                        instructions: { prompt: "prompt" },
+                        sections: [
+                            {
                                 id: "id",
-                                versionNumber: 1,
-                                title: "title",
-                                instructions: {
-                                    contentPrompt: "contentPrompt",
-                                    writingStylePrompt: "writingStylePrompt",
+                                name: "name",
+                                language: "language",
+                                labels: ["labels"],
+                                publishedVersion: {
+                                    id: "id",
+                                    versionNumber: 1,
+                                    generation: {
+                                        title: "title",
+                                        instructions: {
+                                            contentPrompt: "contentPrompt",
+                                            writingStylePrompt: "writingStylePrompt",
+                                        },
+                                        outputSchema: { type: "string" },
+                                    },
                                 },
-                                outputSchema: { type: "string" },
+                                createdAt: "2024-01-15T09:30:00Z",
+                                updatedAt: "2024-01-15T09:30:00Z",
                             },
-                            createdAt: "2024-01-15T09:30:00Z",
-                            updatedAt: "2024-01-15T09:30:00Z",
-                        },
-                    ],
+                        ],
+                    },
                 },
                 createdAt: "2024-01-15T09:30:00Z",
                 updatedAt: "2024-01-15T09:30:00Z",
             },
         ];
 
-        server.mockEndpoint().get("/new/templates").respondWith().statusCode(200).jsonBody(rawResponseBody).build();
+        server.mockEndpoint().get("/alpha/templates").respondWith().statusCode(200).jsonBody(rawResponseBody).build();
 
         const response = await client.newTemplates.list();
         expect(response).toEqual([
@@ -72,31 +76,35 @@ describe("NewTemplatesClient", () => {
                 publishedVersion: {
                     id: "id",
                     versionNumber: 1,
-                    instructions: {
-                        prompt: "prompt",
-                    },
-                    sections: [
-                        {
-                            id: "id",
-                            name: "name",
-                            language: "language",
-                            labels: ["labels"],
-                            publishedVersion: {
-                                id: "id",
-                                versionNumber: 1,
-                                title: "title",
-                                instructions: {
-                                    contentPrompt: "contentPrompt",
-                                    writingStylePrompt: "writingStylePrompt",
-                                },
-                                outputSchema: {
-                                    type: "string",
-                                },
-                            },
-                            createdAt: new Date("2024-01-15T09:30:00.000Z"),
-                            updatedAt: new Date("2024-01-15T09:30:00.000Z"),
+                    generation: {
+                        instructions: {
+                            prompt: "prompt",
                         },
-                    ],
+                        sections: [
+                            {
+                                id: "id",
+                                name: "name",
+                                language: "language",
+                                labels: ["labels"],
+                                publishedVersion: {
+                                    id: "id",
+                                    versionNumber: 1,
+                                    generation: {
+                                        title: "title",
+                                        instructions: {
+                                            contentPrompt: "contentPrompt",
+                                            writingStylePrompt: "writingStylePrompt",
+                                        },
+                                        outputSchema: {
+                                            type: "string",
+                                        },
+                                    },
+                                },
+                                createdAt: new Date("2024-01-15T09:30:00.000Z"),
+                                updatedAt: new Date("2024-01-15T09:30:00.000Z"),
+                            },
+                        ],
+                    },
                 },
                 createdAt: new Date("2024-01-15T09:30:00.000Z"),
                 updatedAt: new Date("2024-01-15T09:30:00.000Z"),
@@ -115,7 +123,11 @@ describe("NewTemplatesClient", () => {
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
-        const rawRequestBody = { name: "name", language: "language" };
+        const rawRequestBody = {
+            name: "name",
+            language: "language",
+            generation: { instructions: { prompt: "prompt" } },
+        };
         const rawResponseBody = {
             id: "id",
             inheritedFromId: "inheritedFromId",
@@ -127,24 +139,31 @@ describe("NewTemplatesClient", () => {
             publishedVersion: {
                 id: "id",
                 versionNumber: 1,
-                instructions: { prompt: "prompt" },
-                sections: [
-                    {
-                        id: "id",
-                        name: "name",
-                        language: "language",
-                        labels: ["labels"],
-                        publishedVersion: {
+                generation: {
+                    instructions: { prompt: "prompt" },
+                    sections: [
+                        {
                             id: "id",
-                            versionNumber: 1,
-                            title: "title",
-                            instructions: { contentPrompt: "contentPrompt", writingStylePrompt: "writingStylePrompt" },
-                            outputSchema: { type: "string" },
+                            name: "name",
+                            language: "language",
+                            labels: ["labels"],
+                            publishedVersion: {
+                                id: "id",
+                                versionNumber: 1,
+                                generation: {
+                                    title: "title",
+                                    instructions: {
+                                        contentPrompt: "contentPrompt",
+                                        writingStylePrompt: "writingStylePrompt",
+                                    },
+                                    outputSchema: { type: "string" },
+                                },
+                            },
+                            createdAt: "2024-01-15T09:30:00Z",
+                            updatedAt: "2024-01-15T09:30:00Z",
                         },
-                        createdAt: "2024-01-15T09:30:00Z",
-                        updatedAt: "2024-01-15T09:30:00Z",
-                    },
-                ],
+                    ],
+                },
             },
             createdAt: "2024-01-15T09:30:00Z",
             updatedAt: "2024-01-15T09:30:00Z",
@@ -152,7 +171,7 @@ describe("NewTemplatesClient", () => {
 
         server
             .mockEndpoint()
-            .post("/new/templates")
+            .post("/alpha/templates")
             .jsonBody(rawRequestBody)
             .respondWith()
             .statusCode(200)
@@ -162,6 +181,11 @@ describe("NewTemplatesClient", () => {
         const response = await client.newTemplates.create({
             name: "name",
             language: "language",
+            generation: {
+                instructions: {
+                    prompt: "prompt",
+                },
+            },
         });
         expect(response).toEqual({
             id: "id",
@@ -174,31 +198,35 @@ describe("NewTemplatesClient", () => {
             publishedVersion: {
                 id: "id",
                 versionNumber: 1,
-                instructions: {
-                    prompt: "prompt",
-                },
-                sections: [
-                    {
-                        id: "id",
-                        name: "name",
-                        language: "language",
-                        labels: ["labels"],
-                        publishedVersion: {
-                            id: "id",
-                            versionNumber: 1,
-                            title: "title",
-                            instructions: {
-                                contentPrompt: "contentPrompt",
-                                writingStylePrompt: "writingStylePrompt",
-                            },
-                            outputSchema: {
-                                type: "string",
-                            },
-                        },
-                        createdAt: new Date("2024-01-15T09:30:00.000Z"),
-                        updatedAt: new Date("2024-01-15T09:30:00.000Z"),
+                generation: {
+                    instructions: {
+                        prompt: "prompt",
                     },
-                ],
+                    sections: [
+                        {
+                            id: "id",
+                            name: "name",
+                            language: "language",
+                            labels: ["labels"],
+                            publishedVersion: {
+                                id: "id",
+                                versionNumber: 1,
+                                generation: {
+                                    title: "title",
+                                    instructions: {
+                                        contentPrompt: "contentPrompt",
+                                        writingStylePrompt: "writingStylePrompt",
+                                    },
+                                    outputSchema: {
+                                        type: "string",
+                                    },
+                                },
+                            },
+                            createdAt: new Date("2024-01-15T09:30:00.000Z"),
+                            updatedAt: new Date("2024-01-15T09:30:00.000Z"),
+                        },
+                    ],
+                },
             },
             createdAt: new Date("2024-01-15T09:30:00.000Z"),
             updatedAt: new Date("2024-01-15T09:30:00.000Z"),
@@ -216,12 +244,16 @@ describe("NewTemplatesClient", () => {
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
-        const rawRequestBody = { name: "name", language: "language" };
+        const rawRequestBody = {
+            name: "name",
+            language: "language",
+            generation: { instructions: { prompt: "prompt" } },
+        };
         const rawResponseBody = { key: "value" };
 
         server
             .mockEndpoint()
-            .post("/new/templates")
+            .post("/alpha/templates")
             .jsonBody(rawRequestBody)
             .respondWith()
             .statusCode(400)
@@ -232,11 +264,16 @@ describe("NewTemplatesClient", () => {
             return await client.newTemplates.create({
                 name: "name",
                 language: "language",
+                generation: {
+                    instructions: {
+                        prompt: "prompt",
+                    },
+                },
             });
         }).rejects.toThrow(Corti.BadRequestError);
     });
 
-    test("get (1)", async () => {
+    test("get", async () => {
         const server = mockServerPool.createServer();
         mockOAuth(server);
 
@@ -248,92 +285,13 @@ describe("NewTemplatesClient", () => {
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
-        const rawResponseBody = {
-            id: "id",
-            inheritedFromId: "inheritedFromId",
-            autoGenerated: true,
-            name: "name",
-            description: "description",
-            language: "language",
-            labels: ["labels"],
-            publishedVersion: {
-                id: "id",
-                versionNumber: 1,
-                instructions: { prompt: "prompt" },
-                sections: [
-                    {
-                        id: "id",
-                        name: "name",
-                        language: "language",
-                        labels: ["labels"],
-                        publishedVersion: {
-                            id: "id",
-                            versionNumber: 1,
-                            title: "title",
-                            instructions: { contentPrompt: "contentPrompt", writingStylePrompt: "writingStylePrompt" },
-                            outputSchema: { type: "string" },
-                        },
-                        createdAt: "2024-01-15T09:30:00Z",
-                        updatedAt: "2024-01-15T09:30:00Z",
-                    },
-                ],
-            },
-            createdAt: "2024-01-15T09:30:00Z",
-            updatedAt: "2024-01-15T09:30:00Z",
-        };
-
-        server
-            .mockEndpoint()
-            .get("/new/templates/templateId")
-            .respondWith()
-            .statusCode(200)
-            .jsonBody(rawResponseBody)
-            .build();
+        server.mockEndpoint().get("/alpha/templates/templateId").respondWith().statusCode(200).build();
 
         const response = await client.newTemplates.get("templateId");
-        expect(response).toEqual({
-            id: "id",
-            inheritedFromId: "inheritedFromId",
-            autoGenerated: true,
-            name: "name",
-            description: "description",
-            language: "language",
-            labels: ["labels"],
-            publishedVersion: {
-                id: "id",
-                versionNumber: 1,
-                instructions: {
-                    prompt: "prompt",
-                },
-                sections: [
-                    {
-                        id: "id",
-                        name: "name",
-                        language: "language",
-                        labels: ["labels"],
-                        publishedVersion: {
-                            id: "id",
-                            versionNumber: 1,
-                            title: "title",
-                            instructions: {
-                                contentPrompt: "contentPrompt",
-                                writingStylePrompt: "writingStylePrompt",
-                            },
-                            outputSchema: {
-                                type: "string",
-                            },
-                        },
-                        createdAt: new Date("2024-01-15T09:30:00.000Z"),
-                        updatedAt: new Date("2024-01-15T09:30:00.000Z"),
-                    },
-                ],
-            },
-            createdAt: new Date("2024-01-15T09:30:00.000Z"),
-            updatedAt: new Date("2024-01-15T09:30:00.000Z"),
-        });
+        expect(response).toEqual(undefined);
     });
 
-    test("get (2)", async () => {
+    test("delete", async () => {
         const server = mockServerPool.createServer();
         mockOAuth(server);
 
@@ -345,40 +303,13 @@ describe("NewTemplatesClient", () => {
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
-        const rawResponseBody = { key: "value" };
-
-        server
-            .mockEndpoint()
-            .get("/new/templates/templateId")
-            .respondWith()
-            .statusCode(404)
-            .jsonBody(rawResponseBody)
-            .build();
-
-        await expect(async () => {
-            return await client.newTemplates.get("templateId");
-        }).rejects.toThrow(Corti.NotFoundError);
-    });
-
-    test("delete (1)", async () => {
-        const server = mockServerPool.createServer();
-        mockOAuth(server);
-
-        const client = new CortiClient({
-            maxRetries: 0,
-            clientId: "client_id",
-            clientSecret: "client_secret",
-            tenantName: "test",
-            environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
-        });
-
-        server.mockEndpoint().delete("/new/templates/templateId").respondWith().statusCode(200).build();
+        server.mockEndpoint().delete("/alpha/templates/templateId").respondWith().statusCode(200).build();
 
         const response = await client.newTemplates.delete("templateId");
         expect(response).toEqual(undefined);
     });
 
-    test("delete (2)", async () => {
+    test("update", async () => {
         const server = mockServerPool.createServer();
         mockOAuth(server);
 
@@ -390,172 +321,9 @@ describe("NewTemplatesClient", () => {
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
-        const rawResponseBody = { key: "value" };
-
-        server
-            .mockEndpoint()
-            .delete("/new/templates/templateId")
-            .respondWith()
-            .statusCode(404)
-            .jsonBody(rawResponseBody)
-            .build();
-
-        await expect(async () => {
-            return await client.newTemplates.delete("templateId");
-        }).rejects.toThrow(Corti.NotFoundError);
-    });
-
-    test("update (1)", async () => {
-        const server = mockServerPool.createServer();
-        mockOAuth(server);
-
-        const client = new CortiClient({
-            maxRetries: 0,
-            clientId: "client_id",
-            clientSecret: "client_secret",
-            tenantName: "test",
-            environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
-        });
-        const rawRequestBody = {};
-        const rawResponseBody = {
-            id: "id",
-            inheritedFromId: "inheritedFromId",
-            autoGenerated: true,
-            name: "name",
-            description: "description",
-            language: "language",
-            labels: ["labels"],
-            publishedVersion: {
-                id: "id",
-                versionNumber: 1,
-                instructions: { prompt: "prompt" },
-                sections: [
-                    {
-                        id: "id",
-                        name: "name",
-                        language: "language",
-                        labels: ["labels"],
-                        publishedVersion: {
-                            id: "id",
-                            versionNumber: 1,
-                            title: "title",
-                            instructions: { contentPrompt: "contentPrompt", writingStylePrompt: "writingStylePrompt" },
-                            outputSchema: { type: "string" },
-                        },
-                        createdAt: "2024-01-15T09:30:00Z",
-                        updatedAt: "2024-01-15T09:30:00Z",
-                    },
-                ],
-            },
-            createdAt: "2024-01-15T09:30:00Z",
-            updatedAt: "2024-01-15T09:30:00Z",
-        };
-
-        server
-            .mockEndpoint()
-            .patch("/new/templates/templateId")
-            .jsonBody(rawRequestBody)
-            .respondWith()
-            .statusCode(200)
-            .jsonBody(rawResponseBody)
-            .build();
+        server.mockEndpoint().patch("/alpha/templates/templateId").respondWith().statusCode(200).build();
 
         const response = await client.newTemplates.update("templateId");
-        expect(response).toEqual({
-            id: "id",
-            inheritedFromId: "inheritedFromId",
-            autoGenerated: true,
-            name: "name",
-            description: "description",
-            language: "language",
-            labels: ["labels"],
-            publishedVersion: {
-                id: "id",
-                versionNumber: 1,
-                instructions: {
-                    prompt: "prompt",
-                },
-                sections: [
-                    {
-                        id: "id",
-                        name: "name",
-                        language: "language",
-                        labels: ["labels"],
-                        publishedVersion: {
-                            id: "id",
-                            versionNumber: 1,
-                            title: "title",
-                            instructions: {
-                                contentPrompt: "contentPrompt",
-                                writingStylePrompt: "writingStylePrompt",
-                            },
-                            outputSchema: {
-                                type: "string",
-                            },
-                        },
-                        createdAt: new Date("2024-01-15T09:30:00.000Z"),
-                        updatedAt: new Date("2024-01-15T09:30:00.000Z"),
-                    },
-                ],
-            },
-            createdAt: new Date("2024-01-15T09:30:00.000Z"),
-            updatedAt: new Date("2024-01-15T09:30:00.000Z"),
-        });
-    });
-
-    test("update (2)", async () => {
-        const server = mockServerPool.createServer();
-        mockOAuth(server);
-
-        const client = new CortiClient({
-            maxRetries: 0,
-            clientId: "client_id",
-            clientSecret: "client_secret",
-            tenantName: "test",
-            environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
-        });
-        const rawRequestBody = {};
-        const rawResponseBody = { key: "value" };
-
-        server
-            .mockEndpoint()
-            .patch("/new/templates/templateId")
-            .jsonBody(rawRequestBody)
-            .respondWith()
-            .statusCode(400)
-            .jsonBody(rawResponseBody)
-            .build();
-
-        await expect(async () => {
-            return await client.newTemplates.update("templateId");
-        }).rejects.toThrow(Corti.BadRequestError);
-    });
-
-    test("update (3)", async () => {
-        const server = mockServerPool.createServer();
-        mockOAuth(server);
-
-        const client = new CortiClient({
-            maxRetries: 0,
-            clientId: "client_id",
-            clientSecret: "client_secret",
-            tenantName: "test",
-            environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
-        });
-        const rawRequestBody = {};
-        const rawResponseBody = { key: "value" };
-
-        server
-            .mockEndpoint()
-            .patch("/new/templates/templateId")
-            .jsonBody(rawRequestBody)
-            .respondWith()
-            .statusCode(404)
-            .jsonBody(rawResponseBody)
-            .build();
-
-        await expect(async () => {
-            return await client.newTemplates.update("templateId");
-        }).rejects.toThrow(Corti.NotFoundError);
+        expect(response).toEqual(undefined);
     });
 });

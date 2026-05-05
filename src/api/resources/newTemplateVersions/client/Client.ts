@@ -6,8 +6,6 @@ import { mergeHeaders, mergeOnlyDefinedHeaders } from "../../../../core/headers.
 import * as core from "../../../../core/index.js";
 import { handleNonStatusCodeError } from "../../../../errors/handleNonStatusCodeError.js";
 import * as errors from "../../../../errors/index.js";
-import * as serializers from "../../../../serialization/index.js";
-import * as Corti from "../../../index.js";
 
 export declare namespace NewTemplateVersionsClient {
     export type Options = BaseClientOptions;
@@ -26,22 +24,20 @@ export class NewTemplateVersionsClient {
      * @param {string} templateId
      * @param {NewTemplateVersionsClient.RequestOptions} requestOptions - Request-specific configuration.
      *
-     * @throws {@link Corti.NotFoundError}
-     *
      * @example
      *     await client.newTemplateVersions.list("templateId")
      */
     public list(
         templateId: string,
         requestOptions?: NewTemplateVersionsClient.RequestOptions,
-    ): core.HttpResponsePromise<Corti.TemplateVersion[]> {
+    ): core.HttpResponsePromise<void> {
         return core.HttpResponsePromise.fromPromise(this.__list(templateId, requestOptions));
     }
 
     private async __list(
         templateId: string,
         requestOptions?: NewTemplateVersionsClient.RequestOptions,
-    ): Promise<core.WithRawResponse<Corti.TemplateVersion[]>> {
+    ): Promise<core.WithRawResponse<void>> {
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
@@ -53,7 +49,7 @@ export class NewTemplateVersionsClient {
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
                     (await core.Supplier.get(this._options.environment)).base,
-                `new/templates/${core.url.encodePathParam(templateId)}/versions`,
+                `alpha/templates/${core.url.encodePathParam(templateId)}/versions`,
             ),
             method: "GET",
             headers: _headers,
@@ -65,63 +61,43 @@ export class NewTemplateVersionsClient {
             logging: this._options.logging,
         });
         if (_response.ok) {
-            return {
-                data: serializers.newTemplateVersions.list.Response.parseOrThrow(_response.body, {
-                    unrecognizedObjectKeys: "passthrough",
-                    allowUnrecognizedUnionMembers: true,
-                    allowUnrecognizedEnumValues: true,
-                    skipValidation: true,
-                    breadcrumbsPrefix: ["response"],
-                }),
-                rawResponse: _response.rawResponse,
-            };
+            return { data: undefined, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
-            switch (_response.error.statusCode) {
-                case 404:
-                    throw new Corti.NotFoundError(_response.error.body, _response.rawResponse);
-                default:
-                    throw new errors.CortiError({
-                        statusCode: _response.error.statusCode,
-                        body: _response.error.body,
-                        rawResponse: _response.rawResponse,
-                    });
-            }
+            throw new errors.CortiError({
+                statusCode: _response.error.statusCode,
+                body: _response.error.body,
+                rawResponse: _response.rawResponse,
+            });
         }
 
         return handleNonStatusCodeError(
             _response.error,
             _response.rawResponse,
             "GET",
-            "/new/templates/{templateId}/versions",
+            "/alpha/templates/{templateId}/versions",
         );
     }
 
     /**
      * @param {string} templateId
-     * @param {Corti.CreateTemplateVersionRequest} request
      * @param {NewTemplateVersionsClient.RequestOptions} requestOptions - Request-specific configuration.
-     *
-     * @throws {@link Corti.BadRequestError}
-     * @throws {@link Corti.NotFoundError}
      *
      * @example
      *     await client.newTemplateVersions.create("templateId")
      */
     public create(
         templateId: string,
-        request: Corti.CreateTemplateVersionRequest = {},
         requestOptions?: NewTemplateVersionsClient.RequestOptions,
-    ): core.HttpResponsePromise<Corti.TemplateVersion> {
-        return core.HttpResponsePromise.fromPromise(this.__create(templateId, request, requestOptions));
+    ): core.HttpResponsePromise<void> {
+        return core.HttpResponsePromise.fromPromise(this.__create(templateId, requestOptions));
     }
 
     private async __create(
         templateId: string,
-        request: Corti.CreateTemplateVersionRequest = {},
         requestOptions?: NewTemplateVersionsClient.RequestOptions,
-    ): Promise<core.WithRawResponse<Corti.TemplateVersion>> {
+    ): Promise<core.WithRawResponse<void>> {
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
@@ -133,17 +109,11 @@ export class NewTemplateVersionsClient {
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
                     (await core.Supplier.get(this._options.environment)).base,
-                `new/templates/${core.url.encodePathParam(templateId)}/versions`,
+                `alpha/templates/${core.url.encodePathParam(templateId)}/versions`,
             ),
             method: "POST",
             headers: _headers,
-            contentType: "application/json",
             queryParameters: requestOptions?.queryParams,
-            requestType: "json",
-            body: serializers.CreateTemplateVersionRequest.jsonOrThrow(request, {
-                unrecognizedObjectKeys: "strip",
-                omitUndefined: true,
-            }),
             timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
             maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
             abortSignal: requestOptions?.abortSignal,
@@ -151,38 +121,22 @@ export class NewTemplateVersionsClient {
             logging: this._options.logging,
         });
         if (_response.ok) {
-            return {
-                data: serializers.TemplateVersion.parseOrThrow(_response.body, {
-                    unrecognizedObjectKeys: "passthrough",
-                    allowUnrecognizedUnionMembers: true,
-                    allowUnrecognizedEnumValues: true,
-                    skipValidation: true,
-                    breadcrumbsPrefix: ["response"],
-                }),
-                rawResponse: _response.rawResponse,
-            };
+            return { data: undefined, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
-            switch (_response.error.statusCode) {
-                case 400:
-                    throw new Corti.BadRequestError(_response.error.body, _response.rawResponse);
-                case 404:
-                    throw new Corti.NotFoundError(_response.error.body, _response.rawResponse);
-                default:
-                    throw new errors.CortiError({
-                        statusCode: _response.error.statusCode,
-                        body: _response.error.body,
-                        rawResponse: _response.rawResponse,
-                    });
-            }
+            throw new errors.CortiError({
+                statusCode: _response.error.statusCode,
+                body: _response.error.body,
+                rawResponse: _response.rawResponse,
+            });
         }
 
         return handleNonStatusCodeError(
             _response.error,
             _response.rawResponse,
             "POST",
-            "/new/templates/{templateId}/versions",
+            "/alpha/templates/{templateId}/versions",
         );
     }
 
@@ -190,8 +144,6 @@ export class NewTemplateVersionsClient {
      * @param {string} templateId
      * @param {string} versionID
      * @param {NewTemplateVersionsClient.RequestOptions} requestOptions - Request-specific configuration.
-     *
-     * @throws {@link Corti.NotFoundError}
      *
      * @example
      *     await client.newTemplateVersions.get("templateId", "versionID")
@@ -200,7 +152,7 @@ export class NewTemplateVersionsClient {
         templateId: string,
         versionID: string,
         requestOptions?: NewTemplateVersionsClient.RequestOptions,
-    ): core.HttpResponsePromise<Corti.TemplateVersion> {
+    ): core.HttpResponsePromise<void> {
         return core.HttpResponsePromise.fromPromise(this.__get(templateId, versionID, requestOptions));
     }
 
@@ -208,7 +160,7 @@ export class NewTemplateVersionsClient {
         templateId: string,
         versionID: string,
         requestOptions?: NewTemplateVersionsClient.RequestOptions,
-    ): Promise<core.WithRawResponse<Corti.TemplateVersion>> {
+    ): Promise<core.WithRawResponse<void>> {
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
@@ -220,7 +172,7 @@ export class NewTemplateVersionsClient {
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
                     (await core.Supplier.get(this._options.environment)).base,
-                `new/templates/${core.url.encodePathParam(templateId)}/versions/${core.url.encodePathParam(versionID)}`,
+                `alpha/templates/${core.url.encodePathParam(templateId)}/versions/${core.url.encodePathParam(versionID)}`,
             ),
             method: "GET",
             headers: _headers,
@@ -232,36 +184,22 @@ export class NewTemplateVersionsClient {
             logging: this._options.logging,
         });
         if (_response.ok) {
-            return {
-                data: serializers.TemplateVersion.parseOrThrow(_response.body, {
-                    unrecognizedObjectKeys: "passthrough",
-                    allowUnrecognizedUnionMembers: true,
-                    allowUnrecognizedEnumValues: true,
-                    skipValidation: true,
-                    breadcrumbsPrefix: ["response"],
-                }),
-                rawResponse: _response.rawResponse,
-            };
+            return { data: undefined, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
-            switch (_response.error.statusCode) {
-                case 404:
-                    throw new Corti.NotFoundError(_response.error.body, _response.rawResponse);
-                default:
-                    throw new errors.CortiError({
-                        statusCode: _response.error.statusCode,
-                        body: _response.error.body,
-                        rawResponse: _response.rawResponse,
-                    });
-            }
+            throw new errors.CortiError({
+                statusCode: _response.error.statusCode,
+                body: _response.error.body,
+                rawResponse: _response.rawResponse,
+            });
         }
 
         return handleNonStatusCodeError(
             _response.error,
             _response.rawResponse,
             "GET",
-            "/new/templates/{templateId}/versions/{versionID}",
+            "/alpha/templates/{templateId}/versions/{versionID}",
         );
     }
 
@@ -269,8 +207,6 @@ export class NewTemplateVersionsClient {
      * @param {string} templateId
      * @param {string} versionID
      * @param {NewTemplateVersionsClient.RequestOptions} requestOptions - Request-specific configuration.
-     *
-     * @throws {@link Corti.NotFoundError}
      *
      * @example
      *     await client.newTemplateVersions.delete("templateId", "versionID")
@@ -299,7 +235,7 @@ export class NewTemplateVersionsClient {
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
                     (await core.Supplier.get(this._options.environment)).base,
-                `new/templates/${core.url.encodePathParam(templateId)}/versions/${core.url.encodePathParam(versionID)}`,
+                `alpha/templates/${core.url.encodePathParam(templateId)}/versions/${core.url.encodePathParam(versionID)}`,
             ),
             method: "DELETE",
             headers: _headers,
@@ -315,34 +251,25 @@ export class NewTemplateVersionsClient {
         }
 
         if (_response.error.reason === "status-code") {
-            switch (_response.error.statusCode) {
-                case 404:
-                    throw new Corti.NotFoundError(_response.error.body, _response.rawResponse);
-                default:
-                    throw new errors.CortiError({
-                        statusCode: _response.error.statusCode,
-                        body: _response.error.body,
-                        rawResponse: _response.rawResponse,
-                    });
-            }
+            throw new errors.CortiError({
+                statusCode: _response.error.statusCode,
+                body: _response.error.body,
+                rawResponse: _response.rawResponse,
+            });
         }
 
         return handleNonStatusCodeError(
             _response.error,
             _response.rawResponse,
             "DELETE",
-            "/new/templates/{templateId}/versions/{versionID}",
+            "/alpha/templates/{templateId}/versions/{versionID}",
         );
     }
 
     /**
-     * Sets this version as the published version of the template.
-     *
      * @param {string} templateId
      * @param {string} versionID
      * @param {NewTemplateVersionsClient.RequestOptions} requestOptions - Request-specific configuration.
-     *
-     * @throws {@link Corti.NotFoundError}
      *
      * @example
      *     await client.newTemplateVersions.publish("templateId", "versionID")
@@ -351,7 +278,7 @@ export class NewTemplateVersionsClient {
         templateId: string,
         versionID: string,
         requestOptions?: NewTemplateVersionsClient.RequestOptions,
-    ): core.HttpResponsePromise<Corti.StatusResponse> {
+    ): core.HttpResponsePromise<void> {
         return core.HttpResponsePromise.fromPromise(this.__publish(templateId, versionID, requestOptions));
     }
 
@@ -359,7 +286,7 @@ export class NewTemplateVersionsClient {
         templateId: string,
         versionID: string,
         requestOptions?: NewTemplateVersionsClient.RequestOptions,
-    ): Promise<core.WithRawResponse<Corti.StatusResponse>> {
+    ): Promise<core.WithRawResponse<void>> {
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
@@ -371,7 +298,7 @@ export class NewTemplateVersionsClient {
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
                     (await core.Supplier.get(this._options.environment)).base,
-                `new/templates/${core.url.encodePathParam(templateId)}/versions/${core.url.encodePathParam(versionID)}/publish`,
+                `alpha/templates/${core.url.encodePathParam(templateId)}/versions/${core.url.encodePathParam(versionID)}/publish`,
             ),
             method: "POST",
             headers: _headers,
@@ -383,36 +310,22 @@ export class NewTemplateVersionsClient {
             logging: this._options.logging,
         });
         if (_response.ok) {
-            return {
-                data: serializers.StatusResponse.parseOrThrow(_response.body, {
-                    unrecognizedObjectKeys: "passthrough",
-                    allowUnrecognizedUnionMembers: true,
-                    allowUnrecognizedEnumValues: true,
-                    skipValidation: true,
-                    breadcrumbsPrefix: ["response"],
-                }),
-                rawResponse: _response.rawResponse,
-            };
+            return { data: undefined, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
-            switch (_response.error.statusCode) {
-                case 404:
-                    throw new Corti.NotFoundError(_response.error.body, _response.rawResponse);
-                default:
-                    throw new errors.CortiError({
-                        statusCode: _response.error.statusCode,
-                        body: _response.error.body,
-                        rawResponse: _response.rawResponse,
-                    });
-            }
+            throw new errors.CortiError({
+                statusCode: _response.error.statusCode,
+                body: _response.error.body,
+                rawResponse: _response.rawResponse,
+            });
         }
 
         return handleNonStatusCodeError(
             _response.error,
             _response.rawResponse,
             "POST",
-            "/new/templates/{templateId}/versions/{versionID}/publish",
+            "/alpha/templates/{templateId}/versions/{versionID}/publish",
         );
     }
 }

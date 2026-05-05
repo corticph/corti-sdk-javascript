@@ -2,24 +2,20 @@
 
 import type * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
-import * as serializers from "../index.js";
-import { SectionInstructions } from "./SectionInstructions.js";
+import type * as serializers from "../index.js";
+import { SectionGeneration } from "./SectionGeneration.js";
 
 export const SectionVersion: core.serialization.ObjectSchema<serializers.SectionVersion.Raw, Corti.SectionVersion> =
     core.serialization.object({
         id: core.serialization.string(),
         versionNumber: core.serialization.number(),
-        title: core.serialization.string(),
-        instructions: SectionInstructions,
-        outputSchema: core.serialization.lazy(() => serializers.OutputSchema),
+        generation: SectionGeneration,
     });
 
 export declare namespace SectionVersion {
     export interface Raw {
         id: string;
         versionNumber: number;
-        title: string;
-        instructions: SectionInstructions.Raw;
-        outputSchema: serializers.OutputSchema.Raw;
+        generation: SectionGeneration.Raw;
     }
 }

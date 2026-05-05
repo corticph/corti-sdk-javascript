@@ -35,9 +35,9 @@ export class CortiClient {
     protected _templates: TemplatesClient | undefined;
     protected _codes: CodesClient | undefined;
     protected _newTemplates: NewTemplatesClient | undefined;
-    protected _newTemplateVersions: NewTemplateVersionsClient | undefined;
     protected _newSections: NewSectionsClient | undefined;
     protected _newSectionVersions: NewSectionVersionsClient | undefined;
+    protected _newTemplateVersions: NewTemplateVersionsClient | undefined;
     protected _agents: AgentsClient | undefined;
     protected _stream: StreamClient | undefined;
     protected _transcribe: TranscribeClient | undefined;
@@ -82,16 +82,16 @@ export class CortiClient {
         return (this._newTemplates ??= new NewTemplatesClient(this._options));
     }
 
-    public get newTemplateVersions(): NewTemplateVersionsClient {
-        return (this._newTemplateVersions ??= new NewTemplateVersionsClient(this._options));
-    }
-
     public get newSections(): NewSectionsClient {
         return (this._newSections ??= new NewSectionsClient(this._options));
     }
 
     public get newSectionVersions(): NewSectionVersionsClient {
         return (this._newSectionVersions ??= new NewSectionVersionsClient(this._options));
+    }
+
+    public get newTemplateVersions(): NewTemplateVersionsClient {
+        return (this._newTemplateVersions ??= new NewTemplateVersionsClient(this._options));
     }
 
     public get agents(): AgentsClient {

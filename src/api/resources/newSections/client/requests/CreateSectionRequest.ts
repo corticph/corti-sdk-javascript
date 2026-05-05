@@ -12,6 +12,9 @@ import type * as Corti from "../../../../index.js";
  *             instructions: {
  *                 contentPrompt: "contentPrompt",
  *                 writingStylePrompt: "writingStylePrompt"
+ *             },
+ *             outputSchema: {
+ *                 type: "string"
  *             }
  *         }
  *     }
@@ -27,7 +30,7 @@ export interface CreateSectionRequest {
     labels?: string[];
     /** Reference to the section to inherit generation configuration from. Inherits from published version unless fields are changed or overridden in the POST /documents request. */
     inheritFromId?: string | null;
-    generation: Corti.CreateSectionVersionRequest;
+    generation: Corti.SectionGeneration;
     /** Defaults to true when omitted. Set this to false if you do not want the section to automatically show up in LIST /sections. */
     publish?: boolean;
 }
