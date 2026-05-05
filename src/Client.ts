@@ -35,9 +35,9 @@ export class CortiClient {
     protected _templates: TemplatesClient | undefined;
     protected _codes: CodesClient | undefined;
     protected _alphaTemplates: AlphaTemplatesClient | undefined;
+    protected _alphaTemplateVersions: AlphaTemplateVersionsClient | undefined;
     protected _alphaSections: AlphaSectionsClient | undefined;
     protected _alphaSectionVersions: AlphaSectionVersionsClient | undefined;
-    protected _alphaTemplateVersions: AlphaTemplateVersionsClient | undefined;
     protected _agents: AgentsClient | undefined;
     protected _stream: StreamClient | undefined;
     protected _transcribe: TranscribeClient | undefined;
@@ -82,16 +82,16 @@ export class CortiClient {
         return (this._alphaTemplates ??= new AlphaTemplatesClient(this._options));
     }
 
+    public get alphaTemplateVersions(): AlphaTemplateVersionsClient {
+        return (this._alphaTemplateVersions ??= new AlphaTemplateVersionsClient(this._options));
+    }
+
     public get alphaSections(): AlphaSectionsClient {
         return (this._alphaSections ??= new AlphaSectionsClient(this._options));
     }
 
     public get alphaSectionVersions(): AlphaSectionVersionsClient {
         return (this._alphaSectionVersions ??= new AlphaSectionVersionsClient(this._options));
-    }
-
-    public get alphaTemplateVersions(): AlphaTemplateVersionsClient {
-        return (this._alphaTemplateVersions ??= new AlphaTemplateVersionsClient(this._options));
     }
 
     public get agents(): AgentsClient {

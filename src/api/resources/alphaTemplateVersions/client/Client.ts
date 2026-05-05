@@ -6,6 +6,8 @@ import { mergeHeaders, mergeOnlyDefinedHeaders } from "../../../../core/headers.
 import * as core from "../../../../core/index.js";
 import { handleNonStatusCodeError } from "../../../../errors/handleNonStatusCodeError.js";
 import * as errors from "../../../../errors/index.js";
+import * as serializers from "../../../../serialization/index.js";
+import * as Corti from "../../../index.js";
 
 export declare namespace AlphaTemplateVersionsClient {
     export type Options = BaseClientOptions;
@@ -21,23 +23,25 @@ export class AlphaTemplateVersionsClient {
     }
 
     /**
-     * @param {string} templateId
+     * @param {string} templateID
      * @param {AlphaTemplateVersionsClient.RequestOptions} requestOptions - Request-specific configuration.
      *
+     * @throws {@link Corti.NotFoundError}
+     *
      * @example
-     *     await client.alphaTemplateVersions.list("templateId")
+     *     await client.alphaTemplateVersions.list("templateID")
      */
     public list(
-        templateId: string,
+        templateID: string,
         requestOptions?: AlphaTemplateVersionsClient.RequestOptions,
-    ): core.HttpResponsePromise<void> {
-        return core.HttpResponsePromise.fromPromise(this.__list(templateId, requestOptions));
+    ): core.HttpResponsePromise<Corti.TemplateVersion[]> {
+        return core.HttpResponsePromise.fromPromise(this.__list(templateID, requestOptions));
     }
 
     private async __list(
-        templateId: string,
+        templateID: string,
         requestOptions?: AlphaTemplateVersionsClient.RequestOptions,
-    ): Promise<core.WithRawResponse<void>> {
+    ): Promise<core.WithRawResponse<Corti.TemplateVersion[]>> {
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
@@ -49,7 +53,7 @@ export class AlphaTemplateVersionsClient {
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
                     (await core.Supplier.get(this._options.environment)).base,
-                `alpha/templates/${core.url.encodePathParam(templateId)}/versions`,
+                `alpha/templates/${core.url.encodePathParam(templateID)}/versions`,
             ),
             method: "GET",
             headers: _headers,
@@ -61,43 +65,69 @@ export class AlphaTemplateVersionsClient {
             logging: this._options.logging,
         });
         if (_response.ok) {
-            return { data: undefined, rawResponse: _response.rawResponse };
+            return {
+                data: serializers.alphaTemplateVersions.list.Response.parseOrThrow(_response.body, {
+                    unrecognizedObjectKeys: "passthrough",
+                    allowUnrecognizedUnionMembers: true,
+                    allowUnrecognizedEnumValues: true,
+                    skipValidation: true,
+                    breadcrumbsPrefix: ["response"],
+                }),
+                rawResponse: _response.rawResponse,
+            };
         }
 
         if (_response.error.reason === "status-code") {
-            throw new errors.CortiError({
-                statusCode: _response.error.statusCode,
-                body: _response.error.body,
-                rawResponse: _response.rawResponse,
-            });
+            switch (_response.error.statusCode) {
+                case 404:
+                    throw new Corti.NotFoundError(_response.error.body, _response.rawResponse);
+                default:
+                    throw new errors.CortiError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                        rawResponse: _response.rawResponse,
+                    });
+            }
         }
 
         return handleNonStatusCodeError(
             _response.error,
             _response.rawResponse,
             "GET",
-            "/alpha/templates/{templateId}/versions",
+            "/alpha/templates/{templateID}/versions",
         );
     }
 
     /**
-     * @param {string} templateId
+     * @param {string} templateID
+     * @param {Corti.CreateTemplateVersionRequest} request
      * @param {AlphaTemplateVersionsClient.RequestOptions} requestOptions - Request-specific configuration.
      *
+     * @throws {@link Corti.BadRequestError}
+     * @throws {@link Corti.NotFoundError}
+     *
      * @example
-     *     await client.alphaTemplateVersions.create("templateId")
+     *     await client.alphaTemplateVersions.create("templateID", {
+     *         generation: {
+     *             instructions: {
+     *                 prompt: "prompt"
+     *             }
+     *         }
+     *     })
      */
     public create(
-        templateId: string,
+        templateID: string,
+        request: Corti.CreateTemplateVersionRequest,
         requestOptions?: AlphaTemplateVersionsClient.RequestOptions,
-    ): core.HttpResponsePromise<void> {
-        return core.HttpResponsePromise.fromPromise(this.__create(templateId, requestOptions));
+    ): core.HttpResponsePromise<Corti.TemplateVersion> {
+        return core.HttpResponsePromise.fromPromise(this.__create(templateID, request, requestOptions));
     }
 
     private async __create(
-        templateId: string,
+        templateID: string,
+        request: Corti.CreateTemplateVersionRequest,
         requestOptions?: AlphaTemplateVersionsClient.RequestOptions,
-    ): Promise<core.WithRawResponse<void>> {
+    ): Promise<core.WithRawResponse<Corti.TemplateVersion>> {
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
@@ -109,11 +139,17 @@ export class AlphaTemplateVersionsClient {
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
                     (await core.Supplier.get(this._options.environment)).base,
-                `alpha/templates/${core.url.encodePathParam(templateId)}/versions`,
+                `alpha/templates/${core.url.encodePathParam(templateID)}/versions`,
             ),
             method: "POST",
             headers: _headers,
+            contentType: "application/json",
             queryParameters: requestOptions?.queryParams,
+            requestType: "json",
+            body: serializers.CreateTemplateVersionRequest.jsonOrThrow(request, {
+                unrecognizedObjectKeys: "strip",
+                omitUndefined: true,
+            }),
             timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
             maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
             abortSignal: requestOptions?.abortSignal,
@@ -121,46 +157,64 @@ export class AlphaTemplateVersionsClient {
             logging: this._options.logging,
         });
         if (_response.ok) {
-            return { data: undefined, rawResponse: _response.rawResponse };
+            return {
+                data: serializers.TemplateVersion.parseOrThrow(_response.body, {
+                    unrecognizedObjectKeys: "passthrough",
+                    allowUnrecognizedUnionMembers: true,
+                    allowUnrecognizedEnumValues: true,
+                    skipValidation: true,
+                    breadcrumbsPrefix: ["response"],
+                }),
+                rawResponse: _response.rawResponse,
+            };
         }
 
         if (_response.error.reason === "status-code") {
-            throw new errors.CortiError({
-                statusCode: _response.error.statusCode,
-                body: _response.error.body,
-                rawResponse: _response.rawResponse,
-            });
+            switch (_response.error.statusCode) {
+                case 400:
+                    throw new Corti.BadRequestError(_response.error.body, _response.rawResponse);
+                case 404:
+                    throw new Corti.NotFoundError(_response.error.body, _response.rawResponse);
+                default:
+                    throw new errors.CortiError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                        rawResponse: _response.rawResponse,
+                    });
+            }
         }
 
         return handleNonStatusCodeError(
             _response.error,
             _response.rawResponse,
             "POST",
-            "/alpha/templates/{templateId}/versions",
+            "/alpha/templates/{templateID}/versions",
         );
     }
 
     /**
-     * @param {string} templateId
+     * @param {string} templateID
      * @param {string} versionID
      * @param {AlphaTemplateVersionsClient.RequestOptions} requestOptions - Request-specific configuration.
      *
+     * @throws {@link Corti.NotFoundError}
+     *
      * @example
-     *     await client.alphaTemplateVersions.get("templateId", "versionID")
+     *     await client.alphaTemplateVersions.get("templateID", "versionID")
      */
     public get(
-        templateId: string,
+        templateID: string,
         versionID: string,
         requestOptions?: AlphaTemplateVersionsClient.RequestOptions,
-    ): core.HttpResponsePromise<void> {
-        return core.HttpResponsePromise.fromPromise(this.__get(templateId, versionID, requestOptions));
+    ): core.HttpResponsePromise<Corti.TemplateVersion> {
+        return core.HttpResponsePromise.fromPromise(this.__get(templateID, versionID, requestOptions));
     }
 
     private async __get(
-        templateId: string,
+        templateID: string,
         versionID: string,
         requestOptions?: AlphaTemplateVersionsClient.RequestOptions,
-    ): Promise<core.WithRawResponse<void>> {
+    ): Promise<core.WithRawResponse<Corti.TemplateVersion>> {
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
@@ -172,7 +226,7 @@ export class AlphaTemplateVersionsClient {
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
                     (await core.Supplier.get(this._options.environment)).base,
-                `alpha/templates/${core.url.encodePathParam(templateId)}/versions/${core.url.encodePathParam(versionID)}`,
+                `alpha/templates/${core.url.encodePathParam(templateID)}/versions/${core.url.encodePathParam(versionID)}`,
             ),
             method: "GET",
             headers: _headers,
@@ -184,43 +238,59 @@ export class AlphaTemplateVersionsClient {
             logging: this._options.logging,
         });
         if (_response.ok) {
-            return { data: undefined, rawResponse: _response.rawResponse };
+            return {
+                data: serializers.TemplateVersion.parseOrThrow(_response.body, {
+                    unrecognizedObjectKeys: "passthrough",
+                    allowUnrecognizedUnionMembers: true,
+                    allowUnrecognizedEnumValues: true,
+                    skipValidation: true,
+                    breadcrumbsPrefix: ["response"],
+                }),
+                rawResponse: _response.rawResponse,
+            };
         }
 
         if (_response.error.reason === "status-code") {
-            throw new errors.CortiError({
-                statusCode: _response.error.statusCode,
-                body: _response.error.body,
-                rawResponse: _response.rawResponse,
-            });
+            switch (_response.error.statusCode) {
+                case 404:
+                    throw new Corti.NotFoundError(_response.error.body, _response.rawResponse);
+                default:
+                    throw new errors.CortiError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                        rawResponse: _response.rawResponse,
+                    });
+            }
         }
 
         return handleNonStatusCodeError(
             _response.error,
             _response.rawResponse,
             "GET",
-            "/alpha/templates/{templateId}/versions/{versionID}",
+            "/alpha/templates/{templateID}/versions/{versionID}",
         );
     }
 
     /**
-     * @param {string} templateId
+     * @param {string} templateID
      * @param {string} versionID
      * @param {AlphaTemplateVersionsClient.RequestOptions} requestOptions - Request-specific configuration.
      *
+     * @throws {@link Corti.NotFoundError}
+     *
      * @example
-     *     await client.alphaTemplateVersions.delete("templateId", "versionID")
+     *     await client.alphaTemplateVersions.delete("templateID", "versionID")
      */
     public delete(
-        templateId: string,
+        templateID: string,
         versionID: string,
         requestOptions?: AlphaTemplateVersionsClient.RequestOptions,
     ): core.HttpResponsePromise<void> {
-        return core.HttpResponsePromise.fromPromise(this.__delete(templateId, versionID, requestOptions));
+        return core.HttpResponsePromise.fromPromise(this.__delete(templateID, versionID, requestOptions));
     }
 
     private async __delete(
-        templateId: string,
+        templateID: string,
         versionID: string,
         requestOptions?: AlphaTemplateVersionsClient.RequestOptions,
     ): Promise<core.WithRawResponse<void>> {
@@ -235,7 +305,7 @@ export class AlphaTemplateVersionsClient {
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
                     (await core.Supplier.get(this._options.environment)).base,
-                `alpha/templates/${core.url.encodePathParam(templateId)}/versions/${core.url.encodePathParam(versionID)}`,
+                `alpha/templates/${core.url.encodePathParam(templateID)}/versions/${core.url.encodePathParam(versionID)}`,
             ),
             method: "DELETE",
             headers: _headers,
@@ -251,42 +321,51 @@ export class AlphaTemplateVersionsClient {
         }
 
         if (_response.error.reason === "status-code") {
-            throw new errors.CortiError({
-                statusCode: _response.error.statusCode,
-                body: _response.error.body,
-                rawResponse: _response.rawResponse,
-            });
+            switch (_response.error.statusCode) {
+                case 404:
+                    throw new Corti.NotFoundError(_response.error.body, _response.rawResponse);
+                default:
+                    throw new errors.CortiError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                        rawResponse: _response.rawResponse,
+                    });
+            }
         }
 
         return handleNonStatusCodeError(
             _response.error,
             _response.rawResponse,
             "DELETE",
-            "/alpha/templates/{templateId}/versions/{versionID}",
+            "/alpha/templates/{templateID}/versions/{versionID}",
         );
     }
 
     /**
-     * @param {string} templateId
+     * Sets this version as the published version of the template.
+     *
+     * @param {string} templateID
      * @param {string} versionID
      * @param {AlphaTemplateVersionsClient.RequestOptions} requestOptions - Request-specific configuration.
      *
+     * @throws {@link Corti.NotFoundError}
+     *
      * @example
-     *     await client.alphaTemplateVersions.publish("templateId", "versionID")
+     *     await client.alphaTemplateVersions.publish("templateID", "versionID")
      */
     public publish(
-        templateId: string,
+        templateID: string,
         versionID: string,
         requestOptions?: AlphaTemplateVersionsClient.RequestOptions,
-    ): core.HttpResponsePromise<void> {
-        return core.HttpResponsePromise.fromPromise(this.__publish(templateId, versionID, requestOptions));
+    ): core.HttpResponsePromise<Corti.StatusResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__publish(templateID, versionID, requestOptions));
     }
 
     private async __publish(
-        templateId: string,
+        templateID: string,
         versionID: string,
         requestOptions?: AlphaTemplateVersionsClient.RequestOptions,
-    ): Promise<core.WithRawResponse<void>> {
+    ): Promise<core.WithRawResponse<Corti.StatusResponse>> {
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
@@ -298,7 +377,7 @@ export class AlphaTemplateVersionsClient {
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
                     (await core.Supplier.get(this._options.environment)).base,
-                `alpha/templates/${core.url.encodePathParam(templateId)}/versions/${core.url.encodePathParam(versionID)}/publish`,
+                `alpha/templates/${core.url.encodePathParam(templateID)}/versions/${core.url.encodePathParam(versionID)}/publish`,
             ),
             method: "POST",
             headers: _headers,
@@ -310,22 +389,36 @@ export class AlphaTemplateVersionsClient {
             logging: this._options.logging,
         });
         if (_response.ok) {
-            return { data: undefined, rawResponse: _response.rawResponse };
+            return {
+                data: serializers.StatusResponse.parseOrThrow(_response.body, {
+                    unrecognizedObjectKeys: "passthrough",
+                    allowUnrecognizedUnionMembers: true,
+                    allowUnrecognizedEnumValues: true,
+                    skipValidation: true,
+                    breadcrumbsPrefix: ["response"],
+                }),
+                rawResponse: _response.rawResponse,
+            };
         }
 
         if (_response.error.reason === "status-code") {
-            throw new errors.CortiError({
-                statusCode: _response.error.statusCode,
-                body: _response.error.body,
-                rawResponse: _response.rawResponse,
-            });
+            switch (_response.error.statusCode) {
+                case 404:
+                    throw new Corti.NotFoundError(_response.error.body, _response.rawResponse);
+                default:
+                    throw new errors.CortiError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                        rawResponse: _response.rawResponse,
+                    });
+            }
         }
 
         return handleNonStatusCodeError(
             _response.error,
             _response.rawResponse,
             "POST",
-            "/alpha/templates/{templateId}/versions/{versionID}/publish",
+            "/alpha/templates/{templateID}/versions/{versionID}/publish",
         );
     }
 }
