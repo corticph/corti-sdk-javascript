@@ -1,7 +1,6 @@
 import { faker } from "@faker-js/faker";
 import type { CortiClient } from "../../src";
 import {
-    cleanupInteractions,
     createTestCortiClient,
     createTestDocument,
     createTestInteraction,
@@ -12,7 +11,6 @@ import {
 describe("cortiClient.documents.update", () => {
     let cortiClient: CortiClient;
     let consoleWarnSpy: ReturnType<typeof setupConsoleWarnSpy>;
-    let createdInteractionIds: string[] = [];
     let validSectionKeys: string[] = [];
 
     beforeAll(async () => {
@@ -22,20 +20,17 @@ describe("cortiClient.documents.update", () => {
 
     beforeEach(() => {
         consoleWarnSpy = setupConsoleWarnSpy();
-        createdInteractionIds = [];
     });
 
-    afterEach(async () => {
+    afterEach(() => {
         consoleWarnSpy.mockRestore();
-        await cleanupInteractions(cortiClient, createdInteractionIds);
-        createdInteractionIds = [];
     });
 
     describe("should update document with only required values", () => {
         it("should update document with empty request without errors or warnings", async () => {
             expect.assertions(2);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
             const documentId = await createTestDocument(cortiClient, interactionId);
 
             const result = await cortiClient.documents.update(interactionId, documentId, {});
@@ -49,7 +44,7 @@ describe("cortiClient.documents.update", () => {
         it("should update document with name without errors or warnings", async () => {
             expect.assertions(2);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
             const documentId = await createTestDocument(cortiClient, interactionId);
 
             const result = await cortiClient.documents.update(interactionId, documentId, {
@@ -63,7 +58,7 @@ describe("cortiClient.documents.update", () => {
         it("should update document with sections without errors or warnings", async () => {
             expect.assertions(2);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
             const documentId = await createTestDocument(cortiClient, interactionId);
 
             const result = await cortiClient.documents.update(interactionId, documentId, {
@@ -81,7 +76,7 @@ describe("cortiClient.documents.update", () => {
         it("should update document with all optional parameters combined without errors or warnings", async () => {
             expect.assertions(2);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
             const documentId = await createTestDocument(cortiClient, interactionId);
 
             const result = await cortiClient.documents.update(interactionId, documentId, {
@@ -105,7 +100,7 @@ describe("cortiClient.documents.update", () => {
         it("should update document with section containing all optional fields without errors or warnings", async () => {
             expect.assertions(2);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
             const documentId = await createTestDocument(cortiClient, interactionId);
 
             const result = await cortiClient.documents.update(interactionId, documentId, {
@@ -126,7 +121,7 @@ describe("cortiClient.documents.update", () => {
         it("should update document with empty sections array without errors or warnings", async () => {
             expect.assertions(2);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
             const documentId = await createTestDocument(cortiClient, interactionId);
 
             const result = await cortiClient.documents.update(interactionId, documentId, {
@@ -140,7 +135,7 @@ describe("cortiClient.documents.update", () => {
         it("should update document with multiple sections without errors or warnings", async () => {
             expect.assertions(2);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
             const documentId = await createTestDocument(cortiClient, interactionId);
 
             const result = await cortiClient.documents.update(interactionId, documentId, {
@@ -171,7 +166,7 @@ describe("cortiClient.documents.update", () => {
         it("should throw error when document ID is missing", async () => {
             expect.assertions(1);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
 
             await expect(cortiClient.documents.update(interactionId, undefined as any, {})).rejects.toThrow();
         });
@@ -181,7 +176,7 @@ describe("cortiClient.documents.update", () => {
         it("should throw error when interaction ID is invalid", async () => {
             expect.assertions(1);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
             const documentId = await createTestDocument(cortiClient, interactionId);
 
             await expect(
@@ -194,7 +189,7 @@ describe("cortiClient.documents.update", () => {
         it("should throw error when document ID is invalid", async () => {
             expect.assertions(1);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
 
             await expect(
                 cortiClient.documents.update(interactionId, "invalid-uuid", {
@@ -206,7 +201,7 @@ describe("cortiClient.documents.update", () => {
         it("should throw error when interaction ID does not exist", async () => {
             expect.assertions(1);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
             const documentId = await createTestDocument(cortiClient, interactionId);
 
             await expect(
@@ -219,7 +214,7 @@ describe("cortiClient.documents.update", () => {
         it("should throw error when document ID does not exist", async () => {
             expect.assertions(1);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
 
             await expect(
                 cortiClient.documents.update(interactionId, faker.string.uuid(), {
@@ -231,7 +226,7 @@ describe("cortiClient.documents.update", () => {
         it("should throw error when section key is missing", async () => {
             expect.assertions(1);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
             const documentId = await createTestDocument(cortiClient, interactionId);
 
             await expect(

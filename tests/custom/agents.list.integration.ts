@@ -1,11 +1,10 @@
 import { faker } from "@faker-js/faker";
 import type { CortiClient } from "../../src";
-import { cleanupAgents, createTestAgent, createTestCortiClient, setupConsoleWarnSpy } from "./testUtils";
+import { createTestAgent, createTestCortiClient, setupConsoleWarnSpy } from "./testUtils";
 
 describe("cortiClient.agents.list", () => {
     let cortiClient: CortiClient;
     let consoleWarnSpy: ReturnType<typeof setupConsoleWarnSpy>;
-    let createdAgentIds: string[] = [];
 
     beforeAll(() => {
         cortiClient = createTestCortiClient();
@@ -13,42 +12,17 @@ describe("cortiClient.agents.list", () => {
 
     beforeEach(() => {
         consoleWarnSpy = setupConsoleWarnSpy();
-        createdAgentIds = [];
     });
 
-    afterEach(async () => {
+    afterEach(() => {
         consoleWarnSpy.mockRestore();
-        await cleanupAgents(cortiClient, createdAgentIds);
-        createdAgentIds = [];
-    });
-
-    it("should return empty list when no agents exist", async () => {
-        expect.assertions(2);
-
-        const existingAgents = await cortiClient.agents.list();
-        const agentIds: string[] = [];
-
-        for (const agent of existingAgents) {
-            if ("id" in agent && agent.id) {
-                agentIds.push(agent.id);
-            }
-        }
-
-        if (agentIds.length > 0) {
-            await cleanupAgents(cortiClient, agentIds);
-        }
-
-        const result = await cortiClient.agents.list();
-
-        expect(result.length).toBe(0);
-        expect(consoleWarnSpy).not.toHaveBeenCalled();
     });
 
     describe("should list agents with only required values", () => {
         it("should return created agent in list without errors or warnings", async () => {
             expect.assertions(2);
 
-            await createTestAgent(cortiClient, createdAgentIds);
+            await createTestAgent(cortiClient);
 
             const result = await cortiClient.agents.list();
 

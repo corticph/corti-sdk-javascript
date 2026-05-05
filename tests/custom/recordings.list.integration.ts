@@ -1,17 +1,10 @@
 import { faker } from "@faker-js/faker";
 import type { CortiClient } from "../../src";
-import {
-    cleanupInteractions,
-    createTestCortiClient,
-    createTestInteraction,
-    createTestRecording,
-    setupConsoleWarnSpy,
-} from "./testUtils";
+import { createTestCortiClient, createTestInteraction, createTestRecording, setupConsoleWarnSpy } from "./testUtils";
 
 describe("cortiClient.recordings.list", () => {
     let cortiClient: CortiClient;
     let consoleWarnSpy: ReturnType<typeof setupConsoleWarnSpy>;
-    let createdInteractionIds: string[] = [];
 
     beforeAll(() => {
         cortiClient = createTestCortiClient();
@@ -19,20 +12,17 @@ describe("cortiClient.recordings.list", () => {
 
     beforeEach(() => {
         consoleWarnSpy = setupConsoleWarnSpy();
-        createdInteractionIds = [];
     });
 
-    afterEach(async () => {
+    afterEach(() => {
         consoleWarnSpy.mockRestore();
-        await cleanupInteractions(cortiClient, createdInteractionIds);
-        createdInteractionIds = [];
     });
 
     describe("should list recordings with only required values", () => {
         it("should return empty list when interaction has no recordings", async () => {
             expect.assertions(2);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
 
             const result = await cortiClient.recordings.list(interactionId);
 
@@ -43,7 +33,7 @@ describe("cortiClient.recordings.list", () => {
         it("should return recordings when interaction has recordings", async () => {
             expect.assertions(3);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
             const recordingId = await createTestRecording(cortiClient, interactionId);
 
             const result = await cortiClient.recordings.list(interactionId);
@@ -56,7 +46,7 @@ describe("cortiClient.recordings.list", () => {
         it("should return multiple recordings when interaction has multiple recordings", async () => {
             expect.assertions(4);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
             const recordingId1 = await createTestRecording(cortiClient, interactionId);
             const recordingId2 = await createTestRecording(cortiClient, interactionId);
 

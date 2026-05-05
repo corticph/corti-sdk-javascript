@@ -1,12 +1,11 @@
 import { faker } from "@faker-js/faker";
 import { createReadStream, readFileSync } from "fs";
 import type { CortiClient } from "../../src";
-import { cleanupInteractions, createTestCortiClient, createTestInteraction, setupConsoleWarnSpy } from "./testUtils";
+import { createTestCortiClient, createTestInteraction, setupConsoleWarnSpy } from "./testUtils";
 
 describe("cortiClient.recordings.upload", () => {
     let cortiClient: CortiClient;
     let consoleWarnSpy: ReturnType<typeof setupConsoleWarnSpy>;
-    let createdInteractionIds: string[] = [];
 
     beforeAll(() => {
         cortiClient = createTestCortiClient();
@@ -14,20 +13,17 @@ describe("cortiClient.recordings.upload", () => {
 
     beforeEach(() => {
         consoleWarnSpy = setupConsoleWarnSpy();
-        createdInteractionIds = [];
     });
 
-    afterEach(async () => {
+    afterEach(() => {
         consoleWarnSpy.mockRestore();
-        await cleanupInteractions(cortiClient, createdInteractionIds);
-        createdInteractionIds = [];
     });
 
     describe("should upload recording with only required values", () => {
         it("should upload trouble-breathing.mp3 using createReadStream without errors or warnings", async () => {
             expect.assertions(2);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
 
             const file = createReadStream("tests/custom/trouble-breathing.mp3", {
                 autoClose: true,
@@ -42,7 +38,7 @@ describe("cortiClient.recordings.upload", () => {
         it("should upload trouble-breathing.mp3 using File object without errors or warnings", async () => {
             expect.assertions(2);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
 
             const fileBuffer = readFileSync("tests/custom/trouble-breathing.mp3");
 

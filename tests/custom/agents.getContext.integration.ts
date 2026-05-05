@@ -1,17 +1,10 @@
 import { faker } from "@faker-js/faker";
 import type { CortiClient } from "../../src";
-import {
-    cleanupAgents,
-    createTestAgent,
-    createTestCortiClient,
-    sendTestMessage,
-    setupConsoleWarnSpy,
-} from "./testUtils";
+import { createTestAgent, createTestCortiClient, sendTestMessage, setupConsoleWarnSpy } from "./testUtils";
 
 describe("cortiClient.agents.getContext", () => {
     let cortiClient: CortiClient;
     let consoleWarnSpy: ReturnType<typeof setupConsoleWarnSpy>;
-    let createdAgentIds: string[] = [];
 
     beforeAll(() => {
         cortiClient = createTestCortiClient();
@@ -19,20 +12,17 @@ describe("cortiClient.agents.getContext", () => {
 
     beforeEach(() => {
         consoleWarnSpy = setupConsoleWarnSpy();
-        createdAgentIds = [];
     });
 
-    afterEach(async () => {
+    afterEach(() => {
         consoleWarnSpy.mockRestore();
-        await cleanupAgents(cortiClient, createdAgentIds);
-        createdAgentIds = [];
     });
 
     describe("should retrieve context with only required values", () => {
         it("should successfully retrieve a context without errors or warnings", async () => {
             expect.assertions(2);
 
-            const agent = await createTestAgent(cortiClient, createdAgentIds);
+            const agent = await createTestAgent(cortiClient);
             const messageResponse = await sendTestMessage(cortiClient, agent.id);
             const contextId = messageResponse.task?.contextId;
 
@@ -51,7 +41,7 @@ describe("cortiClient.agents.getContext", () => {
         it("should retrieve context with limit parameter without errors or warnings", async () => {
             expect.assertions(2);
 
-            const agent = await createTestAgent(cortiClient, createdAgentIds);
+            const agent = await createTestAgent(cortiClient);
             const messageResponse = await sendTestMessage(cortiClient, agent.id);
             const contextId = messageResponse.task?.contextId;
 
@@ -70,7 +60,7 @@ describe("cortiClient.agents.getContext", () => {
         it("should retrieve context with offset parameter without errors or warnings", async () => {
             expect.assertions(2);
 
-            const agent = await createTestAgent(cortiClient, createdAgentIds);
+            const agent = await createTestAgent(cortiClient);
             const messageResponse = await sendTestMessage(cortiClient, agent.id);
             const contextId = messageResponse.task?.contextId;
 
@@ -89,7 +79,7 @@ describe("cortiClient.agents.getContext", () => {
         it("should retrieve context with all optional parameters without errors or warnings", async () => {
             expect.assertions(2);
 
-            const agent = await createTestAgent(cortiClient, createdAgentIds);
+            const agent = await createTestAgent(cortiClient);
             const messageResponse = await sendTestMessage(cortiClient, agent.id);
             const contextId = messageResponse.task?.contextId;
 
@@ -117,7 +107,7 @@ describe("cortiClient.agents.getContext", () => {
         it("should throw error when context ID is missing", async () => {
             expect.assertions(1);
 
-            const agent = await createTestAgent(cortiClient, createdAgentIds);
+            const agent = await createTestAgent(cortiClient);
 
             await expect(cortiClient.agents.getContext(agent.id, undefined as any)).rejects.toThrow();
         });
@@ -127,7 +117,7 @@ describe("cortiClient.agents.getContext", () => {
         it("should throw error when agent ID is invalid format", async () => {
             expect.assertions(1);
 
-            const agent = await createTestAgent(cortiClient, createdAgentIds);
+            const agent = await createTestAgent(cortiClient);
             const messageResponse = await sendTestMessage(cortiClient, agent.id);
             const contextId = messageResponse.task?.contextId;
 
@@ -141,7 +131,7 @@ describe("cortiClient.agents.getContext", () => {
         it("should throw error when context ID is invalid format", async () => {
             expect.assertions(1);
 
-            const agent = await createTestAgent(cortiClient, createdAgentIds);
+            const agent = await createTestAgent(cortiClient);
 
             await expect(cortiClient.agents.getContext(agent.id, "invalid-uuid")).rejects.toThrow("Status code: 400");
         });
@@ -149,7 +139,7 @@ describe("cortiClient.agents.getContext", () => {
         it("should throw error when agent ID does not exist", async () => {
             expect.assertions(1);
 
-            const agent = await createTestAgent(cortiClient, createdAgentIds);
+            const agent = await createTestAgent(cortiClient);
             const messageResponse = await sendTestMessage(cortiClient, agent.id);
             const contextId = messageResponse.task?.contextId;
 
@@ -165,7 +155,7 @@ describe("cortiClient.agents.getContext", () => {
         it("should throw error when context ID does not exist", async () => {
             expect.assertions(1);
 
-            const agent = await createTestAgent(cortiClient, createdAgentIds);
+            const agent = await createTestAgent(cortiClient);
 
             await expect(cortiClient.agents.getContext(agent.id, faker.string.uuid())).rejects.toThrow(
                 "Status code: 404",

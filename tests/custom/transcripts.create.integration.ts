@@ -1,17 +1,10 @@
 import { faker } from "@faker-js/faker";
 import type { CortiClient } from "../../src";
-import {
-    cleanupInteractions,
-    createTestCortiClient,
-    createTestInteraction,
-    createTestRecording,
-    setupConsoleWarnSpy,
-} from "./testUtils";
+import { createTestCortiClient, createTestInteraction, createTestRecording, setupConsoleWarnSpy } from "./testUtils";
 
 describe("cortiClient.transcripts.create", () => {
     let cortiClient: CortiClient;
     let consoleWarnSpy: ReturnType<typeof setupConsoleWarnSpy>;
-    let createdInteractionIds: string[] = [];
 
     beforeAll(() => {
         cortiClient = createTestCortiClient();
@@ -19,20 +12,17 @@ describe("cortiClient.transcripts.create", () => {
 
     beforeEach(() => {
         consoleWarnSpy = setupConsoleWarnSpy();
-        createdInteractionIds = [];
     });
 
-    afterEach(async () => {
+    afterEach(() => {
         consoleWarnSpy.mockRestore();
-        await cleanupInteractions(cortiClient, createdInteractionIds);
-        createdInteractionIds = [];
     });
 
     describe("should create transcript with only required values", () => {
         it("should create transcript with only required fields without errors or warnings", async () => {
             expect.assertions(2);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
             const recordingId = await createTestRecording(cortiClient, interactionId);
 
             const result = await cortiClient.transcripts.create(interactionId, {
@@ -49,7 +39,7 @@ describe("cortiClient.transcripts.create", () => {
         it('should create transcript with participant role "doctor"', async () => {
             expect.assertions(2);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
             const recordingId = await createTestRecording(cortiClient, interactionId);
 
             const result = await cortiClient.transcripts.create(interactionId, {
@@ -70,7 +60,7 @@ describe("cortiClient.transcripts.create", () => {
         it('should create transcript with participant role "patient"', async () => {
             expect.assertions(2);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
             const recordingId = await createTestRecording(cortiClient, interactionId);
 
             const result = await cortiClient.transcripts.create(interactionId, {
@@ -91,7 +81,7 @@ describe("cortiClient.transcripts.create", () => {
         it('should create transcript with participant role "multiple"', async () => {
             expect.assertions(2);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
             const recordingId = await createTestRecording(cortiClient, interactionId);
 
             const result = await cortiClient.transcripts.create(interactionId, {
@@ -112,7 +102,7 @@ describe("cortiClient.transcripts.create", () => {
         it("should create transcript with multiple participants", async () => {
             expect.assertions(2);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
             const recordingId = await createTestRecording(cortiClient, interactionId);
 
             const result = await cortiClient.transcripts.create(interactionId, {
@@ -139,7 +129,7 @@ describe("cortiClient.transcripts.create", () => {
         it("should create transcript with all optional parameters without errors or warnings", async () => {
             expect.assertions(2);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
             const recordingId = await createTestRecording(cortiClient, interactionId);
 
             const isMultichannel = faker.datatype.boolean();
@@ -168,7 +158,7 @@ describe("cortiClient.transcripts.create", () => {
         it("should throw error when recordingId is missing", async () => {
             expect.assertions(1);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
 
             await expect(
                 cortiClient.transcripts.create(interactionId, {
@@ -180,7 +170,7 @@ describe("cortiClient.transcripts.create", () => {
         it("should throw error when primaryLanguage is missing", async () => {
             expect.assertions(1);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
             const recordingId = await createTestRecording(cortiClient, interactionId);
 
             await expect(
@@ -193,7 +183,7 @@ describe("cortiClient.transcripts.create", () => {
         it("should throw error when participant channel is missing", async () => {
             expect.assertions(1);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
             const recordingId = await createTestRecording(cortiClient, interactionId);
 
             await expect(
@@ -212,7 +202,7 @@ describe("cortiClient.transcripts.create", () => {
         it("should throw error when participant role is missing", async () => {
             expect.assertions(1);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
             const recordingId = await createTestRecording(cortiClient, interactionId);
 
             await expect(
@@ -255,7 +245,7 @@ describe("cortiClient.transcripts.create", () => {
         it("should throw error when recordingId does not exist", async () => {
             expect.assertions(1);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
 
             await expect(
                 cortiClient.transcripts.create(interactionId, {
@@ -268,7 +258,7 @@ describe("cortiClient.transcripts.create", () => {
         it("should throw error when recordingId is invalid format", async () => {
             expect.assertions(1);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
 
             await expect(
                 cortiClient.transcripts.create(interactionId, {
@@ -281,7 +271,7 @@ describe("cortiClient.transcripts.create", () => {
         it("should throw error when primaryLanguage is invalid", async () => {
             expect.assertions(1);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
             const recordingId = await createTestRecording(cortiClient, interactionId);
 
             await expect(
@@ -295,7 +285,7 @@ describe("cortiClient.transcripts.create", () => {
         it("should throw error when participant role is invalid", async () => {
             expect.assertions(1);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
             const recordingId = await createTestRecording(cortiClient, interactionId);
 
             await expect(
@@ -315,7 +305,7 @@ describe("cortiClient.transcripts.create", () => {
         it("should throw error when diarize is true but isMultichannel is false", async () => {
             expect.assertions(1);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
             const recordingId = await createTestRecording(cortiClient, interactionId);
 
             await expect(

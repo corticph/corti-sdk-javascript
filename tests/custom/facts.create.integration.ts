@@ -1,17 +1,10 @@
 import { faker } from "@faker-js/faker";
 import type { CortiClient } from "../../src";
-import {
-    cleanupInteractions,
-    createTestCortiClient,
-    createTestInteraction,
-    getValidFactGroups,
-    setupConsoleWarnSpy,
-} from "./testUtils";
+import { createTestCortiClient, createTestInteraction, getValidFactGroups, setupConsoleWarnSpy } from "./testUtils";
 
 describe("cortiClient.facts.create", () => {
     let cortiClient: CortiClient;
     let consoleWarnSpy: ReturnType<typeof setupConsoleWarnSpy>;
-    let createdInteractionIds: string[] = [];
     let validFactGroups: string[] = [];
 
     beforeAll(async () => {
@@ -21,13 +14,10 @@ describe("cortiClient.facts.create", () => {
 
     beforeEach(() => {
         consoleWarnSpy = setupConsoleWarnSpy();
-        createdInteractionIds = [];
     });
 
-    afterEach(async () => {
+    afterEach(() => {
         consoleWarnSpy.mockRestore();
-        await cleanupInteractions(cortiClient, createdInteractionIds);
-        createdInteractionIds = [];
     });
 
     const getValidFactGroup = (): string => faker.helpers.arrayElement(validFactGroups);
@@ -36,7 +26,7 @@ describe("cortiClient.facts.create", () => {
         it("should create single fact with only required fields without errors or warnings", async () => {
             expect.assertions(2);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
 
             const result = await cortiClient.facts.create(interactionId, {
                 facts: [
@@ -54,7 +44,7 @@ describe("cortiClient.facts.create", () => {
         it("should create multiple facts with only required fields without errors or warnings", async () => {
             expect.assertions(2);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
 
             const result = await cortiClient.facts.create(interactionId, {
                 facts: [
@@ -73,7 +63,7 @@ describe("cortiClient.facts.create", () => {
         it('should create fact with source "core" without errors or warnings', async () => {
             expect.assertions(2);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
 
             const result = await cortiClient.facts.create(interactionId, {
                 facts: [{ text: faker.lorem.sentence(), group: getValidFactGroup(), source: "core" }],
@@ -86,7 +76,7 @@ describe("cortiClient.facts.create", () => {
         it('should create fact with source "system" without errors or warnings', async () => {
             expect.assertions(2);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
 
             const result = await cortiClient.facts.create(interactionId, {
                 facts: [{ text: faker.lorem.sentence(), group: getValidFactGroup(), source: "system" }],
@@ -99,7 +89,7 @@ describe("cortiClient.facts.create", () => {
         it('should create fact with source "user" without errors or warnings', async () => {
             expect.assertions(2);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
 
             const result = await cortiClient.facts.create(interactionId, {
                 facts: [{ text: faker.lorem.sentence(), group: getValidFactGroup(), source: "user" }],
@@ -114,7 +104,7 @@ describe("cortiClient.facts.create", () => {
         it("should create facts with all optional parameters combined without errors or warnings", async () => {
             expect.assertions(2);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
 
             const result = await cortiClient.facts.create(interactionId, {
                 facts: [
@@ -142,7 +132,7 @@ describe("cortiClient.facts.create", () => {
         it("should throw error when facts array is missing", async () => {
             expect.assertions(1);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
 
             await expect(cortiClient.facts.create(interactionId, {} as any)).rejects.toThrow(
                 'Missing required key "facts"',
@@ -152,7 +142,7 @@ describe("cortiClient.facts.create", () => {
         it("should throw error when facts array is empty", async () => {
             expect.assertions(1);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
 
             await expect(cortiClient.facts.create(interactionId, { facts: [] })).rejects.toThrow();
         });
@@ -160,7 +150,7 @@ describe("cortiClient.facts.create", () => {
         it("should throw error when fact text is missing", async () => {
             expect.assertions(1);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
 
             await expect(
                 cortiClient.facts.create(interactionId, {
@@ -172,7 +162,7 @@ describe("cortiClient.facts.create", () => {
         it("should throw error when fact group is missing", async () => {
             expect.assertions(1);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
 
             await expect(
                 cortiClient.facts.create(interactionId, {

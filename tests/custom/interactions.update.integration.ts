@@ -1,11 +1,10 @@
 import { faker } from "@faker-js/faker";
 import type { CortiClient } from "../../src";
-import { cleanupInteractions, createTestCortiClient, createTestInteraction, setupConsoleWarnSpy } from "./testUtils";
+import { createTestCortiClient, createTestInteraction, setupConsoleWarnSpy } from "./testUtils";
 
 describe("cortiClient.interactions.update", () => {
     let cortiClient: CortiClient;
     let consoleWarnSpy: ReturnType<typeof setupConsoleWarnSpy>;
-    let createdInteractionIds: string[] = [];
 
     beforeAll(() => {
         cortiClient = createTestCortiClient();
@@ -13,20 +12,17 @@ describe("cortiClient.interactions.update", () => {
 
     beforeEach(() => {
         consoleWarnSpy = setupConsoleWarnSpy();
-        createdInteractionIds = [];
     });
 
-    afterEach(async () => {
+    afterEach(() => {
         consoleWarnSpy.mockRestore();
-        await cleanupInteractions(cortiClient, createdInteractionIds);
-        createdInteractionIds = [];
     });
 
     describe("should update interaction with only required values", () => {
         it("should update interaction with empty request (no changes) without errors or warnings", async () => {
             expect.assertions(2);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
 
             const result = await cortiClient.interactions.update(interactionId, {});
 
@@ -37,7 +33,7 @@ describe("cortiClient.interactions.update", () => {
         it("should update interaction with only assignedUserId without errors or warnings", async () => {
             expect.assertions(2);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
 
             const result = await cortiClient.interactions.update(interactionId, {
                 assignedUserId: faker.string.uuid(),
@@ -50,7 +46,7 @@ describe("cortiClient.interactions.update", () => {
         it("should update interaction with only encounter identifier without errors or warnings", async () => {
             expect.assertions(2);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
 
             const result = await cortiClient.interactions.update(interactionId, {
                 encounter: {
@@ -65,7 +61,7 @@ describe("cortiClient.interactions.update", () => {
         it("should update interaction with only patient identifier without errors or warnings", async () => {
             expect.assertions(2);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
 
             const result = await cortiClient.interactions.update(interactionId, {
                 patient: {
@@ -82,7 +78,7 @@ describe("cortiClient.interactions.update", () => {
         it('should update interaction with status "planned"', async () => {
             expect.assertions(2);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
 
             const result = await cortiClient.interactions.update(interactionId, {
                 encounter: {
@@ -97,7 +93,7 @@ describe("cortiClient.interactions.update", () => {
         it('should update interaction with status "in-progress"', async () => {
             expect.assertions(2);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
 
             const result = await cortiClient.interactions.update(interactionId, {
                 encounter: {
@@ -112,7 +108,7 @@ describe("cortiClient.interactions.update", () => {
         it('should update interaction with status "on-hold"', async () => {
             expect.assertions(2);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
 
             const result = await cortiClient.interactions.update(interactionId, {
                 encounter: {
@@ -127,7 +123,7 @@ describe("cortiClient.interactions.update", () => {
         it('should update interaction with status "completed"', async () => {
             expect.assertions(2);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
 
             const result = await cortiClient.interactions.update(interactionId, {
                 encounter: {
@@ -142,7 +138,7 @@ describe("cortiClient.interactions.update", () => {
         it('should update interaction with status "cancelled"', async () => {
             expect.assertions(2);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
 
             const result = await cortiClient.interactions.update(interactionId, {
                 encounter: {
@@ -157,7 +153,7 @@ describe("cortiClient.interactions.update", () => {
         it('should update interaction with status "deleted"', async () => {
             expect.assertions(2);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
 
             const result = await cortiClient.interactions.update(interactionId, {
                 encounter: {
@@ -174,7 +170,7 @@ describe("cortiClient.interactions.update", () => {
         it('should update interaction with type "first_consultation"', async () => {
             expect.assertions(2);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
 
             const result = await cortiClient.interactions.update(interactionId, {
                 encounter: {
@@ -189,7 +185,7 @@ describe("cortiClient.interactions.update", () => {
         it('should update interaction with type "consultation"', async () => {
             expect.assertions(2);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
 
             const result = await cortiClient.interactions.update(interactionId, {
                 encounter: {
@@ -204,7 +200,7 @@ describe("cortiClient.interactions.update", () => {
         it('should update interaction with type "emergency"', async () => {
             expect.assertions(2);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
 
             const result = await cortiClient.interactions.update(interactionId, {
                 encounter: {
@@ -219,7 +215,7 @@ describe("cortiClient.interactions.update", () => {
         it('should update interaction with type "inpatient"', async () => {
             expect.assertions(2);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
 
             const result = await cortiClient.interactions.update(interactionId, {
                 encounter: {
@@ -234,7 +230,7 @@ describe("cortiClient.interactions.update", () => {
         it('should update interaction with type "outpatient"', async () => {
             expect.assertions(2);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
 
             const result = await cortiClient.interactions.update(interactionId, {
                 encounter: {
@@ -251,7 +247,7 @@ describe("cortiClient.interactions.update", () => {
         it('should update interaction with gender "male"', async () => {
             expect.assertions(2);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
 
             const result = await cortiClient.interactions.update(interactionId, {
                 patient: {
@@ -267,7 +263,7 @@ describe("cortiClient.interactions.update", () => {
         it('should update interaction with gender "female"', async () => {
             expect.assertions(2);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
 
             const result = await cortiClient.interactions.update(interactionId, {
                 patient: {
@@ -283,7 +279,7 @@ describe("cortiClient.interactions.update", () => {
         it('should update interaction with gender "unknown"', async () => {
             expect.assertions(2);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
 
             const result = await cortiClient.interactions.update(interactionId, {
                 patient: {
@@ -299,7 +295,7 @@ describe("cortiClient.interactions.update", () => {
         it('should update interaction with gender "other"', async () => {
             expect.assertions(2);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
 
             const result = await cortiClient.interactions.update(interactionId, {
                 patient: {
@@ -317,7 +313,7 @@ describe("cortiClient.interactions.update", () => {
         it("should update interaction with all optional parameters without errors or warnings", async () => {
             expect.assertions(2);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
             const startDate = faker.date.recent();
             const endDate = faker.date.future({ refDate: startDate });
             const birthDate = faker.date.birthdate({ min: 18, max: 100, mode: "age" });

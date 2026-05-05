@@ -1,7 +1,6 @@
 import { faker } from "@faker-js/faker";
 import type { CortiClient } from "../../src";
 import {
-    cleanupInteractions,
     createTestCortiClient,
     createTestInteraction,
     getValidFactGroups,
@@ -13,7 +12,6 @@ import {
 describe("cortiClient.documents.create", () => {
     let cortiClient: CortiClient;
     let consoleWarnSpy: ReturnType<typeof setupConsoleWarnSpy>;
-    let createdInteractionIds: string[] = [];
     let templateKey: string;
     let _outputLanguage: string;
     let validFactGroups: string[] = [];
@@ -30,20 +28,17 @@ describe("cortiClient.documents.create", () => {
 
     beforeEach(() => {
         consoleWarnSpy = setupConsoleWarnSpy();
-        createdInteractionIds = [];
     });
 
-    afterEach(async () => {
+    afterEach(() => {
         consoleWarnSpy.mockRestore();
-        await cleanupInteractions(cortiClient, createdInteractionIds);
-        createdInteractionIds = [];
     });
 
     describe("should create document with only required values", () => {
         it("should create document with DocumentsCreateRequestWithTemplateKey using facts context", async () => {
             expect.assertions(2);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
 
             const result = await cortiClient.documents.create(interactionId, {
                 context: [
@@ -68,7 +63,7 @@ describe("cortiClient.documents.create", () => {
         it("should create document with DocumentsCreateRequestWithTemplateKey using transcript context", async () => {
             expect.assertions(2);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
 
             const result = await cortiClient.documents.create(interactionId, {
                 context: [
@@ -95,7 +90,7 @@ describe("cortiClient.documents.create", () => {
         it("should create document with DocumentsCreateRequestWithTemplateKey using string context", async () => {
             expect.assertions(2);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
 
             const result = await cortiClient.documents.create(interactionId, {
                 context: [
@@ -115,7 +110,7 @@ describe("cortiClient.documents.create", () => {
         it("should create document with DocumentsCreateRequestWithTemplate using facts context and sectionKeys", async () => {
             expect.assertions(2);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
 
             const result = await cortiClient.documents.create(interactionId, {
                 context: [
@@ -142,7 +137,7 @@ describe("cortiClient.documents.create", () => {
         it("should create document with DocumentsCreateRequestWithTemplate using transcript context and sectionKeys", async () => {
             expect.assertions(2);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
 
             const result = await cortiClient.documents.create(interactionId, {
                 context: [
@@ -171,7 +166,7 @@ describe("cortiClient.documents.create", () => {
         it("should create document with DocumentsCreateRequestWithTemplate using string context and sectionKeys", async () => {
             expect.assertions(2);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
 
             const result = await cortiClient.documents.create(interactionId, {
                 context: [
@@ -195,7 +190,7 @@ describe("cortiClient.documents.create", () => {
         it("should create document with DocumentsCreateRequestWithTemplateKey using facts context", async () => {
             expect.assertions(2);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
 
             const result = await cortiClient.documents.create(interactionId, {
                 context: [
@@ -222,7 +217,7 @@ describe("cortiClient.documents.create", () => {
         it("should create document with DocumentsCreateRequestWithTemplateKey using transcript context", async () => {
             expect.assertions(2);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
 
             const result = await cortiClient.documents.create(interactionId, {
                 context: [
@@ -250,7 +245,7 @@ describe("cortiClient.documents.create", () => {
         it("should create document with DocumentsCreateRequestWithTemplateKey using string context", async () => {
             expect.assertions(2);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
 
             const result = await cortiClient.documents.create(interactionId, {
                 context: [
@@ -271,7 +266,7 @@ describe("cortiClient.documents.create", () => {
         it("should create document with DocumentsCreateRequestWithTemplate using facts context", async () => {
             expect.assertions(2);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
 
             const result = await cortiClient.documents.create(interactionId, {
                 context: [
@@ -305,7 +300,7 @@ describe("cortiClient.documents.create", () => {
         it("should create document with DocumentsCreateRequestWithTemplate using transcript context", async () => {
             expect.assertions(2);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
 
             const result = await cortiClient.documents.create(interactionId, {
                 context: [
@@ -340,7 +335,7 @@ describe("cortiClient.documents.create", () => {
         it("should create document with DocumentsCreateRequestWithTemplate using string context", async () => {
             expect.assertions(2);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
 
             const result = await cortiClient.documents.create(interactionId, {
                 context: [
@@ -370,7 +365,7 @@ describe("cortiClient.documents.create", () => {
         it("should create document with DocumentsCreateRequestWithTemplateKey using source: core", async () => {
             expect.assertions(2);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
 
             const result = await cortiClient.documents.create(interactionId, {
                 context: [
@@ -397,7 +392,7 @@ describe("cortiClient.documents.create", () => {
         it("should create document with DocumentsCreateRequestWithTemplateKey using source: system", async () => {
             expect.assertions(2);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
 
             const result = await cortiClient.documents.create(interactionId, {
                 context: [
@@ -424,7 +419,7 @@ describe("cortiClient.documents.create", () => {
         it("should create document with DocumentsCreateRequestWithTemplateKey using source: user", async () => {
             expect.assertions(2);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
 
             const result = await cortiClient.documents.create(interactionId, {
                 context: [
@@ -451,7 +446,7 @@ describe("cortiClient.documents.create", () => {
         it("should create document with DocumentsCreateRequestWithTemplate using source: core", async () => {
             expect.assertions(2);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
 
             const result = await cortiClient.documents.create(interactionId, {
                 context: [
@@ -485,7 +480,7 @@ describe("cortiClient.documents.create", () => {
         it("should create document with DocumentsCreateRequestWithTemplate using source: system", async () => {
             expect.assertions(2);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
 
             const result = await cortiClient.documents.create(interactionId, {
                 context: [
@@ -519,7 +514,7 @@ describe("cortiClient.documents.create", () => {
         it("should create document with DocumentsCreateRequestWithTemplate using source: user", async () => {
             expect.assertions(2);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
 
             const result = await cortiClient.documents.create(interactionId, {
                 context: [
@@ -555,7 +550,7 @@ describe("cortiClient.documents.create", () => {
         it("should create document with sections array with single section", async () => {
             expect.assertions(2);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
 
             const result = await cortiClient.documents.create(interactionId, {
                 context: [
@@ -581,7 +576,7 @@ describe("cortiClient.documents.create", () => {
         it("should create document with sections array with multiple sections", async () => {
             expect.assertions(2);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
 
             const result = await cortiClient.documents.create(interactionId, {
                 context: [
@@ -610,7 +605,7 @@ describe("cortiClient.documents.create", () => {
         it("should create document with sections array with nameOverride", async () => {
             expect.assertions(2);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
 
             const result = await cortiClient.documents.create(interactionId, {
                 context: [
@@ -637,7 +632,7 @@ describe("cortiClient.documents.create", () => {
         it("should create document with sections array with writingStyleOverride", async () => {
             expect.assertions(2);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
 
             const result = await cortiClient.documents.create(interactionId, {
                 context: [
@@ -664,7 +659,7 @@ describe("cortiClient.documents.create", () => {
         it("should create document with sections array with formatRuleOverride", async () => {
             expect.assertions(2);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
 
             const result = await cortiClient.documents.create(interactionId, {
                 context: [
@@ -691,7 +686,7 @@ describe("cortiClient.documents.create", () => {
         it("should create document with sections array with additionalInstructionsOverride", async () => {
             expect.assertions(2);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
 
             const result = await cortiClient.documents.create(interactionId, {
                 context: [
@@ -718,7 +713,7 @@ describe("cortiClient.documents.create", () => {
         it("should create document with sections array with contentOverride", async () => {
             expect.assertions(2);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
 
             const result = await cortiClient.documents.create(interactionId, {
                 context: [
@@ -745,7 +740,7 @@ describe("cortiClient.documents.create", () => {
         it("should create document with sections array with all overrides", async () => {
             expect.assertions(2);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
 
             const result = await cortiClient.documents.create(interactionId, {
                 context: [
@@ -776,7 +771,7 @@ describe("cortiClient.documents.create", () => {
         it("should create document with sections array with template description", async () => {
             expect.assertions(2);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
 
             const result = await cortiClient.documents.create(interactionId, {
                 context: [
@@ -803,7 +798,7 @@ describe("cortiClient.documents.create", () => {
         it("should create document with sections array with template additionalInstructionsOverride", async () => {
             expect.assertions(2);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
 
             const result = await cortiClient.documents.create(interactionId, {
                 context: [
@@ -830,7 +825,7 @@ describe("cortiClient.documents.create", () => {
         it("should create document with sections array with all template-level options", async () => {
             expect.assertions(2);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
 
             const result = await cortiClient.documents.create(interactionId, {
                 context: [
@@ -865,7 +860,7 @@ describe("cortiClient.documents.create", () => {
         it("should create document with documentationMode: global_sequential using templateKey", async () => {
             expect.assertions(2);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
 
             const result = await cortiClient.documents.create(interactionId, {
                 context: [
@@ -886,7 +881,7 @@ describe("cortiClient.documents.create", () => {
         it("should create document with documentationMode: global_sequential using template with sectionKeys", async () => {
             expect.assertions(2);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
 
             const result = await cortiClient.documents.create(interactionId, {
                 context: [
@@ -909,7 +904,7 @@ describe("cortiClient.documents.create", () => {
         it("should create document with documentationMode: routed_parallel using template with sectionKeys", async () => {
             expect.assertions(2);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
 
             const result = await cortiClient.documents.create(interactionId, {
                 context: [
@@ -932,7 +927,7 @@ describe("cortiClient.documents.create", () => {
         it("should create document with documentationMode: global_sequential using template with sections", async () => {
             expect.assertions(2);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
 
             const result = await cortiClient.documents.create(interactionId, {
                 context: [
@@ -959,7 +954,7 @@ describe("cortiClient.documents.create", () => {
         it("should create document with documentationMode: routed_parallel using template with sections", async () => {
             expect.assertions(2);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
 
             const result = await cortiClient.documents.create(interactionId, {
                 context: [
@@ -988,7 +983,7 @@ describe("cortiClient.documents.create", () => {
         it("should throw error when documentationMode is invalid", async () => {
             expect.assertions(1);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
 
             await expect(
                 cortiClient.documents.create(interactionId, {
@@ -1010,7 +1005,7 @@ describe("cortiClient.documents.create", () => {
         it("should create document when both templateKey and template provided (templateKey takes precedence)", async () => {
             expect.assertions(2);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
 
             // API should accept this - templateKey takes precedence over template
             const result = await cortiClient.documents.create(interactionId, {
@@ -1036,7 +1031,7 @@ describe("cortiClient.documents.create", () => {
         it("should throw error when sections array is empty", async () => {
             expect.assertions(1);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
 
             await expect(
                 cortiClient.documents.create(interactionId, {
@@ -1057,7 +1052,7 @@ describe("cortiClient.documents.create", () => {
         it("should throw error when section key is missing", async () => {
             expect.assertions(1);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
 
             await expect(
                 cortiClient.documents.create(interactionId, {
@@ -1078,7 +1073,7 @@ describe("cortiClient.documents.create", () => {
         it("should throw error when section key is invalid", async () => {
             expect.assertions(1);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
 
             await expect(
                 cortiClient.documents.create(interactionId, {
@@ -1105,7 +1100,7 @@ describe("cortiClient.documents.create", () => {
         it("should throw error when context is missing", async () => {
             expect.assertions(1);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
 
             await expect(
                 cortiClient.documents.create(interactionId, {
@@ -1118,7 +1113,7 @@ describe("cortiClient.documents.create", () => {
         it("should throw error when context is empty array", async () => {
             expect.assertions(1);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
 
             await expect(
                 cortiClient.documents.create(interactionId, {
@@ -1132,7 +1127,7 @@ describe("cortiClient.documents.create", () => {
         it("should throw error when outputLanguage is missing", async () => {
             expect.assertions(1);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
 
             await expect(
                 cortiClient.documents.create(interactionId, {
@@ -1156,7 +1151,7 @@ describe("cortiClient.documents.create", () => {
         it("should throw error when templateKey is missing for DocumentsCreateRequestWithTemplateKey", async () => {
             expect.assertions(1);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
 
             await expect(
                 cortiClient.documents.create(interactionId, {
@@ -1180,7 +1175,7 @@ describe("cortiClient.documents.create", () => {
         it("should throw error when text is missing in facts context", async () => {
             expect.assertions(1);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
 
             await expect(
                 cortiClient.documents.create(interactionId, {
@@ -1204,7 +1199,7 @@ describe("cortiClient.documents.create", () => {
         it("should throw error when transcript text is missing in transcript context", async () => {
             expect.assertions(1);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
 
             await expect(
                 cortiClient.documents.create(interactionId, {
@@ -1229,7 +1224,7 @@ describe("cortiClient.documents.create", () => {
         it("should throw error when string data is missing in string context", async () => {
             expect.assertions(1);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
 
             await expect(
                 cortiClient.documents.create(interactionId, {
@@ -1248,7 +1243,7 @@ describe("cortiClient.documents.create", () => {
         it("should throw error when template is missing for DocumentsCreateRequestWithTemplate", async () => {
             expect.assertions(1);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
 
             await expect(
                 cortiClient.documents.create(interactionId, {
@@ -1272,7 +1267,7 @@ describe("cortiClient.documents.create", () => {
         it("should throw error when context type is invalid", async () => {
             expect.assertions(1);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
 
             await expect(
                 cortiClient.documents.create(interactionId, {
@@ -1291,7 +1286,7 @@ describe("cortiClient.documents.create", () => {
         it("should throw error when outputLanguage is invalid", async () => {
             expect.assertions(1);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
 
             await expect(
                 cortiClient.documents.create(interactionId, {
@@ -1318,7 +1313,7 @@ describe("cortiClient.documents.create", () => {
         it("should create document with disableGuardrails: true using templateKey without errors or warnings", async () => {
             expect.assertions(2);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
 
             const result = await cortiClient.documents.create(interactionId, {
                 context: [
@@ -1339,7 +1334,7 @@ describe("cortiClient.documents.create", () => {
         it("should create document with disableGuardrails: false using templateKey without errors or warnings", async () => {
             expect.assertions(2);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
 
             const result = await cortiClient.documents.create(interactionId, {
                 context: [
@@ -1360,7 +1355,7 @@ describe("cortiClient.documents.create", () => {
         it("should create document with disableGuardrails: true using template without errors or warnings", async () => {
             expect.assertions(2);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
 
             const result = await cortiClient.documents.create(interactionId, {
                 context: [

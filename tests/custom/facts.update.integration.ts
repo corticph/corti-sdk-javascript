@@ -1,7 +1,6 @@
 import { faker } from "@faker-js/faker";
 import type { CortiClient } from "../../src";
 import {
-    cleanupInteractions,
     createTestCortiClient,
     createTestFacts,
     createTestInteraction,
@@ -12,7 +11,6 @@ import {
 describe("cortiClient.facts.update", () => {
     let cortiClient: CortiClient;
     let consoleWarnSpy: ReturnType<typeof setupConsoleWarnSpy>;
-    let createdInteractionIds: string[] = [];
     let validFactGroups: string[] = [];
 
     beforeAll(async () => {
@@ -22,13 +20,10 @@ describe("cortiClient.facts.update", () => {
 
     beforeEach(() => {
         consoleWarnSpy = setupConsoleWarnSpy();
-        createdInteractionIds = [];
     });
 
-    afterEach(async () => {
+    afterEach(() => {
         consoleWarnSpy.mockRestore();
-        await cleanupInteractions(cortiClient, createdInteractionIds);
-        createdInteractionIds = [];
     });
 
     const getValidFactGroup = (): string => faker.helpers.arrayElement(validFactGroups);
@@ -37,7 +32,7 @@ describe("cortiClient.facts.update", () => {
         it("should update fact with empty request without errors or warnings", async () => {
             expect.assertions(2);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
             const [factId] = await createTestFacts(cortiClient, interactionId, 1);
 
             const result = await cortiClient.facts.update(interactionId, factId, {});
@@ -51,7 +46,7 @@ describe("cortiClient.facts.update", () => {
         it("should update fact with text without errors or warnings", async () => {
             expect.assertions(2);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
             const [factId] = await createTestFacts(cortiClient, interactionId, 1);
 
             const result = await cortiClient.facts.update(interactionId, factId, {
@@ -65,7 +60,7 @@ describe("cortiClient.facts.update", () => {
         it("should update fact with group without errors or warnings", async () => {
             expect.assertions(2);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
             const [factId] = await createTestFacts(cortiClient, interactionId, 1);
 
             const result = await cortiClient.facts.update(interactionId, factId, {
@@ -79,7 +74,7 @@ describe("cortiClient.facts.update", () => {
         it("should update fact with isDiscarded: true without errors or warnings", async () => {
             expect.assertions(2);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
             const [factId] = await createTestFacts(cortiClient, interactionId, 1);
 
             const result = await cortiClient.facts.update(interactionId, factId, {
@@ -93,7 +88,7 @@ describe("cortiClient.facts.update", () => {
         it("should update fact with isDiscarded: false without errors or warnings", async () => {
             expect.assertions(2);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
             const [factId] = await createTestFacts(cortiClient, interactionId, 1);
 
             const result = await cortiClient.facts.update(interactionId, factId, {
@@ -107,7 +102,7 @@ describe("cortiClient.facts.update", () => {
         it("should update fact with all optional parameters combined without errors or warnings", async () => {
             expect.assertions(2);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
             const [factId] = await createTestFacts(cortiClient, interactionId, 1);
 
             const result = await cortiClient.facts.update(interactionId, factId, {
@@ -126,7 +121,7 @@ describe("cortiClient.facts.update", () => {
         it('should update fact with source "core" without errors or warnings', async () => {
             expect.assertions(2);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
             const [factId] = await createTestFacts(cortiClient, interactionId, 1);
 
             const result = await cortiClient.facts.update(interactionId, factId, { source: "core" });
@@ -138,7 +133,7 @@ describe("cortiClient.facts.update", () => {
         it('should update fact with source "system" without errors or warnings', async () => {
             expect.assertions(2);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
             const [factId] = await createTestFacts(cortiClient, interactionId, 1);
 
             const result = await cortiClient.facts.update(interactionId, factId, { source: "system" });
@@ -150,7 +145,7 @@ describe("cortiClient.facts.update", () => {
         it('should update fact with source "user" without errors or warnings', async () => {
             expect.assertions(2);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
             const [factId] = await createTestFacts(cortiClient, interactionId, 1);
 
             const result = await cortiClient.facts.update(interactionId, factId, { source: "user" });
@@ -170,7 +165,7 @@ describe("cortiClient.facts.update", () => {
         it("should throw error when fact ID is missing", async () => {
             expect.assertions(1);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
 
             await expect(cortiClient.facts.update(interactionId, undefined as any, {})).rejects.toThrow();
         });
@@ -180,7 +175,7 @@ describe("cortiClient.facts.update", () => {
         it("should throw error when interaction ID is invalid format", async () => {
             expect.assertions(1);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
             const [factId] = await createTestFacts(cortiClient, interactionId, 1);
 
             await expect(
@@ -191,7 +186,7 @@ describe("cortiClient.facts.update", () => {
         it("should throw error when fact ID is invalid format", async () => {
             expect.assertions(1);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
 
             await expect(
                 cortiClient.facts.update(interactionId, "invalid-uuid", { text: faker.lorem.sentence() }),
@@ -201,7 +196,7 @@ describe("cortiClient.facts.update", () => {
         it("should throw error when interaction ID does not exist", async () => {
             expect.assertions(1);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
             const [factId] = await createTestFacts(cortiClient, interactionId, 1);
 
             await expect(
@@ -212,7 +207,7 @@ describe("cortiClient.facts.update", () => {
         it("should throw error when fact ID does not exist", async () => {
             expect.assertions(1);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
 
             await expect(
                 cortiClient.facts.update(interactionId, faker.string.uuid(), { text: faker.lorem.sentence() }),

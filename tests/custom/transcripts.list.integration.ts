@@ -1,7 +1,6 @@
 import { faker } from "@faker-js/faker";
 import type { CortiClient } from "../../src";
 import {
-    cleanupInteractions,
     createTestCortiClient,
     createTestInteraction,
     createTestRecording,
@@ -12,7 +11,6 @@ import {
 describe("cortiClient.transcripts.list", () => {
     let cortiClient: CortiClient;
     let consoleWarnSpy: ReturnType<typeof setupConsoleWarnSpy>;
-    let createdInteractionIds: string[] = [];
 
     beforeAll(() => {
         cortiClient = createTestCortiClient();
@@ -20,20 +18,17 @@ describe("cortiClient.transcripts.list", () => {
 
     beforeEach(() => {
         consoleWarnSpy = setupConsoleWarnSpy();
-        createdInteractionIds = [];
     });
 
-    afterEach(async () => {
+    afterEach(() => {
         consoleWarnSpy.mockRestore();
-        await cleanupInteractions(cortiClient, createdInteractionIds);
-        createdInteractionIds = [];
     });
 
     describe("should list transcripts with only required values", () => {
         it("should return empty list when interaction has no transcripts", async () => {
             expect.assertions(2);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
 
             const result = await cortiClient.transcripts.list(interactionId);
 
@@ -44,7 +39,7 @@ describe("cortiClient.transcripts.list", () => {
         it("should return transcripts when interaction has transcripts", async () => {
             expect.assertions(3);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
             const recordingId = await createTestRecording(cortiClient, interactionId);
             const transcriptId = await createTestTranscript(cortiClient, interactionId, recordingId);
 
@@ -58,7 +53,7 @@ describe("cortiClient.transcripts.list", () => {
         it("should return multiple transcripts when interaction has multiple transcripts", async () => {
             expect.assertions(4);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
             const recordingId1 = await createTestRecording(cortiClient, interactionId);
             const recordingId2 = await createTestRecording(cortiClient, interactionId);
             const transcriptId1 = await createTestTranscript(cortiClient, interactionId, recordingId1);
@@ -77,7 +72,7 @@ describe("cortiClient.transcripts.list", () => {
         it("should return transcripts with full parameter set to true", async () => {
             expect.assertions(3);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
             const recordingId = await createTestRecording(cortiClient, interactionId);
             const transcriptId = await createTestTranscript(cortiClient, interactionId, recordingId);
 
@@ -91,7 +86,7 @@ describe("cortiClient.transcripts.list", () => {
         it("should return transcripts with full parameter set to false", async () => {
             expect.assertions(3);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
             const recordingId = await createTestRecording(cortiClient, interactionId);
             const transcriptId = await createTestTranscript(cortiClient, interactionId, recordingId);
 
@@ -105,7 +100,7 @@ describe("cortiClient.transcripts.list", () => {
         it("should return different responses when full parameter is true vs false", async () => {
             expect.assertions(4);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
             const recordingId = await createTestRecording(cortiClient, interactionId);
 
             await createTestTranscript(cortiClient, interactionId, recordingId);

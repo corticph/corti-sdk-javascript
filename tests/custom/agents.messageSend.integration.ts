@@ -1,11 +1,10 @@
 import { faker } from "@faker-js/faker";
 import type { CortiClient } from "../../src";
-import { cleanupAgents, createTestAgent, createTestCortiClient, setupConsoleWarnSpy } from "./testUtils";
+import { createTestAgent, createTestCortiClient, setupConsoleWarnSpy } from "./testUtils";
 
 describe("cortiClient.agents.messageSend", () => {
     let cortiClient: CortiClient;
     let consoleWarnSpy: ReturnType<typeof setupConsoleWarnSpy>;
-    let createdAgentIds: string[] = [];
 
     beforeAll(() => {
         cortiClient = createTestCortiClient();
@@ -13,20 +12,17 @@ describe("cortiClient.agents.messageSend", () => {
 
     beforeEach(() => {
         consoleWarnSpy = setupConsoleWarnSpy();
-        createdAgentIds = [];
     });
 
-    afterEach(async () => {
+    afterEach(() => {
         consoleWarnSpy.mockRestore();
-        await cleanupAgents(cortiClient, createdAgentIds);
-        createdAgentIds = [];
     });
 
     describe("should send message with minimal fields", () => {
         it("should send message with only required fields without errors or warnings", async () => {
             expect.assertions(2);
 
-            const agent = await createTestAgent(cortiClient, createdAgentIds);
+            const agent = await createTestAgent(cortiClient);
 
             const result = await cortiClient.agents.messageSend(agent.id, {
                 message: {
@@ -49,7 +45,7 @@ describe("cortiClient.agents.messageSend", () => {
         it("should send message with agent role without errors or warnings", async () => {
             expect.assertions(2);
 
-            const agent = await createTestAgent(cortiClient, createdAgentIds);
+            const agent = await createTestAgent(cortiClient);
 
             const result = await cortiClient.agents.messageSend(agent.id, {
                 message: {
@@ -74,7 +70,7 @@ describe("cortiClient.agents.messageSend", () => {
         it("should send message with metadata without errors or warnings", async () => {
             expect.assertions(2);
 
-            const agent = await createTestAgent(cortiClient, createdAgentIds);
+            const agent = await createTestAgent(cortiClient);
 
             const result = await cortiClient.agents.messageSend(agent.id, {
                 message: {
@@ -100,7 +96,7 @@ describe("cortiClient.agents.messageSend", () => {
         it("should send message with extensions without errors or warnings", async () => {
             expect.assertions(2);
 
-            const agent = await createTestAgent(cortiClient, createdAgentIds);
+            const agent = await createTestAgent(cortiClient);
 
             const result = await cortiClient.agents.messageSend(agent.id, {
                 message: {
@@ -125,7 +121,7 @@ describe("cortiClient.agents.messageSend", () => {
         it.skip("should send message with taskId and contextId without errors or warnings", async () => {
             expect.assertions(2);
 
-            const agent = await createTestAgent(cortiClient, createdAgentIds);
+            const agent = await createTestAgent(cortiClient);
 
             const firstMessage = await cortiClient.agents.messageSend(agent.id, {
                 message: {
@@ -167,7 +163,7 @@ describe("cortiClient.agents.messageSend", () => {
         it("should send message with referenceTaskIds without errors or warnings", async () => {
             expect.assertions(2);
 
-            const agent = await createTestAgent(cortiClient, createdAgentIds);
+            const agent = await createTestAgent(cortiClient);
 
             const result = await cortiClient.agents.messageSend(agent.id, {
                 message: {
@@ -192,7 +188,7 @@ describe("cortiClient.agents.messageSend", () => {
         it.skip("should send message with all optional parameters without errors or warnings", async () => {
             expect.assertions(2);
 
-            const agent = await createTestAgent(cortiClient, createdAgentIds);
+            const agent = await createTestAgent(cortiClient);
 
             const firstMessage = await cortiClient.agents.messageSend(agent.id, {
                 message: {
@@ -247,7 +243,7 @@ describe("cortiClient.agents.messageSend", () => {
         it("should send message with file part (uri) without errors or warnings", async () => {
             expect.assertions(2);
 
-            const agent = await createTestAgent(cortiClient, createdAgentIds);
+            const agent = await createTestAgent(cortiClient);
 
             const result = await cortiClient.agents.messageSend(agent.id, {
                 message: {
@@ -270,7 +266,7 @@ describe("cortiClient.agents.messageSend", () => {
         it("should send message with data part without errors or warnings", async () => {
             expect.assertions(2);
 
-            const agent = await createTestAgent(cortiClient, createdAgentIds);
+            const agent = await createTestAgent(cortiClient);
 
             const result = await cortiClient.agents.messageSend(agent.id, {
                 message: {
@@ -295,7 +291,7 @@ describe("cortiClient.agents.messageSend", () => {
         it("should send message with configuration.acceptedOutputModes without errors or warnings", async () => {
             expect.assertions(2);
 
-            const agent = await createTestAgent(cortiClient, createdAgentIds);
+            const agent = await createTestAgent(cortiClient);
 
             const result = await cortiClient.agents.messageSend(agent.id, {
                 message: {
@@ -314,7 +310,7 @@ describe("cortiClient.agents.messageSend", () => {
         it("should send message with configuration.historyLength without errors or warnings", async () => {
             expect.assertions(2);
 
-            const agent = await createTestAgent(cortiClient, createdAgentIds);
+            const agent = await createTestAgent(cortiClient);
 
             const result = await cortiClient.agents.messageSend(agent.id, {
                 message: {
@@ -333,7 +329,7 @@ describe("cortiClient.agents.messageSend", () => {
         it("should send message with configuration.blocking false without errors or warnings", async () => {
             expect.assertions(2);
 
-            const agent = await createTestAgent(cortiClient, createdAgentIds);
+            const agent = await createTestAgent(cortiClient);
 
             const result = await cortiClient.agents.messageSend(agent.id, {
                 message: {
@@ -354,7 +350,7 @@ describe("cortiClient.agents.messageSend", () => {
         it("should send message with metadata without errors or warnings", async () => {
             expect.assertions(2);
 
-            const agent = await createTestAgent(cortiClient, createdAgentIds);
+            const agent = await createTestAgent(cortiClient);
 
             const result = await cortiClient.agents.messageSend(agent.id, {
                 message: {
@@ -375,7 +371,7 @@ describe("cortiClient.agents.messageSend", () => {
         it("should throw error when message is missing", async () => {
             expect.assertions(1);
 
-            const agent = await createTestAgent(cortiClient, createdAgentIds);
+            const agent = await createTestAgent(cortiClient);
 
             await expect(cortiClient.agents.messageSend(agent.id, {} as any)).rejects.toThrow(
                 'Missing required key "message"',
@@ -385,7 +381,7 @@ describe("cortiClient.agents.messageSend", () => {
         it("should throw error when role is missing", async () => {
             expect.assertions(1);
 
-            const agent = await createTestAgent(cortiClient, createdAgentIds);
+            const agent = await createTestAgent(cortiClient);
 
             await expect(
                 cortiClient.agents.messageSend(agent.id, {
@@ -406,7 +402,7 @@ describe("cortiClient.agents.messageSend", () => {
         it("should throw error when parts is missing", async () => {
             expect.assertions(1);
 
-            const agent = await createTestAgent(cortiClient, createdAgentIds);
+            const agent = await createTestAgent(cortiClient);
 
             await expect(
                 cortiClient.agents.messageSend(agent.id, {
@@ -422,7 +418,7 @@ describe("cortiClient.agents.messageSend", () => {
         it("should throw error when messageId is missing", async () => {
             expect.assertions(1);
 
-            const agent = await createTestAgent(cortiClient, createdAgentIds);
+            const agent = await createTestAgent(cortiClient);
 
             await expect(
                 cortiClient.agents.messageSend(agent.id, {
@@ -443,7 +439,7 @@ describe("cortiClient.agents.messageSend", () => {
         it("should throw error when kind is missing", async () => {
             expect.assertions(1);
 
-            const agent = await createTestAgent(cortiClient, createdAgentIds);
+            const agent = await createTestAgent(cortiClient);
 
             await expect(
                 cortiClient.agents.messageSend(agent.id, {
@@ -464,7 +460,7 @@ describe("cortiClient.agents.messageSend", () => {
         it("should throw error when text is missing in text part", async () => {
             expect.assertions(1);
 
-            const agent = await createTestAgent(cortiClient, createdAgentIds);
+            const agent = await createTestAgent(cortiClient);
 
             await expect(
                 cortiClient.agents.messageSend(agent.id, {

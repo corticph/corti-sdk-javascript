@@ -1,11 +1,10 @@
 import { faker } from "@faker-js/faker";
 import type { CortiClient } from "../../src";
-import { cleanupAgents, createTestCortiClient, setupConsoleWarnSpy } from "./testUtils";
+import { createTestCortiClient, setupConsoleWarnSpy } from "./testUtils";
 
 describe("cortiClient.agents.create", () => {
     let cortiClient: CortiClient;
     let consoleWarnSpy: ReturnType<typeof setupConsoleWarnSpy>;
-    let createdAgentIds: string[] = [];
 
     beforeAll(() => {
         cortiClient = createTestCortiClient();
@@ -13,13 +12,10 @@ describe("cortiClient.agents.create", () => {
 
     beforeEach(() => {
         consoleWarnSpy = setupConsoleWarnSpy();
-        createdAgentIds = [];
     });
 
-    afterEach(async () => {
+    afterEach(() => {
         consoleWarnSpy.mockRestore();
-        await cleanupAgents(cortiClient, createdAgentIds);
-        createdAgentIds = [];
     });
 
     describe("should create agent with only required values", () => {
@@ -30,8 +26,6 @@ describe("cortiClient.agents.create", () => {
                 name: faker.lorem.words(3),
                 description: faker.lorem.sentence(),
             });
-
-            createdAgentIds.push(result.id);
 
             expect(result).toBeDefined();
             expect(consoleWarnSpy).not.toHaveBeenCalled();
@@ -48,8 +42,6 @@ describe("cortiClient.agents.create", () => {
                 systemPrompt: faker.lorem.paragraph(),
             });
 
-            createdAgentIds.push(result.id);
-
             expect(result).toBeDefined();
             expect(consoleWarnSpy).not.toHaveBeenCalled();
         });
@@ -62,8 +54,6 @@ describe("cortiClient.agents.create", () => {
                 description: faker.lorem.sentence(),
                 ephemeral: true,
             });
-
-            createdAgentIds.push(result.id);
 
             expect(result).toBeDefined();
             expect(consoleWarnSpy).not.toHaveBeenCalled();
@@ -81,8 +71,6 @@ describe("cortiClient.agents.create", () => {
                 experts: [],
             });
 
-            createdAgentIds.push(result.id);
-
             expect(result).toBeDefined();
             expect(consoleWarnSpy).not.toHaveBeenCalled();
         });
@@ -98,8 +86,6 @@ describe("cortiClient.agents.create", () => {
                 agentType: "expert",
             });
 
-            createdAgentIds.push(result.id);
-
             expect(result).toBeDefined();
             expect(consoleWarnSpy).not.toHaveBeenCalled();
         });
@@ -113,8 +99,6 @@ describe("cortiClient.agents.create", () => {
                 agentType: "orchestrator",
             });
 
-            createdAgentIds.push(result.id);
-
             expect(result).toBeDefined();
             expect(consoleWarnSpy).not.toHaveBeenCalled();
         });
@@ -127,8 +111,6 @@ describe("cortiClient.agents.create", () => {
                 description: faker.lorem.sentence(),
                 agentType: "interviewing-expert",
             });
-
-            createdAgentIds.push(result.id);
 
             expect(result).toBeDefined();
             expect(consoleWarnSpy).not.toHaveBeenCalled();
@@ -151,8 +133,6 @@ describe("cortiClient.agents.create", () => {
                 experts: [{ type: "reference", name: expertName }],
             });
 
-            createdAgentIds.push(result.id);
-
             expect(result).toBeDefined();
             expect(consoleWarnSpy).not.toHaveBeenCalled();
         });
@@ -172,8 +152,6 @@ describe("cortiClient.agents.create", () => {
                     },
                 ],
             });
-
-            createdAgentIds.push(result.id);
 
             expect(result).toBeDefined();
             expect(consoleWarnSpy).not.toHaveBeenCalled();

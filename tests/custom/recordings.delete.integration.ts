@@ -1,17 +1,10 @@
 import { faker } from "@faker-js/faker";
 import type { CortiClient } from "../../src";
-import {
-    cleanupInteractions,
-    createTestCortiClient,
-    createTestInteraction,
-    createTestRecording,
-    setupConsoleWarnSpy,
-} from "./testUtils";
+import { createTestCortiClient, createTestInteraction, createTestRecording, setupConsoleWarnSpy } from "./testUtils";
 
 describe("cortiClient.recordings.delete", () => {
     let cortiClient: CortiClient;
     let consoleWarnSpy: ReturnType<typeof setupConsoleWarnSpy>;
-    let createdInteractionIds: string[] = [];
 
     beforeAll(() => {
         cortiClient = createTestCortiClient();
@@ -19,20 +12,17 @@ describe("cortiClient.recordings.delete", () => {
 
     beforeEach(() => {
         consoleWarnSpy = setupConsoleWarnSpy();
-        createdInteractionIds = [];
     });
 
-    afterEach(async () => {
+    afterEach(() => {
         consoleWarnSpy.mockRestore();
-        await cleanupInteractions(cortiClient, createdInteractionIds);
-        createdInteractionIds = [];
     });
 
     describe("should delete recording with only required values", () => {
         it("should successfully delete an existing recording without errors or warnings", async () => {
             expect.assertions(2);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
             const recordingId = await createTestRecording(cortiClient, interactionId);
 
             const result = await cortiClient.recordings.delete(interactionId, recordingId);
@@ -44,7 +34,7 @@ describe("cortiClient.recordings.delete", () => {
         it("should not throw error when recording ID does not exist (idempotent delete)", async () => {
             expect.assertions(1);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
 
             await expect(cortiClient.recordings.delete(interactionId, faker.string.uuid())).resolves.toBe(undefined);
         });
@@ -62,7 +52,7 @@ describe("cortiClient.recordings.delete", () => {
         it("should throw error when recording ID is null", async () => {
             expect.assertions(1);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
 
             await expect(cortiClient.recordings.delete(interactionId, null as any)).rejects.toThrow(
                 "Expected string. Received null.",
@@ -80,7 +70,7 @@ describe("cortiClient.recordings.delete", () => {
         it("should throw error when recording ID is undefined", async () => {
             expect.assertions(1);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
 
             await expect(cortiClient.recordings.delete(interactionId, undefined as any)).rejects.toThrow(
                 "Expected string. Received undefined.",
@@ -100,7 +90,7 @@ describe("cortiClient.recordings.delete", () => {
         it("should throw error when recording ID is invalid format", async () => {
             expect.assertions(1);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
 
             await expect(cortiClient.recordings.delete(interactionId, "invalid-uuid")).rejects.toThrow(
                 "Status code: 400",

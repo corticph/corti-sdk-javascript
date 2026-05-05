@@ -1,17 +1,10 @@
 import { faker } from "@faker-js/faker";
 import type { CortiClient } from "../../src";
-import {
-    cleanupInteractions,
-    createTestCortiClient,
-    createTestFacts,
-    createTestInteraction,
-    setupConsoleWarnSpy,
-} from "./testUtils";
+import { createTestCortiClient, createTestFacts, createTestInteraction, setupConsoleWarnSpy } from "./testUtils";
 
 describe("cortiClient.facts.list", () => {
     let cortiClient: CortiClient;
     let consoleWarnSpy: ReturnType<typeof setupConsoleWarnSpy>;
-    let createdInteractionIds: string[] = [];
 
     beforeAll(() => {
         cortiClient = createTestCortiClient();
@@ -19,20 +12,17 @@ describe("cortiClient.facts.list", () => {
 
     beforeEach(() => {
         consoleWarnSpy = setupConsoleWarnSpy();
-        createdInteractionIds = [];
     });
 
-    afterEach(async () => {
+    afterEach(() => {
         consoleWarnSpy.mockRestore();
-        await cleanupInteractions(cortiClient, createdInteractionIds);
-        createdInteractionIds = [];
     });
 
     describe("should list facts with only required values", () => {
         it("should return empty list for interaction with no facts without errors or warnings", async () => {
             expect.assertions(2);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
 
             const result = await cortiClient.facts.list(interactionId);
 
@@ -43,7 +33,7 @@ describe("cortiClient.facts.list", () => {
         it("should return facts for interaction with facts without errors or warnings", async () => {
             expect.assertions(3);
 
-            const interactionId = await createTestInteraction(cortiClient, createdInteractionIds);
+            const interactionId = await createTestInteraction(cortiClient);
             const factIds = await createTestFacts(cortiClient, interactionId, 1);
 
             const result = await cortiClient.facts.list(interactionId);
