@@ -13,4 +13,6 @@ export interface AgentsRegistryExpert {
     description: string;
     /** A list of MCP servers the expert can call, including their authorization types. */
     mcpServers?: Corti.AgentsRegistryMcpServer[];
+    /** Optional JSON Schema describing the configuration this expert accepts. When present, callers may supply a matching `config` object on `AgentsCreateExpertReference`; values are deep-merged with schema defaults and validated against this schema. */
+    configSchema?: Record<string, unknown>;
 }
