@@ -178,7 +178,6 @@ export * from "./TemplatesSectionTranslation.js";
 export * from "./TemplatesTranslation.js";
 export * from "./TemplatesWritingStyle.js";
 export * from "./TemplateVersion.js";
-export * from "./TemplateVersionSectionRequest.js";
 export * from "./TranscribeCommand.js";
 export * from "./TranscribeCommandData.js";
 export * from "./TranscribeCommandMessage.js";
