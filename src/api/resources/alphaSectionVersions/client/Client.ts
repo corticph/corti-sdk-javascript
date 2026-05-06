@@ -110,8 +110,7 @@ export class AlphaSectionVersionsClient {
      *     await client.alphaSectionVersions.create("sectionID", {
      *         title: "title",
      *         instructions: {
-     *             contentPrompt: "contentPrompt",
-     *             writingStylePrompt: "writingStylePrompt"
+     *             contentPrompt: "contentPrompt"
      *         },
      *         outputSchema: {
      *             type: "string"

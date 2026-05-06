@@ -43,10 +43,7 @@ describe("AlphaTemplatesClient", () => {
                                     versionNumber: 1,
                                     generation: {
                                         title: "title",
-                                        instructions: {
-                                            contentPrompt: "contentPrompt",
-                                            writingStylePrompt: "writingStylePrompt",
-                                        },
+                                        instructions: { contentPrompt: "contentPrompt" },
                                         outputSchema: { type: "string" },
                                     },
                                 },
@@ -93,7 +90,6 @@ describe("AlphaTemplatesClient", () => {
                                         title: "title",
                                         instructions: {
                                             contentPrompt: "contentPrompt",
-                                            writingStylePrompt: "writingStylePrompt",
                                         },
                                         outputSchema: {
                                             type: "string",
@@ -152,10 +148,7 @@ describe("AlphaTemplatesClient", () => {
                                 versionNumber: 1,
                                 generation: {
                                     title: "title",
-                                    instructions: {
-                                        contentPrompt: "contentPrompt",
-                                        writingStylePrompt: "writingStylePrompt",
-                                    },
+                                    instructions: { contentPrompt: "contentPrompt" },
                                     outputSchema: { type: "string" },
                                 },
                             },
@@ -215,7 +208,6 @@ describe("AlphaTemplatesClient", () => {
                                     title: "title",
                                     instructions: {
                                         contentPrompt: "contentPrompt",
-                                        writingStylePrompt: "writingStylePrompt",
                                     },
                                     outputSchema: {
                                         type: "string",
@@ -309,10 +301,7 @@ describe("AlphaTemplatesClient", () => {
                                 versionNumber: 1,
                                 generation: {
                                     title: "title",
-                                    instructions: {
-                                        contentPrompt: "contentPrompt",
-                                        writingStylePrompt: "writingStylePrompt",
-                                    },
+                                    instructions: { contentPrompt: "contentPrompt" },
                                     outputSchema: { type: "string" },
                                 },
                             },
@@ -363,7 +352,6 @@ describe("AlphaTemplatesClient", () => {
                                     title: "title",
                                     instructions: {
                                         contentPrompt: "contentPrompt",
-                                        writingStylePrompt: "writingStylePrompt",
                                     },
                                     outputSchema: {
                                         type: "string",
@@ -489,10 +477,7 @@ describe("AlphaTemplatesClient", () => {
                                 versionNumber: 1,
                                 generation: {
                                     title: "title",
-                                    instructions: {
-                                        contentPrompt: "contentPrompt",
-                                        writingStylePrompt: "writingStylePrompt",
-                                    },
+                                    instructions: { contentPrompt: "contentPrompt" },
                                     outputSchema: { type: "string" },
                                 },
                             },
@@ -544,7 +529,6 @@ describe("AlphaTemplatesClient", () => {
                                     title: "title",
                                     instructions: {
                                         contentPrompt: "contentPrompt",
-                                        writingStylePrompt: "writingStylePrompt",
                                     },
                                     outputSchema: {
                                         type: "string",

@@ -35,10 +35,7 @@ describe("AlphaTemplateVersionsClient", () => {
                                 versionNumber: 1,
                                 generation: {
                                     title: "title",
-                                    instructions: {
-                                        contentPrompt: "contentPrompt",
-                                        writingStylePrompt: "writingStylePrompt",
-                                    },
+                                    instructions: { contentPrompt: "contentPrompt" },
                                     outputSchema: { type: "string" },
                                 },
                             },
@@ -80,7 +77,6 @@ describe("AlphaTemplateVersionsClient", () => {
                                     title: "title",
                                     instructions: {
                                         contentPrompt: "contentPrompt",
-                                        writingStylePrompt: "writingStylePrompt",
                                     },
                                     outputSchema: {
                                         type: "string",
@@ -151,10 +147,7 @@ describe("AlphaTemplateVersionsClient", () => {
                             versionNumber: 1,
                             generation: {
                                 title: "title",
-                                instructions: {
-                                    contentPrompt: "contentPrompt",
-                                    writingStylePrompt: "writingStylePrompt",
-                                },
+                                instructions: { contentPrompt: "contentPrompt" },
                                 outputSchema: { type: "string" },
                             },
                         },
@@ -201,7 +194,6 @@ describe("AlphaTemplateVersionsClient", () => {
                                 title: "title",
                                 instructions: {
                                     contentPrompt: "contentPrompt",
-                                    writingStylePrompt: "writingStylePrompt",
                                 },
                                 outputSchema: {
                                     type: "string",
@@ -312,10 +304,7 @@ describe("AlphaTemplateVersionsClient", () => {
                             versionNumber: 1,
                             generation: {
                                 title: "title",
-                                instructions: {
-                                    contentPrompt: "contentPrompt",
-                                    writingStylePrompt: "writingStylePrompt",
-                                },
+                                instructions: { contentPrompt: "contentPrompt" },
                                 outputSchema: { type: "string" },
                             },
                         },
@@ -355,7 +344,6 @@ describe("AlphaTemplateVersionsClient", () => {
                                 title: "title",
                                 instructions: {
                                     contentPrompt: "contentPrompt",
-                                    writingStylePrompt: "writingStylePrompt",
                                 },
                                 outputSchema: {
                                     type: "string",

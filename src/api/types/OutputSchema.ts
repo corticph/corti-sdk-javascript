@@ -2,10 +2,4 @@
 
 import type * as Corti from "../index.js";
 
-export type OutputSchema =
-    | Corti.StringNode
-    | Corti.IntegerNode
-    | Corti.FloatNode
-    | Corti.BoolNode
-    | Corti.DictNode
-    | Corti.ListNode;
+export type OutputSchema = Corti.StringNode | Corti.NumberNode | Corti.BoolNode | Corti.ObjectNode | Corti.ArrayNode;

@@ -2,15 +2,15 @@
 
 import type * as Corti from "../index.js";
 
-export interface ListNode {
-    type: "list";
+export interface ArrayNode {
+    type: "array";
     /** Can be used to prompt the LLM with more guidance in addition to the section.instructions */
     description?: string;
     items: Corti.OutputSchema;
-    /** Controls how each list item is rendered in the generated output. Use `bullet` (default), `numbered`, or `plain`, or provide a custom format string containing the `{item}` placeholder. */
+    /** Controls how each array item is rendered in the generated output. Use `bullet` (default), `numbered`, or `plain`, or provide a custom format string containing the `{item}` placeholder. */
     itemFormat?: string;
-    /** Minimum number of list items to generate. */
+    /** Minimum number of array items to generate. */
     minItems?: number | null;
-    /** Maximum number of list items to generate. */
+    /** Maximum number of array items to generate. */
     maxItems?: number | null;
 }

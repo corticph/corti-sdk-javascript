@@ -9,12 +9,14 @@ export const SectionInstructions: core.serialization.ObjectSchema<
     Corti.SectionInstructions
 > = core.serialization.object({
     contentPrompt: core.serialization.string(),
-    writingStylePrompt: core.serialization.string(),
+    writingStylePrompt: core.serialization.string().optional(),
+    miscPrompt: core.serialization.string().optional(),
 });
 
 export declare namespace SectionInstructions {
     export interface Raw {
         contentPrompt: string;
-        writingStylePrompt: string;
+        writingStylePrompt?: string | null;
+        miscPrompt?: string | null;
     }
 }

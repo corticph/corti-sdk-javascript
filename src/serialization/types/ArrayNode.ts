@@ -4,9 +4,9 @@ import type * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
 import * as serializers from "../index.js";
 
-export const ListNode: core.serialization.ObjectSchema<serializers.ListNode.Raw, Corti.ListNode> =
+export const ArrayNode: core.serialization.ObjectSchema<serializers.ArrayNode.Raw, Corti.ArrayNode> =
     core.serialization.object({
-        type: core.serialization.stringLiteral("list"),
+        type: core.serialization.stringLiteral("array"),
         description: core.serialization.string().optional(),
         items: core.serialization.lazy(() => serializers.OutputSchema),
         itemFormat: core.serialization.string().optional(),
@@ -14,9 +14,9 @@ export const ListNode: core.serialization.ObjectSchema<serializers.ListNode.Raw,
         maxItems: core.serialization.number().optionalNullable(),
     });
 
-export declare namespace ListNode {
+export declare namespace ArrayNode {
     export interface Raw {
-        type: "list";
+        type: "array";
         description?: string | null;
         items: serializers.OutputSchema.Raw;
         itemFormat?: string | null;

@@ -10,8 +10,7 @@ import type * as Corti from "../../../../index.js";
  *         generation: {
  *             title: "title",
  *             instructions: {
- *                 contentPrompt: "contentPrompt",
- *                 writingStylePrompt: "writingStylePrompt"
+ *                 contentPrompt: "contentPrompt"
  *             },
  *             outputSchema: {
  *                 type: "string"

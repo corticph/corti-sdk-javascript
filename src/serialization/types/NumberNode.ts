@@ -4,9 +4,9 @@ import type * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
 import type * as serializers from "../index.js";
 
-export const IntegerNode: core.serialization.ObjectSchema<serializers.IntegerNode.Raw, Corti.IntegerNode> =
+export const NumberNode: core.serialization.ObjectSchema<serializers.NumberNode.Raw, Corti.NumberNode> =
     core.serialization.object({
-        type: core.serialization.stringLiteral("integer"),
+        type: core.serialization.stringLiteral("number"),
         description: core.serialization.string().optional(),
         default: core.serialization.number().optionalNullable(),
         enum: core.serialization.list(core.serialization.number()).optional(),
@@ -14,9 +14,9 @@ export const IntegerNode: core.serialization.ObjectSchema<serializers.IntegerNod
         maximum: core.serialization.number().optionalNullable(),
     });
 
-export declare namespace IntegerNode {
+export declare namespace NumberNode {
     export interface Raw {
-        type: "integer";
+        type: "number";
         description?: string | null;
         default?: (number | null | undefined) | null;
         enum?: number[] | null;

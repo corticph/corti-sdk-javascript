@@ -32,7 +32,7 @@ describe("AlphaSectionsClient", () => {
                     versionNumber: 1,
                     generation: {
                         title: "title",
-                        instructions: { contentPrompt: "contentPrompt", writingStylePrompt: "writingStylePrompt" },
+                        instructions: { contentPrompt: "contentPrompt" },
                         outputSchema: { type: "string" },
                     },
                 },
@@ -60,7 +60,6 @@ describe("AlphaSectionsClient", () => {
                         title: "title",
                         instructions: {
                             contentPrompt: "contentPrompt",
-                            writingStylePrompt: "writingStylePrompt",
                         },
                         outputSchema: {
                             type: "string",
@@ -89,7 +88,7 @@ describe("AlphaSectionsClient", () => {
             language: "language",
             generation: {
                 title: "title",
-                instructions: { contentPrompt: "contentPrompt", writingStylePrompt: "writingStylePrompt" },
+                instructions: { contentPrompt: "contentPrompt" },
                 outputSchema: { type: "string" },
             },
         };
@@ -106,7 +105,7 @@ describe("AlphaSectionsClient", () => {
                 versionNumber: 1,
                 generation: {
                     title: "title",
-                    instructions: { contentPrompt: "contentPrompt", writingStylePrompt: "writingStylePrompt" },
+                    instructions: { contentPrompt: "contentPrompt" },
                     outputSchema: { type: "string" },
                 },
             },
@@ -130,7 +129,6 @@ describe("AlphaSectionsClient", () => {
                 title: "title",
                 instructions: {
                     contentPrompt: "contentPrompt",
-                    writingStylePrompt: "writingStylePrompt",
                 },
                 outputSchema: {
                     type: "string",
@@ -152,7 +150,6 @@ describe("AlphaSectionsClient", () => {
                     title: "title",
                     instructions: {
                         contentPrompt: "contentPrompt",
-                        writingStylePrompt: "writingStylePrompt",
                     },
                     outputSchema: {
                         type: "string",
@@ -180,7 +177,7 @@ describe("AlphaSectionsClient", () => {
             language: "language",
             generation: {
                 title: "title",
-                instructions: { contentPrompt: "contentPrompt", writingStylePrompt: "writingStylePrompt" },
+                instructions: { contentPrompt: "contentPrompt" },
                 outputSchema: { type: "string" },
             },
         };
@@ -203,7 +200,6 @@ describe("AlphaSectionsClient", () => {
                     title: "title",
                     instructions: {
                         contentPrompt: "contentPrompt",
-                        writingStylePrompt: "writingStylePrompt",
                     },
                     outputSchema: {
                         type: "string",
@@ -238,7 +234,7 @@ describe("AlphaSectionsClient", () => {
                 versionNumber: 1,
                 generation: {
                     title: "title",
-                    instructions: { contentPrompt: "contentPrompt", writingStylePrompt: "writingStylePrompt" },
+                    instructions: { contentPrompt: "contentPrompt" },
                     outputSchema: { type: "string" },
                 },
             },
@@ -270,7 +266,6 @@ describe("AlphaSectionsClient", () => {
                     title: "title",
                     instructions: {
                         contentPrompt: "contentPrompt",
-                        writingStylePrompt: "writingStylePrompt",
                     },
                     outputSchema: {
                         type: "string",
@@ -379,7 +374,7 @@ describe("AlphaSectionsClient", () => {
                 versionNumber: 1,
                 generation: {
                     title: "title",
-                    instructions: { contentPrompt: "contentPrompt", writingStylePrompt: "writingStylePrompt" },
+                    instructions: { contentPrompt: "contentPrompt" },
                     outputSchema: { type: "string" },
                 },
             },
@@ -412,7 +407,6 @@ describe("AlphaSectionsClient", () => {
                     title: "title",
                     instructions: {
                         contentPrompt: "contentPrompt",
-                        writingStylePrompt: "writingStylePrompt",
                     },
                     outputSchema: {
                         type: "string",

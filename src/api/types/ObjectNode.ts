@@ -2,14 +2,14 @@
 
 import type * as Corti from "../index.js";
 
-export interface DictNode {
-    type: "dict";
+export interface ObjectNode {
+    type: "object";
     /** Can be used to prompt the LLM with more guidance in addition to the section.instructions */
     description?: string;
     /** Controls how subheadings are rendered in the generated output. Use `inline` (default) for `{key}: {value}\n` or `block` for `{key}\n{value}\n`, or provide a custom format string containing both `{key}` and `{value}` placeholders. Mutually exclusive with `objectFormat`. */
     subheadingFormat?: string;
     /** A format string referencing field keys as placeholders (e.g. `{fieldKey}`). All placeholders must correspond to defined field keys. Mutually exclusive with `subheadingFormat`. */
     objectFormat?: string;
-    /** Define what fields are possible to return in the dict. */
+    /** Define what fields are possible to return in the object. */
     fields?: Corti.FieldDefinition[];
 }

@@ -4,26 +4,23 @@ import type * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
 import * as serializers from "../index.js";
 import { BoolNode } from "./BoolNode.js";
-import { FloatNode } from "./FloatNode.js";
-import { IntegerNode } from "./IntegerNode.js";
+import { NumberNode } from "./NumberNode.js";
 import { StringNode } from "./StringNode.js";
 
 export const OutputSchema: core.serialization.Schema<serializers.OutputSchema.Raw, Corti.OutputSchema> =
     core.serialization.undiscriminatedUnion([
         StringNode,
-        IntegerNode,
-        FloatNode,
+        NumberNode,
         BoolNode,
-        core.serialization.lazyObject(() => serializers.DictNode),
-        core.serialization.lazyObject(() => serializers.ListNode),
+        core.serialization.lazyObject(() => serializers.ObjectNode),
+        core.serialization.lazyObject(() => serializers.ArrayNode),
     ]);
 
 export declare namespace OutputSchema {
     export type Raw =
         | StringNode.Raw
-        | IntegerNode.Raw
-        | FloatNode.Raw
+        | NumberNode.Raw
         | BoolNode.Raw
-        | serializers.DictNode.Raw
-        | serializers.ListNode.Raw;
+        | serializers.ObjectNode.Raw
+        | serializers.ArrayNode.Raw;
 }

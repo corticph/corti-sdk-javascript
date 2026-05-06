@@ -24,7 +24,7 @@ describe("AlphaSectionVersionsClient", () => {
                 versionNumber: 1,
                 generation: {
                     title: "title",
-                    instructions: { contentPrompt: "contentPrompt", writingStylePrompt: "writingStylePrompt" },
+                    instructions: { contentPrompt: "contentPrompt" },
                     outputSchema: { type: "string" },
                 },
             },
@@ -47,7 +47,6 @@ describe("AlphaSectionVersionsClient", () => {
                     title: "title",
                     instructions: {
                         contentPrompt: "contentPrompt",
-                        writingStylePrompt: "writingStylePrompt",
                     },
                     outputSchema: {
                         type: "string",
@@ -97,7 +96,7 @@ describe("AlphaSectionVersionsClient", () => {
         });
         const rawRequestBody = {
             title: "title",
-            instructions: { contentPrompt: "contentPrompt", writingStylePrompt: "writingStylePrompt" },
+            instructions: { contentPrompt: "contentPrompt" },
             outputSchema: { type: "string" },
         };
         const rawResponseBody = {
@@ -105,7 +104,11 @@ describe("AlphaSectionVersionsClient", () => {
             versionNumber: 1,
             generation: {
                 title: "title",
-                instructions: { contentPrompt: "contentPrompt", writingStylePrompt: "writingStylePrompt" },
+                instructions: {
+                    contentPrompt: "contentPrompt",
+                    writingStylePrompt: "writingStylePrompt",
+                    miscPrompt: "miscPrompt",
+                },
                 outputSchema: {
                     type: "string",
                     description: "description",
@@ -129,7 +132,6 @@ describe("AlphaSectionVersionsClient", () => {
             title: "title",
             instructions: {
                 contentPrompt: "contentPrompt",
-                writingStylePrompt: "writingStylePrompt",
             },
             outputSchema: {
                 type: "string",
@@ -143,6 +145,7 @@ describe("AlphaSectionVersionsClient", () => {
                 instructions: {
                     contentPrompt: "contentPrompt",
                     writingStylePrompt: "writingStylePrompt",
+                    miscPrompt: "miscPrompt",
                 },
                 outputSchema: {
                     type: "string",
@@ -168,7 +171,7 @@ describe("AlphaSectionVersionsClient", () => {
         });
         const rawRequestBody = {
             title: "title",
-            instructions: { contentPrompt: "contentPrompt", writingStylePrompt: "writingStylePrompt" },
+            instructions: { contentPrompt: "contentPrompt" },
             outputSchema: { type: "string" },
         };
         const rawResponseBody = { key: "value" };
@@ -187,7 +190,6 @@ describe("AlphaSectionVersionsClient", () => {
                 title: "title",
                 instructions: {
                     contentPrompt: "contentPrompt",
-                    writingStylePrompt: "writingStylePrompt",
                 },
                 outputSchema: {
                     type: "string",
@@ -209,7 +211,7 @@ describe("AlphaSectionVersionsClient", () => {
         });
         const rawRequestBody = {
             title: "title",
-            instructions: { contentPrompt: "contentPrompt", writingStylePrompt: "writingStylePrompt" },
+            instructions: { contentPrompt: "contentPrompt" },
             outputSchema: { type: "string" },
         };
         const rawResponseBody = { key: "value" };
@@ -228,7 +230,6 @@ describe("AlphaSectionVersionsClient", () => {
                 title: "title",
                 instructions: {
                     contentPrompt: "contentPrompt",
-                    writingStylePrompt: "writingStylePrompt",
                 },
                 outputSchema: {
                     type: "string",
@@ -254,7 +255,11 @@ describe("AlphaSectionVersionsClient", () => {
             versionNumber: 1,
             generation: {
                 title: "title",
-                instructions: { contentPrompt: "contentPrompt", writingStylePrompt: "writingStylePrompt" },
+                instructions: {
+                    contentPrompt: "contentPrompt",
+                    writingStylePrompt: "writingStylePrompt",
+                    miscPrompt: "miscPrompt",
+                },
                 outputSchema: {
                     type: "string",
                     description: "description",
@@ -282,6 +287,7 @@ describe("AlphaSectionVersionsClient", () => {
                 instructions: {
                     contentPrompt: "contentPrompt",
                     writingStylePrompt: "writingStylePrompt",
+                    miscPrompt: "miscPrompt",
                 },
                 outputSchema: {
                     type: "string",

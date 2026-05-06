@@ -4,18 +4,18 @@ import type * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
 import * as serializers from "../index.js";
 
-export const DictNode: core.serialization.ObjectSchema<serializers.DictNode.Raw, Corti.DictNode> =
+export const ObjectNode: core.serialization.ObjectSchema<serializers.ObjectNode.Raw, Corti.ObjectNode> =
     core.serialization.object({
-        type: core.serialization.stringLiteral("dict"),
+        type: core.serialization.stringLiteral("object"),
         description: core.serialization.string().optional(),
         subheadingFormat: core.serialization.string().optional(),
         objectFormat: core.serialization.string().optional(),
         fields: core.serialization.list(core.serialization.lazyObject(() => serializers.FieldDefinition)).optional(),
     });
 
-export declare namespace DictNode {
+export declare namespace ObjectNode {
     export interface Raw {
-        type: "dict";
+        type: "object";
         description?: string | null;
         subheadingFormat?: string | null;
         objectFormat?: string | null;
