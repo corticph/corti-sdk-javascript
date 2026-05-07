@@ -24,6 +24,176 @@ export class AlphaTemplateVersionsClient {
 
     /**
      * @param {string} templateID
+     * @param {AlphaTemplateVersionsClient.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link Corti.NotFoundError}
+     *
+     * @example
+     *     await client.alphaTemplateVersions.list("templateID")
+     */
+    public list(
+        templateID: string,
+        requestOptions?: AlphaTemplateVersionsClient.RequestOptions,
+    ): core.HttpResponsePromise<Corti.TemplateVersion[]> {
+        return core.HttpResponsePromise.fromPromise(this.__list(templateID, requestOptions));
+    }
+
+    private async __list(
+        templateID: string,
+        requestOptions?: AlphaTemplateVersionsClient.RequestOptions,
+    ): Promise<core.WithRawResponse<Corti.TemplateVersion[]>> {
+        const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
+        const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+            _authRequest.headers,
+            this._options?.headers,
+            mergeOnlyDefinedHeaders({ "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName }),
+            requestOptions?.headers,
+        );
+        const _response = await core.fetcher({
+            url: core.url.join(
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)).base,
+                `alpha/templates/${core.url.encodePathParam(templateID)}/versions/`,
+            ),
+            method: "GET",
+            headers: _headers,
+            queryParameters: requestOptions?.queryParams,
+            timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
+            maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
+            abortSignal: requestOptions?.abortSignal,
+            fetchFn: this._options?.fetch,
+            logging: this._options.logging,
+        });
+        if (_response.ok) {
+            return {
+                data: serializers.alphaTemplateVersions.list.Response.parseOrThrow(_response.body, {
+                    unrecognizedObjectKeys: "passthrough",
+                    allowUnrecognizedUnionMembers: true,
+                    allowUnrecognizedEnumValues: true,
+                    skipValidation: true,
+                    breadcrumbsPrefix: ["response"],
+                }),
+                rawResponse: _response.rawResponse,
+            };
+        }
+
+        if (_response.error.reason === "status-code") {
+            switch (_response.error.statusCode) {
+                case 404:
+                    throw new Corti.NotFoundError(_response.error.body, _response.rawResponse);
+                default:
+                    throw new errors.CortiError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                        rawResponse: _response.rawResponse,
+                    });
+            }
+        }
+
+        return handleNonStatusCodeError(
+            _response.error,
+            _response.rawResponse,
+            "GET",
+            "/alpha/templates/{templateID}/versions/",
+        );
+    }
+
+    /**
+     * @param {string} templateID
+     * @param {Corti.CreateTemplateVersionRequest} request
+     * @param {AlphaTemplateVersionsClient.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link Corti.BadRequestError}
+     * @throws {@link Corti.NotFoundError}
+     *
+     * @example
+     *     await client.alphaTemplateVersions.create("templateID", {
+     *         generation: {
+     *             instructions: {
+     *                 prompt: "prompt"
+     *             }
+     *         }
+     *     })
+     */
+    public create(
+        templateID: string,
+        request: Corti.CreateTemplateVersionRequest,
+        requestOptions?: AlphaTemplateVersionsClient.RequestOptions,
+    ): core.HttpResponsePromise<Corti.TemplateVersion> {
+        return core.HttpResponsePromise.fromPromise(this.__create(templateID, request, requestOptions));
+    }
+
+    private async __create(
+        templateID: string,
+        request: Corti.CreateTemplateVersionRequest,
+        requestOptions?: AlphaTemplateVersionsClient.RequestOptions,
+    ): Promise<core.WithRawResponse<Corti.TemplateVersion>> {
+        const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
+        const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+            _authRequest.headers,
+            this._options?.headers,
+            mergeOnlyDefinedHeaders({ "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName }),
+            requestOptions?.headers,
+        );
+        const _response = await core.fetcher({
+            url: core.url.join(
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)).base,
+                `alpha/templates/${core.url.encodePathParam(templateID)}/versions/`,
+            ),
+            method: "POST",
+            headers: _headers,
+            contentType: "application/json",
+            queryParameters: requestOptions?.queryParams,
+            requestType: "json",
+            body: serializers.CreateTemplateVersionRequest.jsonOrThrow(request, {
+                unrecognizedObjectKeys: "strip",
+                omitUndefined: true,
+            }),
+            timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
+            maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
+            abortSignal: requestOptions?.abortSignal,
+            fetchFn: this._options?.fetch,
+            logging: this._options.logging,
+        });
+        if (_response.ok) {
+            return {
+                data: serializers.TemplateVersion.parseOrThrow(_response.body, {
+                    unrecognizedObjectKeys: "passthrough",
+                    allowUnrecognizedUnionMembers: true,
+                    allowUnrecognizedEnumValues: true,
+                    skipValidation: true,
+                    breadcrumbsPrefix: ["response"],
+                }),
+                rawResponse: _response.rawResponse,
+            };
+        }
+
+        if (_response.error.reason === "status-code") {
+            switch (_response.error.statusCode) {
+                case 400:
+                    throw new Corti.BadRequestError(_response.error.body, _response.rawResponse);
+                case 404:
+                    throw new Corti.NotFoundError(_response.error.body, _response.rawResponse);
+                default:
+                    throw new errors.CortiError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                        rawResponse: _response.rawResponse,
+                    });
+            }
+        }
+
+        return handleNonStatusCodeError(
+            _response.error,
+            _response.rawResponse,
+            "POST",
+            "/alpha/templates/{templateID}/versions/",
+        );
+    }
+
+    /**
+     * @param {string} templateID
      * @param {string} versionID
      * @param {AlphaTemplateVersionsClient.RequestOptions} requestOptions - Request-specific configuration.
      *
@@ -249,126 +419,6 @@ export class AlphaTemplateVersionsClient {
             _response.rawResponse,
             "POST",
             "/alpha/templates/{templateID}/versions/{versionID}/publish",
-        );
-    }
-
-    /**
-     * @param {string} templateID
-     * @param {AlphaTemplateVersionsClient.RequestOptions} requestOptions - Request-specific configuration.
-     *
-     * @example
-     *     await client.alphaTemplateVersions.list("templateID")
-     */
-    public list(
-        templateID: string,
-        requestOptions?: AlphaTemplateVersionsClient.RequestOptions,
-    ): core.HttpResponsePromise<void> {
-        return core.HttpResponsePromise.fromPromise(this.__list(templateID, requestOptions));
-    }
-
-    private async __list(
-        templateID: string,
-        requestOptions?: AlphaTemplateVersionsClient.RequestOptions,
-    ): Promise<core.WithRawResponse<void>> {
-        const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
-        const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
-            _authRequest.headers,
-            this._options?.headers,
-            mergeOnlyDefinedHeaders({ "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName }),
-            requestOptions?.headers,
-        );
-        const _response = await core.fetcher({
-            url: core.url.join(
-                (await core.Supplier.get(this._options.baseUrl)) ??
-                    (await core.Supplier.get(this._options.environment)).base,
-                `alpha/templates/${core.url.encodePathParam(templateID)}/versions`,
-            ),
-            method: "GET",
-            headers: _headers,
-            queryParameters: requestOptions?.queryParams,
-            timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
-            maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
-            abortSignal: requestOptions?.abortSignal,
-            fetchFn: this._options?.fetch,
-            logging: this._options.logging,
-        });
-        if (_response.ok) {
-            return { data: undefined, rawResponse: _response.rawResponse };
-        }
-
-        if (_response.error.reason === "status-code") {
-            throw new errors.CortiError({
-                statusCode: _response.error.statusCode,
-                body: _response.error.body,
-                rawResponse: _response.rawResponse,
-            });
-        }
-
-        return handleNonStatusCodeError(
-            _response.error,
-            _response.rawResponse,
-            "GET",
-            "/alpha/templates/{templateID}/versions",
-        );
-    }
-
-    /**
-     * @param {string} templateID
-     * @param {AlphaTemplateVersionsClient.RequestOptions} requestOptions - Request-specific configuration.
-     *
-     * @example
-     *     await client.alphaTemplateVersions.create("templateID")
-     */
-    public create(
-        templateID: string,
-        requestOptions?: AlphaTemplateVersionsClient.RequestOptions,
-    ): core.HttpResponsePromise<void> {
-        return core.HttpResponsePromise.fromPromise(this.__create(templateID, requestOptions));
-    }
-
-    private async __create(
-        templateID: string,
-        requestOptions?: AlphaTemplateVersionsClient.RequestOptions,
-    ): Promise<core.WithRawResponse<void>> {
-        const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
-        const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
-            _authRequest.headers,
-            this._options?.headers,
-            mergeOnlyDefinedHeaders({ "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName }),
-            requestOptions?.headers,
-        );
-        const _response = await core.fetcher({
-            url: core.url.join(
-                (await core.Supplier.get(this._options.baseUrl)) ??
-                    (await core.Supplier.get(this._options.environment)).base,
-                `alpha/templates/${core.url.encodePathParam(templateID)}/versions`,
-            ),
-            method: "POST",
-            headers: _headers,
-            queryParameters: requestOptions?.queryParams,
-            timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
-            maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
-            abortSignal: requestOptions?.abortSignal,
-            fetchFn: this._options?.fetch,
-            logging: this._options.logging,
-        });
-        if (_response.ok) {
-            return { data: undefined, rawResponse: _response.rawResponse };
-        }
-
-        if (_response.error.reason === "status-code") {
-            throw new errors.CortiError({
-                statusCode: _response.error.statusCode,
-                body: _response.error.body,
-                rawResponse: _response.rawResponse,
-            });
-        }
-
-        return handleNonStatusCodeError(
-            _response.error,
-            _response.rawResponse,
-            "POST",
-            "/alpha/templates/{templateID}/versions",
         );
     }
 }

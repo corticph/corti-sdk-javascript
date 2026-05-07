@@ -276,7 +276,7 @@ describe("AgentsClient", () => {
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
         const rawRequestBody = { name: "name", description: "description" };
-        const rawResponseBody = { key: "value" };
+        const rawResponseBody = { code: "code", description: "description" };
 
         server
             .mockEndpoint()
@@ -717,7 +717,7 @@ describe("AgentsClient", () => {
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
         const rawRequestBody = {};
-        const rawResponseBody = { key: "value" };
+        const rawResponseBody = { code: "code", description: "description" };
 
         server
             .mockEndpoint()
@@ -1332,7 +1332,7 @@ describe("AgentsClient", () => {
                 kind: "message",
             },
         };
-        const rawResponseBody = { key: "value" };
+        const rawResponseBody = { code: "code", description: "description" };
 
         server
             .mockEndpoint()
@@ -1897,7 +1897,7 @@ describe("AgentsClient", () => {
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
-        const rawResponseBody = { key: "value" };
+        const rawResponseBody = { code: "code", description: "description" };
 
         server
             .mockEndpoint()

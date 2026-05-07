@@ -6,6 +6,238 @@ import { mockServerPool } from "../mock-server/MockServerPool";
 import { mockOAuth } from "./mockAuth";
 
 describe("AlphaSectionVersionsClient", () => {
+    test("list (1)", async () => {
+        const server = mockServerPool.createServer();
+        mockOAuth(server);
+
+        const client = new CortiClient({
+            maxRetries: 0,
+            clientId: "client_id",
+            clientSecret: "client_secret",
+            tenantName: "test",
+            environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
+        });
+
+        const rawResponseBody = [
+            {
+                id: "id",
+                versionNumber: 1,
+                generation: {
+                    title: "title",
+                    instructions: { contentPrompt: "contentPrompt" },
+                    outputSchema: { type: "string" },
+                },
+            },
+        ];
+
+        server
+            .mockEndpoint()
+            .get("/alpha/sections/sectionID/versions/")
+            .respondWith()
+            .statusCode(200)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        const response = await client.alphaSectionVersions.list("sectionID");
+        expect(response).toEqual([
+            {
+                id: "id",
+                versionNumber: 1,
+                generation: {
+                    title: "title",
+                    instructions: {
+                        contentPrompt: "contentPrompt",
+                    },
+                    outputSchema: {
+                        type: "string",
+                    },
+                },
+            },
+        ]);
+    });
+
+    test("list (2)", async () => {
+        const server = mockServerPool.createServer();
+        mockOAuth(server);
+
+        const client = new CortiClient({
+            maxRetries: 0,
+            clientId: "client_id",
+            clientSecret: "client_secret",
+            tenantName: "test",
+            environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
+        });
+
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .get("/alpha/sections/sectionID/versions/")
+            .respondWith()
+            .statusCode(404)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.alphaSectionVersions.list("sectionID");
+        }).rejects.toThrow(Corti.NotFoundError);
+    });
+
+    test("create (1)", async () => {
+        const server = mockServerPool.createServer();
+        mockOAuth(server);
+
+        const client = new CortiClient({
+            maxRetries: 0,
+            clientId: "client_id",
+            clientSecret: "client_secret",
+            tenantName: "test",
+            environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
+        });
+        const rawRequestBody = {
+            title: "title",
+            instructions: { contentPrompt: "contentPrompt" },
+            outputSchema: { type: "string" },
+        };
+        const rawResponseBody = {
+            id: "id",
+            versionNumber: 1,
+            generation: {
+                title: "title",
+                instructions: {
+                    contentPrompt: "contentPrompt",
+                    writingStylePrompt: "writingStylePrompt",
+                    miscPrompt: "miscPrompt",
+                },
+                outputSchema: {
+                    type: "string",
+                    description: "description",
+                    default: "default",
+                    enum: ["enum"],
+                    pattern: "pattern",
+                },
+            },
+        };
+
+        server
+            .mockEndpoint()
+            .post("/alpha/sections/sectionID/versions/")
+            .jsonBody(rawRequestBody)
+            .respondWith()
+            .statusCode(200)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        const response = await client.alphaSectionVersions.create("sectionID", {
+            title: "title",
+            instructions: {
+                contentPrompt: "contentPrompt",
+            },
+            outputSchema: {
+                type: "string",
+            },
+        });
+        expect(response).toEqual({
+            id: "id",
+            versionNumber: 1,
+            generation: {
+                title: "title",
+                instructions: {
+                    contentPrompt: "contentPrompt",
+                    writingStylePrompt: "writingStylePrompt",
+                    miscPrompt: "miscPrompt",
+                },
+                outputSchema: {
+                    type: "string",
+                    description: "description",
+                    default: "default",
+                    enum: ["enum"],
+                    pattern: "pattern",
+                },
+            },
+        });
+    });
+
+    test("create (2)", async () => {
+        const server = mockServerPool.createServer();
+        mockOAuth(server);
+
+        const client = new CortiClient({
+            maxRetries: 0,
+            clientId: "client_id",
+            clientSecret: "client_secret",
+            tenantName: "test",
+            environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
+        });
+        const rawRequestBody = {
+            title: "title",
+            instructions: { contentPrompt: "contentPrompt" },
+            outputSchema: { type: "string" },
+        };
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .post("/alpha/sections/sectionID/versions/")
+            .jsonBody(rawRequestBody)
+            .respondWith()
+            .statusCode(400)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.alphaSectionVersions.create("sectionID", {
+                title: "title",
+                instructions: {
+                    contentPrompt: "contentPrompt",
+                },
+                outputSchema: {
+                    type: "string",
+                },
+            });
+        }).rejects.toThrow(Corti.BadRequestError);
+    });
+
+    test("create (3)", async () => {
+        const server = mockServerPool.createServer();
+        mockOAuth(server);
+
+        const client = new CortiClient({
+            maxRetries: 0,
+            clientId: "client_id",
+            clientSecret: "client_secret",
+            tenantName: "test",
+            environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
+        });
+        const rawRequestBody = {
+            title: "title",
+            instructions: { contentPrompt: "contentPrompt" },
+            outputSchema: { type: "string" },
+        };
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .post("/alpha/sections/sectionID/versions/")
+            .jsonBody(rawRequestBody)
+            .respondWith()
+            .statusCode(404)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.alphaSectionVersions.create("sectionID", {
+                title: "title",
+                instructions: {
+                    contentPrompt: "contentPrompt",
+                },
+                outputSchema: {
+                    type: "string",
+                },
+            });
+        }).rejects.toThrow(Corti.NotFoundError);
+    });
+
     test("get (1)", async () => {
         const server = mockServerPool.createServer();
         mockOAuth(server);
@@ -198,41 +430,5 @@ describe("AlphaSectionVersionsClient", () => {
         await expect(async () => {
             return await client.alphaSectionVersions.publish("sectionID", "versionID");
         }).rejects.toThrow(Corti.NotFoundError);
-    });
-
-    test("list", async () => {
-        const server = mockServerPool.createServer();
-        mockOAuth(server);
-
-        const client = new CortiClient({
-            maxRetries: 0,
-            clientId: "client_id",
-            clientSecret: "client_secret",
-            tenantName: "test",
-            environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
-        });
-
-        server.mockEndpoint().get("/alpha/sections/sectionID/versions").respondWith().statusCode(200).build();
-
-        const response = await client.alphaSectionVersions.list("sectionID");
-        expect(response).toEqual(undefined);
-    });
-
-    test("create", async () => {
-        const server = mockServerPool.createServer();
-        mockOAuth(server);
-
-        const client = new CortiClient({
-            maxRetries: 0,
-            clientId: "client_id",
-            clientSecret: "client_secret",
-            tenantName: "test",
-            environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
-        });
-
-        server.mockEndpoint().post("/alpha/sections/sectionID/versions").respondWith().statusCode(200).build();
-
-        const response = await client.alphaSectionVersions.create("sectionID");
-        expect(response).toEqual(undefined);
     });
 });
