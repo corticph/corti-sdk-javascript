@@ -2,6 +2,9 @@
 
 import type * as Corti from "../index.js";
 
+/**
+ * Generate a document using a stored template, with explicitly supplied input context. Optionally supply runtime overrides to patch instructions or sections without mutating the base template.
+ */
 export interface GuidedDocumentByTemplateRefWithContext {
     /** Ordered list of context items the model reasons over. Each item is one of text, a transcript (with optional metadata and segments), or a batch of facts. Items are interleaved by timestamps where present on transcript segments; otherwise array order is preserved. */
     context: Corti.GuidedDocumentContext[];

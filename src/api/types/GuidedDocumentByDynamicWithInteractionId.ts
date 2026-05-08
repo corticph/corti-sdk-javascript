@@ -2,8 +2,11 @@
 
 import type * as Corti from "../index.js";
 
+/**
+ * Generate a document from a fully inline template definition supplied in the request body, with input context drawn implicitly from an existing interaction's facts and transcripts. Sections and the wrapping template are created and immediately published as auto-generated resources.
+ */
 export interface GuidedDocumentByDynamicWithInteractionId {
-    /** When supplied, all facts and transcripts already attached to the referenced interaction are passed implicitly as input context. */
+    /** All facts and transcripts already attached to the referenced interaction are passed implicitly as input context. */
     interactionId: string;
     /** Fully inline template defined in the request body. */
     dynamicTemplate: Corti.GuidedDynamicRequest;

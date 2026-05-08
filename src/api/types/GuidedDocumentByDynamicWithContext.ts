@@ -2,6 +2,9 @@
 
 import type * as Corti from "../index.js";
 
+/**
+ * Generate a document from a fully inline template definition supplied in the request body, with explicitly supplied input context. Sections and the wrapping template are created and immediately published as auto-generated resources.
+ */
 export interface GuidedDocumentByDynamicWithContext {
     /** Ordered list of context items the model reasons over. Each item is one of text, a transcript (with optional metadata and segments), or a batch of facts. Items are interleaved by timestamps where present on transcript segments; otherwise array order is preserved. */
     context: Corti.GuidedDocumentContext[];

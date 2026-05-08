@@ -2,8 +2,11 @@
 
 import type * as Corti from "../index.js";
 
+/**
+ * Generate a document by assembling a template from existing stored sections, with input context drawn implicitly from an existing interaction's facts and transcripts. The resulting template aggregate is auto-saved and can be referenced in future calls.
+ */
 export interface GuidedDocumentByAssemblyWithInteractionId {
-    /** When supplied, all facts and transcripts already attached to the referenced interaction are passed implicitly as input context. */
+    /** All facts and transcripts already attached to the referenced interaction are passed implicitly as input context. */
     interactionId: string;
     /** Assemble a template from existing stored sections. */
     assemblyTemplate: Corti.GuidedAssemblyRequest;

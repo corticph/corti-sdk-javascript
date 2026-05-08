@@ -2,8 +2,11 @@
 
 import type * as Corti from "../index.js";
 
+/**
+ * Generate a document using a stored template, with input context drawn implicitly from an existing interaction's facts and transcripts. Optionally supply runtime overrides to patch instructions or sections without mutating the base template.
+ */
 export interface GuidedDocumentByTemplateRefWithInteractionId {
-    /** When supplied, all facts and transcripts already attached to the referenced interaction are passed implicitly as input context. */
+    /** All facts and transcripts already attached to the referenced interaction are passed implicitly as input context. */
     interactionId: string;
     /** Reference an existing stored template, optionally with overrides. */
     templateRef: Corti.GuidedTemplateRef;

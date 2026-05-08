@@ -2,6 +2,9 @@
 
 import type * as Corti from "../index.js";
 
+/**
+ * Generate a document by assembling a template from existing stored sections, with explicitly supplied input context. The resulting template aggregate is auto-saved and can be referenced in future calls.
+ */
 export interface GuidedDocumentByAssemblyWithContext {
     /** Ordered list of context items the model reasons over. Each item is one of text, a transcript (with optional metadata and segments), or a batch of facts. Items are interleaved by timestamps where present on transcript segments; otherwise array order is preserved. */
     context: Corti.GuidedDocumentContext[];
