@@ -2,7 +2,4 @@
 
 import type * as Corti from "../index.js";
 
-export type GuidedDocumentContext =
-    | Corti.GuidedDocumentContextText
-    | Corti.GuidedDocumentContextTranscript
-    | Corti.GuidedDocumentContextFacts;
+export type GuidedDocumentContext = Corti.ContextText | Corti.ContextTranscript | Corti.ContextFacts;

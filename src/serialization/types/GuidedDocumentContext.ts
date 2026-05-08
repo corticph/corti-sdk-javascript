@@ -3,22 +3,15 @@
 import type * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
 import type * as serializers from "../index.js";
-import { GuidedDocumentContextFacts } from "./GuidedDocumentContextFacts.js";
-import { GuidedDocumentContextText } from "./GuidedDocumentContextText.js";
-import { GuidedDocumentContextTranscript } from "./GuidedDocumentContextTranscript.js";
+import { ContextFacts } from "./ContextFacts.js";
+import { ContextText } from "./ContextText.js";
+import { ContextTranscript } from "./ContextTranscript.js";
 
 export const GuidedDocumentContext: core.serialization.Schema<
     serializers.GuidedDocumentContext.Raw,
     Corti.GuidedDocumentContext
-> = core.serialization.undiscriminatedUnion([
-    GuidedDocumentContextText,
-    GuidedDocumentContextTranscript,
-    GuidedDocumentContextFacts,
-]);
+> = core.serialization.undiscriminatedUnion([ContextText, ContextTranscript, ContextFacts]);
 
 export declare namespace GuidedDocumentContext {
-    export type Raw =
-        | GuidedDocumentContextText.Raw
-        | GuidedDocumentContextTranscript.Raw
-        | GuidedDocumentContextFacts.Raw;
+    export type Raw = ContextText.Raw | ContextTranscript.Raw | ContextFacts.Raw;
 }

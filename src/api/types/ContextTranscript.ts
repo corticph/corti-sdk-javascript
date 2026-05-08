@@ -5,7 +5,7 @@ import type * as Corti from "../index.js";
 /**
  * A transcript provided as input context to the model.
  */
-export interface GuidedDocumentContextTranscript {
+export interface ContextTranscript {
     type: "transcript";
     transcript: Corti.GuidedDocumentTranscriptMinimal;
 }

@@ -5,15 +5,15 @@ import * as core from "../../core/index.js";
 import type * as serializers from "../index.js";
 import { GuidedDocumentTranscriptMinimal } from "./GuidedDocumentTranscriptMinimal.js";
 
-export const GuidedDocumentContextTranscript: core.serialization.ObjectSchema<
-    serializers.GuidedDocumentContextTranscript.Raw,
-    Corti.GuidedDocumentContextTranscript
+export const ContextTranscript: core.serialization.ObjectSchema<
+    serializers.ContextTranscript.Raw,
+    Corti.ContextTranscript
 > = core.serialization.object({
     type: core.serialization.stringLiteral("transcript"),
     transcript: GuidedDocumentTranscriptMinimal,
 });
 
-export declare namespace GuidedDocumentContextTranscript {
+export declare namespace ContextTranscript {
     export interface Raw {
         type: "transcript";
         transcript: GuidedDocumentTranscriptMinimal.Raw;

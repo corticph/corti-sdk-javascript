@@ -3,7 +3,7 @@
 /**
  * A freeform text snippet provided as input context to the model.
  */
-export interface GuidedDocumentContextText {
+export interface ContextText {
     type: "text";
     /** Arbitrary text to be reasoned over. */
     text: string;
