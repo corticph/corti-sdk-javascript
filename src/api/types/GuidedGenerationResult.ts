@@ -3,7 +3,7 @@
 import type * as Corti from "../index.js";
 
 /**
- * ML-service result. The shape mirrors the resolved template's section output schemas.
+ * Generation result. The shape mirrors the resolved template's section output schemas.
  */
 export interface GuidedGenerationResult {
     /** The generated document as a map of section key to rendered string output. */

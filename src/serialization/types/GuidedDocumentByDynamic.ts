@@ -3,20 +3,17 @@
 import type * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
 import type * as serializers from "../index.js";
-import { DocumentsContext } from "./DocumentsContext.js";
-import { GuidedDynamicRequest } from "./GuidedDynamicRequest.js";
+import { GuidedDocumentByDynamicWithContext } from "./GuidedDocumentByDynamicWithContext.js";
+import { GuidedDocumentByDynamicWithInteractionId } from "./GuidedDocumentByDynamicWithInteractionId.js";
 
-export const GuidedDocumentByDynamic: core.serialization.ObjectSchema<
+export const GuidedDocumentByDynamic: core.serialization.Schema<
     serializers.GuidedDocumentByDynamic.Raw,
     Corti.GuidedDocumentByDynamic
-> = core.serialization.object({
-    context: DocumentsContext,
-    dynamicTemplate: GuidedDynamicRequest,
-});
+> = core.serialization.undiscriminatedUnion([
+    GuidedDocumentByDynamicWithContext,
+    GuidedDocumentByDynamicWithInteractionId,
+]);
 
 export declare namespace GuidedDocumentByDynamic {
-    export interface Raw {
-        context: DocumentsContext.Raw;
-        dynamicTemplate: GuidedDynamicRequest.Raw;
-    }
+    export type Raw = GuidedDocumentByDynamicWithContext.Raw | GuidedDocumentByDynamicWithInteractionId.Raw;
 }

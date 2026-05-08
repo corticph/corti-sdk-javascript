@@ -3,20 +3,17 @@
 import type * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
 import type * as serializers from "../index.js";
-import { DocumentsContext } from "./DocumentsContext.js";
-import { GuidedAssemblyRequest } from "./GuidedAssemblyRequest.js";
+import { GuidedDocumentByAssemblyWithContext } from "./GuidedDocumentByAssemblyWithContext.js";
+import { GuidedDocumentByAssemblyWithInteractionId } from "./GuidedDocumentByAssemblyWithInteractionId.js";
 
-export const GuidedDocumentByAssembly: core.serialization.ObjectSchema<
+export const GuidedDocumentByAssembly: core.serialization.Schema<
     serializers.GuidedDocumentByAssembly.Raw,
     Corti.GuidedDocumentByAssembly
-> = core.serialization.object({
-    context: DocumentsContext,
-    assemblyTemplate: GuidedAssemblyRequest,
-});
+> = core.serialization.undiscriminatedUnion([
+    GuidedDocumentByAssemblyWithContext,
+    GuidedDocumentByAssemblyWithInteractionId,
+]);
 
 export declare namespace GuidedDocumentByAssembly {
-    export interface Raw {
-        context: DocumentsContext.Raw;
-        assemblyTemplate: GuidedAssemblyRequest.Raw;
-    }
+    export type Raw = GuidedDocumentByAssemblyWithContext.Raw | GuidedDocumentByAssemblyWithInteractionId.Raw;
 }

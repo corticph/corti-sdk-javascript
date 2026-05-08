@@ -4,10 +4,8 @@ import type * as Corti from "../index.js";
 
 /**
  * Generate a document by assembling a template from existing stored sections. The resulting template aggregate is auto-saved and can be referenced in future calls.
+ * Exactly one of `context` or `interactionId` must be supplied. supplying both is not currently supported.
  */
-export interface GuidedDocumentByAssembly {
-    /** Single context object the model reasons over. Same shape as the `DocumentsContext` used by `POST /interactions/{id}/documents/`, but supplied as a single object — not an array. */
-    context: Corti.DocumentsContext;
-    /** Assemble a template from existing stored sections. */
-    assemblyTemplate: Corti.GuidedAssemblyRequest;
-}
+export type GuidedDocumentByAssembly =
+    | Corti.GuidedDocumentByAssemblyWithContext
+    | Corti.GuidedDocumentByAssemblyWithInteractionId;

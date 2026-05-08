@@ -4,10 +4,8 @@ import type * as Corti from "../index.js";
 
 /**
  * Generate a document using a stored template. Optionally supply runtime overrides to patch instructions or sections without mutating the base template.
+ * Exactly one of `context` or `interactionId` must be supplied. Supplying both is not currently supported.
  */
-export interface GuidedDocumentByTemplateRef {
-    /** Single context object the model reasons over. Same shape as the `DocumentsContext` used by `POST /interactions/{id}/documents/`, but supplied as a single object — not an array. */
-    context: Corti.DocumentsContext;
-    /** Reference an existing stored template, optionally with overrides. */
-    templateRef: Corti.GuidedTemplateRef;
-}
+export type GuidedDocumentByTemplateRef =
+    | Corti.GuidedDocumentByTemplateRefWithContext
+    | Corti.GuidedDocumentByTemplateRefWithInteractionId;

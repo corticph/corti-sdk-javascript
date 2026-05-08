@@ -4,10 +4,8 @@ import type * as Corti from "../index.js";
 
 /**
  * Generate a document from a fully inline template definition supplied in the request body. Sections and the wrapping template are created and immediately published as auto-generated resources.
+ * Exactly one of `context` or `interactionId` must be supplied — supplying both is not currently supported.
  */
-export interface GuidedDocumentByDynamic {
-    /** Single context object the model reasons over. Same shape as the `DocumentsContext` used by `POST /interactions/{id}/documents/`, but supplied as a single object — not an array. */
-    context: Corti.DocumentsContext;
-    /** Fully inline template defined in the request body. */
-    dynamicTemplate: Corti.GuidedDynamicRequest;
-}
+export type GuidedDocumentByDynamic =
+    | Corti.GuidedDocumentByDynamicWithContext
+    | Corti.GuidedDocumentByDynamicWithInteractionId;
