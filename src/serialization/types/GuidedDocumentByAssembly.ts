@@ -6,17 +6,19 @@ import type * as serializers from "../index.js";
 import { GuidedAssemblyRequest } from "./GuidedAssemblyRequest.js";
 import { GuidedDocumentContext } from "./GuidedDocumentContext.js";
 
-export const GuidedDocumentByAssemblyWithContext: core.serialization.ObjectSchema<
-    serializers.GuidedDocumentByAssemblyWithContext.Raw,
-    Corti.GuidedDocumentByAssemblyWithContext
+export const GuidedDocumentByAssembly: core.serialization.ObjectSchema<
+    serializers.GuidedDocumentByAssembly.Raw,
+    Corti.GuidedDocumentByAssembly
 > = core.serialization.object({
-    context: core.serialization.list(GuidedDocumentContext),
+    context: core.serialization.list(GuidedDocumentContext).optional(),
+    interactionId: core.serialization.string().optional(),
     assemblyTemplate: GuidedAssemblyRequest,
 });
 
-export declare namespace GuidedDocumentByAssemblyWithContext {
+export declare namespace GuidedDocumentByAssembly {
     export interface Raw {
-        context: GuidedDocumentContext.Raw[];
+        context?: GuidedDocumentContext.Raw[] | null;
+        interactionId?: string | null;
         assemblyTemplate: GuidedAssemblyRequest.Raw;
     }
 }

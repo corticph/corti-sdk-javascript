@@ -17,7 +17,7 @@ describe("AlphaDocumentsClient", () => {
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
-        const rawRequestBody = { context: [{ type: "text", text: "text" }], templateRef: { templateId: "templateId" } };
+        const rawRequestBody = { templateRef: { templateId: "templateId" } };
         const rawResponseBody = {
             templateId: "templateId",
             templateVersionId: "templateVersionId",
@@ -34,12 +34,6 @@ describe("AlphaDocumentsClient", () => {
             .build();
 
         const response = await client.alphaDocuments.generate({
-            context: [
-                {
-                    type: "text",
-                    text: "text",
-                },
-            ],
             templateRef: {
                 templateId: "templateId",
             },
@@ -69,13 +63,7 @@ describe("AlphaDocumentsClient", () => {
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
-        const rawRequestBody = {
-            context: [
-                { type: "text", text: "text" },
-                { type: "text", text: "text" },
-            ],
-            templateRef: { templateId: "templateId" },
-        };
+        const rawRequestBody = { templateRef: { templateId: "templateId" } };
         const rawResponseBody = { key: "value" };
 
         server
@@ -89,16 +77,6 @@ describe("AlphaDocumentsClient", () => {
 
         await expect(async () => {
             return await client.alphaDocuments.generate({
-                context: [
-                    {
-                        type: "text",
-                        text: "text",
-                    },
-                    {
-                        type: "text",
-                        text: "text",
-                    },
-                ],
                 templateRef: {
                     templateId: "templateId",
                 },
@@ -117,13 +95,7 @@ describe("AlphaDocumentsClient", () => {
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
-        const rawRequestBody = {
-            context: [
-                { type: "text", text: "text" },
-                { type: "text", text: "text" },
-            ],
-            templateRef: { templateId: "templateId" },
-        };
+        const rawRequestBody = { templateRef: { templateId: "templateId" } };
         const rawResponseBody = { key: "value" };
 
         server
@@ -137,16 +109,6 @@ describe("AlphaDocumentsClient", () => {
 
         await expect(async () => {
             return await client.alphaDocuments.generate({
-                context: [
-                    {
-                        type: "text",
-                        text: "text",
-                    },
-                    {
-                        type: "text",
-                        text: "text",
-                    },
-                ],
                 templateRef: {
                     templateId: "templateId",
                 },
@@ -165,13 +127,7 @@ describe("AlphaDocumentsClient", () => {
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
-        const rawRequestBody = {
-            context: [
-                { type: "text", text: "text" },
-                { type: "text", text: "text" },
-            ],
-            templateRef: { templateId: "templateId" },
-        };
+        const rawRequestBody = { templateRef: { templateId: "templateId" } };
         const rawResponseBody = { key: "value" };
 
         server
@@ -185,16 +141,6 @@ describe("AlphaDocumentsClient", () => {
 
         await expect(async () => {
             return await client.alphaDocuments.generate({
-                context: [
-                    {
-                        type: "text",
-                        text: "text",
-                    },
-                    {
-                        type: "text",
-                        text: "text",
-                    },
-                ],
                 templateRef: {
                     templateId: "templateId",
                 },
@@ -213,13 +159,7 @@ describe("AlphaDocumentsClient", () => {
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
-        const rawRequestBody = {
-            context: [
-                { type: "text", text: "text" },
-                { type: "text", text: "text" },
-            ],
-            templateRef: { templateId: "templateId" },
-        };
+        const rawRequestBody = { templateRef: { templateId: "templateId" } };
         const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
 
         server
@@ -233,16 +173,6 @@ describe("AlphaDocumentsClient", () => {
 
         await expect(async () => {
             return await client.alphaDocuments.generate({
-                context: [
-                    {
-                        type: "text",
-                        text: "text",
-                    },
-                    {
-                        type: "text",
-                        text: "text",
-                    },
-                ],
                 templateRef: {
                     templateId: "templateId",
                 },

@@ -6,17 +6,19 @@ import type * as serializers from "../index.js";
 import { GuidedDocumentContext } from "./GuidedDocumentContext.js";
 import { GuidedDynamicRequest } from "./GuidedDynamicRequest.js";
 
-export const GuidedDocumentByDynamicWithContext: core.serialization.ObjectSchema<
-    serializers.GuidedDocumentByDynamicWithContext.Raw,
-    Corti.GuidedDocumentByDynamicWithContext
+export const GuidedDocumentByDynamic: core.serialization.ObjectSchema<
+    serializers.GuidedDocumentByDynamic.Raw,
+    Corti.GuidedDocumentByDynamic
 > = core.serialization.object({
-    context: core.serialization.list(GuidedDocumentContext),
+    context: core.serialization.list(GuidedDocumentContext).optional(),
+    interactionId: core.serialization.string().optional(),
     dynamicTemplate: GuidedDynamicRequest,
 });
 
-export declare namespace GuidedDocumentByDynamicWithContext {
+export declare namespace GuidedDocumentByDynamic {
     export interface Raw {
-        context: GuidedDocumentContext.Raw[];
+        context?: GuidedDocumentContext.Raw[] | null;
+        interactionId?: string | null;
         dynamicTemplate: GuidedDynamicRequest.Raw;
     }
 }

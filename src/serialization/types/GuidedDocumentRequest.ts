@@ -3,31 +3,19 @@
 import type * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
 import type * as serializers from "../index.js";
-import { GuidedDocumentByAssemblyWithContext } from "./GuidedDocumentByAssemblyWithContext.js";
-import { GuidedDocumentByAssemblyWithInteractionId } from "./GuidedDocumentByAssemblyWithInteractionId.js";
-import { GuidedDocumentByDynamicWithContext } from "./GuidedDocumentByDynamicWithContext.js";
-import { GuidedDocumentByDynamicWithInteractionId } from "./GuidedDocumentByDynamicWithInteractionId.js";
-import { GuidedDocumentByTemplateRefWithContext } from "./GuidedDocumentByTemplateRefWithContext.js";
-import { GuidedDocumentByTemplateRefWithInteractionId } from "./GuidedDocumentByTemplateRefWithInteractionId.js";
+import { GuidedDocumentByAssembly } from "./GuidedDocumentByAssembly.js";
+import { GuidedDocumentByDynamic } from "./GuidedDocumentByDynamic.js";
+import { GuidedDocumentByTemplateRef } from "./GuidedDocumentByTemplateRef.js";
 
 export const GuidedDocumentRequest: core.serialization.Schema<
     serializers.GuidedDocumentRequest.Raw,
     Corti.GuidedDocumentRequest
 > = core.serialization.undiscriminatedUnion([
-    GuidedDocumentByTemplateRefWithContext,
-    GuidedDocumentByTemplateRefWithInteractionId,
-    GuidedDocumentByAssemblyWithContext,
-    GuidedDocumentByAssemblyWithInteractionId,
-    GuidedDocumentByDynamicWithContext,
-    GuidedDocumentByDynamicWithInteractionId,
+    GuidedDocumentByTemplateRef,
+    GuidedDocumentByAssembly,
+    GuidedDocumentByDynamic,
 ]);
 
 export declare namespace GuidedDocumentRequest {
-    export type Raw =
-        | GuidedDocumentByTemplateRefWithContext.Raw
-        | GuidedDocumentByTemplateRefWithInteractionId.Raw
-        | GuidedDocumentByAssemblyWithContext.Raw
-        | GuidedDocumentByAssemblyWithInteractionId.Raw
-        | GuidedDocumentByDynamicWithContext.Raw
-        | GuidedDocumentByDynamicWithInteractionId.Raw;
+    export type Raw = GuidedDocumentByTemplateRef.Raw | GuidedDocumentByAssembly.Raw | GuidedDocumentByDynamic.Raw;
 }

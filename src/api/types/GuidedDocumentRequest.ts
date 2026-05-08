@@ -3,9 +3,6 @@
 import type * as Corti from "../index.js";
 
 export type GuidedDocumentRequest =
-    | Corti.GuidedDocumentByTemplateRefWithContext
-    | Corti.GuidedDocumentByTemplateRefWithInteractionId
-    | Corti.GuidedDocumentByAssemblyWithContext
-    | Corti.GuidedDocumentByAssemblyWithInteractionId
-    | Corti.GuidedDocumentByDynamicWithContext
-    | Corti.GuidedDocumentByDynamicWithInteractionId;
+    | Corti.GuidedDocumentByTemplateRef
+    | Corti.GuidedDocumentByAssembly
+    | Corti.GuidedDocumentByDynamic;
