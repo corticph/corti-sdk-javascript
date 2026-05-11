@@ -42,7 +42,7 @@ describe("AlphaTemplatesClient", () => {
                                     id: "id",
                                     versionNumber: 1,
                                     generation: {
-                                        title: "title",
+                                        heading: "heading",
                                         instructions: { contentPrompt: "contentPrompt" },
                                         outputSchema: { type: "string" },
                                     },
@@ -87,7 +87,7 @@ describe("AlphaTemplatesClient", () => {
                                     id: "id",
                                     versionNumber: 1,
                                     generation: {
-                                        title: "title",
+                                        heading: "heading",
                                         instructions: {
                                             contentPrompt: "contentPrompt",
                                         },
@@ -147,7 +147,7 @@ describe("AlphaTemplatesClient", () => {
                                 id: "id",
                                 versionNumber: 1,
                                 generation: {
-                                    title: "title",
+                                    heading: "heading",
                                     instructions: { contentPrompt: "contentPrompt" },
                                     outputSchema: { type: "string" },
                                 },
@@ -205,7 +205,7 @@ describe("AlphaTemplatesClient", () => {
                                 id: "id",
                                 versionNumber: 1,
                                 generation: {
-                                    title: "title",
+                                    heading: "heading",
                                     instructions: {
                                         contentPrompt: "contentPrompt",
                                     },
@@ -300,7 +300,7 @@ describe("AlphaTemplatesClient", () => {
                                 id: "id",
                                 versionNumber: 1,
                                 generation: {
-                                    title: "title",
+                                    heading: "heading",
                                     instructions: { contentPrompt: "contentPrompt" },
                                     outputSchema: { type: "string" },
                                 },
@@ -349,7 +349,7 @@ describe("AlphaTemplatesClient", () => {
                                 id: "id",
                                 versionNumber: 1,
                                 generation: {
-                                    title: "title",
+                                    heading: "heading",
                                     instructions: {
                                         contentPrompt: "contentPrompt",
                                     },
@@ -476,7 +476,7 @@ describe("AlphaTemplatesClient", () => {
                                 id: "id",
                                 versionNumber: 1,
                                 generation: {
-                                    title: "title",
+                                    heading: "heading",
                                     instructions: { contentPrompt: "contentPrompt" },
                                     outputSchema: { type: "string" },
                                 },
@@ -526,7 +526,7 @@ describe("AlphaTemplatesClient", () => {
                                 id: "id",
                                 versionNumber: 1,
                                 generation: {
-                                    title: "title",
+                                    heading: "heading",
                                     instructions: {
                                         contentPrompt: "contentPrompt",
                                     },

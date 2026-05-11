@@ -103,7 +103,7 @@ export class AlphaSectionsClient {
      *         name: "name",
      *         language: "language",
      *         generation: {
-     *             title: "title",
+     *             heading: "heading",
      *             instructions: {
      *                 contentPrompt: "contentPrompt"
      *             },

@@ -108,7 +108,7 @@ export class AlphaSectionVersionsClient {
      *
      * @example
      *     await client.alphaSectionVersions.create("sectionID", {
-     *         title: "title",
+     *         heading: "heading",
      *         instructions: {
      *             contentPrompt: "contentPrompt"
      *         },

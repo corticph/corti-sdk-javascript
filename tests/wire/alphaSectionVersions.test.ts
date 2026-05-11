@@ -23,7 +23,7 @@ describe("AlphaSectionVersionsClient", () => {
                 id: "id",
                 versionNumber: 1,
                 generation: {
-                    title: "title",
+                    heading: "heading",
                     instructions: { contentPrompt: "contentPrompt" },
                     outputSchema: { type: "string" },
                 },
@@ -44,7 +44,7 @@ describe("AlphaSectionVersionsClient", () => {
                 id: "id",
                 versionNumber: 1,
                 generation: {
-                    title: "title",
+                    heading: "heading",
                     instructions: {
                         contentPrompt: "contentPrompt",
                     },
@@ -95,7 +95,7 @@ describe("AlphaSectionVersionsClient", () => {
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
         const rawRequestBody = {
-            title: "title",
+            heading: "heading",
             instructions: { contentPrompt: "contentPrompt" },
             outputSchema: { type: "string" },
         };
@@ -103,7 +103,7 @@ describe("AlphaSectionVersionsClient", () => {
             id: "id",
             versionNumber: 1,
             generation: {
-                title: "title",
+                heading: "heading",
                 instructions: {
                     contentPrompt: "contentPrompt",
                     writingStylePrompt: "writingStylePrompt",
@@ -129,7 +129,7 @@ describe("AlphaSectionVersionsClient", () => {
             .build();
 
         const response = await client.alphaSectionVersions.create("sectionID", {
-            title: "title",
+            heading: "heading",
             instructions: {
                 contentPrompt: "contentPrompt",
             },
@@ -141,7 +141,7 @@ describe("AlphaSectionVersionsClient", () => {
             id: "id",
             versionNumber: 1,
             generation: {
-                title: "title",
+                heading: "heading",
                 instructions: {
                     contentPrompt: "contentPrompt",
                     writingStylePrompt: "writingStylePrompt",
@@ -170,7 +170,7 @@ describe("AlphaSectionVersionsClient", () => {
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
         const rawRequestBody = {
-            title: "title",
+            heading: "heading",
             instructions: { contentPrompt: "contentPrompt" },
             outputSchema: { type: "string" },
         };
@@ -187,7 +187,7 @@ describe("AlphaSectionVersionsClient", () => {
 
         await expect(async () => {
             return await client.alphaSectionVersions.create("sectionID", {
-                title: "title",
+                heading: "heading",
                 instructions: {
                     contentPrompt: "contentPrompt",
                 },
@@ -210,7 +210,7 @@ describe("AlphaSectionVersionsClient", () => {
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
         const rawRequestBody = {
-            title: "title",
+            heading: "heading",
             instructions: { contentPrompt: "contentPrompt" },
             outputSchema: { type: "string" },
         };
@@ -227,7 +227,7 @@ describe("AlphaSectionVersionsClient", () => {
 
         await expect(async () => {
             return await client.alphaSectionVersions.create("sectionID", {
-                title: "title",
+                heading: "heading",
                 instructions: {
                     contentPrompt: "contentPrompt",
                 },
@@ -254,7 +254,7 @@ describe("AlphaSectionVersionsClient", () => {
             id: "id",
             versionNumber: 1,
             generation: {
-                title: "title",
+                heading: "heading",
                 instructions: {
                     contentPrompt: "contentPrompt",
                     writingStylePrompt: "writingStylePrompt",
@@ -283,7 +283,7 @@ describe("AlphaSectionVersionsClient", () => {
             id: "id",
             versionNumber: 1,
             generation: {
-                title: "title",
+                heading: "heading",
                 instructions: {
                     contentPrompt: "contentPrompt",
                     writingStylePrompt: "writingStylePrompt",

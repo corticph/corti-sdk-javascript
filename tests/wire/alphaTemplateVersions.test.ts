@@ -34,7 +34,7 @@ describe("AlphaTemplateVersionsClient", () => {
                                 id: "id",
                                 versionNumber: 1,
                                 generation: {
-                                    title: "title",
+                                    heading: "heading",
                                     instructions: { contentPrompt: "contentPrompt" },
                                     outputSchema: { type: "string" },
                                 },
@@ -74,7 +74,7 @@ describe("AlphaTemplateVersionsClient", () => {
                                 id: "id",
                                 versionNumber: 1,
                                 generation: {
-                                    title: "title",
+                                    heading: "heading",
                                     instructions: {
                                         contentPrompt: "contentPrompt",
                                     },
@@ -146,7 +146,7 @@ describe("AlphaTemplateVersionsClient", () => {
                             id: "id",
                             versionNumber: 1,
                             generation: {
-                                title: "title",
+                                heading: "heading",
                                 instructions: { contentPrompt: "contentPrompt" },
                                 outputSchema: { type: "string" },
                             },
@@ -191,7 +191,7 @@ describe("AlphaTemplateVersionsClient", () => {
                             id: "id",
                             versionNumber: 1,
                             generation: {
-                                title: "title",
+                                heading: "heading",
                                 instructions: {
                                     contentPrompt: "contentPrompt",
                                 },
@@ -303,7 +303,7 @@ describe("AlphaTemplateVersionsClient", () => {
                             id: "id",
                             versionNumber: 1,
                             generation: {
-                                title: "title",
+                                heading: "heading",
                                 instructions: { contentPrompt: "contentPrompt" },
                                 outputSchema: { type: "string" },
                             },
@@ -341,7 +341,7 @@ describe("AlphaTemplateVersionsClient", () => {
                             id: "id",
                             versionNumber: 1,
                             generation: {
-                                title: "title",
+                                heading: "heading",
                                 instructions: {
                                     contentPrompt: "contentPrompt",
                                 },

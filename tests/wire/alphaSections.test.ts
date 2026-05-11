@@ -31,7 +31,7 @@ describe("AlphaSectionsClient", () => {
                     id: "id",
                     versionNumber: 1,
                     generation: {
-                        title: "title",
+                        heading: "heading",
                         instructions: { contentPrompt: "contentPrompt" },
                         outputSchema: { type: "string" },
                     },
@@ -57,7 +57,7 @@ describe("AlphaSectionsClient", () => {
                     id: "id",
                     versionNumber: 1,
                     generation: {
-                        title: "title",
+                        heading: "heading",
                         instructions: {
                             contentPrompt: "contentPrompt",
                         },
@@ -87,7 +87,7 @@ describe("AlphaSectionsClient", () => {
             name: "name",
             language: "language",
             generation: {
-                title: "title",
+                heading: "heading",
                 instructions: { contentPrompt: "contentPrompt" },
                 outputSchema: { type: "string" },
             },
@@ -104,7 +104,7 @@ describe("AlphaSectionsClient", () => {
                 id: "id",
                 versionNumber: 1,
                 generation: {
-                    title: "title",
+                    heading: "heading",
                     instructions: { contentPrompt: "contentPrompt" },
                     outputSchema: { type: "string" },
                 },
@@ -126,7 +126,7 @@ describe("AlphaSectionsClient", () => {
             name: "name",
             language: "language",
             generation: {
-                title: "title",
+                heading: "heading",
                 instructions: {
                     contentPrompt: "contentPrompt",
                 },
@@ -147,7 +147,7 @@ describe("AlphaSectionsClient", () => {
                 id: "id",
                 versionNumber: 1,
                 generation: {
-                    title: "title",
+                    heading: "heading",
                     instructions: {
                         contentPrompt: "contentPrompt",
                     },
@@ -174,7 +174,7 @@ describe("AlphaSectionsClient", () => {
         });
         const rawRequestBody = {
             generation: {
-                title: "title",
+                heading: "heading",
                 instructions: { contentPrompt: "contentPrompt" },
                 outputSchema: { type: "string" },
             },
@@ -195,7 +195,7 @@ describe("AlphaSectionsClient", () => {
         await expect(async () => {
             return await client.alphaSections.create({
                 generation: {
-                    title: "title",
+                    heading: "heading",
                     instructions: {
                         contentPrompt: "contentPrompt",
                     },
@@ -233,7 +233,7 @@ describe("AlphaSectionsClient", () => {
                 id: "id",
                 versionNumber: 1,
                 generation: {
-                    title: "title",
+                    heading: "heading",
                     instructions: { contentPrompt: "contentPrompt" },
                     outputSchema: { type: "string" },
                 },
@@ -263,7 +263,7 @@ describe("AlphaSectionsClient", () => {
                 id: "id",
                 versionNumber: 1,
                 generation: {
-                    title: "title",
+                    heading: "heading",
                     instructions: {
                         contentPrompt: "contentPrompt",
                     },
@@ -373,7 +373,7 @@ describe("AlphaSectionsClient", () => {
                 id: "id",
                 versionNumber: 1,
                 generation: {
-                    title: "title",
+                    heading: "heading",
                     instructions: { contentPrompt: "contentPrompt" },
                     outputSchema: { type: "string" },
                 },
@@ -404,7 +404,7 @@ describe("AlphaSectionsClient", () => {
                 id: "id",
                 versionNumber: 1,
                 generation: {
-                    title: "title",
+                    heading: "heading",
                     instructions: {
                         contentPrompt: "contentPrompt",
                     },
