@@ -7,7 +7,7 @@ import type * as Corti from "../index.js";
  */
 export interface SectionGenerationPartial {
     /** Override the inherited section title. Passed to the LLM. */
-    title?: string;
+    heading?: string;
     /** Override the inherited prompt instructions for this section. Any field omitted is inherited. */
     instructions?: Corti.SectionInstructionsPartial;
     /** Override the inherited output schema. */
