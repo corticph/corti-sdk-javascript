@@ -8,9 +8,5 @@ import type * as Corti from "../index.js";
 export interface GuidedSectionOverride {
     /** The UUID of a section linked to the base template version. */
     sectionId: string;
-    /** When provided, replaces the section's title for this call. */
-    title?: string | null;
-    instructions?: Corti.SectionInstructionsOverride;
-    /** When provided, fully replaces the parent's output schema. Not a partial merge — any submitted value replaces the parent's schema in its entirety. */
-    outputSchema?: Corti.OutputSchema;
+    generation?: Corti.SectionOverrides;
 }

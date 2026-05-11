@@ -2,24 +2,20 @@
 
 import type * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
-import * as serializers from "../index.js";
-import { SectionInstructionsOverride } from "./SectionInstructionsOverride.js";
+import type * as serializers from "../index.js";
+import { SectionOverrides } from "./SectionOverrides.js";
 
 export const GuidedSectionOverride: core.serialization.ObjectSchema<
     serializers.GuidedSectionOverride.Raw,
     Corti.GuidedSectionOverride
 > = core.serialization.object({
     sectionId: core.serialization.string(),
-    title: core.serialization.string().optionalNullable(),
-    instructions: SectionInstructionsOverride.optional(),
-    outputSchema: core.serialization.lazy(() => serializers.OutputSchema).optional(),
+    generation: SectionOverrides.optional(),
 });
 
 export declare namespace GuidedSectionOverride {
     export interface Raw {
         sectionId: string;
-        title?: (string | null | undefined) | null;
-        instructions?: SectionInstructionsOverride.Raw | null;
-        outputSchema?: serializers.OutputSchema.Raw | null;
+        generation?: SectionOverrides.Raw | null;
     }
 }
