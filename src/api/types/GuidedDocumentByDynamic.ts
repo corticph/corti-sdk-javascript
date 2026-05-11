@@ -12,4 +12,6 @@ export interface GuidedDocumentByDynamic {
     interactionId?: string;
     /** Fully inline template defined in the request body. */
     dynamicTemplate: Corti.GuidedDynamicRequest;
+    /** The language in which the document will be generated as a BCP 47 tag. */
+    outputLanguage: string;
 }

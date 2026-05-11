@@ -12,4 +12,6 @@ export interface GuidedDocumentByAssembly {
     interactionId?: string;
     /** Assemble a template from existing stored sections. */
     assemblyTemplate: Corti.GuidedAssemblyRequest;
+    /** The language in which the document will be generated as a BCP 47 tag. */
+    outputLanguage: string;
 }

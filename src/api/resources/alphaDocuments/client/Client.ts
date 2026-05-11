@@ -39,7 +39,8 @@ export class AlphaDocumentsClient {
      *     await client.alphaDocuments.generate({
      *         templateRef: {
      *             templateId: "templateId"
-     *         }
+     *         },
+     *         outputLanguage: "outputLanguage"
      *     })
      */
     public generate(

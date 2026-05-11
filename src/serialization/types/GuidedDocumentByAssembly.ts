@@ -13,6 +13,7 @@ export const GuidedDocumentByAssembly: core.serialization.ObjectSchema<
     context: core.serialization.list(GuidedDocumentContext).optional(),
     interactionId: core.serialization.string().optional(),
     assemblyTemplate: GuidedAssemblyRequest,
+    outputLanguage: core.serialization.string(),
 });
 
 export declare namespace GuidedDocumentByAssembly {
@@ -20,5 +21,6 @@ export declare namespace GuidedDocumentByAssembly {
         context?: GuidedDocumentContext.Raw[] | null;
         interactionId?: string | null;
         assemblyTemplate: GuidedAssemblyRequest.Raw;
+        outputLanguage: string;
     }
 }

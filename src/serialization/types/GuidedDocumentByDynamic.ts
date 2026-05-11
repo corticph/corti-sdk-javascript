@@ -13,6 +13,7 @@ export const GuidedDocumentByDynamic: core.serialization.ObjectSchema<
     context: core.serialization.list(GuidedDocumentContext).optional(),
     interactionId: core.serialization.string().optional(),
     dynamicTemplate: GuidedDynamicRequest,
+    outputLanguage: core.serialization.string(),
 });
 
 export declare namespace GuidedDocumentByDynamic {
@@ -20,5 +21,6 @@ export declare namespace GuidedDocumentByDynamic {
         context?: GuidedDocumentContext.Raw[] | null;
         interactionId?: string | null;
         dynamicTemplate: GuidedDynamicRequest.Raw;
+        outputLanguage: string;
     }
 }

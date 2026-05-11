@@ -12,4 +12,6 @@ export interface GuidedDocumentByTemplateRef {
     interactionId?: string;
     /** Reference an existing stored template, optionally with overrides. */
     templateRef: Corti.GuidedTemplateRef;
+    /** The language in which the document will be generated as a BCP 47 tag. */
+    outputLanguage: string;
 }
