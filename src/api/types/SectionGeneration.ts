@@ -3,8 +3,8 @@
 import type * as Corti from "../index.js";
 
 export interface SectionGeneration {
-    /** The title of this section. Passed to the LLM. */
-    title: string;
+    /** The heading of this section. Passed to the LLM. */
+    heading: string;
     /** The prompt instructions for this section. */
     instructions: Corti.SectionInstructions;
     outputSchema: Corti.OutputSchema;

@@ -9,14 +9,14 @@ export const SectionGeneration: core.serialization.ObjectSchema<
     serializers.SectionGeneration.Raw,
     Corti.SectionGeneration
 > = core.serialization.object({
-    title: core.serialization.string(),
+    heading: core.serialization.string(),
     instructions: SectionInstructions,
     outputSchema: core.serialization.lazy(() => serializers.OutputSchema),
 });
 
 export declare namespace SectionGeneration {
     export interface Raw {
-        title: string;
+        heading: string;
         instructions: SectionInstructions.Raw;
         outputSchema: serializers.OutputSchema.Raw;
     }

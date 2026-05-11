@@ -24,6 +24,178 @@ export class AlphaSectionVersionsClient {
 
     /**
      * @param {string} sectionID
+     * @param {AlphaSectionVersionsClient.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link Corti.NotFoundError}
+     *
+     * @example
+     *     await client.alphaSectionVersions.list("sectionID")
+     */
+    public list(
+        sectionID: string,
+        requestOptions?: AlphaSectionVersionsClient.RequestOptions,
+    ): core.HttpResponsePromise<Corti.SectionVersion[]> {
+        return core.HttpResponsePromise.fromPromise(this.__list(sectionID, requestOptions));
+    }
+
+    private async __list(
+        sectionID: string,
+        requestOptions?: AlphaSectionVersionsClient.RequestOptions,
+    ): Promise<core.WithRawResponse<Corti.SectionVersion[]>> {
+        const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
+        const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+            _authRequest.headers,
+            this._options?.headers,
+            mergeOnlyDefinedHeaders({ "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName }),
+            requestOptions?.headers,
+        );
+        const _response = await core.fetcher({
+            url: core.url.join(
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)).base,
+                `alpha/sections/${core.url.encodePathParam(sectionID)}/versions/`,
+            ),
+            method: "GET",
+            headers: _headers,
+            queryParameters: requestOptions?.queryParams,
+            timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
+            maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
+            abortSignal: requestOptions?.abortSignal,
+            fetchFn: this._options?.fetch,
+            logging: this._options.logging,
+        });
+        if (_response.ok) {
+            return {
+                data: serializers.alphaSectionVersions.list.Response.parseOrThrow(_response.body, {
+                    unrecognizedObjectKeys: "passthrough",
+                    allowUnrecognizedUnionMembers: true,
+                    allowUnrecognizedEnumValues: true,
+                    skipValidation: true,
+                    breadcrumbsPrefix: ["response"],
+                }),
+                rawResponse: _response.rawResponse,
+            };
+        }
+
+        if (_response.error.reason === "status-code") {
+            switch (_response.error.statusCode) {
+                case 404:
+                    throw new Corti.NotFoundError(_response.error.body, _response.rawResponse);
+                default:
+                    throw new errors.CortiError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                        rawResponse: _response.rawResponse,
+                    });
+            }
+        }
+
+        return handleNonStatusCodeError(
+            _response.error,
+            _response.rawResponse,
+            "GET",
+            "/alpha/sections/{sectionID}/versions/",
+        );
+    }
+
+    /**
+     * @param {string} sectionID
+     * @param {Corti.SectionGeneration} request
+     * @param {AlphaSectionVersionsClient.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link Corti.BadRequestError}
+     * @throws {@link Corti.NotFoundError}
+     *
+     * @example
+     *     await client.alphaSectionVersions.create("sectionID", {
+     *         heading: "heading",
+     *         instructions: {
+     *             contentPrompt: "contentPrompt"
+     *         },
+     *         outputSchema: {
+     *             type: "string"
+     *         }
+     *     })
+     */
+    public create(
+        sectionID: string,
+        request: Corti.SectionGeneration,
+        requestOptions?: AlphaSectionVersionsClient.RequestOptions,
+    ): core.HttpResponsePromise<Corti.SectionVersion> {
+        return core.HttpResponsePromise.fromPromise(this.__create(sectionID, request, requestOptions));
+    }
+
+    private async __create(
+        sectionID: string,
+        request: Corti.SectionGeneration,
+        requestOptions?: AlphaSectionVersionsClient.RequestOptions,
+    ): Promise<core.WithRawResponse<Corti.SectionVersion>> {
+        const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
+        const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+            _authRequest.headers,
+            this._options?.headers,
+            mergeOnlyDefinedHeaders({ "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName }),
+            requestOptions?.headers,
+        );
+        const _response = await core.fetcher({
+            url: core.url.join(
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)).base,
+                `alpha/sections/${core.url.encodePathParam(sectionID)}/versions/`,
+            ),
+            method: "POST",
+            headers: _headers,
+            contentType: "application/json",
+            queryParameters: requestOptions?.queryParams,
+            requestType: "json",
+            body: serializers.SectionGeneration.jsonOrThrow(request, {
+                unrecognizedObjectKeys: "strip",
+                omitUndefined: true,
+            }),
+            timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
+            maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
+            abortSignal: requestOptions?.abortSignal,
+            fetchFn: this._options?.fetch,
+            logging: this._options.logging,
+        });
+        if (_response.ok) {
+            return {
+                data: serializers.SectionVersion.parseOrThrow(_response.body, {
+                    unrecognizedObjectKeys: "passthrough",
+                    allowUnrecognizedUnionMembers: true,
+                    allowUnrecognizedEnumValues: true,
+                    skipValidation: true,
+                    breadcrumbsPrefix: ["response"],
+                }),
+                rawResponse: _response.rawResponse,
+            };
+        }
+
+        if (_response.error.reason === "status-code") {
+            switch (_response.error.statusCode) {
+                case 400:
+                    throw new Corti.BadRequestError(_response.error.body, _response.rawResponse);
+                case 404:
+                    throw new Corti.NotFoundError(_response.error.body, _response.rawResponse);
+                default:
+                    throw new errors.CortiError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                        rawResponse: _response.rawResponse,
+                    });
+            }
+        }
+
+        return handleNonStatusCodeError(
+            _response.error,
+            _response.rawResponse,
+            "POST",
+            "/alpha/sections/{sectionID}/versions/",
+        );
+    }
+
+    /**
+     * @param {string} sectionID
      * @param {string} versionID
      * @param {AlphaSectionVersionsClient.RequestOptions} requestOptions - Request-specific configuration.
      *
@@ -249,126 +421,6 @@ export class AlphaSectionVersionsClient {
             _response.rawResponse,
             "POST",
             "/alpha/sections/{sectionID}/versions/{versionID}/publish",
-        );
-    }
-
-    /**
-     * @param {string} sectionID
-     * @param {AlphaSectionVersionsClient.RequestOptions} requestOptions - Request-specific configuration.
-     *
-     * @example
-     *     await client.alphaSectionVersions.list("sectionID")
-     */
-    public list(
-        sectionID: string,
-        requestOptions?: AlphaSectionVersionsClient.RequestOptions,
-    ): core.HttpResponsePromise<void> {
-        return core.HttpResponsePromise.fromPromise(this.__list(sectionID, requestOptions));
-    }
-
-    private async __list(
-        sectionID: string,
-        requestOptions?: AlphaSectionVersionsClient.RequestOptions,
-    ): Promise<core.WithRawResponse<void>> {
-        const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
-        const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
-            _authRequest.headers,
-            this._options?.headers,
-            mergeOnlyDefinedHeaders({ "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName }),
-            requestOptions?.headers,
-        );
-        const _response = await core.fetcher({
-            url: core.url.join(
-                (await core.Supplier.get(this._options.baseUrl)) ??
-                    (await core.Supplier.get(this._options.environment)).base,
-                `alpha/sections/${core.url.encodePathParam(sectionID)}/versions`,
-            ),
-            method: "GET",
-            headers: _headers,
-            queryParameters: requestOptions?.queryParams,
-            timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
-            maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
-            abortSignal: requestOptions?.abortSignal,
-            fetchFn: this._options?.fetch,
-            logging: this._options.logging,
-        });
-        if (_response.ok) {
-            return { data: undefined, rawResponse: _response.rawResponse };
-        }
-
-        if (_response.error.reason === "status-code") {
-            throw new errors.CortiError({
-                statusCode: _response.error.statusCode,
-                body: _response.error.body,
-                rawResponse: _response.rawResponse,
-            });
-        }
-
-        return handleNonStatusCodeError(
-            _response.error,
-            _response.rawResponse,
-            "GET",
-            "/alpha/sections/{sectionID}/versions",
-        );
-    }
-
-    /**
-     * @param {string} sectionID
-     * @param {AlphaSectionVersionsClient.RequestOptions} requestOptions - Request-specific configuration.
-     *
-     * @example
-     *     await client.alphaSectionVersions.create("sectionID")
-     */
-    public create(
-        sectionID: string,
-        requestOptions?: AlphaSectionVersionsClient.RequestOptions,
-    ): core.HttpResponsePromise<void> {
-        return core.HttpResponsePromise.fromPromise(this.__create(sectionID, requestOptions));
-    }
-
-    private async __create(
-        sectionID: string,
-        requestOptions?: AlphaSectionVersionsClient.RequestOptions,
-    ): Promise<core.WithRawResponse<void>> {
-        const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
-        const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
-            _authRequest.headers,
-            this._options?.headers,
-            mergeOnlyDefinedHeaders({ "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName }),
-            requestOptions?.headers,
-        );
-        const _response = await core.fetcher({
-            url: core.url.join(
-                (await core.Supplier.get(this._options.baseUrl)) ??
-                    (await core.Supplier.get(this._options.environment)).base,
-                `alpha/sections/${core.url.encodePathParam(sectionID)}/versions`,
-            ),
-            method: "POST",
-            headers: _headers,
-            queryParameters: requestOptions?.queryParams,
-            timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
-            maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
-            abortSignal: requestOptions?.abortSignal,
-            fetchFn: this._options?.fetch,
-            logging: this._options.logging,
-        });
-        if (_response.ok) {
-            return { data: undefined, rawResponse: _response.rawResponse };
-        }
-
-        if (_response.error.reason === "status-code") {
-            throw new errors.CortiError({
-                statusCode: _response.error.statusCode,
-                body: _response.error.body,
-                rawResponse: _response.rawResponse,
-            });
-        }
-
-        return handleNonStatusCodeError(
-            _response.error,
-            _response.rawResponse,
-            "POST",
-            "/alpha/sections/{sectionID}/versions",
         );
     }
 }
