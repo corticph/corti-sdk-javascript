@@ -17,8 +17,12 @@ describe("AlphaDocumentsClient", () => {
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
-        const rawRequestBody = { key: "value" };
-        const rawResponseBody = { key: "value" };
+        const rawRequestBody = { templateRef: { templateId: "templateId" }, outputLanguage: "outputLanguage" };
+        const rawResponseBody = {
+            templateId: "templateId",
+            templateVersionId: "templateVersionId",
+            result: { stringDocument: { key: "value" }, structuredDocument: { key: "value" } },
+        };
 
         server
             .mockEndpoint()
@@ -30,10 +34,22 @@ describe("AlphaDocumentsClient", () => {
             .build();
 
         const response = await client.alphaDocuments.generate({
-            key: "value",
+            templateRef: {
+                templateId: "templateId",
+            },
+            outputLanguage: "outputLanguage",
         });
         expect(response).toEqual({
-            key: "value",
+            templateId: "templateId",
+            templateVersionId: "templateVersionId",
+            result: {
+                stringDocument: {
+                    key: "value",
+                },
+                structuredDocument: {
+                    key: "value",
+                },
+            },
         });
     });
 
@@ -48,7 +64,7 @@ describe("AlphaDocumentsClient", () => {
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
-        const rawRequestBody = { key: "value" };
+        const rawRequestBody = { templateRef: { templateId: "templateId" }, outputLanguage: "outputLanguage" };
         const rawResponseBody = { key: "value" };
 
         server
@@ -62,7 +78,10 @@ describe("AlphaDocumentsClient", () => {
 
         await expect(async () => {
             return await client.alphaDocuments.generate({
-                key: "value",
+                templateRef: {
+                    templateId: "templateId",
+                },
+                outputLanguage: "outputLanguage",
             });
         }).rejects.toThrow(Corti.BadRequestError);
     });
@@ -78,7 +97,7 @@ describe("AlphaDocumentsClient", () => {
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
-        const rawRequestBody = { key: "value" };
+        const rawRequestBody = { templateRef: { templateId: "templateId" }, outputLanguage: "outputLanguage" };
         const rawResponseBody = { key: "value" };
 
         server
@@ -92,7 +111,10 @@ describe("AlphaDocumentsClient", () => {
 
         await expect(async () => {
             return await client.alphaDocuments.generate({
-                key: "value",
+                templateRef: {
+                    templateId: "templateId",
+                },
+                outputLanguage: "outputLanguage",
             });
         }).rejects.toThrow(Corti.NotFoundError);
     });
@@ -108,7 +130,7 @@ describe("AlphaDocumentsClient", () => {
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
-        const rawRequestBody = { key: "value" };
+        const rawRequestBody = { templateRef: { templateId: "templateId" }, outputLanguage: "outputLanguage" };
         const rawResponseBody = { key: "value" };
 
         server
@@ -122,7 +144,10 @@ describe("AlphaDocumentsClient", () => {
 
         await expect(async () => {
             return await client.alphaDocuments.generate({
-                key: "value",
+                templateRef: {
+                    templateId: "templateId",
+                },
+                outputLanguage: "outputLanguage",
             });
         }).rejects.toThrow(Corti.UnprocessableEntityError);
     });
@@ -138,7 +163,7 @@ describe("AlphaDocumentsClient", () => {
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
-        const rawRequestBody = { key: "value" };
+        const rawRequestBody = { templateRef: { templateId: "templateId" }, outputLanguage: "outputLanguage" };
         const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
 
         server
@@ -152,7 +177,10 @@ describe("AlphaDocumentsClient", () => {
 
         await expect(async () => {
             return await client.alphaDocuments.generate({
-                key: "value",
+                templateRef: {
+                    templateId: "templateId",
+                },
+                outputLanguage: "outputLanguage",
             });
         }).rejects.toThrow(Corti.BadGatewayError);
     });
