@@ -27,7 +27,7 @@ export class AlphaDocumentsClient {
      *
      * With the exception of the plain `templateRef` path (no overrides), every call persists a new auto-generated template aggregate that snapshots the resolved content. The snapshot is drift-proof: subsequent edits to base templates or sections do not affect previously generated documents.
      *
-     * @param {Corti.GuidedDocumentRequest} request
+     * @param {unknown} request
      * @param {AlphaDocumentsClient.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Corti.BadRequestError}
@@ -37,23 +37,20 @@ export class AlphaDocumentsClient {
      *
      * @example
      *     await client.alphaDocuments.generate({
-     *         templateRef: {
-     *             templateId: "templateId"
-     *         },
-     *         outputLanguage: "outputLanguage"
+     *         "key": "value"
      *     })
      */
     public generate(
-        request: Corti.GuidedDocumentRequest,
+        request?: unknown,
         requestOptions?: AlphaDocumentsClient.RequestOptions,
-    ): core.HttpResponsePromise<Corti.GuidedDocumentResponse> {
+    ): core.HttpResponsePromise<unknown> {
         return core.HttpResponsePromise.fromPromise(this.__generate(request, requestOptions));
     }
 
     private async __generate(
-        request: Corti.GuidedDocumentRequest,
+        request?: unknown,
         requestOptions?: AlphaDocumentsClient.RequestOptions,
-    ): Promise<core.WithRawResponse<Corti.GuidedDocumentResponse>> {
+    ): Promise<core.WithRawResponse<unknown>> {
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
@@ -72,10 +69,7 @@ export class AlphaDocumentsClient {
             contentType: "application/json",
             queryParameters: requestOptions?.queryParams,
             requestType: "json",
-            body: serializers.GuidedDocumentRequest.jsonOrThrow(request, {
-                unrecognizedObjectKeys: "strip",
-                omitUndefined: true,
-            }),
+            body: request,
             timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
             maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
             abortSignal: requestOptions?.abortSignal,
@@ -83,16 +77,7 @@ export class AlphaDocumentsClient {
             logging: this._options.logging,
         });
         if (_response.ok) {
-            return {
-                data: serializers.GuidedDocumentResponse.parseOrThrow(_response.body, {
-                    unrecognizedObjectKeys: "passthrough",
-                    allowUnrecognizedUnionMembers: true,
-                    allowUnrecognizedEnumValues: true,
-                    skipValidation: true,
-                    breadcrumbsPrefix: ["response"],
-                }),
-                rawResponse: _response.rawResponse,
-            };
+            return { data: _response.body, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
