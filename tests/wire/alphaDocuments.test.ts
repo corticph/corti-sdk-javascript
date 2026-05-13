@@ -17,8 +17,15 @@ describe("AlphaDocumentsClient", () => {
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
-        const rawRequestBody = { key: "value" };
-        const rawResponseBody = { key: "value" };
+        const rawRequestBody = {
+            context: { type: "facts", data: [{ text: "text" }] },
+            templateRef: { templateId: "templateId" },
+        };
+        const rawResponseBody = {
+            templateId: "templateId",
+            templateVersionId: "templateVersionId",
+            result: { stringDocument: { key: "value" }, structuredDocument: { key: "value" } },
+        };
 
         server
             .mockEndpoint()
@@ -30,10 +37,29 @@ describe("AlphaDocumentsClient", () => {
             .build();
 
         const response = await client.alphaDocuments.generate({
-            key: "value",
+            context: {
+                type: "facts",
+                data: [
+                    {
+                        text: "text",
+                    },
+                ],
+            },
+            templateRef: {
+                templateId: "templateId",
+            },
         });
         expect(response).toEqual({
-            key: "value",
+            templateId: "templateId",
+            templateVersionId: "templateVersionId",
+            result: {
+                stringDocument: {
+                    key: "value",
+                },
+                structuredDocument: {
+                    key: "value",
+                },
+            },
         });
     });
 
@@ -48,7 +74,10 @@ describe("AlphaDocumentsClient", () => {
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
-        const rawRequestBody = { key: "value" };
+        const rawRequestBody = {
+            context: { type: "facts", data: [{ text: "text" }, { text: "text" }] },
+            templateRef: { templateId: "templateId" },
+        };
         const rawResponseBody = { key: "value" };
 
         server
@@ -62,7 +91,20 @@ describe("AlphaDocumentsClient", () => {
 
         await expect(async () => {
             return await client.alphaDocuments.generate({
-                key: "value",
+                context: {
+                    type: "facts",
+                    data: [
+                        {
+                            text: "text",
+                        },
+                        {
+                            text: "text",
+                        },
+                    ],
+                },
+                templateRef: {
+                    templateId: "templateId",
+                },
             });
         }).rejects.toThrow(Corti.BadRequestError);
     });
@@ -78,7 +120,10 @@ describe("AlphaDocumentsClient", () => {
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
-        const rawRequestBody = { key: "value" };
+        const rawRequestBody = {
+            context: { type: "facts", data: [{ text: "text" }, { text: "text" }] },
+            templateRef: { templateId: "templateId" },
+        };
         const rawResponseBody = { key: "value" };
 
         server
@@ -92,7 +137,20 @@ describe("AlphaDocumentsClient", () => {
 
         await expect(async () => {
             return await client.alphaDocuments.generate({
-                key: "value",
+                context: {
+                    type: "facts",
+                    data: [
+                        {
+                            text: "text",
+                        },
+                        {
+                            text: "text",
+                        },
+                    ],
+                },
+                templateRef: {
+                    templateId: "templateId",
+                },
             });
         }).rejects.toThrow(Corti.NotFoundError);
     });
@@ -108,7 +166,10 @@ describe("AlphaDocumentsClient", () => {
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
-        const rawRequestBody = { key: "value" };
+        const rawRequestBody = {
+            context: { type: "facts", data: [{ text: "text" }, { text: "text" }] },
+            templateRef: { templateId: "templateId" },
+        };
         const rawResponseBody = { key: "value" };
 
         server
@@ -122,7 +183,20 @@ describe("AlphaDocumentsClient", () => {
 
         await expect(async () => {
             return await client.alphaDocuments.generate({
-                key: "value",
+                context: {
+                    type: "facts",
+                    data: [
+                        {
+                            text: "text",
+                        },
+                        {
+                            text: "text",
+                        },
+                    ],
+                },
+                templateRef: {
+                    templateId: "templateId",
+                },
             });
         }).rejects.toThrow(Corti.UnprocessableEntityError);
     });
@@ -138,7 +212,10 @@ describe("AlphaDocumentsClient", () => {
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
-        const rawRequestBody = { key: "value" };
+        const rawRequestBody = {
+            context: { type: "facts", data: [{ text: "text" }, { text: "text" }] },
+            templateRef: { templateId: "templateId" },
+        };
         const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
 
         server
@@ -152,7 +229,20 @@ describe("AlphaDocumentsClient", () => {
 
         await expect(async () => {
             return await client.alphaDocuments.generate({
-                key: "value",
+                context: {
+                    type: "facts",
+                    data: [
+                        {
+                            text: "text",
+                        },
+                        {
+                            text: "text",
+                        },
+                    ],
+                },
+                templateRef: {
+                    templateId: "templateId",
+                },
             });
         }).rejects.toThrow(Corti.BadGatewayError);
     });
