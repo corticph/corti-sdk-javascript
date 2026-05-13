@@ -3,20 +3,24 @@
 import type * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
 import type * as serializers from "../index.js";
-import { DocumentsContext } from "./DocumentsContext.js";
+import { GuidedDocumentContext } from "./GuidedDocumentContext.js";
 import { GuidedTemplateRef } from "./GuidedTemplateRef.js";
 
 export const GuidedDocumentByTemplateRef: core.serialization.ObjectSchema<
     serializers.GuidedDocumentByTemplateRef.Raw,
     Corti.GuidedDocumentByTemplateRef
 > = core.serialization.object({
-    context: DocumentsContext,
+    context: core.serialization.list(GuidedDocumentContext).optional(),
+    interactionId: core.serialization.string().optional(),
     templateRef: GuidedTemplateRef,
+    outputLanguage: core.serialization.string(),
 });
 
 export declare namespace GuidedDocumentByTemplateRef {
     export interface Raw {
-        context: DocumentsContext.Raw;
+        context?: GuidedDocumentContext.Raw[] | null;
+        interactionId?: string | null;
         templateRef: GuidedTemplateRef.Raw;
+        outputLanguage: string;
     }
 }

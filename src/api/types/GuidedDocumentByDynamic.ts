@@ -3,11 +3,15 @@
 import type * as Corti from "../index.js";
 
 /**
- * Generate a document from a fully inline template definition supplied in the request body. Sections and the wrapping template are created and immediately published as auto-generated resources.
+ * Generate a document from a fully inline template definition supplied in the request body. Sections and the wrapping template are created and immediately published as auto-generated resources. At least one of `context` or `interactionId` must be supplied as input context for the model.
  */
 export interface GuidedDocumentByDynamic {
-    /** Single context object the model reasons over. Same shape as the `DocumentsContext` used by `POST /interactions/{id}/documents/`, but supplied as a single object — not an array. */
-    context: Corti.DocumentsContext;
+    /** Ordered list of context items the model reasons over. Each item is one of text, a transcript (with optional metadata and segments), or a single fact. Items are interleaved by timestamps where present on transcript segments; otherwise array order is preserved. */
+    context?: Corti.GuidedDocumentContext[];
+    /** When supplied, all facts and transcripts already attached to the referenced interaction are passed implicitly as input context. */
+    interactionId?: string;
     /** Fully inline template defined in the request body. */
     dynamicTemplate: Corti.GuidedDynamicRequest;
+    /** The language in which the document will be generated as a BCP 47 tag. */
+    outputLanguage: string;
 }

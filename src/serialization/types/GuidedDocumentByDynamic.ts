@@ -3,20 +3,24 @@
 import type * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
 import type * as serializers from "../index.js";
-import { DocumentsContext } from "./DocumentsContext.js";
+import { GuidedDocumentContext } from "./GuidedDocumentContext.js";
 import { GuidedDynamicRequest } from "./GuidedDynamicRequest.js";
 
 export const GuidedDocumentByDynamic: core.serialization.ObjectSchema<
     serializers.GuidedDocumentByDynamic.Raw,
     Corti.GuidedDocumentByDynamic
 > = core.serialization.object({
-    context: DocumentsContext,
+    context: core.serialization.list(GuidedDocumentContext).optional(),
+    interactionId: core.serialization.string().optional(),
     dynamicTemplate: GuidedDynamicRequest,
+    outputLanguage: core.serialization.string(),
 });
 
 export declare namespace GuidedDocumentByDynamic {
     export interface Raw {
-        context: DocumentsContext.Raw;
+        context?: GuidedDocumentContext.Raw[] | null;
+        interactionId?: string | null;
         dynamicTemplate: GuidedDynamicRequest.Raw;
+        outputLanguage: string;
     }
 }

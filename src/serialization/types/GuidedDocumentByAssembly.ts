@@ -3,20 +3,24 @@
 import type * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
 import type * as serializers from "../index.js";
-import { DocumentsContext } from "./DocumentsContext.js";
 import { GuidedAssemblyRequest } from "./GuidedAssemblyRequest.js";
+import { GuidedDocumentContext } from "./GuidedDocumentContext.js";
 
 export const GuidedDocumentByAssembly: core.serialization.ObjectSchema<
     serializers.GuidedDocumentByAssembly.Raw,
     Corti.GuidedDocumentByAssembly
 > = core.serialization.object({
-    context: DocumentsContext,
+    context: core.serialization.list(GuidedDocumentContext).optional(),
+    interactionId: core.serialization.string().optional(),
     assemblyTemplate: GuidedAssemblyRequest,
+    outputLanguage: core.serialization.string(),
 });
 
 export declare namespace GuidedDocumentByAssembly {
     export interface Raw {
-        context: DocumentsContext.Raw;
+        context?: GuidedDocumentContext.Raw[] | null;
+        interactionId?: string | null;
         assemblyTemplate: GuidedAssemblyRequest.Raw;
+        outputLanguage: string;
     }
 }

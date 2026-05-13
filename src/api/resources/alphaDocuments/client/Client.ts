@@ -37,15 +37,10 @@ export class AlphaDocumentsClient {
      *
      * @example
      *     await client.alphaDocuments.generate({
-     *         context: {
-     *             type: "facts",
-     *             data: [{
-     *                     text: "text"
-     *                 }]
-     *         },
      *         templateRef: {
      *             templateId: "templateId"
-     *         }
+     *         },
+     *         outputLanguage: "outputLanguage"
      *     })
      */
     public generate(
