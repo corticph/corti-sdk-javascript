@@ -6,8 +6,6 @@ import { mergeHeaders, mergeOnlyDefinedHeaders } from "../../../../core/headers.
 import * as core from "../../../../core/index.js";
 import { handleNonStatusCodeError } from "../../../../errors/handleNonStatusCodeError.js";
 import * as errors from "../../../../errors/index.js";
-import * as serializers from "../../../../serialization/index.js";
-import * as Corti from "../../../index.js";
 
 export declare namespace AlphaDocumentsClient {
     export type Options = BaseClientOptions;
@@ -23,37 +21,18 @@ export class AlphaDocumentsClient {
     }
 
     /**
-     * Generates a structured document using one of four template-supply paths: a stored template reference (optionally with runtime overrides), an ad-hoc assembly of stored sections, or a fully inline dynamic template. Exactly one of `templateRef`, `assemblyTemplate`, or `dynamicTemplate` must be provided.
-     *
-     * With the exception of the plain `templateRef` path (no overrides), every call persists a new auto-generated template aggregate that snapshots the resolved content. The snapshot is drift-proof: subsequent edits to base templates or sections do not affect previously generated documents.
-     *
-     * @param {Corti.GuidedDocumentRequest} request
      * @param {AlphaDocumentsClient.RequestOptions} requestOptions - Request-specific configuration.
      *
-     * @throws {@link Corti.BadRequestError}
-     * @throws {@link Corti.NotFoundError}
-     * @throws {@link Corti.UnprocessableEntityError}
-     * @throws {@link Corti.BadGatewayError}
-     *
      * @example
-     *     await client.alphaDocuments.generate({
-     *         templateRef: {
-     *             templateId: "templateId"
-     *         },
-     *         outputLanguage: "outputLanguage"
-     *     })
+     *     await client.alphaDocuments.generate()
      */
-    public generate(
-        request: Corti.GuidedDocumentRequest,
-        requestOptions?: AlphaDocumentsClient.RequestOptions,
-    ): core.HttpResponsePromise<Corti.GuidedDocumentResponse> {
-        return core.HttpResponsePromise.fromPromise(this.__generate(request, requestOptions));
+    public generate(requestOptions?: AlphaDocumentsClient.RequestOptions): core.HttpResponsePromise<void> {
+        return core.HttpResponsePromise.fromPromise(this.__generate(requestOptions));
     }
 
     private async __generate(
-        request: Corti.GuidedDocumentRequest,
         requestOptions?: AlphaDocumentsClient.RequestOptions,
-    ): Promise<core.WithRawResponse<Corti.GuidedDocumentResponse>> {
+    ): Promise<core.WithRawResponse<void>> {
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
@@ -69,13 +48,7 @@ export class AlphaDocumentsClient {
             ),
             method: "POST",
             headers: _headers,
-            contentType: "application/json",
             queryParameters: requestOptions?.queryParams,
-            requestType: "json",
-            body: serializers.GuidedDocumentRequest.jsonOrThrow(request, {
-                unrecognizedObjectKeys: "strip",
-                omitUndefined: true,
-            }),
             timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
             maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
             abortSignal: requestOptions?.abortSignal,
@@ -83,44 +56,15 @@ export class AlphaDocumentsClient {
             logging: this._options.logging,
         });
         if (_response.ok) {
-            return {
-                data: serializers.GuidedDocumentResponse.parseOrThrow(_response.body, {
-                    unrecognizedObjectKeys: "passthrough",
-                    allowUnrecognizedUnionMembers: true,
-                    allowUnrecognizedEnumValues: true,
-                    skipValidation: true,
-                    breadcrumbsPrefix: ["response"],
-                }),
-                rawResponse: _response.rawResponse,
-            };
+            return { data: undefined, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
-            switch (_response.error.statusCode) {
-                case 400:
-                    throw new Corti.BadRequestError(_response.error.body, _response.rawResponse);
-                case 404:
-                    throw new Corti.NotFoundError(_response.error.body, _response.rawResponse);
-                case 422:
-                    throw new Corti.UnprocessableEntityError(_response.error.body, _response.rawResponse);
-                case 502:
-                    throw new Corti.BadGatewayError(
-                        serializers.ErrorResponse.parseOrThrow(_response.error.body, {
-                            unrecognizedObjectKeys: "passthrough",
-                            allowUnrecognizedUnionMembers: true,
-                            allowUnrecognizedEnumValues: true,
-                            skipValidation: true,
-                            breadcrumbsPrefix: ["response"],
-                        }),
-                        _response.rawResponse,
-                    );
-                default:
-                    throw new errors.CortiError({
-                        statusCode: _response.error.statusCode,
-                        body: _response.error.body,
-                        rawResponse: _response.rawResponse,
-                    });
-            }
+            throw new errors.CortiError({
+                statusCode: _response.error.statusCode,
+                body: _response.error.body,
+                rawResponse: _response.rawResponse,
+            });
         }
 
         return handleNonStatusCodeError(_response.error, _response.rawResponse, "POST", "/alpha/documents");
