@@ -274,6 +274,8 @@ export class AlphaSectionVersionsClient {
     }
 
     /**
+     * Currently published version cannot be deleted. Last remaining version can be deleted, simply create a new section version again if needed.
+     *
      * @param {string} sectionID
      * @param {string} versionID
      * @param {AlphaSectionVersionsClient.RequestOptions} requestOptions - Request-specific configuration.

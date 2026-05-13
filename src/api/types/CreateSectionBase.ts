@@ -3,7 +3,7 @@
 export interface CreateSectionBase {
     /** A human-readable identifier for this section. Not passed to the LLM. */
     name: string;
-    /** The intended language for outputs as BCP 47 tag. Does not strictly have to match outputLanguage in POST /documents request. */
+    /** The intended language for outputs as BCP 47 tag. Informational metadata only. The final output language is determined by outputLanguage in the POST /documents request. */
     language: string;
     /** A description for this section. Not passed to the LLM. */
     description?: string;

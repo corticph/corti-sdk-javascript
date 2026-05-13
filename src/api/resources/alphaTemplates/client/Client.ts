@@ -249,6 +249,8 @@ export class AlphaTemplatesClient {
     }
 
     /**
+     * Deletes a template and its versions.
+     *
      * @param {string} templateID
      * @param {AlphaTemplatesClient.RequestOptions} requestOptions - Request-specific configuration.
      *

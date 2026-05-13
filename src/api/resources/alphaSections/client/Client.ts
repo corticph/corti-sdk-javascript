@@ -253,6 +253,8 @@ export class AlphaSectionsClient {
     }
 
     /**
+     * Delete section
+     *
      * @param {string} sectionID
      * @param {AlphaSectionsClient.RequestOptions} requestOptions - Request-specific configuration.
      *

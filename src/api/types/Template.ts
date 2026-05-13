@@ -13,7 +13,7 @@ export interface Template {
     name: string;
     /** A description for this template. Not passed to the LLM. */
     description?: string;
-    /** The intended language as BCP 47 tag. Does not strictly have to match outputLanguage in POST /documents request. */
+    /** The intended language as BCP 47 tag. Informational metadata only. The final output language is determined by outputLanguage in the POST /documents request. */
     language: string;
     /** The available labels to use as query param filter in the LIST /templates endpoint. */
     labels: string[];

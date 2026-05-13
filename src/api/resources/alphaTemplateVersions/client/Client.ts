@@ -272,6 +272,8 @@ export class AlphaTemplateVersionsClient {
     }
 
     /**
+     * A published version cannot be deleted. When deleting a last remaining version of a template, simply create a new version again if needed.
+     *
      * @param {string} templateID
      * @param {string} versionID
      * @param {AlphaTemplateVersionsClient.RequestOptions} requestOptions - Request-specific configuration.
