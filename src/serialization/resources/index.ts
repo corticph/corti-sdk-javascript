@@ -1,6 +1,10 @@
 export * from "./agents/client/requests/index.js";
 export * as agents from "./agents/index.js";
 export * from "./agents/types/index.js";
+export * from "./alphaSections/client/requests/index.js";
+export * as alphaSections from "./alphaSections/index.js";
+export * from "./alphaTemplates/client/requests/index.js";
+export * as alphaTemplates from "./alphaTemplates/index.js";
 export * as auth from "./auth/index.js";
 export * from "./auth/types/index.js";
 export * from "./codes/client/requests/index.js";
