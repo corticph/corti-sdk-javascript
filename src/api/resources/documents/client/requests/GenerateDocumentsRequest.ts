@@ -14,7 +14,7 @@ import type * as Corti from "../../../../index.js";
  *     }
  */
 export interface GenerateDocumentsRequest {
-    /** With the optional header `X-Corti-Retention-Policy:none` the API will generate and return the document as expected, but the generated document will not be saved to the database. The response will include the header `X-Corti-Retention-Policy:acknowledged` to confirm that your retention preference was respected. If the header is omitted or set to any other value, the default retention policy will apply, and the document will be stored in the database. */
+    /** Pass the optional `X-Corti-Retention-Policy: none` header to generate and return the document without saving it to the database. The response will be 200 with `EphemeralDocumentResponse`. Without the header the document is saved and the response is 201 with `CreateDocumentResponse`. */
     cortiRetentionPolicy?: Corti.GenerateDocumentsRequestXCortiRetentionPolicy;
     body: Corti.GuidedDocumentRequest;
 }
