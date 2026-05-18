@@ -4,6 +4,7 @@ export * from "./agents/types/index.js";
 export * as alphaDocuments from "./alphaDocuments/index.js";
 export * from "./alphaSections/client/requests/index.js";
 export * as alphaSections from "./alphaSections/index.js";
+export * from "./alphaSectionVersions/client/requests/index.js";
 export * as alphaSectionVersions from "./alphaSectionVersions/index.js";
 export * from "./alphaTemplates/client/requests/index.js";
 export * as alphaTemplates from "./alphaTemplates/index.js";

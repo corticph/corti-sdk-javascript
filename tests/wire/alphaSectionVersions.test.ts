@@ -95,9 +95,11 @@ describe("AlphaSectionVersionsClient", () => {
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
         const rawRequestBody = {
-            heading: "heading",
-            instructions: { contentPrompt: "contentPrompt" },
-            outputSchema: { type: "string" },
+            generation: {
+                heading: "heading",
+                instructions: { contentPrompt: "contentPrompt" },
+                outputSchema: { type: "string" },
+            },
         };
         const rawResponseBody = {
             id: "id",
@@ -129,12 +131,14 @@ describe("AlphaSectionVersionsClient", () => {
             .build();
 
         const response = await client.alphaSectionVersions.create("sectionID", {
-            heading: "heading",
-            instructions: {
-                contentPrompt: "contentPrompt",
-            },
-            outputSchema: {
-                type: "string",
+            generation: {
+                heading: "heading",
+                instructions: {
+                    contentPrompt: "contentPrompt",
+                },
+                outputSchema: {
+                    type: "string",
+                },
             },
         });
         expect(response).toEqual({
@@ -170,9 +174,11 @@ describe("AlphaSectionVersionsClient", () => {
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
         const rawRequestBody = {
-            heading: "heading",
-            instructions: { contentPrompt: "contentPrompt" },
-            outputSchema: { type: "string" },
+            generation: {
+                heading: "heading",
+                instructions: { contentPrompt: "contentPrompt" },
+                outputSchema: { type: "string" },
+            },
         };
         const rawResponseBody = { key: "value" };
 
@@ -187,12 +193,14 @@ describe("AlphaSectionVersionsClient", () => {
 
         await expect(async () => {
             return await client.alphaSectionVersions.create("sectionID", {
-                heading: "heading",
-                instructions: {
-                    contentPrompt: "contentPrompt",
-                },
-                outputSchema: {
-                    type: "string",
+                generation: {
+                    heading: "heading",
+                    instructions: {
+                        contentPrompt: "contentPrompt",
+                    },
+                    outputSchema: {
+                        type: "string",
+                    },
                 },
             });
         }).rejects.toThrow(Corti.BadRequestError);
@@ -210,9 +218,11 @@ describe("AlphaSectionVersionsClient", () => {
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
         const rawRequestBody = {
-            heading: "heading",
-            instructions: { contentPrompt: "contentPrompt" },
-            outputSchema: { type: "string" },
+            generation: {
+                heading: "heading",
+                instructions: { contentPrompt: "contentPrompt" },
+                outputSchema: { type: "string" },
+            },
         };
         const rawResponseBody = { key: "value" };
 
@@ -227,12 +237,14 @@ describe("AlphaSectionVersionsClient", () => {
 
         await expect(async () => {
             return await client.alphaSectionVersions.create("sectionID", {
-                heading: "heading",
-                instructions: {
-                    contentPrompt: "contentPrompt",
-                },
-                outputSchema: {
-                    type: "string",
+                generation: {
+                    heading: "heading",
+                    instructions: {
+                        contentPrompt: "contentPrompt",
+                    },
+                    outputSchema: {
+                        type: "string",
+                    },
                 },
             });
         }).rejects.toThrow(Corti.NotFoundError);
@@ -389,7 +401,10 @@ describe("AlphaSectionVersionsClient", () => {
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
-        const rawResponseBody = { status: "published" };
+        const rawResponseBody = {
+            status: "status",
+            evidence: { evidenceId: "f47ac10b-58cc-4372-a567-0e02b2c3d479", type: "transcript", quote: "quote" },
+        };
 
         server
             .mockEndpoint()
@@ -401,7 +416,12 @@ describe("AlphaSectionVersionsClient", () => {
 
         const response = await client.alphaSectionVersions.publish("sectionID", "versionID");
         expect(response).toEqual({
-            status: "published",
+            status: "status",
+            evidence: {
+                evidenceId: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+                type: "transcript",
+                quote: "quote",
+            },
         });
     });
 

@@ -12,13 +12,13 @@ export const CreateSectionFromInheritanceRequest: core.serialization.ObjectSchem
 > = core.serialization
     .object({
         inheritFromId: core.serialization.string(),
-        generation: SectionGenerationPartial,
+        generation: SectionGenerationPartial.optional(),
     })
     .extend(CreateSectionBase);
 
 export declare namespace CreateSectionFromInheritanceRequest {
     export interface Raw extends CreateSectionBase.Raw {
         inheritFromId: string;
-        generation: SectionGenerationPartial.Raw;
+        generation?: SectionGenerationPartial.Raw | null;
     }
 }

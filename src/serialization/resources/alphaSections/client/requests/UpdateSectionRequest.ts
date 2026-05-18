@@ -3,22 +3,27 @@
 import type * as Corti from "../../../../../api/index.js";
 import * as core from "../../../../../core/index.js";
 import type * as serializers from "../../../../index.js";
+import { Label } from "../../../../types/Label.js";
 
 export const UpdateSectionRequest: core.serialization.Schema<
     serializers.UpdateSectionRequest.Raw,
     Corti.UpdateSectionRequest
 > = core.serialization.object({
     name: core.serialization.string().optional(),
-    language: core.serialization.string().optional(),
     description: core.serialization.string().optional(),
-    labels: core.serialization.list(core.serialization.string()).optional(),
+    languages: core.serialization.list(core.serialization.string()).optional(),
+    regions: core.serialization.list(core.serialization.string()).optional(),
+    specialties: core.serialization.list(core.serialization.string()).optional(),
+    labels: core.serialization.list(Label).optional(),
 });
 
 export declare namespace UpdateSectionRequest {
     export interface Raw {
         name?: string | null;
-        language?: string | null;
         description?: string | null;
-        labels?: string[] | null;
+        languages?: string[] | null;
+        regions?: string[] | null;
+        specialties?: string[] | null;
+        labels?: Label.Raw[] | null;
     }
 }

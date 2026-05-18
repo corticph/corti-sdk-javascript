@@ -40,9 +40,11 @@ export class AlphaSectionsClient {
         request: Corti.ListAlphaSectionsRequest = {},
         requestOptions?: AlphaSectionsClient.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.Section[]>> {
-        const { lang, label, published } = request;
+        const { lang, region, specialty, label, published } = request;
         const _queryParams: Record<string, unknown> = {
             lang,
+            region,
+            specialty,
             label,
             published,
         };
@@ -101,7 +103,6 @@ export class AlphaSectionsClient {
      * @example
      *     await client.alphaSections.create({
      *         name: "name",
-     *         language: "language",
      *         generation: {
      *             heading: "heading",
      *             instructions: {

@@ -28,8 +28,10 @@ describe("AlphaTemplateVersionsClient", () => {
                         {
                             id: "id",
                             name: "name",
-                            language: "language",
-                            labels: ["labels"],
+                            languages: ["languages"],
+                            regions: ["regions"],
+                            specialties: ["specialties"],
+                            labels: [{ key: "key", value: "value" }],
                             publishedVersion: {
                                 id: "id",
                                 versionNumber: 1,
@@ -68,8 +70,15 @@ describe("AlphaTemplateVersionsClient", () => {
                         {
                             id: "id",
                             name: "name",
-                            language: "language",
-                            labels: ["labels"],
+                            languages: ["languages"],
+                            regions: ["regions"],
+                            specialties: ["specialties"],
+                            labels: [
+                                {
+                                    key: "key",
+                                    value: "value",
+                                },
+                            ],
                             publishedVersion: {
                                 id: "id",
                                 versionNumber: 1,
@@ -140,8 +149,10 @@ describe("AlphaTemplateVersionsClient", () => {
                     {
                         id: "id",
                         name: "name",
-                        language: "language",
-                        labels: ["labels"],
+                        languages: ["languages"],
+                        regions: ["regions"],
+                        specialties: ["specialties"],
+                        labels: [{ key: "key", value: "value" }],
                         publishedVersion: {
                             id: "id",
                             versionNumber: 1,
@@ -185,8 +196,15 @@ describe("AlphaTemplateVersionsClient", () => {
                     {
                         id: "id",
                         name: "name",
-                        language: "language",
-                        labels: ["labels"],
+                        languages: ["languages"],
+                        regions: ["regions"],
+                        specialties: ["specialties"],
+                        labels: [
+                            {
+                                key: "key",
+                                value: "value",
+                            },
+                        ],
                         publishedVersion: {
                             id: "id",
                             versionNumber: 1,
@@ -297,8 +315,10 @@ describe("AlphaTemplateVersionsClient", () => {
                     {
                         id: "id",
                         name: "name",
-                        language: "language",
-                        labels: ["labels"],
+                        languages: ["languages"],
+                        regions: ["regions"],
+                        specialties: ["specialties"],
+                        labels: [{ key: "key", value: "value" }],
                         publishedVersion: {
                             id: "id",
                             versionNumber: 1,
@@ -335,8 +355,15 @@ describe("AlphaTemplateVersionsClient", () => {
                     {
                         id: "id",
                         name: "name",
-                        language: "language",
-                        labels: ["labels"],
+                        languages: ["languages"],
+                        regions: ["regions"],
+                        specialties: ["specialties"],
+                        labels: [
+                            {
+                                key: "key",
+                                value: "value",
+                            },
+                        ],
                         publishedVersion: {
                             id: "id",
                             versionNumber: 1,
@@ -447,7 +474,10 @@ describe("AlphaTemplateVersionsClient", () => {
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
-        const rawResponseBody = { status: "published" };
+        const rawResponseBody = {
+            status: "status",
+            evidence: { evidenceId: "f47ac10b-58cc-4372-a567-0e02b2c3d479", type: "transcript", quote: "quote" },
+        };
 
         server
             .mockEndpoint()
@@ -459,7 +489,12 @@ describe("AlphaTemplateVersionsClient", () => {
 
         const response = await client.alphaTemplateVersions.publish("templateID", "versionID");
         expect(response).toEqual({
-            status: "published",
+            status: "status",
+            evidence: {
+                evidenceId: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+                type: "transcript",
+                quote: "quote",
+            },
         });
     });
 

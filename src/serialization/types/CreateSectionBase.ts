@@ -3,24 +3,29 @@
 import type * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
 import type * as serializers from "../index.js";
+import { Label } from "./Label.js";
 
 export const CreateSectionBase: core.serialization.ObjectSchema<
     serializers.CreateSectionBase.Raw,
     Corti.CreateSectionBase
 > = core.serialization.object({
     name: core.serialization.string(),
-    language: core.serialization.string(),
     description: core.serialization.string().optional(),
-    labels: core.serialization.list(core.serialization.string()).optional(),
+    languages: core.serialization.list(core.serialization.string()).optional(),
+    regions: core.serialization.list(core.serialization.string()).optional(),
+    specialties: core.serialization.list(core.serialization.string()).optional(),
+    labels: core.serialization.list(Label).optional(),
     publish: core.serialization.boolean().optional(),
 });
 
 export declare namespace CreateSectionBase {
     export interface Raw {
         name: string;
-        language: string;
         description?: string | null;
-        labels?: string[] | null;
+        languages?: string[] | null;
+        regions?: string[] | null;
+        specialties?: string[] | null;
+        labels?: Label.Raw[] | null;
         publish?: boolean | null;
     }
 }

@@ -6,8 +6,8 @@ import type * as Corti from "../index.js";
  * Creates a template that inherits from another template. Any fields omitted in `generation` are inherited from the referenced template's published version; any fields provided override the inherited values.
  */
 export interface CreateTemplateFromInheritanceRequest extends Corti.CreateTemplateBase {
-    /** Reference to the template to inherit template instructions and sections from. Inherits from the published version of the referenced template. */
+    /** Reference to the template to inherit instructions and sections from. Inherits from the published version of the referenced template. */
     inheritFromId: string;
     /** Partial overrides applied on top of the inherited template. All inner fields are optional. Any field omitted is inherited from the referenced template. */
-    generation: Corti.CreateTemplateFromInheritanceRequestGeneration;
+    generation?: Corti.CreateTemplateFromInheritanceRequestGeneration;
 }

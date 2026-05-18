@@ -5,9 +5,13 @@
  *     {}
  */
 export interface ListAlphaSectionsRequest {
-    /** Filter sections by language (BCP 47 tag). Repeatable. */
+    /** Filter sections by BCP 47 language subtag (e.g. `fr`, `de`). Repeatable. */
     lang?: string | string[];
-    /** Filter sections by label. Repeatable; matches sections that have any of the given labels. */
+    /** Filter sections by ISO 3166-1 alpha-3 region code (e.g. `BEL`). Repeatable. */
+    region?: string | string[];
+    /** Filter sections by clinical specialty. Repeatable. */
+    specialty?: string | string[];
+    /** Filter sections by label in `key:value` format. Repeatable; matches sections that have any of the given labels. */
     label?: string | string[];
     /** Filter by publish status. Omit to return both published and unpublished items; set to `true` for published only, `false` for unpublished only. */
     published?: boolean;

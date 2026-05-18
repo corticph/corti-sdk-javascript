@@ -40,9 +40,11 @@ export class AlphaTemplatesClient {
         request: Corti.ListAlphaTemplatesRequest = {},
         requestOptions?: AlphaTemplatesClient.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.Template[]>> {
-        const { lang, label, published } = request;
+        const { lang, region, specialty, label, published } = request;
         const _queryParams: Record<string, unknown> = {
             lang,
+            region,
+            specialty,
             label,
             published,
         };
@@ -101,7 +103,6 @@ export class AlphaTemplatesClient {
      * @example
      *     await client.alphaTemplates.create({
      *         name: "name",
-     *         language: "language",
      *         generation: {
      *             instructions: {
      *                 prompt: "prompt"

@@ -100,7 +100,7 @@ export class AlphaSectionVersionsClient {
 
     /**
      * @param {string} sectionID
-     * @param {Corti.SectionGeneration} request
+     * @param {Corti.CreateSectionVersionRequest} request
      * @param {AlphaSectionVersionsClient.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Corti.BadRequestError}
@@ -108,18 +108,20 @@ export class AlphaSectionVersionsClient {
      *
      * @example
      *     await client.alphaSectionVersions.create("sectionID", {
-     *         heading: "heading",
-     *         instructions: {
-     *             contentPrompt: "contentPrompt"
-     *         },
-     *         outputSchema: {
-     *             type: "string"
+     *         generation: {
+     *             heading: "heading",
+     *             instructions: {
+     *                 contentPrompt: "contentPrompt"
+     *             },
+     *             outputSchema: {
+     *                 type: "string"
+     *             }
      *         }
      *     })
      */
     public create(
         sectionID: string,
-        request: Corti.SectionGeneration,
+        request: Corti.CreateSectionVersionRequest,
         requestOptions?: AlphaSectionVersionsClient.RequestOptions,
     ): core.HttpResponsePromise<Corti.SectionVersion> {
         return core.HttpResponsePromise.fromPromise(this.__create(sectionID, request, requestOptions));
@@ -127,7 +129,7 @@ export class AlphaSectionVersionsClient {
 
     private async __create(
         sectionID: string,
-        request: Corti.SectionGeneration,
+        request: Corti.CreateSectionVersionRequest,
         requestOptions?: AlphaSectionVersionsClient.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.SectionVersion>> {
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
@@ -148,7 +150,7 @@ export class AlphaSectionVersionsClient {
             contentType: "application/json",
             queryParameters: requestOptions?.queryParams,
             requestType: "json",
-            body: serializers.SectionGeneration.jsonOrThrow(request, {
+            body: serializers.CreateSectionVersionRequest.jsonOrThrow(request, {
                 unrecognizedObjectKeys: "strip",
                 omitUndefined: true,
             }),

@@ -3,6 +3,7 @@
 import type * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
 import type * as serializers from "../index.js";
+import { Label } from "./Label.js";
 
 export const CreateTemplateBase: core.serialization.ObjectSchema<
     serializers.CreateTemplateBase.Raw,
@@ -10,17 +11,23 @@ export const CreateTemplateBase: core.serialization.ObjectSchema<
 > = core.serialization.object({
     name: core.serialization.string(),
     description: core.serialization.string().optional(),
-    language: core.serialization.string(),
-    labels: core.serialization.list(core.serialization.string()).optional(),
+    languages: core.serialization.list(core.serialization.string()).optional(),
+    regions: core.serialization.list(core.serialization.string()).optional(),
+    specialties: core.serialization.list(core.serialization.string()).optional(),
+    labels: core.serialization.list(Label).optional(),
     publish: core.serialization.boolean().optional(),
+    policies: core.serialization.list(core.serialization.unknown()).optional(),
 });
 
 export declare namespace CreateTemplateBase {
     export interface Raw {
         name: string;
         description?: string | null;
-        language: string;
-        labels?: string[] | null;
+        languages?: string[] | null;
+        regions?: string[] | null;
+        specialties?: string[] | null;
+        labels?: Label.Raw[] | null;
         publish?: boolean | null;
+        policies?: unknown[] | null;
     }
 }

@@ -12,13 +12,13 @@ export const CreateTemplateFromInheritanceRequest: core.serialization.ObjectSche
 > = core.serialization
     .object({
         inheritFromId: core.serialization.string(),
-        generation: CreateTemplateFromInheritanceRequestGeneration,
+        generation: CreateTemplateFromInheritanceRequestGeneration.optional(),
     })
     .extend(CreateTemplateBase);
 
 export declare namespace CreateTemplateFromInheritanceRequest {
     export interface Raw extends CreateTemplateBase.Raw {
         inheritFromId: string;
-        generation: CreateTemplateFromInheritanceRequestGeneration.Raw;
+        generation?: CreateTemplateFromInheritanceRequestGeneration.Raw | null;
     }
 }
