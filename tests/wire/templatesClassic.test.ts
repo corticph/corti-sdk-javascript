@@ -5,8 +5,8 @@ import { CortiClient } from "../../src/Client";
 import { mockServerPool } from "../mock-server/MockServerPool";
 import { mockOAuth } from "./mockAuth";
 
-describe("TemplatesClient", () => {
-    test("sectionList (1)", async () => {
+describe("TemplatesClassicClient", () => {
+    test("templates_section_list (1)", async () => {
         const server = mockServerPool.createServer();
         mockOAuth(server);
 
@@ -39,7 +39,7 @@ describe("TemplatesClient", () => {
 
         server.mockEndpoint().get("/templateSections/").respondWith().statusCode(200).jsonBody(rawResponseBody).build();
 
-        const response = await client.templates.sectionList();
+        const response = await client.templatesClassic.templatesSectionList();
         expect(response).toEqual({
             data: [
                 {
@@ -66,7 +66,7 @@ describe("TemplatesClient", () => {
         });
     });
 
-    test("sectionList (2)", async () => {
+    test("templates_section_list (2)", async () => {
         const server = mockServerPool.createServer();
         mockOAuth(server);
 
@@ -83,11 +83,11 @@ describe("TemplatesClient", () => {
         server.mockEndpoint().get("/templateSections/").respondWith().statusCode(401).jsonBody(rawResponseBody).build();
 
         await expect(async () => {
-            return await client.templates.sectionList();
+            return await client.templatesClassic.templatesSectionList();
         }).rejects.toThrow(Corti.UnauthorizedError);
     });
 
-    test("sectionList (3)", async () => {
+    test("templates_section_list (3)", async () => {
         const server = mockServerPool.createServer();
         mockOAuth(server);
 
@@ -104,11 +104,11 @@ describe("TemplatesClient", () => {
         server.mockEndpoint().get("/templateSections/").respondWith().statusCode(500).jsonBody(rawResponseBody).build();
 
         await expect(async () => {
-            return await client.templates.sectionList();
+            return await client.templatesClassic.templatesSectionList();
         }).rejects.toThrow(Corti.InternalServerError);
     });
 
-    test("list (1)", async () => {
+    test("templates_list (1)", async () => {
         const server = mockServerPool.createServer();
         mockOAuth(server);
 
@@ -150,7 +150,7 @@ describe("TemplatesClient", () => {
 
         server.mockEndpoint().get("/templates/").respondWith().statusCode(200).jsonBody(rawResponseBody).build();
 
-        const response = await client.templates.list();
+        const response = await client.templatesClassic.templatesList();
         expect(response).toEqual({
             data: [
                 {
@@ -190,7 +190,7 @@ describe("TemplatesClient", () => {
         });
     });
 
-    test("list (2)", async () => {
+    test("templates_list (2)", async () => {
         const server = mockServerPool.createServer();
         mockOAuth(server);
 
@@ -207,11 +207,11 @@ describe("TemplatesClient", () => {
         server.mockEndpoint().get("/templates/").respondWith().statusCode(401).jsonBody(rawResponseBody).build();
 
         await expect(async () => {
-            return await client.templates.list();
+            return await client.templatesClassic.templatesList();
         }).rejects.toThrow(Corti.UnauthorizedError);
     });
 
-    test("list (3)", async () => {
+    test("templates_list (3)", async () => {
         const server = mockServerPool.createServer();
         mockOAuth(server);
 
@@ -228,11 +228,11 @@ describe("TemplatesClient", () => {
         server.mockEndpoint().get("/templates/").respondWith().statusCode(500).jsonBody(rawResponseBody).build();
 
         await expect(async () => {
-            return await client.templates.list();
+            return await client.templatesClassic.templatesList();
         }).rejects.toThrow(Corti.InternalServerError);
     });
 
-    test("get (1)", async () => {
+    test("templates_get (1)", async () => {
         const server = mockServerPool.createServer();
         mockOAuth(server);
 
@@ -270,7 +270,7 @@ describe("TemplatesClient", () => {
 
         server.mockEndpoint().get("/templates/key").respondWith().statusCode(200).jsonBody(rawResponseBody).build();
 
-        const response = await client.templates.get("key");
+        const response = await client.templatesClassic.templatesGet("key");
         expect(response).toEqual({
             updatedAt: new Date("2024-01-15T09:30:00.000Z"),
             name: "name",
@@ -308,7 +308,7 @@ describe("TemplatesClient", () => {
         });
     });
 
-    test("get (2)", async () => {
+    test("templates_get (2)", async () => {
         const server = mockServerPool.createServer();
         mockOAuth(server);
 
@@ -325,11 +325,11 @@ describe("TemplatesClient", () => {
         server.mockEndpoint().get("/templates/key").respondWith().statusCode(401).jsonBody(rawResponseBody).build();
 
         await expect(async () => {
-            return await client.templates.get("key");
+            return await client.templatesClassic.templatesGet("key");
         }).rejects.toThrow(Corti.UnauthorizedError);
     });
 
-    test("get (3)", async () => {
+    test("templates_get (3)", async () => {
         const server = mockServerPool.createServer();
         mockOAuth(server);
 
@@ -346,7 +346,7 @@ describe("TemplatesClient", () => {
         server.mockEndpoint().get("/templates/key").respondWith().statusCode(500).jsonBody(rawResponseBody).build();
 
         await expect(async () => {
-            return await client.templates.get("key");
+            return await client.templatesClassic.templatesGet("key");
         }).rejects.toThrow(Corti.InternalServerError);
     });
 });

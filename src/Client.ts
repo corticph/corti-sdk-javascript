@@ -4,11 +4,12 @@ import { AgentsClient } from "./api/resources/agents/client/Client.js";
 import { AuthClient } from "./api/resources/auth/client/Client.js";
 import { CodesClient } from "./api/resources/codes/client/Client.js";
 import { DocumentsClient } from "./api/resources/documents/client/Client.js";
+import { DocumentsClassicClient } from "./api/resources/documentsClassic/client/Client.js";
 import { FactsClient } from "./api/resources/facts/client/Client.js";
 import { InteractionsClient } from "./api/resources/interactions/client/Client.js";
 import { RecordingsClient } from "./api/resources/recordings/client/Client.js";
 import { StreamClient } from "./api/resources/stream/client/Client.js";
-import { TemplatesClient } from "./api/resources/templates/client/Client.js";
+import { TemplatesClassicClient } from "./api/resources/templatesClassic/client/Client.js";
 import { TranscribeClient } from "./api/resources/transcribe/client/Client.js";
 import { TranscriptsClient } from "./api/resources/transcripts/client/Client.js";
 import type { BaseClientOptions, BaseRequestOptions } from "./BaseClient.js";
@@ -27,9 +28,10 @@ export class CortiClient {
     protected _recordings: RecordingsClient | undefined;
     protected _transcripts: TranscriptsClient | undefined;
     protected _facts: FactsClient | undefined;
-    protected _documents: DocumentsClient | undefined;
-    protected _templates: TemplatesClient | undefined;
+    protected _documentsClassic: DocumentsClassicClient | undefined;
+    protected _templatesClassic: TemplatesClassicClient | undefined;
     protected _codes: CodesClient | undefined;
+    protected _documents: DocumentsClient | undefined;
     protected _agents: AgentsClient | undefined;
     protected _stream: StreamClient | undefined;
     protected _transcribe: TranscribeClient | undefined;
@@ -58,16 +60,20 @@ export class CortiClient {
         return (this._facts ??= new FactsClient(this._options));
     }
 
-    public get documents(): DocumentsClient {
-        return (this._documents ??= new DocumentsClient(this._options));
+    public get documentsClassic(): DocumentsClassicClient {
+        return (this._documentsClassic ??= new DocumentsClassicClient(this._options));
     }
 
-    public get templates(): TemplatesClient {
-        return (this._templates ??= new TemplatesClient(this._options));
+    public get templatesClassic(): TemplatesClassicClient {
+        return (this._templatesClassic ??= new TemplatesClassicClient(this._options));
     }
 
     public get codes(): CodesClient {
         return (this._codes ??= new CodesClient(this._options));
+    }
+
+    public get documents(): DocumentsClient {
+        return (this._documents ??= new DocumentsClient(this._options));
     }
 
     public get agents(): AgentsClient {
