@@ -582,8 +582,6 @@ export class DocumentsClient {
      *
      * With the exception of the plain `templateRef` path (no overrides), every call persists a new auto-generated template aggregate that snapshots the resolved content. The snapshot is drift-proof: subsequent edits to base templates or sections do not affect previously generated documents.
      *
-     * Pass the `X-Corti-Retention-Policy: none` header to generate and return the document without saving it to the database. The response will be 200 with `EphemeralDocumentResponse`. Without the header the document is saved and the response is 201 with `CreateDocumentResponse`.
-     *
      * @param {Corti.GenerateDocumentsRequest} request
      * @param {DocumentsClient.RequestOptions} requestOptions - Request-specific configuration.
      *
