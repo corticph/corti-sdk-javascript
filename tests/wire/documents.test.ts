@@ -1012,4 +1012,204 @@ describe("DocumentsClient", () => {
             return await client.documents.update("id", "documentId");
         }).rejects.toThrow(Corti.GatewayTimeoutError);
     });
+
+    test("generate (1)", async () => {
+        const server = mockServerPool.createServer();
+        mockOAuth(server);
+
+        const client = new CortiClient({
+            maxRetries: 0,
+            clientId: "client_id",
+            clientSecret: "client_secret",
+            tenantName: "test",
+            environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
+        });
+        const rawRequestBody = { outputLanguage: "outputLanguage", templateRef: { templateId: "templateId" } };
+        const rawResponseBody = {
+            document: {
+                name: "name",
+                templateId: "templateId",
+                templateVersionId: "templateVersionId",
+                language: "language",
+                stringDocument: { key: "value" },
+                structuredDocument: { key: "value" },
+            },
+            usageInfo: { creditsConsumed: 1.1 },
+        };
+
+        server
+            .mockEndpoint()
+            .post("/documents/")
+            .jsonBody(rawRequestBody)
+            .respondWith()
+            .statusCode(200)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        const response = await client.documents.generate({
+            body: {
+                outputLanguage: "outputLanguage",
+                templateRef: {
+                    templateId: "templateId",
+                },
+            },
+        });
+        expect(response).toEqual({
+            document: {
+                name: "name",
+                templateId: "templateId",
+                templateVersionId: "templateVersionId",
+                language: "language",
+                stringDocument: {
+                    key: "value",
+                },
+                structuredDocument: {
+                    key: "value",
+                },
+            },
+            usageInfo: {
+                creditsConsumed: 1.1,
+            },
+        });
+    });
+
+    test("generate (2)", async () => {
+        const server = mockServerPool.createServer();
+        mockOAuth(server);
+
+        const client = new CortiClient({
+            maxRetries: 0,
+            clientId: "client_id",
+            clientSecret: "client_secret",
+            tenantName: "test",
+            environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
+        });
+        const rawRequestBody = { templateRef: { templateId: "templateId" }, outputLanguage: "outputLanguage" };
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .post("/documents/")
+            .jsonBody(rawRequestBody)
+            .respondWith()
+            .statusCode(400)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.documents.generate({
+                body: {
+                    templateRef: {
+                        templateId: "templateId",
+                    },
+                    outputLanguage: "outputLanguage",
+                },
+            });
+        }).rejects.toThrow(Corti.BadRequestError);
+    });
+
+    test("generate (3)", async () => {
+        const server = mockServerPool.createServer();
+        mockOAuth(server);
+
+        const client = new CortiClient({
+            maxRetries: 0,
+            clientId: "client_id",
+            clientSecret: "client_secret",
+            tenantName: "test",
+            environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
+        });
+        const rawRequestBody = { templateRef: { templateId: "templateId" }, outputLanguage: "outputLanguage" };
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .post("/documents/")
+            .jsonBody(rawRequestBody)
+            .respondWith()
+            .statusCode(404)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.documents.generate({
+                body: {
+                    templateRef: {
+                        templateId: "templateId",
+                    },
+                    outputLanguage: "outputLanguage",
+                },
+            });
+        }).rejects.toThrow(Corti.NotFoundError);
+    });
+
+    test("generate (4)", async () => {
+        const server = mockServerPool.createServer();
+        mockOAuth(server);
+
+        const client = new CortiClient({
+            maxRetries: 0,
+            clientId: "client_id",
+            clientSecret: "client_secret",
+            tenantName: "test",
+            environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
+        });
+        const rawRequestBody = { templateRef: { templateId: "templateId" }, outputLanguage: "outputLanguage" };
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .post("/documents/")
+            .jsonBody(rawRequestBody)
+            .respondWith()
+            .statusCode(422)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.documents.generate({
+                body: {
+                    templateRef: {
+                        templateId: "templateId",
+                    },
+                    outputLanguage: "outputLanguage",
+                },
+            });
+        }).rejects.toThrow(Corti.UnprocessableEntityError);
+    });
+
+    test("generate (5)", async () => {
+        const server = mockServerPool.createServer();
+        mockOAuth(server);
+
+        const client = new CortiClient({
+            maxRetries: 0,
+            clientId: "client_id",
+            clientSecret: "client_secret",
+            tenantName: "test",
+            environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
+        });
+        const rawRequestBody = { templateRef: { templateId: "templateId" }, outputLanguage: "outputLanguage" };
+        const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
+
+        server
+            .mockEndpoint()
+            .post("/documents/")
+            .jsonBody(rawRequestBody)
+            .respondWith()
+            .statusCode(500)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.documents.generate({
+                body: {
+                    templateRef: {
+                        templateId: "templateId",
+                    },
+                    outputLanguage: "outputLanguage",
+                },
+            });
+        }).rejects.toThrow(Corti.InternalServerError);
+    });
 });

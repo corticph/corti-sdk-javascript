@@ -4,6 +4,6 @@ import type * as Corti from "../index.js";
 
 export interface TemplateGeneration {
     instructions: Corti.TemplateInstructions;
-    /** Populated only on GET /alpha/templates/{templateID}/versions/{versionID}; omitted from list responses. */
+    /** Populated only on GET /documents/templates/{templateID}/versions/{versionID}; omitted from list responses. */
     sections?: Corti.Section[];
 }
