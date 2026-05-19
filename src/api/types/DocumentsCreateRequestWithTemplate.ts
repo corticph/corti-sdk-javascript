@@ -9,7 +9,7 @@ export interface DocumentsCreateRequestWithTemplate {
     template: Corti.DocumentsTemplate;
     /** An optional name for the document. */
     name?: string;
-    /** The language in which the document will be generated. Check [languages page](/about/languages) for more. */
+    /** The language in which the document will be generated. Check [languages page](/stt/languages) for more. */
     outputLanguage: string;
     /** Set to true to disable guardrails during document generation, default is false. */
     disableGuardrails?: boolean;
