@@ -7,4 +7,6 @@ export interface StreamConfigMode {
     type: Corti.StreamConfigModeType;
     /** Output language locale specific to facts. */
     outputLocale?: Corti.StreamSupportedLanguage;
+    /** Rate at which fact generation should process and return results. If no value is set, the default is `fixed` and will trigger fact generation at the standard interval of around 60s. With `fast_init`, fact generation will follow a logarithmic curve. */
+    factGenerationInterval?: Corti.StreamConfigModeFactGenerationInterval;
 }

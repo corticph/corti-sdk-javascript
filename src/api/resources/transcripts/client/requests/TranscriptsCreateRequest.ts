@@ -12,7 +12,7 @@ import type * as Corti from "../../../../index.js";
 export interface TranscriptsCreateRequest {
     /** The unique identifier for the recording. */
     recordingId: Corti.Uuid;
-    /** The primary spoken language of the recording. Check https://docs.corti.ai/about/languages for more. */
+    /** The primary spoken language of the recording. Check https://docs.corti.ai/stt/languages for more. */
     primaryLanguage: string;
     /** Indicates whether spoken dictation commands should be converted to punctuation (e.g., 'comma' → ','). */
     isDictation?: boolean;
