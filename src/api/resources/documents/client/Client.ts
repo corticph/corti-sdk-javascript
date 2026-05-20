@@ -592,7 +592,7 @@ export class DocumentsClient {
      *
      * With the exception of the plain `templateRef` path (no overrides), every call persists a new auto-generated template aggregate that snapshots the resolved content. The snapshot is drift-proof: subsequent edits to base templates or sections do not affect previously generated documents.
      *
-     * @param {Corti.GenerateDocumentsRequest} request
+     * @param {Corti.GuidedDocumentRequest} request
      * @param {DocumentsClient.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Corti.BadRequestError}
@@ -602,34 +602,28 @@ export class DocumentsClient {
      *
      * @example
      *     await client.documents.generate({
-     *         body: {
-     *             outputLanguage: "outputLanguage",
-     *             templateRef: {
-     *                 templateId: "templateId"
-     *             }
+     *         outputLanguage: "outputLanguage",
+     *         templateRef: {
+     *             templateId: "templateId"
      *         }
      *     })
      */
     public generate(
-        request: Corti.GenerateDocumentsRequest,
+        request: Corti.GuidedDocumentRequest,
         requestOptions?: DocumentsClient.RequestOptions,
     ): core.HttpResponsePromise<Corti.CreateEphemeralDocumentResponse> {
         return core.HttpResponsePromise.fromPromise(this.__generate(request, requestOptions));
     }
 
     private async __generate(
-        request: Corti.GenerateDocumentsRequest,
+        request: Corti.GuidedDocumentRequest,
         requestOptions?: DocumentsClient.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.CreateEphemeralDocumentResponse>> {
-        const { cortiRetentionPolicy, body: _body } = request;
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
             this._options?.headers,
-            mergeOnlyDefinedHeaders({
-                "X-Corti-Retention-Policy": cortiRetentionPolicy,
-                "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName,
-            }),
+            mergeOnlyDefinedHeaders({ "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName }),
             requestOptions?.headers,
         );
         const _response = await core.fetcher({
@@ -643,7 +637,7 @@ export class DocumentsClient {
             contentType: "application/json",
             queryParameters: requestOptions?.queryParams,
             requestType: "json",
-            body: serializers.GuidedDocumentRequest.jsonOrThrow(_body, {
+            body: serializers.GuidedDocumentRequest.jsonOrThrow(request, {
                 unrecognizedObjectKeys: "strip",
                 omitUndefined: true,
             }),

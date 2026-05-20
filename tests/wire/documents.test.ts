@@ -1047,11 +1047,9 @@ describe("DocumentsClient", () => {
             .build();
 
         const response = await client.documents.generate({
-            body: {
-                outputLanguage: "outputLanguage",
-                templateRef: {
-                    templateId: "templateId",
-                },
+            outputLanguage: "outputLanguage",
+            templateRef: {
+                templateId: "templateId",
             },
         });
         expect(response).toEqual({
@@ -1098,12 +1096,10 @@ describe("DocumentsClient", () => {
 
         await expect(async () => {
             return await client.documents.generate({
-                body: {
-                    templateRef: {
-                        templateId: "templateId",
-                    },
-                    outputLanguage: "outputLanguage",
+                templateRef: {
+                    templateId: "templateId",
                 },
+                outputLanguage: "outputLanguage",
             });
         }).rejects.toThrow(Corti.BadRequestError);
     });
@@ -1133,12 +1129,10 @@ describe("DocumentsClient", () => {
 
         await expect(async () => {
             return await client.documents.generate({
-                body: {
-                    templateRef: {
-                        templateId: "templateId",
-                    },
-                    outputLanguage: "outputLanguage",
+                templateRef: {
+                    templateId: "templateId",
                 },
+                outputLanguage: "outputLanguage",
             });
         }).rejects.toThrow(Corti.NotFoundError);
     });
@@ -1168,12 +1162,10 @@ describe("DocumentsClient", () => {
 
         await expect(async () => {
             return await client.documents.generate({
-                body: {
-                    templateRef: {
-                        templateId: "templateId",
-                    },
-                    outputLanguage: "outputLanguage",
+                templateRef: {
+                    templateId: "templateId",
                 },
+                outputLanguage: "outputLanguage",
             });
         }).rejects.toThrow(Corti.UnprocessableEntityError);
     });
@@ -1203,12 +1195,10 @@ describe("DocumentsClient", () => {
 
         await expect(async () => {
             return await client.documents.generate({
-                body: {
-                    templateRef: {
-                        templateId: "templateId",
-                    },
-                    outputLanguage: "outputLanguage",
+                templateRef: {
+                    templateId: "templateId",
                 },
+                outputLanguage: "outputLanguage",
             });
         }).rejects.toThrow(Corti.InternalServerError);
     });
