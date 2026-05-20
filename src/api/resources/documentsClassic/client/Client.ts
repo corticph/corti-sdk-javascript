@@ -23,6 +23,8 @@ export class DocumentsClassicClient {
     }
 
     /**
+     * @deprecated
+     *
      * List Documents
      *
      * @param {Corti.Uuid} id - The unique identifier of the interaction. Must be a valid UUID.
@@ -123,6 +125,8 @@ export class DocumentsClassicClient {
     }
 
     /**
+     * @deprecated
+     *
      * This endpoint offers different ways to generate a document. Find guides to document generation [here](/textgen/documents-standard).
      *
      * @param {Corti.Uuid} id - The unique identifier of the interaction. Must be a valid UUID.
@@ -246,6 +250,8 @@ export class DocumentsClassicClient {
     }
 
     /**
+     * @deprecated
+     *
      * Get Document.
      *
      * @param {Corti.Uuid} id - The unique identifier of the interaction. Must be a valid UUID.
@@ -354,6 +360,8 @@ export class DocumentsClassicClient {
     }
 
     /**
+     * @deprecated
+     *
      * @param {Corti.Uuid} id - The unique identifier of the interaction. Must be a valid UUID.
      * @param {Corti.Uuid} documentId - The document ID representing the context for the request. Must be a valid UUID.
      * @param {DocumentsClassicClient.RequestOptions} requestOptions - Request-specific configuration.
@@ -451,6 +459,8 @@ export class DocumentsClassicClient {
     }
 
     /**
+     * @deprecated
+     *
      * @param {Corti.Uuid} id - The unique identifier of the interaction. Must be a valid UUID.
      * @param {Corti.Uuid} documentId - The document ID representing the context for the request. Must be a valid UUID.
      * @param {Corti.DocumentsUpdateRequest} request
