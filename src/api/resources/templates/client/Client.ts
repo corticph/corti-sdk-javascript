@@ -9,41 +9,41 @@ import * as errors from "../../../../errors/index.js";
 import * as serializers from "../../../../serialization/index.js";
 import * as Corti from "../../../index.js";
 
-export declare namespace TemplatesClassicClient {
+export declare namespace TemplatesClient {
     export type Options = BaseClientOptions;
 
     export interface RequestOptions extends BaseRequestOptions {}
 }
 
-export class TemplatesClassicClient {
-    protected readonly _options: NormalizedClientOptionsWithAuth<TemplatesClassicClient.Options>;
+export class TemplatesClient {
+    protected readonly _options: NormalizedClientOptionsWithAuth<TemplatesClient.Options>;
 
-    constructor(options: TemplatesClassicClient.Options) {
+    constructor(options: TemplatesClient.Options) {
         this._options = normalizeClientOptionsWithAuth(options);
     }
 
     /**
      * Retrieves a list of template sections with optional filters for organization and language.
      *
-     * @param {Corti.TemplatesSectionListRequest} request
-     * @param {TemplatesClassicClient.RequestOptions} requestOptions - Request-specific configuration.
+     * @param {Corti.SectionListTemplatesRequest} request
+     * @param {TemplatesClient.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Corti.UnauthorizedError}
      * @throws {@link Corti.InternalServerError}
      *
      * @example
-     *     await client.templatesClassic.templatesSectionList()
+     *     await client.templates.sectionList()
      */
-    public templatesSectionList(
-        request: Corti.TemplatesSectionListRequest = {},
-        requestOptions?: TemplatesClassicClient.RequestOptions,
+    public sectionList(
+        request: Corti.SectionListTemplatesRequest = {},
+        requestOptions?: TemplatesClient.RequestOptions,
     ): core.HttpResponsePromise<Corti.TemplatesSectionListResponse> {
-        return core.HttpResponsePromise.fromPromise(this.__templatesSectionList(request, requestOptions));
+        return core.HttpResponsePromise.fromPromise(this.__sectionList(request, requestOptions));
     }
 
-    private async __templatesSectionList(
-        request: Corti.TemplatesSectionListRequest = {},
-        requestOptions?: TemplatesClassicClient.RequestOptions,
+    private async __sectionList(
+        request: Corti.SectionListTemplatesRequest = {},
+        requestOptions?: TemplatesClient.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.TemplatesSectionListResponse>> {
         const { org, lang } = request;
         const _queryParams: Record<string, unknown> = {
@@ -115,25 +115,25 @@ export class TemplatesClassicClient {
     /**
      * Retrieves a list of templates with optional filters for organization, language, and status.
      *
-     * @param {Corti.TemplatesListRequest} request
-     * @param {TemplatesClassicClient.RequestOptions} requestOptions - Request-specific configuration.
+     * @param {Corti.ListTemplatesRequest} request
+     * @param {TemplatesClient.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Corti.UnauthorizedError}
      * @throws {@link Corti.InternalServerError}
      *
      * @example
-     *     await client.templatesClassic.templatesList()
+     *     await client.templates.list()
      */
-    public templatesList(
-        request: Corti.TemplatesListRequest = {},
-        requestOptions?: TemplatesClassicClient.RequestOptions,
+    public list(
+        request: Corti.ListTemplatesRequest = {},
+        requestOptions?: TemplatesClient.RequestOptions,
     ): core.HttpResponsePromise<Corti.TemplatesListResponse> {
-        return core.HttpResponsePromise.fromPromise(this.__templatesList(request, requestOptions));
+        return core.HttpResponsePromise.fromPromise(this.__list(request, requestOptions));
     }
 
-    private async __templatesList(
-        request: Corti.TemplatesListRequest = {},
-        requestOptions?: TemplatesClassicClient.RequestOptions,
+    private async __list(
+        request: Corti.ListTemplatesRequest = {},
+        requestOptions?: TemplatesClient.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.TemplatesListResponse>> {
         const { org, lang, status } = request;
         const _queryParams: Record<string, unknown> = {
@@ -207,24 +207,24 @@ export class TemplatesClassicClient {
      * Retrieves template by key.
      *
      * @param {string} key - The key of the template
-     * @param {TemplatesClassicClient.RequestOptions} requestOptions - Request-specific configuration.
+     * @param {TemplatesClient.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Corti.UnauthorizedError}
      * @throws {@link Corti.InternalServerError}
      *
      * @example
-     *     await client.templatesClassic.templatesGet("key")
+     *     await client.templates.get("key")
      */
-    public templatesGet(
+    public get(
         key: string,
-        requestOptions?: TemplatesClassicClient.RequestOptions,
+        requestOptions?: TemplatesClient.RequestOptions,
     ): core.HttpResponsePromise<Corti.TemplatesItem> {
-        return core.HttpResponsePromise.fromPromise(this.__templatesGet(key, requestOptions));
+        return core.HttpResponsePromise.fromPromise(this.__get(key, requestOptions));
     }
 
-    private async __templatesGet(
+    private async __get(
         key: string,
-        requestOptions?: TemplatesClassicClient.RequestOptions,
+        requestOptions?: TemplatesClient.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.TemplatesItem>> {
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
