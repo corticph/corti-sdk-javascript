@@ -276,7 +276,7 @@ describe("AgentsClient", () => {
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
         const rawRequestBody = { name: "name", description: "description" };
-        const rawResponseBody = { code: "code", description: "description" };
+        const rawResponseBody = { key: "value" };
 
         server
             .mockEndpoint()
@@ -717,7 +717,7 @@ describe("AgentsClient", () => {
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
         const rawRequestBody = {};
-        const rawResponseBody = { code: "code", description: "description" };
+        const rawResponseBody = { key: "value" };
 
         server
             .mockEndpoint()
@@ -1332,7 +1332,7 @@ describe("AgentsClient", () => {
                 kind: "message",
             },
         };
-        const rawResponseBody = { code: "code", description: "description" };
+        const rawResponseBody = { key: "value" };
 
         server
             .mockEndpoint()
@@ -1793,6 +1793,7 @@ describe("AgentsClient", () => {
                     displayDescription: "displayDescription",
                     description: "description",
                     mcpServers: [{ name: "name", authorizationType: "none" }],
+                    configSchema: { key: "value" },
                 },
             ],
         };
@@ -1822,6 +1823,9 @@ describe("AgentsClient", () => {
                             authorizationType: "none",
                         },
                     ],
+                    configSchema: {
+                        key: "value",
+                    },
                 },
             ],
         });
@@ -1893,7 +1897,7 @@ describe("AgentsClient", () => {
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
-        const rawResponseBody = { code: "code", description: "description" };
+        const rawResponseBody = { key: "value" };
 
         server
             .mockEndpoint()
