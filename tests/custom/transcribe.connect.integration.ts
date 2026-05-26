@@ -82,6 +82,9 @@ describe("cortiClient.transcribe.connect", () => {
                     interimResults: true,
                     spokenPunctuation: true,
                     automaticPunctuation: true,
+                    audioEvents: {
+                        enabled: true,
+                    },
                     commands: [
                         {
                             id: faker.string.alphanumeric(8),
@@ -112,6 +115,9 @@ describe("cortiClient.transcribe.connect", () => {
                         interimResults: true,
                         spokenPunctuation: true,
                         automaticPunctuation: true,
+                        audioEvents: {
+                            enabled: true,
+                        },
                         commands: [
                             {
                                 id: faker.string.alphanumeric(8),
@@ -292,6 +298,28 @@ describe("cortiClient.transcribe.connect", () => {
             await waitForWebSocketMessage(transcribeSocket, "CONFIG_DENIED", { messages, rejectOnWrongMessage: true });
 
             expect([2, 3]).toContain(transcribeSocket.socket.readyState); // CLOSING or CLOSED
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
+    });
+
+    describe("should connect with newly added transcribe configuration fields", () => {
+        it("should connect with audioEvents enabled without errors or warnings", async () => {
+            expect.assertions(2);
+
+            const transcribeSocket = await cortiClient.transcribe.connect({
+                awaitConfiguration: false,
+                configuration: {
+                    primaryLanguage: "en",
+                    audioEvents: {
+                        enabled: true,
+                    },
+                },
+            });
+            activeSockets.push(transcribeSocket);
+
+            await waitForWebSocketMessage(transcribeSocket, "CONFIG_ACCEPTED", { rejectOnWrongMessage: true });
+
+            expect(transcribeSocket.socket.readyState).toBe(1); // OPEN
             expect(consoleWarnSpy).not.toHaveBeenCalled();
         });
     });

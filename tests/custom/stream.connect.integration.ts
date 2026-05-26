@@ -47,6 +47,9 @@ describe("cortiClient.stream.connect", () => {
                 configuration: {
                     retentionPolicy: "retain",
                     audioFormat: "audio/mp3",
+                    audioEvents: {
+                        enabled: true,
+                    },
                     transcription: {
                         primaryLanguage: "en",
                         isDiarization: true,
@@ -65,6 +68,7 @@ describe("cortiClient.stream.connect", () => {
                     mode: {
                         type: "facts",
                         outputLocale: "en-US",
+                        factGenerationInterval: "fixed",
                     },
                 },
             });
@@ -92,6 +96,9 @@ describe("cortiClient.stream.connect", () => {
                     configuration: {
                         retentionPolicy: "retain",
                         audioFormat: "audio/mpeg",
+                        audioEvents: {
+                            enabled: true,
+                        },
                         transcription: {
                             primaryLanguage: "en",
                             isDiarization: true,
@@ -110,6 +117,7 @@ describe("cortiClient.stream.connect", () => {
                         mode: {
                             type: "facts",
                             outputLocale: "en-US",
+                            factGenerationInterval: "fast_init",
                         },
                     },
                 });
@@ -263,6 +271,75 @@ describe("cortiClient.stream.connect", () => {
                     mode: {
                         type: "facts",
                         outputLocale: "en-US",
+                    },
+                },
+            });
+            activeSockets.push(streamSocket);
+
+            await waitForWebSocketMessage(streamSocket, "CONFIG_ACCEPTED", { rejectOnWrongMessage: true });
+
+            expect(streamSocket.socket.readyState).toBe(1); // OPEN
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
+    });
+
+    describe("should connect with newly added stream configuration fields", () => {
+        it("should connect with audioEvents enabled without errors or warnings", async () => {
+            expect.assertions(2);
+
+            const interactionId = await createTestInteraction(cortiClient);
+
+            const streamSocket = await cortiClient.stream.connect({
+                id: interactionId,
+                awaitConfiguration: false,
+                configuration: {
+                    audioEvents: {
+                        enabled: true,
+                    },
+                    transcription: {
+                        primaryLanguage: "en",
+                        participants: [
+                            {
+                                channel: 0,
+                                role: "doctor",
+                            },
+                        ],
+                    },
+                    mode: {
+                        type: "transcription",
+                    },
+                },
+            });
+            activeSockets.push(streamSocket);
+
+            await waitForWebSocketMessage(streamSocket, "CONFIG_ACCEPTED", { rejectOnWrongMessage: true });
+
+            expect(streamSocket.socket.readyState).toBe(1); // OPEN
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
+
+        it("should connect with factGenerationInterval fast_init without errors or warnings", async () => {
+            expect.assertions(2);
+
+            const interactionId = await createTestInteraction(cortiClient);
+
+            const streamSocket = await cortiClient.stream.connect({
+                id: interactionId,
+                awaitConfiguration: false,
+                configuration: {
+                    transcription: {
+                        primaryLanguage: "en",
+                        participants: [
+                            {
+                                channel: 0,
+                                role: "doctor",
+                            },
+                        ],
+                    },
+                    mode: {
+                        type: "facts",
+                        outputLocale: "en-US",
+                        factGenerationInterval: "fast_init",
                     },
                 },
             });
