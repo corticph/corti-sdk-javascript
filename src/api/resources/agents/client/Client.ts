@@ -836,6 +836,84 @@ export class AgentsClient {
     }
 
     /**
+     * This endpoint deletes a context (thread) and scrubs all associated data including messages, memories, and memory chunks for the given agent. Thread and task metadata is soft-deleted for audit purposes, while content columns are irreversibly overwritten.
+     *
+     * @param {string} id - The identifier of the agent associated with the context.
+     * @param {string} contextId - The identifier of the context (thread) to delete.
+     * @param {AgentsClient.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link Corti.BadRequestError}
+     * @throws {@link Corti.UnauthorizedError}
+     * @throws {@link Corti.NotFoundError}
+     *
+     * @example
+     *     await client.agents.deleteContext("12345678-90ab-cdef-gh12-34567890abc", "contextId")
+     */
+    public deleteContext(
+        id: string,
+        contextId: string,
+        requestOptions?: AgentsClient.RequestOptions,
+    ): core.HttpResponsePromise<void> {
+        return core.HttpResponsePromise.fromPromise(this.__deleteContext(id, contextId, requestOptions));
+    }
+
+    private async __deleteContext(
+        id: string,
+        contextId: string,
+        requestOptions?: AgentsClient.RequestOptions,
+    ): Promise<core.WithRawResponse<void>> {
+        const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
+        const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+            _authRequest.headers,
+            this._options?.headers,
+            mergeOnlyDefinedHeaders({ "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName }),
+            requestOptions?.headers,
+        );
+        const _response = await core.fetcher({
+            url: core.url.join(
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)).agents,
+                `agents/${core.url.encodePathParam(id)}/v1/contexts/${core.url.encodePathParam(contextId)}`,
+            ),
+            method: "DELETE",
+            headers: _headers,
+            queryParameters: requestOptions?.queryParams,
+            timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
+            maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
+            abortSignal: requestOptions?.abortSignal,
+            fetchFn: this._options?.fetch,
+            logging: this._options.logging,
+        });
+        if (_response.ok) {
+            return { data: undefined, rawResponse: _response.rawResponse };
+        }
+
+        if (_response.error.reason === "status-code") {
+            switch (_response.error.statusCode) {
+                case 400:
+                    throw new Corti.BadRequestError(_response.error.body, _response.rawResponse);
+                case 401:
+                    throw new Corti.UnauthorizedError(_response.error.body, _response.rawResponse);
+                case 404:
+                    throw new Corti.NotFoundError(_response.error.body, _response.rawResponse);
+                default:
+                    throw new errors.CortiError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                        rawResponse: _response.rawResponse,
+                    });
+            }
+        }
+
+        return handleNonStatusCodeError(
+            _response.error,
+            _response.rawResponse,
+            "DELETE",
+            "/agents/{id}/v1/contexts/{contextId}",
+        );
+    }
+
+    /**
      * This endpoint retrieves the experts registry, which contains information about all available experts that can be referenced when creating agents through the AgentsCreateExpertReference schema.
      *
      * @param {Corti.AgentsGetRegistryExpertsRequest} request

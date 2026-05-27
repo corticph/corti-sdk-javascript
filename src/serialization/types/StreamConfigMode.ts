@@ -3,6 +3,7 @@
 import type * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
 import type * as serializers from "../index.js";
+import { StreamConfigModeFactGenerationInterval } from "./StreamConfigModeFactGenerationInterval.js";
 import { StreamConfigModeType } from "./StreamConfigModeType.js";
 import { StreamSupportedLanguage } from "./StreamSupportedLanguage.js";
 
@@ -12,11 +13,13 @@ export const StreamConfigMode: core.serialization.ObjectSchema<
 > = core.serialization.object({
     type: StreamConfigModeType,
     outputLocale: StreamSupportedLanguage.optional(),
+    factGenerationInterval: StreamConfigModeFactGenerationInterval.optional(),
 });
 
 export declare namespace StreamConfigMode {
     export interface Raw {
         type: StreamConfigModeType.Raw;
         outputLocale?: StreamSupportedLanguage.Raw | null;
+        factGenerationInterval?: StreamConfigModeFactGenerationInterval.Raw | null;
     }
 }
