@@ -6,10 +6,8 @@ export interface ObjectNode {
     type: "object";
     /** Can be used to prompt the LLM with more guidance in addition to the section.instructions */
     description?: string;
-    /** Controls how subheadings are rendered in the generated output. Use `inline` (default) for `{key}: {value}\n` or `block` for `{key}\n{value}\n`, or provide a custom format string containing both `{key}` and `{value}` placeholders. Mutually exclusive with `objectFormat`. */
-    subheadingFormat?: string;
-    /** A format string referencing field keys as placeholders (e.g. `{fieldKey}`). All placeholders must correspond to defined field keys. Mutually exclusive with `subheadingFormat`. */
-    objectFormat?: string;
+    /** Format string used to render each field in the generated string output. For example use `{key}` and `{value}` placeholders for the field key and its value respectively to programmatically control inline or block subheadings or other use cases. */
+    fieldFormat?: string;
     /** Define what fields are possible to return in the object. */
     fields?: Corti.FieldDefinition[];
 }
