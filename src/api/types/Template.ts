@@ -15,7 +15,7 @@ export interface Template {
     name: string;
     /** A description for this template. Not passed to the LLM. */
     description?: string;
-    /** BCP 47 language subtags this template has been tweaked for (e.g. `["fr", "de"]`). Empty means no language-specific tweaks. */
+    /** BCP 47 language tags this template has been tweaked for (e.g. `["fr", "de", "en-GB"]`). Empty means no language-specific tweaks. */
     languages: string[];
     /** ISO 3166-1 alpha-3 country codes this template has been tweaked for (e.g. `["BEL"]`). Empty means no region-specific tweaks. */
     regions: string[];

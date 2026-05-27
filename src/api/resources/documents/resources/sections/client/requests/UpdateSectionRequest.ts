@@ -7,10 +7,16 @@ import type * as Corti from "../../../../../../index.js";
  *     {}
  */
 export interface UpdateSectionRequest {
+    /** A human-readable identifier for this section. Not passed to the LLM. */
     name?: string;
+    /** A description for this section. Not passed to the LLM. */
     description?: string;
+    /** BCP 47 language tags this section has been tweaked for. */
     languages?: string[];
+    /** ISO 3166-1 alpha-3 country codes this section has been tweaked for. */
     regions?: string[];
+    /** Clinical specialties this section has been tweaked for. */
     specialties?: string[];
+    /** Labels work as query param filter in the LIST /sections endpoint. */
     labels?: Corti.Label[];
 }
