@@ -16,7 +16,7 @@ export interface DocumentsGetResponse {
     createdAt: Date;
     /** The timestamp when the document was last updated. */
     updatedAt: Date;
-    /** The language in which the document will be generated. Check https://docs.corti.ai/about/languages for more. */
+    /** The language in which the document will be generated. Check https://docs.corti.ai/stt/languages for more. */
     outputLanguage: string;
     usageInfo: Corti.CommonUsageInfo;
 }
