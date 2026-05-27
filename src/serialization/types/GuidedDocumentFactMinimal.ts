@@ -9,10 +9,12 @@ export const GuidedDocumentFactMinimal: core.serialization.ObjectSchema<
     Corti.GuidedDocumentFactMinimal
 > = core.serialization.object({
     text: core.serialization.string(),
+    group: core.serialization.string().optional(),
 });
 
 export declare namespace GuidedDocumentFactMinimal {
     export interface Raw {
         text: string;
+        group?: string | null;
     }
 }
