@@ -7,5 +7,7 @@ export interface TemplateVersion {
     id: string;
     /** Starts at 0 and auto-increments. */
     versionNumber: number;
+    /** Present when the template version has been deleted. */
+    deletedAt?: Date | null;
     generation: Corti.TemplateGeneration;
 }

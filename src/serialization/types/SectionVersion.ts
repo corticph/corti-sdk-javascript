@@ -9,6 +9,7 @@ export const SectionVersion: core.serialization.ObjectSchema<serializers.Section
     core.serialization.object({
         id: core.serialization.string(),
         versionNumber: core.serialization.number(),
+        deletedAt: core.serialization.date().optionalNullable(),
         generation: SectionGeneration,
     });
 
@@ -16,6 +17,7 @@ export declare namespace SectionVersion {
     export interface Raw {
         id: string;
         versionNumber: number;
+        deletedAt?: (string | null | undefined) | null;
         generation: SectionGeneration.Raw;
     }
 }

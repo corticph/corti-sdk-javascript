@@ -261,12 +261,13 @@ export class TemplatesClient {
     }
 
     /**
-     * Deletes a template and its versions.
+     * Deletes a template and its versions. Returns 409 if other templates or sections inherit from this template.
      *
      * @param {string} templateID
      * @param {TemplatesClient.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Corti.NotFoundError}
+     * @throws {@link Corti.ConflictError}
      *
      * @example
      *     await client.documents.templates.delete("templateID")
@@ -309,6 +310,17 @@ export class TemplatesClient {
             switch (_response.error.statusCode) {
                 case 404:
                     throw new Corti.NotFoundError(_response.error.body, _response.rawResponse);
+                case 409:
+                    throw new Corti.ConflictError(
+                        serializers.ErrorResponse.parseOrThrow(_response.error.body, {
+                            unrecognizedObjectKeys: "passthrough",
+                            allowUnrecognizedUnionMembers: true,
+                            allowUnrecognizedEnumValues: true,
+                            skipValidation: true,
+                            breadcrumbsPrefix: ["response"],
+                        }),
+                        _response.rawResponse,
+                    );
                 default:
                     throw new errors.CortiError({
                         statusCode: _response.error.statusCode,

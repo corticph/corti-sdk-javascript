@@ -33,6 +33,7 @@ describe("SectionsClient", () => {
                 publishedVersion: {
                     id: "id",
                     versionNumber: 1,
+                    deletedAt: "2024-01-15T09:30:00Z",
                     generation: {
                         heading: "heading",
                         instructions: { contentPrompt: "contentPrompt" },
@@ -41,6 +42,7 @@ describe("SectionsClient", () => {
                 },
                 createdAt: "2024-01-15T09:30:00Z",
                 updatedAt: "2024-01-15T09:30:00Z",
+                deletedAt: "2024-01-15T09:30:00Z",
             },
         ];
 
@@ -73,6 +75,7 @@ describe("SectionsClient", () => {
                 publishedVersion: {
                     id: "id",
                     versionNumber: 1,
+                    deletedAt: new Date("2024-01-15T09:30:00.000Z"),
                     generation: {
                         heading: "heading",
                         instructions: {
@@ -85,6 +88,7 @@ describe("SectionsClient", () => {
                 },
                 createdAt: new Date("2024-01-15T09:30:00.000Z"),
                 updatedAt: new Date("2024-01-15T09:30:00.000Z"),
+                deletedAt: new Date("2024-01-15T09:30:00.000Z"),
             },
         ]);
     });
@@ -122,6 +126,7 @@ describe("SectionsClient", () => {
             publishedVersion: {
                 id: "id",
                 versionNumber: 1,
+                deletedAt: "2024-01-15T09:30:00Z",
                 generation: {
                     heading: "heading",
                     instructions: { contentPrompt: "contentPrompt" },
@@ -130,6 +135,7 @@ describe("SectionsClient", () => {
             },
             createdAt: "2024-01-15T09:30:00Z",
             updatedAt: "2024-01-15T09:30:00Z",
+            deletedAt: "2024-01-15T09:30:00Z",
         };
 
         server
@@ -172,6 +178,7 @@ describe("SectionsClient", () => {
             publishedVersion: {
                 id: "id",
                 versionNumber: 1,
+                deletedAt: new Date("2024-01-15T09:30:00.000Z"),
                 generation: {
                     heading: "heading",
                     instructions: {
@@ -184,6 +191,7 @@ describe("SectionsClient", () => {
             },
             createdAt: new Date("2024-01-15T09:30:00.000Z"),
             updatedAt: new Date("2024-01-15T09:30:00.000Z"),
+            deletedAt: new Date("2024-01-15T09:30:00.000Z"),
         });
     });
 
@@ -259,6 +267,7 @@ describe("SectionsClient", () => {
             publishedVersion: {
                 id: "id",
                 versionNumber: 1,
+                deletedAt: "2024-01-15T09:30:00Z",
                 generation: {
                     heading: "heading",
                     instructions: { contentPrompt: "contentPrompt" },
@@ -267,6 +276,7 @@ describe("SectionsClient", () => {
             },
             createdAt: "2024-01-15T09:30:00Z",
             updatedAt: "2024-01-15T09:30:00Z",
+            deletedAt: "2024-01-15T09:30:00Z",
         };
 
         server
@@ -297,6 +307,7 @@ describe("SectionsClient", () => {
             publishedVersion: {
                 id: "id",
                 versionNumber: 1,
+                deletedAt: new Date("2024-01-15T09:30:00.000Z"),
                 generation: {
                     heading: "heading",
                     instructions: {
@@ -309,6 +320,7 @@ describe("SectionsClient", () => {
             },
             createdAt: new Date("2024-01-15T09:30:00.000Z"),
             updatedAt: new Date("2024-01-15T09:30:00.000Z"),
+            deletedAt: new Date("2024-01-15T09:30:00.000Z"),
         });
     });
 
@@ -384,6 +396,33 @@ describe("SectionsClient", () => {
         }).rejects.toThrow(Corti.NotFoundError);
     });
 
+    test("delete (3)", async () => {
+        const server = mockServerPool.createServer();
+        mockOAuth(server);
+
+        const client = new CortiClient({
+            maxRetries: 0,
+            clientId: "client_id",
+            clientSecret: "client_secret",
+            tenantName: "test",
+            environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
+        });
+
+        const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
+
+        server
+            .mockEndpoint()
+            .delete("/documents/sections/sectionID")
+            .respondWith()
+            .statusCode(409)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.documents.sections.delete("sectionID");
+        }).rejects.toThrow(Corti.ConflictError);
+    });
+
     test("update (1)", async () => {
         const server = mockServerPool.createServer();
         mockOAuth(server);
@@ -410,6 +449,7 @@ describe("SectionsClient", () => {
             publishedVersion: {
                 id: "id",
                 versionNumber: 1,
+                deletedAt: "2024-01-15T09:30:00Z",
                 generation: {
                     heading: "heading",
                     instructions: { contentPrompt: "contentPrompt" },
@@ -418,6 +458,7 @@ describe("SectionsClient", () => {
             },
             createdAt: "2024-01-15T09:30:00Z",
             updatedAt: "2024-01-15T09:30:00Z",
+            deletedAt: "2024-01-15T09:30:00Z",
         };
 
         server
@@ -449,6 +490,7 @@ describe("SectionsClient", () => {
             publishedVersion: {
                 id: "id",
                 versionNumber: 1,
+                deletedAt: new Date("2024-01-15T09:30:00.000Z"),
                 generation: {
                     heading: "heading",
                     instructions: {
@@ -461,6 +503,7 @@ describe("SectionsClient", () => {
             },
             createdAt: new Date("2024-01-15T09:30:00.000Z"),
             updatedAt: new Date("2024-01-15T09:30:00.000Z"),
+            deletedAt: new Date("2024-01-15T09:30:00.000Z"),
         });
     });
 

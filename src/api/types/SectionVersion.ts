@@ -7,5 +7,7 @@ export interface SectionVersion {
     id: string;
     /** Starts at 0 and auto-increments. */
     versionNumber: number;
+    /** Present when the section version has been deleted. */
+    deletedAt?: Date | null;
     generation: Corti.SectionGeneration;
 }

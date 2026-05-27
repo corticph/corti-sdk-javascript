@@ -30,4 +30,6 @@ export interface Template {
     createdAt: Date;
     /** The original timestamp when the template was last updated. */
     updatedAt: Date;
+    /** Present when the template has been deleted. GET by ID still returns the full resource with this field populated. */
+    deletedAt?: Date | null;
 }

@@ -29,4 +29,6 @@ export interface Section {
     createdAt: Date;
     /** The original timestamp when the section was last updated. */
     updatedAt: Date;
+    /** Present when the section has been deleted. GET by ID still returns the full resource with this field populated. */
+    deletedAt?: Date | null;
 }

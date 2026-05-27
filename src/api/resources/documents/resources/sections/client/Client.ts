@@ -265,12 +265,13 @@ export class SectionsClient {
     }
 
     /**
-     * Delete section
+     * Deletes a section and its versions. Returns 409 if other sections inherit from this section.
      *
      * @param {string} sectionID
      * @param {SectionsClient.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Corti.NotFoundError}
+     * @throws {@link Corti.ConflictError}
      *
      * @example
      *     await client.documents.sections.delete("sectionID")
@@ -313,6 +314,17 @@ export class SectionsClient {
             switch (_response.error.statusCode) {
                 case 404:
                     throw new Corti.NotFoundError(_response.error.body, _response.rawResponse);
+                case 409:
+                    throw new Corti.ConflictError(
+                        serializers.ErrorResponse.parseOrThrow(_response.error.body, {
+                            unrecognizedObjectKeys: "passthrough",
+                            allowUnrecognizedUnionMembers: true,
+                            allowUnrecognizedEnumValues: true,
+                            skipValidation: true,
+                            breadcrumbsPrefix: ["response"],
+                        }),
+                        _response.rawResponse,
+                    );
                 default:
                     throw new errors.CortiError({
                         statusCode: _response.error.statusCode,

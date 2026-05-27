@@ -33,6 +33,7 @@ describe("TemplatesClient", () => {
                 publishedVersion: {
                     id: "id",
                     versionNumber: 1,
+                    deletedAt: "2024-01-15T09:30:00Z",
                     generation: {
                         instructions: { prompt: "prompt" },
                         sections: [
@@ -60,6 +61,7 @@ describe("TemplatesClient", () => {
                 },
                 createdAt: "2024-01-15T09:30:00Z",
                 updatedAt: "2024-01-15T09:30:00Z",
+                deletedAt: "2024-01-15T09:30:00Z",
             },
         ];
 
@@ -92,6 +94,7 @@ describe("TemplatesClient", () => {
                 publishedVersion: {
                     id: "id",
                     versionNumber: 1,
+                    deletedAt: new Date("2024-01-15T09:30:00.000Z"),
                     generation: {
                         instructions: {
                             prompt: "prompt",
@@ -130,6 +133,7 @@ describe("TemplatesClient", () => {
                 },
                 createdAt: new Date("2024-01-15T09:30:00.000Z"),
                 updatedAt: new Date("2024-01-15T09:30:00.000Z"),
+                deletedAt: new Date("2024-01-15T09:30:00.000Z"),
             },
         ]);
     });
@@ -160,6 +164,7 @@ describe("TemplatesClient", () => {
             publishedVersion: {
                 id: "id",
                 versionNumber: 1,
+                deletedAt: "2024-01-15T09:30:00Z",
                 generation: {
                     instructions: { prompt: "prompt" },
                     sections: [
@@ -187,6 +192,7 @@ describe("TemplatesClient", () => {
             },
             createdAt: "2024-01-15T09:30:00Z",
             updatedAt: "2024-01-15T09:30:00Z",
+            deletedAt: "2024-01-15T09:30:00Z",
         };
 
         server
@@ -225,6 +231,7 @@ describe("TemplatesClient", () => {
             publishedVersion: {
                 id: "id",
                 versionNumber: 1,
+                deletedAt: new Date("2024-01-15T09:30:00.000Z"),
                 generation: {
                     instructions: {
                         prompt: "prompt",
@@ -263,6 +270,7 @@ describe("TemplatesClient", () => {
             },
             createdAt: new Date("2024-01-15T09:30:00.000Z"),
             updatedAt: new Date("2024-01-15T09:30:00.000Z"),
+            deletedAt: new Date("2024-01-15T09:30:00.000Z"),
         });
     });
 
@@ -327,6 +335,7 @@ describe("TemplatesClient", () => {
             publishedVersion: {
                 id: "id",
                 versionNumber: 1,
+                deletedAt: "2024-01-15T09:30:00Z",
                 generation: {
                     instructions: { prompt: "prompt" },
                     sections: [
@@ -354,6 +363,7 @@ describe("TemplatesClient", () => {
             },
             createdAt: "2024-01-15T09:30:00Z",
             updatedAt: "2024-01-15T09:30:00Z",
+            deletedAt: "2024-01-15T09:30:00Z",
         };
 
         server
@@ -384,6 +394,7 @@ describe("TemplatesClient", () => {
             publishedVersion: {
                 id: "id",
                 versionNumber: 1,
+                deletedAt: new Date("2024-01-15T09:30:00.000Z"),
                 generation: {
                     instructions: {
                         prompt: "prompt",
@@ -422,6 +433,7 @@ describe("TemplatesClient", () => {
             },
             createdAt: new Date("2024-01-15T09:30:00.000Z"),
             updatedAt: new Date("2024-01-15T09:30:00.000Z"),
+            deletedAt: new Date("2024-01-15T09:30:00.000Z"),
         });
     });
 
@@ -497,6 +509,33 @@ describe("TemplatesClient", () => {
         }).rejects.toThrow(Corti.NotFoundError);
     });
 
+    test("delete (3)", async () => {
+        const server = mockServerPool.createServer();
+        mockOAuth(server);
+
+        const client = new CortiClient({
+            maxRetries: 0,
+            clientId: "client_id",
+            clientSecret: "client_secret",
+            tenantName: "test",
+            environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
+        });
+
+        const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
+
+        server
+            .mockEndpoint()
+            .delete("/documents/templates/templateID")
+            .respondWith()
+            .statusCode(409)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.documents.templates.delete("templateID");
+        }).rejects.toThrow(Corti.ConflictError);
+    });
+
     test("update (1)", async () => {
         const server = mockServerPool.createServer();
         mockOAuth(server);
@@ -523,6 +562,7 @@ describe("TemplatesClient", () => {
             publishedVersion: {
                 id: "id",
                 versionNumber: 1,
+                deletedAt: "2024-01-15T09:30:00Z",
                 generation: {
                     instructions: { prompt: "prompt" },
                     sections: [
@@ -550,6 +590,7 @@ describe("TemplatesClient", () => {
             },
             createdAt: "2024-01-15T09:30:00Z",
             updatedAt: "2024-01-15T09:30:00Z",
+            deletedAt: "2024-01-15T09:30:00Z",
         };
 
         server
@@ -581,6 +622,7 @@ describe("TemplatesClient", () => {
             publishedVersion: {
                 id: "id",
                 versionNumber: 1,
+                deletedAt: new Date("2024-01-15T09:30:00.000Z"),
                 generation: {
                     instructions: {
                         prompt: "prompt",
@@ -619,6 +661,7 @@ describe("TemplatesClient", () => {
             },
             createdAt: new Date("2024-01-15T09:30:00.000Z"),
             updatedAt: new Date("2024-01-15T09:30:00.000Z"),
+            deletedAt: new Date("2024-01-15T09:30:00.000Z"),
         });
     });
 

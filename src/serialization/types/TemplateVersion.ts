@@ -9,6 +9,7 @@ export const TemplateVersion: core.serialization.ObjectSchema<serializers.Templa
     core.serialization.object({
         id: core.serialization.string(),
         versionNumber: core.serialization.number(),
+        deletedAt: core.serialization.date().optionalNullable(),
         generation: TemplateGeneration,
     });
 
@@ -16,6 +17,7 @@ export declare namespace TemplateVersion {
     export interface Raw {
         id: string;
         versionNumber: number;
+        deletedAt?: (string | null | undefined) | null;
         generation: TemplateGeneration.Raw;
     }
 }

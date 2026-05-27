@@ -22,6 +22,7 @@ export const Section: core.serialization.ObjectSchema<serializers.Section.Raw, C
         publishedVersion: SectionVersion.optional(),
         createdAt: core.serialization.date(),
         updatedAt: core.serialization.date(),
+        deletedAt: core.serialization.date().optionalNullable(),
     });
 
 export declare namespace Section {
@@ -39,5 +40,6 @@ export declare namespace Section {
         publishedVersion?: SectionVersion.Raw | null;
         createdAt: string;
         updatedAt: string;
+        deletedAt?: (string | null | undefined) | null;
     }
 }

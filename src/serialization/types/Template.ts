@@ -23,6 +23,7 @@ export const Template: core.serialization.ObjectSchema<serializers.Template.Raw,
         publishedVersion: TemplateVersion.optional(),
         createdAt: core.serialization.date(),
         updatedAt: core.serialization.date(),
+        deletedAt: core.serialization.date().optionalNullable(),
     });
 
 export declare namespace Template {
@@ -41,5 +42,6 @@ export declare namespace Template {
         publishedVersion?: TemplateVersion.Raw | null;
         createdAt: string;
         updatedAt: string;
+        deletedAt?: (string | null | undefined) | null;
     }
 }

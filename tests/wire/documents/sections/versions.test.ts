@@ -22,6 +22,7 @@ describe("VersionsClient", () => {
             {
                 id: "id",
                 versionNumber: 1,
+                deletedAt: "2024-01-15T09:30:00Z",
                 generation: {
                     heading: "heading",
                     instructions: { contentPrompt: "contentPrompt" },
@@ -43,6 +44,7 @@ describe("VersionsClient", () => {
             {
                 id: "id",
                 versionNumber: 1,
+                deletedAt: new Date("2024-01-15T09:30:00.000Z"),
                 generation: {
                     heading: "heading",
                     instructions: {
@@ -104,6 +106,7 @@ describe("VersionsClient", () => {
         const rawResponseBody = {
             id: "id",
             versionNumber: 1,
+            deletedAt: "2024-01-15T09:30:00Z",
             generation: {
                 heading: "heading",
                 instructions: {
@@ -144,6 +147,7 @@ describe("VersionsClient", () => {
         expect(response).toEqual({
             id: "id",
             versionNumber: 1,
+            deletedAt: new Date("2024-01-15T09:30:00.000Z"),
             generation: {
                 heading: "heading",
                 instructions: {
@@ -265,6 +269,7 @@ describe("VersionsClient", () => {
         const rawResponseBody = {
             id: "id",
             versionNumber: 1,
+            deletedAt: "2024-01-15T09:30:00Z",
             generation: {
                 heading: "heading",
                 instructions: {
@@ -294,6 +299,7 @@ describe("VersionsClient", () => {
         expect(response).toEqual({
             id: "id",
             versionNumber: 1,
+            deletedAt: new Date("2024-01-15T09:30:00.000Z"),
             generation: {
                 heading: "heading",
                 instructions: {
