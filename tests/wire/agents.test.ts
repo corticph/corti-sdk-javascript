@@ -1773,6 +1773,110 @@ describe("AgentsClient", () => {
         }).rejects.toThrow(Corti.NotFoundError);
     });
 
+    test("deleteContext (1)", async () => {
+        const server = mockServerPool.createServer();
+        mockOAuth(server);
+
+        const client = new CortiClient({
+            maxRetries: 0,
+            clientId: "client_id",
+            clientSecret: "client_secret",
+            tenantName: "test",
+            environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
+        });
+
+        server
+            .mockEndpoint()
+            .delete("/agents/12345678-90ab-cdef-gh12-34567890abc/v1/contexts/contextId")
+            .respondWith()
+            .statusCode(200)
+            .build();
+
+        const response = await client.agents.deleteContext("12345678-90ab-cdef-gh12-34567890abc", "contextId");
+        expect(response).toEqual(undefined);
+    });
+
+    test("deleteContext (2)", async () => {
+        const server = mockServerPool.createServer();
+        mockOAuth(server);
+
+        const client = new CortiClient({
+            maxRetries: 0,
+            clientId: "client_id",
+            clientSecret: "client_secret",
+            tenantName: "test",
+            environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
+        });
+
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .delete("/agents/id/v1/contexts/contextId")
+            .respondWith()
+            .statusCode(400)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.agents.deleteContext("id", "contextId");
+        }).rejects.toThrow(Corti.BadRequestError);
+    });
+
+    test("deleteContext (3)", async () => {
+        const server = mockServerPool.createServer();
+        mockOAuth(server);
+
+        const client = new CortiClient({
+            maxRetries: 0,
+            clientId: "client_id",
+            clientSecret: "client_secret",
+            tenantName: "test",
+            environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
+        });
+
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .delete("/agents/id/v1/contexts/contextId")
+            .respondWith()
+            .statusCode(401)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.agents.deleteContext("id", "contextId");
+        }).rejects.toThrow(Corti.UnauthorizedError);
+    });
+
+    test("deleteContext (4)", async () => {
+        const server = mockServerPool.createServer();
+        mockOAuth(server);
+
+        const client = new CortiClient({
+            maxRetries: 0,
+            clientId: "client_id",
+            clientSecret: "client_secret",
+            tenantName: "test",
+            environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
+        });
+
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .delete("/agents/id/v1/contexts/contextId")
+            .respondWith()
+            .statusCode(404)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.agents.deleteContext("id", "contextId");
+        }).rejects.toThrow(Corti.NotFoundError);
+    });
+
     test("getRegistryExperts (1)", async () => {
         const server = mockServerPool.createServer();
         mockOAuth(server);
@@ -1793,6 +1897,7 @@ describe("AgentsClient", () => {
                     displayDescription: "displayDescription",
                     description: "description",
                     mcpServers: [{ name: "name", authorizationType: "none" }],
+                    configSchema: { key: "value" },
                 },
             ],
         };
@@ -1822,6 +1927,9 @@ describe("AgentsClient", () => {
                             authorizationType: "none",
                         },
                     ],
+                    configSchema: {
+                        key: "value",
+                    },
                 },
             ],
         });
