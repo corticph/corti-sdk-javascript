@@ -4,6 +4,7 @@ import type * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
 import type * as serializers from "../index.js";
 import { Label } from "./Label.js";
+import { SectionPolicy } from "./SectionPolicy.js";
 import { SectionSource } from "./SectionSource.js";
 import { SectionVersion } from "./SectionVersion.js";
 
@@ -23,6 +24,7 @@ export const Section: core.serialization.ObjectSchema<serializers.Section.Raw, C
         createdAt: core.serialization.date(),
         updatedAt: core.serialization.date(),
         deletedAt: core.serialization.date().optionalNullable(),
+        policies: core.serialization.list(SectionPolicy).optional(),
     });
 
 export declare namespace Section {
@@ -41,5 +43,6 @@ export declare namespace Section {
         createdAt: string;
         updatedAt: string;
         deletedAt?: (string | null | undefined) | null;
+        policies?: SectionPolicy.Raw[] | null;
     }
 }

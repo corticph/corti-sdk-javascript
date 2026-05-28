@@ -17,4 +17,6 @@ export interface CreateSectionBase {
     labels?: Corti.Label[];
     /** Defaults to true when omitted. Set this to false if you do not want the section to automatically show up in LIST /sections. */
     publish?: boolean;
+    /** Access policies to apply to the section on creation. */
+    policies?: Corti.CreateSectionPolicyRequest[];
 }

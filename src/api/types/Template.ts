@@ -24,7 +24,7 @@ export interface Template {
     /** The available labels to use as query param filter in the LIST /templates endpoint. */
     labels: Corti.Label[];
     /** Access policies for this template. */
-    policies?: unknown[];
+    policies?: Corti.TemplatePolicy[];
     publishedVersion?: Corti.TemplateVersion;
     /** The original timestamp when the template was created. */
     createdAt: Date;

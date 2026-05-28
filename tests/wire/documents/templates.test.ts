@@ -30,6 +30,16 @@ describe("TemplatesClient", () => {
                 regions: ["regions"],
                 specialties: ["specialties"],
                 labels: [{ key: "key", value: "value" }],
+                policies: [
+                    {
+                        id: "id",
+                        kind: "project",
+                        templateId: "templateId",
+                        createdBy: "createdBy",
+                        createdAt: "2024-01-15T09:30:00Z",
+                        updatedAt: "2024-01-15T09:30:00Z",
+                    },
+                ],
                 publishedVersion: {
                     id: "id",
                     versionNumber: 1,
@@ -89,6 +99,16 @@ describe("TemplatesClient", () => {
                     {
                         key: "key",
                         value: "value",
+                    },
+                ],
+                policies: [
+                    {
+                        id: "id",
+                        kind: "project",
+                        templateId: "templateId",
+                        createdBy: "createdBy",
+                        createdAt: new Date("2024-01-15T09:30:00.000Z"),
+                        updatedAt: new Date("2024-01-15T09:30:00.000Z"),
                     },
                 ],
                 publishedVersion: {
@@ -161,6 +181,17 @@ describe("TemplatesClient", () => {
             regions: ["regions"],
             specialties: ["specialties"],
             labels: [{ key: "key", value: "value" }],
+            policies: [
+                {
+                    id: "id",
+                    kind: "project",
+                    customerIds: ["customerIds"],
+                    templateId: "templateId",
+                    createdBy: "createdBy",
+                    createdAt: "2024-01-15T09:30:00Z",
+                    updatedAt: "2024-01-15T09:30:00Z",
+                },
+            ],
             publishedVersion: {
                 id: "id",
                 versionNumber: 1,
@@ -226,6 +257,17 @@ describe("TemplatesClient", () => {
                 {
                     key: "key",
                     value: "value",
+                },
+            ],
+            policies: [
+                {
+                    id: "id",
+                    kind: "project",
+                    customerIds: ["customerIds"],
+                    templateId: "templateId",
+                    createdBy: "createdBy",
+                    createdAt: new Date("2024-01-15T09:30:00.000Z"),
+                    updatedAt: new Date("2024-01-15T09:30:00.000Z"),
                 },
             ],
             publishedVersion: {
@@ -332,6 +374,17 @@ describe("TemplatesClient", () => {
             regions: ["regions"],
             specialties: ["specialties"],
             labels: [{ key: "key", value: "value" }],
+            policies: [
+                {
+                    id: "id",
+                    kind: "project",
+                    customerIds: ["customerIds"],
+                    templateId: "templateId",
+                    createdBy: "createdBy",
+                    createdAt: "2024-01-15T09:30:00Z",
+                    updatedAt: "2024-01-15T09:30:00Z",
+                },
+            ],
             publishedVersion: {
                 id: "id",
                 versionNumber: 1,
@@ -389,6 +442,17 @@ describe("TemplatesClient", () => {
                 {
                     key: "key",
                     value: "value",
+                },
+            ],
+            policies: [
+                {
+                    id: "id",
+                    kind: "project",
+                    customerIds: ["customerIds"],
+                    templateId: "templateId",
+                    createdBy: "createdBy",
+                    createdAt: new Date("2024-01-15T09:30:00.000Z"),
+                    updatedAt: new Date("2024-01-15T09:30:00.000Z"),
                 },
             ],
             publishedVersion: {
@@ -559,6 +623,17 @@ describe("TemplatesClient", () => {
             regions: ["regions"],
             specialties: ["specialties"],
             labels: [{ key: "key", value: "value" }],
+            policies: [
+                {
+                    id: "id",
+                    kind: "project",
+                    customerIds: ["customerIds"],
+                    templateId: "templateId",
+                    createdBy: "createdBy",
+                    createdAt: "2024-01-15T09:30:00Z",
+                    updatedAt: "2024-01-15T09:30:00Z",
+                },
+            ],
             publishedVersion: {
                 id: "id",
                 versionNumber: 1,
@@ -617,6 +692,17 @@ describe("TemplatesClient", () => {
                 {
                     key: "key",
                     value: "value",
+                },
+            ],
+            policies: [
+                {
+                    id: "id",
+                    kind: "project",
+                    customerIds: ["customerIds"],
+                    templateId: "templateId",
+                    createdBy: "createdBy",
+                    createdAt: new Date("2024-01-15T09:30:00.000Z"),
+                    updatedAt: new Date("2024-01-15T09:30:00.000Z"),
                 },
             ],
             publishedVersion: {

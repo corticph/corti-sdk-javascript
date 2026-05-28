@@ -31,4 +31,6 @@ export interface Section {
     updatedAt: Date;
     /** Present when the section has been deleted. GET by ID still returns the full resource with this field populated. */
     deletedAt?: Date | null;
+    /** Access policies for this section. */
+    policies?: Corti.SectionPolicy[];
 }

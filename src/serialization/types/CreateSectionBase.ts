@@ -3,6 +3,7 @@
 import type * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
 import type * as serializers from "../index.js";
+import { CreateSectionPolicyRequest } from "./CreateSectionPolicyRequest.js";
 import { Label } from "./Label.js";
 
 export const CreateSectionBase: core.serialization.ObjectSchema<
@@ -16,6 +17,7 @@ export const CreateSectionBase: core.serialization.ObjectSchema<
     specialties: core.serialization.list(core.serialization.string()).optional(),
     labels: core.serialization.list(Label).optional(),
     publish: core.serialization.boolean().optional(),
+    policies: core.serialization.list(CreateSectionPolicyRequest).optional(),
 });
 
 export declare namespace CreateSectionBase {
@@ -27,5 +29,6 @@ export declare namespace CreateSectionBase {
         specialties?: string[] | null;
         labels?: Label.Raw[] | null;
         publish?: boolean | null;
+        policies?: CreateSectionPolicyRequest.Raw[] | null;
     }
 }

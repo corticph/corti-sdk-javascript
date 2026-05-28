@@ -3,6 +3,7 @@
 import type * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
 import type * as serializers from "../index.js";
+import { CreateTemplatePolicyRequest } from "./CreateTemplatePolicyRequest.js";
 import { Label } from "./Label.js";
 
 export const CreateTemplateBase: core.serialization.ObjectSchema<
@@ -16,7 +17,7 @@ export const CreateTemplateBase: core.serialization.ObjectSchema<
     specialties: core.serialization.list(core.serialization.string()).optional(),
     labels: core.serialization.list(Label).optional(),
     publish: core.serialization.boolean().optional(),
-    policies: core.serialization.list(core.serialization.unknown()).optional(),
+    policies: core.serialization.list(CreateTemplatePolicyRequest).optional(),
 });
 
 export declare namespace CreateTemplateBase {
@@ -28,6 +29,6 @@ export declare namespace CreateTemplateBase {
         specialties?: string[] | null;
         labels?: Label.Raw[] | null;
         publish?: boolean | null;
-        policies?: unknown[] | null;
+        policies?: CreateTemplatePolicyRequest.Raw[] | null;
     }
 }

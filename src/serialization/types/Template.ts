@@ -4,6 +4,7 @@ import type * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
 import type * as serializers from "../index.js";
 import { Label } from "./Label.js";
+import { TemplatePolicy } from "./TemplatePolicy.js";
 import { TemplateSource } from "./TemplateSource.js";
 import { TemplateVersion } from "./TemplateVersion.js";
 
@@ -19,7 +20,7 @@ export const Template: core.serialization.ObjectSchema<serializers.Template.Raw,
         regions: core.serialization.list(core.serialization.string()),
         specialties: core.serialization.list(core.serialization.string()),
         labels: core.serialization.list(Label),
-        policies: core.serialization.list(core.serialization.unknown()).optional(),
+        policies: core.serialization.list(TemplatePolicy).optional(),
         publishedVersion: TemplateVersion.optional(),
         createdAt: core.serialization.date(),
         updatedAt: core.serialization.date(),
@@ -38,7 +39,7 @@ export declare namespace Template {
         regions: string[];
         specialties: string[];
         labels: Label.Raw[];
-        policies?: unknown[] | null;
+        policies?: TemplatePolicy.Raw[] | null;
         publishedVersion?: TemplateVersion.Raw | null;
         createdAt: string;
         updatedAt: string;
