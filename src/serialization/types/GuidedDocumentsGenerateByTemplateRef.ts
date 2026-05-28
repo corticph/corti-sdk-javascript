@@ -6,16 +6,16 @@ import type * as serializers from "../index.js";
 import { GuidedDocumentsGenerateBase } from "./GuidedDocumentsGenerateBase.js";
 import { GuidedTemplateRef } from "./GuidedTemplateRef.js";
 
-export const GuidedDocumentByTemplateRef: core.serialization.ObjectSchema<
-    serializers.GuidedDocumentByTemplateRef.Raw,
-    Corti.GuidedDocumentByTemplateRef
+export const GuidedDocumentsGenerateByTemplateRef: core.serialization.ObjectSchema<
+    serializers.GuidedDocumentsGenerateByTemplateRef.Raw,
+    Corti.GuidedDocumentsGenerateByTemplateRef
 > = core.serialization
     .object({
         templateRef: GuidedTemplateRef,
     })
     .extend(GuidedDocumentsGenerateBase);
 
-export declare namespace GuidedDocumentByTemplateRef {
+export declare namespace GuidedDocumentsGenerateByTemplateRef {
     export interface Raw extends GuidedDocumentsGenerateBase.Raw {
         templateRef: GuidedTemplateRef.Raw;
     }
