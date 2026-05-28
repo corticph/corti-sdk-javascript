@@ -1,39 +1,39 @@
 {
-  "cliVersion": "5.35.2",
-  "generatorName": "fernapi/fern-typescript-node-sdk",
-  "generatorVersion": "3.54.0",
-  "generatorConfig": {
-    "namespaceExport": "Corti",
-    "noSerdeLayer": false,
-    "enableInlineTypes": false,
-    "streamType": "web",
-    "shouldGenerateWebsocketClients": true,
-    "generateSubpackageExports": false,
-    "inlinePathParameters": false,
-    "extraDevDependencies": {
-      "@faker-js/faker": "^9.9.0"
-    },
-    "packageJson": {
-      "scripts": {
-        "test:integration": "pnpm test:integration:main && pnpm test:integration:empty-state",
-        "test:integration:main": "vitest run --config vitest.integration.config.mts --project integration",
-        "test:integration:empty-state": "vitest run --config vitest.integration.config.mts --project integration-empty-state"
-      },
-      "exports": {
-        "./utils": {
-          "import": {
-            "types": "./dist/esm/custom/utils/index.d.mts",
-            "default": "./dist/esm/custom/utils/index.mjs"
-          },
-          "require": {
-            "types": "./dist/cjs/custom/utils/index.d.ts",
-            "default": "./dist/cjs/custom/utils/index.js"
-          },
-          "default": "./dist/cjs/custom/utils/index.js"
+    "cliVersion": "5.35.2",
+    "generatorName": "fernapi/fern-typescript-node-sdk",
+    "generatorVersion": "3.54.0",
+    "generatorConfig": {
+        "namespaceExport": "Corti",
+        "noSerdeLayer": false,
+        "enableInlineTypes": false,
+        "streamType": "web",
+        "shouldGenerateWebsocketClients": true,
+        "generateSubpackageExports": false,
+        "inlinePathParameters": false,
+        "extraDevDependencies": {
+            "@faker-js/faker": "^9.9.0"
+        },
+        "packageJson": {
+            "scripts": {
+                "test:integration": "pnpm test:integration:main && pnpm test:integration:empty-state",
+                "test:integration:main": "vitest run --config vitest.integration.config.mts --project integration",
+                "test:integration:empty-state": "vitest run --config vitest.integration.config.mts --project integration-empty-state"
+            },
+            "exports": {
+                "./utils": {
+                    "import": {
+                        "types": "./dist/esm/custom/utils/index.d.mts",
+                        "default": "./dist/esm/custom/utils/index.mjs"
+                    },
+                    "require": {
+                        "types": "./dist/cjs/custom/utils/index.d.ts",
+                        "default": "./dist/cjs/custom/utils/index.js"
+                    },
+                    "default": "./dist/cjs/custom/utils/index.js"
+                }
+            }
         }
-      }
-    }
-  },
-  "originGitCommit": "21a5c673bcaabf792bab0fbf98331637d466431b",
-  "sdkVersion": "0.0.0-dev"
+    },
+    "originGitCommit": "21a5c673bcaabf792bab0fbf98331637d466431b",
+    "sdkVersion": "0.0.0-dev"
 }
