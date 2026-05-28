@@ -1024,7 +1024,7 @@ describe("DocumentsClient", () => {
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
-        const rawRequestBody = { templateRef: { templateId: "templateId" } };
+        const rawRequestBody = { outputLanguage: "outputLanguage", templateRef: { templateId: "templateId" } };
         const rawResponseBody = {
             document: {
                 name: "name",
@@ -1047,6 +1047,7 @@ describe("DocumentsClient", () => {
             .build();
 
         const response = await client.documents.generate({
+            outputLanguage: "outputLanguage",
             templateRef: {
                 templateId: "templateId",
             },
@@ -1081,7 +1082,7 @@ describe("DocumentsClient", () => {
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
-        const rawRequestBody = { templateRef: { templateId: "templateId" } };
+        const rawRequestBody = { templateRef: { templateId: "templateId" }, outputLanguage: "outputLanguage" };
         const rawResponseBody = { key: "value" };
 
         server
@@ -1098,6 +1099,7 @@ describe("DocumentsClient", () => {
                 templateRef: {
                     templateId: "templateId",
                 },
+                outputLanguage: "outputLanguage",
             });
         }).rejects.toThrow(Corti.BadRequestError);
     });
@@ -1113,7 +1115,7 @@ describe("DocumentsClient", () => {
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
-        const rawRequestBody = { templateRef: { templateId: "templateId" } };
+        const rawRequestBody = { templateRef: { templateId: "templateId" }, outputLanguage: "outputLanguage" };
         const rawResponseBody = { key: "value" };
 
         server
@@ -1130,6 +1132,7 @@ describe("DocumentsClient", () => {
                 templateRef: {
                     templateId: "templateId",
                 },
+                outputLanguage: "outputLanguage",
             });
         }).rejects.toThrow(Corti.NotFoundError);
     });
@@ -1145,7 +1148,7 @@ describe("DocumentsClient", () => {
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
-        const rawRequestBody = { templateRef: { templateId: "templateId" } };
+        const rawRequestBody = { templateRef: { templateId: "templateId" }, outputLanguage: "outputLanguage" };
         const rawResponseBody = { key: "value" };
 
         server
@@ -1162,6 +1165,7 @@ describe("DocumentsClient", () => {
                 templateRef: {
                     templateId: "templateId",
                 },
+                outputLanguage: "outputLanguage",
             });
         }).rejects.toThrow(Corti.UnprocessableEntityError);
     });
@@ -1177,7 +1181,7 @@ describe("DocumentsClient", () => {
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
-        const rawRequestBody = { templateRef: { templateId: "templateId" } };
+        const rawRequestBody = { templateRef: { templateId: "templateId" }, outputLanguage: "outputLanguage" };
         const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
 
         server
@@ -1194,6 +1198,7 @@ describe("DocumentsClient", () => {
                 templateRef: {
                     templateId: "templateId",
                 },
+                outputLanguage: "outputLanguage",
             });
         }).rejects.toThrow(Corti.InternalServerError);
     });

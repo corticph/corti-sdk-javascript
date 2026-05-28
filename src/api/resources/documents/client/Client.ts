@@ -602,6 +602,7 @@ export class DocumentsClient {
      *
      * @example
      *     await client.documents.generate({
+     *         outputLanguage: "outputLanguage",
      *         templateRef: {
      *             templateId: "templateId"
      *         }

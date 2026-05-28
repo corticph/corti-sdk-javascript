@@ -4,16 +4,19 @@ import type * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
 import type * as serializers from "../index.js";
 import { GuidedAssemblyRequest } from "./GuidedAssemblyRequest.js";
+import { GuidedDocumentBase } from "./GuidedDocumentBase.js";
 
 export const GuidedDocumentByAssembly: core.serialization.ObjectSchema<
     serializers.GuidedDocumentByAssembly.Raw,
     Corti.GuidedDocumentByAssembly
-> = core.serialization.object({
-    assemblyTemplate: GuidedAssemblyRequest,
-});
+> = core.serialization
+    .object({
+        assemblyTemplate: GuidedAssemblyRequest,
+    })
+    .extend(GuidedDocumentBase);
 
 export declare namespace GuidedDocumentByAssembly {
-    export interface Raw {
+    export interface Raw extends GuidedDocumentBase.Raw {
         assemblyTemplate: GuidedAssemblyRequest.Raw;
     }
 }

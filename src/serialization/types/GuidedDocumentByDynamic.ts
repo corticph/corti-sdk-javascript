@@ -3,17 +3,20 @@
 import type * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
 import type * as serializers from "../index.js";
+import { GuidedDocumentBase } from "./GuidedDocumentBase.js";
 import { GuidedDynamicRequest } from "./GuidedDynamicRequest.js";
 
 export const GuidedDocumentByDynamic: core.serialization.ObjectSchema<
     serializers.GuidedDocumentByDynamic.Raw,
     Corti.GuidedDocumentByDynamic
-> = core.serialization.object({
-    dynamicTemplate: GuidedDynamicRequest,
-});
+> = core.serialization
+    .object({
+        dynamicTemplate: GuidedDynamicRequest,
+    })
+    .extend(GuidedDocumentBase);
 
 export declare namespace GuidedDocumentByDynamic {
-    export interface Raw {
+    export interface Raw extends GuidedDocumentBase.Raw {
         dynamicTemplate: GuidedDynamicRequest.Raw;
     }
 }

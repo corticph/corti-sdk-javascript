@@ -3,17 +3,20 @@
 import type * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
 import type * as serializers from "../index.js";
+import { GuidedDocumentBase } from "./GuidedDocumentBase.js";
 import { GuidedTemplateRef } from "./GuidedTemplateRef.js";
 
 export const GuidedDocumentByTemplateRef: core.serialization.ObjectSchema<
     serializers.GuidedDocumentByTemplateRef.Raw,
     Corti.GuidedDocumentByTemplateRef
-> = core.serialization.object({
-    templateRef: GuidedTemplateRef,
-});
+> = core.serialization
+    .object({
+        templateRef: GuidedTemplateRef,
+    })
+    .extend(GuidedDocumentBase);
 
 export declare namespace GuidedDocumentByTemplateRef {
-    export interface Raw {
+    export interface Raw extends GuidedDocumentBase.Raw {
         templateRef: GuidedTemplateRef.Raw;
     }
 }
