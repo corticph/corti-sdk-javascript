@@ -101,6 +101,10 @@ export class SectionsClient {
     }
 
     /**
+     * Creates a new section with an initial version. When `publish` is true (default),
+     * the response includes the published version with full inheritance resolution applied
+     * (section inheritance chain walked to fill missing fields).
+     *
      * @param {Corti.CreateSectionRequest} request
      * @param {SectionsClient.RequestOptions} requestOptions - Request-specific configuration.
      *
@@ -189,6 +193,10 @@ export class SectionsClient {
     }
 
     /**
+     * Returns the section with its published version fully resolved (inheritance chain walked
+     * to fill missing fields). To see raw authored values without inheritance, use
+     * GET /documents/sections/{sectionID}/versions/{versionID}.
+     *
      * @param {string} sectionID
      * @param {SectionsClient.RequestOptions} requestOptions - Request-specific configuration.
      *

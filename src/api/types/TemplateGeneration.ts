@@ -2,6 +2,9 @@
 
 import type * as Corti from "../index.js";
 
+/**
+ * Fully resolved template generation. Sections are expanded with their own inheritance applied.
+ */
 export interface TemplateGeneration {
     instructions: Corti.TemplateInstructions;
     /** Fully resolved sections with inheritance applied. */

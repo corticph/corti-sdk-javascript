@@ -101,6 +101,10 @@ export class TemplatesClient {
     }
 
     /**
+     * Creates a new template with an initial version. When `publish` is true (default),
+     * the response includes the published version with full inheritance resolution applied
+     * (template-level and section-level inheritance walked).
+     *
      * @param {Corti.CreateTemplateRequest} request
      * @param {TemplatesClient.RequestOptions} requestOptions - Request-specific configuration.
      *
@@ -185,6 +189,10 @@ export class TemplatesClient {
     }
 
     /**
+     * Returns the template with its published version fully resolved (inheritance walked,
+     * sections expanded with their own inheritance applied). To see raw authored
+     * values without inheritance, use GET /documents/templates/{templateID}/versions/{versionID}.
+     *
      * @param {string} templateID
      * @param {TemplatesClient.RequestOptions} requestOptions - Request-specific configuration.
      *

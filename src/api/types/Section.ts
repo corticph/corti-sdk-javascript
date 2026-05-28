@@ -23,7 +23,7 @@ export interface Section {
     description?: string;
     /** The labels available to use as query param filter in the LIST /sections endpoint. */
     labels: Corti.Label[];
-    /** Shows the currently published version of this section. */
+    /** The currently published version with section inheritance fully resolved. Present when a version has been published. */
     publishedVersion?: Corti.SectionVersion;
     /** The original timestamp when the section was created. */
     createdAt: Date;

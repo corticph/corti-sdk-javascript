@@ -25,6 +25,7 @@ export interface Template {
     labels: Corti.Label[];
     /** Access policies for this template. */
     policies?: Corti.TemplatePolicy[];
+    /** The currently published version with inheritance fully resolved. Present when a version has been published. */
     publishedVersion?: Corti.TemplateVersion;
     /** The original timestamp when the template was created. */
     createdAt: Date;

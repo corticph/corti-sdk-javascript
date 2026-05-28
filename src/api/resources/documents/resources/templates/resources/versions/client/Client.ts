@@ -102,6 +102,8 @@ export class VersionsClient {
     }
 
     /**
+     * Creates a new template version. Returns raw authored values without inheritance resolution or section expansion.
+     *
      * @param {string} templateID
      * @param {Corti.documents.templates.CreateTemplateVersionRequest} request
      * @param {VersionsClient.RequestOptions} requestOptions - Request-specific configuration.
@@ -122,7 +124,7 @@ export class VersionsClient {
         templateID: string,
         request: Corti.documents.templates.CreateTemplateVersionRequest,
         requestOptions?: VersionsClient.RequestOptions,
-    ): core.HttpResponsePromise<Corti.TemplateVersion> {
+    ): core.HttpResponsePromise<Corti.ShallowTemplateVersionResponse> {
         return core.HttpResponsePromise.fromPromise(this.__create(templateID, request, requestOptions));
     }
 
@@ -130,7 +132,7 @@ export class VersionsClient {
         templateID: string,
         request: Corti.documents.templates.CreateTemplateVersionRequest,
         requestOptions?: VersionsClient.RequestOptions,
-    ): Promise<core.WithRawResponse<Corti.TemplateVersion>> {
+    ): Promise<core.WithRawResponse<Corti.ShallowTemplateVersionResponse>> {
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
@@ -161,7 +163,7 @@ export class VersionsClient {
         });
         if (_response.ok) {
             return {
-                data: serializers.TemplateVersion.parseOrThrow(_response.body, {
+                data: serializers.ShallowTemplateVersionResponse.parseOrThrow(_response.body, {
                     unrecognizedObjectKeys: "passthrough",
                     allowUnrecognizedUnionMembers: true,
                     allowUnrecognizedEnumValues: true,
