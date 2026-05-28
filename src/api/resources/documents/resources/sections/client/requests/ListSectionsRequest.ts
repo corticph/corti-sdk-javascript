@@ -5,7 +5,7 @@
  *     {}
  */
 export interface ListSectionsRequest {
-    /** Filter sections by BCP 47 language subtag (e.g. `fr`, `de`). Repeatable. */
+    /** Filter sections by BCP 47 language tag (e.g. `fr`, `de`, or `en-GB`). Repeatable. */
     lang?: string | string[];
     /** Filter sections by ISO 3166-1 alpha-3 region code (e.g. `BEL`). Repeatable. */
     region?: string | string[];

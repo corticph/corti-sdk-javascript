@@ -7,10 +7,16 @@ import type * as Corti from "../../../../../../index.js";
  *     {}
  */
 export interface GuidedTemplatesUpdateRequest {
+    /** The name of this template. Not passed to the LLM. */
     name?: string;
+    /** A description for this template. Not passed to the LLM. */
     description?: string;
+    /** BCP 47 language tags this template has been tweaked for (e.g. `["fr", "de", "en-GB"]`). */
     languages?: string[];
+    /** ISO 3166-1 alpha-3 country codes this template has been tweaked for (e.g. `["BEL"]`). */
     regions?: string[];
+    /** Clinical specialties this template has been tweaked for. */
     specialties?: string[];
+    /** Labels work as query param filter in the LIST /templates endpoint. */
     labels?: Corti.Label[];
 }

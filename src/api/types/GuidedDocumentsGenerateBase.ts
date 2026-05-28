@@ -3,13 +3,13 @@
 import type * as Corti from "../index.js";
 
 /**
- * Fields shared across all guided-document request variants.
+ * Fields shared across all guided-document request variants. `outputLanguage` is always required. Exactly one input mode must be supplied: provide context items inline, or reference an existing interaction whose attached facts and transcripts will be used.
  */
 export interface GuidedDocumentsGenerateBase {
     /** The language in which the document will be generated as a BCP 47 tag. */
     outputLanguage: string;
     /** Ordered list of context items the model reasons over. Each item is one of text, a transcript (with optional metadata and segments), or a single fact. Items are interleaved by timestamps where present on transcript segments; otherwise array order is preserved. */
     context?: Corti.GuidedDocumentContext[];
-    /** When supplied, all facts and transcripts already attached to the referenced interaction are passed implicitly as input context. */
+    /** When supplied, all facts and transcripts already attached to the referenced interaction are passed implicitly as input context. Facts with `isDiscarded: true` are not passed on. */
     interactionId?: string;
 }

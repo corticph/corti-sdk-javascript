@@ -8,8 +8,7 @@ export const ObjectNode: core.serialization.ObjectSchema<serializers.ObjectNode.
     core.serialization.object({
         type: core.serialization.stringLiteral("object"),
         description: core.serialization.string().optional(),
-        subheadingFormat: core.serialization.string().optional(),
-        objectFormat: core.serialization.string().optional(),
+        fieldFormat: core.serialization.string().optional(),
         fields: core.serialization.list(core.serialization.lazyObject(() => serializers.FieldDefinition)).optional(),
     });
 
@@ -17,8 +16,7 @@ export declare namespace ObjectNode {
     export interface Raw {
         type: "object";
         description?: string | null;
-        subheadingFormat?: string | null;
-        objectFormat?: string | null;
+        fieldFormat?: string | null;
         fields?: serializers.FieldDefinition.Raw[] | null;
     }
 }

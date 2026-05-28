@@ -161,6 +161,7 @@ export * from "./InteractionsGetResponse.js";
 export * from "./InteractionsListResponse.js";
 export * from "./InteractionsPatient.js";
 export * from "./Label.js";
+export * from "./LanguagesListResponse.js";
 export * from "./NumberNode.js";
 export * from "./OAuthTokenRequest.js";
 export * from "./ObjectNode.js";
