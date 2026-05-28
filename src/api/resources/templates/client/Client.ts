@@ -25,7 +25,7 @@ export class TemplatesClient {
     /**
      * Retrieves a list of template sections with optional filters for organization and language.
      *
-     * @param {Corti.SectionListTemplatesRequest} request
+     * @param {Corti.TemplatesSectionListRequest} request
      * @param {TemplatesClient.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Corti.UnauthorizedError}
@@ -35,14 +35,14 @@ export class TemplatesClient {
      *     await client.templates.sectionList()
      */
     public sectionList(
-        request: Corti.SectionListTemplatesRequest = {},
+        request: Corti.TemplatesSectionListRequest = {},
         requestOptions?: TemplatesClient.RequestOptions,
     ): core.HttpResponsePromise<Corti.TemplatesSectionListResponse> {
         return core.HttpResponsePromise.fromPromise(this.__sectionList(request, requestOptions));
     }
 
     private async __sectionList(
-        request: Corti.SectionListTemplatesRequest = {},
+        request: Corti.TemplatesSectionListRequest = {},
         requestOptions?: TemplatesClient.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.TemplatesSectionListResponse>> {
         const { org, lang } = request;
@@ -115,7 +115,7 @@ export class TemplatesClient {
     /**
      * Retrieves a list of templates with optional filters for organization, language, and status.
      *
-     * @param {Corti.ListTemplatesRequest} request
+     * @param {Corti.TemplatesListRequest} request
      * @param {TemplatesClient.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Corti.UnauthorizedError}
@@ -125,14 +125,14 @@ export class TemplatesClient {
      *     await client.templates.list()
      */
     public list(
-        request: Corti.ListTemplatesRequest = {},
+        request: Corti.TemplatesListRequest = {},
         requestOptions?: TemplatesClient.RequestOptions,
     ): core.HttpResponsePromise<Corti.TemplatesListResponse> {
         return core.HttpResponsePromise.fromPromise(this.__list(request, requestOptions));
     }
 
     private async __list(
-        request: Corti.ListTemplatesRequest = {},
+        request: Corti.TemplatesListRequest = {},
         requestOptions?: TemplatesClient.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.TemplatesListResponse>> {
         const { org, lang, status } = request;

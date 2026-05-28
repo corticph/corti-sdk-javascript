@@ -4,7 +4,7 @@
  * @example
  *     {}
  */
-export interface SectionListTemplatesRequest {
+export interface TemplatesSectionListRequest {
     /** Filter template sections by organization. */
     org?: string | string[];
     /** Filter template sections by language. */
