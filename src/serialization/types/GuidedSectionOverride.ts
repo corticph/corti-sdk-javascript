@@ -3,19 +3,19 @@
 import type * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
 import type * as serializers from "../index.js";
-import { SectionOverrides } from "./SectionOverrides.js";
+import { GuidedSectionOverrides } from "./GuidedSectionOverrides.js";
 
 export const GuidedSectionOverride: core.serialization.ObjectSchema<
     serializers.GuidedSectionOverride.Raw,
     Corti.GuidedSectionOverride
 > = core.serialization.object({
     sectionId: core.serialization.string(),
-    generation: SectionOverrides.optional(),
+    generation: GuidedSectionOverrides.optional(),
 });
 
 export declare namespace GuidedSectionOverride {
     export interface Raw {
         sectionId: string;
-        generation?: SectionOverrides.Raw | null;
+        generation?: GuidedSectionOverrides.Raw | null;
     }
 }

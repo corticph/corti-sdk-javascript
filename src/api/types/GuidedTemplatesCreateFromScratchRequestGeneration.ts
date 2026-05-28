@@ -3,6 +3,6 @@
 import type * as Corti from "../index.js";
 
 export interface GuidedTemplatesCreateFromScratchRequestGeneration {
-    instructions: Corti.TemplateInstructions;
+    instructions: Corti.GuidedTemplateInstructions;
     sections?: Corti.GuidedTemplatesVersionSectionRequest[];
 }

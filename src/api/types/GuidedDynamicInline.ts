@@ -3,6 +3,6 @@
 import type * as Corti from "../index.js";
 
 export interface GuidedDynamicInline {
-    instructions: Corti.TemplateInstructions;
-    sections: Corti.SectionGeneration[];
+    instructions: Corti.GuidedTemplateInstructions;
+    sections: Corti.GuidedSectionGeneration[];
 }

@@ -9,6 +9,6 @@ export interface GuidedAssemblyRequest {
     /** Name for the auto-generated template aggregate that will be persisted. */
     name: string;
     /** Template-level instructions for the assembled template. */
-    instructions?: Corti.TemplateInstructions;
+    instructions?: Corti.GuidedTemplateInstructions;
     sectionRefs: Corti.GuidedAssemblySectionRef[];
 }

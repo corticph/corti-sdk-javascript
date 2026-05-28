@@ -3,20 +3,20 @@
 import type * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
 import type * as serializers from "../index.js";
+import { GuidedSectionGeneration } from "./GuidedSectionGeneration.js";
 import { GuidedSectionsCreateBase } from "./GuidedSectionsCreateBase.js";
-import { SectionGeneration } from "./SectionGeneration.js";
 
 export const GuidedSectionsCreateFromScratchRequest: core.serialization.ObjectSchema<
     serializers.GuidedSectionsCreateFromScratchRequest.Raw,
     Corti.GuidedSectionsCreateFromScratchRequest
 > = core.serialization
     .object({
-        generation: SectionGeneration,
+        generation: GuidedSectionGeneration,
     })
     .extend(GuidedSectionsCreateBase);
 
 export declare namespace GuidedSectionsCreateFromScratchRequest {
     export interface Raw extends GuidedSectionsCreateBase.Raw {
-        generation: SectionGeneration.Raw;
+        generation: GuidedSectionGeneration.Raw;
     }
 }

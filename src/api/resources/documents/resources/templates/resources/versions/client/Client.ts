@@ -37,14 +37,14 @@ export class VersionsClient {
     public list(
         templateID: string,
         requestOptions?: VersionsClient.RequestOptions,
-    ): core.HttpResponsePromise<Corti.TemplateVersion[]> {
+    ): core.HttpResponsePromise<Corti.GuidedTemplateVersion[]> {
         return core.HttpResponsePromise.fromPromise(this.__list(templateID, requestOptions));
     }
 
     private async __list(
         templateID: string,
         requestOptions?: VersionsClient.RequestOptions,
-    ): Promise<core.WithRawResponse<Corti.TemplateVersion[]>> {
+    ): Promise<core.WithRawResponse<Corti.GuidedTemplateVersion[]>> {
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
@@ -122,7 +122,7 @@ export class VersionsClient {
         templateID: string,
         request: Corti.documents.templates.GuidedTemplatesCreateVersionRequest,
         requestOptions?: VersionsClient.RequestOptions,
-    ): core.HttpResponsePromise<Corti.TemplateVersion> {
+    ): core.HttpResponsePromise<Corti.GuidedTemplateVersion> {
         return core.HttpResponsePromise.fromPromise(this.__create(templateID, request, requestOptions));
     }
 
@@ -130,7 +130,7 @@ export class VersionsClient {
         templateID: string,
         request: Corti.documents.templates.GuidedTemplatesCreateVersionRequest,
         requestOptions?: VersionsClient.RequestOptions,
-    ): Promise<core.WithRawResponse<Corti.TemplateVersion>> {
+    ): Promise<core.WithRawResponse<Corti.GuidedTemplateVersion>> {
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
@@ -161,7 +161,7 @@ export class VersionsClient {
         });
         if (_response.ok) {
             return {
-                data: serializers.TemplateVersion.parseOrThrow(_response.body, {
+                data: serializers.GuidedTemplateVersion.parseOrThrow(_response.body, {
                     unrecognizedObjectKeys: "passthrough",
                     allowUnrecognizedUnionMembers: true,
                     allowUnrecognizedEnumValues: true,
@@ -209,7 +209,7 @@ export class VersionsClient {
         templateID: string,
         versionID: string,
         requestOptions?: VersionsClient.RequestOptions,
-    ): core.HttpResponsePromise<Corti.TemplateVersion> {
+    ): core.HttpResponsePromise<Corti.GuidedTemplateVersion> {
         return core.HttpResponsePromise.fromPromise(this.__get(templateID, versionID, requestOptions));
     }
 
@@ -217,7 +217,7 @@ export class VersionsClient {
         templateID: string,
         versionID: string,
         requestOptions?: VersionsClient.RequestOptions,
-    ): Promise<core.WithRawResponse<Corti.TemplateVersion>> {
+    ): Promise<core.WithRawResponse<Corti.GuidedTemplateVersion>> {
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
@@ -242,7 +242,7 @@ export class VersionsClient {
         });
         if (_response.ok) {
             return {
-                data: serializers.TemplateVersion.parseOrThrow(_response.body, {
+                data: serializers.GuidedTemplateVersion.parseOrThrow(_response.body, {
                     unrecognizedObjectKeys: "passthrough",
                     allowUnrecognizedUnionMembers: true,
                     allowUnrecognizedEnumValues: true,

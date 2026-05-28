@@ -3,13 +3,13 @@
 import type * as Corti from "../../../../../../../../api/index.js";
 import * as core from "../../../../../../../../core/index.js";
 import type * as serializers from "../../../../../../../index.js";
-import { SectionVersion } from "../../../../../../../types/SectionVersion.js";
+import { GuidedSectionVersion } from "../../../../../../../types/GuidedSectionVersion.js";
 
 export const Response: core.serialization.Schema<
     serializers.documents.sections.versions.list.Response.Raw,
-    Corti.SectionVersion[]
-> = core.serialization.list(SectionVersion);
+    Corti.GuidedSectionVersion[]
+> = core.serialization.list(GuidedSectionVersion);
 
 export declare namespace Response {
-    export type Raw = SectionVersion.Raw[];
+    export type Raw = GuidedSectionVersion.Raw[];
 }

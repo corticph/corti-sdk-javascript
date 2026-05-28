@@ -4,7 +4,7 @@ import type * as Corti from "../index.js";
 
 export interface GuidedTemplateOverrides {
     /** Replaces the template-level instructions for this call. */
-    instructions?: Corti.TemplateInstructions;
+    instructions?: Corti.GuidedTemplateInstructions;
     /** Per-section override patches. Each entry must reference a section already linked to the base template version. */
     sections?: Corti.GuidedSectionOverride[];
 }

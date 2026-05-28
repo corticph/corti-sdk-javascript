@@ -6,6 +6,6 @@ import type * as Corti from "../index.js";
  * Partial overrides applied on top of the inherited template. All inner fields are optional. Any field omitted is inherited from the referenced template.
  */
 export interface GuidedTemplatesCreateFromInheritanceRequestGeneration {
-    instructions?: Corti.TemplateInstructionsPartial;
+    instructions?: Corti.GuidedTemplateInstructionsPartial;
     sections?: Corti.GuidedTemplatesVersionSectionRequest[];
 }

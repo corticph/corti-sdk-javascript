@@ -3,17 +3,17 @@
 import type * as Corti from "../../../../../../../../../api/index.js";
 import * as core from "../../../../../../../../../core/index.js";
 import type * as serializers from "../../../../../../../../index.js";
-import { SectionGeneration } from "../../../../../../../../types/SectionGeneration.js";
+import { GuidedSectionGeneration } from "../../../../../../../../types/GuidedSectionGeneration.js";
 
 export const GuidedSectionsCreateVersionRequest: core.serialization.Schema<
     serializers.documents.sections.GuidedSectionsCreateVersionRequest.Raw,
     Corti.documents.sections.GuidedSectionsCreateVersionRequest
 > = core.serialization.object({
-    generation: SectionGeneration,
+    generation: GuidedSectionGeneration,
 });
 
 export declare namespace GuidedSectionsCreateVersionRequest {
     export interface Raw {
-        generation: SectionGeneration.Raw;
+        generation: GuidedSectionGeneration.Raw;
     }
 }

@@ -4,19 +4,19 @@ import type * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
 import type * as serializers from "../index.js";
 import { GuidedSectionOverride } from "./GuidedSectionOverride.js";
-import { TemplateInstructions } from "./TemplateInstructions.js";
+import { GuidedTemplateInstructions } from "./GuidedTemplateInstructions.js";
 
 export const GuidedTemplateOverrides: core.serialization.ObjectSchema<
     serializers.GuidedTemplateOverrides.Raw,
     Corti.GuidedTemplateOverrides
 > = core.serialization.object({
-    instructions: TemplateInstructions.optional(),
+    instructions: GuidedTemplateInstructions.optional(),
     sections: core.serialization.list(GuidedSectionOverride).optional(),
 });
 
 export declare namespace GuidedTemplateOverrides {
     export interface Raw {
-        instructions?: TemplateInstructions.Raw | null;
+        instructions?: GuidedTemplateInstructions.Raw | null;
         sections?: GuidedSectionOverride.Raw[] | null;
     }
 }

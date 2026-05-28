@@ -38,14 +38,14 @@ export class TemplatesClient {
     public list(
         request: Corti.documents.ListTemplatesRequest = {},
         requestOptions?: TemplatesClient.RequestOptions,
-    ): core.HttpResponsePromise<Corti.Template[]> {
+    ): core.HttpResponsePromise<Corti.GuidedTemplate[]> {
         return core.HttpResponsePromise.fromPromise(this.__list(request, requestOptions));
     }
 
     private async __list(
         request: Corti.documents.ListTemplatesRequest = {},
         requestOptions?: TemplatesClient.RequestOptions,
-    ): Promise<core.WithRawResponse<Corti.Template[]>> {
+    ): Promise<core.WithRawResponse<Corti.GuidedTemplate[]>> {
         const { lang, region, specialty, label, published } = request;
         const _queryParams: Record<string, unknown> = {
             lang,
@@ -119,14 +119,14 @@ export class TemplatesClient {
     public create(
         request: Corti.GuidedTemplatesCreateRequest,
         requestOptions?: TemplatesClient.RequestOptions,
-    ): core.HttpResponsePromise<Corti.Template> {
+    ): core.HttpResponsePromise<Corti.GuidedTemplate> {
         return core.HttpResponsePromise.fromPromise(this.__create(request, requestOptions));
     }
 
     private async __create(
         request: Corti.GuidedTemplatesCreateRequest,
         requestOptions?: TemplatesClient.RequestOptions,
-    ): Promise<core.WithRawResponse<Corti.Template>> {
+    ): Promise<core.WithRawResponse<Corti.GuidedTemplate>> {
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
@@ -157,7 +157,7 @@ export class TemplatesClient {
         });
         if (_response.ok) {
             return {
-                data: serializers.Template.parseOrThrow(_response.body, {
+                data: serializers.GuidedTemplate.parseOrThrow(_response.body, {
                     unrecognizedObjectKeys: "passthrough",
                     allowUnrecognizedUnionMembers: true,
                     allowUnrecognizedEnumValues: true,
@@ -196,14 +196,14 @@ export class TemplatesClient {
     public get(
         templateID: string,
         requestOptions?: TemplatesClient.RequestOptions,
-    ): core.HttpResponsePromise<Corti.Template> {
+    ): core.HttpResponsePromise<Corti.GuidedTemplate> {
         return core.HttpResponsePromise.fromPromise(this.__get(templateID, requestOptions));
     }
 
     private async __get(
         templateID: string,
         requestOptions?: TemplatesClient.RequestOptions,
-    ): Promise<core.WithRawResponse<Corti.Template>> {
+    ): Promise<core.WithRawResponse<Corti.GuidedTemplate>> {
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
@@ -228,7 +228,7 @@ export class TemplatesClient {
         });
         if (_response.ok) {
             return {
-                data: serializers.Template.parseOrThrow(_response.body, {
+                data: serializers.GuidedTemplate.parseOrThrow(_response.body, {
                     unrecognizedObjectKeys: "passthrough",
                     allowUnrecognizedUnionMembers: true,
                     allowUnrecognizedEnumValues: true,
@@ -353,7 +353,7 @@ export class TemplatesClient {
         templateID: string,
         request: Corti.documents.GuidedTemplatesUpdateRequest = {},
         requestOptions?: TemplatesClient.RequestOptions,
-    ): core.HttpResponsePromise<Corti.Template> {
+    ): core.HttpResponsePromise<Corti.GuidedTemplate> {
         return core.HttpResponsePromise.fromPromise(this.__update(templateID, request, requestOptions));
     }
 
@@ -361,7 +361,7 @@ export class TemplatesClient {
         templateID: string,
         request: Corti.documents.GuidedTemplatesUpdateRequest = {},
         requestOptions?: TemplatesClient.RequestOptions,
-    ): Promise<core.WithRawResponse<Corti.Template>> {
+    ): Promise<core.WithRawResponse<Corti.GuidedTemplate>> {
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
@@ -392,7 +392,7 @@ export class TemplatesClient {
         });
         if (_response.ok) {
             return {
-                data: serializers.Template.parseOrThrow(_response.body, {
+                data: serializers.GuidedTemplate.parseOrThrow(_response.body, {
                     unrecognizedObjectKeys: "passthrough",
                     allowUnrecognizedUnionMembers: true,
                     allowUnrecognizedEnumValues: true,

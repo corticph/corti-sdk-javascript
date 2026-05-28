@@ -38,14 +38,14 @@ export class SectionsClient {
     public list(
         request: Corti.documents.ListSectionsRequest = {},
         requestOptions?: SectionsClient.RequestOptions,
-    ): core.HttpResponsePromise<Corti.Section[]> {
+    ): core.HttpResponsePromise<Corti.GuidedSection[]> {
         return core.HttpResponsePromise.fromPromise(this.__list(request, requestOptions));
     }
 
     private async __list(
         request: Corti.documents.ListSectionsRequest = {},
         requestOptions?: SectionsClient.RequestOptions,
-    ): Promise<core.WithRawResponse<Corti.Section[]>> {
+    ): Promise<core.WithRawResponse<Corti.GuidedSection[]>> {
         const { lang, region, specialty, label, published } = request;
         const _queryParams: Record<string, unknown> = {
             lang,
@@ -123,14 +123,14 @@ export class SectionsClient {
     public create(
         request: Corti.GuidedSectionsCreateRequest,
         requestOptions?: SectionsClient.RequestOptions,
-    ): core.HttpResponsePromise<Corti.Section> {
+    ): core.HttpResponsePromise<Corti.GuidedSection> {
         return core.HttpResponsePromise.fromPromise(this.__create(request, requestOptions));
     }
 
     private async __create(
         request: Corti.GuidedSectionsCreateRequest,
         requestOptions?: SectionsClient.RequestOptions,
-    ): Promise<core.WithRawResponse<Corti.Section>> {
+    ): Promise<core.WithRawResponse<Corti.GuidedSection>> {
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
@@ -161,7 +161,7 @@ export class SectionsClient {
         });
         if (_response.ok) {
             return {
-                data: serializers.Section.parseOrThrow(_response.body, {
+                data: serializers.GuidedSection.parseOrThrow(_response.body, {
                     unrecognizedObjectKeys: "passthrough",
                     allowUnrecognizedUnionMembers: true,
                     allowUnrecognizedEnumValues: true,
@@ -200,14 +200,14 @@ export class SectionsClient {
     public get(
         sectionID: string,
         requestOptions?: SectionsClient.RequestOptions,
-    ): core.HttpResponsePromise<Corti.Section> {
+    ): core.HttpResponsePromise<Corti.GuidedSection> {
         return core.HttpResponsePromise.fromPromise(this.__get(sectionID, requestOptions));
     }
 
     private async __get(
         sectionID: string,
         requestOptions?: SectionsClient.RequestOptions,
-    ): Promise<core.WithRawResponse<Corti.Section>> {
+    ): Promise<core.WithRawResponse<Corti.GuidedSection>> {
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
@@ -232,7 +232,7 @@ export class SectionsClient {
         });
         if (_response.ok) {
             return {
-                data: serializers.Section.parseOrThrow(_response.body, {
+                data: serializers.GuidedSection.parseOrThrow(_response.body, {
                     unrecognizedObjectKeys: "passthrough",
                     allowUnrecognizedUnionMembers: true,
                     allowUnrecognizedEnumValues: true,
@@ -357,7 +357,7 @@ export class SectionsClient {
         sectionID: string,
         request: Corti.documents.GuidedSectionsUpdateRequest = {},
         requestOptions?: SectionsClient.RequestOptions,
-    ): core.HttpResponsePromise<Corti.Section> {
+    ): core.HttpResponsePromise<Corti.GuidedSection> {
         return core.HttpResponsePromise.fromPromise(this.__update(sectionID, request, requestOptions));
     }
 
@@ -365,7 +365,7 @@ export class SectionsClient {
         sectionID: string,
         request: Corti.documents.GuidedSectionsUpdateRequest = {},
         requestOptions?: SectionsClient.RequestOptions,
-    ): Promise<core.WithRawResponse<Corti.Section>> {
+    ): Promise<core.WithRawResponse<Corti.GuidedSection>> {
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
@@ -396,7 +396,7 @@ export class SectionsClient {
         });
         if (_response.ok) {
             return {
-                data: serializers.Section.parseOrThrow(_response.body, {
+                data: serializers.GuidedSection.parseOrThrow(_response.body, {
                     unrecognizedObjectKeys: "passthrough",
                     allowUnrecognizedUnionMembers: true,
                     allowUnrecognizedEnumValues: true,

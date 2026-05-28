@@ -3,7 +3,7 @@
 import type * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
 import type * as serializers from "../index.js";
-import { SectionOverrides } from "./SectionOverrides.js";
+import { GuidedSectionOverrides } from "./GuidedSectionOverrides.js";
 
 export const GuidedAssemblySectionRef: core.serialization.ObjectSchema<
     serializers.GuidedAssemblySectionRef.Raw,
@@ -11,13 +11,13 @@ export const GuidedAssemblySectionRef: core.serialization.ObjectSchema<
 > = core.serialization.object({
     sectionId: core.serialization.string(),
     sectionVersionId: core.serialization.string().optionalNullable(),
-    overrides: SectionOverrides.optional(),
+    overrides: GuidedSectionOverrides.optional(),
 });
 
 export declare namespace GuidedAssemblySectionRef {
     export interface Raw {
         sectionId: string;
         sectionVersionId?: (string | null | undefined) | null;
-        overrides?: SectionOverrides.Raw | null;
+        overrides?: GuidedSectionOverrides.Raw | null;
     }
 }

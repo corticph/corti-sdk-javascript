@@ -37,14 +37,14 @@ export class VersionsClient {
     public list(
         sectionID: string,
         requestOptions?: VersionsClient.RequestOptions,
-    ): core.HttpResponsePromise<Corti.SectionVersion[]> {
+    ): core.HttpResponsePromise<Corti.GuidedSectionVersion[]> {
         return core.HttpResponsePromise.fromPromise(this.__list(sectionID, requestOptions));
     }
 
     private async __list(
         sectionID: string,
         requestOptions?: VersionsClient.RequestOptions,
-    ): Promise<core.WithRawResponse<Corti.SectionVersion[]>> {
+    ): Promise<core.WithRawResponse<Corti.GuidedSectionVersion[]>> {
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
@@ -126,7 +126,7 @@ export class VersionsClient {
         sectionID: string,
         request: Corti.documents.sections.GuidedSectionsCreateVersionRequest,
         requestOptions?: VersionsClient.RequestOptions,
-    ): core.HttpResponsePromise<Corti.SectionVersion> {
+    ): core.HttpResponsePromise<Corti.GuidedSectionVersion> {
         return core.HttpResponsePromise.fromPromise(this.__create(sectionID, request, requestOptions));
     }
 
@@ -134,7 +134,7 @@ export class VersionsClient {
         sectionID: string,
         request: Corti.documents.sections.GuidedSectionsCreateVersionRequest,
         requestOptions?: VersionsClient.RequestOptions,
-    ): Promise<core.WithRawResponse<Corti.SectionVersion>> {
+    ): Promise<core.WithRawResponse<Corti.GuidedSectionVersion>> {
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
@@ -165,7 +165,7 @@ export class VersionsClient {
         });
         if (_response.ok) {
             return {
-                data: serializers.SectionVersion.parseOrThrow(_response.body, {
+                data: serializers.GuidedSectionVersion.parseOrThrow(_response.body, {
                     unrecognizedObjectKeys: "passthrough",
                     allowUnrecognizedUnionMembers: true,
                     allowUnrecognizedEnumValues: true,
@@ -213,7 +213,7 @@ export class VersionsClient {
         sectionID: string,
         versionID: string,
         requestOptions?: VersionsClient.RequestOptions,
-    ): core.HttpResponsePromise<Corti.SectionVersion> {
+    ): core.HttpResponsePromise<Corti.GuidedSectionVersion> {
         return core.HttpResponsePromise.fromPromise(this.__get(sectionID, versionID, requestOptions));
     }
 
@@ -221,7 +221,7 @@ export class VersionsClient {
         sectionID: string,
         versionID: string,
         requestOptions?: VersionsClient.RequestOptions,
-    ): Promise<core.WithRawResponse<Corti.SectionVersion>> {
+    ): Promise<core.WithRawResponse<Corti.GuidedSectionVersion>> {
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
@@ -246,7 +246,7 @@ export class VersionsClient {
         });
         if (_response.ok) {
             return {
-                data: serializers.SectionVersion.parseOrThrow(_response.body, {
+                data: serializers.GuidedSectionVersion.parseOrThrow(_response.body, {
                     unrecognizedObjectKeys: "passthrough",
                     allowUnrecognizedUnionMembers: true,
                     allowUnrecognizedEnumValues: true,

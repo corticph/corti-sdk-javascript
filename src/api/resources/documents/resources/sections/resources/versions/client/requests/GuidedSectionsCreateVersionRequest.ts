@@ -17,5 +17,5 @@ import type * as Corti from "../../../../../../../../index.js";
  *     }
  */
 export interface GuidedSectionsCreateVersionRequest {
-    generation: Corti.SectionGeneration;
+    generation: Corti.GuidedSectionGeneration;
 }

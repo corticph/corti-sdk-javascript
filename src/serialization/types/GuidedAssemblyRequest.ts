@@ -4,21 +4,21 @@ import type * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
 import type * as serializers from "../index.js";
 import { GuidedAssemblySectionRef } from "./GuidedAssemblySectionRef.js";
-import { TemplateInstructions } from "./TemplateInstructions.js";
+import { GuidedTemplateInstructions } from "./GuidedTemplateInstructions.js";
 
 export const GuidedAssemblyRequest: core.serialization.ObjectSchema<
     serializers.GuidedAssemblyRequest.Raw,
     Corti.GuidedAssemblyRequest
 > = core.serialization.object({
     name: core.serialization.string(),
-    instructions: TemplateInstructions.optional(),
+    instructions: GuidedTemplateInstructions.optional(),
     sectionRefs: core.serialization.list(GuidedAssemblySectionRef),
 });
 
 export declare namespace GuidedAssemblyRequest {
     export interface Raw {
         name: string;
-        instructions?: TemplateInstructions.Raw | null;
+        instructions?: GuidedTemplateInstructions.Raw | null;
         sectionRefs: GuidedAssemblySectionRef.Raw[];
     }
 }

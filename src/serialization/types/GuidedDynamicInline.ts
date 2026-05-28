@@ -3,20 +3,20 @@
 import type * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
 import type * as serializers from "../index.js";
-import { SectionGeneration } from "./SectionGeneration.js";
-import { TemplateInstructions } from "./TemplateInstructions.js";
+import { GuidedSectionGeneration } from "./GuidedSectionGeneration.js";
+import { GuidedTemplateInstructions } from "./GuidedTemplateInstructions.js";
 
 export const GuidedDynamicInline: core.serialization.ObjectSchema<
     serializers.GuidedDynamicInline.Raw,
     Corti.GuidedDynamicInline
 > = core.serialization.object({
-    instructions: TemplateInstructions,
-    sections: core.serialization.list(SectionGeneration),
+    instructions: GuidedTemplateInstructions,
+    sections: core.serialization.list(GuidedSectionGeneration),
 });
 
 export declare namespace GuidedDynamicInline {
     export interface Raw {
-        instructions: TemplateInstructions.Raw;
-        sections: SectionGeneration.Raw[];
+        instructions: GuidedTemplateInstructions.Raw;
+        sections: GuidedSectionGeneration.Raw[];
     }
 }

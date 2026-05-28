@@ -9,5 +9,5 @@ export interface GuidedAssemblySectionRef {
     sectionId: string;
     /** Optional explicit section version. Defaults to the section's published version when omitted. */
     sectionVersionId?: string | null;
-    overrides?: Corti.SectionOverrides;
+    overrides?: Corti.GuidedSectionOverrides;
 }

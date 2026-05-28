@@ -3,20 +3,20 @@
 import type * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
 import type * as serializers from "../index.js";
+import { GuidedTemplateInstructions } from "./GuidedTemplateInstructions.js";
 import { GuidedTemplatesVersionSectionRequest } from "./GuidedTemplatesVersionSectionRequest.js";
-import { TemplateInstructions } from "./TemplateInstructions.js";
 
 export const GuidedTemplatesCreateFromScratchRequestGeneration: core.serialization.ObjectSchema<
     serializers.GuidedTemplatesCreateFromScratchRequestGeneration.Raw,
     Corti.GuidedTemplatesCreateFromScratchRequestGeneration
 > = core.serialization.object({
-    instructions: TemplateInstructions,
+    instructions: GuidedTemplateInstructions,
     sections: core.serialization.list(GuidedTemplatesVersionSectionRequest).optional(),
 });
 
 export declare namespace GuidedTemplatesCreateFromScratchRequestGeneration {
     export interface Raw {
-        instructions: TemplateInstructions.Raw;
+        instructions: GuidedTemplateInstructions.Raw;
         sections?: GuidedTemplatesVersionSectionRequest.Raw[] | null;
     }
 }

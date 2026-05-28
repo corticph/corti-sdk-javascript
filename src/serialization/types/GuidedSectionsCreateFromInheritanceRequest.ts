@@ -3,8 +3,8 @@
 import type * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
 import type * as serializers from "../index.js";
+import { GuidedSectionGenerationPartial } from "./GuidedSectionGenerationPartial.js";
 import { GuidedSectionsCreateBase } from "./GuidedSectionsCreateBase.js";
-import { SectionGenerationPartial } from "./SectionGenerationPartial.js";
 
 export const GuidedSectionsCreateFromInheritanceRequest: core.serialization.ObjectSchema<
     serializers.GuidedSectionsCreateFromInheritanceRequest.Raw,
@@ -12,13 +12,13 @@ export const GuidedSectionsCreateFromInheritanceRequest: core.serialization.Obje
 > = core.serialization
     .object({
         inheritFromId: core.serialization.string(),
-        generation: SectionGenerationPartial.optional(),
+        generation: GuidedSectionGenerationPartial.optional(),
     })
     .extend(GuidedSectionsCreateBase);
 
 export declare namespace GuidedSectionsCreateFromInheritanceRequest {
     export interface Raw extends GuidedSectionsCreateBase.Raw {
         inheritFromId: string;
-        generation?: SectionGenerationPartial.Raw | null;
+        generation?: GuidedSectionGenerationPartial.Raw | null;
     }
 }

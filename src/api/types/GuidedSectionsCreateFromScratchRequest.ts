@@ -6,5 +6,5 @@ import type * as Corti from "../index.js";
  * Creates a section from scratch with an explicit generation configuration. All required fields on `generation` apply.
  */
 export interface GuidedSectionsCreateFromScratchRequest extends Corti.GuidedSectionsCreateBase {
-    generation: Corti.SectionGeneration;
+    generation: Corti.GuidedSectionGeneration;
 }

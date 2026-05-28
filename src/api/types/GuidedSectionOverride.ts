@@ -8,5 +8,5 @@ import type * as Corti from "../index.js";
 export interface GuidedSectionOverride {
     /** The UUID of a section linked to the base template version. */
     sectionId: string;
-    generation?: Corti.SectionOverrides;
+    generation?: Corti.GuidedSectionOverrides;
 }

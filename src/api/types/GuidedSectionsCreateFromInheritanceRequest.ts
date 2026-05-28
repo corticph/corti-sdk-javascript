@@ -8,5 +8,5 @@ import type * as Corti from "../index.js";
 export interface GuidedSectionsCreateFromInheritanceRequest extends Corti.GuidedSectionsCreateBase {
     /** Reference to the section to inherit generation configuration from. Inherits from the published version of the referenced section. */
     inheritFromId: string;
-    generation?: Corti.SectionGenerationPartial;
+    generation?: Corti.GuidedSectionGenerationPartial;
 }
