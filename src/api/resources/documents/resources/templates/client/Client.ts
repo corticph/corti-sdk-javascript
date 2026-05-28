@@ -29,21 +29,21 @@ export class TemplatesClient {
     }
 
     /**
-     * @param {Corti.documents.ListTemplatesRequest} request
+     * @param {Corti.documents.GuidedTemplatesListRequest} request
      * @param {TemplatesClient.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @example
      *     await client.documents.templates.list()
      */
     public list(
-        request: Corti.documents.ListTemplatesRequest = {},
+        request: Corti.documents.GuidedTemplatesListRequest = {},
         requestOptions?: TemplatesClient.RequestOptions,
     ): core.HttpResponsePromise<Corti.GuidedTemplate[]> {
         return core.HttpResponsePromise.fromPromise(this.__list(request, requestOptions));
     }
 
     private async __list(
-        request: Corti.documents.ListTemplatesRequest = {},
+        request: Corti.documents.GuidedTemplatesListRequest = {},
         requestOptions?: TemplatesClient.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.GuidedTemplate[]>> {
         const { lang, region, specialty, label, published } = request;

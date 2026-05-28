@@ -3,19 +3,19 @@
 import type * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
 import type * as serializers from "../index.js";
-import { DocumentationEvidence } from "./DocumentationEvidence.js";
+import { CommonDocumentationEvidence } from "./CommonDocumentationEvidence.js";
 
 export const CommonStatusResponse: core.serialization.ObjectSchema<
     serializers.CommonStatusResponse.Raw,
     Corti.CommonStatusResponse
 > = core.serialization.object({
     status: core.serialization.string(),
-    evidence: DocumentationEvidence.optional(),
+    evidence: CommonDocumentationEvidence.optional(),
 });
 
 export declare namespace CommonStatusResponse {
     export interface Raw {
         status: string;
-        evidence?: DocumentationEvidence.Raw | null;
+        evidence?: CommonDocumentationEvidence.Raw | null;
     }
 }

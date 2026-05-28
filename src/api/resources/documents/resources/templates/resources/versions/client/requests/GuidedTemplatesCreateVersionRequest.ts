@@ -9,6 +9,5 @@ import type * as Corti from "../../../../../../../../index.js";
  *     }
  */
 export interface GuidedTemplatesCreateVersionRequest {
-    /** When the template inherits from another template, all inner fields are optional. Any field omitted is inherited from the parent's published version. */
-    generation: Corti.documents.templates.GuidedTemplatesCreateVersionRequestGeneration;
+    generation: Corti.GuidedTemplatesVersionGeneration;
 }

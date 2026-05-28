@@ -3,17 +3,17 @@
 import type * as Corti from "../../../../../../../../../api/index.js";
 import * as core from "../../../../../../../../../core/index.js";
 import type * as serializers from "../../../../../../../../index.js";
-import { GuidedTemplatesCreateVersionRequestGeneration } from "../../types/GuidedTemplatesCreateVersionRequestGeneration.js";
+import { GuidedTemplatesVersionGeneration } from "../../../../../../../../types/GuidedTemplatesVersionGeneration.js";
 
 export const GuidedTemplatesCreateVersionRequest: core.serialization.Schema<
     serializers.documents.templates.GuidedTemplatesCreateVersionRequest.Raw,
     Corti.documents.templates.GuidedTemplatesCreateVersionRequest
 > = core.serialization.object({
-    generation: GuidedTemplatesCreateVersionRequestGeneration,
+    generation: GuidedTemplatesVersionGeneration,
 });
 
 export declare namespace GuidedTemplatesCreateVersionRequest {
     export interface Raw {
-        generation: GuidedTemplatesCreateVersionRequestGeneration.Raw;
+        generation: GuidedTemplatesVersionGeneration.Raw;
     }
 }

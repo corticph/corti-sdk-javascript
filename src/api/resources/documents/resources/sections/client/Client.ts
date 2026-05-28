@@ -29,21 +29,21 @@ export class SectionsClient {
     }
 
     /**
-     * @param {Corti.documents.ListSectionsRequest} request
+     * @param {Corti.documents.GuidedSectionsListRequest} request
      * @param {SectionsClient.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @example
      *     await client.documents.sections.list()
      */
     public list(
-        request: Corti.documents.ListSectionsRequest = {},
+        request: Corti.documents.GuidedSectionsListRequest = {},
         requestOptions?: SectionsClient.RequestOptions,
     ): core.HttpResponsePromise<Corti.GuidedSection[]> {
         return core.HttpResponsePromise.fromPromise(this.__list(request, requestOptions));
     }
 
     private async __list(
-        request: Corti.documents.ListSectionsRequest = {},
+        request: Corti.documents.GuidedSectionsListRequest = {},
         requestOptions?: SectionsClient.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.GuidedSection[]>> {
         const { lang, region, specialty, label, published } = request;

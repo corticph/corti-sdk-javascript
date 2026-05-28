@@ -4,5 +4,5 @@ import type * as Corti from "../index.js";
 
 export interface CommonStatusResponse {
     status: string;
-    evidence?: Corti.DocumentationEvidence;
+    evidence?: Corti.CommonDocumentationEvidence;
 }

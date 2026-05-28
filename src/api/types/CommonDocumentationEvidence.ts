@@ -2,7 +2,7 @@
 
 import type * as Corti from "../index.js";
 
-export interface DocumentationEvidence {
+export interface CommonDocumentationEvidence {
     evidenceId?: Corti.Uuid;
     type?: string;
     quote?: string;

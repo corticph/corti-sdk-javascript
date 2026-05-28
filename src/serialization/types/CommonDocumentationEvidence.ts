@@ -5,16 +5,16 @@ import * as core from "../../core/index.js";
 import type * as serializers from "../index.js";
 import { Uuid } from "./Uuid.js";
 
-export const DocumentationEvidence: core.serialization.ObjectSchema<
-    serializers.DocumentationEvidence.Raw,
-    Corti.DocumentationEvidence
+export const CommonDocumentationEvidence: core.serialization.ObjectSchema<
+    serializers.CommonDocumentationEvidence.Raw,
+    Corti.CommonDocumentationEvidence
 > = core.serialization.object({
     evidenceId: Uuid.optional(),
     type: core.serialization.string().optional(),
     quote: core.serialization.string().optional(),
 });
 
-export declare namespace DocumentationEvidence {
+export declare namespace CommonDocumentationEvidence {
     export interface Raw {
         evidenceId?: Uuid.Raw | null;
         type?: string | null;
