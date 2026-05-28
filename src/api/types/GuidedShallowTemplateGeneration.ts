@@ -3,7 +3,7 @@
 import type * as Corti from "../index.js";
 
 /**
- * Template generation with section references (not fully resolved). Use the resolved TemplateGeneration for hydrated section data.
+ * Template generation with section references (not fully resolved). Use the resolved GuidedTemplateGeneration for hydrated section data.
  */
 export interface GuidedShallowTemplateGeneration {
     instructions: Corti.GuidedTemplateInstructions;

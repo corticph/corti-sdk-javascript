@@ -3,7 +3,7 @@
 import type * as Corti from "../index.js";
 
 /**
- * Partial form of SectionGeneration used when inheriting from another section. Any field omitted is inherited from the referenced section.
+ * Partial form of GuidedSectionGeneration used when inheriting from another section. Any field omitted is inherited from the referenced section.
  */
 export interface GuidedSectionGenerationPartial {
     /** Override the inherited section title. Passed to the LLM. */
