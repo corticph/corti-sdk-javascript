@@ -3,20 +3,20 @@
 import type * as Corti from "../../../../../../../../api/index.js";
 import * as core from "../../../../../../../../core/index.js";
 import type * as serializers from "../../../../../../../index.js";
-import { GuidedTemplateInstructions } from "../../../../../../../types/GuidedTemplateInstructions.js";
+import { GuidedTemplateInstructionsPartial } from "../../../../../../../types/GuidedTemplateInstructionsPartial.js";
 import { GuidedTemplatesVersionSectionRequest } from "../../../../../../../types/GuidedTemplatesVersionSectionRequest.js";
 
 export const GuidedTemplatesCreateVersionRequestGeneration: core.serialization.ObjectSchema<
     serializers.documents.templates.GuidedTemplatesCreateVersionRequestGeneration.Raw,
     Corti.documents.templates.GuidedTemplatesCreateVersionRequestGeneration
 > = core.serialization.object({
-    instructions: GuidedTemplateInstructions,
+    instructions: GuidedTemplateInstructionsPartial.optional(),
     sections: core.serialization.list(GuidedTemplatesVersionSectionRequest).optional(),
 });
 
 export declare namespace GuidedTemplatesCreateVersionRequestGeneration {
     export interface Raw {
-        instructions: GuidedTemplateInstructions.Raw;
+        instructions?: GuidedTemplateInstructionsPartial.Raw | null;
         sections?: GuidedTemplatesVersionSectionRequest.Raw[] | null;
     }
 }

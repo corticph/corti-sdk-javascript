@@ -11,5 +11,5 @@ export interface GuidedSectionGenerationPartial {
     /** Override the inherited prompt instructions for this section. Any field omitted is inherited. */
     instructions?: Corti.GuidedSectionInstructionsPartial;
     /** Override the inherited output schema. */
-    outputSchema?: Corti.OutputSchema;
+    outputSchema?: Corti.GuidedOutputSchema;
 }

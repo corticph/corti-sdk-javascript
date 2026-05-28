@@ -10,5 +10,5 @@ export interface GuidedSectionOverrides {
     heading?: string | null;
     instructions?: Corti.GuidedSectionInstructionsOverride;
     /** When provided, fully replaces the parent's output schema. */
-    outputSchema?: Corti.OutputSchema;
+    outputSchema?: Corti.GuidedOutputSchema;
 }

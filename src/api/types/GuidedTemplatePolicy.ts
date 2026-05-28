@@ -3,13 +3,17 @@
 import type * as Corti from "../index.js";
 
 export interface GuidedTemplatePolicy {
+    /** The UUID of the policy. */
     id: string;
-    /** The kind of access policy. `project` means all users in the project can access, `customers` restricts to specific customer IDs. */
     kind: Corti.GuidedTemplatePolicyKind;
-    /** Required when kind is `customers`. The list of customer IDs that can access this template. */
+    /** Present when `kind` is `customers`. Lists the customer tenant identifiers that have access. */
     customerIds?: string[] | null;
+    /** The UUID of the template this policy belongs to. */
     templateId: string;
+    /** The UUID of the user who created this policy. */
     createdBy: string;
+    /** Timestamp when the policy was created. */
     createdAt: Date;
+    /** Timestamp when the policy was last updated. */
     updatedAt: Date;
 }

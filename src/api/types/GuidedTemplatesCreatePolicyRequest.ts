@@ -3,8 +3,7 @@
 import type * as Corti from "../index.js";
 
 export interface GuidedTemplatesCreatePolicyRequest {
-    /** The kind of access policy. */
-    kind: Corti.GuidedTemplatesCreatePolicyRequestKind;
-    /** Required when kind is `customers`. */
+    kind: Corti.GuidedTemplatePolicyKind;
+    /** Required when `kind` is `customers`. List of customer tenant identifiers that should have access. */
     customerIds?: string[] | null;
 }

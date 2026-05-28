@@ -2,6 +2,11 @@
 
 import type * as Corti from "../index.js";
 
+/**
+ * Template version with fully resolved (inherited) values. Template-level and section-level
+ * inheritance chains are walked. Used in Template.publishedVersion
+ * on resource-level endpoints (GET/POST template).
+ */
 export interface GuidedTemplateVersion {
     /** The UUID of the version. */
     id: string;

@@ -7,5 +7,5 @@ export interface GuidedSectionGeneration {
     heading: string;
     /** The prompt instructions for this section. */
     instructions: Corti.GuidedSectionInstructions;
-    outputSchema: Corti.OutputSchema;
+    outputSchema: Corti.GuidedOutputSchema;
 }

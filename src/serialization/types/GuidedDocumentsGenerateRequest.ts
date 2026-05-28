@@ -3,22 +3,22 @@
 import type * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
 import type * as serializers from "../index.js";
+import { GuidedDocumentByTemplateRef } from "./GuidedDocumentByTemplateRef.js";
 import { GuidedDocumentsGenerateByAssembly } from "./GuidedDocumentsGenerateByAssembly.js";
 import { GuidedDocumentsGenerateByDynamic } from "./GuidedDocumentsGenerateByDynamic.js";
-import { GuidedDocumentsGenerateByTemplateRef } from "./GuidedDocumentsGenerateByTemplateRef.js";
 
 export const GuidedDocumentsGenerateRequest: core.serialization.Schema<
     serializers.GuidedDocumentsGenerateRequest.Raw,
     Corti.GuidedDocumentsGenerateRequest
 > = core.serialization.undiscriminatedUnion([
-    GuidedDocumentsGenerateByTemplateRef,
+    GuidedDocumentByTemplateRef,
     GuidedDocumentsGenerateByAssembly,
     GuidedDocumentsGenerateByDynamic,
 ]);
 
 export declare namespace GuidedDocumentsGenerateRequest {
     export type Raw =
-        | GuidedDocumentsGenerateByTemplateRef.Raw
+        | GuidedDocumentByTemplateRef.Raw
         | GuidedDocumentsGenerateByAssembly.Raw
         | GuidedDocumentsGenerateByDynamic.Raw;
 }

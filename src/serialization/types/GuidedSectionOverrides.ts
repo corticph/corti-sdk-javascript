@@ -11,13 +11,13 @@ export const GuidedSectionOverrides: core.serialization.ObjectSchema<
 > = core.serialization.object({
     heading: core.serialization.string().optionalNullable(),
     instructions: GuidedSectionInstructionsOverride.optional(),
-    outputSchema: core.serialization.lazy(() => serializers.OutputSchema).optional(),
+    outputSchema: core.serialization.lazy(() => serializers.GuidedOutputSchema).optional(),
 });
 
 export declare namespace GuidedSectionOverrides {
     export interface Raw {
         heading?: (string | null | undefined) | null;
         instructions?: GuidedSectionInstructionsOverride.Raw | null;
-        outputSchema?: serializers.OutputSchema.Raw | null;
+        outputSchema?: serializers.GuidedOutputSchema.Raw | null;
     }
 }

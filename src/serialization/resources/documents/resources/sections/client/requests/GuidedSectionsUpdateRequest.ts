@@ -3,7 +3,7 @@
 import type * as Corti from "../../../../../../../api/index.js";
 import * as core from "../../../../../../../core/index.js";
 import type * as serializers from "../../../../../../index.js";
-import { Label } from "../../../../../../types/Label.js";
+import { GuidedLabel } from "../../../../../../types/GuidedLabel.js";
 
 export const GuidedSectionsUpdateRequest: core.serialization.Schema<
     serializers.documents.GuidedSectionsUpdateRequest.Raw,
@@ -14,7 +14,7 @@ export const GuidedSectionsUpdateRequest: core.serialization.Schema<
     languages: core.serialization.list(core.serialization.string()).optional(),
     regions: core.serialization.list(core.serialization.string()).optional(),
     specialties: core.serialization.list(core.serialization.string()).optional(),
-    labels: core.serialization.list(Label).optional(),
+    labels: core.serialization.list(GuidedLabel).optional(),
 });
 
 export declare namespace GuidedSectionsUpdateRequest {
@@ -24,6 +24,6 @@ export declare namespace GuidedSectionsUpdateRequest {
         languages?: string[] | null;
         regions?: string[] | null;
         specialties?: string[] | null;
-        labels?: Label.Raw[] | null;
+        labels?: GuidedLabel.Raw[] | null;
     }
 }

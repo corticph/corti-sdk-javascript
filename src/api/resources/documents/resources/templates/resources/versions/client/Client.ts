@@ -37,14 +37,14 @@ export class VersionsClient {
     public list(
         templateID: string,
         requestOptions?: VersionsClient.RequestOptions,
-    ): core.HttpResponsePromise<Corti.GuidedTemplateVersion[]> {
+    ): core.HttpResponsePromise<Corti.GuidedShallowTemplateVersion[]> {
         return core.HttpResponsePromise.fromPromise(this.__list(templateID, requestOptions));
     }
 
     private async __list(
         templateID: string,
         requestOptions?: VersionsClient.RequestOptions,
-    ): Promise<core.WithRawResponse<Corti.GuidedTemplateVersion[]>> {
+    ): Promise<core.WithRawResponse<Corti.GuidedShallowTemplateVersion[]>> {
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
@@ -102,6 +102,8 @@ export class VersionsClient {
     }
 
     /**
+     * Creates a new template version. Returns raw authored values without inheritance resolution or section expansion.
+     *
      * @param {string} templateID
      * @param {Corti.documents.templates.GuidedTemplatesCreateVersionRequest} request
      * @param {VersionsClient.RequestOptions} requestOptions - Request-specific configuration.
@@ -111,18 +113,14 @@ export class VersionsClient {
      *
      * @example
      *     await client.documents.templates.versions.create("templateID", {
-     *         generation: {
-     *             instructions: {
-     *                 prompt: "prompt"
-     *             }
-     *         }
+     *         generation: {}
      *     })
      */
     public create(
         templateID: string,
         request: Corti.documents.templates.GuidedTemplatesCreateVersionRequest,
         requestOptions?: VersionsClient.RequestOptions,
-    ): core.HttpResponsePromise<Corti.GuidedTemplateVersion> {
+    ): core.HttpResponsePromise<Corti.GuidedShallowTemplateVersion> {
         return core.HttpResponsePromise.fromPromise(this.__create(templateID, request, requestOptions));
     }
 
@@ -130,7 +128,7 @@ export class VersionsClient {
         templateID: string,
         request: Corti.documents.templates.GuidedTemplatesCreateVersionRequest,
         requestOptions?: VersionsClient.RequestOptions,
-    ): Promise<core.WithRawResponse<Corti.GuidedTemplateVersion>> {
+    ): Promise<core.WithRawResponse<Corti.GuidedShallowTemplateVersion>> {
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
@@ -161,7 +159,7 @@ export class VersionsClient {
         });
         if (_response.ok) {
             return {
-                data: serializers.GuidedTemplateVersion.parseOrThrow(_response.body, {
+                data: serializers.GuidedShallowTemplateVersion.parseOrThrow(_response.body, {
                     unrecognizedObjectKeys: "passthrough",
                     allowUnrecognizedUnionMembers: true,
                     allowUnrecognizedEnumValues: true,
@@ -209,7 +207,7 @@ export class VersionsClient {
         templateID: string,
         versionID: string,
         requestOptions?: VersionsClient.RequestOptions,
-    ): core.HttpResponsePromise<Corti.GuidedTemplateVersion> {
+    ): core.HttpResponsePromise<Corti.GuidedShallowTemplateVersion> {
         return core.HttpResponsePromise.fromPromise(this.__get(templateID, versionID, requestOptions));
     }
 
@@ -217,7 +215,7 @@ export class VersionsClient {
         templateID: string,
         versionID: string,
         requestOptions?: VersionsClient.RequestOptions,
-    ): Promise<core.WithRawResponse<Corti.GuidedTemplateVersion>> {
+    ): Promise<core.WithRawResponse<Corti.GuidedShallowTemplateVersion>> {
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
@@ -242,7 +240,7 @@ export class VersionsClient {
         });
         if (_response.ok) {
             return {
-                data: serializers.GuidedTemplateVersion.parseOrThrow(_response.body, {
+                data: serializers.GuidedShallowTemplateVersion.parseOrThrow(_response.body, {
                     unrecognizedObjectKeys: "passthrough",
                     allowUnrecognizedUnionMembers: true,
                     allowUnrecognizedEnumValues: true,

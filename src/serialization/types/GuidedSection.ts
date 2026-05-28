@@ -3,9 +3,10 @@
 import type * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
 import type * as serializers from "../index.js";
+import { GuidedLabel } from "./GuidedLabel.js";
+import { GuidedSectionPolicy } from "./GuidedSectionPolicy.js";
 import { GuidedSectionSource } from "./GuidedSectionSource.js";
 import { GuidedSectionVersion } from "./GuidedSectionVersion.js";
-import { Label } from "./Label.js";
 
 export const GuidedSection: core.serialization.ObjectSchema<serializers.GuidedSection.Raw, Corti.GuidedSection> =
     core.serialization.object({
@@ -18,11 +19,12 @@ export const GuidedSection: core.serialization.ObjectSchema<serializers.GuidedSe
         regions: core.serialization.list(core.serialization.string()),
         specialties: core.serialization.list(core.serialization.string()),
         description: core.serialization.string().optional(),
-        labels: core.serialization.list(Label),
+        labels: core.serialization.list(GuidedLabel),
         publishedVersion: GuidedSectionVersion.optional(),
         createdAt: core.serialization.date(),
         updatedAt: core.serialization.date(),
         deletedAt: core.serialization.date().optionalNullable(),
+        policies: core.serialization.list(GuidedSectionPolicy).optional(),
     });
 
 export declare namespace GuidedSection {
@@ -36,10 +38,11 @@ export declare namespace GuidedSection {
         regions: string[];
         specialties: string[];
         description?: string | null;
-        labels: Label.Raw[];
+        labels: GuidedLabel.Raw[];
         publishedVersion?: GuidedSectionVersion.Raw | null;
         createdAt: string;
         updatedAt: string;
         deletedAt?: (string | null | undefined) | null;
+        policies?: GuidedSectionPolicy.Raw[] | null;
     }
 }

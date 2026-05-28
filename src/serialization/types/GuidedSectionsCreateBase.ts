@@ -3,7 +3,8 @@
 import type * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
 import type * as serializers from "../index.js";
-import { Label } from "./Label.js";
+import { GuidedLabel } from "./GuidedLabel.js";
+import { GuidedSectionsCreatePolicyRequest } from "./GuidedSectionsCreatePolicyRequest.js";
 
 export const GuidedSectionsCreateBase: core.serialization.ObjectSchema<
     serializers.GuidedSectionsCreateBase.Raw,
@@ -14,8 +15,9 @@ export const GuidedSectionsCreateBase: core.serialization.ObjectSchema<
     languages: core.serialization.list(core.serialization.string()).optional(),
     regions: core.serialization.list(core.serialization.string()).optional(),
     specialties: core.serialization.list(core.serialization.string()).optional(),
-    labels: core.serialization.list(Label).optional(),
+    labels: core.serialization.list(GuidedLabel).optional(),
     publish: core.serialization.boolean().optional(),
+    policies: core.serialization.list(GuidedSectionsCreatePolicyRequest).optional(),
 });
 
 export declare namespace GuidedSectionsCreateBase {
@@ -25,7 +27,8 @@ export declare namespace GuidedSectionsCreateBase {
         languages?: string[] | null;
         regions?: string[] | null;
         specialties?: string[] | null;
-        labels?: Label.Raw[] | null;
+        labels?: GuidedLabel.Raw[] | null;
         publish?: boolean | null;
+        policies?: GuidedSectionsCreatePolicyRequest.Raw[] | null;
     }
 }

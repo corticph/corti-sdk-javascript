@@ -3,8 +3,8 @@
 import type * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
 import type * as serializers from "../index.js";
+import { GuidedLabel } from "./GuidedLabel.js";
 import { GuidedTemplatesCreatePolicyRequest } from "./GuidedTemplatesCreatePolicyRequest.js";
-import { Label } from "./Label.js";
 
 export const GuidedTemplatesCreateBase: core.serialization.ObjectSchema<
     serializers.GuidedTemplatesCreateBase.Raw,
@@ -15,7 +15,7 @@ export const GuidedTemplatesCreateBase: core.serialization.ObjectSchema<
     languages: core.serialization.list(core.serialization.string()).optional(),
     regions: core.serialization.list(core.serialization.string()).optional(),
     specialties: core.serialization.list(core.serialization.string()).optional(),
-    labels: core.serialization.list(Label).optional(),
+    labels: core.serialization.list(GuidedLabel).optional(),
     publish: core.serialization.boolean().optional(),
     policies: core.serialization.list(GuidedTemplatesCreatePolicyRequest).optional(),
 });
@@ -27,7 +27,7 @@ export declare namespace GuidedTemplatesCreateBase {
         languages?: string[] | null;
         regions?: string[] | null;
         specialties?: string[] | null;
-        labels?: Label.Raw[] | null;
+        labels?: GuidedLabel.Raw[] | null;
         publish?: boolean | null;
         policies?: GuidedTemplatesCreatePolicyRequest.Raw[] | null;
     }

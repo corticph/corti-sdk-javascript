@@ -2,7 +2,10 @@
 
 import type * as Corti from "../../../../../../../index.js";
 
+/**
+ * When the template inherits from another template, all inner fields are optional. Any field omitted is inherited from the parent's published version.
+ */
 export interface GuidedTemplatesCreateVersionRequestGeneration {
-    instructions: Corti.GuidedTemplateInstructions;
+    instructions?: Corti.GuidedTemplateInstructionsPartial;
     sections?: Corti.GuidedTemplatesVersionSectionRequest[];
 }

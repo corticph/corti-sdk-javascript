@@ -26,6 +26,8 @@ export class VersionsClient {
     }
 
     /**
+     * Returns raw authored section versions without inheritance resolution. To see resolved content, use GET /sections/{sectionID} instead.
+     *
      * @param {string} sectionID
      * @param {VersionsClient.RequestOptions} requestOptions - Request-specific configuration.
      *
@@ -102,6 +104,8 @@ export class VersionsClient {
     }
 
     /**
+     * Creates a new section version. Returns raw authored values without inheritance resolution.
+     *
      * @param {string} sectionID
      * @param {Corti.documents.sections.GuidedSectionsCreateVersionRequest} request
      * @param {VersionsClient.RequestOptions} requestOptions - Request-specific configuration.
@@ -111,15 +115,7 @@ export class VersionsClient {
      *
      * @example
      *     await client.documents.sections.versions.create("sectionID", {
-     *         generation: {
-     *             heading: "heading",
-     *             instructions: {
-     *                 contentPrompt: "contentPrompt"
-     *             },
-     *             outputSchema: {
-     *                 type: "string"
-     *             }
-     *         }
+     *         generation: {}
      *     })
      */
     public create(
@@ -200,6 +196,8 @@ export class VersionsClient {
     }
 
     /**
+     * Returns raw authored section version without inheritance resolution. To see resolved content, use GET /sections/{sectionID} instead.
+     *
      * @param {string} sectionID
      * @param {string} versionID
      * @param {VersionsClient.RequestOptions} requestOptions - Request-specific configuration.

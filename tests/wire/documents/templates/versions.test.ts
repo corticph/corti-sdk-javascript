@@ -25,27 +25,7 @@ describe("VersionsClient", () => {
                 deletedAt: "2024-01-15T09:30:00Z",
                 generation: {
                     instructions: { prompt: "prompt" },
-                    sections: [
-                        {
-                            id: "id",
-                            name: "name",
-                            languages: ["languages"],
-                            regions: ["regions"],
-                            specialties: ["specialties"],
-                            labels: [{ key: "key", value: "value" }],
-                            publishedVersion: {
-                                id: "id",
-                                versionNumber: 1,
-                                generation: {
-                                    heading: "heading",
-                                    instructions: { contentPrompt: "contentPrompt" },
-                                    outputSchema: { type: "string" },
-                                },
-                            },
-                            createdAt: "2024-01-15T09:30:00Z",
-                            updatedAt: "2024-01-15T09:30:00Z",
-                        },
-                    ],
+                    sections: [{ sectionId: "sectionId", orderIndex: 1 }],
                 },
             },
         ];
@@ -70,32 +50,8 @@ describe("VersionsClient", () => {
                     },
                     sections: [
                         {
-                            id: "id",
-                            name: "name",
-                            languages: ["languages"],
-                            regions: ["regions"],
-                            specialties: ["specialties"],
-                            labels: [
-                                {
-                                    key: "key",
-                                    value: "value",
-                                },
-                            ],
-                            publishedVersion: {
-                                id: "id",
-                                versionNumber: 1,
-                                generation: {
-                                    heading: "heading",
-                                    instructions: {
-                                        contentPrompt: "contentPrompt",
-                                    },
-                                    outputSchema: {
-                                        type: "string",
-                                    },
-                                },
-                            },
-                            createdAt: new Date("2024-01-15T09:30:00.000Z"),
-                            updatedAt: new Date("2024-01-15T09:30:00.000Z"),
+                            sectionId: "sectionId",
+                            orderIndex: 1,
                         },
                     ],
                 },
@@ -141,35 +97,12 @@ describe("VersionsClient", () => {
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
-        const rawRequestBody = { generation: { instructions: { prompt: "prompt" } } };
+        const rawRequestBody = { generation: {} };
         const rawResponseBody = {
             id: "id",
             versionNumber: 1,
             deletedAt: "2024-01-15T09:30:00Z",
-            generation: {
-                instructions: { prompt: "prompt" },
-                sections: [
-                    {
-                        id: "id",
-                        name: "name",
-                        languages: ["languages"],
-                        regions: ["regions"],
-                        specialties: ["specialties"],
-                        labels: [{ key: "key", value: "value" }],
-                        publishedVersion: {
-                            id: "id",
-                            versionNumber: 1,
-                            generation: {
-                                heading: "heading",
-                                instructions: { contentPrompt: "contentPrompt" },
-                                outputSchema: { type: "string" },
-                            },
-                        },
-                        createdAt: "2024-01-15T09:30:00Z",
-                        updatedAt: "2024-01-15T09:30:00Z",
-                    },
-                ],
-            },
+            generation: { instructions: { prompt: "prompt" }, sections: [{ sectionId: "sectionId", orderIndex: 1 }] },
         };
 
         server
@@ -182,11 +115,7 @@ describe("VersionsClient", () => {
             .build();
 
         const response = await client.documents.templates.versions.create("templateID", {
-            generation: {
-                instructions: {
-                    prompt: "prompt",
-                },
-            },
+            generation: {},
         });
         expect(response).toEqual({
             id: "id",
@@ -198,32 +127,8 @@ describe("VersionsClient", () => {
                 },
                 sections: [
                     {
-                        id: "id",
-                        name: "name",
-                        languages: ["languages"],
-                        regions: ["regions"],
-                        specialties: ["specialties"],
-                        labels: [
-                            {
-                                key: "key",
-                                value: "value",
-                            },
-                        ],
-                        publishedVersion: {
-                            id: "id",
-                            versionNumber: 1,
-                            generation: {
-                                heading: "heading",
-                                instructions: {
-                                    contentPrompt: "contentPrompt",
-                                },
-                                outputSchema: {
-                                    type: "string",
-                                },
-                            },
-                        },
-                        createdAt: new Date("2024-01-15T09:30:00.000Z"),
-                        updatedAt: new Date("2024-01-15T09:30:00.000Z"),
+                        sectionId: "sectionId",
+                        orderIndex: 1,
                     },
                 ],
             },
@@ -241,7 +146,7 @@ describe("VersionsClient", () => {
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
-        const rawRequestBody = { generation: { instructions: { prompt: "prompt" } } };
+        const rawRequestBody = { generation: {} };
         const rawResponseBody = { key: "value" };
 
         server
@@ -255,11 +160,7 @@ describe("VersionsClient", () => {
 
         await expect(async () => {
             return await client.documents.templates.versions.create("templateID", {
-                generation: {
-                    instructions: {
-                        prompt: "prompt",
-                    },
-                },
+                generation: {},
             });
         }).rejects.toThrow(Corti.BadRequestError);
     });
@@ -275,7 +176,7 @@ describe("VersionsClient", () => {
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
-        const rawRequestBody = { generation: { instructions: { prompt: "prompt" } } };
+        const rawRequestBody = { generation: {} };
         const rawResponseBody = { key: "value" };
 
         server
@@ -289,11 +190,7 @@ describe("VersionsClient", () => {
 
         await expect(async () => {
             return await client.documents.templates.versions.create("templateID", {
-                generation: {
-                    instructions: {
-                        prompt: "prompt",
-                    },
-                },
+                generation: {},
             });
         }).rejects.toThrow(Corti.NotFoundError);
     });
@@ -314,30 +211,7 @@ describe("VersionsClient", () => {
             id: "id",
             versionNumber: 1,
             deletedAt: "2024-01-15T09:30:00Z",
-            generation: {
-                instructions: { prompt: "prompt" },
-                sections: [
-                    {
-                        id: "id",
-                        name: "name",
-                        languages: ["languages"],
-                        regions: ["regions"],
-                        specialties: ["specialties"],
-                        labels: [{ key: "key", value: "value" }],
-                        publishedVersion: {
-                            id: "id",
-                            versionNumber: 1,
-                            generation: {
-                                heading: "heading",
-                                instructions: { contentPrompt: "contentPrompt" },
-                                outputSchema: { type: "string" },
-                            },
-                        },
-                        createdAt: "2024-01-15T09:30:00Z",
-                        updatedAt: "2024-01-15T09:30:00Z",
-                    },
-                ],
-            },
+            generation: { instructions: { prompt: "prompt" }, sections: [{ sectionId: "sectionId", orderIndex: 1 }] },
         };
 
         server
@@ -359,32 +233,8 @@ describe("VersionsClient", () => {
                 },
                 sections: [
                     {
-                        id: "id",
-                        name: "name",
-                        languages: ["languages"],
-                        regions: ["regions"],
-                        specialties: ["specialties"],
-                        labels: [
-                            {
-                                key: "key",
-                                value: "value",
-                            },
-                        ],
-                        publishedVersion: {
-                            id: "id",
-                            versionNumber: 1,
-                            generation: {
-                                heading: "heading",
-                                instructions: {
-                                    contentPrompt: "contentPrompt",
-                                },
-                                outputSchema: {
-                                    type: "string",
-                                },
-                            },
-                        },
-                        createdAt: new Date("2024-01-15T09:30:00.000Z"),
-                        updatedAt: new Date("2024-01-15T09:30:00.000Z"),
+                        sectionId: "sectionId",
+                        orderIndex: 1,
                     },
                 ],
             },

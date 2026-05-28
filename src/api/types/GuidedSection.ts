@@ -22,8 +22,8 @@ export interface GuidedSection {
     /** The description for the section. */
     description?: string;
     /** The labels available to use as query param filter in the LIST /sections endpoint. */
-    labels: Corti.Label[];
-    /** Shows the currently published version of this section. */
+    labels: Corti.GuidedLabel[];
+    /** The currently published version with section inheritance fully resolved. Present when a version has been published. */
     publishedVersion?: Corti.GuidedSectionVersion;
     /** The original timestamp when the section was created. */
     createdAt: Date;
@@ -31,4 +31,6 @@ export interface GuidedSection {
     updatedAt: Date;
     /** Present when the section has been deleted. GET by ID still returns the full resource with this field populated. */
     deletedAt?: Date | null;
+    /** Access policies for this section. */
+    policies?: Corti.GuidedSectionPolicy[];
 }

@@ -11,13 +11,13 @@ export const GuidedSectionGeneration: core.serialization.ObjectSchema<
 > = core.serialization.object({
     heading: core.serialization.string(),
     instructions: GuidedSectionInstructions,
-    outputSchema: core.serialization.lazy(() => serializers.OutputSchema),
+    outputSchema: core.serialization.lazy(() => serializers.GuidedOutputSchema),
 });
 
 export declare namespace GuidedSectionGeneration {
     export interface Raw {
         heading: string;
         instructions: GuidedSectionInstructions.Raw;
-        outputSchema: serializers.OutputSchema.Raw;
+        outputSchema: serializers.GuidedOutputSchema.Raw;
     }
 }

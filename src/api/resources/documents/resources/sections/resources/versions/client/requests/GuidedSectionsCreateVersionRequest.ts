@@ -5,17 +5,9 @@ import type * as Corti from "../../../../../../../../index.js";
 /**
  * @example
  *     {
- *         generation: {
- *             heading: "heading",
- *             instructions: {
- *                 contentPrompt: "contentPrompt"
- *             },
- *             outputSchema: {
- *                 type: "string"
- *             }
- *         }
+ *         generation: {}
  *     }
  */
 export interface GuidedSectionsCreateVersionRequest {
-    generation: Corti.GuidedSectionGeneration;
+    generation: Corti.GuidedSectionGenerationPartial;
 }

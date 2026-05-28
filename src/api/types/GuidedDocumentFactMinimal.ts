@@ -6,4 +6,6 @@
 export interface GuidedDocumentFactMinimal {
     /** The text of the fact. */
     text: string;
+    /** The group to which the fact belongs. */
+    group?: string;
 }

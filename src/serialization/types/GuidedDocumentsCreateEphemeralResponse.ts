@@ -4,19 +4,19 @@ import type * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
 import type * as serializers from "../index.js";
 import { CommonUsageInfo } from "./CommonUsageInfo.js";
-import { EphemeralDocument } from "./EphemeralDocument.js";
+import { GuidedEphemeralDocument } from "./GuidedEphemeralDocument.js";
 
 export const GuidedDocumentsCreateEphemeralResponse: core.serialization.ObjectSchema<
     serializers.GuidedDocumentsCreateEphemeralResponse.Raw,
     Corti.GuidedDocumentsCreateEphemeralResponse
 > = core.serialization.object({
-    document: EphemeralDocument,
+    document: GuidedEphemeralDocument,
     usageInfo: CommonUsageInfo,
 });
 
 export declare namespace GuidedDocumentsCreateEphemeralResponse {
     export interface Raw {
-        document: EphemeralDocument.Raw;
+        document: GuidedEphemeralDocument.Raw;
         usageInfo: CommonUsageInfo.Raw;
     }
 }

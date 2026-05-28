@@ -3,19 +3,19 @@
 import type * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
 import type * as serializers from "../index.js";
-import { GuidedTemplatesCreatePolicyRequestKind } from "./GuidedTemplatesCreatePolicyRequestKind.js";
+import { GuidedTemplatePolicyKind } from "./GuidedTemplatePolicyKind.js";
 
 export const GuidedTemplatesCreatePolicyRequest: core.serialization.ObjectSchema<
     serializers.GuidedTemplatesCreatePolicyRequest.Raw,
     Corti.GuidedTemplatesCreatePolicyRequest
 > = core.serialization.object({
-    kind: GuidedTemplatesCreatePolicyRequestKind,
+    kind: GuidedTemplatePolicyKind,
     customerIds: core.serialization.list(core.serialization.string()).optionalNullable(),
 });
 
 export declare namespace GuidedTemplatesCreatePolicyRequest {
     export interface Raw {
-        kind: GuidedTemplatesCreatePolicyRequestKind.Raw;
+        kind: GuidedTemplatePolicyKind.Raw;
         customerIds?: (string[] | null | undefined) | null;
     }
 }

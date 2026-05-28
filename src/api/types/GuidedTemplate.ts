@@ -15,16 +15,17 @@ export interface GuidedTemplate {
     name: string;
     /** A description for this template. Not passed to the LLM. */
     description?: string;
-    /** BCP 47 language subtags this template has been tweaked for (e.g. `["fr", "de"]`). Empty means no language-specific tweaks. */
+    /** BCP 47 language tags this template has been tweaked for (e.g. `["fr", "de", "en-GB"]`). Empty means no language-specific tweaks. */
     languages: string[];
     /** ISO 3166-1 alpha-3 country codes this template has been tweaked for (e.g. `["BEL"]`). Empty means no region-specific tweaks. */
     regions: string[];
     /** Clinical specialties this template has been tweaked for. Empty means no specialty-specific tweaks. */
     specialties: string[];
     /** The available labels to use as query param filter in the LIST /templates endpoint. */
-    labels: Corti.Label[];
+    labels: Corti.GuidedLabel[];
     /** Access policies for this template. */
     policies?: Corti.GuidedTemplatePolicy[];
+    /** The currently published version with inheritance fully resolved. Present when a version has been published. */
     publishedVersion?: Corti.GuidedTemplateVersion;
     /** The original timestamp when the template was created. */
     createdAt: Date;

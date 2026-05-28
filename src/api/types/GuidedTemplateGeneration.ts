@@ -2,8 +2,11 @@
 
 import type * as Corti from "../index.js";
 
+/**
+ * Fully resolved template generation. Sections are expanded with their own inheritance applied.
+ */
 export interface GuidedTemplateGeneration {
     instructions: Corti.GuidedTemplateInstructions;
-    /** Populated only on GET /documents/templates/{templateID}/versions/{versionID}; omitted from list responses. */
+    /** Fully resolved sections with inheritance applied. */
     sections?: Corti.GuidedSection[];
 }

@@ -6,6 +6,6 @@ import type * as Corti from "../index.js";
  * Response when a document is generated but not saved (retention policy `none`).
  */
 export interface GuidedDocumentsCreateEphemeralResponse {
-    document: Corti.EphemeralDocument;
+    document: Corti.GuidedEphemeralDocument;
     usageInfo: Corti.CommonUsageInfo;
 }

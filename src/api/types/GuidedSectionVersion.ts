@@ -2,6 +2,11 @@
 
 import type * as Corti from "../index.js";
 
+/**
+ * A section version. When embedded inside a Section resource (e.g. GET /sections/:id),
+ * inheritance is fully resolved. When returned directly from version endpoints
+ * (GET/LIST/POST .../versions/...), contains raw authored values without inheritance.
+ */
 export interface GuidedSectionVersion {
     /** The UUID of the section version. */
     id: string;
