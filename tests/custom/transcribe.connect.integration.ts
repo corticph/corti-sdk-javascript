@@ -160,6 +160,26 @@ describe("cortiClient.transcribe.connect", () => {
             expect(transcribeSocket.socket.readyState).toBe(1); // OPEN
             expect(consoleWarnSpy).not.toHaveBeenCalled();
         });
+
+        it("should connect with audioEvents enabled without errors or warnings", async () => {
+            expect.assertions(2);
+
+            const transcribeSocket = await cortiClient.transcribe.connect({
+                awaitConfiguration: false,
+                configuration: {
+                    primaryLanguage: "en",
+                    audioEvents: {
+                        enabled: true,
+                    },
+                },
+            });
+            activeSockets.push(transcribeSocket);
+
+            await waitForWebSocketMessage(transcribeSocket, "CONFIG_ACCEPTED", { rejectOnWrongMessage: true });
+
+            expect(transcribeSocket.socket.readyState).toBe(1); // OPEN
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
     });
 
     describe("should handle configuration status messages", () => {
