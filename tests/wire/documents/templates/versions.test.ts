@@ -25,27 +25,7 @@ describe("VersionsClient", () => {
                 deletedAt: "2024-01-15T09:30:00Z",
                 generation: {
                     instructions: { prompt: "prompt" },
-                    sections: [
-                        {
-                            id: "id",
-                            name: "name",
-                            languages: ["languages"],
-                            regions: ["regions"],
-                            specialties: ["specialties"],
-                            labels: [{ key: "key", value: "value" }],
-                            publishedVersion: {
-                                id: "id",
-                                versionNumber: 1,
-                                generation: {
-                                    heading: "heading",
-                                    instructions: { contentPrompt: "contentPrompt" },
-                                    outputSchema: { type: "string" },
-                                },
-                            },
-                            createdAt: "2024-01-15T09:30:00Z",
-                            updatedAt: "2024-01-15T09:30:00Z",
-                        },
-                    ],
+                    sections: [{ sectionId: "sectionId", orderIndex: 1 }],
                 },
             },
         ];
@@ -70,32 +50,8 @@ describe("VersionsClient", () => {
                     },
                     sections: [
                         {
-                            id: "id",
-                            name: "name",
-                            languages: ["languages"],
-                            regions: ["regions"],
-                            specialties: ["specialties"],
-                            labels: [
-                                {
-                                    key: "key",
-                                    value: "value",
-                                },
-                            ],
-                            publishedVersion: {
-                                id: "id",
-                                versionNumber: 1,
-                                generation: {
-                                    heading: "heading",
-                                    instructions: {
-                                        contentPrompt: "contentPrompt",
-                                    },
-                                    outputSchema: {
-                                        type: "string",
-                                    },
-                                },
-                            },
-                            createdAt: new Date("2024-01-15T09:30:00.000Z"),
-                            updatedAt: new Date("2024-01-15T09:30:00.000Z"),
+                            sectionId: "sectionId",
+                            orderIndex: 1,
                         },
                     ],
                 },
@@ -314,30 +270,7 @@ describe("VersionsClient", () => {
             id: "id",
             versionNumber: 1,
             deletedAt: "2024-01-15T09:30:00Z",
-            generation: {
-                instructions: { prompt: "prompt" },
-                sections: [
-                    {
-                        id: "id",
-                        name: "name",
-                        languages: ["languages"],
-                        regions: ["regions"],
-                        specialties: ["specialties"],
-                        labels: [{ key: "key", value: "value" }],
-                        publishedVersion: {
-                            id: "id",
-                            versionNumber: 1,
-                            generation: {
-                                heading: "heading",
-                                instructions: { contentPrompt: "contentPrompt" },
-                                outputSchema: { type: "string" },
-                            },
-                        },
-                        createdAt: "2024-01-15T09:30:00Z",
-                        updatedAt: "2024-01-15T09:30:00Z",
-                    },
-                ],
-            },
+            generation: { instructions: { prompt: "prompt" }, sections: [{ sectionId: "sectionId", orderIndex: 1 }] },
         };
 
         server
@@ -359,32 +292,8 @@ describe("VersionsClient", () => {
                 },
                 sections: [
                     {
-                        id: "id",
-                        name: "name",
-                        languages: ["languages"],
-                        regions: ["regions"],
-                        specialties: ["specialties"],
-                        labels: [
-                            {
-                                key: "key",
-                                value: "value",
-                            },
-                        ],
-                        publishedVersion: {
-                            id: "id",
-                            versionNumber: 1,
-                            generation: {
-                                heading: "heading",
-                                instructions: {
-                                    contentPrompt: "contentPrompt",
-                                },
-                                outputSchema: {
-                                    type: "string",
-                                },
-                            },
-                        },
-                        createdAt: new Date("2024-01-15T09:30:00.000Z"),
-                        updatedAt: new Date("2024-01-15T09:30:00.000Z"),
+                        sectionId: "sectionId",
+                        orderIndex: 1,
                     },
                 ],
             },

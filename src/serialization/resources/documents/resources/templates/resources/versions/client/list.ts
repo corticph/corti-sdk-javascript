@@ -3,13 +3,13 @@
 import type * as Corti from "../../../../../../../../api/index.js";
 import * as core from "../../../../../../../../core/index.js";
 import type * as serializers from "../../../../../../../index.js";
-import { TemplateVersion } from "../../../../../../../types/TemplateVersion.js";
+import { ShallowTemplateVersionResponse } from "../../../../../../../types/ShallowTemplateVersionResponse.js";
 
 export const Response: core.serialization.Schema<
     serializers.documents.templates.versions.list.Response.Raw,
-    Corti.TemplateVersion[]
-> = core.serialization.list(TemplateVersion);
+    Corti.ShallowTemplateVersionResponse[]
+> = core.serialization.list(ShallowTemplateVersionResponse);
 
 export declare namespace Response {
-    export type Raw = TemplateVersion.Raw[];
+    export type Raw = ShallowTemplateVersionResponse.Raw[];
 }

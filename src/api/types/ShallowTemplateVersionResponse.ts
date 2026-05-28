@@ -3,14 +3,14 @@
 import type * as Corti from "../index.js";
 
 /**
- * Template version with fully resolved (inherited) values. Used in Template.publishedVersion.
+ * Template version with shallow (unresolved) values. Sections are returned as references, not fully resolved objects. Returned by GET and LIST version endpoints.
  */
-export interface TemplateVersion {
+export interface ShallowTemplateVersionResponse {
     /** The UUID of the version. */
     id: string;
     /** Starts at 0 and auto-increments. */
     versionNumber: number;
     /** Present when the template version has been deleted. */
     deletedAt?: Date | null;
-    generation: Corti.TemplateGeneration;
+    generation: Corti.ShallowTemplateGeneration;
 }
