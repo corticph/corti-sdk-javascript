@@ -115,15 +115,7 @@ export class VersionsClient {
      *
      * @example
      *     await client.documents.sections.versions.create("sectionID", {
-     *         generation: {
-     *             heading: "heading",
-     *             instructions: {
-     *                 contentPrompt: "contentPrompt"
-     *             },
-     *             outputSchema: {
-     *                 type: "string"
-     *             }
-     *         }
+     *         generation: {}
      *     })
      */
     public create(

@@ -113,11 +113,7 @@ export class VersionsClient {
      *
      * @example
      *     await client.documents.templates.versions.create("templateID", {
-     *         generation: {
-     *             instructions: {
-     *                 prompt: "prompt"
-     *             }
-     *         }
+     *         generation: {}
      *     })
      */
     public create(

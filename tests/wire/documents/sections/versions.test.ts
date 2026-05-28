@@ -96,13 +96,7 @@ describe("VersionsClient", () => {
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
-        const rawRequestBody = {
-            generation: {
-                heading: "heading",
-                instructions: { contentPrompt: "contentPrompt" },
-                outputSchema: { type: "string" },
-            },
-        };
+        const rawRequestBody = { generation: {} };
         const rawResponseBody = {
             id: "id",
             versionNumber: 1,
@@ -134,15 +128,7 @@ describe("VersionsClient", () => {
             .build();
 
         const response = await client.documents.sections.versions.create("sectionID", {
-            generation: {
-                heading: "heading",
-                instructions: {
-                    contentPrompt: "contentPrompt",
-                },
-                outputSchema: {
-                    type: "string",
-                },
-            },
+            generation: {},
         });
         expect(response).toEqual({
             id: "id",
@@ -177,13 +163,7 @@ describe("VersionsClient", () => {
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
-        const rawRequestBody = {
-            generation: {
-                heading: "heading",
-                instructions: { contentPrompt: "contentPrompt" },
-                outputSchema: { type: "string" },
-            },
-        };
+        const rawRequestBody = { generation: {} };
         const rawResponseBody = { key: "value" };
 
         server
@@ -197,15 +177,7 @@ describe("VersionsClient", () => {
 
         await expect(async () => {
             return await client.documents.sections.versions.create("sectionID", {
-                generation: {
-                    heading: "heading",
-                    instructions: {
-                        contentPrompt: "contentPrompt",
-                    },
-                    outputSchema: {
-                        type: "string",
-                    },
-                },
+                generation: {},
             });
         }).rejects.toThrow(Corti.BadRequestError);
     });
@@ -221,13 +193,7 @@ describe("VersionsClient", () => {
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
-        const rawRequestBody = {
-            generation: {
-                heading: "heading",
-                instructions: { contentPrompt: "contentPrompt" },
-                outputSchema: { type: "string" },
-            },
-        };
+        const rawRequestBody = { generation: {} };
         const rawResponseBody = { key: "value" };
 
         server
@@ -241,15 +207,7 @@ describe("VersionsClient", () => {
 
         await expect(async () => {
             return await client.documents.sections.versions.create("sectionID", {
-                generation: {
-                    heading: "heading",
-                    instructions: {
-                        contentPrompt: "contentPrompt",
-                    },
-                    outputSchema: {
-                        type: "string",
-                    },
-                },
+                generation: {},
             });
         }).rejects.toThrow(Corti.NotFoundError);
     });

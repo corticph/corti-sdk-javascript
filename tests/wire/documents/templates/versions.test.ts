@@ -97,7 +97,7 @@ describe("VersionsClient", () => {
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
-        const rawRequestBody = { generation: { instructions: { prompt: "prompt" } } };
+        const rawRequestBody = { generation: {} };
         const rawResponseBody = {
             id: "id",
             versionNumber: 1,
@@ -115,11 +115,7 @@ describe("VersionsClient", () => {
             .build();
 
         const response = await client.documents.templates.versions.create("templateID", {
-            generation: {
-                instructions: {
-                    prompt: "prompt",
-                },
-            },
+            generation: {},
         });
         expect(response).toEqual({
             id: "id",
@@ -150,7 +146,7 @@ describe("VersionsClient", () => {
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
-        const rawRequestBody = { generation: { instructions: { prompt: "prompt" } } };
+        const rawRequestBody = { generation: {} };
         const rawResponseBody = { key: "value" };
 
         server
@@ -164,11 +160,7 @@ describe("VersionsClient", () => {
 
         await expect(async () => {
             return await client.documents.templates.versions.create("templateID", {
-                generation: {
-                    instructions: {
-                        prompt: "prompt",
-                    },
-                },
+                generation: {},
             });
         }).rejects.toThrow(Corti.BadRequestError);
     });
@@ -184,7 +176,7 @@ describe("VersionsClient", () => {
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
-        const rawRequestBody = { generation: { instructions: { prompt: "prompt" } } };
+        const rawRequestBody = { generation: {} };
         const rawResponseBody = { key: "value" };
 
         server
@@ -198,11 +190,7 @@ describe("VersionsClient", () => {
 
         await expect(async () => {
             return await client.documents.templates.versions.create("templateID", {
-                generation: {
-                    instructions: {
-                        prompt: "prompt",
-                    },
-                },
+                generation: {},
             });
         }).rejects.toThrow(Corti.NotFoundError);
     });

@@ -5,13 +5,10 @@ import type * as Corti from "../../../../../../../../index.js";
 /**
  * @example
  *     {
- *         generation: {
- *             instructions: {
- *                 prompt: "prompt"
- *             }
- *         }
+ *         generation: {}
  *     }
  */
 export interface CreateTemplateVersionRequest {
+    /** When the template inherits from another template, all inner fields are optional. Any field omitted is inherited from the parent's published version. */
     generation: Corti.documents.templates.CreateTemplateVersionRequestGeneration;
 }
