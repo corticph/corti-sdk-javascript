@@ -14,6 +14,7 @@ export interface TranscribeConfig {
     /** Commands that should be registered and detected */
     commands?: Corti.TranscribeCommand[];
     formatting?: Corti.TranscribeFormatting;
+    audioEvents?: Corti.TranscribeAudioEventsConfig;
     /** The audio format of the incoming audio stream */
     audioFormat?: string;
 }
