@@ -5,9 +5,9 @@ import * as core from "../../core/index.js";
 import type * as serializers from "../index.js";
 import { GuidedShallowTemplateGeneration } from "./GuidedShallowTemplateGeneration.js";
 
-export const GuidedShallowTemplateVersion: core.serialization.ObjectSchema<
-    serializers.GuidedShallowTemplateVersion.Raw,
-    Corti.GuidedShallowTemplateVersion
+export const GuidedShallowTemplateVersionResponse: core.serialization.ObjectSchema<
+    serializers.GuidedShallowTemplateVersionResponse.Raw,
+    Corti.GuidedShallowTemplateVersionResponse
 > = core.serialization.object({
     id: core.serialization.string(),
     versionNumber: core.serialization.number(),
@@ -15,7 +15,7 @@ export const GuidedShallowTemplateVersion: core.serialization.ObjectSchema<
     generation: GuidedShallowTemplateGeneration,
 });
 
-export declare namespace GuidedShallowTemplateVersion {
+export declare namespace GuidedShallowTemplateVersionResponse {
     export interface Raw {
         id: string;
         versionNumber: number;

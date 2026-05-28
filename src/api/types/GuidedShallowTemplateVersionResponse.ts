@@ -8,7 +8,7 @@ import type * as Corti from "../index.js";
  * Use this to inspect what was explicitly set on this version versus inherited.
  * Returned by GET, LIST, and POST version endpoints.
  */
-export interface GuidedShallowTemplateVersion {
+export interface GuidedShallowTemplateVersionResponse {
     /** The UUID of the version. */
     id: string;
     /** Starts at 0 and auto-increments. */
