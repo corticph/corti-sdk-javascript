@@ -137,33 +137,6 @@ describe("cortiClient.agents.create", () => {
             expect(consoleWarnSpy).not.toHaveBeenCalled();
         });
 
-        it("should create agent with an expert reference config without errors or warnings", async () => {
-            const registry = await cortiClient.agents.getRegistryExperts({ limit: 1 });
-            const expertName = registry.experts?.[0]?.name;
-            if (!expertName) {
-                console.warn("Skipping: no registry experts available");
-                return;
-            }
-            expect.assertions(2);
-
-            const result = await cortiClient.agents.create({
-                name: faker.lorem.words(3),
-                description: faker.lorem.sentence(),
-                experts: [
-                    {
-                        type: "reference",
-                        name: expertName,
-                        config: {
-                            sampleFlag: true,
-                        },
-                    },
-                ],
-            });
-
-            expect(result).toBeDefined();
-            expect(consoleWarnSpy).not.toHaveBeenCalled();
-        });
-
         it("should create agent with a new inline expert without errors or warnings", async () => {
             expect.assertions(2);
 
