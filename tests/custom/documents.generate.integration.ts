@@ -6,6 +6,7 @@ describe("cortiClient.documents.generate", () => {
     let cortiClient: CortiClient;
     let consoleWarnSpy: ReturnType<typeof setupConsoleWarnSpy>;
     const createdTemplateIds: string[] = [];
+    const createdSectionIds: string[] = [];
 
     beforeAll(() => {
         cortiClient = createTestCortiClient();
@@ -18,21 +19,75 @@ describe("cortiClient.documents.generate", () => {
     afterEach(async () => {
         consoleWarnSpy.mockRestore();
 
-        await Promise.allSettled(
-            createdTemplateIds.splice(0).map((templateId) => cortiClient.documents.templates.delete(templateId)),
-        );
+        await Promise.allSettled([
+            ...createdTemplateIds.splice(0).map((templateId) => cortiClient.documents.templates.delete(templateId)),
+            ...createdSectionIds.splice(0).map((sectionId) => cortiClient.documents.sections.delete(sectionId)),
+        ]);
     });
 
-    describe("should generate guided document with templateRef and only required values", () => {
-        it("should generate document using stored template and text context without errors or warnings", async () => {
-            expect.assertions(3);
+    describe("should generate guided document with dynamicTemplate and only required values", () => {
+        it("should generate document using inline template and text context without errors or warnings", async () => {
+            expect.assertions(2);
+
+            const result = await cortiClient.documents.generate({
+                outputLanguage: "en",
+                context: [
+                    {
+                        type: "text",
+                        text: faker.lorem.paragraph(),
+                    },
+                ],
+                dynamicTemplate: {
+                    name: faker.lorem.words(3),
+                    generation: {
+                        instructions: {
+                            prompt: "Produce a brief clinical summary from the supplied context.",
+                        },
+                        sections: [
+                            {
+                                heading: "Summary",
+                                instructions: {
+                                    contentPrompt: "Summarise the provided context in one short paragraph.",
+                                },
+                                outputSchema: {
+                                    type: "string",
+                                },
+                            },
+                        ],
+                    },
+                },
+            });
+
+            expect(result).toBeDefined();
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
+    });
+
+    describe("should generate guided document with templateRef and stored section", () => {
+        it("should generate document using stored template reference without errors or warnings", async () => {
+            expect.assertions(2);
+
+            const section = await cortiClient.documents.sections.create({
+                name: faker.lorem.words(3),
+                generation: {
+                    heading: "Summary",
+                    instructions: {
+                        contentPrompt: "Summarise the provided context in one short paragraph.",
+                    },
+                    outputSchema: {
+                        type: "string",
+                    },
+                },
+            });
+            createdSectionIds.push(section.id);
 
             const template = await cortiClient.documents.templates.create({
                 name: faker.lorem.words(3),
                 generation: {
                     instructions: {
-                        prompt: faker.lorem.sentence(),
+                        prompt: "Produce a brief clinical summary from the supplied context.",
                     },
+                    sections: [{ sectionId: section.id }],
                 },
             });
             createdTemplateIds.push(template.id);
