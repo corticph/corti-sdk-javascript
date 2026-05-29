@@ -46,13 +46,20 @@ export class TemplatesClient {
         request: Corti.documents.GuidedTemplatesListRequest = {},
         requestOptions?: TemplatesClient.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.GuidedTemplate[]>> {
-        const { lang, region, specialty, label, published } = request;
+        const { lang, region, specialty, label, published, source } = request;
         const _queryParams: Record<string, unknown> = {
             lang,
             region,
             specialty,
             label,
             published,
+            source:
+                source != null
+                    ? serializers.documents.ListTemplatesRequestSource.jsonOrThrow(source, {
+                          unrecognizedObjectKeys: "strip",
+                          omitUndefined: true,
+                      })
+                    : undefined,
         };
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(

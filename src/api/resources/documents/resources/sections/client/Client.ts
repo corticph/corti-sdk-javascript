@@ -46,13 +46,20 @@ export class SectionsClient {
         request: Corti.documents.GuidedSectionsListRequest = {},
         requestOptions?: SectionsClient.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.GuidedSection[]>> {
-        const { lang, region, specialty, label, published } = request;
+        const { lang, region, specialty, label, published, source } = request;
         const _queryParams: Record<string, unknown> = {
             lang,
             region,
             specialty,
             label,
             published,
+            source:
+                source != null
+                    ? serializers.documents.ListSectionsRequestSource.jsonOrThrow(source, {
+                          unrecognizedObjectKeys: "strip",
+                          omitUndefined: true,
+                      })
+                    : undefined,
         };
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
