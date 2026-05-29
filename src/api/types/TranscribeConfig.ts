@@ -5,11 +5,11 @@ import type * as Corti from "../index.js";
 export interface TranscribeConfig {
     /** The locale of the primary spoken language. */
     primaryLanguage: Corti.TranscribeSupportedLanguage;
-    /** When true, returns interim results for reduced latency */
+    /** When true, returns interim (preview) transcript results (`isFinal=false`) for reduced latency than final transcripts. Defaults to false. */
     interimResults?: boolean;
-    /** When true, converts spoken punctuation such as 'period' or 'slash' into '.' or '/' */
+    /** When true, converts spoken punctuation such as 'period' or 'slash' into '.' or '/'. Defaults to false. Overrides automaticPunctuation when both are enabled. */
     spokenPunctuation?: boolean;
-    /** When true, automatically punctuates and capitalizes in the final transcript */
+    /** When true, automatically punctuates and capitalizes in the final transcript. Defaults to false. Overridden by spokenPunctuation when both are enabled. */
     automaticPunctuation?: boolean;
     /** Commands that should be registered and detected */
     commands?: Corti.TranscribeCommand[];
@@ -17,4 +17,6 @@ export interface TranscribeConfig {
     audioEvents?: Corti.TranscribeAudioEventsConfig;
     /** The audio format of the incoming audio stream */
     audioFormat?: string;
+    /** Define replacements to have terms (single words or multi-word phrases) replaced in final text output with your preferred style. For example, replace "BID" with "twice daily". */
+    replacements?: Corti.TranscribeConfigReplacementsItem[];
 }
