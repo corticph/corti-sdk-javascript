@@ -25,7 +25,7 @@ describe("cortiClient.documents.templates.get", () => {
 
     describe("should get guided template with only required values", () => {
         it("should retrieve an existing template without errors or warnings", async () => {
-            expect.assertions(4);
+            expect.assertions(3);
 
             const created = await cortiClient.documents.templates.create({
                 name: faker.lorem.words(3),

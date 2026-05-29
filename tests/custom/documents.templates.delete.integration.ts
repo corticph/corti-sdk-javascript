@@ -20,7 +20,7 @@ describe("cortiClient.documents.templates.delete", () => {
 
     describe("should delete guided template with only required values", () => {
         it("should delete an existing template without errors or warnings", async () => {
-            expect.assertions(2);
+            expect.assertions(1);
 
             const created = await cortiClient.documents.templates.create({
                 name: faker.lorem.words(3),

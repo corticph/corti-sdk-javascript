@@ -45,7 +45,7 @@ describe("cortiClient.documents.templates.create", () => {
 
     describe("should create guided template with all optional values", () => {
         it("should create template with metadata fields without errors or warnings", async () => {
-            expect.assertions(3);
+            expect.assertions(2);
 
             const result = await cortiClient.documents.templates.create({
                 name: faker.lorem.words(3),

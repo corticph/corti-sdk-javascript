@@ -54,7 +54,7 @@ describe("cortiClient.documents.templates.list", () => {
 
             const result = await cortiClient.documents.templates.list({
                 published: true,
-                label: ["integration-test"],
+                label: ["integration-test:true"],
                 lang: ["en"],
             });
 
