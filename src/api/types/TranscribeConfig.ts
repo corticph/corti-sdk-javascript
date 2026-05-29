@@ -17,6 +17,6 @@ export interface TranscribeConfig {
     audioEvents?: Corti.TranscribeAudioEventsConfig;
     /** The audio format of the incoming audio stream */
     audioFormat?: string;
-    /** Define replacements to have terms (single words or multi-word phrases) replaced in final text output with your preferred style. For example, replace "BID" with "twice daily". */
+    /** Define replacements to have terms (single words or multi-word phrases) replaced in final text output with your preferred style. For example, replace "BID" with "twice daily". Configuration is limited to 1,000 replacements per stream. */
     replacements?: Corti.TranscribeConfigReplacementsItem[];
 }
