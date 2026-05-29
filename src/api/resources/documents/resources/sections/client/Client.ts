@@ -55,7 +55,7 @@ export class SectionsClient {
             published,
             source:
                 source != null
-                    ? serializers.documents.ListSectionsRequestSource.jsonOrThrow(source, {
+                    ? serializers.GuidedSourceFilter.jsonOrThrow(source, {
                           unrecognizedObjectKeys: "strip",
                           omitUndefined: true,
                       })

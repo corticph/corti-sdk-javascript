@@ -18,5 +18,5 @@ export interface GuidedTemplatesListRequest {
     /** Filter by publish status. Omit to return both published and unpublished items; set to `true` for published only, `false` for unpublished only. */
     published?: boolean;
     /** Filter by source. Omit to return both. `user` returns only user/client-created templates; `corti` returns only Corti standard templates. */
-    source?: Corti.documents.ListTemplatesRequestSource;
+    source?: Corti.GuidedSourceFilter;
 }

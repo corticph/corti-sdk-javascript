@@ -18,5 +18,5 @@ export interface GuidedSectionsListRequest {
     /** Filter by publish status. Omit to return both published and unpublished items; set to `true` for published only, `false` for unpublished only. */
     published?: boolean;
     /** Filter by source. Omit to return both. `user` returns only user-created sections; `corti` returns only Corti standard sections. */
-    source?: Corti.documents.ListSectionsRequestSource;
+    source?: Corti.GuidedSourceFilter;
 }

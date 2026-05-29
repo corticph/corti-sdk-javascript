@@ -55,7 +55,7 @@ export class TemplatesClient {
             published,
             source:
                 source != null
-                    ? serializers.documents.ListTemplatesRequestSource.jsonOrThrow(source, {
+                    ? serializers.GuidedSourceFilter.jsonOrThrow(source, {
                           unrecognizedObjectKeys: "strip",
                           omitUndefined: true,
                       })

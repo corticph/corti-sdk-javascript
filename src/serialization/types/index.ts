@@ -153,6 +153,7 @@ export * from "./GuidedSectionsCreateRequest.js";
 export * from "./GuidedSectionVersion.js";
 export * from "./GuidedShallowTemplateGeneration.js";
 export * from "./GuidedShallowTemplateVersionResponse.js";
+export * from "./GuidedSourceFilter.js";
 export * from "./GuidedStringNode.js";
 export * from "./GuidedTemplate.js";
 export * from "./GuidedTemplateGeneration.js";
