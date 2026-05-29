@@ -8,6 +8,8 @@ import { handleNonStatusCodeError } from "../../../../errors/handleNonStatusCode
 import * as errors from "../../../../errors/index.js";
 import * as serializers from "../../../../serialization/index.js";
 import * as Corti from "../../../index.js";
+import { SectionsClient } from "../resources/sections/client/Client.js";
+import { TemplatesClient } from "../resources/templates/client/Client.js";
 
 export declare namespace DocumentsClient {
     export type Options = BaseClientOptions;
@@ -17,12 +19,24 @@ export declare namespace DocumentsClient {
 
 export class DocumentsClient {
     protected readonly _options: NormalizedClientOptionsWithAuth<DocumentsClient.Options>;
+    protected _templates: TemplatesClient | undefined;
+    protected _sections: SectionsClient | undefined;
 
     constructor(options: DocumentsClient.Options) {
         this._options = normalizeClientOptionsWithAuth(options);
     }
 
+    public get templates(): TemplatesClient {
+        return (this._templates ??= new TemplatesClient(this._options));
+    }
+
+    public get sections(): SectionsClient {
+        return (this._sections ??= new SectionsClient(this._options));
+    }
+
     /**
+     * @deprecated
+     *
      * List Documents
      *
      * @param {Corti.Uuid} id - The unique identifier of the interaction. Must be a valid UUID.
@@ -123,6 +137,8 @@ export class DocumentsClient {
     }
 
     /**
+     * @deprecated
+     *
      * This endpoint offers different ways to generate a document. Find guides to document generation [here](/textgen/documents-standard).
      *
      * @param {Corti.Uuid} id - The unique identifier of the interaction. Must be a valid UUID.
@@ -246,6 +262,8 @@ export class DocumentsClient {
     }
 
     /**
+     * @deprecated
+     *
      * Get Document.
      *
      * @param {Corti.Uuid} id - The unique identifier of the interaction. Must be a valid UUID.
@@ -354,6 +372,8 @@ export class DocumentsClient {
     }
 
     /**
+     * @deprecated
+     *
      * @param {Corti.Uuid} id - The unique identifier of the interaction. Must be a valid UUID.
      * @param {Corti.Uuid} documentId - The document ID representing the context for the request. Must be a valid UUID.
      * @param {DocumentsClient.RequestOptions} requestOptions - Request-specific configuration.
@@ -451,6 +471,8 @@ export class DocumentsClient {
     }
 
     /**
+     * @deprecated
+     *
      * @param {Corti.Uuid} id - The unique identifier of the interaction. Must be a valid UUID.
      * @param {Corti.Uuid} documentId - The document ID representing the context for the request. Must be a valid UUID.
      * @param {Corti.DocumentsUpdateRequest} request
@@ -563,5 +585,109 @@ export class DocumentsClient {
             "PATCH",
             "/interactions/{id}/documents/{documentId}",
         );
+    }
+
+    /**
+     * Generates a structured document using one of three template-supply paths: a stored template reference (optionally with runtime overrides), an ad-hoc assembly of stored sections, or a fully inline dynamic template. Exactly one of `templateRef`, `assemblyTemplate`, or `dynamicTemplate` must be provided.
+     * Context can combine different types or reference an interactionId to automatically fetch existing context to pass to the LLM. Note that discarded facts are not passed to the LLM.
+     * With the exception of the plain `templateRef` path (no overrides), every call creates a new auto-generated template aggregate that snapshots the resolved prompts as a drift-proof receipt, persisted for 30 days.
+     *
+     * @param {Corti.GuidedDocumentsGenerateRequest} request
+     * @param {DocumentsClient.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link Corti.BadRequestError}
+     * @throws {@link Corti.NotFoundError}
+     * @throws {@link Corti.UnprocessableEntityError}
+     * @throws {@link Corti.InternalServerError}
+     *
+     * @example
+     *     await client.documents.generate({
+     *         outputLanguage: "outputLanguage",
+     *         templateRef: {
+     *             templateId: "templateId"
+     *         }
+     *     })
+     */
+    public generate(
+        request: Corti.GuidedDocumentsGenerateRequest,
+        requestOptions?: DocumentsClient.RequestOptions,
+    ): core.HttpResponsePromise<Corti.GuidedDocumentsCreateEphemeralResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__generate(request, requestOptions));
+    }
+
+    private async __generate(
+        request: Corti.GuidedDocumentsGenerateRequest,
+        requestOptions?: DocumentsClient.RequestOptions,
+    ): Promise<core.WithRawResponse<Corti.GuidedDocumentsCreateEphemeralResponse>> {
+        const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
+        const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+            _authRequest.headers,
+            this._options?.headers,
+            mergeOnlyDefinedHeaders({ "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName }),
+            requestOptions?.headers,
+        );
+        const _response = await core.fetcher({
+            url: core.url.join(
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)).base,
+                "documents/",
+            ),
+            method: "POST",
+            headers: _headers,
+            contentType: "application/json",
+            queryParameters: requestOptions?.queryParams,
+            requestType: "json",
+            body: serializers.GuidedDocumentsGenerateRequest.jsonOrThrow(request, {
+                unrecognizedObjectKeys: "strip",
+                omitUndefined: true,
+            }),
+            timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
+            maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
+            abortSignal: requestOptions?.abortSignal,
+            fetchFn: this._options?.fetch,
+            logging: this._options.logging,
+        });
+        if (_response.ok) {
+            return {
+                data: serializers.GuidedDocumentsCreateEphemeralResponse.parseOrThrow(_response.body, {
+                    unrecognizedObjectKeys: "passthrough",
+                    allowUnrecognizedUnionMembers: true,
+                    allowUnrecognizedEnumValues: true,
+                    skipValidation: true,
+                    breadcrumbsPrefix: ["response"],
+                }),
+                rawResponse: _response.rawResponse,
+            };
+        }
+
+        if (_response.error.reason === "status-code") {
+            switch (_response.error.statusCode) {
+                case 400:
+                    throw new Corti.BadRequestError(_response.error.body, _response.rawResponse);
+                case 404:
+                    throw new Corti.NotFoundError(_response.error.body, _response.rawResponse);
+                case 422:
+                    throw new Corti.UnprocessableEntityError(_response.error.body, _response.rawResponse);
+                case 500:
+                    throw new Corti.InternalServerError(
+                        serializers.ErrorResponse.parseOrThrow(_response.error.body, {
+                            unrecognizedObjectKeys: "passthrough",
+                            allowUnrecognizedUnionMembers: true,
+                            allowUnrecognizedEnumValues: true,
+                            skipValidation: true,
+                            breadcrumbsPrefix: ["response"],
+                        }),
+                        _response.rawResponse,
+                    );
+                default:
+                    throw new errors.CortiError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                        rawResponse: _response.rawResponse,
+                    });
+            }
+        }
+
+        return handleNonStatusCodeError(_response.error, _response.rawResponse, "POST", "/documents/");
     }
 }
