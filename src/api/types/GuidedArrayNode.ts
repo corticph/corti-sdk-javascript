@@ -7,7 +7,7 @@ export interface GuidedArrayNode {
     /** Can be used to prompt the LLM with more guidance in addition to the section.instructions */
     description?: string;
     items: Corti.GuidedOutputSchema;
-    /** Controls how each array item is rendered in the generated output. Use `bullet` (default), `numbered`, or `plain`, or provide a custom format string containing the `{item}` placeholder. */
+    /** Format string used to render each array item in the generated output. Use the `{item}` placeholder for the item value. */
     itemFormat?: string;
     /** Minimum number of array items to generate. */
     minItems?: number | null;
