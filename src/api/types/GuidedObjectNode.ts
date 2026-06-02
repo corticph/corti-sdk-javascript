@@ -4,7 +4,7 @@ import type * as Corti from "../index.js";
 
 export interface GuidedObjectNode {
     type: "object";
-    /** Can be used to prompt the LLM with more guidance in addition to the section.instructions */
+    /** Guide the LLM in what to output for this node. Supplements the section-level instructions. */
     description?: string;
     /**
      * Free-form format string that controls how an object's fields are rendered into the final text output. Operates in one of two modes determined by which placeholders appear:
