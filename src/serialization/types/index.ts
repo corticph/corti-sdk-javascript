@@ -240,6 +240,7 @@ export * from "./TranscribeCommandMessage.js";
 export * from "./TranscribeCommandVariable.js";
 export * from "./TranscribeConfig.js";
 export * from "./TranscribeConfigMessage.js";
+export * from "./TranscribeConfigReplacementsItem.js";
 export * from "./TranscribeConfigStatusMessage.js";
 export * from "./TranscribeConfigStatusMessageType.js";
 export * from "./TranscribeDeltaUsageMessage.js";
