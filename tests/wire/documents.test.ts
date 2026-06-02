@@ -1031,8 +1031,10 @@ describe("DocumentsClient", () => {
                 templateId: "templateId",
                 templateVersionId: "templateVersionId",
                 language: "language",
+                interactionId: "interactionId",
                 stringDocument: { key: "value" },
                 structuredDocument: { key: "value" },
+                labels: [{ key: "key", value: "value" }],
             },
             usageInfo: { creditsConsumed: 1.1 },
         };
@@ -1058,12 +1060,19 @@ describe("DocumentsClient", () => {
                 templateId: "templateId",
                 templateVersionId: "templateVersionId",
                 language: "language",
+                interactionId: "interactionId",
                 stringDocument: {
                     key: "value",
                 },
                 structuredDocument: {
                     key: "value",
                 },
+                labels: [
+                    {
+                        key: "key",
+                        value: "value",
+                    },
+                ],
             },
             usageInfo: {
                 creditsConsumed: 1.1,
