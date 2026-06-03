@@ -16,6 +16,7 @@ export const TranscriptsCreateRequest: core.serialization.Schema<
     isMultichannel: core.serialization.boolean().optional(),
     diarize: core.serialization.boolean().optional(),
     participants: core.serialization.list(TranscriptsParticipant).optional(),
+    async: core.serialization.boolean().optional(),
 });
 
 export declare namespace TranscriptsCreateRequest {
@@ -26,5 +27,6 @@ export declare namespace TranscriptsCreateRequest {
         isMultichannel?: boolean | null;
         diarize?: boolean | null;
         participants?: TranscriptsParticipant.Raw[] | null;
+        async?: boolean | null;
     }
 }

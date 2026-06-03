@@ -5,7 +5,8 @@ import type * as Corti from "../index.js";
 export interface GuidedFieldDefinition {
     /** Use to set a key to reference. */
     key: string;
-    /** Can be used to prompt the LLM with more guidance in addition to the section.instructions */
+    /** Guide the LLM in what to output for this node. Supplements the section-level instructions. */
     description: string;
+    /** Must be another output schema node (string, number, boolean, array, or object). */
     value: Corti.GuidedOutputSchema;
 }
