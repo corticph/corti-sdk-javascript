@@ -8,6 +8,7 @@ import { handleNonStatusCodeError } from "../../../../../../errors/handleNonStat
 import * as errors from "../../../../../../errors/index.js";
 import * as serializers from "../../../../../../serialization/index.js";
 import * as Corti from "../../../../../index.js";
+import { PoliciesClient } from "../resources/policies/client/Client.js";
 import { VersionsClient } from "../resources/versions/client/Client.js";
 
 export declare namespace SectionsClient {
@@ -19,6 +20,7 @@ export declare namespace SectionsClient {
 export class SectionsClient {
     protected readonly _options: NormalizedClientOptionsWithAuth<SectionsClient.Options>;
     protected _versions: VersionsClient | undefined;
+    protected _policies: PoliciesClient | undefined;
 
     constructor(options: SectionsClient.Options) {
         this._options = normalizeClientOptionsWithAuth(options);
@@ -26,6 +28,10 @@ export class SectionsClient {
 
     public get versions(): VersionsClient {
         return (this._versions ??= new VersionsClient(this._options));
+    }
+
+    public get policies(): PoliciesClient {
+        return (this._policies ??= new PoliciesClient(this._options));
     }
 
     /**
