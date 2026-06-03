@@ -9,16 +9,16 @@ import * as errors from "../../../../errors/index.js";
 import * as serializers from "../../../../serialization/index.js";
 import * as Corti from "../../../index.js";
 
-export declare namespace DocumentsClient {
+export declare namespace DocumentsClassicClient {
     export type Options = BaseClientOptions;
 
     export interface RequestOptions extends BaseRequestOptions {}
 }
 
-export class DocumentsClient {
-    protected readonly _options: NormalizedClientOptionsWithAuth<DocumentsClient.Options>;
+export class DocumentsClassicClient {
+    protected readonly _options: NormalizedClientOptionsWithAuth<DocumentsClassicClient.Options>;
 
-    constructor(options: DocumentsClient.Options) {
+    constructor(options: DocumentsClassicClient.Options) {
         this._options = normalizeClientOptionsWithAuth(options);
     }
 
@@ -26,7 +26,7 @@ export class DocumentsClient {
      * List Documents
      *
      * @param {Corti.Uuid} id - The unique identifier of the interaction. Must be a valid UUID.
-     * @param {DocumentsClient.RequestOptions} requestOptions - Request-specific configuration.
+     * @param {DocumentsClassicClient.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Corti.BadRequestError}
      * @throws {@link Corti.ForbiddenError}
@@ -34,18 +34,18 @@ export class DocumentsClient {
      * @throws {@link Corti.GatewayTimeoutError}
      *
      * @example
-     *     await client.documents.list("f47ac10b-58cc-4372-a567-0e02b2c3d479")
+     *     await client.documentsClassic.documentsList("f47ac10b-58cc-4372-a567-0e02b2c3d479")
      */
-    public list(
+    public documentsList(
         id: Corti.Uuid,
-        requestOptions?: DocumentsClient.RequestOptions,
+        requestOptions?: DocumentsClassicClient.RequestOptions,
     ): core.HttpResponsePromise<Corti.DocumentsListResponse> {
-        return core.HttpResponsePromise.fromPromise(this.__list(id, requestOptions));
+        return core.HttpResponsePromise.fromPromise(this.__documentsList(id, requestOptions));
     }
 
-    private async __list(
+    private async __documentsList(
         id: Corti.Uuid,
-        requestOptions?: DocumentsClient.RequestOptions,
+        requestOptions?: DocumentsClassicClient.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.DocumentsListResponse>> {
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
@@ -127,7 +127,7 @@ export class DocumentsClient {
      *
      * @param {Corti.Uuid} id - The unique identifier of the interaction. Must be a valid UUID.
      * @param {Corti.DocumentsCreateRequest} request
-     * @param {DocumentsClient.RequestOptions} requestOptions - Request-specific configuration.
+     * @param {DocumentsClassicClient.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Corti.BadRequestError}
      * @throws {@link Corti.ForbiddenError}
@@ -135,7 +135,7 @@ export class DocumentsClient {
      * @throws {@link Corti.GatewayTimeoutError}
      *
      * @example
-     *     await client.documents.create("f47ac10b-58cc-4372-a567-0e02b2c3d479", {
+     *     await client.documentsClassic.documentsCreate("f47ac10b-58cc-4372-a567-0e02b2c3d479", {
      *         context: [{
      *                 type: "facts",
      *                 data: [{
@@ -146,18 +146,18 @@ export class DocumentsClient {
      *         outputLanguage: "outputLanguage"
      *     })
      */
-    public create(
+    public documentsCreate(
         id: Corti.Uuid,
         request: Corti.DocumentsCreateRequest,
-        requestOptions?: DocumentsClient.RequestOptions,
+        requestOptions?: DocumentsClassicClient.RequestOptions,
     ): core.HttpResponsePromise<Corti.DocumentsGetResponse> {
-        return core.HttpResponsePromise.fromPromise(this.__create(id, request, requestOptions));
+        return core.HttpResponsePromise.fromPromise(this.__documentsCreate(id, request, requestOptions));
     }
 
-    private async __create(
+    private async __documentsCreate(
         id: Corti.Uuid,
         request: Corti.DocumentsCreateRequest,
-        requestOptions?: DocumentsClient.RequestOptions,
+        requestOptions?: DocumentsClassicClient.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.DocumentsGetResponse>> {
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
@@ -250,7 +250,7 @@ export class DocumentsClient {
      *
      * @param {Corti.Uuid} id - The unique identifier of the interaction. Must be a valid UUID.
      * @param {Corti.Uuid} documentId - The document ID representing the context for the request. Must be a valid UUID.
-     * @param {DocumentsClient.RequestOptions} requestOptions - Request-specific configuration.
+     * @param {DocumentsClassicClient.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Corti.BadRequestError}
      * @throws {@link Corti.ForbiddenError}
@@ -258,20 +258,20 @@ export class DocumentsClient {
      * @throws {@link Corti.GatewayTimeoutError}
      *
      * @example
-     *     await client.documents.get("f47ac10b-58cc-4372-a567-0e02b2c3d479", "f47ac10b-58cc-4372-a567-0e02b2c3d479")
+     *     await client.documentsClassic.documentsGet("f47ac10b-58cc-4372-a567-0e02b2c3d479", "f47ac10b-58cc-4372-a567-0e02b2c3d479")
      */
-    public get(
+    public documentsGet(
         id: Corti.Uuid,
         documentId: Corti.Uuid,
-        requestOptions?: DocumentsClient.RequestOptions,
+        requestOptions?: DocumentsClassicClient.RequestOptions,
     ): core.HttpResponsePromise<Corti.DocumentsGetResponse> {
-        return core.HttpResponsePromise.fromPromise(this.__get(id, documentId, requestOptions));
+        return core.HttpResponsePromise.fromPromise(this.__documentsGet(id, documentId, requestOptions));
     }
 
-    private async __get(
+    private async __documentsGet(
         id: Corti.Uuid,
         documentId: Corti.Uuid,
-        requestOptions?: DocumentsClient.RequestOptions,
+        requestOptions?: DocumentsClassicClient.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.DocumentsGetResponse>> {
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
@@ -356,7 +356,7 @@ export class DocumentsClient {
     /**
      * @param {Corti.Uuid} id - The unique identifier of the interaction. Must be a valid UUID.
      * @param {Corti.Uuid} documentId - The document ID representing the context for the request. Must be a valid UUID.
-     * @param {DocumentsClient.RequestOptions} requestOptions - Request-specific configuration.
+     * @param {DocumentsClassicClient.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Corti.ForbiddenError}
      * @throws {@link Corti.NotFoundError}
@@ -364,20 +364,20 @@ export class DocumentsClient {
      * @throws {@link Corti.GatewayTimeoutError}
      *
      * @example
-     *     await client.documents.delete("f47ac10b-58cc-4372-a567-0e02b2c3d479", "f47ac10b-58cc-4372-a567-0e02b2c3d479")
+     *     await client.documentsClassic.documentsDelete("f47ac10b-58cc-4372-a567-0e02b2c3d479", "f47ac10b-58cc-4372-a567-0e02b2c3d479")
      */
-    public delete(
+    public documentsDelete(
         id: Corti.Uuid,
         documentId: Corti.Uuid,
-        requestOptions?: DocumentsClient.RequestOptions,
+        requestOptions?: DocumentsClassicClient.RequestOptions,
     ): core.HttpResponsePromise<void> {
-        return core.HttpResponsePromise.fromPromise(this.__delete(id, documentId, requestOptions));
+        return core.HttpResponsePromise.fromPromise(this.__documentsDelete(id, documentId, requestOptions));
     }
 
-    private async __delete(
+    private async __documentsDelete(
         id: Corti.Uuid,
         documentId: Corti.Uuid,
-        requestOptions?: DocumentsClient.RequestOptions,
+        requestOptions?: DocumentsClassicClient.RequestOptions,
     ): Promise<core.WithRawResponse<void>> {
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
@@ -454,7 +454,7 @@ export class DocumentsClient {
      * @param {Corti.Uuid} id - The unique identifier of the interaction. Must be a valid UUID.
      * @param {Corti.Uuid} documentId - The document ID representing the context for the request. Must be a valid UUID.
      * @param {Corti.DocumentsUpdateRequest} request
-     * @param {DocumentsClient.RequestOptions} requestOptions - Request-specific configuration.
+     * @param {DocumentsClassicClient.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Corti.BadRequestError}
      * @throws {@link Corti.ForbiddenError}
@@ -462,22 +462,22 @@ export class DocumentsClient {
      * @throws {@link Corti.GatewayTimeoutError}
      *
      * @example
-     *     await client.documents.update("f47ac10b-58cc-4372-a567-0e02b2c3d479", "f47ac10b-58cc-4372-a567-0e02b2c3d479")
+     *     await client.documentsClassic.documentsUpdate("f47ac10b-58cc-4372-a567-0e02b2c3d479", "f47ac10b-58cc-4372-a567-0e02b2c3d479")
      */
-    public update(
+    public documentsUpdate(
         id: Corti.Uuid,
         documentId: Corti.Uuid,
         request: Corti.DocumentsUpdateRequest = {},
-        requestOptions?: DocumentsClient.RequestOptions,
+        requestOptions?: DocumentsClassicClient.RequestOptions,
     ): core.HttpResponsePromise<Corti.DocumentsGetResponse> {
-        return core.HttpResponsePromise.fromPromise(this.__update(id, documentId, request, requestOptions));
+        return core.HttpResponsePromise.fromPromise(this.__documentsUpdate(id, documentId, request, requestOptions));
     }
 
-    private async __update(
+    private async __documentsUpdate(
         id: Corti.Uuid,
         documentId: Corti.Uuid,
         request: Corti.DocumentsUpdateRequest = {},
-        requestOptions?: DocumentsClient.RequestOptions,
+        requestOptions?: DocumentsClassicClient.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.DocumentsGetResponse>> {
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(

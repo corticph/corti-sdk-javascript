@@ -5,8 +5,8 @@ import { CortiClient } from "../../src/Client";
 import { mockServerPool } from "../mock-server/MockServerPool";
 import { mockOAuth } from "./mockAuth";
 
-describe("DocumentsClient", () => {
-    test("list (1)", async () => {
+describe("DocumentsClassicClient", () => {
+    test("documents_list (1)", async () => {
         const server = mockServerPool.createServer();
         mockOAuth(server);
 
@@ -51,7 +51,7 @@ describe("DocumentsClient", () => {
             .jsonBody(rawResponseBody)
             .build();
 
-        const response = await client.documents.list("f47ac10b-58cc-4372-a567-0e02b2c3d479");
+        const response = await client.documentsClassic.documentsList("f47ac10b-58cc-4372-a567-0e02b2c3d479");
         expect(response).toEqual({
             data: [
                 {
@@ -80,7 +80,7 @@ describe("DocumentsClient", () => {
         });
     });
 
-    test("list (2)", async () => {
+    test("documents_list (2)", async () => {
         const server = mockServerPool.createServer();
         mockOAuth(server);
 
@@ -103,11 +103,11 @@ describe("DocumentsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.documents.list("id");
+            return await client.documentsClassic.documentsList("id");
         }).rejects.toThrow(Corti.BadRequestError);
     });
 
-    test("list (3)", async () => {
+    test("documents_list (3)", async () => {
         const server = mockServerPool.createServer();
         mockOAuth(server);
 
@@ -130,11 +130,11 @@ describe("DocumentsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.documents.list("id");
+            return await client.documentsClassic.documentsList("id");
         }).rejects.toThrow(Corti.ForbiddenError);
     });
 
-    test("list (4)", async () => {
+    test("documents_list (4)", async () => {
         const server = mockServerPool.createServer();
         mockOAuth(server);
 
@@ -157,11 +157,11 @@ describe("DocumentsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.documents.list("id");
+            return await client.documentsClassic.documentsList("id");
         }).rejects.toThrow(Corti.InternalServerError);
     });
 
-    test("list (5)", async () => {
+    test("documents_list (5)", async () => {
         const server = mockServerPool.createServer();
         mockOAuth(server);
 
@@ -184,11 +184,11 @@ describe("DocumentsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.documents.list("id");
+            return await client.documentsClassic.documentsList("id");
         }).rejects.toThrow(Corti.GatewayTimeoutError);
     });
 
-    test("create (1)", async () => {
+    test("documents_create (1)", async () => {
         const server = mockServerPool.createServer();
         mockOAuth(server);
 
@@ -234,7 +234,7 @@ describe("DocumentsClient", () => {
             .jsonBody(rawResponseBody)
             .build();
 
-        const response = await client.documents.create("f47ac10b-58cc-4372-a567-0e02b2c3d479", {
+        const response = await client.documentsClassic.documentsCreate("f47ac10b-58cc-4372-a567-0e02b2c3d479", {
             context: [
                 {
                     type: "facts",
@@ -272,7 +272,7 @@ describe("DocumentsClient", () => {
         });
     });
 
-    test("create (2)", async () => {
+    test("documents_create (2)", async () => {
         const server = mockServerPool.createServer();
         mockOAuth(server);
 
@@ -303,7 +303,7 @@ describe("DocumentsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.documents.create("id", {
+            return await client.documentsClassic.documentsCreate("id", {
                 context: [
                     {
                         type: "facts",
@@ -334,7 +334,7 @@ describe("DocumentsClient", () => {
         }).rejects.toThrow(Corti.BadRequestError);
     });
 
-    test("create (3)", async () => {
+    test("documents_create (3)", async () => {
         const server = mockServerPool.createServer();
         mockOAuth(server);
 
@@ -365,7 +365,7 @@ describe("DocumentsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.documents.create("id", {
+            return await client.documentsClassic.documentsCreate("id", {
                 context: [
                     {
                         type: "facts",
@@ -396,7 +396,7 @@ describe("DocumentsClient", () => {
         }).rejects.toThrow(Corti.ForbiddenError);
     });
 
-    test("create (4)", async () => {
+    test("documents_create (4)", async () => {
         const server = mockServerPool.createServer();
         mockOAuth(server);
 
@@ -427,7 +427,7 @@ describe("DocumentsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.documents.create("id", {
+            return await client.documentsClassic.documentsCreate("id", {
                 context: [
                     {
                         type: "facts",
@@ -458,7 +458,7 @@ describe("DocumentsClient", () => {
         }).rejects.toThrow(Corti.InternalServerError);
     });
 
-    test("create (5)", async () => {
+    test("documents_create (5)", async () => {
         const server = mockServerPool.createServer();
         mockOAuth(server);
 
@@ -489,7 +489,7 @@ describe("DocumentsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.documents.create("id", {
+            return await client.documentsClassic.documentsCreate("id", {
                 context: [
                     {
                         type: "facts",
@@ -520,7 +520,7 @@ describe("DocumentsClient", () => {
         }).rejects.toThrow(Corti.GatewayTimeoutError);
     });
 
-    test("get (1)", async () => {
+    test("documents_get (1)", async () => {
         const server = mockServerPool.createServer();
         mockOAuth(server);
 
@@ -561,7 +561,7 @@ describe("DocumentsClient", () => {
             .jsonBody(rawResponseBody)
             .build();
 
-        const response = await client.documents.get(
+        const response = await client.documentsClassic.documentsGet(
             "f47ac10b-58cc-4372-a567-0e02b2c3d479",
             "f47ac10b-58cc-4372-a567-0e02b2c3d479",
         );
@@ -589,7 +589,7 @@ describe("DocumentsClient", () => {
         });
     });
 
-    test("get (2)", async () => {
+    test("documents_get (2)", async () => {
         const server = mockServerPool.createServer();
         mockOAuth(server);
 
@@ -612,11 +612,11 @@ describe("DocumentsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.documents.get("id", "documentId");
+            return await client.documentsClassic.documentsGet("id", "documentId");
         }).rejects.toThrow(Corti.BadRequestError);
     });
 
-    test("get (3)", async () => {
+    test("documents_get (3)", async () => {
         const server = mockServerPool.createServer();
         mockOAuth(server);
 
@@ -639,11 +639,11 @@ describe("DocumentsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.documents.get("id", "documentId");
+            return await client.documentsClassic.documentsGet("id", "documentId");
         }).rejects.toThrow(Corti.ForbiddenError);
     });
 
-    test("get (4)", async () => {
+    test("documents_get (4)", async () => {
         const server = mockServerPool.createServer();
         mockOAuth(server);
 
@@ -666,11 +666,11 @@ describe("DocumentsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.documents.get("id", "documentId");
+            return await client.documentsClassic.documentsGet("id", "documentId");
         }).rejects.toThrow(Corti.InternalServerError);
     });
 
-    test("get (5)", async () => {
+    test("documents_get (5)", async () => {
         const server = mockServerPool.createServer();
         mockOAuth(server);
 
@@ -693,11 +693,11 @@ describe("DocumentsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.documents.get("id", "documentId");
+            return await client.documentsClassic.documentsGet("id", "documentId");
         }).rejects.toThrow(Corti.GatewayTimeoutError);
     });
 
-    test("delete (1)", async () => {
+    test("documents_delete (1)", async () => {
         const server = mockServerPool.createServer();
         mockOAuth(server);
 
@@ -716,14 +716,14 @@ describe("DocumentsClient", () => {
             .statusCode(200)
             .build();
 
-        const response = await client.documents.delete(
+        const response = await client.documentsClassic.documentsDelete(
             "f47ac10b-58cc-4372-a567-0e02b2c3d479",
             "f47ac10b-58cc-4372-a567-0e02b2c3d479",
         );
         expect(response).toEqual(undefined);
     });
 
-    test("delete (2)", async () => {
+    test("documents_delete (2)", async () => {
         const server = mockServerPool.createServer();
         mockOAuth(server);
 
@@ -746,11 +746,11 @@ describe("DocumentsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.documents.delete("id", "documentId");
+            return await client.documentsClassic.documentsDelete("id", "documentId");
         }).rejects.toThrow(Corti.ForbiddenError);
     });
 
-    test("delete (3)", async () => {
+    test("documents_delete (3)", async () => {
         const server = mockServerPool.createServer();
         mockOAuth(server);
 
@@ -773,11 +773,11 @@ describe("DocumentsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.documents.delete("id", "documentId");
+            return await client.documentsClassic.documentsDelete("id", "documentId");
         }).rejects.toThrow(Corti.NotFoundError);
     });
 
-    test("delete (4)", async () => {
+    test("documents_delete (4)", async () => {
         const server = mockServerPool.createServer();
         mockOAuth(server);
 
@@ -800,11 +800,11 @@ describe("DocumentsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.documents.delete("id", "documentId");
+            return await client.documentsClassic.documentsDelete("id", "documentId");
         }).rejects.toThrow(Corti.InternalServerError);
     });
 
-    test("delete (5)", async () => {
+    test("documents_delete (5)", async () => {
         const server = mockServerPool.createServer();
         mockOAuth(server);
 
@@ -827,11 +827,11 @@ describe("DocumentsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.documents.delete("id", "documentId");
+            return await client.documentsClassic.documentsDelete("id", "documentId");
         }).rejects.toThrow(Corti.GatewayTimeoutError);
     });
 
-    test("update (1)", async () => {
+    test("documents_update (1)", async () => {
         const server = mockServerPool.createServer();
         mockOAuth(server);
 
@@ -873,7 +873,7 @@ describe("DocumentsClient", () => {
             .jsonBody(rawResponseBody)
             .build();
 
-        const response = await client.documents.update(
+        const response = await client.documentsClassic.documentsUpdate(
             "f47ac10b-58cc-4372-a567-0e02b2c3d479",
             "f47ac10b-58cc-4372-a567-0e02b2c3d479",
         );
@@ -901,7 +901,7 @@ describe("DocumentsClient", () => {
         });
     });
 
-    test("update (2)", async () => {
+    test("documents_update (2)", async () => {
         const server = mockServerPool.createServer();
         mockOAuth(server);
 
@@ -925,11 +925,11 @@ describe("DocumentsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.documents.update("id", "documentId");
+            return await client.documentsClassic.documentsUpdate("id", "documentId");
         }).rejects.toThrow(Corti.BadRequestError);
     });
 
-    test("update (3)", async () => {
+    test("documents_update (3)", async () => {
         const server = mockServerPool.createServer();
         mockOAuth(server);
 
@@ -953,11 +953,11 @@ describe("DocumentsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.documents.update("id", "documentId");
+            return await client.documentsClassic.documentsUpdate("id", "documentId");
         }).rejects.toThrow(Corti.ForbiddenError);
     });
 
-    test("update (4)", async () => {
+    test("documents_update (4)", async () => {
         const server = mockServerPool.createServer();
         mockOAuth(server);
 
@@ -981,11 +981,11 @@ describe("DocumentsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.documents.update("id", "documentId");
+            return await client.documentsClassic.documentsUpdate("id", "documentId");
         }).rejects.toThrow(Corti.InternalServerError);
     });
 
-    test("update (5)", async () => {
+    test("documents_update (5)", async () => {
         const server = mockServerPool.createServer();
         mockOAuth(server);
 
@@ -1009,7 +1009,7 @@ describe("DocumentsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.documents.update("id", "documentId");
+            return await client.documentsClassic.documentsUpdate("id", "documentId");
         }).rejects.toThrow(Corti.GatewayTimeoutError);
     });
 });
