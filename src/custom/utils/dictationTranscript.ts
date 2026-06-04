@@ -30,12 +30,9 @@ function buildInsertion(committed: string, segment: string): string {
     const leftAttach = new Set([",", ".", ":", ";", "!", "?", ")", "]", "}", "%"]);
 
     const needsSpace =
-        committed.length > 0 &&
-        !/\s/.test(prevChar) &&
-        !noSpaceAfter.has(prevChar) &&
-        !leftAttach.has(nextChar);
+        committed.length > 0 && !/\s/.test(prevChar) && !noSpaceAfter.has(prevChar) && !leftAttach.has(nextChar);
 
-    return needsSpace ? " " + segment : segment;
+    return needsSpace ? ` ${segment}` : segment;
 }
 
 /**
@@ -53,9 +50,7 @@ export function applyDictationTranscript(
     message: Pick<TranscribeTranscriptData, "text" | "start" | "end" | "isFinal">,
 ): DictationTranscriptSnapshot {
     const committedText = previous?.committedText ?? "";
-    const finalizedStarts: Set<number> = previous
-        ? new Set(previous._finalizedStarts)
-        : new Set();
+    const finalizedStarts: Set<number> = previous ? new Set(previous._finalizedStarts) : new Set();
     const latestFinalEnd = previous?._latestFinalEnd ?? -Infinity;
 
     if (message.isFinal) {
@@ -81,21 +76,25 @@ export function applyDictationTranscript(
 
     // Interim path.
     if (finalizedStarts.has(message.start)) {
-        return previous ?? {
-            committedText: "",
-            interimText: "",
-            _finalizedStarts: finalizedStarts,
-            _latestFinalEnd: latestFinalEnd,
-        };
+        return (
+            previous ?? {
+                committedText: "",
+                interimText: "",
+                _finalizedStarts: finalizedStarts,
+                _latestFinalEnd: latestFinalEnd,
+            }
+        );
     }
 
     if (message.start < latestFinalEnd) {
-        return previous ?? {
-            committedText: "",
-            interimText: "",
-            _finalizedStarts: finalizedStarts,
-            _latestFinalEnd: latestFinalEnd,
-        };
+        return (
+            previous ?? {
+                committedText: "",
+                interimText: "",
+                _finalizedStarts: finalizedStarts,
+                _latestFinalEnd: latestFinalEnd,
+            }
+        );
     }
 
     return {
