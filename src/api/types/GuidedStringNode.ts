@@ -2,12 +2,12 @@
 
 export interface GuidedStringNode {
     type: "string";
-    /** Can be used to prompt the LLM with more guidance in addition to the section.instructions */
+    /** Guide the LLM in what to output for this node. Supplements the section-level instructions. */
     description?: string;
-    /** The default to output if nothing to output. */
+    /** If nothing is outputted, this default is used. When `enum` is set, the default must be one of the enum values. */
     default?: string | null;
-    /** Can be used to prompt the LLM with specific values to output. */
+    /** Can be used to guide the LLM with specific values to output. */
     enum?: string[];
-    /** Can be used to prompt the LLM for a specific output pattern. */
+    /** Can be used to constrain the LLM to output a specific pattern. */
     pattern?: string | null;
 }
