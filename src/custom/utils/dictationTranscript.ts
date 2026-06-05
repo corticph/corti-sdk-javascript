@@ -15,6 +15,9 @@ export interface DictationTranscriptSnapshot {
     _latestFinalEnd: number;
 }
 
+const NO_SPACE_AFTER = new Set(["(", "[", "{", '"', "'", "\u2018", "\u201c"]);
+const LEFT_ATTACH = new Set([",", ".", ":", ";", "!", "?", ")", "]", "}", "%"]);
+
 /**
  * Returns the segment text prefixed with at most one space, applying
  * punctuation-aware boundary rules so callers never produce double-spaces
@@ -26,11 +29,8 @@ function buildInsertion(committed: string, segment: string): string {
     const prevChar = committed.length > 0 ? committed[committed.length - 1] : "";
     const nextChar = segment[0] ?? "";
 
-    const noSpaceAfter = new Set(["(", "[", "{", '"', "'", "\u2018", "\u201c"]);
-    const leftAttach = new Set([",", ".", ":", ";", "!", "?", ")", "]", "}", "%"]);
-
     const needsSpace =
-        committed.length > 0 && !/\s/.test(prevChar) && !noSpaceAfter.has(prevChar) && !leftAttach.has(nextChar);
+        committed.length > 0 && !/\s/.test(prevChar) && !NO_SPACE_AFTER.has(prevChar) && !LEFT_ATTACH.has(nextChar);
 
     return needsSpace ? ` ${segment}` : segment;
 }
@@ -50,7 +50,7 @@ export function applyDictationTranscript(
     message: Pick<TranscribeTranscriptData, "text" | "start" | "end" | "isFinal">,
 ): DictationTranscriptSnapshot {
     const committedText = previous?.committedText ?? "";
-    const finalizedStarts: Set<number> = previous ? new Set(previous._finalizedStarts) : new Set();
+    const finalizedStarts = previous?._finalizedStarts ?? new Set<number>();
     const latestFinalEnd = previous?._latestFinalEnd ?? -Infinity;
 
     if (message.isFinal) {
@@ -63,13 +63,15 @@ export function applyDictationTranscript(
             };
         }
 
+        const nextFinalizedStarts = new Set(finalizedStarts);
+        nextFinalizedStarts.add(message.start);
+
         const newCommitted = committedText + buildInsertion(committedText, message.text);
-        finalizedStarts.add(message.start);
 
         return {
             committedText: newCommitted,
             interimText: "",
-            _finalizedStarts: finalizedStarts,
+            _finalizedStarts: nextFinalizedStarts,
             _latestFinalEnd: Math.max(latestFinalEnd, message.end),
         };
     }
