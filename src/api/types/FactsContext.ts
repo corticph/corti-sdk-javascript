@@ -3,7 +3,7 @@
 import type * as Corti from "../index.js";
 
 export interface FactsContext {
-    /** The . */
+    /** The text of the fact. */
     text: string;
     /** The group to which the fact belongs. */
     group?: string;
