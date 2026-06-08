@@ -92,22 +92,22 @@ export class CortiClient extends BaseCortiClient {
     }
 
     /**
-     * Returns the base REST API URL the client is configured to use.
+     * Returns the full set of URLs the client is configured to use.
      *
-     * Resolves `baseUrl` when explicitly set, otherwise returns the `base` URL
-     * derived from the configured environment.
+     * If a custom `baseUrl` was provided it overrides the `base` field; all
+     * other URLs are derived from the configured environment.
      *
      * @example
      * ```typescript
      * const client = new CortiClient({ environment: "eu", ... });
-     * console.log(await client.getBaseUrl()); // "https://api.eu.corti.app/v2"
+     * const urls = await client.getEnvironmentUrls();
+     * // { base: "https://api.eu.corti.app/v2", wss: "wss://...", login: "https://...", agents: "https://..." }
      * ```
      */
-    public getBaseUrl = async (): Promise<string> => {
-        return (
-            (await core.Supplier.get(this._options.baseUrl)) ??
-            (await core.Supplier.get(this._options.environment)).base
-        );
+    public getEnvironmentUrls = async (): Promise<environments.CortiEnvironmentUrls> => {
+        const env = await core.Supplier.get(this._options.environment);
+        const baseUrl = await core.Supplier.get(this._options.baseUrl);
+        return baseUrl != null ? { ...env, base: baseUrl } : env;
     };
 
     /**
