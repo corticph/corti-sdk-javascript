@@ -92,6 +92,25 @@ export class CortiClient extends BaseCortiClient {
     }
 
     /**
+     * Returns the base REST API URL the client is configured to use.
+     *
+     * Resolves `baseUrl` when explicitly set, otherwise returns the `base` URL
+     * derived from the configured environment.
+     *
+     * @example
+     * ```typescript
+     * const client = new CortiClient({ environment: "eu", ... });
+     * console.log(await client.getBaseUrl()); // "https://api.eu.corti.app/v2"
+     * ```
+     */
+    public getBaseUrl = async (): Promise<string> => {
+        return (
+            (await core.Supplier.get(this._options.baseUrl)) ??
+            (await core.Supplier.get(this._options.environment)).base
+        );
+    };
+
+    /**
      * Retrieves authentication headers for API requests.
      *
      * This method returns a Headers object containing the Authorization header with a valid
