@@ -92,6 +92,27 @@ export class CortiClient extends BaseCortiClient {
     }
 
     /**
+     * Returns the full set of URLs the client is configured to use.
+     *
+     * If a custom `baseUrl` was provided it overrides the `base` field; all
+     * other URLs are derived from the configured environment.
+     *
+     * @example
+     * ```typescript
+     * const client = new CortiClient({ environment: "eu", ... });
+     * const urls = await client.getEnvironmentUrls();
+     * // { base: "https://api.eu.corti.app/v2", wss: "wss://...", login: "https://...", agents: "https://..." }
+     * ```
+     */
+    public getEnvironmentUrls = async (): Promise<environments.CortiEnvironmentUrls> => {
+        const baseUrl = await core.Supplier.get(this._options.baseUrl);
+        // baseUrl is a universal override: all generated clients use `baseUrl ?? env.<field>`.
+        // Resolve environment only in the fallback path to avoid triggering auth discovery needlessly.
+        if (baseUrl != null) return { base: baseUrl, wss: baseUrl, login: baseUrl, agents: baseUrl };
+        return await core.Supplier.get(this._options.environment);
+    };
+
+    /**
      * Retrieves authentication headers for API requests.
      *
      * This method returns a Headers object containing the Authorization header with a valid
