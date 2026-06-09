@@ -38,14 +38,14 @@ describe("cortiClient.getEnvironmentUrls", () => {
     });
 
     describe("baseUrl override", () => {
-        it("overrides base and wss but keeps login and agents from the environment", async () => {
+        it("overrides all four fields since all generated clients use baseUrl ?? env.<field>", async () => {
             const client = makeClient({ ...CC_AUTH, environment: "eu", baseUrl: "https://proxy.example.com" });
             const urls = await client.getEnvironmentUrls();
 
             expect(urls.base).toBe("https://proxy.example.com");
             expect(urls.wss).toBe("https://proxy.example.com");
-            expect(urls.login).toBe("https://auth.eu.corti.app/realms");
-            expect(urls.agents).toBe("https://api.eu.corti.app");
+            expect(urls.login).toBe("https://proxy.example.com");
+            expect(urls.agents).toBe("https://proxy.example.com");
         });
 
         it("without an environment, base and wss reflect the baseUrl", async () => {
