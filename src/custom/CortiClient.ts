@@ -105,10 +105,11 @@ export class CortiClient extends BaseCortiClient {
      * ```
      */
     public getEnvironmentUrls = async (): Promise<environments.CortiEnvironmentUrls> => {
-        const env = await core.Supplier.get(this._options.environment);
         const baseUrl = await core.Supplier.get(this._options.baseUrl);
         // baseUrl is a universal override: all generated clients use `baseUrl ?? env.<field>`.
-        return baseUrl != null ? { base: baseUrl, wss: baseUrl, login: baseUrl, agents: baseUrl } : env;
+        // Resolve environment only in the fallback path to avoid triggering auth discovery needlessly.
+        if (baseUrl != null) return { base: baseUrl, wss: baseUrl, login: baseUrl, agents: baseUrl };
+        return await core.Supplier.get(this._options.environment);
     };
 
     /**
