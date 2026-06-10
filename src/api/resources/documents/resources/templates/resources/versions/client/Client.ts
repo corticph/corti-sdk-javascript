@@ -26,6 +26,9 @@ export class VersionsClient {
     }
 
     /**
+     * Returns raw authored template versions without inheritance resolution or section expansion.
+     * To see resolved content, use GET /documents/templates/{templateID} instead.
+     *
      * @param {string} templateID
      * @param {VersionsClient.RequestOptions} requestOptions - Request-specific configuration.
      *
@@ -194,6 +197,9 @@ export class VersionsClient {
     }
 
     /**
+     * Returns the raw authored template version without inheritance resolution or section expansion.
+     * To see resolved content, use GET /documents/templates/{templateID} instead.
+     *
      * @param {string} templateID
      * @param {string} versionID
      * @param {VersionsClient.RequestOptions} requestOptions - Request-specific configuration.
