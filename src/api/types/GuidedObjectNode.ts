@@ -4,14 +4,14 @@ import type * as Corti from "../index.js";
 
 export interface GuidedObjectNode {
     type: "object";
-    /** Can be used to prompt the LLM with more guidance in addition to the section.instructions */
+    /** Guide the LLM in what to output for this node. Supplements the section-level instructions. */
     description?: string;
     /**
      * Free-form format string that controls how an object's fields are rendered into the final text output. Operates in one of two modes determined by which placeholders appear:
      *
-     * **Subheading mode** (default: `"{key}: {value}\n"`): triggered when the format contains both `{key}` and `{value}`. Applied per field — each field becomes a key/value line. Fields that render to null are skipped.
+     * **Subheading mode** (default: `"{key}: {value}\n"`): triggered when the format contains both `{key}` and `{value}`. Applied per field — each field becomes a key/value line. When a field has no relevant input/output and no `default` is set, the entire key/value line for that field is omitted from the rendered output.
      *
-     * **Object mode** (e.g. `"{name} ({age})"`): triggered when `{key}` and `{value}` are absent. Placeholders must be actual field keys defined in `fields`. Applied once for the whole object, composing all fields into a single string. Fields rendering to null become empty string.
+     * **Object mode** (e.g. `"{name} ({age})"`): triggered when `{key}` and `{value}` are absent. Placeholders must be actual field keys defined in `fields`. Applied once for the whole object, composing all fields into a single string. When a field has no relevant input/output and no `default` is set, its placeholder is replaced with an empty string (`""`).
      *
      * Validation rules: format must not be empty; if either `{key}` or `{value}` appears, both must be present; in subheading mode no extra placeholders are allowed; in object mode every placeholder must match a defined field key.
      */
