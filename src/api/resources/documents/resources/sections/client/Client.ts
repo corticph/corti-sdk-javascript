@@ -29,6 +29,9 @@ export class SectionsClient {
     }
 
     /**
+     * Returns a list of sections and their metadata. Fetch a sectionId to get the full generation content.
+     * Use query parameters to filter by language, region, specialty, label, publish status, or source.
+     *
      * @param {Corti.documents.GuidedSectionsListRequest} request
      * @param {SectionsClient.RequestOptions} requestOptions - Request-specific configuration.
      *
@@ -358,6 +361,9 @@ export class SectionsClient {
     }
 
     /**
+     * Updates the section's metadata fields (name, description, languages, regions, specialties, labels).
+     * Generation content (instructions, output schema) is managed through versions and cannot be updated here.
+     *
      * @param {string} sectionID
      * @param {Corti.documents.GuidedSectionsUpdateRequest} request
      * @param {SectionsClient.RequestOptions} requestOptions - Request-specific configuration.
