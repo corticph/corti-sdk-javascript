@@ -265,8 +265,8 @@ describe("CodesClient", () => {
         const rawRequestBody = {
             system: ["icd10cm-inpatient", "icd10cm-inpatient"],
             context: [
-                { type: "text", text: "text" },
-                { type: "text", text: "text" },
+                { type: "text", text: "x" },
+                { type: "text", text: "x" },
             ],
         };
         const rawResponseBody = { key: "value" };
@@ -286,11 +286,11 @@ describe("CodesClient", () => {
                 context: [
                     {
                         type: "text",
-                        text: "text",
+                        text: "x",
                     },
                     {
                         type: "text",
-                        text: "text",
+                        text: "x",
                     },
                 ],
             });
@@ -311,8 +311,8 @@ describe("CodesClient", () => {
         const rawRequestBody = {
             system: ["icd10cm-inpatient", "icd10cm-inpatient"],
             context: [
-                { type: "text", text: "text" },
-                { type: "text", text: "text" },
+                { type: "text", text: "x" },
+                { type: "text", text: "x" },
             ],
         };
         const rawResponseBody = { key: "value" };
@@ -332,11 +332,11 @@ describe("CodesClient", () => {
                 context: [
                     {
                         type: "text",
-                        text: "text",
+                        text: "x",
                     },
                     {
                         type: "text",
-                        text: "text",
+                        text: "x",
                     },
                 ],
             });
@@ -357,8 +357,8 @@ describe("CodesClient", () => {
         const rawRequestBody = {
             system: ["icd10cm-inpatient", "icd10cm-inpatient"],
             context: [
-                { type: "text", text: "text" },
-                { type: "text", text: "text" },
+                { type: "text", text: "x" },
+                { type: "text", text: "x" },
             ],
         };
         const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
@@ -378,11 +378,11 @@ describe("CodesClient", () => {
                 context: [
                     {
                         type: "text",
-                        text: "text",
+                        text: "x",
                     },
                     {
                         type: "text",
-                        text: "text",
+                        text: "x",
                     },
                 ],
             });
@@ -403,8 +403,8 @@ describe("CodesClient", () => {
         const rawRequestBody = {
             system: ["icd10cm-inpatient", "icd10cm-inpatient"],
             context: [
-                { type: "text", text: "text" },
-                { type: "text", text: "text" },
+                { type: "text", text: "x" },
+                { type: "text", text: "x" },
             ],
         };
         const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
@@ -424,11 +424,11 @@ describe("CodesClient", () => {
                 context: [
                     {
                         type: "text",
-                        text: "text",
+                        text: "x",
                     },
                     {
                         type: "text",
-                        text: "text",
+                        text: "x",
                     },
                 ],
             });
@@ -449,8 +449,8 @@ describe("CodesClient", () => {
         const rawRequestBody = {
             system: ["icd10cm-inpatient", "icd10cm-inpatient"],
             context: [
-                { type: "text", text: "text" },
-                { type: "text", text: "text" },
+                { type: "text", text: "x" },
+                { type: "text", text: "x" },
             ],
         };
         const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
@@ -470,11 +470,11 @@ describe("CodesClient", () => {
                 context: [
                     {
                         type: "text",
-                        text: "text",
+                        text: "x",
                     },
                     {
                         type: "text",
-                        text: "text",
+                        text: "x",
                     },
                 ],
             });

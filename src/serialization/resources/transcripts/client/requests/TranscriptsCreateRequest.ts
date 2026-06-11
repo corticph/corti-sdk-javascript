@@ -12,19 +12,25 @@ export const TranscriptsCreateRequest: core.serialization.Schema<
 > = core.serialization.object({
     recordingId: Uuid,
     primaryLanguage: core.serialization.string(),
+    spokenPunctuation: core.serialization.boolean().optional(),
+    automaticPunctuation: core.serialization.boolean().optional(),
     isDictation: core.serialization.boolean().optional(),
     isMultichannel: core.serialization.boolean().optional(),
     diarize: core.serialization.boolean().optional(),
     participants: core.serialization.list(TranscriptsParticipant).optional(),
+    async: core.serialization.boolean().optional(),
 });
 
 export declare namespace TranscriptsCreateRequest {
     export interface Raw {
         recordingId: Uuid.Raw;
         primaryLanguage: string;
+        spokenPunctuation?: boolean | null;
+        automaticPunctuation?: boolean | null;
         isDictation?: boolean | null;
         isMultichannel?: boolean | null;
         diarize?: boolean | null;
         participants?: TranscriptsParticipant.Raw[] | null;
+        async?: boolean | null;
     }
 }
