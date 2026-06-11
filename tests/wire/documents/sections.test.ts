@@ -43,16 +43,6 @@ describe("SectionsClient", () => {
                 createdAt: "2024-01-15T09:30:00Z",
                 updatedAt: "2024-01-15T09:30:00Z",
                 deletedAt: "2024-01-15T09:30:00Z",
-                policies: [
-                    {
-                        id: "id",
-                        kind: "project",
-                        sectionId: "sectionId",
-                        createdBy: "createdBy",
-                        createdAt: "2024-01-15T09:30:00Z",
-                        updatedAt: "2024-01-15T09:30:00Z",
-                    },
-                ],
             },
         ];
 
@@ -99,16 +89,6 @@ describe("SectionsClient", () => {
                 createdAt: new Date("2024-01-15T09:30:00.000Z"),
                 updatedAt: new Date("2024-01-15T09:30:00.000Z"),
                 deletedAt: new Date("2024-01-15T09:30:00.000Z"),
-                policies: [
-                    {
-                        id: "id",
-                        kind: "project",
-                        sectionId: "sectionId",
-                        createdBy: "createdBy",
-                        createdAt: new Date("2024-01-15T09:30:00.000Z"),
-                        updatedAt: new Date("2024-01-15T09:30:00.000Z"),
-                    },
-                ],
             },
         ]);
     });
@@ -156,17 +136,6 @@ describe("SectionsClient", () => {
             createdAt: "2024-01-15T09:30:00Z",
             updatedAt: "2024-01-15T09:30:00Z",
             deletedAt: "2024-01-15T09:30:00Z",
-            policies: [
-                {
-                    id: "id",
-                    kind: "project",
-                    customerIds: ["customerIds"],
-                    sectionId: "sectionId",
-                    createdBy: "createdBy",
-                    createdAt: "2024-01-15T09:30:00Z",
-                    updatedAt: "2024-01-15T09:30:00Z",
-                },
-            ],
         };
 
         server
@@ -223,17 +192,6 @@ describe("SectionsClient", () => {
             createdAt: new Date("2024-01-15T09:30:00.000Z"),
             updatedAt: new Date("2024-01-15T09:30:00.000Z"),
             deletedAt: new Date("2024-01-15T09:30:00.000Z"),
-            policies: [
-                {
-                    id: "id",
-                    kind: "project",
-                    customerIds: ["customerIds"],
-                    sectionId: "sectionId",
-                    createdBy: "createdBy",
-                    createdAt: new Date("2024-01-15T09:30:00.000Z"),
-                    updatedAt: new Date("2024-01-15T09:30:00.000Z"),
-                },
-            ],
         });
     });
 
@@ -319,17 +277,6 @@ describe("SectionsClient", () => {
             createdAt: "2024-01-15T09:30:00Z",
             updatedAt: "2024-01-15T09:30:00Z",
             deletedAt: "2024-01-15T09:30:00Z",
-            policies: [
-                {
-                    id: "id",
-                    kind: "project",
-                    customerIds: ["customerIds"],
-                    sectionId: "sectionId",
-                    createdBy: "createdBy",
-                    createdAt: "2024-01-15T09:30:00Z",
-                    updatedAt: "2024-01-15T09:30:00Z",
-                },
-            ],
         };
 
         server
@@ -374,17 +321,6 @@ describe("SectionsClient", () => {
             createdAt: new Date("2024-01-15T09:30:00.000Z"),
             updatedAt: new Date("2024-01-15T09:30:00.000Z"),
             deletedAt: new Date("2024-01-15T09:30:00.000Z"),
-            policies: [
-                {
-                    id: "id",
-                    kind: "project",
-                    customerIds: ["customerIds"],
-                    sectionId: "sectionId",
-                    createdBy: "createdBy",
-                    createdAt: new Date("2024-01-15T09:30:00.000Z"),
-                    updatedAt: new Date("2024-01-15T09:30:00.000Z"),
-                },
-            ],
         });
     });
 
@@ -523,17 +459,6 @@ describe("SectionsClient", () => {
             createdAt: "2024-01-15T09:30:00Z",
             updatedAt: "2024-01-15T09:30:00Z",
             deletedAt: "2024-01-15T09:30:00Z",
-            policies: [
-                {
-                    id: "id",
-                    kind: "project",
-                    customerIds: ["customerIds"],
-                    sectionId: "sectionId",
-                    createdBy: "createdBy",
-                    createdAt: "2024-01-15T09:30:00Z",
-                    updatedAt: "2024-01-15T09:30:00Z",
-                },
-            ],
         };
 
         server
@@ -579,17 +504,6 @@ describe("SectionsClient", () => {
             createdAt: new Date("2024-01-15T09:30:00.000Z"),
             updatedAt: new Date("2024-01-15T09:30:00.000Z"),
             deletedAt: new Date("2024-01-15T09:30:00.000Z"),
-            policies: [
-                {
-                    id: "id",
-                    kind: "project",
-                    customerIds: ["customerIds"],
-                    sectionId: "sectionId",
-                    createdBy: "createdBy",
-                    createdAt: new Date("2024-01-15T09:30:00.000Z"),
-                    updatedAt: new Date("2024-01-15T09:30:00.000Z"),
-                },
-            ],
         });
     });
 

@@ -4,7 +4,6 @@ import type * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
 import type * as serializers from "../index.js";
 import { GuidedLabel } from "./GuidedLabel.js";
-import { GuidedSectionPolicy } from "./GuidedSectionPolicy.js";
 import { GuidedSectionSource } from "./GuidedSectionSource.js";
 import { GuidedSectionVersion } from "./GuidedSectionVersion.js";
 
@@ -24,7 +23,6 @@ export const GuidedSection: core.serialization.ObjectSchema<serializers.GuidedSe
         createdAt: core.serialization.date(),
         updatedAt: core.serialization.date(),
         deletedAt: core.serialization.date().optionalNullable(),
-        policies: core.serialization.list(GuidedSectionPolicy).optional(),
     });
 
 export declare namespace GuidedSection {
@@ -43,6 +41,5 @@ export declare namespace GuidedSection {
         createdAt: string;
         updatedAt: string;
         deletedAt?: (string | null | undefined) | null;
-        policies?: GuidedSectionPolicy.Raw[] | null;
     }
 }
