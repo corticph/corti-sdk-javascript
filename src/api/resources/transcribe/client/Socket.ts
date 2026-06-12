@@ -21,8 +21,8 @@ export declare namespace TranscribeSocket {
         | Corti.TranscribeErrorMessage
         | Corti.TranscribeTranscriptMessage
         | Corti.TranscribeCommandMessage
-        | Corti.TranscribeConfigStatusMessage
-        | Corti.TranscribeAudioEventMessage;
+        | Corti.TranscribeAudioEventMessage
+        | Corti.TranscribeConfigStatusMessage;
     type EventHandlers = {
         open?: () => void;
         message?: (message: Response) => void;
