@@ -11,6 +11,7 @@ export const StreamConfigTranscription: core.serialization.ObjectSchema<
     Corti.StreamConfigTranscription
 > = core.serialization.object({
     primaryLanguage: StreamSupportedLanguage,
+    diarize: core.serialization.boolean().optional(),
     isDiarization: core.serialization.boolean().optional(),
     isMultichannel: core.serialization.boolean().optional(),
     participants: core.serialization.list(StreamConfigParticipant),
@@ -19,6 +20,7 @@ export const StreamConfigTranscription: core.serialization.ObjectSchema<
 export declare namespace StreamConfigTranscription {
     export interface Raw {
         primaryLanguage: StreamSupportedLanguage.Raw;
+        diarize?: boolean | null;
         isDiarization?: boolean | null;
         isMultichannel?: boolean | null;
         participants: StreamConfigParticipant.Raw[];

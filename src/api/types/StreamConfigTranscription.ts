@@ -5,7 +5,9 @@ import type * as Corti from "../index.js";
 export interface StreamConfigTranscription {
     /** Primary spoken language for transcription */
     primaryLanguage: Corti.StreamSupportedLanguage;
-    /** Enable speaker diarization */
+    /** Enable speaker diarization. */
+    diarize?: boolean;
+    /** **Deprecated** — renamed to `diarize`. Still accepted for backward compatibility; `diarize` takes precedence when both are provided. `CONFIG_ACCEPTED` echoes both fields during the deprecation period. No removal date is currently planned. */
     isDiarization?: boolean;
     /** Enable multi-channel audio processing */
     isMultichannel?: boolean;
