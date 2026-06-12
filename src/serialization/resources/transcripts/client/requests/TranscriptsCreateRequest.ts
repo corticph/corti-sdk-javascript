@@ -5,6 +5,8 @@ import * as core from "../../../../../core/index.js";
 import type * as serializers from "../../../../index.js";
 import { TranscriptsParticipant } from "../../../../types/TranscriptsParticipant.js";
 import { Uuid } from "../../../../types/Uuid.js";
+import { TranscriptsCreateRequestKeyterms } from "../../types/TranscriptsCreateRequestKeyterms.js";
+import { TranscriptsCreateRequestReplacementsItem } from "../../types/TranscriptsCreateRequestReplacementsItem.js";
 
 export const TranscriptsCreateRequest: core.serialization.Schema<
     serializers.TranscriptsCreateRequest.Raw,
@@ -19,6 +21,8 @@ export const TranscriptsCreateRequest: core.serialization.Schema<
     diarize: core.serialization.boolean().optional(),
     participants: core.serialization.list(TranscriptsParticipant).optional(),
     async: core.serialization.boolean().optional(),
+    replacements: core.serialization.list(TranscriptsCreateRequestReplacementsItem).optional(),
+    keyterms: TranscriptsCreateRequestKeyterms.optional(),
 });
 
 export declare namespace TranscriptsCreateRequest {
@@ -32,5 +36,7 @@ export declare namespace TranscriptsCreateRequest {
         diarize?: boolean | null;
         participants?: TranscriptsParticipant.Raw[] | null;
         async?: boolean | null;
+        replacements?: TranscriptsCreateRequestReplacementsItem.Raw[] | null;
+        keyterms?: TranscriptsCreateRequestKeyterms.Raw | null;
     }
 }

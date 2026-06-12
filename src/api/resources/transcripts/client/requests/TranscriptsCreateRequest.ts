@@ -28,4 +28,8 @@ export interface TranscriptsCreateRequest {
     participants?: Corti.TranscriptsParticipant[];
     /** If true, the request will return immediately with a 202 status and the transcript will be processed asynchronously. Poll [Get Transcript Status](/api-reference/transcripts/get-transcript-status) to check transcript processing status - `processing`, `completed`, `failed`. */
     async?: boolean;
+    /** Define replacements to have terms (single words or multi-word phrases) replaced in final text output with your preferred style. For example, replace "BID" with "twice daily". Configuration is case insensitive and limited to 1,000 replacements per stream. */
+    replacements?: Corti.TranscriptsCreateRequestReplacementsItem[];
+    /** Define words, terms, and phrases to be recognized by Corti speech-to-text. Especially useful for proper nouns (e.g., surnames), but also supportive of words not being recognized consistently. Configuration is case sensitive and limited to 1,000 key terms per stream. */
+    keyterms?: Corti.TranscriptsCreateRequestKeyterms;
 }
