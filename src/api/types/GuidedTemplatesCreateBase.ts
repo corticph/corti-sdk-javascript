@@ -17,6 +17,4 @@ export interface GuidedTemplatesCreateBase {
     labels?: Corti.GuidedLabel[];
     /** Defaults to true when omitted. Set this to false if you do not want the template to automatically show up in LIST templates. */
     publish?: boolean;
-    /** Access policies to apply to the template on creation. */
-    policies?: Corti.GuidedTemplatesCreatePolicyRequest[];
 }
