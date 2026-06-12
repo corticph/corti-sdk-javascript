@@ -61,6 +61,47 @@ describe("cortiClient.documents.generate", () => {
             expect(result).toBeDefined();
             expect(consoleWarnSpy).not.toHaveBeenCalled();
         });
+
+        it("should generate document with labels without errors or warnings", async () => {
+            expect.assertions(3);
+
+            const labelKey = faker.string.alphanumeric(8);
+            const labelValue = faker.string.alphanumeric(8);
+
+            const result = await cortiClient.documents.generate({
+                outputLanguage: "en",
+                labels: [{ key: labelKey, value: labelValue }],
+                context: [
+                    {
+                        type: "text",
+                        text: faker.lorem.paragraph(),
+                    },
+                ],
+                dynamicTemplate: {
+                    name: faker.lorem.words(3),
+                    generation: {
+                        instructions: {
+                            prompt: "Produce a brief clinical summary from the supplied context.",
+                        },
+                        sections: [
+                            {
+                                heading: "Summary",
+                                instructions: {
+                                    contentPrompt: "Summarise the provided context in one short paragraph.",
+                                },
+                                outputSchema: {
+                                    type: "string",
+                                },
+                            },
+                        ],
+                    },
+                },
+            });
+
+            expect(result.document.labels).toEqual(expect.arrayContaining([{ key: labelKey, value: labelValue }]));
+            expect(result).toBeDefined();
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
     });
 
     describe("should generate guided document with templateRef and stored section", () => {

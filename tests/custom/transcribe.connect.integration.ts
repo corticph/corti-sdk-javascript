@@ -141,7 +141,7 @@ describe("cortiClient.transcribe.connect", () => {
                     commands: [
                         {
                             id: faker.string.alphanumeric(8),
-                            phrases: ["set status to", "change status to"],
+                            phrases: ["set status to {status}", "change status to {status}"],
                             variables: [
                                 {
                                     key: "status",
@@ -179,6 +179,69 @@ describe("cortiClient.transcribe.connect", () => {
 
             expect(transcribeSocket.socket.readyState).toBe(1); // OPEN
             expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
+
+        it("should connect with replacements configuration without errors or warnings", async () => {
+            expect.assertions(2);
+
+            const transcribeSocket = await cortiClient.transcribe.connect({
+                awaitConfiguration: false,
+                configuration: {
+                    primaryLanguage: "en",
+                    replacements: [{ find: "BID", replace: "twice daily" }],
+                },
+            });
+            activeSockets.push(transcribeSocket);
+
+            await waitForWebSocketMessage(transcribeSocket, "CONFIG_ACCEPTED", { rejectOnWrongMessage: true });
+
+            expect(transcribeSocket.socket.readyState).toBe(1); // OPEN
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
+
+        it("should connect with wildcard command variable without errors or warnings", async () => {
+            expect.assertions(2);
+
+            const transcribeSocket = await cortiClient.transcribe.connect({
+                awaitConfiguration: false,
+                configuration: {
+                    primaryLanguage: "en",
+                    commands: [
+                        {
+                            id: faker.string.alphanumeric(8),
+                            phrases: ["select {note} end select"],
+                            variables: [
+                                {
+                                    key: "note",
+                                    type: "wildcard",
+                                },
+                            ],
+                        },
+                    ],
+                },
+            });
+            activeSockets.push(transcribeSocket);
+
+            await waitForWebSocketMessage(transcribeSocket, "CONFIG_ACCEPTED", { rejectOnWrongMessage: true });
+
+            expect(transcribeSocket.socket.readyState).toBe(1); // OPEN
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
+    });
+
+    describe("should throw error when audioEvents configuration is invalid", () => {
+        it("should throw error when audioEvents is missing enabled", async () => {
+            expect.assertions(1);
+
+            await expect(
+                cortiClient.transcribe.connect({
+                    awaitConfiguration: false,
+                    configuration: {
+                        primaryLanguage: "en",
+                        audioEvents: {} as any,
+                    },
+                }),
+            ).rejects.toThrow('Missing required key "enabled"');
         });
     });
 

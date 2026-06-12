@@ -154,6 +154,40 @@ describe("cortiClient.transcripts.create", () => {
         });
     });
 
+    describe("should create transcript with async parameter", () => {
+        it("should create transcript with async set to true without errors or warnings", async () => {
+            expect.assertions(2);
+
+            const interactionId = await createTestInteraction(cortiClient);
+            const recordingId = await createTestRecording(cortiClient, interactionId);
+
+            const result = await cortiClient.transcripts.create(interactionId, {
+                recordingId,
+                primaryLanguage: "en",
+                async: true,
+            });
+
+            expect(result).toBeDefined();
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
+
+        it("should create transcript with async set to false without errors or warnings", async () => {
+            expect.assertions(2);
+
+            const interactionId = await createTestInteraction(cortiClient);
+            const recordingId = await createTestRecording(cortiClient, interactionId);
+
+            const result = await cortiClient.transcripts.create(interactionId, {
+                recordingId,
+                primaryLanguage: "en",
+                async: false,
+            });
+
+            expect(result).toBeDefined();
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
+    });
+
     describe("should throw error when required parameters are missing", () => {
         it("should throw error when recordingId is missing", async () => {
             expect.assertions(1);
