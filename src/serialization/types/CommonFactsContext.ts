@@ -10,12 +10,12 @@ export const CommonFactsContext: core.serialization.ObjectSchema<
     Corti.CommonFactsContext
 > = core.serialization.object({
     type: core.serialization.stringLiteral("facts"),
-    fact: GuidedDocumentFactMinimal,
+    facts: core.serialization.list(GuidedDocumentFactMinimal),
 });
 
 export declare namespace CommonFactsContext {
     export interface Raw {
         type: "facts";
-        fact: GuidedDocumentFactMinimal.Raw;
+        facts: GuidedDocumentFactMinimal.Raw[];
     }
 }

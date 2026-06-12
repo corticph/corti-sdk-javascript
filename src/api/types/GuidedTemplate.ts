@@ -23,8 +23,6 @@ export interface GuidedTemplate {
     specialties: string[];
     /** The available labels to use as query param filter in the LIST /templates endpoint. */
     labels: Corti.GuidedLabel[];
-    /** Access policies for this template. */
-    policies?: Corti.GuidedTemplatePolicy[];
     /** The currently published version with inheritance fully resolved. Present when a version has been published. */
     publishedVersion?: Corti.GuidedTemplateVersion;
     /** The original timestamp when the template was created. */
