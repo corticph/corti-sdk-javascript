@@ -1,7 +1,4 @@
-import {
-    applyDictationTranscript,
-    type DictationTranscriptSnapshot,
-} from "../../../src/custom/utils/dictationTranscript";
+import { applyDictationTranscript, type DictationTranscriptSnapshot } from "../../src/custom/utils/dictationTranscript";
 
 type Msg = Parameters<typeof applyDictationTranscript>[1];
 
