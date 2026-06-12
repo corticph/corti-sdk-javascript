@@ -1,5 +1,5 @@
 {
-    "cliVersion": "5.44.13",
+    "cliVersion": "5.44.14",
     "generatorName": "fernapi/fern-typescript-node-sdk",
     "generatorVersion": "3.54.0",
     "generatorConfig": {
@@ -34,6 +34,6 @@
             }
         }
     },
-    "originGitCommit": "445d6aed483ca4cda0fae4f87e24eda4e09c8449",
+    "originGitCommit": "25b6402feb1cbbe875a8d3d5fb6f2a3335d4ae56",
     "sdkVersion": "0.0.0-dev"
 }
