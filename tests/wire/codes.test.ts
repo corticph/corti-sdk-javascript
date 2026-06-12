@@ -25,26 +25,26 @@ describe("CodesClient", () => {
             codes: [
                 {
                     system: "icd10cm-outpatient",
-                    code: "R1030",
+                    code: "R10.30",
                     display: "Lower abdominal pain, unspecified",
                     evidences: [
                         { contextIndex: 0, text: "Example text mentioning lower abdominal pain", start: 0, end: 44 },
                     ],
                     alternatives: [
-                        { code: "R1010", display: "Upper abdominal pain, unspecified" },
-                        { code: "R1032", display: "Left lower quadrant pain" },
+                        { code: "R10.10", display: "Upper abdominal pain, unspecified" },
+                        { code: "R10.32", display: "Left lower quadrant pain" },
                     ],
                 },
             ],
             candidates: [
                 {
                     system: "icd10cm-outpatient",
-                    code: "R509",
+                    code: "R50.9",
                     display: "Fever, unspecified",
                     evidences: [{ contextIndex: 1, text: "Example text mentioning fever", start: 0, end: 29 }],
                     alternatives: [
-                        { code: "R502", display: "Drug induced fever" },
-                        { code: "R5082", display: "Postprocedural fever" },
+                        { code: "R50.2", display: "Drug induced fever" },
+                        { code: "R50.82", display: "Postprocedural fever" },
                     ],
                 },
             ],
@@ -73,7 +73,7 @@ describe("CodesClient", () => {
             codes: [
                 {
                     system: "icd10cm-outpatient",
-                    code: "R1030",
+                    code: "R10.30",
                     display: "Lower abdominal pain, unspecified",
                     evidences: [
                         {
@@ -85,11 +85,11 @@ describe("CodesClient", () => {
                     ],
                     alternatives: [
                         {
-                            code: "R1010",
+                            code: "R10.10",
                             display: "Upper abdominal pain, unspecified",
                         },
                         {
-                            code: "R1032",
+                            code: "R10.32",
                             display: "Left lower quadrant pain",
                         },
                     ],
@@ -98,7 +98,7 @@ describe("CodesClient", () => {
             candidates: [
                 {
                     system: "icd10cm-outpatient",
-                    code: "R509",
+                    code: "R50.9",
                     display: "Fever, unspecified",
                     evidences: [
                         {
@@ -110,11 +110,11 @@ describe("CodesClient", () => {
                     ],
                     alternatives: [
                         {
-                            code: "R502",
+                            code: "R50.2",
                             display: "Drug induced fever",
                         },
                         {
-                            code: "R5082",
+                            code: "R50.82",
                             display: "Postprocedural fever",
                         },
                     ],
@@ -146,26 +146,26 @@ describe("CodesClient", () => {
             codes: [
                 {
                     system: "icd10cm-outpatient",
-                    code: "R1030",
+                    code: "R10.30",
                     display: "Lower abdominal pain, unspecified",
                     evidences: [
                         { contextIndex: 0, text: "Example text mentioning lower abdominal pain", start: 0, end: 44 },
                     ],
                     alternatives: [
-                        { code: "R1010", display: "Upper abdominal pain, unspecified" },
-                        { code: "R1032", display: "Left lower quadrant pain" },
+                        { code: "R10.10", display: "Upper abdominal pain, unspecified" },
+                        { code: "R10.32", display: "Left lower quadrant pain" },
                     ],
                 },
             ],
             candidates: [
                 {
                     system: "icd10cm-outpatient",
-                    code: "R509",
+                    code: "R50.9",
                     display: "Fever, unspecified",
                     evidences: [{ contextIndex: 1, text: "Example text mentioning fever", start: 0, end: 29 }],
                     alternatives: [
-                        { code: "R502", display: "Drug induced fever" },
-                        { code: "R5082", display: "Postprocedural fever" },
+                        { code: "R50.2", display: "Drug induced fever" },
+                        { code: "R50.82", display: "Postprocedural fever" },
                     ],
                 },
             ],
@@ -198,7 +198,7 @@ describe("CodesClient", () => {
             codes: [
                 {
                     system: "icd10cm-outpatient",
-                    code: "R1030",
+                    code: "R10.30",
                     display: "Lower abdominal pain, unspecified",
                     evidences: [
                         {
@@ -210,11 +210,11 @@ describe("CodesClient", () => {
                     ],
                     alternatives: [
                         {
-                            code: "R1010",
+                            code: "R10.10",
                             display: "Upper abdominal pain, unspecified",
                         },
                         {
-                            code: "R1032",
+                            code: "R10.32",
                             display: "Left lower quadrant pain",
                         },
                     ],
@@ -223,7 +223,7 @@ describe("CodesClient", () => {
             candidates: [
                 {
                     system: "icd10cm-outpatient",
-                    code: "R509",
+                    code: "R50.9",
                     display: "Fever, unspecified",
                     evidences: [
                         {
@@ -235,11 +235,11 @@ describe("CodesClient", () => {
                     ],
                     alternatives: [
                         {
-                            code: "R502",
+                            code: "R50.2",
                             display: "Drug induced fever",
                         },
                         {
-                            code: "R5082",
+                            code: "R50.82",
                             display: "Postprocedural fever",
                         },
                     ],
@@ -265,8 +265,8 @@ describe("CodesClient", () => {
         const rawRequestBody = {
             system: ["icd10cm-inpatient", "icd10cm-inpatient"],
             context: [
-                { type: "text", text: "text" },
-                { type: "text", text: "text" },
+                { type: "text", text: "x" },
+                { type: "text", text: "x" },
             ],
         };
         const rawResponseBody = { key: "value" };
@@ -286,11 +286,11 @@ describe("CodesClient", () => {
                 context: [
                     {
                         type: "text",
-                        text: "text",
+                        text: "x",
                     },
                     {
                         type: "text",
-                        text: "text",
+                        text: "x",
                     },
                 ],
             });
@@ -311,8 +311,8 @@ describe("CodesClient", () => {
         const rawRequestBody = {
             system: ["icd10cm-inpatient", "icd10cm-inpatient"],
             context: [
-                { type: "text", text: "text" },
-                { type: "text", text: "text" },
+                { type: "text", text: "x" },
+                { type: "text", text: "x" },
             ],
         };
         const rawResponseBody = { key: "value" };
@@ -332,11 +332,11 @@ describe("CodesClient", () => {
                 context: [
                     {
                         type: "text",
-                        text: "text",
+                        text: "x",
                     },
                     {
                         type: "text",
-                        text: "text",
+                        text: "x",
                     },
                 ],
             });
@@ -357,8 +357,8 @@ describe("CodesClient", () => {
         const rawRequestBody = {
             system: ["icd10cm-inpatient", "icd10cm-inpatient"],
             context: [
-                { type: "text", text: "text" },
-                { type: "text", text: "text" },
+                { type: "text", text: "x" },
+                { type: "text", text: "x" },
             ],
         };
         const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
@@ -378,11 +378,11 @@ describe("CodesClient", () => {
                 context: [
                     {
                         type: "text",
-                        text: "text",
+                        text: "x",
                     },
                     {
                         type: "text",
-                        text: "text",
+                        text: "x",
                     },
                 ],
             });
@@ -403,8 +403,8 @@ describe("CodesClient", () => {
         const rawRequestBody = {
             system: ["icd10cm-inpatient", "icd10cm-inpatient"],
             context: [
-                { type: "text", text: "text" },
-                { type: "text", text: "text" },
+                { type: "text", text: "x" },
+                { type: "text", text: "x" },
             ],
         };
         const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
@@ -424,11 +424,11 @@ describe("CodesClient", () => {
                 context: [
                     {
                         type: "text",
-                        text: "text",
+                        text: "x",
                     },
                     {
                         type: "text",
-                        text: "text",
+                        text: "x",
                     },
                 ],
             });
@@ -449,8 +449,8 @@ describe("CodesClient", () => {
         const rawRequestBody = {
             system: ["icd10cm-inpatient", "icd10cm-inpatient"],
             context: [
-                { type: "text", text: "text" },
-                { type: "text", text: "text" },
+                { type: "text", text: "x" },
+                { type: "text", text: "x" },
             ],
         };
         const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
@@ -470,11 +470,11 @@ describe("CodesClient", () => {
                 context: [
                     {
                         type: "text",
-                        text: "text",
+                        text: "x",
                     },
                     {
                         type: "text",
-                        text: "text",
+                        text: "x",
                     },
                 ],
             });
