@@ -3,6 +3,7 @@
 import type * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
 import type * as serializers from "../index.js";
+import { GuidedLabel } from "./GuidedLabel.js";
 
 export const GuidedEphemeralDocument: core.serialization.ObjectSchema<
     serializers.GuidedEphemeralDocument.Raw,
@@ -12,10 +13,12 @@ export const GuidedEphemeralDocument: core.serialization.ObjectSchema<
     templateId: core.serialization.string(),
     templateVersionId: core.serialization.string(),
     language: core.serialization.string(),
+    interactionId: core.serialization.string().optionalNullable(),
     stringDocument: core.serialization.record(core.serialization.string(), core.serialization.string()),
     structuredDocument: core.serialization
         .record(core.serialization.string(), core.serialization.unknown())
         .optionalNullable(),
+    labels: core.serialization.list(GuidedLabel),
 });
 
 export declare namespace GuidedEphemeralDocument {
@@ -24,7 +27,9 @@ export declare namespace GuidedEphemeralDocument {
         templateId: string;
         templateVersionId: string;
         language: string;
+        interactionId?: (string | null | undefined) | null;
         stringDocument: Record<string, string>;
         structuredDocument?: (Record<string, unknown> | null | undefined) | null;
+        labels: GuidedLabel.Raw[];
     }
 }
