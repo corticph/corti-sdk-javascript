@@ -21,8 +21,8 @@ export declare namespace StreamSocket {
         | Corti.StreamEndedMessage
         | Corti.StreamUsageMessage
         | Corti.StreamErrorMessage
-        | Corti.StreamAudioEventMessage
-        | Corti.StreamConfigStatusMessage;
+        | Corti.StreamConfigStatusMessage
+        | Corti.StreamAudioEventMessage;
     type EventHandlers = {
         open?: () => void;
         message?: (message: Response) => void;

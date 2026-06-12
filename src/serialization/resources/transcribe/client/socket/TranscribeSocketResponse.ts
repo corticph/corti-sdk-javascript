@@ -22,8 +22,8 @@ export const TranscribeSocketResponse: core.serialization.Schema<
     | Corti.TranscribeErrorMessage
     | Corti.TranscribeTranscriptMessage
     | Corti.TranscribeCommandMessage
-    | Corti.TranscribeAudioEventMessage
     | Corti.TranscribeConfigStatusMessage
+    | Corti.TranscribeAudioEventMessage
 > = core.serialization.undiscriminatedUnion([
     TranscribeUsageMessage,
     TranscribeFlushedMessage,
@@ -32,8 +32,8 @@ export const TranscribeSocketResponse: core.serialization.Schema<
     TranscribeErrorMessage,
     TranscribeTranscriptMessage,
     TranscribeCommandMessage,
-    TranscribeAudioEventMessage,
     TranscribeConfigStatusMessage,
+    TranscribeAudioEventMessage,
 ]);
 
 export declare namespace TranscribeSocketResponse {
@@ -45,6 +45,6 @@ export declare namespace TranscribeSocketResponse {
         | TranscribeErrorMessage.Raw
         | TranscribeTranscriptMessage.Raw
         | TranscribeCommandMessage.Raw
-        | TranscribeAudioEventMessage.Raw
-        | TranscribeConfigStatusMessage.Raw;
+        | TranscribeConfigStatusMessage.Raw
+        | TranscribeAudioEventMessage.Raw;
 }

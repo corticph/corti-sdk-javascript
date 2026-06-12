@@ -22,8 +22,8 @@ export const StreamSocketResponse: core.serialization.Schema<
     | Corti.StreamEndedMessage
     | Corti.StreamUsageMessage
     | Corti.StreamErrorMessage
-    | Corti.StreamAudioEventMessage
     | Corti.StreamConfigStatusMessage
+    | Corti.StreamAudioEventMessage
 > = core.serialization.undiscriminatedUnion([
     StreamTranscriptMessage,
     StreamFactsMessage,
@@ -32,8 +32,8 @@ export const StreamSocketResponse: core.serialization.Schema<
     StreamEndedMessage,
     StreamUsageMessage,
     StreamErrorMessage,
-    StreamAudioEventMessage,
     StreamConfigStatusMessage,
+    StreamAudioEventMessage,
 ]);
 
 export declare namespace StreamSocketResponse {
@@ -45,6 +45,6 @@ export declare namespace StreamSocketResponse {
         | StreamEndedMessage.Raw
         | StreamUsageMessage.Raw
         | StreamErrorMessage.Raw
-        | StreamAudioEventMessage.Raw
-        | StreamConfigStatusMessage.Raw;
+        | StreamConfigStatusMessage.Raw
+        | StreamAudioEventMessage.Raw;
 }
