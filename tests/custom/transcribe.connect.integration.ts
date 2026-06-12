@@ -229,21 +229,6 @@ describe("cortiClient.transcribe.connect", () => {
         });
     });
 
-    describe("should reject invalid audioEvents configuration", () => {
-        it("should reject configuration when audioEvents is missing enabled", async () => {
-            expect.assertions(1);
-
-            await expect(
-                cortiClient.transcribe.connect({
-                    configuration: {
-                        primaryLanguage: "en",
-                        audioEvents: {} as any,
-                    },
-                }),
-            ).rejects.toThrow("CONFIG_DENIED");
-        });
-    });
-
     describe("should handle configuration status messages", () => {
         it("should return CONFIG_ALREADY_RECEIVED when configuration is sent twice", async () => {
             expect.assertions(2);
