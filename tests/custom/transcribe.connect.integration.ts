@@ -229,19 +229,18 @@ describe("cortiClient.transcribe.connect", () => {
         });
     });
 
-    describe("should throw error when audioEvents configuration is invalid", () => {
-        it("should throw error when audioEvents is missing enabled", async () => {
+    describe("should reject invalid audioEvents configuration", () => {
+        it("should reject configuration when audioEvents is missing enabled", async () => {
             expect.assertions(1);
 
             await expect(
                 cortiClient.transcribe.connect({
-                    awaitConfiguration: false,
                     configuration: {
                         primaryLanguage: "en",
                         audioEvents: {} as any,
                     },
                 }),
-            ).rejects.toThrow('Missing required key "enabled"');
+            ).rejects.toThrow("CONFIG_DENIED");
         });
     });
 
