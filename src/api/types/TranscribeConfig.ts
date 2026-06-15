@@ -5,16 +5,18 @@ import type * as Corti from "../index.js";
 export interface TranscribeConfig {
     /** The locale of the primary spoken language. */
     primaryLanguage: Corti.TranscribeSupportedLanguage;
-    /** When true, returns interim results for reduced latency */
+    /** When true, returns interim (preview) transcript results (`isFinal=false`) for reduced latency than final transcripts. Defaults to false. */
     interimResults?: boolean;
-    /** When true, converts spoken punctuation such as 'period' or 'slash' into '.' or '/' */
+    /** When true, converts spoken punctuation such as 'period' or 'slash' into '.' or '/'. Defaults to false. Overrides automaticPunctuation when both are enabled. */
     spokenPunctuation?: boolean;
-    /** When true, automatically punctuates and capitalizes in the final transcript */
+    /** When true, automatically punctuates and capitalizes in the final transcript. Defaults to false. Overridden by spokenPunctuation when both are enabled. */
     automaticPunctuation?: boolean;
     /** Commands that should be registered and detected */
     commands?: Corti.TranscribeCommand[];
     formatting?: Corti.TranscribeFormatting;
     audioEvents?: Corti.TranscribeAudioEventsConfig;
-    /** The audio format of the incoming audio stream */
+    /** Define the audio format of the incoming audio stream - optional but recommended. When omitted, the server auto-detects the format from the first audio chunk using ffprobe. Supported audio will be processed. Unsupported return an error but might in some cases error silently. If provided (recommended), the provided MIME type must be supported and the audio must match the MIME type. An unsupported MIME type results in `CONFIG_REJECTED`. Audio that differs from the MIME type will return audio validation errors on the socket. See full list of supported MIME types [here](/stt/audio). */
     audioFormat?: string;
+    /** Define replacements to have terms (single words or multi-word phrases) replaced in final text output with your preferred style. For example, replace "BID" with "twice daily". Configuration is limited to 1,000 replacements per stream. */
+    replacements?: Corti.TranscribeConfigReplacementsItem[];
 }

@@ -2,11 +2,11 @@
 
 export interface GuidedNumberNode {
     type: "number";
-    /** Can be used to prompt the LLM with more guidance in addition to the section.instructions */
+    /** Guide the LLM in what to output for this node. Supplements the section-level instructions. */
     description?: string;
-    /** The default to output if nothing to output. */
+    /** If nothing is outputted, this default is used. */
     default?: number | null;
-    /** Can be used to prompt the LLM for specifically allowed numeric values to output. */
+    /** Can be used to guide the LLM with specific values to output. */
     enum?: number[];
     /** Use if a minimum value applies. */
     minimum?: number | null;

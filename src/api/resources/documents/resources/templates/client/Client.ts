@@ -29,6 +29,9 @@ export class TemplatesClient {
     }
 
     /**
+     * Returns a list of templates and their metadata. Fetch a specific templateId to get the expanded sections.
+     * Use query parameters to filter by language, region, specialty, label, publish status, or source.
+     *
      * @param {Corti.documents.GuidedTemplatesListRequest} request
      * @param {TemplatesClient.RequestOptions} requestOptions - Request-specific configuration.
      *
@@ -354,6 +357,10 @@ export class TemplatesClient {
     }
 
     /**
+     * Updates the template's metadata fields (name, description, languages, regions, specialties, labels).
+     * Generation content (template instructions, section composition) is managed through versions
+     * and cannot be updated here.
+     *
      * @param {string} templateID
      * @param {Corti.documents.GuidedTemplatesUpdateRequest} request
      * @param {TemplatesClient.RequestOptions} requestOptions - Request-specific configuration.

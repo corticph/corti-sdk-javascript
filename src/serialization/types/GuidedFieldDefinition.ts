@@ -11,6 +11,7 @@ export const GuidedFieldDefinition: core.serialization.ObjectSchema<
     key: core.serialization.string(),
     description: core.serialization.string(),
     value: core.serialization.lazy(() => serializers.GuidedOutputSchema),
+    default: core.serialization.string().optionalNullable(),
 });
 
 export declare namespace GuidedFieldDefinition {
@@ -18,5 +19,6 @@ export declare namespace GuidedFieldDefinition {
         key: string;
         description: string;
         value: serializers.GuidedOutputSchema.Raw;
+        default?: (string | null | undefined) | null;
     }
 }

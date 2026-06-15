@@ -4,6 +4,7 @@ import type * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
 import type * as serializers from "../index.js";
 import { GuidedDocumentContext } from "./GuidedDocumentContext.js";
+import { GuidedLabel } from "./GuidedLabel.js";
 
 export const GuidedDocumentsGenerateBase: core.serialization.ObjectSchema<
     serializers.GuidedDocumentsGenerateBase.Raw,
@@ -12,6 +13,7 @@ export const GuidedDocumentsGenerateBase: core.serialization.ObjectSchema<
     outputLanguage: core.serialization.string(),
     context: core.serialization.list(GuidedDocumentContext).optional(),
     interactionId: core.serialization.string().optional(),
+    labels: core.serialization.list(GuidedLabel).optional(),
 });
 
 export declare namespace GuidedDocumentsGenerateBase {
@@ -19,5 +21,6 @@ export declare namespace GuidedDocumentsGenerateBase {
         outputLanguage: string;
         context?: GuidedDocumentContext.Raw[] | null;
         interactionId?: string | null;
+        labels?: GuidedLabel.Raw[] | null;
     }
 }

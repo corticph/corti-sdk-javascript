@@ -8,11 +8,11 @@ export const TranscribeAudioEventsConfig: core.serialization.ObjectSchema<
     serializers.TranscribeAudioEventsConfig.Raw,
     Corti.TranscribeAudioEventsConfig
 > = core.serialization.object({
-    enabled: core.serialization.boolean().optional(),
+    enabled: core.serialization.boolean(),
 });
 
 export declare namespace TranscribeAudioEventsConfig {
     export interface Raw {
-        enabled?: boolean | null;
+        enabled: boolean;
     }
 }

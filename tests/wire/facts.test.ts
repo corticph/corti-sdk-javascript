@@ -476,8 +476,8 @@ describe("FactsClient", () => {
         });
         const rawRequestBody = {
             context: [
-                { type: "text", text: "text" },
-                { type: "text", text: "text" },
+                { type: "text", text: "x" },
+                { type: "text", text: "x" },
             ],
             outputLanguage: "outputLanguage",
         };
@@ -497,11 +497,11 @@ describe("FactsClient", () => {
                 context: [
                     {
                         type: "text",
-                        text: "text",
+                        text: "x",
                     },
                     {
                         type: "text",
-                        text: "text",
+                        text: "x",
                     },
                 ],
                 outputLanguage: "outputLanguage",

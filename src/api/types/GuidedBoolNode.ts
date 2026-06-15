@@ -2,8 +2,8 @@
 
 export interface GuidedBoolNode {
     type: "boolean";
-    /** Can be used to prompt the LLM with more guidance in addition to the section.instructions */
+    /** Guide the LLM in what to output for this node. Supplements the section-level instructions. */
     description?: string;
-    /** The default to output if nothing to output. */
+    /** If nothing is outputted, this default is used. */
     default?: boolean | null;
 }

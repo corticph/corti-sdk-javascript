@@ -12,4 +12,6 @@ export interface GuidedDocumentsGenerateBase {
     context?: Corti.GuidedDocumentContext[];
     /** When supplied, all facts and transcripts already attached to the referenced interaction are passed implicitly as input context. Facts with `isDiscarded: true` are not passed on. */
     interactionId?: string;
+    /** Key/value labels attached to the document. Used for filtering in the LIST /documents endpoint. */
+    labels?: Corti.GuidedLabel[];
 }

@@ -14,7 +14,7 @@ export interface TranscriptsCreateRequest {
     recordingId: Corti.Uuid;
     /** The primary spoken language of the recording. Check https://docs.corti.ai/stt/languages for more. */
     primaryLanguage: string;
-    /** Indicates whether spoken dictation commands should be converted to punctuation (e.g., 'comma' → ','). */
+    /** If true, spoken punctuation will be converted to symbols (e.g., 'comma' → ','). */
     isDictation?: boolean;
     /** If true, each audio channel is transcribed separately. */
     isMultichannel?: boolean;
@@ -22,4 +22,6 @@ export interface TranscriptsCreateRequest {
     diarize?: boolean;
     /** An array of participants, each specifying a role and an assigned audio channel in the recording. Leave empty when shouldDiarize: true */
     participants?: Corti.TranscriptsParticipant[];
+    /** If true, the request will return immediately with a 202 status and the transcript will be processed asynchronously. Poll [Get Transcript Status](/api-reference/transcripts/get-transcript-status) to check transcript processing status - `processing`, `completed`, `failed`. */
+    async?: boolean;
 }

@@ -3,10 +3,10 @@
 import type * as Corti from "../index.js";
 
 export interface TranscribeCommand {
-    /** To identify the command when it gets detected and returned over the WebSocket */
+    /** Unique value to identify the command when it is detected and returned over the WebSocket */
     id: string;
-    /** The spoken phrases that should trigger the command */
+    /** One or more word sequence(s) that can be spoken to trigger the command. At least one phrase is required per command. */
     phrases: string[];
-    /** Variables for the command */
+    /** Placeholders that can (optionally) be added in phrases to provide flexibility and extensibility for triggering commands. */
     variables?: Corti.TranscribeCommandVariable[];
 }

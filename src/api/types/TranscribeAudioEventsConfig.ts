@@ -2,5 +2,5 @@
 
 export interface TranscribeAudioEventsConfig {
     /** When true, enables audio quality and speech activity events to be sent over the WebSocket. Disabled by default. */
-    enabled?: boolean;
+    enabled: boolean;
 }
