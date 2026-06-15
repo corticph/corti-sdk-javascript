@@ -4,7 +4,9 @@ import type * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
 import type * as serializers from "../index.js";
 import { StreamAudioEventsConfig } from "./StreamAudioEventsConfig.js";
+import { StreamConfigKeyterms } from "./StreamConfigKeyterms.js";
 import { StreamConfigMode } from "./StreamConfigMode.js";
+import { StreamConfigReplacementsItem } from "./StreamConfigReplacementsItem.js";
 import { StreamConfigRetentionPolicy } from "./StreamConfigRetentionPolicy.js";
 import { StreamConfigTranscription } from "./StreamConfigTranscription.js";
 
@@ -15,6 +17,8 @@ export const StreamConfig: core.serialization.ObjectSchema<serializers.StreamCon
         retentionPolicy: StreamConfigRetentionPolicy.optional(),
         audioEvents: StreamAudioEventsConfig.optional(),
         audioFormat: core.serialization.string().optional(),
+        replacements: core.serialization.list(StreamConfigReplacementsItem).optional(),
+        keyterms: StreamConfigKeyterms.optional(),
     });
 
 export declare namespace StreamConfig {
@@ -24,5 +28,7 @@ export declare namespace StreamConfig {
         retentionPolicy?: StreamConfigRetentionPolicy.Raw | null;
         audioEvents?: StreamAudioEventsConfig.Raw | null;
         audioFormat?: string | null;
+        replacements?: StreamConfigReplacementsItem.Raw[] | null;
+        keyterms?: StreamConfigKeyterms.Raw | null;
     }
 }
