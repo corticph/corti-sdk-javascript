@@ -3,7 +3,7 @@
 import type * as Corti from "../index.js";
 
 /**
- * Creates a template from scratch. `generation.instructions` is required and the template fully specifies its own instructions and sections.
+ * Creates a template from scratch. The template fully specifies its own instructions and sections.
  */
 export interface GuidedTemplatesCreateFromScratchRequest extends Corti.GuidedTemplatesCreateBase {
     generation: Corti.GuidedTemplatesCreateFromScratchRequestGeneration;
