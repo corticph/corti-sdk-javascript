@@ -20,6 +20,7 @@ export const GuidedSection: core.serialization.ObjectSchema<serializers.GuidedSe
         description: core.serialization.string().optional(),
         labels: core.serialization.list(GuidedLabel),
         publishedVersion: GuidedSectionVersion.optional(),
+        createdBy: core.serialization.string().optional(),
         createdAt: core.serialization.date(),
         updatedAt: core.serialization.date(),
         deletedAt: core.serialization.date().optionalNullable(),
@@ -38,6 +39,7 @@ export declare namespace GuidedSection {
         description?: string | null;
         labels: GuidedLabel.Raw[];
         publishedVersion?: GuidedSectionVersion.Raw | null;
+        createdBy?: string | null;
         createdAt: string;
         updatedAt: string;
         deletedAt?: (string | null | undefined) | null;
