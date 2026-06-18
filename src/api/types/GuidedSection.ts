@@ -25,6 +25,8 @@ export interface GuidedSection {
     labels: Corti.GuidedLabel[];
     /** The currently published version with section inheritance fully resolved. Present when a version has been published. */
     publishedVersion?: Corti.GuidedSectionVersion;
+    /** The UUID of the creator of this section. */
+    createdBy?: string;
     /** The original timestamp when the section was created. */
     createdAt: Date;
     /** The original timestamp when the section was last updated. */

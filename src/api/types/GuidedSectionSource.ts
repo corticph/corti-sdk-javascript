@@ -4,5 +4,6 @@
 export const GuidedSectionSource = {
     User: "user",
     Corti: "corti",
+    Project: "project",
 } as const;
 export type GuidedSectionSource = (typeof GuidedSectionSource)[keyof typeof GuidedSectionSource];

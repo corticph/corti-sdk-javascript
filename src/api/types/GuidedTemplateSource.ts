@@ -4,5 +4,6 @@
 export const GuidedTemplateSource = {
     User: "user",
     Corti: "corti",
+    Project: "project",
 } as const;
 export type GuidedTemplateSource = (typeof GuidedTemplateSource)[keyof typeof GuidedTemplateSource];

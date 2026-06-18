@@ -25,6 +25,8 @@ export interface GuidedTemplate {
     labels: Corti.GuidedLabel[];
     /** The currently published version with inheritance fully resolved. Present when a version has been published. */
     publishedVersion?: Corti.GuidedTemplateVersion;
+    /** The UUID of the creator of this template. */
+    createdBy?: string;
     /** The original timestamp when the template was created. */
     createdAt: Date;
     /** The original timestamp when the template was last updated. */
