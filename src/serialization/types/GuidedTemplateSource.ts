@@ -7,8 +7,8 @@ import type * as serializers from "../index.js";
 export const GuidedTemplateSource: core.serialization.Schema<
     serializers.GuidedTemplateSource.Raw,
     Corti.GuidedTemplateSource
-> = core.serialization.enum_(["user", "corti"]);
+> = core.serialization.enum_(["user", "corti", "project"]);
 
 export declare namespace GuidedTemplateSource {
-    export type Raw = "user" | "corti";
+    export type Raw = "user" | "corti" | "project";
 }

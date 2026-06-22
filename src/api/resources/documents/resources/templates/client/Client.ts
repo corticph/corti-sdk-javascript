@@ -123,11 +123,7 @@ export class TemplatesClient {
      * @example
      *     await client.documents.templates.create({
      *         name: "name",
-     *         generation: {
-     *             instructions: {
-     *                 prompt: "prompt"
-     *             }
-     *         }
+     *         generation: {}
      *     })
      */
     public create(
