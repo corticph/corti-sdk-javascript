@@ -10,13 +10,13 @@ export const GuidedTemplatesCreateFromScratchRequestGeneration: core.serializati
     serializers.GuidedTemplatesCreateFromScratchRequestGeneration.Raw,
     Corti.GuidedTemplatesCreateFromScratchRequestGeneration
 > = core.serialization.object({
-    instructions: GuidedTemplateInstructions,
+    instructions: GuidedTemplateInstructions.optional(),
     sections: core.serialization.list(GuidedTemplatesVersionSectionRequest).optional(),
 });
 
 export declare namespace GuidedTemplatesCreateFromScratchRequestGeneration {
     export interface Raw {
-        instructions: GuidedTemplateInstructions.Raw;
+        instructions?: GuidedTemplateInstructions.Raw | null;
         sections?: GuidedTemplatesVersionSectionRequest.Raw[] | null;
     }
 }
