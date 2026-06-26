@@ -138,7 +138,7 @@ export class TranscriptsClient {
     }
 
     /**
-     * Create a transcript from an audio file uploaded to the interaction via `/recordings` endpoint.<br/><Note>Each interaction may have more than one audio file and transcript associated with it. Audio files up to 60 min in total duration, or 150 MB in total size, may be used.<br/><br/>By default, requests will process synchronously for 25 seconds before timeout, upon which processing will continue asynchronously. Set the `async` parameter to true to receive the location header immediately and process the request asynchronously. Read more [here](https://docs.corti.ai/stt/transcripts).</Note>
+     * Create a transcript from an audio file uploaded to the interaction via `/recordings` endpoint.<br/><Note>Each interaction may have more than one audio file and transcript associated with it. Audio files up to 120 minutes in total audio duration and  150 MB in size may be used.<br/><br/>By default, requests will process synchronously for 25 seconds before timeout, upon which processing will continue asynchronously. Set the `async` parameter to true to receive the location header immediately and process the request asynchronously. Read more [here](https://docs.corti.ai/stt/transcripts).</Note>
      *
      * @param {Corti.Uuid} id - The unique identifier of the interaction. Must be a valid UUID.
      * @param {Corti.TranscriptsCreateRequest} request

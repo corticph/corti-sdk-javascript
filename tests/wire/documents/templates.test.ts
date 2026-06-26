@@ -59,6 +59,7 @@ describe("TemplatesClient", () => {
                         ],
                     },
                 },
+                createdBy: "createdBy",
                 createdAt: "2024-01-15T09:30:00Z",
                 updatedAt: "2024-01-15T09:30:00Z",
                 deletedAt: "2024-01-15T09:30:00Z",
@@ -131,6 +132,7 @@ describe("TemplatesClient", () => {
                         ],
                     },
                 },
+                createdBy: "createdBy",
                 createdAt: new Date("2024-01-15T09:30:00.000Z"),
                 updatedAt: new Date("2024-01-15T09:30:00.000Z"),
                 deletedAt: new Date("2024-01-15T09:30:00.000Z"),
@@ -149,7 +151,7 @@ describe("TemplatesClient", () => {
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
-        const rawRequestBody = { name: "name", generation: { instructions: { prompt: "prompt" } } };
+        const rawRequestBody = { name: "name", generation: {} };
         const rawResponseBody = {
             id: "id",
             inheritedFromId: "inheritedFromId",
@@ -190,6 +192,7 @@ describe("TemplatesClient", () => {
                     ],
                 },
             },
+            createdBy: "createdBy",
             createdAt: "2024-01-15T09:30:00Z",
             updatedAt: "2024-01-15T09:30:00Z",
             deletedAt: "2024-01-15T09:30:00Z",
@@ -206,11 +209,7 @@ describe("TemplatesClient", () => {
 
         const response = await client.documents.templates.create({
             name: "name",
-            generation: {
-                instructions: {
-                    prompt: "prompt",
-                },
-            },
+            generation: {},
         });
         expect(response).toEqual({
             id: "id",
@@ -268,6 +267,7 @@ describe("TemplatesClient", () => {
                     ],
                 },
             },
+            createdBy: "createdBy",
             createdAt: new Date("2024-01-15T09:30:00.000Z"),
             updatedAt: new Date("2024-01-15T09:30:00.000Z"),
             deletedAt: new Date("2024-01-15T09:30:00.000Z"),
@@ -285,7 +285,7 @@ describe("TemplatesClient", () => {
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
-        const rawRequestBody = { generation: { instructions: { prompt: "prompt" } }, name: "name" };
+        const rawRequestBody = { generation: {}, name: "name" };
         const rawResponseBody = { key: "value" };
 
         server
@@ -299,11 +299,7 @@ describe("TemplatesClient", () => {
 
         await expect(async () => {
             return await client.documents.templates.create({
-                generation: {
-                    instructions: {
-                        prompt: "prompt",
-                    },
-                },
+                generation: {},
                 name: "name",
             });
         }).rejects.toThrow(Corti.BadRequestError);
@@ -361,6 +357,7 @@ describe("TemplatesClient", () => {
                     ],
                 },
             },
+            createdBy: "createdBy",
             createdAt: "2024-01-15T09:30:00Z",
             updatedAt: "2024-01-15T09:30:00Z",
             deletedAt: "2024-01-15T09:30:00Z",
@@ -431,6 +428,7 @@ describe("TemplatesClient", () => {
                     ],
                 },
             },
+            createdBy: "createdBy",
             createdAt: new Date("2024-01-15T09:30:00.000Z"),
             updatedAt: new Date("2024-01-15T09:30:00.000Z"),
             deletedAt: new Date("2024-01-15T09:30:00.000Z"),
@@ -588,6 +586,7 @@ describe("TemplatesClient", () => {
                     ],
                 },
             },
+            createdBy: "createdBy",
             createdAt: "2024-01-15T09:30:00Z",
             updatedAt: "2024-01-15T09:30:00Z",
             deletedAt: "2024-01-15T09:30:00Z",
@@ -659,6 +658,7 @@ describe("TemplatesClient", () => {
                     ],
                 },
             },
+            createdBy: "createdBy",
             createdAt: new Date("2024-01-15T09:30:00.000Z"),
             updatedAt: new Date("2024-01-15T09:30:00.000Z"),
             deletedAt: new Date("2024-01-15T09:30:00.000Z"),
