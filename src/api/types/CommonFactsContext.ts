@@ -3,9 +3,9 @@
 import type * as Corti from "../index.js";
 
 /**
- * A single fact provided as input context to the model.
+ * A list of facts provided as input context to the model.
  */
 export interface CommonFactsContext {
     type: "facts";
-    fact: Corti.GuidedDocumentFactMinimal;
+    facts: Corti.GuidedDocumentFactMinimal[];
 }
