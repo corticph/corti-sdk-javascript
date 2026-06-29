@@ -20,6 +20,7 @@ export const GuidedTemplate: core.serialization.ObjectSchema<serializers.GuidedT
         specialties: core.serialization.list(core.serialization.string()),
         labels: core.serialization.list(GuidedLabel),
         publishedVersion: GuidedTemplateVersion.optional(),
+        createdBy: core.serialization.string().optional(),
         createdAt: core.serialization.date(),
         updatedAt: core.serialization.date(),
         deletedAt: core.serialization.date().optionalNullable(),
@@ -38,6 +39,7 @@ export declare namespace GuidedTemplate {
         specialties: string[];
         labels: GuidedLabel.Raw[];
         publishedVersion?: GuidedTemplateVersion.Raw | null;
+        createdBy?: string | null;
         createdAt: string;
         updatedAt: string;
         deletedAt?: (string | null | undefined) | null;

@@ -14,7 +14,11 @@ export interface TranscriptsCreateRequest {
     recordingId: Corti.Uuid;
     /** The primary spoken language of the recording. Check https://docs.corti.ai/stt/languages for more. */
     primaryLanguage: string;
-    /** If true, spoken punctuation will be converted to symbols (e.g., 'comma' → ','). */
+    /** When true, converts spoken punctuation such as 'period' or 'slash' into symbols (e.g., '.', '/'). When enabled, automatic punctuation is turned off. Takes precedence over `automaticPunctuation` when both are enabled. */
+    spokenPunctuation?: boolean;
+    /** When true, automatically punctuates and capitalizes the transcript. Defaults to true. Overridden by `spokenPunctuation` when both are enabled. */
+    automaticPunctuation?: boolean;
+    /** **Deprecated** — replaced by `spokenPunctuation` and `automaticPunctuation`. Ignored when either of those fields is provided. When `true` and neither new field is provided, it is treated as `spokenPunctuation: true` (automatic punctuation off). No removal date is currently planned. */
     isDictation?: boolean;
     /** If true, each audio channel is transcribed separately. */
     isMultichannel?: boolean;
@@ -24,4 +28,8 @@ export interface TranscriptsCreateRequest {
     participants?: Corti.TranscriptsParticipant[];
     /** If true, the request will return immediately with a 202 status and the transcript will be processed asynchronously. Poll [Get Transcript Status](/api-reference/transcripts/get-transcript-status) to check transcript processing status - `processing`, `completed`, `failed`. */
     async?: boolean;
+    /** Define replacements to have terms (single words or multi-word phrases) replaced in final text output with your preferred style. For example, replace "BID" with "twice daily". Configuration is case insensitive and limited to 1,000 replacements per stream. */
+    replacements?: Corti.TranscriptsCreateRequestReplacementsItem[];
+    /** Define words, terms, and phrases to be recognized by Corti speech-to-text. Especially useful for proper nouns (e.g., surnames), but also supportive of words not being recognized consistently. */
+    keyterms?: Corti.TranscriptsCreateRequestKeyterms;
 }
