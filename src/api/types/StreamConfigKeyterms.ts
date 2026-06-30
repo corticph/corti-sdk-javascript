@@ -3,9 +3,9 @@
 import type * as Corti from "../index.js";
 
 /**
- * Define words, terms, and phrases to be recognized by Corti speech-to-text. Especially useful for proper nouns (e.g., surnames), but also supportive of words not being recognized consistently. Configuration is case sensitive and limited to 1,000 key terms per stream.
+ * Define words, terms, and phrases to be recognized by Corti speech-to-text. Especially useful for proper nouns (e.g., surnames), but also supportive of words not being recognized consistently.
  */
 export interface StreamConfigKeyterms {
-    /** Ordered list of words to be recognized. */
+    /** Ordered list of words to be recognized. Configuration is case sensitive and limited to 1,000 key terms per stream. */
     terms?: Corti.StreamConfigKeytermsTermsItem[];
 }
