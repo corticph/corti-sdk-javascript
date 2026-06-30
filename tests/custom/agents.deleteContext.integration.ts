@@ -64,7 +64,7 @@ describe("cortiClient.agents.deleteContext", () => {
             );
         });
 
-        // Skipped: agents team is fixing a regression where the endpoint stopped validating the agent ID
+        // FIXME: re-enable when agents team fixes the regression where the endpoint stopped validating the agent ID
         it.skip("should throw error when agent ID does not exist", async () => {
             expect.assertions(1);
 
