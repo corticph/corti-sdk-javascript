@@ -4,11 +4,11 @@ import type * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
 import type * as serializers from "../index.js";
 
-export const GuidedSectionSource: core.serialization.Schema<
-    serializers.GuidedSectionSource.Raw,
-    Corti.GuidedSectionSource
+export const GuidedSectionListItemSource: core.serialization.Schema<
+    serializers.GuidedSectionListItemSource.Raw,
+    Corti.GuidedSectionListItemSource
 > = core.serialization.enum_(["user", "corti", "project"]);
 
-export declare namespace GuidedSectionSource {
+export declare namespace GuidedSectionListItemSource {
     export type Raw = "user" | "corti" | "project";
 }
