@@ -41,14 +41,14 @@ export class TemplatesClient {
     public list(
         request: Corti.documents.GuidedTemplatesListRequest = {},
         requestOptions?: TemplatesClient.RequestOptions,
-    ): core.HttpResponsePromise<Corti.GuidedTemplate[]> {
+    ): core.HttpResponsePromise<Corti.GuidedTemplateListItem[]> {
         return core.HttpResponsePromise.fromPromise(this.__list(request, requestOptions));
     }
 
     private async __list(
         request: Corti.documents.GuidedTemplatesListRequest = {},
         requestOptions?: TemplatesClient.RequestOptions,
-    ): Promise<core.WithRawResponse<Corti.GuidedTemplate[]>> {
+    ): Promise<core.WithRawResponse<Corti.GuidedTemplateListItem[]>> {
         const { lang, region, specialty, label, published, source } = request;
         const _queryParams: Record<string, unknown> = {
             lang,
