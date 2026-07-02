@@ -30,16 +30,6 @@ describe("SectionsClient", () => {
                 specialties: ["specialties"],
                 description: "description",
                 labels: [{ key: "key", value: "value" }],
-                publishedVersion: {
-                    id: "id",
-                    versionNumber: 1,
-                    deletedAt: "2024-01-15T09:30:00Z",
-                    generation: {
-                        heading: "heading",
-                        instructions: { contentPrompt: "contentPrompt" },
-                        outputSchema: { type: "string" },
-                    },
-                },
                 createdBy: "createdBy",
                 createdAt: "2024-01-15T09:30:00Z",
                 updatedAt: "2024-01-15T09:30:00Z",
@@ -73,20 +63,6 @@ describe("SectionsClient", () => {
                         value: "value",
                     },
                 ],
-                publishedVersion: {
-                    id: "id",
-                    versionNumber: 1,
-                    deletedAt: new Date("2024-01-15T09:30:00.000Z"),
-                    generation: {
-                        heading: "heading",
-                        instructions: {
-                            contentPrompt: "contentPrompt",
-                        },
-                        outputSchema: {
-                            type: "string",
-                        },
-                    },
-                },
                 createdBy: "createdBy",
                 createdAt: new Date("2024-01-15T09:30:00.000Z"),
                 updatedAt: new Date("2024-01-15T09:30:00.000Z"),
@@ -106,14 +82,7 @@ describe("SectionsClient", () => {
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
-        const rawRequestBody = {
-            name: "name",
-            generation: {
-                heading: "heading",
-                instructions: { contentPrompt: "contentPrompt" },
-                outputSchema: { type: "string" },
-            },
-        };
+        const rawRequestBody = { name: "name", inheritFromId: "inheritFromId" };
         const rawResponseBody = {
             id: "id",
             inheritedFromId: "inheritedFromId",
@@ -125,6 +94,10 @@ describe("SectionsClient", () => {
             specialties: ["specialties"],
             description: "description",
             labels: [{ key: "key", value: "value" }],
+            createdBy: "createdBy",
+            createdAt: "2024-01-15T09:30:00Z",
+            updatedAt: "2024-01-15T09:30:00Z",
+            deletedAt: "2024-01-15T09:30:00Z",
             publishedVersion: {
                 id: "id",
                 versionNumber: 1,
@@ -135,10 +108,6 @@ describe("SectionsClient", () => {
                     outputSchema: { type: "string" },
                 },
             },
-            createdBy: "createdBy",
-            createdAt: "2024-01-15T09:30:00Z",
-            updatedAt: "2024-01-15T09:30:00Z",
-            deletedAt: "2024-01-15T09:30:00Z",
         };
 
         server
@@ -152,15 +121,7 @@ describe("SectionsClient", () => {
 
         const response = await client.documents.sections.create({
             name: "name",
-            generation: {
-                heading: "heading",
-                instructions: {
-                    contentPrompt: "contentPrompt",
-                },
-                outputSchema: {
-                    type: "string",
-                },
-            },
+            inheritFromId: "inheritFromId",
         });
         expect(response).toEqual({
             id: "id",
@@ -178,6 +139,10 @@ describe("SectionsClient", () => {
                     value: "value",
                 },
             ],
+            createdBy: "createdBy",
+            createdAt: new Date("2024-01-15T09:30:00.000Z"),
+            updatedAt: new Date("2024-01-15T09:30:00.000Z"),
+            deletedAt: new Date("2024-01-15T09:30:00.000Z"),
             publishedVersion: {
                 id: "id",
                 versionNumber: 1,
@@ -192,10 +157,6 @@ describe("SectionsClient", () => {
                     },
                 },
             },
-            createdBy: "createdBy",
-            createdAt: new Date("2024-01-15T09:30:00.000Z"),
-            updatedAt: new Date("2024-01-15T09:30:00.000Z"),
-            deletedAt: new Date("2024-01-15T09:30:00.000Z"),
         });
     });
 
@@ -210,14 +171,7 @@ describe("SectionsClient", () => {
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
-        const rawRequestBody = {
-            generation: {
-                heading: "heading",
-                instructions: { contentPrompt: "contentPrompt" },
-                outputSchema: { type: "string" },
-            },
-            name: "name",
-        };
+        const rawRequestBody = { inheritFromId: "inheritFromId", name: "name" };
         const rawResponseBody = { key: "value" };
 
         server
@@ -231,15 +185,7 @@ describe("SectionsClient", () => {
 
         await expect(async () => {
             return await client.documents.sections.create({
-                generation: {
-                    heading: "heading",
-                    instructions: {
-                        contentPrompt: "contentPrompt",
-                    },
-                    outputSchema: {
-                        type: "string",
-                    },
-                },
+                inheritFromId: "inheritFromId",
                 name: "name",
             });
         }).rejects.toThrow(Corti.BadRequestError);
@@ -268,6 +214,10 @@ describe("SectionsClient", () => {
             specialties: ["specialties"],
             description: "description",
             labels: [{ key: "key", value: "value" }],
+            createdBy: "createdBy",
+            createdAt: "2024-01-15T09:30:00Z",
+            updatedAt: "2024-01-15T09:30:00Z",
+            deletedAt: "2024-01-15T09:30:00Z",
             publishedVersion: {
                 id: "id",
                 versionNumber: 1,
@@ -278,10 +228,6 @@ describe("SectionsClient", () => {
                     outputSchema: { type: "string" },
                 },
             },
-            createdBy: "createdBy",
-            createdAt: "2024-01-15T09:30:00Z",
-            updatedAt: "2024-01-15T09:30:00Z",
-            deletedAt: "2024-01-15T09:30:00Z",
         };
 
         server
@@ -309,6 +255,10 @@ describe("SectionsClient", () => {
                     value: "value",
                 },
             ],
+            createdBy: "createdBy",
+            createdAt: new Date("2024-01-15T09:30:00.000Z"),
+            updatedAt: new Date("2024-01-15T09:30:00.000Z"),
+            deletedAt: new Date("2024-01-15T09:30:00.000Z"),
             publishedVersion: {
                 id: "id",
                 versionNumber: 1,
@@ -323,10 +273,6 @@ describe("SectionsClient", () => {
                     },
                 },
             },
-            createdBy: "createdBy",
-            createdAt: new Date("2024-01-15T09:30:00.000Z"),
-            updatedAt: new Date("2024-01-15T09:30:00.000Z"),
-            deletedAt: new Date("2024-01-15T09:30:00.000Z"),
         });
     });
 
@@ -452,6 +398,10 @@ describe("SectionsClient", () => {
             specialties: ["specialties"],
             description: "description",
             labels: [{ key: "key", value: "value" }],
+            createdBy: "createdBy",
+            createdAt: "2024-01-15T09:30:00Z",
+            updatedAt: "2024-01-15T09:30:00Z",
+            deletedAt: "2024-01-15T09:30:00Z",
             publishedVersion: {
                 id: "id",
                 versionNumber: 1,
@@ -462,10 +412,6 @@ describe("SectionsClient", () => {
                     outputSchema: { type: "string" },
                 },
             },
-            createdBy: "createdBy",
-            createdAt: "2024-01-15T09:30:00Z",
-            updatedAt: "2024-01-15T09:30:00Z",
-            deletedAt: "2024-01-15T09:30:00Z",
         };
 
         server
@@ -494,6 +440,10 @@ describe("SectionsClient", () => {
                     value: "value",
                 },
             ],
+            createdBy: "createdBy",
+            createdAt: new Date("2024-01-15T09:30:00.000Z"),
+            updatedAt: new Date("2024-01-15T09:30:00.000Z"),
+            deletedAt: new Date("2024-01-15T09:30:00.000Z"),
             publishedVersion: {
                 id: "id",
                 versionNumber: 1,
@@ -508,10 +458,6 @@ describe("SectionsClient", () => {
                     },
                 },
             },
-            createdBy: "createdBy",
-            createdAt: new Date("2024-01-15T09:30:00.000Z"),
-            updatedAt: new Date("2024-01-15T09:30:00.000Z"),
-            deletedAt: new Date("2024-01-15T09:30:00.000Z"),
         });
     });
 
