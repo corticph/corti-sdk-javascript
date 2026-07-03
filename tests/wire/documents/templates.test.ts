@@ -30,35 +30,6 @@ describe("TemplatesClient", () => {
                 regions: ["regions"],
                 specialties: ["specialties"],
                 labels: [{ key: "key", value: "value" }],
-                publishedVersion: {
-                    id: "id",
-                    versionNumber: 1,
-                    deletedAt: "2024-01-15T09:30:00Z",
-                    generation: {
-                        instructions: { prompt: "prompt" },
-                        sections: [
-                            {
-                                id: "id",
-                                name: "name",
-                                languages: ["languages"],
-                                regions: ["regions"],
-                                specialties: ["specialties"],
-                                labels: [{ key: "key", value: "value" }],
-                                publishedVersion: {
-                                    id: "id",
-                                    versionNumber: 1,
-                                    generation: {
-                                        heading: "heading",
-                                        instructions: { contentPrompt: "contentPrompt" },
-                                        outputSchema: { type: "string" },
-                                    },
-                                },
-                                createdAt: "2024-01-15T09:30:00Z",
-                                updatedAt: "2024-01-15T09:30:00Z",
-                            },
-                        ],
-                    },
-                },
                 createdBy: "createdBy",
                 createdAt: "2024-01-15T09:30:00Z",
                 updatedAt: "2024-01-15T09:30:00Z",
@@ -92,46 +63,6 @@ describe("TemplatesClient", () => {
                         value: "value",
                     },
                 ],
-                publishedVersion: {
-                    id: "id",
-                    versionNumber: 1,
-                    deletedAt: new Date("2024-01-15T09:30:00.000Z"),
-                    generation: {
-                        instructions: {
-                            prompt: "prompt",
-                        },
-                        sections: [
-                            {
-                                id: "id",
-                                name: "name",
-                                languages: ["languages"],
-                                regions: ["regions"],
-                                specialties: ["specialties"],
-                                labels: [
-                                    {
-                                        key: "key",
-                                        value: "value",
-                                    },
-                                ],
-                                publishedVersion: {
-                                    id: "id",
-                                    versionNumber: 1,
-                                    generation: {
-                                        heading: "heading",
-                                        instructions: {
-                                            contentPrompt: "contentPrompt",
-                                        },
-                                        outputSchema: {
-                                            type: "string",
-                                        },
-                                    },
-                                },
-                                createdAt: new Date("2024-01-15T09:30:00.000Z"),
-                                updatedAt: new Date("2024-01-15T09:30:00.000Z"),
-                            },
-                        ],
-                    },
-                },
                 createdBy: "createdBy",
                 createdAt: new Date("2024-01-15T09:30:00.000Z"),
                 updatedAt: new Date("2024-01-15T09:30:00.000Z"),
@@ -163,6 +94,10 @@ describe("TemplatesClient", () => {
             regions: ["regions"],
             specialties: ["specialties"],
             labels: [{ key: "key", value: "value" }],
+            createdBy: "createdBy",
+            createdAt: "2024-01-15T09:30:00Z",
+            updatedAt: "2024-01-15T09:30:00Z",
+            deletedAt: "2024-01-15T09:30:00Z",
             publishedVersion: {
                 id: "id",
                 versionNumber: 1,
@@ -177,6 +112,8 @@ describe("TemplatesClient", () => {
                             regions: ["regions"],
                             specialties: ["specialties"],
                             labels: [{ key: "key", value: "value" }],
+                            createdAt: "2024-01-15T09:30:00Z",
+                            updatedAt: "2024-01-15T09:30:00Z",
                             publishedVersion: {
                                 id: "id",
                                 versionNumber: 1,
@@ -186,16 +123,10 @@ describe("TemplatesClient", () => {
                                     outputSchema: { type: "string" },
                                 },
                             },
-                            createdAt: "2024-01-15T09:30:00Z",
-                            updatedAt: "2024-01-15T09:30:00Z",
                         },
                     ],
                 },
             },
-            createdBy: "createdBy",
-            createdAt: "2024-01-15T09:30:00Z",
-            updatedAt: "2024-01-15T09:30:00Z",
-            deletedAt: "2024-01-15T09:30:00Z",
         };
 
         server
@@ -227,6 +158,10 @@ describe("TemplatesClient", () => {
                     value: "value",
                 },
             ],
+            createdBy: "createdBy",
+            createdAt: new Date("2024-01-15T09:30:00.000Z"),
+            updatedAt: new Date("2024-01-15T09:30:00.000Z"),
+            deletedAt: new Date("2024-01-15T09:30:00.000Z"),
             publishedVersion: {
                 id: "id",
                 versionNumber: 1,
@@ -248,6 +183,8 @@ describe("TemplatesClient", () => {
                                     value: "value",
                                 },
                             ],
+                            createdAt: new Date("2024-01-15T09:30:00.000Z"),
+                            updatedAt: new Date("2024-01-15T09:30:00.000Z"),
                             publishedVersion: {
                                 id: "id",
                                 versionNumber: 1,
@@ -261,16 +198,10 @@ describe("TemplatesClient", () => {
                                     },
                                 },
                             },
-                            createdAt: new Date("2024-01-15T09:30:00.000Z"),
-                            updatedAt: new Date("2024-01-15T09:30:00.000Z"),
                         },
                     ],
                 },
             },
-            createdBy: "createdBy",
-            createdAt: new Date("2024-01-15T09:30:00.000Z"),
-            updatedAt: new Date("2024-01-15T09:30:00.000Z"),
-            deletedAt: new Date("2024-01-15T09:30:00.000Z"),
         });
     });
 
@@ -328,6 +259,10 @@ describe("TemplatesClient", () => {
             regions: ["regions"],
             specialties: ["specialties"],
             labels: [{ key: "key", value: "value" }],
+            createdBy: "createdBy",
+            createdAt: "2024-01-15T09:30:00Z",
+            updatedAt: "2024-01-15T09:30:00Z",
+            deletedAt: "2024-01-15T09:30:00Z",
             publishedVersion: {
                 id: "id",
                 versionNumber: 1,
@@ -342,6 +277,8 @@ describe("TemplatesClient", () => {
                             regions: ["regions"],
                             specialties: ["specialties"],
                             labels: [{ key: "key", value: "value" }],
+                            createdAt: "2024-01-15T09:30:00Z",
+                            updatedAt: "2024-01-15T09:30:00Z",
                             publishedVersion: {
                                 id: "id",
                                 versionNumber: 1,
@@ -351,16 +288,10 @@ describe("TemplatesClient", () => {
                                     outputSchema: { type: "string" },
                                 },
                             },
-                            createdAt: "2024-01-15T09:30:00Z",
-                            updatedAt: "2024-01-15T09:30:00Z",
                         },
                     ],
                 },
             },
-            createdBy: "createdBy",
-            createdAt: "2024-01-15T09:30:00Z",
-            updatedAt: "2024-01-15T09:30:00Z",
-            deletedAt: "2024-01-15T09:30:00Z",
         };
 
         server
@@ -388,6 +319,10 @@ describe("TemplatesClient", () => {
                     value: "value",
                 },
             ],
+            createdBy: "createdBy",
+            createdAt: new Date("2024-01-15T09:30:00.000Z"),
+            updatedAt: new Date("2024-01-15T09:30:00.000Z"),
+            deletedAt: new Date("2024-01-15T09:30:00.000Z"),
             publishedVersion: {
                 id: "id",
                 versionNumber: 1,
@@ -409,6 +344,8 @@ describe("TemplatesClient", () => {
                                     value: "value",
                                 },
                             ],
+                            createdAt: new Date("2024-01-15T09:30:00.000Z"),
+                            updatedAt: new Date("2024-01-15T09:30:00.000Z"),
                             publishedVersion: {
                                 id: "id",
                                 versionNumber: 1,
@@ -422,16 +359,10 @@ describe("TemplatesClient", () => {
                                     },
                                 },
                             },
-                            createdAt: new Date("2024-01-15T09:30:00.000Z"),
-                            updatedAt: new Date("2024-01-15T09:30:00.000Z"),
                         },
                     ],
                 },
             },
-            createdBy: "createdBy",
-            createdAt: new Date("2024-01-15T09:30:00.000Z"),
-            updatedAt: new Date("2024-01-15T09:30:00.000Z"),
-            deletedAt: new Date("2024-01-15T09:30:00.000Z"),
         });
     });
 
@@ -557,6 +488,10 @@ describe("TemplatesClient", () => {
             regions: ["regions"],
             specialties: ["specialties"],
             labels: [{ key: "key", value: "value" }],
+            createdBy: "createdBy",
+            createdAt: "2024-01-15T09:30:00Z",
+            updatedAt: "2024-01-15T09:30:00Z",
+            deletedAt: "2024-01-15T09:30:00Z",
             publishedVersion: {
                 id: "id",
                 versionNumber: 1,
@@ -571,6 +506,8 @@ describe("TemplatesClient", () => {
                             regions: ["regions"],
                             specialties: ["specialties"],
                             labels: [{ key: "key", value: "value" }],
+                            createdAt: "2024-01-15T09:30:00Z",
+                            updatedAt: "2024-01-15T09:30:00Z",
                             publishedVersion: {
                                 id: "id",
                                 versionNumber: 1,
@@ -580,16 +517,10 @@ describe("TemplatesClient", () => {
                                     outputSchema: { type: "string" },
                                 },
                             },
-                            createdAt: "2024-01-15T09:30:00Z",
-                            updatedAt: "2024-01-15T09:30:00Z",
                         },
                     ],
                 },
             },
-            createdBy: "createdBy",
-            createdAt: "2024-01-15T09:30:00Z",
-            updatedAt: "2024-01-15T09:30:00Z",
-            deletedAt: "2024-01-15T09:30:00Z",
         };
 
         server
@@ -618,6 +549,10 @@ describe("TemplatesClient", () => {
                     value: "value",
                 },
             ],
+            createdBy: "createdBy",
+            createdAt: new Date("2024-01-15T09:30:00.000Z"),
+            updatedAt: new Date("2024-01-15T09:30:00.000Z"),
+            deletedAt: new Date("2024-01-15T09:30:00.000Z"),
             publishedVersion: {
                 id: "id",
                 versionNumber: 1,
@@ -639,6 +574,8 @@ describe("TemplatesClient", () => {
                                     value: "value",
                                 },
                             ],
+                            createdAt: new Date("2024-01-15T09:30:00.000Z"),
+                            updatedAt: new Date("2024-01-15T09:30:00.000Z"),
                             publishedVersion: {
                                 id: "id",
                                 versionNumber: 1,
@@ -652,16 +589,10 @@ describe("TemplatesClient", () => {
                                     },
                                 },
                             },
-                            createdAt: new Date("2024-01-15T09:30:00.000Z"),
-                            updatedAt: new Date("2024-01-15T09:30:00.000Z"),
                         },
                     ],
                 },
             },
-            createdBy: "createdBy",
-            createdAt: new Date("2024-01-15T09:30:00.000Z"),
-            updatedAt: new Date("2024-01-15T09:30:00.000Z"),
-            deletedAt: new Date("2024-01-15T09:30:00.000Z"),
         });
     });
 

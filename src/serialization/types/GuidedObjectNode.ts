@@ -11,6 +11,7 @@ export const GuidedObjectNode: core.serialization.ObjectSchema<
     type: core.serialization.stringLiteral("object"),
     description: core.serialization.string().optional(),
     fieldFormat: core.serialization.string().optional(),
+    default: core.serialization.record(core.serialization.string(), core.serialization.unknown()).optionalNullable(),
     fields: core.serialization.list(core.serialization.lazyObject(() => serializers.GuidedFieldDefinition)).optional(),
 });
 
@@ -19,6 +20,7 @@ export declare namespace GuidedObjectNode {
         type: "object";
         description?: string | null;
         fieldFormat?: string | null;
+        default?: (Record<string, unknown> | null | undefined) | null;
         fields?: serializers.GuidedFieldDefinition.Raw[] | null;
     }
 }
