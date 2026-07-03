@@ -5,7 +5,6 @@ import { createTestCortiClient, setupConsoleWarnSpy } from "./testUtils";
 describe("cortiClient.documents.templates.create", () => {
     let cortiClient: CortiClient;
     let consoleWarnSpy: ReturnType<typeof setupConsoleWarnSpy>;
-    const createdTemplateIds: string[] = [];
 
     beforeAll(() => {
         cortiClient = createTestCortiClient();
@@ -15,12 +14,8 @@ describe("cortiClient.documents.templates.create", () => {
         consoleWarnSpy = setupConsoleWarnSpy();
     });
 
-    afterEach(async () => {
+    afterEach(() => {
         consoleWarnSpy.mockRestore();
-
-        await Promise.allSettled(
-            createdTemplateIds.splice(0).map((templateId) => cortiClient.documents.templates.delete(templateId)),
-        );
     });
 
     describe("should create guided template with only required values", () => {
@@ -38,7 +33,19 @@ describe("cortiClient.documents.templates.create", () => {
 
             expect(result.id).toBeDefined();
             expect(result.name).toBeDefined();
-            createdTemplateIds.push(result.id);
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
+
+        it("should create template from scratch without generation.instructions without errors or warnings", async () => {
+            expect.assertions(3);
+
+            const result = await cortiClient.documents.templates.create({
+                name: faker.lorem.words(3),
+                generation: {},
+            });
+
+            expect(result.id).toBeDefined();
+            expect(result.name).toBeDefined();
             expect(consoleWarnSpy).not.toHaveBeenCalled();
         });
     });
@@ -63,7 +70,6 @@ describe("cortiClient.documents.templates.create", () => {
             });
 
             expect(result.id).toBeDefined();
-            createdTemplateIds.push(result.id);
             expect(consoleWarnSpy).not.toHaveBeenCalled();
         });
     });

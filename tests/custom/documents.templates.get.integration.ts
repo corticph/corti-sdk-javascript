@@ -5,7 +5,6 @@ import { createTestCortiClient, setupConsoleWarnSpy } from "./testUtils";
 describe("cortiClient.documents.templates.get", () => {
     let cortiClient: CortiClient;
     let consoleWarnSpy: ReturnType<typeof setupConsoleWarnSpy>;
-    const createdTemplateIds: string[] = [];
 
     beforeAll(() => {
         cortiClient = createTestCortiClient();
@@ -15,12 +14,8 @@ describe("cortiClient.documents.templates.get", () => {
         consoleWarnSpy = setupConsoleWarnSpy();
     });
 
-    afterEach(async () => {
+    afterEach(() => {
         consoleWarnSpy.mockRestore();
-
-        await Promise.allSettled(
-            createdTemplateIds.splice(0).map((templateId) => cortiClient.documents.templates.delete(templateId)),
-        );
     });
 
     describe("should get guided template with only required values", () => {
@@ -35,7 +30,6 @@ describe("cortiClient.documents.templates.get", () => {
                     },
                 },
             });
-            createdTemplateIds.push(created.id);
 
             const result = await cortiClient.documents.templates.get(created.id);
 
