@@ -40,4 +40,26 @@ describe("tenant empty state (after purge)", () => {
         expect(seen).toEqual([]);
         expect(consoleWarnSpy).not.toHaveBeenCalled();
     });
+
+    it("should have no user or project guided templates when tenant is purged", async () => {
+        expect.assertions(2);
+
+        const templates = await cortiClient.documents.templates.list();
+        const tenantTemplates = templates.filter(
+            (template) => template.source === "user" || template.source === "project",
+        );
+
+        expect(tenantTemplates).toHaveLength(0);
+        expect(consoleWarnSpy).not.toHaveBeenCalled();
+    });
+
+    it("should have no user or project guided sections when tenant is purged", async () => {
+        expect.assertions(2);
+
+        const sections = await cortiClient.documents.sections.list();
+        const tenantSections = sections.filter((section) => section.source === "user" || section.source === "project");
+
+        expect(tenantSections).toHaveLength(0);
+        expect(consoleWarnSpy).not.toHaveBeenCalled();
+    });
 });

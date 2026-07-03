@@ -10,10 +10,10 @@ export const GuidedTemplatesCreateRequest: core.serialization.Schema<
     serializers.GuidedTemplatesCreateRequest.Raw,
     Corti.GuidedTemplatesCreateRequest
 > = core.serialization.undiscriminatedUnion([
-    GuidedTemplatesCreateFromScratchRequest,
     GuidedTemplatesCreateFromInheritanceRequest,
+    GuidedTemplatesCreateFromScratchRequest,
 ]);
 
 export declare namespace GuidedTemplatesCreateRequest {
-    export type Raw = GuidedTemplatesCreateFromScratchRequest.Raw | GuidedTemplatesCreateFromInheritanceRequest.Raw;
+    export type Raw = GuidedTemplatesCreateFromInheritanceRequest.Raw | GuidedTemplatesCreateFromScratchRequest.Raw;
 }

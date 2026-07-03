@@ -138,15 +138,106 @@ describe("cortiClient.transcripts.create", () => {
             const result = await cortiClient.transcripts.create(interactionId, {
                 recordingId,
                 primaryLanguage: "en",
-                isDictation: faker.datatype.boolean(),
+                spokenPunctuation: faker.datatype.boolean(),
+                automaticPunctuation: faker.datatype.boolean(),
                 isMultichannel,
                 diarize,
+                replacements: [{ find: "BID", replace: "twice daily" }],
+                keyterms: {
+                    terms: [{ term: faker.person.lastName() }],
+                },
                 participants: [
                     {
                         channel: faker.number.int({ min: 0, max: 1 }),
                         role: faker.helpers.arrayElement(["doctor", "patient", "multiple"]),
                     },
                 ],
+            });
+
+            expect(result).toBeDefined();
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
+    });
+
+    describe("should create transcript with punctuation configuration", () => {
+        it("should create transcript with spokenPunctuation enabled without errors or warnings", async () => {
+            expect.assertions(2);
+
+            const interactionId = await createTestInteraction(cortiClient);
+            const recordingId = await createTestRecording(cortiClient, interactionId);
+
+            const result = await cortiClient.transcripts.create(interactionId, {
+                recordingId,
+                primaryLanguage: "en",
+                spokenPunctuation: true,
+            });
+
+            expect(result).toBeDefined();
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
+
+        it("should create transcript with automaticPunctuation enabled without errors or warnings", async () => {
+            expect.assertions(2);
+
+            const interactionId = await createTestInteraction(cortiClient);
+            const recordingId = await createTestRecording(cortiClient, interactionId);
+
+            const result = await cortiClient.transcripts.create(interactionId, {
+                recordingId,
+                primaryLanguage: "en",
+                automaticPunctuation: true,
+            });
+
+            expect(result).toBeDefined();
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
+
+        it("should create transcript with deprecated isDictation for backward compatibility without errors or warnings", async () => {
+            expect.assertions(2);
+
+            const interactionId = await createTestInteraction(cortiClient);
+            const recordingId = await createTestRecording(cortiClient, interactionId);
+
+            const result = await cortiClient.transcripts.create(interactionId, {
+                recordingId,
+                primaryLanguage: "en",
+                isDictation: true,
+            });
+
+            expect(result).toBeDefined();
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
+    });
+
+    describe("should create transcript with replacements and keyterms", () => {
+        it("should create transcript with replacements without errors or warnings", async () => {
+            expect.assertions(2);
+
+            const interactionId = await createTestInteraction(cortiClient);
+            const recordingId = await createTestRecording(cortiClient, interactionId);
+
+            const result = await cortiClient.transcripts.create(interactionId, {
+                recordingId,
+                primaryLanguage: "en",
+                replacements: [{ find: "BID", replace: "twice daily" }],
+            });
+
+            expect(result).toBeDefined();
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
+
+        it("should create transcript with keyterms without errors or warnings", async () => {
+            expect.assertions(2);
+
+            const interactionId = await createTestInteraction(cortiClient);
+            const recordingId = await createTestRecording(cortiClient, interactionId);
+
+            const result = await cortiClient.transcripts.create(interactionId, {
+                recordingId,
+                primaryLanguage: "en",
+                keyterms: {
+                    terms: [{ term: "McDonald" }],
+                },
             });
 
             expect(result).toBeDefined();
@@ -334,6 +425,23 @@ describe("cortiClient.transcripts.create", () => {
                     ],
                 }),
             ).rejects.toThrow('Expected enum. Received "invalid-role"');
+        });
+
+        it("should throw error when keyterm term exceeds 50 characters", async () => {
+            expect.assertions(1);
+
+            const interactionId = await createTestInteraction(cortiClient);
+            const recordingId = await createTestRecording(cortiClient, interactionId);
+
+            await expect(
+                cortiClient.transcripts.create(interactionId, {
+                    recordingId,
+                    primaryLanguage: "en",
+                    keyterms: {
+                        terms: [{ term: "a".repeat(51) }],
+                    },
+                }),
+            ).rejects.toThrow("Status code: 400");
         });
 
         it("should throw error when diarize is true but isMultichannel is false", async () => {

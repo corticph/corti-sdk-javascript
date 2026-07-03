@@ -5,7 +5,6 @@ import { createTestCortiClient, setupConsoleWarnSpy } from "./testUtils";
 describe("cortiClient.documents.sections.create", () => {
     let cortiClient: CortiClient;
     let consoleWarnSpy: ReturnType<typeof setupConsoleWarnSpy>;
-    const createdSectionIds: string[] = [];
 
     beforeAll(() => {
         cortiClient = createTestCortiClient();
@@ -15,12 +14,8 @@ describe("cortiClient.documents.sections.create", () => {
         consoleWarnSpy = setupConsoleWarnSpy();
     });
 
-    afterEach(async () => {
+    afterEach(() => {
         consoleWarnSpy.mockRestore();
-
-        await Promise.allSettled(
-            createdSectionIds.splice(0).map((sectionId) => cortiClient.documents.sections.delete(sectionId)),
-        );
     });
 
     describe("should create guided section with only required values", () => {
@@ -42,7 +37,6 @@ describe("cortiClient.documents.sections.create", () => {
 
             expect(result.id).toBeDefined();
             expect(result.name).toBeDefined();
-            createdSectionIds.push(result.id);
             expect(consoleWarnSpy).not.toHaveBeenCalled();
         });
     });

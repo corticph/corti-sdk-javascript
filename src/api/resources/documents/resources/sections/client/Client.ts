@@ -41,14 +41,14 @@ export class SectionsClient {
     public list(
         request: Corti.documents.GuidedSectionsListRequest = {},
         requestOptions?: SectionsClient.RequestOptions,
-    ): core.HttpResponsePromise<Corti.GuidedSection[]> {
+    ): core.HttpResponsePromise<Corti.GuidedSectionListItem[]> {
         return core.HttpResponsePromise.fromPromise(this.__list(request, requestOptions));
     }
 
     private async __list(
         request: Corti.documents.GuidedSectionsListRequest = {},
         requestOptions?: SectionsClient.RequestOptions,
-    ): Promise<core.WithRawResponse<Corti.GuidedSection[]>> {
+    ): Promise<core.WithRawResponse<Corti.GuidedSectionListItem[]>> {
         const { lang, region, specialty, label, published, source } = request;
         const _queryParams: Record<string, unknown> = {
             lang,
@@ -123,15 +123,7 @@ export class SectionsClient {
      * @example
      *     await client.documents.sections.create({
      *         name: "name",
-     *         generation: {
-     *             heading: "heading",
-     *             instructions: {
-     *                 contentPrompt: "contentPrompt"
-     *             },
-     *             outputSchema: {
-     *                 type: "string"
-     *             }
-     *         }
+     *         inheritFromId: "inheritFromId"
      *     })
      */
     public create(

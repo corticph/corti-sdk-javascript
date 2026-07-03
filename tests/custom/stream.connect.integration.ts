@@ -35,6 +35,122 @@ describe("cortiClient.stream.connect", () => {
         activeSockets = [];
     });
 
+    describe("should connect with diarize configuration", () => {
+        it("should connect with diarize enabled without errors or warnings", async () => {
+            expect.assertions(2);
+
+            const interactionId = await createTestInteraction(cortiClient);
+
+            const streamSocket = await cortiClient.stream.connect({
+                id: interactionId,
+                awaitConfiguration: false,
+                configuration: {
+                    transcription: {
+                        primaryLanguage: "en",
+                        diarize: true,
+                        isMultichannel: true,
+                        participants: [
+                            {
+                                channel: 0,
+                                role: "doctor",
+                            },
+                            {
+                                channel: 1,
+                                role: "patient",
+                            },
+                        ],
+                    },
+                    mode: {
+                        type: "facts",
+                        outputLocale: "en-US",
+                    },
+                },
+            });
+            activeSockets.push(streamSocket);
+
+            await waitForWebSocketMessage(streamSocket, "CONFIG_ACCEPTED", { rejectOnWrongMessage: true });
+
+            expect(streamSocket.socket.readyState).toBe(1); // OPEN
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
+
+        it("should connect with deprecated isDiarization for backward compatibility without errors or warnings", async () => {
+            expect.assertions(2);
+
+            const interactionId = await createTestInteraction(cortiClient);
+
+            const streamSocket = await cortiClient.stream.connect({
+                id: interactionId,
+                awaitConfiguration: false,
+                configuration: {
+                    transcription: {
+                        primaryLanguage: "en",
+                        isDiarization: true,
+                        isMultichannel: true,
+                        participants: [
+                            {
+                                channel: 0,
+                                role: "doctor",
+                            },
+                            {
+                                channel: 1,
+                                role: "patient",
+                            },
+                        ],
+                    },
+                    mode: {
+                        type: "facts",
+                        outputLocale: "en-US",
+                    },
+                },
+            });
+            activeSockets.push(streamSocket);
+
+            await waitForWebSocketMessage(streamSocket, "CONFIG_ACCEPTED", { rejectOnWrongMessage: true });
+
+            expect(streamSocket.socket.readyState).toBe(1); // OPEN
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
+    });
+
+    describe("should connect with replacements and keyterms configuration", () => {
+        it("should connect with replacements and keyterms without errors or warnings", async () => {
+            expect.assertions(2);
+
+            const interactionId = await createTestInteraction(cortiClient);
+
+            const streamSocket = await cortiClient.stream.connect({
+                id: interactionId,
+                awaitConfiguration: false,
+                configuration: {
+                    replacements: [{ find: "BID", replace: "twice daily" }],
+                    keyterms: {
+                        terms: [{ term: "McDonald" }],
+                    },
+                    transcription: {
+                        primaryLanguage: "en",
+                        participants: [
+                            {
+                                channel: 0,
+                                role: "doctor",
+                            },
+                        ],
+                    },
+                    mode: {
+                        type: "facts",
+                        outputLocale: "en-US",
+                    },
+                },
+            });
+            activeSockets.push(streamSocket);
+
+            await waitForWebSocketMessage(streamSocket, "CONFIG_ACCEPTED", { rejectOnWrongMessage: true });
+
+            expect(streamSocket.socket.readyState).toBe(1); // OPEN
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
+    });
+
     describe("should connect with full configuration", () => {
         it("should connect with full configuration passed to connect", async () => {
             expect.assertions(2);

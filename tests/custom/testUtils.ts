@@ -128,8 +128,11 @@ export async function createTestInteraction(cortiClient: CortiClient, overrideDa
 }
 
 /**
- * Deletes all interactions and agents in the current tenant.
+ * Deletes integration-created tenant data: guided templates/sections, interactions, and agents.
  * Used by the empty-state integration suite (see tests/custom/empty-state.ts).
+ *
+ * Guided templates/sections: list all, delete those with `source` `user` or `project` (templates before
+ * sections per source). Corti standard resources are not deleted.
  *
  * Interactions: collect ids via `for await` over `interactions.list()`, then delete all in parallel with
  * `Promise.allSettled`. Failures are logged after that batch settles.
@@ -139,6 +142,40 @@ export async function createTestInteraction(cortiClient: CortiClient, overrideDa
  */
 export async function purgeIntegrationTenant(cortiClient: CortiClient): Promise<void> {
     const failedDeletes: string[] = [];
+
+    const purgeGuidedTemplates = async (source: "user" | "project") => {
+        const templates = await cortiClient.documents.templates.list();
+        const templateIds = templates.filter((template) => template.source === source).map((template) => template.id);
+        const templateResults = await Promise.allSettled(
+            templateIds.map((id) => cortiClient.documents.templates.delete(id)),
+        );
+        failedDeletes.push(...collectRejectedDeleteFailures("template", templateIds, templateResults));
+    };
+
+    const purgeGuidedSections = async (source: "user" | "project") => {
+        const sections = await cortiClient.documents.sections.list();
+        const sectionIds = sections.filter((section) => section.source === source).map((section) => section.id);
+        const sectionResults = await Promise.allSettled(
+            sectionIds.map((id) => cortiClient.documents.sections.delete(id)),
+        );
+        failedDeletes.push(...collectRejectedDeleteFailures("section", sectionIds, sectionResults));
+    };
+
+    for (const source of ["user", "project"] as const) {
+        try {
+            await purgeGuidedTemplates(source);
+        } catch (error) {
+            console.error(`purgeIntegrationTenant: templates (${source}) phase failed:`, error);
+            rethrowWithContext(`purgeIntegrationTenant templates (${source}) phase failed`, error);
+        }
+
+        try {
+            await purgeGuidedSections(source);
+        } catch (error) {
+            console.error(`purgeIntegrationTenant: sections (${source}) phase failed:`, error);
+            rethrowWithContext(`purgeIntegrationTenant sections (${source}) phase failed`, error);
+        }
+    }
 
     try {
         const page = await cortiClient.interactions.list();

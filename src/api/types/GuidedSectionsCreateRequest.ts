@@ -3,5 +3,5 @@
 import type * as Corti from "../index.js";
 
 export type GuidedSectionsCreateRequest =
-    | Corti.GuidedSectionsCreateFromScratchRequest
-    | Corti.GuidedSectionsCreateFromInheritanceRequest;
+    | Corti.GuidedSectionsCreateFromInheritanceRequest
+    | Corti.GuidedSectionsCreateFromScratchRequest;

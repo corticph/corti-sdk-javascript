@@ -2,7 +2,7 @@ import { faker } from "@faker-js/faker";
 import * as fs from "fs";
 import * as path from "path";
 import type { CortiClient } from "../../src/custom/CortiClient";
-import { createTestCortiClient, setupConsoleWarnSpy, waitForWebSocketMessage } from "./testUtils";
+import { createTestCortiClient, pause, setupConsoleWarnSpy, waitForWebSocketMessage } from "./testUtils";
 
 describe("cortiClient.transcribe.connect", () => {
     let cortiClient: CortiClient;
@@ -18,7 +18,7 @@ describe("cortiClient.transcribe.connect", () => {
         activeSockets = [];
     });
 
-    afterEach(() => {
+    afterEach(async () => {
         activeSockets.forEach((socket) => {
             if (socket && typeof socket.close === "function") {
                 try {
@@ -29,6 +29,7 @@ describe("cortiClient.transcribe.connect", () => {
             }
         });
         activeSockets = [];
+        await pause(250);
     });
 
     describe("should connect with minimal configuration", () => {
@@ -199,6 +200,26 @@ describe("cortiClient.transcribe.connect", () => {
             expect(consoleWarnSpy).not.toHaveBeenCalled();
         });
 
+        it("should connect with keyterms configuration without errors or warnings", async () => {
+            expect.assertions(2);
+
+            const transcribeSocket = await cortiClient.transcribe.connect({
+                awaitConfiguration: false,
+                configuration: {
+                    primaryLanguage: "en",
+                    keyterms: {
+                        terms: [{ term: "McDonald" }],
+                    },
+                },
+            });
+            activeSockets.push(transcribeSocket);
+
+            await waitForWebSocketMessage(transcribeSocket, "CONFIG_ACCEPTED", { rejectOnWrongMessage: true });
+
+            expect(transcribeSocket.socket.readyState).toBe(1); // OPEN
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
+
         it("should connect with wildcard command variable without errors or warnings", async () => {
             expect.assertions(2);
 
@@ -271,6 +292,7 @@ describe("cortiClient.transcribe.connect", () => {
                 awaitConfiguration: false,
                 configuration: {
                     primaryLanguage: "en",
+                    audioFormat: "audio/mp3",
                 },
             });
             activeSockets.push(transcribeSocket);
@@ -289,7 +311,9 @@ describe("cortiClient.transcribe.connect", () => {
                 transcribeSocket.sendAudio(chunk);
             }
 
-            await waitForWebSocketMessage(transcribeSocket, "transcript", { messages, timeoutMs: 30000 });
+            transcribeSocket.sendFlush({ type: "flush" });
+
+            await waitForWebSocketMessage(transcribeSocket, "transcript", { messages, timeoutMs: 60000 });
 
             transcribeSocket.sendEnd({ type: "end" });
 
