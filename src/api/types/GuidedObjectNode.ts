@@ -16,6 +16,8 @@ export interface GuidedObjectNode {
      * Validation rules: format must not be empty; if either `{key}` or `{value}` appears, both must be present; in subheading mode no extra placeholders are allowed; in object mode every placeholder must match a defined field key.
      */
     fieldFormat?: string;
+    /** If nothing is outputted, this default is used. */
+    default?: Record<string, unknown> | null;
     /** Define what fields are possible to return in the object. */
     fields?: Corti.GuidedFieldDefinition[];
 }

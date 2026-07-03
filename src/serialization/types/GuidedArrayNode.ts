@@ -12,6 +12,7 @@ export const GuidedArrayNode: core.serialization.ObjectSchema<serializers.Guided
         itemFormat: core.serialization.string().optional(),
         minItems: core.serialization.number().optionalNullable(),
         maxItems: core.serialization.number().optionalNullable(),
+        default: core.serialization.list(core.serialization.unknown()).optionalNullable(),
     });
 
 export declare namespace GuidedArrayNode {
@@ -22,5 +23,6 @@ export declare namespace GuidedArrayNode {
         itemFormat?: string | null;
         minItems?: (number | null | undefined) | null;
         maxItems?: (number | null | undefined) | null;
+        default?: (unknown[] | null | undefined) | null;
     }
 }

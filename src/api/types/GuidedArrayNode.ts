@@ -14,4 +14,6 @@ export interface GuidedArrayNode {
     minItems?: number | null;
     /** Maximum number of array items to generate. */
     maxItems?: number | null;
+    /** If nothing is outputted, this default is used. */
+    default?: unknown[] | null;
 }
