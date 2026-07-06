@@ -16,5 +16,6 @@ export const CommonCodingSystemEnum = {
     Opcs4: "opcs4",
     Ops: "ops",
     Ccam: "ccam",
+    Snomedctint: "snomedctint",
 } as const;
 export type CommonCodingSystemEnum = (typeof CommonCodingSystemEnum)[keyof typeof CommonCodingSystemEnum];
