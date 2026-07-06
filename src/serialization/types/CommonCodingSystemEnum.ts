@@ -23,6 +23,7 @@ export const CommonCodingSystemEnum: core.serialization.Schema<
     "opcs4",
     "ops",
     "ccam",
+    "snomedctint",
 ]);
 
 export declare namespace CommonCodingSystemEnum {
@@ -41,5 +42,6 @@ export declare namespace CommonCodingSystemEnum {
         | "icd10gm-outpatient"
         | "opcs4"
         | "ops"
-        | "ccam";
+        | "ccam"
+        | "snomedctint";
 }
