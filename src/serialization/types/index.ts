@@ -28,6 +28,7 @@ export * from "./AgentsExpertReferenceType.js";
 export * from "./AgentsExpertType.js";
 export * from "./AgentsFilePart.js";
 export * from "./AgentsFilePartFile.js";
+export * from "./AgentsFilePartKind.js";
 export * from "./AgentsFileWithBytes.js";
 export * from "./AgentsFileWithUri.js";
 export * from "./AgentsMcpServer.js";
