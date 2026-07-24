@@ -1,3 +1,3 @@
 export { AgentsCreateAgent } from "./AgentsCreateAgent.js";
-export { AgentsMessageSendParams } from "./AgentsMessageSendParams.js";
+export { AgentsMessageSendBody } from "./AgentsMessageSendBody.js";
 export { AgentsUpdateAgent } from "./AgentsUpdateAgent.js";
