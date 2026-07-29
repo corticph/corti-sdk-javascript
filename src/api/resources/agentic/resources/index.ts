@@ -2,6 +2,7 @@ export * from "./a2A/client/requests/index.js";
 export * as a2A from "./a2A/index.js";
 export * from "./a2A/types/index.js";
 export * as artifacts from "./artifacts/index.js";
+export * from "./connectors/client/requests/index.js";
 export * as connectors from "./connectors/index.js";
 export * from "./contexts/client/requests/index.js";
 export * as contexts from "./contexts/index.js";

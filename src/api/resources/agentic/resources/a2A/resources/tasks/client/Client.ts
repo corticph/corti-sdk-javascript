@@ -302,18 +302,13 @@ export class TasksClient {
     }
 
     /**
-     * @param {Corti.CommonAgentIdValue} agentId - Agent identifier (prefixed UUIDv7).
-     * @param {Corti.CommonTaskIdValue} taskId - Task identifier (prefixed UUIDv7).
-     * @param {TasksClient.RequestOptions} requestOptions - Request-specific configuration.
-     *
-     * @example
-     *     await client.agentic.a2A.tasks.subscribe("agt.0192f4c8-2c5a-7b3e-9f1a-3c8d6e2b7a40", "task.0192f4c8-4e7c-7d50-b13c-5eaf8a4d9c62")
+     * Resubscribe to an in-flight task's event stream over SSE.
      */
     public subscribe(
         agentId: Corti.CommonAgentIdValue,
         taskId: Corti.CommonTaskIdValue,
         requestOptions?: TasksClient.RequestOptions,
-    ): core.HttpResponsePromise<void> {
+    ): core.HttpResponsePromise<core.Stream<Corti.A2AStreamEventResponse>> {
         return core.HttpResponsePromise.fromPromise(this.__subscribe(agentId, taskId, requestOptions));
     }
 
@@ -321,7 +316,7 @@ export class TasksClient {
         agentId: Corti.CommonAgentIdValue,
         taskId: Corti.CommonTaskIdValue,
         requestOptions?: TasksClient.RequestOptions,
-    ): Promise<core.WithRawResponse<void>> {
+    ): Promise<core.WithRawResponse<core.Stream<Corti.A2AStreamEventResponse>>> {
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
@@ -332,15 +327,16 @@ export class TasksClient {
             }),
             requestOptions?.headers,
         );
-        const _response = await core.fetcher({
+        const _response = await core.fetcher<ReadableStream>({
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
                     (await core.Supplier.get(this._options.environment)).agents,
                 `v2/agentic/agents/${core.url.encodePathParam(serializers.CommonAgentIdValue.jsonOrThrow(agentId, { omitUndefined: true }))}/a2a/tasks/${core.url.encodePathParam(serializers.CommonTaskIdValue.jsonOrThrow(taskId, { omitUndefined: true }))}:subscribe`,
             ),
-            method: "GET",
+            method: "POST",
             headers: _headers,
             queryParameters: requestOptions?.queryParams,
+            responseType: "sse",
             timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
             maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
             abortSignal: requestOptions?.abortSignal,
@@ -348,21 +344,46 @@ export class TasksClient {
             logging: this._options.logging,
         });
         if (_response.ok) {
-            return { data: undefined, rawResponse: _response.rawResponse };
+            return {
+                data: new core.Stream({
+                    stream: _response.body,
+                    parse: async (data) => {
+                        return serializers.A2AStreamEventResponse.parseOrThrow(data, {
+                            unrecognizedObjectKeys: "passthrough",
+                            allowUnrecognizedUnionMembers: true,
+                            allowUnrecognizedEnumValues: true,
+                            skipValidation: true,
+                            breadcrumbsPrefix: ["response"],
+                        });
+                    },
+                    signal: requestOptions?.abortSignal,
+                    eventShape: {
+                        type: "sse",
+                    },
+                }),
+                rawResponse: _response.rawResponse,
+            };
         }
 
         if (_response.error.reason === "status-code") {
-            throw new errors.CortiError({
-                statusCode: _response.error.statusCode,
-                body: _response.error.body,
-                rawResponse: _response.rawResponse,
-            });
+            switch (_response.error.statusCode) {
+                case 401:
+                    throw new Corti.UnauthorizedError(_response.error.body, _response.rawResponse);
+                case 404:
+                    throw new Corti.NotFoundError(_response.error.body, _response.rawResponse);
+                default:
+                    throw new errors.CortiError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                        rawResponse: _response.rawResponse,
+                    });
+            }
         }
 
         return handleNonStatusCodeError(
             _response.error,
             _response.rawResponse,
-            "GET",
+            "POST",
             "/v2/agentic/agents/{agentId}/a2a/tasks/{taskId}/:subscribe",
         );
     }

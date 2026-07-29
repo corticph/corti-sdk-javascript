@@ -352,4 +352,116 @@ export class ConnectorsClient {
             "/v2/agentic/agents/{agentId}/connectors/{agentConnectorId}",
         );
     }
+
+    /**
+     * Partially updates an agent-scoped connector using JSON Merge Patch
+     * (RFC 7386). `type` is immutable.
+     * **Future scope**:  not yet implemented; the server returns `501`.
+     *
+     * @param {Corti.CommonAgentIdValue} agentId - Agent identifier (prefixed UUIDv7).
+     * @param {Corti.CommonConnectorIdValue} agentConnectorId - Agent-scoped connector identifier (prefixed UUIDv7).
+     * @param {Corti.agentic.ConnectorsPatchRequest} request
+     * @param {ConnectorsClient.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link Corti.BadRequestError}
+     * @throws {@link Corti.UnauthorizedError}
+     * @throws {@link Corti.NotFoundError}
+     * @throws {@link Corti.NotImplementedError}
+     *
+     * @example
+     *     await client.agentic.connectors.update("agt.0192f4c8-2c5a-7b3e-9f1a-3c8d6e2b7a40", "con.0192f4c8-7baf-7083-a46f-81d2bd70cf95", {
+     *         enabled: false
+     *     })
+     */
+    public update(
+        agentId: Corti.CommonAgentIdValue,
+        agentConnectorId: Corti.CommonConnectorIdValue,
+        request: Corti.agentic.ConnectorsPatchRequest = {},
+        requestOptions?: ConnectorsClient.RequestOptions,
+    ): core.HttpResponsePromise<Corti.CommonConnectorResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__update(agentId, agentConnectorId, request, requestOptions));
+    }
+
+    private async __update(
+        agentId: Corti.CommonAgentIdValue,
+        agentConnectorId: Corti.CommonConnectorIdValue,
+        request: Corti.agentic.ConnectorsPatchRequest = {},
+        requestOptions?: ConnectorsClient.RequestOptions,
+    ): Promise<core.WithRawResponse<Corti.CommonConnectorResponse>> {
+        const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
+        const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+            _authRequest.headers,
+            this._options?.headers,
+            mergeOnlyDefinedHeaders({ "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName }),
+            requestOptions?.headers,
+        );
+        const _response = await core.fetcher({
+            url: core.url.join(
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)).agents,
+                `v2/agentic/agents/${core.url.encodePathParam(serializers.CommonAgentIdValue.jsonOrThrow(agentId, { omitUndefined: true }))}/connectors/${core.url.encodePathParam(serializers.CommonConnectorIdValue.jsonOrThrow(agentConnectorId, { omitUndefined: true }))}`,
+            ),
+            method: "PATCH",
+            headers: _headers,
+            contentType: "application/merge-patch+json",
+            queryParameters: requestOptions?.queryParams,
+            requestType: "json",
+            body: serializers.agentic.ConnectorsPatchRequest.jsonOrThrow(request, {
+                unrecognizedObjectKeys: "strip",
+                omitUndefined: true,
+            }),
+            timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
+            maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
+            abortSignal: requestOptions?.abortSignal,
+            fetchFn: this._options?.fetch,
+            logging: this._options.logging,
+        });
+        if (_response.ok) {
+            return {
+                data: serializers.CommonConnectorResponse.parseOrThrow(_response.body, {
+                    unrecognizedObjectKeys: "passthrough",
+                    allowUnrecognizedUnionMembers: true,
+                    allowUnrecognizedEnumValues: true,
+                    skipValidation: true,
+                    breadcrumbsPrefix: ["response"],
+                }),
+                rawResponse: _response.rawResponse,
+            };
+        }
+
+        if (_response.error.reason === "status-code") {
+            switch (_response.error.statusCode) {
+                case 400:
+                    throw new Corti.BadRequestError(_response.error.body, _response.rawResponse);
+                case 401:
+                    throw new Corti.UnauthorizedError(_response.error.body, _response.rawResponse);
+                case 404:
+                    throw new Corti.NotFoundError(_response.error.body, _response.rawResponse);
+                case 501:
+                    throw new Corti.NotImplementedError(
+                        serializers.CommonErrorResponse.parseOrThrow(_response.error.body, {
+                            unrecognizedObjectKeys: "passthrough",
+                            allowUnrecognizedUnionMembers: true,
+                            allowUnrecognizedEnumValues: true,
+                            skipValidation: true,
+                            breadcrumbsPrefix: ["response"],
+                        }),
+                        _response.rawResponse,
+                    );
+                default:
+                    throw new errors.CortiError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                        rawResponse: _response.rawResponse,
+                    });
+            }
+        }
+
+        return handleNonStatusCodeError(
+            _response.error,
+            _response.rawResponse,
+            "PATCH",
+            "/v2/agentic/agents/{agentId}/connectors/{agentConnectorId}",
+        );
+    }
 }

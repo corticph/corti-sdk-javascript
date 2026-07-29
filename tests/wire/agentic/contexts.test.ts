@@ -6,6 +6,90 @@ import { mockServerPool } from "../../mock-server/MockServerPool";
 import { mockOAuth } from "../mockAuth";
 
 describe("ContextsClient", () => {
+    test("list (1)", async () => {
+        const server = mockServerPool.createServer();
+        mockOAuth(server);
+
+        const client = new CortiClient({
+            maxRetries: 0,
+            clientId: "client_id",
+            clientSecret: "client_secret",
+            tenantName: "test",
+            environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
+        });
+
+        const rawResponseBody = {
+            contexts: [
+                {
+                    id: "ctx.0192f4c8-3d6b-7c4f-a02b-4d9e7f3c8b51",
+                    agentId: "agt.0192f4c8-2c5a-7b3e-9f1a-3c8d6e2b7a40",
+                    taskCount: 1,
+                    createdAt: "2024-01-15T09:30:00Z",
+                    updatedAt: "2024-01-15T09:30:00Z",
+                    expiresAt: "2024-01-15T09:30:00Z",
+                },
+            ],
+            nextPageToken: "nextPageToken",
+            totalSize: 42,
+        };
+
+        server
+            .mockEndpoint({ once: false })
+            .get("/v2/agentic/contexts")
+            .respondWith()
+            .statusCode(200)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        const expected = {
+            contexts: [
+                {
+                    id: "ctx.0192f4c8-3d6b-7c4f-a02b-4d9e7f3c8b51",
+                    agentId: "agt.0192f4c8-2c5a-7b3e-9f1a-3c8d6e2b7a40",
+                    taskCount: 1,
+                    createdAt: new Date("2024-01-15T09:30:00.000Z"),
+                    updatedAt: new Date("2024-01-15T09:30:00.000Z"),
+                    expiresAt: new Date("2024-01-15T09:30:00.000Z"),
+                },
+            ],
+            nextPageToken: "nextPageToken",
+            totalSize: 42,
+        };
+        const page = await client.agentic.contexts.list();
+
+        expect(expected.contexts).toEqual(page.data);
+        expect(page.hasNextPage()).toBe(true);
+        const nextPage = await page.getNextPage();
+        expect(expected.contexts).toEqual(nextPage.data);
+    });
+
+    test("list (2)", async () => {
+        const server = mockServerPool.createServer();
+        mockOAuth(server);
+
+        const client = new CortiClient({
+            maxRetries: 0,
+            clientId: "client_id",
+            clientSecret: "client_secret",
+            tenantName: "test",
+            environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
+        });
+
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .get("/v2/agentic/contexts")
+            .respondWith()
+            .statusCode(401)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.agentic.contexts.list();
+        }).rejects.toThrow(Corti.UnauthorizedError);
+    });
+
     test("get (1)", async () => {
         const server = mockServerPool.createServer();
         mockOAuth(server);

@@ -29,6 +29,97 @@ export class ContextsClient {
     }
 
     /**
+     * Lists contexts matching the filters.
+     * **Future scope**: not yet implemented; the server currently returns an empty page and ignores all parameters.
+     *
+     * @param {Corti.agentic.ListContextsRequest} request
+     * @param {ContextsClient.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link Corti.UnauthorizedError}
+     *
+     * @example
+     *     await client.agentic.contexts.list()
+     */
+    public async list(
+        request: Corti.agentic.ListContextsRequest = {},
+        requestOptions?: ContextsClient.RequestOptions,
+    ): Promise<core.Page<Corti.Contexts, Corti.ContextsListResponse>> {
+        const list = core.HttpResponsePromise.interceptFunction(
+            async (
+                request: Corti.agentic.ListContextsRequest,
+            ): Promise<core.WithRawResponse<Corti.ContextsListResponse>> => {
+                const { agentId, from: from_, to, pageSize, pageToken } = request;
+                const _queryParams: Record<string, unknown> = {
+                    agentId,
+                    from: from_ != null ? from_?.toISOString() : undefined,
+                    to: to != null ? to?.toISOString() : undefined,
+                    pageSize,
+                    pageToken,
+                };
+                const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
+                const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+                    _authRequest.headers,
+                    this._options?.headers,
+                    mergeOnlyDefinedHeaders({ "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName }),
+                    requestOptions?.headers,
+                );
+                const _response = await core.fetcher({
+                    url: core.url.join(
+                        (await core.Supplier.get(this._options.baseUrl)) ??
+                            (await core.Supplier.get(this._options.environment)).agents,
+                        "v2/agentic/contexts",
+                    ),
+                    method: "GET",
+                    headers: _headers,
+                    queryParameters: { ..._queryParams, ...requestOptions?.queryParams },
+                    timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
+                    maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
+                    abortSignal: requestOptions?.abortSignal,
+                    fetchFn: this._options?.fetch,
+                    logging: this._options.logging,
+                });
+                if (_response.ok) {
+                    return {
+                        data: serializers.ContextsListResponse.parseOrThrow(_response.body, {
+                            unrecognizedObjectKeys: "passthrough",
+                            allowUnrecognizedUnionMembers: true,
+                            allowUnrecognizedEnumValues: true,
+                            skipValidation: true,
+                            breadcrumbsPrefix: ["response"],
+                        }),
+                        rawResponse: _response.rawResponse,
+                    };
+                }
+                if (_response.error.reason === "status-code") {
+                    switch (_response.error.statusCode) {
+                        case 401:
+                            throw new Corti.UnauthorizedError(_response.error.body, _response.rawResponse);
+                        default:
+                            throw new errors.CortiError({
+                                statusCode: _response.error.statusCode,
+                                body: _response.error.body,
+                                rawResponse: _response.rawResponse,
+                            });
+                    }
+                }
+                return handleNonStatusCodeError(_response.error, _response.rawResponse, "GET", "/v2/agentic/contexts");
+            },
+        );
+        const dataWithRawResponse = await list(request).withRawResponse();
+        return new core.Page<Corti.Contexts, Corti.ContextsListResponse>({
+            response: dataWithRawResponse.data,
+            rawResponse: dataWithRawResponse.rawResponse,
+            hasNextPage: (response) =>
+                response?.nextPageToken != null &&
+                !(typeof response?.nextPageToken === "string" && response?.nextPageToken === ""),
+            getItems: (response) => response?.contexts ?? [],
+            loadPage: (response) => {
+                return list(core.setObjectProperty(request, "pageToken", response?.nextPageToken));
+            },
+        });
+    }
+
+    /**
      * Returns the context's metadata together with its `tasks`, oldest first.
      * Each task carries its full message `history`; the user's prompt for a
      * task is the `ROLE_USER` message within that task's history (there is no

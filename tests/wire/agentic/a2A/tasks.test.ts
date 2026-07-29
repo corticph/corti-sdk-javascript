@@ -604,7 +604,7 @@ describe("TasksClient", () => {
         }).rejects.toThrow(Corti.ConflictError);
     });
 
-    test("subscribe", async () => {
+    test("subscribe (1)", async () => {
         const server = mockServerPool.createServer();
         mockOAuth(server);
 
@@ -616,20 +616,91 @@ describe("TasksClient", () => {
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
+        const rawResponseBody =
+            'event: \ndata: {"data":"{\\"statusUpdate\\":{\\"taskId\\":\\"task.0192f4c8-4e7c-7d50-b13c-5eaf8a4d9c62\\",\\"contextId\\":\\"ctx.0192f4c8-3d6b-7c4f-a02b-4d9e7f3c8b51\\",\\"status\\":{\\"state\\":\\"TASK_STATE_COMPLETED\\",\\"timestamp\\":\\"2026-05-19T12:00:01Z\\"}}}","event":"event","id":"task.0192f4c8-4e7c-7d50-b13c-5eaf8a4d9c62","retry":1}\n\n';
+
         server
             .mockEndpoint()
-            .get(
+            .post(
                 "/v2/agentic/agents/agt.0192f4c8-2c5a-7b3e-9f1a-3c8d6e2b7a40/a2a/tasks/task.0192f4c8-4e7c-7d50-b13c-5eaf8a4d9c62:subscribe",
             )
             .header("A2A-Version", "1.0")
             .respondWith()
             .statusCode(200)
+            .sseBody(rawResponseBody)
             .build();
 
         const response = await client.agentic.a2A.tasks.subscribe(
             "agt.0192f4c8-2c5a-7b3e-9f1a-3c8d6e2b7a40",
             "task.0192f4c8-4e7c-7d50-b13c-5eaf8a4d9c62",
         );
-        expect(response).toEqual(undefined);
+        const events: unknown[] = [];
+        for await (const event of response) {
+            events.push(event);
+        }
+        expect(events).toEqual([
+            {
+                data: '{"statusUpdate":{"taskId":"task.0192f4c8-4e7c-7d50-b13c-5eaf8a4d9c62","contextId":"ctx.0192f4c8-3d6b-7c4f-a02b-4d9e7f3c8b51","status":{"state":"TASK_STATE_COMPLETED","timestamp":"2026-05-19T12:00:01Z"}}}',
+                event: "event",
+                id: "task.0192f4c8-4e7c-7d50-b13c-5eaf8a4d9c62",
+                retry: 1,
+            },
+        ]);
+    });
+
+    test("subscribe (2)", async () => {
+        const server = mockServerPool.createServer();
+        mockOAuth(server);
+
+        const client = new CortiClient({
+            maxRetries: 0,
+            clientId: "client_id",
+            clientSecret: "client_secret",
+            tenantName: "test",
+            environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
+        });
+
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .post("/v2/agentic/agents/agentId/a2a/tasks/taskId:subscribe")
+            .header("A2A-Version", "1.0")
+            .respondWith()
+            .statusCode(401)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.agentic.a2A.tasks.subscribe("agentId", "taskId");
+        }).rejects.toThrow(Corti.UnauthorizedError);
+    });
+
+    test("subscribe (3)", async () => {
+        const server = mockServerPool.createServer();
+        mockOAuth(server);
+
+        const client = new CortiClient({
+            maxRetries: 0,
+            clientId: "client_id",
+            clientSecret: "client_secret",
+            tenantName: "test",
+            environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
+        });
+
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .post("/v2/agentic/agents/agentId/a2a/tasks/taskId:subscribe")
+            .header("A2A-Version", "1.0")
+            .respondWith()
+            .statusCode(404)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.agentic.a2A.tasks.subscribe("agentId", "taskId");
+        }).rejects.toThrow(Corti.NotFoundError);
     });
 });
