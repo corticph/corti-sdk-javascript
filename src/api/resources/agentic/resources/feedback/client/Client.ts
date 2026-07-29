@@ -234,14 +234,9 @@ export class FeedbackClient {
     }
 
     /**
-     * Soft-deletes every feedback resource the authenticated user submitted for the task. The task must exist, belong to the supplied context, and belong to the authenticated customer. Idempotent: deleting when there is no feedback returns `204`.
-     *
      * @param {Corti.CommonContextIdValue} contextId - Context identifier (prefixed UUIDv7).
      * @param {Corti.CommonTaskIdValue} taskId - Task identifier (prefixed UUIDv7).
      * @param {FeedbackClient.RequestOptions} requestOptions - Request-specific configuration.
-     *
-     * @throws {@link Corti.UnauthorizedError}
-     * @throws {@link Corti.NotFoundError}
      *
      * @example
      *     await client.agentic.feedback.delete("ctx.0192f4c8-3d6b-7c4f-a02b-4d9e7f3c8b51", "task.0192f4c8-4e7c-7d50-b13c-5eaf8a4d9c62")
@@ -286,18 +281,11 @@ export class FeedbackClient {
         }
 
         if (_response.error.reason === "status-code") {
-            switch (_response.error.statusCode) {
-                case 401:
-                    throw new Corti.UnauthorizedError(_response.error.body, _response.rawResponse);
-                case 404:
-                    throw new Corti.NotFoundError(_response.error.body, _response.rawResponse);
-                default:
-                    throw new errors.CortiError({
-                        statusCode: _response.error.statusCode,
-                        body: _response.error.body,
-                        rawResponse: _response.rawResponse,
-                    });
-            }
+            throw new errors.CortiError({
+                statusCode: _response.error.statusCode,
+                body: _response.error.body,
+                rawResponse: _response.rawResponse,
+            });
         }
 
         return handleNonStatusCodeError(

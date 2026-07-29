@@ -426,7 +426,7 @@ describe("FeedbackClient", () => {
         }).rejects.toThrow(Corti.UnprocessableEntityError);
     });
 
-    test("delete (1)", async () => {
+    test("delete", async () => {
         const server = mockServerPool.createServer();
         mockOAuth(server);
 
@@ -452,59 +452,5 @@ describe("FeedbackClient", () => {
             "task.0192f4c8-4e7c-7d50-b13c-5eaf8a4d9c62",
         );
         expect(response).toEqual(undefined);
-    });
-
-    test("delete (2)", async () => {
-        const server = mockServerPool.createServer();
-        mockOAuth(server);
-
-        const client = new CortiClient({
-            maxRetries: 0,
-            clientId: "client_id",
-            clientSecret: "client_secret",
-            tenantName: "test",
-            environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
-        });
-
-        const rawResponseBody = { key: "value" };
-
-        server
-            .mockEndpoint()
-            .delete("/v2/agentic/contexts/contextId/tasks/taskId/feedback")
-            .respondWith()
-            .statusCode(401)
-            .jsonBody(rawResponseBody)
-            .build();
-
-        await expect(async () => {
-            return await client.agentic.feedback.delete("contextId", "taskId");
-        }).rejects.toThrow(Corti.UnauthorizedError);
-    });
-
-    test("delete (3)", async () => {
-        const server = mockServerPool.createServer();
-        mockOAuth(server);
-
-        const client = new CortiClient({
-            maxRetries: 0,
-            clientId: "client_id",
-            clientSecret: "client_secret",
-            tenantName: "test",
-            environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
-        });
-
-        const rawResponseBody = { key: "value" };
-
-        server
-            .mockEndpoint()
-            .delete("/v2/agentic/contexts/contextId/tasks/taskId/feedback")
-            .respondWith()
-            .statusCode(404)
-            .jsonBody(rawResponseBody)
-            .build();
-
-        await expect(async () => {
-            return await client.agentic.feedback.delete("contextId", "taskId");
-        }).rejects.toThrow(Corti.NotFoundError);
     });
 });
