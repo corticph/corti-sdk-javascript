@@ -87,6 +87,7 @@ export class CortiClient extends BaseCortiClient {
         }));
     }
 
+    /** @deprecated */
     public override get agents(): CustomAgents {
         return (this._agents ??= new CustomAgents(this._options));
     }
