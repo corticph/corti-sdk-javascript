@@ -113,13 +113,11 @@ export class CortiAuth extends AuthClient {
         const { environment, tenantName, ...rest } = options;
         super({
             ...rest,
-            // @ts-expect-error it suppose to be required, but we need to filter out header without rewriting too much
-            tenantName: null,
             environment: getEnvironment(environment),
             token: options.token ?? (() => ""),
         });
 
-        this._tenantName = tenantName;
+        this._tenantName = async () => (await core.Supplier.get(tenantName)) ?? "";
         this._options.authProvider = new core.NoOpAuthProvider();
 
         /** Stripping Fern headers to bypass CORS on authentication requests */
