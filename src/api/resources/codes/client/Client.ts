@@ -36,7 +36,6 @@ export class CodesClient {
      *
      * @example
      *     await client.codes.predict({
-     *         tenantName: "base",
      *         system: ["icd10cm-outpatient", "cpt"],
      *         context: [{
      *                 type: "text",
@@ -46,7 +45,6 @@ export class CodesClient {
      *
      * @example
      *     await client.codes.predict({
-     *         tenantName: "base",
      *         system: ["icd10cm-outpatient"],
      *         context: [{
      *                 type: "text",
@@ -69,12 +67,11 @@ export class CodesClient {
         request: Corti.CodesGeneralPredictRequest,
         requestOptions?: CodesClient.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.CodesGeneralResponse>> {
-        const { tenantName, ..._body } = request;
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
             this._options?.headers,
-            mergeOnlyDefinedHeaders({ "Tenant-Name": tenantName }),
+            mergeOnlyDefinedHeaders({ "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName }),
             requestOptions?.headers,
         );
         const _response = await core.fetcher({
@@ -88,7 +85,7 @@ export class CodesClient {
             contentType: "application/json",
             queryParameters: requestOptions?.queryParams,
             requestType: "json",
-            body: serializers.CodesGeneralPredictRequest.jsonOrThrow(_body, {
+            body: serializers.CodesGeneralPredictRequest.jsonOrThrow(request, {
                 unrecognizedObjectKeys: "strip",
                 omitUndefined: true,
             }),

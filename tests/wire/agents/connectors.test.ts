@@ -14,6 +14,7 @@ describe("ConnectorsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
@@ -61,6 +62,7 @@ describe("ConnectorsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
@@ -87,6 +89,7 @@ describe("ConnectorsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
@@ -113,6 +116,7 @@ describe("ConnectorsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
         const rawRequestBody = { type: "registry", name: "@dedalus/coding-expert" };
@@ -156,6 +160,7 @@ describe("ConnectorsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
         const rawRequestBody = { type: "registry", name: "name" };
@@ -186,6 +191,7 @@ describe("ConnectorsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
         const rawRequestBody = { type: "registry", name: "name" };
@@ -216,6 +222,7 @@ describe("ConnectorsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
         const rawRequestBody = { type: "registry", name: "name" };
@@ -246,6 +253,7 @@ describe("ConnectorsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
         const rawRequestBody = { type: "registry", name: "name" };
@@ -276,6 +284,7 @@ describe("ConnectorsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
@@ -320,6 +329,7 @@ describe("ConnectorsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
@@ -346,6 +356,7 @@ describe("ConnectorsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
@@ -372,6 +383,7 @@ describe("ConnectorsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
@@ -399,6 +411,7 @@ describe("ConnectorsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
@@ -425,6 +438,7 @@ describe("ConnectorsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 

@@ -14,6 +14,7 @@ describe("DocumentsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
@@ -45,15 +46,12 @@ describe("DocumentsClient", () => {
         server
             .mockEndpoint()
             .get("/interactions/f47ac10b-58cc-4372-a567-0e02b2c3d479/documents/")
-            .header("Tenant-Name", "base")
             .respondWith()
             .statusCode(200)
             .jsonBody(rawResponseBody)
             .build();
 
-        const response = await client.documents.list("f47ac10b-58cc-4372-a567-0e02b2c3d479", {
-            tenantName: "base",
-        });
+        const response = await client.documents.list("f47ac10b-58cc-4372-a567-0e02b2c3d479");
         expect(response).toEqual({
             data: [
                 {
@@ -90,6 +88,7 @@ describe("DocumentsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
@@ -98,16 +97,13 @@ describe("DocumentsClient", () => {
         server
             .mockEndpoint()
             .get("/interactions/id/documents/")
-            .header("Tenant-Name", "tenantName")
             .respondWith()
             .statusCode(400)
             .jsonBody(rawResponseBody)
             .build();
 
         await expect(async () => {
-            return await client.documents.list("id", {
-                tenantName: "tenantName",
-            });
+            return await client.documents.list("id");
         }).rejects.toThrow(Corti.BadRequestError);
     });
 
@@ -119,6 +115,7 @@ describe("DocumentsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
@@ -127,16 +124,13 @@ describe("DocumentsClient", () => {
         server
             .mockEndpoint()
             .get("/interactions/id/documents/")
-            .header("Tenant-Name", "tenantName")
             .respondWith()
             .statusCode(403)
             .jsonBody(rawResponseBody)
             .build();
 
         await expect(async () => {
-            return await client.documents.list("id", {
-                tenantName: "tenantName",
-            });
+            return await client.documents.list("id");
         }).rejects.toThrow(Corti.ForbiddenError);
     });
 
@@ -148,6 +142,7 @@ describe("DocumentsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
@@ -156,16 +151,13 @@ describe("DocumentsClient", () => {
         server
             .mockEndpoint()
             .get("/interactions/id/documents/")
-            .header("Tenant-Name", "tenantName")
             .respondWith()
             .statusCode(500)
             .jsonBody(rawResponseBody)
             .build();
 
         await expect(async () => {
-            return await client.documents.list("id", {
-                tenantName: "tenantName",
-            });
+            return await client.documents.list("id");
         }).rejects.toThrow(Corti.InternalServerError);
     });
 
@@ -177,6 +169,7 @@ describe("DocumentsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
@@ -185,16 +178,13 @@ describe("DocumentsClient", () => {
         server
             .mockEndpoint()
             .get("/interactions/id/documents/")
-            .header("Tenant-Name", "tenantName")
             .respondWith()
             .statusCode(504)
             .jsonBody(rawResponseBody)
             .build();
 
         await expect(async () => {
-            return await client.documents.list("id", {
-                tenantName: "tenantName",
-            });
+            return await client.documents.list("id");
         }).rejects.toThrow(Corti.GatewayTimeoutError);
     });
 
@@ -206,6 +196,7 @@ describe("DocumentsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
         const rawRequestBody = {
@@ -237,7 +228,6 @@ describe("DocumentsClient", () => {
         server
             .mockEndpoint()
             .post("/interactions/f47ac10b-58cc-4372-a567-0e02b2c3d479/documents/")
-            .header("Tenant-Name", "base")
             .jsonBody(rawRequestBody)
             .respondWith()
             .statusCode(200)
@@ -245,21 +235,18 @@ describe("DocumentsClient", () => {
             .build();
 
         const response = await client.documents.create("f47ac10b-58cc-4372-a567-0e02b2c3d479", {
-            tenantName: "base",
-            body: {
-                context: [
-                    {
-                        type: "facts",
-                        data: [
-                            {
-                                text: "text",
-                            },
-                        ],
-                    },
-                ],
-                templateKey: "templateKey",
-                outputLanguage: "outputLanguage",
-            },
+            context: [
+                {
+                    type: "facts",
+                    data: [
+                        {
+                            text: "text",
+                        },
+                    ],
+                },
+            ],
+            templateKey: "templateKey",
+            outputLanguage: "outputLanguage",
         });
         expect(response).toEqual({
             id: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
@@ -293,6 +280,7 @@ describe("DocumentsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
         const rawRequestBody = {
@@ -308,7 +296,6 @@ describe("DocumentsClient", () => {
         server
             .mockEndpoint()
             .post("/interactions/id/documents/")
-            .header("Tenant-Name", "tenantName")
             .jsonBody(rawRequestBody)
             .respondWith()
             .statusCode(400)
@@ -317,35 +304,32 @@ describe("DocumentsClient", () => {
 
         await expect(async () => {
             return await client.documents.create("id", {
-                tenantName: "tenantName",
-                body: {
-                    context: [
-                        {
-                            type: "facts",
-                            data: [
-                                {
-                                    text: "text",
-                                },
-                                {
-                                    text: "text",
-                                },
-                            ],
-                        },
-                        {
-                            type: "facts",
-                            data: [
-                                {
-                                    text: "text",
-                                },
-                                {
-                                    text: "text",
-                                },
-                            ],
-                        },
-                    ],
-                    templateKey: "templateKey",
-                    outputLanguage: "outputLanguage",
-                },
+                context: [
+                    {
+                        type: "facts",
+                        data: [
+                            {
+                                text: "text",
+                            },
+                            {
+                                text: "text",
+                            },
+                        ],
+                    },
+                    {
+                        type: "facts",
+                        data: [
+                            {
+                                text: "text",
+                            },
+                            {
+                                text: "text",
+                            },
+                        ],
+                    },
+                ],
+                templateKey: "templateKey",
+                outputLanguage: "outputLanguage",
             });
         }).rejects.toThrow(Corti.BadRequestError);
     });
@@ -358,6 +342,7 @@ describe("DocumentsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
         const rawRequestBody = {
@@ -373,7 +358,6 @@ describe("DocumentsClient", () => {
         server
             .mockEndpoint()
             .post("/interactions/id/documents/")
-            .header("Tenant-Name", "tenantName")
             .jsonBody(rawRequestBody)
             .respondWith()
             .statusCode(403)
@@ -382,35 +366,32 @@ describe("DocumentsClient", () => {
 
         await expect(async () => {
             return await client.documents.create("id", {
-                tenantName: "tenantName",
-                body: {
-                    context: [
-                        {
-                            type: "facts",
-                            data: [
-                                {
-                                    text: "text",
-                                },
-                                {
-                                    text: "text",
-                                },
-                            ],
-                        },
-                        {
-                            type: "facts",
-                            data: [
-                                {
-                                    text: "text",
-                                },
-                                {
-                                    text: "text",
-                                },
-                            ],
-                        },
-                    ],
-                    templateKey: "templateKey",
-                    outputLanguage: "outputLanguage",
-                },
+                context: [
+                    {
+                        type: "facts",
+                        data: [
+                            {
+                                text: "text",
+                            },
+                            {
+                                text: "text",
+                            },
+                        ],
+                    },
+                    {
+                        type: "facts",
+                        data: [
+                            {
+                                text: "text",
+                            },
+                            {
+                                text: "text",
+                            },
+                        ],
+                    },
+                ],
+                templateKey: "templateKey",
+                outputLanguage: "outputLanguage",
             });
         }).rejects.toThrow(Corti.ForbiddenError);
     });
@@ -423,6 +404,7 @@ describe("DocumentsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
         const rawRequestBody = {
@@ -438,7 +420,6 @@ describe("DocumentsClient", () => {
         server
             .mockEndpoint()
             .post("/interactions/id/documents/")
-            .header("Tenant-Name", "tenantName")
             .jsonBody(rawRequestBody)
             .respondWith()
             .statusCode(500)
@@ -447,35 +428,32 @@ describe("DocumentsClient", () => {
 
         await expect(async () => {
             return await client.documents.create("id", {
-                tenantName: "tenantName",
-                body: {
-                    context: [
-                        {
-                            type: "facts",
-                            data: [
-                                {
-                                    text: "text",
-                                },
-                                {
-                                    text: "text",
-                                },
-                            ],
-                        },
-                        {
-                            type: "facts",
-                            data: [
-                                {
-                                    text: "text",
-                                },
-                                {
-                                    text: "text",
-                                },
-                            ],
-                        },
-                    ],
-                    templateKey: "templateKey",
-                    outputLanguage: "outputLanguage",
-                },
+                context: [
+                    {
+                        type: "facts",
+                        data: [
+                            {
+                                text: "text",
+                            },
+                            {
+                                text: "text",
+                            },
+                        ],
+                    },
+                    {
+                        type: "facts",
+                        data: [
+                            {
+                                text: "text",
+                            },
+                            {
+                                text: "text",
+                            },
+                        ],
+                    },
+                ],
+                templateKey: "templateKey",
+                outputLanguage: "outputLanguage",
             });
         }).rejects.toThrow(Corti.InternalServerError);
     });
@@ -488,6 +466,7 @@ describe("DocumentsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
         const rawRequestBody = {
@@ -503,7 +482,6 @@ describe("DocumentsClient", () => {
         server
             .mockEndpoint()
             .post("/interactions/id/documents/")
-            .header("Tenant-Name", "tenantName")
             .jsonBody(rawRequestBody)
             .respondWith()
             .statusCode(504)
@@ -512,35 +490,32 @@ describe("DocumentsClient", () => {
 
         await expect(async () => {
             return await client.documents.create("id", {
-                tenantName: "tenantName",
-                body: {
-                    context: [
-                        {
-                            type: "facts",
-                            data: [
-                                {
-                                    text: "text",
-                                },
-                                {
-                                    text: "text",
-                                },
-                            ],
-                        },
-                        {
-                            type: "facts",
-                            data: [
-                                {
-                                    text: "text",
-                                },
-                                {
-                                    text: "text",
-                                },
-                            ],
-                        },
-                    ],
-                    templateKey: "templateKey",
-                    outputLanguage: "outputLanguage",
-                },
+                context: [
+                    {
+                        type: "facts",
+                        data: [
+                            {
+                                text: "text",
+                            },
+                            {
+                                text: "text",
+                            },
+                        ],
+                    },
+                    {
+                        type: "facts",
+                        data: [
+                            {
+                                text: "text",
+                            },
+                            {
+                                text: "text",
+                            },
+                        ],
+                    },
+                ],
+                templateKey: "templateKey",
+                outputLanguage: "outputLanguage",
             });
         }).rejects.toThrow(Corti.GatewayTimeoutError);
     });
@@ -553,6 +528,7 @@ describe("DocumentsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
@@ -580,7 +556,6 @@ describe("DocumentsClient", () => {
         server
             .mockEndpoint()
             .get("/interactions/f47ac10b-58cc-4372-a567-0e02b2c3d479/documents/f47ac10b-58cc-4372-a567-0e02b2c3d479")
-            .header("Tenant-Name", "base")
             .respondWith()
             .statusCode(200)
             .jsonBody(rawResponseBody)
@@ -589,9 +564,6 @@ describe("DocumentsClient", () => {
         const response = await client.documents.get(
             "f47ac10b-58cc-4372-a567-0e02b2c3d479",
             "f47ac10b-58cc-4372-a567-0e02b2c3d479",
-            {
-                tenantName: "base",
-            },
         );
         expect(response).toEqual({
             id: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
@@ -625,6 +597,7 @@ describe("DocumentsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
@@ -633,16 +606,13 @@ describe("DocumentsClient", () => {
         server
             .mockEndpoint()
             .get("/interactions/id/documents/documentId")
-            .header("Tenant-Name", "tenantName")
             .respondWith()
             .statusCode(400)
             .jsonBody(rawResponseBody)
             .build();
 
         await expect(async () => {
-            return await client.documents.get("id", "documentId", {
-                tenantName: "tenantName",
-            });
+            return await client.documents.get("id", "documentId");
         }).rejects.toThrow(Corti.BadRequestError);
     });
 
@@ -654,6 +624,7 @@ describe("DocumentsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
@@ -662,16 +633,13 @@ describe("DocumentsClient", () => {
         server
             .mockEndpoint()
             .get("/interactions/id/documents/documentId")
-            .header("Tenant-Name", "tenantName")
             .respondWith()
             .statusCode(403)
             .jsonBody(rawResponseBody)
             .build();
 
         await expect(async () => {
-            return await client.documents.get("id", "documentId", {
-                tenantName: "tenantName",
-            });
+            return await client.documents.get("id", "documentId");
         }).rejects.toThrow(Corti.ForbiddenError);
     });
 
@@ -683,6 +651,7 @@ describe("DocumentsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
@@ -691,16 +660,13 @@ describe("DocumentsClient", () => {
         server
             .mockEndpoint()
             .get("/interactions/id/documents/documentId")
-            .header("Tenant-Name", "tenantName")
             .respondWith()
             .statusCode(500)
             .jsonBody(rawResponseBody)
             .build();
 
         await expect(async () => {
-            return await client.documents.get("id", "documentId", {
-                tenantName: "tenantName",
-            });
+            return await client.documents.get("id", "documentId");
         }).rejects.toThrow(Corti.InternalServerError);
     });
 
@@ -712,6 +678,7 @@ describe("DocumentsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
@@ -720,16 +687,13 @@ describe("DocumentsClient", () => {
         server
             .mockEndpoint()
             .get("/interactions/id/documents/documentId")
-            .header("Tenant-Name", "tenantName")
             .respondWith()
             .statusCode(504)
             .jsonBody(rawResponseBody)
             .build();
 
         await expect(async () => {
-            return await client.documents.get("id", "documentId", {
-                tenantName: "tenantName",
-            });
+            return await client.documents.get("id", "documentId");
         }).rejects.toThrow(Corti.GatewayTimeoutError);
     });
 
@@ -741,13 +705,13 @@ describe("DocumentsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
         server
             .mockEndpoint()
             .delete("/interactions/f47ac10b-58cc-4372-a567-0e02b2c3d479/documents/f47ac10b-58cc-4372-a567-0e02b2c3d479")
-            .header("Tenant-Name", "base")
             .respondWith()
             .statusCode(200)
             .build();
@@ -755,9 +719,6 @@ describe("DocumentsClient", () => {
         const response = await client.documents.delete(
             "f47ac10b-58cc-4372-a567-0e02b2c3d479",
             "f47ac10b-58cc-4372-a567-0e02b2c3d479",
-            {
-                tenantName: "base",
-            },
         );
         expect(response).toEqual(undefined);
     });
@@ -770,6 +731,7 @@ describe("DocumentsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
@@ -778,16 +740,13 @@ describe("DocumentsClient", () => {
         server
             .mockEndpoint()
             .delete("/interactions/id/documents/documentId")
-            .header("Tenant-Name", "tenantName")
             .respondWith()
             .statusCode(403)
             .jsonBody(rawResponseBody)
             .build();
 
         await expect(async () => {
-            return await client.documents.delete("id", "documentId", {
-                tenantName: "tenantName",
-            });
+            return await client.documents.delete("id", "documentId");
         }).rejects.toThrow(Corti.ForbiddenError);
     });
 
@@ -799,6 +758,7 @@ describe("DocumentsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
@@ -807,16 +767,13 @@ describe("DocumentsClient", () => {
         server
             .mockEndpoint()
             .delete("/interactions/id/documents/documentId")
-            .header("Tenant-Name", "tenantName")
             .respondWith()
             .statusCode(404)
             .jsonBody(rawResponseBody)
             .build();
 
         await expect(async () => {
-            return await client.documents.delete("id", "documentId", {
-                tenantName: "tenantName",
-            });
+            return await client.documents.delete("id", "documentId");
         }).rejects.toThrow(Corti.NotFoundError);
     });
 
@@ -828,6 +785,7 @@ describe("DocumentsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
@@ -836,16 +794,13 @@ describe("DocumentsClient", () => {
         server
             .mockEndpoint()
             .delete("/interactions/id/documents/documentId")
-            .header("Tenant-Name", "tenantName")
             .respondWith()
             .statusCode(500)
             .jsonBody(rawResponseBody)
             .build();
 
         await expect(async () => {
-            return await client.documents.delete("id", "documentId", {
-                tenantName: "tenantName",
-            });
+            return await client.documents.delete("id", "documentId");
         }).rejects.toThrow(Corti.InternalServerError);
     });
 
@@ -857,6 +812,7 @@ describe("DocumentsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
@@ -865,16 +821,13 @@ describe("DocumentsClient", () => {
         server
             .mockEndpoint()
             .delete("/interactions/id/documents/documentId")
-            .header("Tenant-Name", "tenantName")
             .respondWith()
             .statusCode(504)
             .jsonBody(rawResponseBody)
             .build();
 
         await expect(async () => {
-            return await client.documents.delete("id", "documentId", {
-                tenantName: "tenantName",
-            });
+            return await client.documents.delete("id", "documentId");
         }).rejects.toThrow(Corti.GatewayTimeoutError);
     });
 
@@ -886,6 +839,7 @@ describe("DocumentsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
         const rawRequestBody = {};
@@ -913,7 +867,6 @@ describe("DocumentsClient", () => {
         server
             .mockEndpoint()
             .patch("/interactions/f47ac10b-58cc-4372-a567-0e02b2c3d479/documents/f47ac10b-58cc-4372-a567-0e02b2c3d479")
-            .header("Tenant-Name", "base")
             .jsonBody(rawRequestBody)
             .respondWith()
             .statusCode(200)
@@ -923,9 +876,6 @@ describe("DocumentsClient", () => {
         const response = await client.documents.update(
             "f47ac10b-58cc-4372-a567-0e02b2c3d479",
             "f47ac10b-58cc-4372-a567-0e02b2c3d479",
-            {
-                tenantName: "base",
-            },
         );
         expect(response).toEqual({
             id: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
@@ -959,6 +909,7 @@ describe("DocumentsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
         const rawRequestBody = {};
@@ -967,7 +918,6 @@ describe("DocumentsClient", () => {
         server
             .mockEndpoint()
             .patch("/interactions/id/documents/documentId")
-            .header("Tenant-Name", "tenantName")
             .jsonBody(rawRequestBody)
             .respondWith()
             .statusCode(400)
@@ -975,9 +925,7 @@ describe("DocumentsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.documents.update("id", "documentId", {
-                tenantName: "tenantName",
-            });
+            return await client.documents.update("id", "documentId");
         }).rejects.toThrow(Corti.BadRequestError);
     });
 
@@ -989,6 +937,7 @@ describe("DocumentsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
         const rawRequestBody = {};
@@ -997,7 +946,6 @@ describe("DocumentsClient", () => {
         server
             .mockEndpoint()
             .patch("/interactions/id/documents/documentId")
-            .header("Tenant-Name", "tenantName")
             .jsonBody(rawRequestBody)
             .respondWith()
             .statusCode(403)
@@ -1005,9 +953,7 @@ describe("DocumentsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.documents.update("id", "documentId", {
-                tenantName: "tenantName",
-            });
+            return await client.documents.update("id", "documentId");
         }).rejects.toThrow(Corti.ForbiddenError);
     });
 
@@ -1019,6 +965,7 @@ describe("DocumentsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
         const rawRequestBody = {};
@@ -1027,7 +974,6 @@ describe("DocumentsClient", () => {
         server
             .mockEndpoint()
             .patch("/interactions/id/documents/documentId")
-            .header("Tenant-Name", "tenantName")
             .jsonBody(rawRequestBody)
             .respondWith()
             .statusCode(500)
@@ -1035,9 +981,7 @@ describe("DocumentsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.documents.update("id", "documentId", {
-                tenantName: "tenantName",
-            });
+            return await client.documents.update("id", "documentId");
         }).rejects.toThrow(Corti.InternalServerError);
     });
 
@@ -1049,6 +993,7 @@ describe("DocumentsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
         const rawRequestBody = {};
@@ -1057,7 +1002,6 @@ describe("DocumentsClient", () => {
         server
             .mockEndpoint()
             .patch("/interactions/id/documents/documentId")
-            .header("Tenant-Name", "tenantName")
             .jsonBody(rawRequestBody)
             .respondWith()
             .statusCode(504)
@@ -1065,9 +1009,7 @@ describe("DocumentsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.documents.update("id", "documentId", {
-                tenantName: "tenantName",
-            });
+            return await client.documents.update("id", "documentId");
         }).rejects.toThrow(Corti.GatewayTimeoutError);
     });
 
@@ -1079,6 +1021,7 @@ describe("DocumentsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
         const rawRequestBody = { outputLanguage: "outputLanguage", templateRef: { templateId: "templateId" } };
@@ -1099,7 +1042,6 @@ describe("DocumentsClient", () => {
         server
             .mockEndpoint()
             .post("/documents/")
-            .header("Tenant-Name", "base")
             .jsonBody(rawRequestBody)
             .respondWith()
             .statusCode(200)
@@ -1107,12 +1049,9 @@ describe("DocumentsClient", () => {
             .build();
 
         const response = await client.documents.generate({
-            tenantName: "base",
-            body: {
-                outputLanguage: "outputLanguage",
-                templateRef: {
-                    templateId: "templateId",
-                },
+            outputLanguage: "outputLanguage",
+            templateRef: {
+                templateId: "templateId",
             },
         });
         expect(response).toEqual({
@@ -1149,6 +1088,7 @@ describe("DocumentsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
         const rawRequestBody = { templateRef: { templateId: "templateId" }, outputLanguage: "outputLanguage" };
@@ -1157,7 +1097,6 @@ describe("DocumentsClient", () => {
         server
             .mockEndpoint()
             .post("/documents/")
-            .header("Tenant-Name", "tenantName")
             .jsonBody(rawRequestBody)
             .respondWith()
             .statusCode(400)
@@ -1166,13 +1105,10 @@ describe("DocumentsClient", () => {
 
         await expect(async () => {
             return await client.documents.generate({
-                tenantName: "tenantName",
-                body: {
-                    templateRef: {
-                        templateId: "templateId",
-                    },
-                    outputLanguage: "outputLanguage",
+                templateRef: {
+                    templateId: "templateId",
                 },
+                outputLanguage: "outputLanguage",
             });
         }).rejects.toThrow(Corti.BadRequestError);
     });
@@ -1185,6 +1121,7 @@ describe("DocumentsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
         const rawRequestBody = { templateRef: { templateId: "templateId" }, outputLanguage: "outputLanguage" };
@@ -1193,7 +1130,6 @@ describe("DocumentsClient", () => {
         server
             .mockEndpoint()
             .post("/documents/")
-            .header("Tenant-Name", "tenantName")
             .jsonBody(rawRequestBody)
             .respondWith()
             .statusCode(404)
@@ -1202,13 +1138,10 @@ describe("DocumentsClient", () => {
 
         await expect(async () => {
             return await client.documents.generate({
-                tenantName: "tenantName",
-                body: {
-                    templateRef: {
-                        templateId: "templateId",
-                    },
-                    outputLanguage: "outputLanguage",
+                templateRef: {
+                    templateId: "templateId",
                 },
+                outputLanguage: "outputLanguage",
             });
         }).rejects.toThrow(Corti.NotFoundError);
     });
@@ -1221,6 +1154,7 @@ describe("DocumentsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
         const rawRequestBody = { templateRef: { templateId: "templateId" }, outputLanguage: "outputLanguage" };
@@ -1229,7 +1163,6 @@ describe("DocumentsClient", () => {
         server
             .mockEndpoint()
             .post("/documents/")
-            .header("Tenant-Name", "tenantName")
             .jsonBody(rawRequestBody)
             .respondWith()
             .statusCode(422)
@@ -1238,13 +1171,10 @@ describe("DocumentsClient", () => {
 
         await expect(async () => {
             return await client.documents.generate({
-                tenantName: "tenantName",
-                body: {
-                    templateRef: {
-                        templateId: "templateId",
-                    },
-                    outputLanguage: "outputLanguage",
+                templateRef: {
+                    templateId: "templateId",
                 },
+                outputLanguage: "outputLanguage",
             });
         }).rejects.toThrow(Corti.UnprocessableEntityError);
     });
@@ -1257,6 +1187,7 @@ describe("DocumentsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
         const rawRequestBody = { templateRef: { templateId: "templateId" }, outputLanguage: "outputLanguage" };
@@ -1265,7 +1196,6 @@ describe("DocumentsClient", () => {
         server
             .mockEndpoint()
             .post("/documents/")
-            .header("Tenant-Name", "tenantName")
             .jsonBody(rawRequestBody)
             .respondWith()
             .statusCode(500)
@@ -1274,13 +1204,10 @@ describe("DocumentsClient", () => {
 
         await expect(async () => {
             return await client.documents.generate({
-                tenantName: "tenantName",
-                body: {
-                    templateRef: {
-                        templateId: "templateId",
-                    },
-                    outputLanguage: "outputLanguage",
+                templateRef: {
+                    templateId: "templateId",
                 },
+                outputLanguage: "outputLanguage",
             });
         }).rejects.toThrow(Corti.InternalServerError);
     });

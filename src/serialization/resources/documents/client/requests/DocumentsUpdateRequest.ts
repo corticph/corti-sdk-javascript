@@ -7,7 +7,7 @@ import { DocumentsSectionInput } from "../../../../types/DocumentsSectionInput.j
 
 export const DocumentsUpdateRequest: core.serialization.Schema<
     serializers.DocumentsUpdateRequest.Raw,
-    Omit<Corti.DocumentsUpdateRequest, "tenantName">
+    Corti.DocumentsUpdateRequest
 > = core.serialization.object({
     name: core.serialization.string().optional(),
     sections: core.serialization.list(DocumentsSectionInput).optional(),

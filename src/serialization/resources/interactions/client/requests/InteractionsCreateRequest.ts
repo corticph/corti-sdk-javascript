@@ -9,7 +9,7 @@ import { Uuid } from "../../../../types/Uuid.js";
 
 export const InteractionsCreateRequest: core.serialization.Schema<
     serializers.InteractionsCreateRequest.Raw,
-    Omit<Corti.InteractionsCreateRequest, "tenantName">
+    Corti.InteractionsCreateRequest
 > = core.serialization.object({
     assignedUserId: Uuid.optional(),
     encounter: InteractionsEncounterCreateRequest,

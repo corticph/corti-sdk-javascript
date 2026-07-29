@@ -4,13 +4,9 @@ import type * as Corti from "../../../../index.js";
 
 /**
  * @example
- *     {
- *         tenantName: "base"
- *     }
+ *     {}
  */
 export interface LanguagesListRequest {
     /** Field used to filter languages that supported specific endpoint. */
     endpoint?: Corti.LanguagesListRequestEndpoint;
-    /** Identifies a distinct entity within Corti's multi-tenant system. Ensures correct routing and authentication of the request. */
-    tenantName: string;
 }

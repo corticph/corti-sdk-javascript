@@ -7,7 +7,7 @@ import { GuidedSectionGenerationPartial } from "../../../../../../../../types/Gu
 
 export const GuidedSectionsCreateVersionRequest: core.serialization.Schema<
     serializers.documents.sections.GuidedSectionsCreateVersionRequest.Raw,
-    Omit<Corti.documents.sections.GuidedSectionsCreateVersionRequest, "tenantName">
+    Corti.documents.sections.GuidedSectionsCreateVersionRequest
 > = core.serialization.object({
     generation: GuidedSectionGenerationPartial,
 });

@@ -36,22 +36,20 @@ export class TemplatesClient {
      * @param {TemplatesClient.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @example
-     *     await client.documents.templates.list({
-     *         tenantName: "base"
-     *     })
+     *     await client.documents.templates.list()
      */
     public list(
-        request: Corti.documents.GuidedTemplatesListRequest,
+        request: Corti.documents.GuidedTemplatesListRequest = {},
         requestOptions?: TemplatesClient.RequestOptions,
     ): core.HttpResponsePromise<Corti.GuidedTemplateListItem[]> {
         return core.HttpResponsePromise.fromPromise(this.__list(request, requestOptions));
     }
 
     private async __list(
-        request: Corti.documents.GuidedTemplatesListRequest,
+        request: Corti.documents.GuidedTemplatesListRequest = {},
         requestOptions?: TemplatesClient.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.GuidedTemplateListItem[]>> {
-        const { lang, region, specialty, label, published, source, tenantName } = request;
+        const { lang, region, specialty, label, published, source } = request;
         const _queryParams: Record<string, unknown> = {
             lang,
             region,
@@ -70,7 +68,7 @@ export class TemplatesClient {
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
             this._options?.headers,
-            mergeOnlyDefinedHeaders({ "Tenant-Name": tenantName }),
+            mergeOnlyDefinedHeaders({ "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName }),
             requestOptions?.headers,
         );
         const _response = await core.fetcher({
@@ -117,37 +115,33 @@ export class TemplatesClient {
      * the response includes the published version with full inheritance resolution applied
      * (template-level and section-level inheritance walked).
      *
-     * @param {Corti.documents.CreateTemplatesRequest} request
+     * @param {Corti.GuidedTemplatesCreateRequest} request
      * @param {TemplatesClient.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Corti.BadRequestError}
      *
      * @example
      *     await client.documents.templates.create({
-     *         tenantName: "base",
-     *         body: {
-     *             name: "name",
-     *             inheritFromId: "inheritFromId"
-     *         }
+     *         name: "name",
+     *         inheritFromId: "inheritFromId"
      *     })
      */
     public create(
-        request: Corti.documents.CreateTemplatesRequest,
+        request: Corti.GuidedTemplatesCreateRequest,
         requestOptions?: TemplatesClient.RequestOptions,
     ): core.HttpResponsePromise<Corti.GuidedTemplate> {
         return core.HttpResponsePromise.fromPromise(this.__create(request, requestOptions));
     }
 
     private async __create(
-        request: Corti.documents.CreateTemplatesRequest,
+        request: Corti.GuidedTemplatesCreateRequest,
         requestOptions?: TemplatesClient.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.GuidedTemplate>> {
-        const { tenantName, body: _body } = request;
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
             this._options?.headers,
-            mergeOnlyDefinedHeaders({ "Tenant-Name": tenantName }),
+            mergeOnlyDefinedHeaders({ "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName }),
             requestOptions?.headers,
         );
         const _response = await core.fetcher({
@@ -161,7 +155,7 @@ export class TemplatesClient {
             contentType: "application/json",
             queryParameters: requestOptions?.queryParams,
             requestType: "json",
-            body: serializers.GuidedTemplatesCreateRequest.jsonOrThrow(_body, {
+            body: serializers.GuidedTemplatesCreateRequest.jsonOrThrow(request, {
                 unrecognizedObjectKeys: "strip",
                 omitUndefined: true,
             }),
@@ -206,35 +200,29 @@ export class TemplatesClient {
      * values without inheritance, use GET /documents/templates/{templateID}/versions/{versionID}.
      *
      * @param {string} templateID
-     * @param {Corti.documents.GetTemplatesRequest} request
      * @param {TemplatesClient.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Corti.NotFoundError}
      *
      * @example
-     *     await client.documents.templates.get("templateID", {
-     *         tenantName: "base"
-     *     })
+     *     await client.documents.templates.get("templateID")
      */
     public get(
         templateID: string,
-        request: Corti.documents.GetTemplatesRequest,
         requestOptions?: TemplatesClient.RequestOptions,
     ): core.HttpResponsePromise<Corti.GuidedTemplate> {
-        return core.HttpResponsePromise.fromPromise(this.__get(templateID, request, requestOptions));
+        return core.HttpResponsePromise.fromPromise(this.__get(templateID, requestOptions));
     }
 
     private async __get(
         templateID: string,
-        request: Corti.documents.GetTemplatesRequest,
         requestOptions?: TemplatesClient.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.GuidedTemplate>> {
-        const { tenantName } = request;
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
             this._options?.headers,
-            mergeOnlyDefinedHeaders({ "Tenant-Name": tenantName }),
+            mergeOnlyDefinedHeaders({ "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName }),
             requestOptions?.headers,
         );
         const _response = await core.fetcher({
@@ -290,36 +278,27 @@ export class TemplatesClient {
      * Deletes a template and its versions. Returns 409 if other templates or sections inherit from this template.
      *
      * @param {string} templateID
-     * @param {Corti.documents.DeleteTemplatesRequest} request
      * @param {TemplatesClient.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Corti.NotFoundError}
      * @throws {@link Corti.ConflictError}
      *
      * @example
-     *     await client.documents.templates.delete("templateID", {
-     *         tenantName: "base"
-     *     })
+     *     await client.documents.templates.delete("templateID")
      */
-    public delete(
-        templateID: string,
-        request: Corti.documents.DeleteTemplatesRequest,
-        requestOptions?: TemplatesClient.RequestOptions,
-    ): core.HttpResponsePromise<void> {
-        return core.HttpResponsePromise.fromPromise(this.__delete(templateID, request, requestOptions));
+    public delete(templateID: string, requestOptions?: TemplatesClient.RequestOptions): core.HttpResponsePromise<void> {
+        return core.HttpResponsePromise.fromPromise(this.__delete(templateID, requestOptions));
     }
 
     private async __delete(
         templateID: string,
-        request: Corti.documents.DeleteTemplatesRequest,
         requestOptions?: TemplatesClient.RequestOptions,
     ): Promise<core.WithRawResponse<void>> {
-        const { tenantName } = request;
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
             this._options?.headers,
-            mergeOnlyDefinedHeaders({ "Tenant-Name": tenantName }),
+            mergeOnlyDefinedHeaders({ "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName }),
             requestOptions?.headers,
         );
         const _response = await core.fetcher({
@@ -377,13 +356,11 @@ export class TemplatesClient {
      * @throws {@link Corti.NotFoundError}
      *
      * @example
-     *     await client.documents.templates.update("templateID", {
-     *         tenantName: "base"
-     *     })
+     *     await client.documents.templates.update("templateID")
      */
     public update(
         templateID: string,
-        request: Corti.documents.GuidedTemplatesUpdateRequest,
+        request: Corti.documents.GuidedTemplatesUpdateRequest = {},
         requestOptions?: TemplatesClient.RequestOptions,
     ): core.HttpResponsePromise<Corti.GuidedTemplate> {
         return core.HttpResponsePromise.fromPromise(this.__update(templateID, request, requestOptions));
@@ -391,15 +368,14 @@ export class TemplatesClient {
 
     private async __update(
         templateID: string,
-        request: Corti.documents.GuidedTemplatesUpdateRequest,
+        request: Corti.documents.GuidedTemplatesUpdateRequest = {},
         requestOptions?: TemplatesClient.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.GuidedTemplate>> {
-        const { tenantName, ..._body } = request;
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
             this._options?.headers,
-            mergeOnlyDefinedHeaders({ "Tenant-Name": tenantName }),
+            mergeOnlyDefinedHeaders({ "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName }),
             requestOptions?.headers,
         );
         const _response = await core.fetcher({
@@ -413,7 +389,7 @@ export class TemplatesClient {
             contentType: "application/json",
             queryParameters: requestOptions?.queryParams,
             requestType: "json",
-            body: serializers.documents.GuidedTemplatesUpdateRequest.jsonOrThrow(_body, {
+            body: serializers.documents.GuidedTemplatesUpdateRequest.jsonOrThrow(request, {
                 unrecognizedObjectKeys: "strip",
                 omitUndefined: true,
             }),

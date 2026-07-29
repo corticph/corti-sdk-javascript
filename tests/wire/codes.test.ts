@@ -14,6 +14,7 @@ describe("CodesClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
         const rawRequestBody = {
@@ -53,7 +54,6 @@ describe("CodesClient", () => {
         server
             .mockEndpoint()
             .post("/tools/coding/")
-            .header("Tenant-Name", "base")
             .jsonBody(rawRequestBody)
             .respondWith()
             .statusCode(200)
@@ -61,7 +61,6 @@ describe("CodesClient", () => {
             .build();
 
         const response = await client.codes.predict({
-            tenantName: "base",
             system: ["icd10cm-outpatient", "cpt"],
             context: [
                 {
@@ -135,6 +134,7 @@ describe("CodesClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
         const rawRequestBody = {
@@ -175,7 +175,6 @@ describe("CodesClient", () => {
         server
             .mockEndpoint()
             .post("/tools/coding/")
-            .header("Tenant-Name", "base")
             .jsonBody(rawRequestBody)
             .respondWith()
             .statusCode(200)
@@ -183,7 +182,6 @@ describe("CodesClient", () => {
             .build();
 
         const response = await client.codes.predict({
-            tenantName: "base",
             system: ["icd10cm-outpatient"],
             context: [
                 {
@@ -261,6 +259,7 @@ describe("CodesClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
         const rawRequestBody = {
@@ -275,7 +274,6 @@ describe("CodesClient", () => {
         server
             .mockEndpoint()
             .post("/tools/coding/")
-            .header("Tenant-Name", "tenantName")
             .jsonBody(rawRequestBody)
             .respondWith()
             .statusCode(400)
@@ -284,7 +282,6 @@ describe("CodesClient", () => {
 
         await expect(async () => {
             return await client.codes.predict({
-                tenantName: "tenantName",
                 system: ["icd10cm-inpatient", "icd10cm-inpatient"],
                 context: [
                     {
@@ -308,6 +305,7 @@ describe("CodesClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
         const rawRequestBody = {
@@ -322,7 +320,6 @@ describe("CodesClient", () => {
         server
             .mockEndpoint()
             .post("/tools/coding/")
-            .header("Tenant-Name", "tenantName")
             .jsonBody(rawRequestBody)
             .respondWith()
             .statusCode(403)
@@ -331,7 +328,6 @@ describe("CodesClient", () => {
 
         await expect(async () => {
             return await client.codes.predict({
-                tenantName: "tenantName",
                 system: ["icd10cm-inpatient", "icd10cm-inpatient"],
                 context: [
                     {
@@ -355,6 +351,7 @@ describe("CodesClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
         const rawRequestBody = {
@@ -369,7 +366,6 @@ describe("CodesClient", () => {
         server
             .mockEndpoint()
             .post("/tools/coding/")
-            .header("Tenant-Name", "tenantName")
             .jsonBody(rawRequestBody)
             .respondWith()
             .statusCode(500)
@@ -378,7 +374,6 @@ describe("CodesClient", () => {
 
         await expect(async () => {
             return await client.codes.predict({
-                tenantName: "tenantName",
                 system: ["icd10cm-inpatient", "icd10cm-inpatient"],
                 context: [
                     {
@@ -402,6 +397,7 @@ describe("CodesClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
         const rawRequestBody = {
@@ -416,7 +412,6 @@ describe("CodesClient", () => {
         server
             .mockEndpoint()
             .post("/tools/coding/")
-            .header("Tenant-Name", "tenantName")
             .jsonBody(rawRequestBody)
             .respondWith()
             .statusCode(502)
@@ -425,7 +420,6 @@ describe("CodesClient", () => {
 
         await expect(async () => {
             return await client.codes.predict({
-                tenantName: "tenantName",
                 system: ["icd10cm-inpatient", "icd10cm-inpatient"],
                 context: [
                     {
@@ -449,6 +443,7 @@ describe("CodesClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
         const rawRequestBody = {
@@ -463,7 +458,6 @@ describe("CodesClient", () => {
         server
             .mockEndpoint()
             .post("/tools/coding/")
-            .header("Tenant-Name", "tenantName")
             .jsonBody(rawRequestBody)
             .respondWith()
             .statusCode(504)
@@ -472,7 +466,6 @@ describe("CodesClient", () => {
 
         await expect(async () => {
             return await client.codes.predict({
-                tenantName: "tenantName",
                 system: ["icd10cm-inpatient", "icd10cm-inpatient"],
                 context: [
                     {

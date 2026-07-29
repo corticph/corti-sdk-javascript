@@ -32,22 +32,20 @@ export class TemplatesClient {
      * @throws {@link Corti.InternalServerError}
      *
      * @example
-     *     await client.templates.sectionList({
-     *         tenantName: "base"
-     *     })
+     *     await client.templates.sectionList()
      */
     public sectionList(
-        request: Corti.TemplatesSectionListRequest,
+        request: Corti.TemplatesSectionListRequest = {},
         requestOptions?: TemplatesClient.RequestOptions,
     ): core.HttpResponsePromise<Corti.TemplatesSectionListResponse> {
         return core.HttpResponsePromise.fromPromise(this.__sectionList(request, requestOptions));
     }
 
     private async __sectionList(
-        request: Corti.TemplatesSectionListRequest,
+        request: Corti.TemplatesSectionListRequest = {},
         requestOptions?: TemplatesClient.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.TemplatesSectionListResponse>> {
-        const { org, lang, tenantName } = request;
+        const { org, lang } = request;
         const _queryParams: Record<string, unknown> = {
             org,
             lang,
@@ -56,7 +54,7 @@ export class TemplatesClient {
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
             this._options?.headers,
-            mergeOnlyDefinedHeaders({ "Tenant-Name": tenantName }),
+            mergeOnlyDefinedHeaders({ "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName }),
             requestOptions?.headers,
         );
         const _response = await core.fetcher({
@@ -124,22 +122,20 @@ export class TemplatesClient {
      * @throws {@link Corti.InternalServerError}
      *
      * @example
-     *     await client.templates.list({
-     *         tenantName: "base"
-     *     })
+     *     await client.templates.list()
      */
     public list(
-        request: Corti.TemplatesListRequest,
+        request: Corti.TemplatesListRequest = {},
         requestOptions?: TemplatesClient.RequestOptions,
     ): core.HttpResponsePromise<Corti.TemplatesListResponse> {
         return core.HttpResponsePromise.fromPromise(this.__list(request, requestOptions));
     }
 
     private async __list(
-        request: Corti.TemplatesListRequest,
+        request: Corti.TemplatesListRequest = {},
         requestOptions?: TemplatesClient.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.TemplatesListResponse>> {
-        const { org, lang, status, tenantName } = request;
+        const { org, lang, status } = request;
         const _queryParams: Record<string, unknown> = {
             org,
             lang,
@@ -149,7 +145,7 @@ export class TemplatesClient {
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
             this._options?.headers,
-            mergeOnlyDefinedHeaders({ "Tenant-Name": tenantName }),
+            mergeOnlyDefinedHeaders({ "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName }),
             requestOptions?.headers,
         );
         const _response = await core.fetcher({
@@ -211,36 +207,30 @@ export class TemplatesClient {
      * Retrieves template by key.
      *
      * @param {string} key - The key of the template
-     * @param {Corti.GetTemplatesRequest} request
      * @param {TemplatesClient.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Corti.UnauthorizedError}
      * @throws {@link Corti.InternalServerError}
      *
      * @example
-     *     await client.templates.get("key", {
-     *         tenantName: "base"
-     *     })
+     *     await client.templates.get("key")
      */
     public get(
         key: string,
-        request: Corti.GetTemplatesRequest,
         requestOptions?: TemplatesClient.RequestOptions,
     ): core.HttpResponsePromise<Corti.TemplatesItem> {
-        return core.HttpResponsePromise.fromPromise(this.__get(key, request, requestOptions));
+        return core.HttpResponsePromise.fromPromise(this.__get(key, requestOptions));
     }
 
     private async __get(
         key: string,
-        request: Corti.GetTemplatesRequest,
         requestOptions?: TemplatesClient.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.TemplatesItem>> {
-        const { tenantName } = request;
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
             this._options?.headers,
-            mergeOnlyDefinedHeaders({ "Tenant-Name": tenantName }),
+            mergeOnlyDefinedHeaders({ "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName }),
             requestOptions?.headers,
         );
         const _response = await core.fetcher({

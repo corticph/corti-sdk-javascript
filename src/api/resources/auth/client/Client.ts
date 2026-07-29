@@ -2,7 +2,7 @@
 
 import type { BaseClientOptions, BaseRequestOptions } from "../../../../BaseClient.js";
 import { type NormalizedClientOptionsWithAuth, normalizeClientOptionsWithAuth } from "../../../../BaseClient.js";
-import { mergeHeaders } from "../../../../core/headers.js";
+import { mergeHeaders, mergeOnlyDefinedHeaders } from "../../../../core/headers.js";
 import * as core from "../../../../core/index.js";
 import { handleNonStatusCodeError } from "../../../../errors/handleNonStatusCodeError.js";
 import * as errors from "../../../../errors/index.js";
@@ -43,7 +43,11 @@ export class AuthClient {
         request: Corti.OAuthTokenRequest,
         requestOptions?: AuthClient.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.AuthTokenResponse>> {
-        const _headers: core.Fetcher.Args["headers"] = mergeHeaders(this._options?.headers, requestOptions?.headers);
+        const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+            this._options?.headers,
+            mergeOnlyDefinedHeaders({ "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName }),
+            requestOptions?.headers,
+        );
         const _response = await core.fetcher({
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
@@ -94,7 +98,7 @@ export class AuthClient {
      * authorization_code (with client_secret), authorization_code with PKCE (code_verifier), password (ROPC), or refresh_token. Use the returned access_token in the Authorization header when calling the Corti API.
      *
      * @param {string} tenantName
-     * @param {Corti.AuthTokenRequest} request
+     * @param {Corti.AuthTokenRequestBody} request
      * @param {AuthClient.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Corti.BadRequestError}
@@ -109,7 +113,7 @@ export class AuthClient {
      */
     public token(
         tenantName: string,
-        request: Corti.AuthTokenRequest,
+        request: Corti.AuthTokenRequestBody,
         requestOptions?: AuthClient.RequestOptions,
     ): core.HttpResponsePromise<Corti.AuthTokenResponse> {
         return core.HttpResponsePromise.fromPromise(this.__token(tenantName, request, requestOptions));
@@ -117,13 +121,14 @@ export class AuthClient {
 
     private async __token(
         tenantName: string,
-        request: Corti.AuthTokenRequest,
+        request: Corti.AuthTokenRequestBody,
         requestOptions?: AuthClient.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.AuthTokenResponse>> {
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
             this._options?.headers,
+            mergeOnlyDefinedHeaders({ "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName }),
             requestOptions?.headers,
         );
         const _response = await core.fetcher({
@@ -137,7 +142,7 @@ export class AuthClient {
             contentType: "application/x-www-form-urlencoded",
             queryParameters: requestOptions?.queryParams,
             requestType: "form",
-            body: serializers.AuthTokenRequest.jsonOrThrow(request, {
+            body: serializers.AuthTokenRequestBody.jsonOrThrow(request, {
                 unrecognizedObjectKeys: "strip",
                 omitUndefined: true,
             }),

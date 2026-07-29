@@ -5,7 +5,6 @@ import type * as Corti from "../../../../index.js";
 /**
  * @example
  *     {
- *         tenantName: "base",
  *         facts: [{
  *                 text: "text",
  *                 group: "other"
@@ -13,8 +12,6 @@ import type * as Corti from "../../../../index.js";
  *     }
  */
 export interface FactsCreateRequest {
-    /** Identifies a distinct entity within Corti's multi-tenant system. Ensures correct routing and authentication of the request. */
-    tenantName: string;
     /** A list of facts to be created. */
     facts: Corti.FactsCreateInput[];
 }

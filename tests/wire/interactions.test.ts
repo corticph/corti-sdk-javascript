@@ -14,6 +14,7 @@ describe("InteractionsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
@@ -41,7 +42,6 @@ describe("InteractionsClient", () => {
         server
             .mockEndpoint({ once: false })
             .get("/interactions/")
-            .header("Tenant-Name", "base")
             .respondWith()
             .statusCode(200)
             .jsonBody(rawResponseBody)
@@ -71,9 +71,7 @@ describe("InteractionsClient", () => {
                 },
             ],
         };
-        const page = await client.interactions.list({
-            tenantName: "base",
-        });
+        const page = await client.interactions.list();
 
         expect(expected.interactions).toEqual(page.data);
         expect(page.hasNextPage()).toBe(true);
@@ -89,6 +87,7 @@ describe("InteractionsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
@@ -97,16 +96,13 @@ describe("InteractionsClient", () => {
         server
             .mockEndpoint({ once: false })
             .get("/interactions/")
-            .header("Tenant-Name", "tenantName")
             .respondWith()
             .statusCode(403)
             .jsonBody(rawResponseBody)
             .build();
 
         await expect(async () => {
-            return await client.interactions.list({
-                tenantName: "tenantName",
-            });
+            return await client.interactions.list();
         }).rejects.toThrow(Corti.ForbiddenError);
     });
 
@@ -118,6 +114,7 @@ describe("InteractionsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
@@ -126,16 +123,13 @@ describe("InteractionsClient", () => {
         server
             .mockEndpoint({ once: false })
             .get("/interactions/")
-            .header("Tenant-Name", "tenantName")
             .respondWith()
             .statusCode(504)
             .jsonBody(rawResponseBody)
             .build();
 
         await expect(async () => {
-            return await client.interactions.list({
-                tenantName: "tenantName",
-            });
+            return await client.interactions.list();
         }).rejects.toThrow(Corti.GatewayTimeoutError);
     });
 
@@ -147,6 +141,7 @@ describe("InteractionsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
         const rawRequestBody = {
@@ -157,7 +152,6 @@ describe("InteractionsClient", () => {
         server
             .mockEndpoint()
             .post("/interactions/")
-            .header("Tenant-Name", "base")
             .jsonBody(rawRequestBody)
             .respondWith()
             .statusCode(200)
@@ -165,7 +159,6 @@ describe("InteractionsClient", () => {
             .build();
 
         const response = await client.interactions.create({
-            tenantName: "base",
             encounter: {
                 identifier: "identifier",
                 status: "planned",
@@ -186,6 +179,7 @@ describe("InteractionsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
         const rawRequestBody = {
@@ -196,7 +190,6 @@ describe("InteractionsClient", () => {
         server
             .mockEndpoint()
             .post("/interactions/")
-            .header("Tenant-Name", "tenantName")
             .jsonBody(rawRequestBody)
             .respondWith()
             .statusCode(400)
@@ -205,7 +198,6 @@ describe("InteractionsClient", () => {
 
         await expect(async () => {
             return await client.interactions.create({
-                tenantName: "tenantName",
                 encounter: {
                     identifier: "identifier",
                     status: "planned",
@@ -223,6 +215,7 @@ describe("InteractionsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
         const rawRequestBody = {
@@ -233,7 +226,6 @@ describe("InteractionsClient", () => {
         server
             .mockEndpoint()
             .post("/interactions/")
-            .header("Tenant-Name", "tenantName")
             .jsonBody(rawRequestBody)
             .respondWith()
             .statusCode(403)
@@ -242,7 +234,6 @@ describe("InteractionsClient", () => {
 
         await expect(async () => {
             return await client.interactions.create({
-                tenantName: "tenantName",
                 encounter: {
                     identifier: "identifier",
                     status: "planned",
@@ -260,6 +251,7 @@ describe("InteractionsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
         const rawRequestBody = {
@@ -270,7 +262,6 @@ describe("InteractionsClient", () => {
         server
             .mockEndpoint()
             .post("/interactions/")
-            .header("Tenant-Name", "tenantName")
             .jsonBody(rawRequestBody)
             .respondWith()
             .statusCode(500)
@@ -279,7 +270,6 @@ describe("InteractionsClient", () => {
 
         await expect(async () => {
             return await client.interactions.create({
-                tenantName: "tenantName",
                 encounter: {
                     identifier: "identifier",
                     status: "planned",
@@ -297,6 +287,7 @@ describe("InteractionsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
         const rawRequestBody = {
@@ -307,7 +298,6 @@ describe("InteractionsClient", () => {
         server
             .mockEndpoint()
             .post("/interactions/")
-            .header("Tenant-Name", "tenantName")
             .jsonBody(rawRequestBody)
             .respondWith()
             .statusCode(504)
@@ -316,7 +306,6 @@ describe("InteractionsClient", () => {
 
         await expect(async () => {
             return await client.interactions.create({
-                tenantName: "tenantName",
                 encounter: {
                     identifier: "identifier",
                     status: "planned",
@@ -334,6 +323,7 @@ describe("InteractionsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
@@ -364,15 +354,12 @@ describe("InteractionsClient", () => {
         server
             .mockEndpoint()
             .get("/interactions/f47ac10b-58cc-4372-a567-0e02b2c3d479")
-            .header("Tenant-Name", "base")
             .respondWith()
             .statusCode(200)
             .jsonBody(rawResponseBody)
             .build();
 
-        const response = await client.interactions.get("f47ac10b-58cc-4372-a567-0e02b2c3d479", {
-            tenantName: "base",
-        });
+        const response = await client.interactions.get("f47ac10b-58cc-4372-a567-0e02b2c3d479");
         expect(response).toEqual({
             id: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
             assignedUserId: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
@@ -409,24 +396,16 @@ describe("InteractionsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
         const rawResponseBody = { key: "value" };
 
-        server
-            .mockEndpoint()
-            .get("/interactions/id")
-            .header("Tenant-Name", "tenantName")
-            .respondWith()
-            .statusCode(403)
-            .jsonBody(rawResponseBody)
-            .build();
+        server.mockEndpoint().get("/interactions/id").respondWith().statusCode(403).jsonBody(rawResponseBody).build();
 
         await expect(async () => {
-            return await client.interactions.get("id", {
-                tenantName: "tenantName",
-            });
+            return await client.interactions.get("id");
         }).rejects.toThrow(Corti.ForbiddenError);
     });
 
@@ -438,24 +417,16 @@ describe("InteractionsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
         const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
 
-        server
-            .mockEndpoint()
-            .get("/interactions/id")
-            .header("Tenant-Name", "tenantName")
-            .respondWith()
-            .statusCode(504)
-            .jsonBody(rawResponseBody)
-            .build();
+        server.mockEndpoint().get("/interactions/id").respondWith().statusCode(504).jsonBody(rawResponseBody).build();
 
         await expect(async () => {
-            return await client.interactions.get("id", {
-                tenantName: "tenantName",
-            });
+            return await client.interactions.get("id");
         }).rejects.toThrow(Corti.GatewayTimeoutError);
     });
 
@@ -467,20 +438,18 @@ describe("InteractionsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
         server
             .mockEndpoint()
             .delete("/interactions/f47ac10b-58cc-4372-a567-0e02b2c3d479")
-            .header("Tenant-Name", "base")
             .respondWith()
             .statusCode(200)
             .build();
 
-        const response = await client.interactions.delete("f47ac10b-58cc-4372-a567-0e02b2c3d479", {
-            tenantName: "base",
-        });
+        const response = await client.interactions.delete("f47ac10b-58cc-4372-a567-0e02b2c3d479");
         expect(response).toEqual(undefined);
     });
 
@@ -492,6 +461,7 @@ describe("InteractionsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
@@ -500,16 +470,13 @@ describe("InteractionsClient", () => {
         server
             .mockEndpoint()
             .delete("/interactions/id")
-            .header("Tenant-Name", "tenantName")
             .respondWith()
             .statusCode(403)
             .jsonBody(rawResponseBody)
             .build();
 
         await expect(async () => {
-            return await client.interactions.delete("id", {
-                tenantName: "tenantName",
-            });
+            return await client.interactions.delete("id");
         }).rejects.toThrow(Corti.ForbiddenError);
     });
 
@@ -521,6 +488,7 @@ describe("InteractionsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
@@ -529,16 +497,13 @@ describe("InteractionsClient", () => {
         server
             .mockEndpoint()
             .delete("/interactions/id")
-            .header("Tenant-Name", "tenantName")
             .respondWith()
             .statusCode(504)
             .jsonBody(rawResponseBody)
             .build();
 
         await expect(async () => {
-            return await client.interactions.delete("id", {
-                tenantName: "tenantName",
-            });
+            return await client.interactions.delete("id");
         }).rejects.toThrow(Corti.GatewayTimeoutError);
     });
 
@@ -550,6 +515,7 @@ describe("InteractionsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
         const rawRequestBody = {};
@@ -580,16 +546,13 @@ describe("InteractionsClient", () => {
         server
             .mockEndpoint()
             .patch("/interactions/f47ac10b-58cc-4372-a567-0e02b2c3d479")
-            .header("Tenant-Name", "base")
             .jsonBody(rawRequestBody)
             .respondWith()
             .statusCode(200)
             .jsonBody(rawResponseBody)
             .build();
 
-        const response = await client.interactions.update("f47ac10b-58cc-4372-a567-0e02b2c3d479", {
-            tenantName: "base",
-        });
+        const response = await client.interactions.update("f47ac10b-58cc-4372-a567-0e02b2c3d479");
         expect(response).toEqual({
             id: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
             assignedUserId: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
@@ -626,6 +589,7 @@ describe("InteractionsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
         const rawRequestBody = {};
@@ -634,7 +598,6 @@ describe("InteractionsClient", () => {
         server
             .mockEndpoint()
             .patch("/interactions/id")
-            .header("Tenant-Name", "tenantName")
             .jsonBody(rawRequestBody)
             .respondWith()
             .statusCode(403)
@@ -642,9 +605,7 @@ describe("InteractionsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.interactions.update("id", {
-                tenantName: "tenantName",
-            });
+            return await client.interactions.update("id");
         }).rejects.toThrow(Corti.ForbiddenError);
     });
 
@@ -656,6 +617,7 @@ describe("InteractionsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
         const rawRequestBody = {};
@@ -664,7 +626,6 @@ describe("InteractionsClient", () => {
         server
             .mockEndpoint()
             .patch("/interactions/id")
-            .header("Tenant-Name", "tenantName")
             .jsonBody(rawRequestBody)
             .respondWith()
             .statusCode(504)
@@ -672,9 +633,7 @@ describe("InteractionsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.interactions.update("id", {
-                tenantName: "tenantName",
-            });
+            return await client.interactions.update("id");
         }).rejects.toThrow(Corti.GatewayTimeoutError);
     });
 });

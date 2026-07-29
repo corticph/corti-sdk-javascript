@@ -32,22 +32,20 @@ export class LanguagesClient {
      * @throws {@link Corti.InternalServerError}
      *
      * @example
-     *     await client.languages.list({
-     *         tenantName: "base"
-     *     })
+     *     await client.languages.list()
      */
     public list(
-        request: Corti.LanguagesListRequest,
+        request: Corti.LanguagesListRequest = {},
         requestOptions?: LanguagesClient.RequestOptions,
     ): core.HttpResponsePromise<Corti.LanguagesListResponse> {
         return core.HttpResponsePromise.fromPromise(this.__list(request, requestOptions));
     }
 
     private async __list(
-        request: Corti.LanguagesListRequest,
+        request: Corti.LanguagesListRequest = {},
         requestOptions?: LanguagesClient.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.LanguagesListResponse>> {
-        const { endpoint, tenantName } = request;
+        const { endpoint } = request;
         const _queryParams: Record<string, unknown> = {
             endpoint:
                 endpoint != null
@@ -61,7 +59,7 @@ export class LanguagesClient {
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
             this._options?.headers,
-            mergeOnlyDefinedHeaders({ "Tenant-Name": tenantName }),
+            mergeOnlyDefinedHeaders({ "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName }),
             requestOptions?.headers,
         );
         const _response = await core.fetcher({

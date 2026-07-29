@@ -7,7 +7,7 @@ import { GuidedTemplatesVersionGeneration } from "../../../../../../../../types/
 
 export const GuidedTemplatesCreateVersionRequest: core.serialization.Schema<
     serializers.documents.templates.GuidedTemplatesCreateVersionRequest.Raw,
-    Omit<Corti.documents.templates.GuidedTemplatesCreateVersionRequest, "tenantName">
+    Corti.documents.templates.GuidedTemplatesCreateVersionRequest
 > = core.serialization.object({
     generation: GuidedTemplatesVersionGeneration,
 });

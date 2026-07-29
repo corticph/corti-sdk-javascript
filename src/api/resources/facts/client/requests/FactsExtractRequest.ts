@@ -5,7 +5,6 @@ import type * as Corti from "../../../../index.js";
 /**
  * @example
  *     {
- *         tenantName: "base",
  *         context: [{
  *                 type: "text",
  *                 text: "text"
@@ -14,8 +13,6 @@ import type * as Corti from "../../../../index.js";
  *     }
  */
 export interface FactsExtractRequest {
-    /** Identifies a distinct entity within Corti's multi-tenant system. Ensures correct routing and authentication of the request. */
-    tenantName: string;
     context: Corti.CommonTextContext[];
     /** The desired output language code for extracted facts. Check [languages page](/stt/languages) for more. */
     outputLanguage: string;

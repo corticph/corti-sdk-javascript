@@ -77,7 +77,10 @@ export class A2AClient {
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
             this._options?.headers,
-            mergeOnlyDefinedHeaders({ "A2A-Version": "1.0" }),
+            mergeOnlyDefinedHeaders({
+                "A2A-Version": "1.0",
+                "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName,
+            }),
             requestOptions?.headers,
         );
         const _response = await core.fetcher({
@@ -179,7 +182,10 @@ export class A2AClient {
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
             this._options?.headers,
-            mergeOnlyDefinedHeaders({ "A2A-Version": "1.0" }),
+            mergeOnlyDefinedHeaders({
+                "A2A-Version": "1.0",
+                "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName,
+            }),
             requestOptions?.headers,
         );
         const _response = await core.fetcher({
@@ -262,7 +268,10 @@ export class A2AClient {
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
             this._options?.headers,
-            mergeOnlyDefinedHeaders({ "A2A-Version": "1.0" }),
+            mergeOnlyDefinedHeaders({
+                "A2A-Version": "1.0",
+                "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName,
+            }),
             requestOptions?.headers,
         );
         const _response = await core.fetcher<ReadableStream>({

@@ -30,35 +30,29 @@ export class VersionsClient {
      * To see resolved content, use GET /documents/templates/{templateID} instead.
      *
      * @param {string} templateID
-     * @param {Corti.documents.templates.ListVersionsRequest} request
      * @param {VersionsClient.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Corti.NotFoundError}
      *
      * @example
-     *     await client.documents.templates.versions.list("templateID", {
-     *         tenantName: "base"
-     *     })
+     *     await client.documents.templates.versions.list("templateID")
      */
     public list(
         templateID: string,
-        request: Corti.documents.templates.ListVersionsRequest,
         requestOptions?: VersionsClient.RequestOptions,
     ): core.HttpResponsePromise<Corti.GuidedShallowTemplateVersionResponse[]> {
-        return core.HttpResponsePromise.fromPromise(this.__list(templateID, request, requestOptions));
+        return core.HttpResponsePromise.fromPromise(this.__list(templateID, requestOptions));
     }
 
     private async __list(
         templateID: string,
-        request: Corti.documents.templates.ListVersionsRequest,
         requestOptions?: VersionsClient.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.GuidedShallowTemplateVersionResponse[]>> {
-        const { tenantName } = request;
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
             this._options?.headers,
-            mergeOnlyDefinedHeaders({ "Tenant-Name": tenantName }),
+            mergeOnlyDefinedHeaders({ "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName }),
             requestOptions?.headers,
         );
         const _response = await core.fetcher({
@@ -122,7 +116,6 @@ export class VersionsClient {
      *
      * @example
      *     await client.documents.templates.versions.create("templateID", {
-     *         tenantName: "base",
      *         generation: {}
      *     })
      */
@@ -139,12 +132,11 @@ export class VersionsClient {
         request: Corti.documents.templates.GuidedTemplatesCreateVersionRequest,
         requestOptions?: VersionsClient.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.GuidedShallowTemplateVersionResponse>> {
-        const { tenantName, ..._body } = request;
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
             this._options?.headers,
-            mergeOnlyDefinedHeaders({ "Tenant-Name": tenantName }),
+            mergeOnlyDefinedHeaders({ "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName }),
             requestOptions?.headers,
         );
         const _response = await core.fetcher({
@@ -158,7 +150,7 @@ export class VersionsClient {
             contentType: "application/json",
             queryParameters: requestOptions?.queryParams,
             requestType: "json",
-            body: serializers.documents.templates.GuidedTemplatesCreateVersionRequest.jsonOrThrow(_body, {
+            body: serializers.documents.templates.GuidedTemplatesCreateVersionRequest.jsonOrThrow(request, {
                 unrecognizedObjectKeys: "strip",
                 omitUndefined: true,
             }),
@@ -210,37 +202,31 @@ export class VersionsClient {
      *
      * @param {string} templateID
      * @param {string} versionID
-     * @param {Corti.documents.templates.GetVersionsRequest} request
      * @param {VersionsClient.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Corti.NotFoundError}
      *
      * @example
-     *     await client.documents.templates.versions.get("templateID", "versionID", {
-     *         tenantName: "base"
-     *     })
+     *     await client.documents.templates.versions.get("templateID", "versionID")
      */
     public get(
         templateID: string,
         versionID: string,
-        request: Corti.documents.templates.GetVersionsRequest,
         requestOptions?: VersionsClient.RequestOptions,
     ): core.HttpResponsePromise<Corti.GuidedShallowTemplateVersionResponse> {
-        return core.HttpResponsePromise.fromPromise(this.__get(templateID, versionID, request, requestOptions));
+        return core.HttpResponsePromise.fromPromise(this.__get(templateID, versionID, requestOptions));
     }
 
     private async __get(
         templateID: string,
         versionID: string,
-        request: Corti.documents.templates.GetVersionsRequest,
         requestOptions?: VersionsClient.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.GuidedShallowTemplateVersionResponse>> {
-        const { tenantName } = request;
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
             this._options?.headers,
-            mergeOnlyDefinedHeaders({ "Tenant-Name": tenantName }),
+            mergeOnlyDefinedHeaders({ "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName }),
             requestOptions?.headers,
         );
         const _response = await core.fetcher({
@@ -297,37 +283,31 @@ export class VersionsClient {
      *
      * @param {string} templateID
      * @param {string} versionID
-     * @param {Corti.documents.templates.DeleteVersionsRequest} request
      * @param {VersionsClient.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Corti.NotFoundError}
      *
      * @example
-     *     await client.documents.templates.versions.delete("templateID", "versionID", {
-     *         tenantName: "base"
-     *     })
+     *     await client.documents.templates.versions.delete("templateID", "versionID")
      */
     public delete(
         templateID: string,
         versionID: string,
-        request: Corti.documents.templates.DeleteVersionsRequest,
         requestOptions?: VersionsClient.RequestOptions,
     ): core.HttpResponsePromise<void> {
-        return core.HttpResponsePromise.fromPromise(this.__delete(templateID, versionID, request, requestOptions));
+        return core.HttpResponsePromise.fromPromise(this.__delete(templateID, versionID, requestOptions));
     }
 
     private async __delete(
         templateID: string,
         versionID: string,
-        request: Corti.documents.templates.DeleteVersionsRequest,
         requestOptions?: VersionsClient.RequestOptions,
     ): Promise<core.WithRawResponse<void>> {
-        const { tenantName } = request;
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
             this._options?.headers,
-            mergeOnlyDefinedHeaders({ "Tenant-Name": tenantName }),
+            mergeOnlyDefinedHeaders({ "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName }),
             requestOptions?.headers,
         );
         const _response = await core.fetcher({
@@ -375,37 +355,31 @@ export class VersionsClient {
      *
      * @param {string} templateID
      * @param {string} versionID
-     * @param {Corti.documents.templates.PublishVersionsRequest} request
      * @param {VersionsClient.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Corti.NotFoundError}
      *
      * @example
-     *     await client.documents.templates.versions.publish("templateID", "versionID", {
-     *         tenantName: "base"
-     *     })
+     *     await client.documents.templates.versions.publish("templateID", "versionID")
      */
     public publish(
         templateID: string,
         versionID: string,
-        request: Corti.documents.templates.PublishVersionsRequest,
         requestOptions?: VersionsClient.RequestOptions,
     ): core.HttpResponsePromise<Corti.CommonStatusResponse> {
-        return core.HttpResponsePromise.fromPromise(this.__publish(templateID, versionID, request, requestOptions));
+        return core.HttpResponsePromise.fromPromise(this.__publish(templateID, versionID, requestOptions));
     }
 
     private async __publish(
         templateID: string,
         versionID: string,
-        request: Corti.documents.templates.PublishVersionsRequest,
         requestOptions?: VersionsClient.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.CommonStatusResponse>> {
-        const { tenantName } = request;
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
             this._options?.headers,
-            mergeOnlyDefinedHeaders({ "Tenant-Name": tenantName }),
+            mergeOnlyDefinedHeaders({ "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName }),
             requestOptions?.headers,
         );
         const _response = await core.fetcher({

@@ -4,13 +4,9 @@ import type * as Corti from "../../../../../../index.js";
 
 /**
  * @example
- *     {
- *         tenantName: "base"
- *     }
+ *     {}
  */
 export interface GuidedTemplatesUpdateRequest {
-    /** Identifies a distinct entity within Corti's multi-tenant system. Ensures correct routing and authentication of the request. */
-    tenantName: string;
     /** The name of this template. Not passed to the LLM. */
     name?: string;
     /** A description for this template. Not passed to the LLM. */

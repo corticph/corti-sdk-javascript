@@ -7,7 +7,7 @@ import { FactsBatchUpdateInput } from "../../../../types/FactsBatchUpdateInput.j
 
 export const FactsBatchUpdateRequest: core.serialization.Schema<
     serializers.FactsBatchUpdateRequest.Raw,
-    Omit<Corti.FactsBatchUpdateRequest, "tenantName">
+    Corti.FactsBatchUpdateRequest
 > = core.serialization.object({
     facts: core.serialization.list(FactsBatchUpdateInput),
 });

@@ -14,6 +14,7 @@ describe("TemplatesClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
@@ -39,15 +40,12 @@ describe("TemplatesClient", () => {
         server
             .mockEndpoint()
             .get("/documents/templates/")
-            .header("Tenant-Name", "base")
             .respondWith()
             .statusCode(200)
             .jsonBody(rawResponseBody)
             .build();
 
-        const response = await client.documents.templates.list({
-            tenantName: "base",
-        });
+        const response = await client.documents.templates.list();
         expect(response).toEqual([
             {
                 id: "id",
@@ -81,6 +79,7 @@ describe("TemplatesClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
         const rawRequestBody = { name: "name", inheritFromId: "inheritFromId" };
@@ -133,7 +132,6 @@ describe("TemplatesClient", () => {
         server
             .mockEndpoint()
             .post("/documents/templates/")
-            .header("Tenant-Name", "base")
             .jsonBody(rawRequestBody)
             .respondWith()
             .statusCode(200)
@@ -141,11 +139,8 @@ describe("TemplatesClient", () => {
             .build();
 
         const response = await client.documents.templates.create({
-            tenantName: "base",
-            body: {
-                name: "name",
-                inheritFromId: "inheritFromId",
-            },
+            name: "name",
+            inheritFromId: "inheritFromId",
         });
         expect(response).toEqual({
             id: "id",
@@ -218,6 +213,7 @@ describe("TemplatesClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
         const rawRequestBody = { inheritFromId: "inheritFromId", name: "name" };
@@ -226,7 +222,6 @@ describe("TemplatesClient", () => {
         server
             .mockEndpoint()
             .post("/documents/templates/")
-            .header("Tenant-Name", "tenantName")
             .jsonBody(rawRequestBody)
             .respondWith()
             .statusCode(400)
@@ -235,11 +230,8 @@ describe("TemplatesClient", () => {
 
         await expect(async () => {
             return await client.documents.templates.create({
-                tenantName: "tenantName",
-                body: {
-                    inheritFromId: "inheritFromId",
-                    name: "name",
-                },
+                inheritFromId: "inheritFromId",
+                name: "name",
             });
         }).rejects.toThrow(Corti.BadRequestError);
     });
@@ -252,6 +244,7 @@ describe("TemplatesClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
@@ -304,15 +297,12 @@ describe("TemplatesClient", () => {
         server
             .mockEndpoint()
             .get("/documents/templates/templateID")
-            .header("Tenant-Name", "base")
             .respondWith()
             .statusCode(200)
             .jsonBody(rawResponseBody)
             .build();
 
-        const response = await client.documents.templates.get("templateID", {
-            tenantName: "base",
-        });
+        const response = await client.documents.templates.get("templateID");
         expect(response).toEqual({
             id: "id",
             inheritedFromId: "inheritedFromId",
@@ -384,6 +374,7 @@ describe("TemplatesClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
@@ -392,16 +383,13 @@ describe("TemplatesClient", () => {
         server
             .mockEndpoint()
             .get("/documents/templates/templateID")
-            .header("Tenant-Name", "tenantName")
             .respondWith()
             .statusCode(404)
             .jsonBody(rawResponseBody)
             .build();
 
         await expect(async () => {
-            return await client.documents.templates.get("templateID", {
-                tenantName: "tenantName",
-            });
+            return await client.documents.templates.get("templateID");
         }).rejects.toThrow(Corti.NotFoundError);
     });
 
@@ -413,20 +401,13 @@ describe("TemplatesClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
-        server
-            .mockEndpoint()
-            .delete("/documents/templates/templateID")
-            .header("Tenant-Name", "base")
-            .respondWith()
-            .statusCode(200)
-            .build();
+        server.mockEndpoint().delete("/documents/templates/templateID").respondWith().statusCode(200).build();
 
-        const response = await client.documents.templates.delete("templateID", {
-            tenantName: "base",
-        });
+        const response = await client.documents.templates.delete("templateID");
         expect(response).toEqual(undefined);
     });
 
@@ -438,6 +419,7 @@ describe("TemplatesClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
@@ -446,16 +428,13 @@ describe("TemplatesClient", () => {
         server
             .mockEndpoint()
             .delete("/documents/templates/templateID")
-            .header("Tenant-Name", "tenantName")
             .respondWith()
             .statusCode(404)
             .jsonBody(rawResponseBody)
             .build();
 
         await expect(async () => {
-            return await client.documents.templates.delete("templateID", {
-                tenantName: "tenantName",
-            });
+            return await client.documents.templates.delete("templateID");
         }).rejects.toThrow(Corti.NotFoundError);
     });
 
@@ -467,6 +446,7 @@ describe("TemplatesClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
@@ -475,16 +455,13 @@ describe("TemplatesClient", () => {
         server
             .mockEndpoint()
             .delete("/documents/templates/templateID")
-            .header("Tenant-Name", "tenantName")
             .respondWith()
             .statusCode(409)
             .jsonBody(rawResponseBody)
             .build();
 
         await expect(async () => {
-            return await client.documents.templates.delete("templateID", {
-                tenantName: "tenantName",
-            });
+            return await client.documents.templates.delete("templateID");
         }).rejects.toThrow(Corti.ConflictError);
     });
 
@@ -496,6 +473,7 @@ describe("TemplatesClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
         const rawRequestBody = {};
@@ -548,16 +526,13 @@ describe("TemplatesClient", () => {
         server
             .mockEndpoint()
             .patch("/documents/templates/templateID")
-            .header("Tenant-Name", "base")
             .jsonBody(rawRequestBody)
             .respondWith()
             .statusCode(200)
             .jsonBody(rawResponseBody)
             .build();
 
-        const response = await client.documents.templates.update("templateID", {
-            tenantName: "base",
-        });
+        const response = await client.documents.templates.update("templateID");
         expect(response).toEqual({
             id: "id",
             inheritedFromId: "inheritedFromId",
@@ -629,6 +604,7 @@ describe("TemplatesClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
         const rawRequestBody = {};
@@ -637,7 +613,6 @@ describe("TemplatesClient", () => {
         server
             .mockEndpoint()
             .patch("/documents/templates/templateID")
-            .header("Tenant-Name", "tenantName")
             .jsonBody(rawRequestBody)
             .respondWith()
             .statusCode(400)
@@ -645,9 +620,7 @@ describe("TemplatesClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.documents.templates.update("templateID", {
-                tenantName: "tenantName",
-            });
+            return await client.documents.templates.update("templateID");
         }).rejects.toThrow(Corti.BadRequestError);
     });
 
@@ -659,6 +632,7 @@ describe("TemplatesClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
         const rawRequestBody = {};
@@ -667,7 +641,6 @@ describe("TemplatesClient", () => {
         server
             .mockEndpoint()
             .patch("/documents/templates/templateID")
-            .header("Tenant-Name", "tenantName")
             .jsonBody(rawRequestBody)
             .respondWith()
             .statusCode(404)
@@ -675,9 +648,7 @@ describe("TemplatesClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.documents.templates.update("templateID", {
-                tenantName: "tenantName",
-            });
+            return await client.documents.templates.update("templateID");
         }).rejects.toThrow(Corti.NotFoundError);
     });
 });

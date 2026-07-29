@@ -4,9 +4,7 @@ import type * as Corti from "../../../../index.js";
 
 /**
  * @example
- *     {
- *         tenantName: "base"
- *     }
+ *     {}
  */
 export interface InteractionsListRequest {
     /** Field used to sort interactions. Default is createdAt. */
@@ -21,6 +19,4 @@ export interface InteractionsListRequest {
     encounterStatus?: Corti.InteractionsEncounterStatusEnum | Corti.InteractionsEncounterStatusEnum[];
     /** A unique identifier for the patient. */
     patient?: string;
-    /** Identifies a distinct entity within Corti's multi-tenant system. Ensures correct routing and authentication of the request. */
-    tenantName: string;
 }

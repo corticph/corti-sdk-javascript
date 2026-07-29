@@ -25,33 +25,27 @@ export class FactsClient {
     /**
      * Returns a list of available fact groups, used to categorize facts associated with an interaction.
      *
-     * @param {Corti.FactsFactGroupsListRequest} request
      * @param {FactsClient.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Corti.InternalServerError}
      *
      * @example
-     *     await client.facts.factGroupsList({
-     *         tenantName: "base"
-     *     })
+     *     await client.facts.factGroupsList()
      */
     public factGroupsList(
-        request: Corti.FactsFactGroupsListRequest,
         requestOptions?: FactsClient.RequestOptions,
     ): core.HttpResponsePromise<Corti.FactsFactGroupsListResponse> {
-        return core.HttpResponsePromise.fromPromise(this.__factGroupsList(request, requestOptions));
+        return core.HttpResponsePromise.fromPromise(this.__factGroupsList(requestOptions));
     }
 
     private async __factGroupsList(
-        request: Corti.FactsFactGroupsListRequest,
         requestOptions?: FactsClient.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.FactsFactGroupsListResponse>> {
-        const { tenantName } = request;
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
             this._options?.headers,
-            mergeOnlyDefinedHeaders({ "Tenant-Name": tenantName }),
+            mergeOnlyDefinedHeaders({ "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName }),
             requestOptions?.headers,
         );
         const _response = await core.fetcher({
@@ -111,35 +105,29 @@ export class FactsClient {
      * Retrieves a list of facts for a given interaction.
      *
      * @param {Corti.Uuid} id - The unique identifier of the interaction. Must be a valid UUID.
-     * @param {Corti.FactsListRequest} request
      * @param {FactsClient.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Corti.GatewayTimeoutError}
      *
      * @example
-     *     await client.facts.list("f47ac10b-58cc-4372-a567-0e02b2c3d479", {
-     *         tenantName: "base"
-     *     })
+     *     await client.facts.list("f47ac10b-58cc-4372-a567-0e02b2c3d479")
      */
     public list(
         id: Corti.Uuid,
-        request: Corti.FactsListRequest,
         requestOptions?: FactsClient.RequestOptions,
     ): core.HttpResponsePromise<Corti.FactsListResponse> {
-        return core.HttpResponsePromise.fromPromise(this.__list(id, request, requestOptions));
+        return core.HttpResponsePromise.fromPromise(this.__list(id, requestOptions));
     }
 
     private async __list(
         id: Corti.Uuid,
-        request: Corti.FactsListRequest,
         requestOptions?: FactsClient.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.FactsListResponse>> {
-        const { tenantName } = request;
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
             this._options?.headers,
-            mergeOnlyDefinedHeaders({ "Tenant-Name": tenantName }),
+            mergeOnlyDefinedHeaders({ "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName }),
             requestOptions?.headers,
         );
         const _response = await core.fetcher({
@@ -206,7 +194,6 @@ export class FactsClient {
      *
      * @example
      *     await client.facts.create("f47ac10b-58cc-4372-a567-0e02b2c3d479", {
-     *         tenantName: "base",
      *         facts: [{
      *                 text: "text",
      *                 group: "other"
@@ -226,12 +213,11 @@ export class FactsClient {
         request: Corti.FactsCreateRequest,
         requestOptions?: FactsClient.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.FactsCreateResponse>> {
-        const { tenantName, ..._body } = request;
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
             this._options?.headers,
-            mergeOnlyDefinedHeaders({ "Tenant-Name": tenantName }),
+            mergeOnlyDefinedHeaders({ "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName }),
             requestOptions?.headers,
         );
         const _response = await core.fetcher({
@@ -245,7 +231,7 @@ export class FactsClient {
             contentType: "application/json",
             queryParameters: requestOptions?.queryParams,
             requestType: "json",
-            body: serializers.FactsCreateRequest.jsonOrThrow(_body, {
+            body: serializers.FactsCreateRequest.jsonOrThrow(request, {
                 unrecognizedObjectKeys: "strip",
                 omitUndefined: true,
             }),
@@ -304,7 +290,6 @@ export class FactsClient {
      *
      * @example
      *     await client.facts.batchUpdate("f47ac10b-58cc-4372-a567-0e02b2c3d479", {
-     *         tenantName: "base",
      *         facts: [{
      *                 factId: "3c9d8a12-7f44-4b3e-9e6f-9271c2bbfa08"
      *             }]
@@ -323,12 +308,11 @@ export class FactsClient {
         request: Corti.FactsBatchUpdateRequest,
         requestOptions?: FactsClient.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.FactsBatchUpdateResponse>> {
-        const { tenantName, ..._body } = request;
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
             this._options?.headers,
-            mergeOnlyDefinedHeaders({ "Tenant-Name": tenantName }),
+            mergeOnlyDefinedHeaders({ "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName }),
             requestOptions?.headers,
         );
         const _response = await core.fetcher({
@@ -342,7 +326,7 @@ export class FactsClient {
             contentType: "application/json",
             queryParameters: requestOptions?.queryParams,
             requestType: "json",
-            body: serializers.FactsBatchUpdateRequest.jsonOrThrow(_body, {
+            body: serializers.FactsBatchUpdateRequest.jsonOrThrow(request, {
                 unrecognizedObjectKeys: "strip",
                 omitUndefined: true,
             }),
@@ -401,14 +385,12 @@ export class FactsClient {
      * @throws {@link Corti.GatewayTimeoutError}
      *
      * @example
-     *     await client.facts.update("f47ac10b-58cc-4372-a567-0e02b2c3d479", "3c9d8a12-7f44-4b3e-9e6f-9271c2bbfa08", {
-     *         tenantName: "base"
-     *     })
+     *     await client.facts.update("f47ac10b-58cc-4372-a567-0e02b2c3d479", "3c9d8a12-7f44-4b3e-9e6f-9271c2bbfa08")
      */
     public update(
         id: Corti.Uuid,
         factId: string,
-        request: Corti.FactsUpdateRequest,
+        request: Corti.FactsUpdateRequest = {},
         requestOptions?: FactsClient.RequestOptions,
     ): core.HttpResponsePromise<Corti.FactsUpdateResponse> {
         return core.HttpResponsePromise.fromPromise(this.__update(id, factId, request, requestOptions));
@@ -417,15 +399,14 @@ export class FactsClient {
     private async __update(
         id: Corti.Uuid,
         factId: string,
-        request: Corti.FactsUpdateRequest,
+        request: Corti.FactsUpdateRequest = {},
         requestOptions?: FactsClient.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.FactsUpdateResponse>> {
-        const { tenantName, ..._body } = request;
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
             this._options?.headers,
-            mergeOnlyDefinedHeaders({ "Tenant-Name": tenantName }),
+            mergeOnlyDefinedHeaders({ "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName }),
             requestOptions?.headers,
         );
         const _response = await core.fetcher({
@@ -439,7 +420,7 @@ export class FactsClient {
             contentType: "application/json",
             queryParameters: requestOptions?.queryParams,
             requestType: "json",
-            body: serializers.FactsUpdateRequest.jsonOrThrow(_body, {
+            body: serializers.FactsUpdateRequest.jsonOrThrow(request, {
                 unrecognizedObjectKeys: "strip",
                 omitUndefined: true,
             }),
@@ -502,7 +483,6 @@ export class FactsClient {
      *
      * @example
      *     await client.facts.extract({
-     *         tenantName: "base",
      *         context: [{
      *                 type: "text",
      *                 text: "text"
@@ -521,12 +501,11 @@ export class FactsClient {
         request: Corti.FactsExtractRequest,
         requestOptions?: FactsClient.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.FactsExtractResponse>> {
-        const { tenantName, ..._body } = request;
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
             this._options?.headers,
-            mergeOnlyDefinedHeaders({ "Tenant-Name": tenantName }),
+            mergeOnlyDefinedHeaders({ "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName }),
             requestOptions?.headers,
         );
         const _response = await core.fetcher({
@@ -540,7 +519,7 @@ export class FactsClient {
             contentType: "application/json",
             queryParameters: requestOptions?.queryParams,
             requestType: "json",
-            body: serializers.FactsExtractRequest.jsonOrThrow(_body, {
+            body: serializers.FactsExtractRequest.jsonOrThrow(request, {
                 unrecognizedObjectKeys: "strip",
                 omitUndefined: true,
             }),
