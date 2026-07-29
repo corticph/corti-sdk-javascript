@@ -1,7 +1,6 @@
 import { CortiClient as BaseCortiClient } from "../Client.js";
 import * as core from "../core/index.js";
 import type * as environments from "../environments.js";
-import { CustomAgentic } from "./agents/CustomAgentic.js";
 import { CustomAgents } from "./agents/CustomAgents.js";
 import { CortiAuth } from "./auth/CortiAuth.js";
 import { CustomStream } from "./stream/CustomStream.js";
@@ -46,7 +45,6 @@ export class CortiClient extends BaseCortiClient {
     protected override _stream: CustomStream | undefined;
     protected override _transcribe: CustomTranscribe | undefined;
     protected override _agents: CustomAgents | undefined;
-    protected override _agentic: CustomAgentic | undefined;
 
     private readonly _encodeHeadersAsWsProtocols: boolean | undefined;
 
@@ -89,13 +87,8 @@ export class CortiClient extends BaseCortiClient {
         }));
     }
 
-    /** @deprecated Use {@link CortiClient.agentic} (Agents API v2) instead. */
     public override get agents(): CustomAgents {
         return (this._agents ??= new CustomAgents(this._options));
-    }
-
-    public override get agentic(): CustomAgentic {
-        return (this._agentic ??= new CustomAgentic(this._options));
     }
 
     /**
