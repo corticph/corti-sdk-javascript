@@ -65,6 +65,7 @@ export class DocumentsClient {
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
             this._options?.headers,
+            mergeOnlyDefinedHeaders({ "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName }),
             requestOptions?.headers,
         );
         const _response = await core.fetcher({
@@ -181,7 +182,10 @@ export class DocumentsClient {
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
             this._options?.headers,
-            mergeOnlyDefinedHeaders({ "X-Corti-Retention-Policy": cortiRetentionPolicy }),
+            mergeOnlyDefinedHeaders({
+                "X-Corti-Retention-Policy": cortiRetentionPolicy,
+                "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName,
+            }),
             requestOptions?.headers,
         );
         const _response = await core.fetcher({
@@ -297,6 +301,7 @@ export class DocumentsClient {
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
             this._options?.headers,
+            mergeOnlyDefinedHeaders({ "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName }),
             requestOptions?.headers,
         );
         const _response = await core.fetcher({
@@ -404,6 +409,7 @@ export class DocumentsClient {
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
             this._options?.headers,
+            mergeOnlyDefinedHeaders({ "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName }),
             requestOptions?.headers,
         );
         const _response = await core.fetcher({
@@ -505,6 +511,7 @@ export class DocumentsClient {
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
             this._options?.headers,
+            mergeOnlyDefinedHeaders({ "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName }),
             requestOptions?.headers,
         );
         const _response = await core.fetcher({
@@ -625,7 +632,10 @@ export class DocumentsClient {
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
             this._options?.headers,
-            mergeOnlyDefinedHeaders({ "X-Corti-Retention-Policy": cortiRetentionPolicy }),
+            mergeOnlyDefinedHeaders({
+                "X-Corti-Retention-Policy": cortiRetentionPolicy,
+                "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName,
+            }),
             requestOptions?.headers,
         );
         const _response = await core.fetcher({

@@ -14,6 +14,7 @@ describe("DocumentsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
@@ -87,6 +88,7 @@ describe("DocumentsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
@@ -113,6 +115,7 @@ describe("DocumentsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
@@ -139,6 +142,7 @@ describe("DocumentsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
@@ -165,6 +169,7 @@ describe("DocumentsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
@@ -191,6 +196,7 @@ describe("DocumentsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
         const rawRequestBody = {
@@ -276,6 +282,7 @@ describe("DocumentsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
         const rawRequestBody = {
@@ -339,6 +346,7 @@ describe("DocumentsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
         const rawRequestBody = {
@@ -402,6 +410,7 @@ describe("DocumentsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
         const rawRequestBody = {
@@ -465,6 +474,7 @@ describe("DocumentsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
         const rawRequestBody = {
@@ -528,6 +538,7 @@ describe("DocumentsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
@@ -596,6 +607,7 @@ describe("DocumentsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
@@ -622,6 +634,7 @@ describe("DocumentsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
@@ -648,6 +661,7 @@ describe("DocumentsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
@@ -674,6 +688,7 @@ describe("DocumentsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
@@ -700,6 +715,7 @@ describe("DocumentsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
@@ -725,6 +741,7 @@ describe("DocumentsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
@@ -751,6 +768,7 @@ describe("DocumentsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
@@ -777,6 +795,7 @@ describe("DocumentsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
@@ -803,6 +822,7 @@ describe("DocumentsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
@@ -829,6 +849,7 @@ describe("DocumentsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
         const rawRequestBody = {};
@@ -898,6 +919,7 @@ describe("DocumentsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
         const rawRequestBody = {};
@@ -925,6 +947,7 @@ describe("DocumentsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
         const rawRequestBody = {};
@@ -952,6 +975,7 @@ describe("DocumentsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
         const rawRequestBody = {};
@@ -979,6 +1003,7 @@ describe("DocumentsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
         const rawRequestBody = {};
@@ -1006,6 +1031,7 @@ describe("DocumentsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
         const rawRequestBody = { outputLanguage: "outputLanguage", templateRef: { templateId: "templateId" } };
@@ -1074,6 +1100,7 @@ describe("DocumentsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
         const rawRequestBody = { templateRef: { templateId: "templateId" }, outputLanguage: "outputLanguage" };
@@ -1108,6 +1135,7 @@ describe("DocumentsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
         const rawRequestBody = { templateRef: { templateId: "templateId" }, outputLanguage: "outputLanguage" };
@@ -1142,6 +1170,7 @@ describe("DocumentsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
         const rawRequestBody = { templateRef: { templateId: "templateId" }, outputLanguage: "outputLanguage" };
@@ -1176,6 +1205,7 @@ describe("DocumentsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
         const rawRequestBody = { templateRef: { templateId: "templateId" }, outputLanguage: "outputLanguage" };

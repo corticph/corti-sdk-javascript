@@ -14,6 +14,7 @@ describe("TemplatesClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
@@ -78,6 +79,7 @@ describe("TemplatesClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
         const rawRequestBody = { name: "name", inheritFromId: "inheritFromId" };
@@ -211,6 +213,7 @@ describe("TemplatesClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
         const rawRequestBody = { inheritFromId: "inheritFromId", name: "name" };
@@ -241,6 +244,7 @@ describe("TemplatesClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
@@ -370,6 +374,7 @@ describe("TemplatesClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
@@ -396,6 +401,7 @@ describe("TemplatesClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
@@ -413,6 +419,7 @@ describe("TemplatesClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
@@ -439,6 +446,7 @@ describe("TemplatesClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
@@ -465,6 +473,7 @@ describe("TemplatesClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
         const rawRequestBody = {};
@@ -595,6 +604,7 @@ describe("TemplatesClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
         const rawRequestBody = {};
@@ -622,6 +632,7 @@ describe("TemplatesClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
+            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
         const rawRequestBody = {};
