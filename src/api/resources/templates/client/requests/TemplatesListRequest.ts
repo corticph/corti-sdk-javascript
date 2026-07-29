@@ -2,7 +2,9 @@
 
 /**
  * @example
- *     {}
+ *     {
+ *         tenantName: "base"
+ *     }
  */
 export interface TemplatesListRequest {
     /** Filter templates by organization. */
@@ -11,4 +13,6 @@ export interface TemplatesListRequest {
     lang?: string | string[];
     /** Filter templates by their status. */
     status?: string | string[];
+    /** Identifies a distinct entity within Corti's multi-tenant system. Ensures correct routing and authentication of the request. */
+    tenantName: string;
 }

@@ -14,7 +14,6 @@ describe("FactsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
-            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
@@ -22,9 +21,18 @@ describe("FactsClient", () => {
             data: [{ id: "f47ac10b-58cc-4372-a567-0e02b2c3d479", key: "key", translations: [{}] }],
         };
 
-        server.mockEndpoint().get("/factgroups/").respondWith().statusCode(200).jsonBody(rawResponseBody).build();
+        server
+            .mockEndpoint()
+            .get("/factgroups/")
+            .header("Tenant-Name", "base")
+            .respondWith()
+            .statusCode(200)
+            .jsonBody(rawResponseBody)
+            .build();
 
-        const response = await client.facts.factGroupsList();
+        const response = await client.facts.factGroupsList({
+            tenantName: "base",
+        });
         expect(response).toEqual({
             data: [
                 {
@@ -44,16 +52,24 @@ describe("FactsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
-            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
         const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
 
-        server.mockEndpoint().get("/factgroups/").respondWith().statusCode(500).jsonBody(rawResponseBody).build();
+        server
+            .mockEndpoint()
+            .get("/factgroups/")
+            .header("Tenant-Name", "tenantName")
+            .respondWith()
+            .statusCode(500)
+            .jsonBody(rawResponseBody)
+            .build();
 
         await expect(async () => {
-            return await client.facts.factGroupsList();
+            return await client.facts.factGroupsList({
+                tenantName: "tenantName",
+            });
         }).rejects.toThrow(Corti.InternalServerError);
     });
 
@@ -65,7 +81,6 @@ describe("FactsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
-            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
@@ -88,12 +103,15 @@ describe("FactsClient", () => {
         server
             .mockEndpoint()
             .get("/interactions/f47ac10b-58cc-4372-a567-0e02b2c3d479/facts/")
+            .header("Tenant-Name", "base")
             .respondWith()
             .statusCode(200)
             .jsonBody(rawResponseBody)
             .build();
 
-        const response = await client.facts.list("f47ac10b-58cc-4372-a567-0e02b2c3d479");
+        const response = await client.facts.list("f47ac10b-58cc-4372-a567-0e02b2c3d479", {
+            tenantName: "base",
+        });
         expect(response).toEqual({
             facts: [
                 {
@@ -119,7 +137,6 @@ describe("FactsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
-            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
@@ -128,13 +145,16 @@ describe("FactsClient", () => {
         server
             .mockEndpoint()
             .get("/interactions/id/facts/")
+            .header("Tenant-Name", "tenantName")
             .respondWith()
             .statusCode(504)
             .jsonBody(rawResponseBody)
             .build();
 
         await expect(async () => {
-            return await client.facts.list("id");
+            return await client.facts.list("id", {
+                tenantName: "tenantName",
+            });
         }).rejects.toThrow(Corti.GatewayTimeoutError);
     });
 
@@ -146,7 +166,6 @@ describe("FactsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
-            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
         const rawRequestBody = { facts: [{ text: "text", group: "other" }] };
@@ -167,6 +186,7 @@ describe("FactsClient", () => {
         server
             .mockEndpoint()
             .post("/interactions/f47ac10b-58cc-4372-a567-0e02b2c3d479/facts/")
+            .header("Tenant-Name", "base")
             .jsonBody(rawRequestBody)
             .respondWith()
             .statusCode(200)
@@ -174,6 +194,7 @@ describe("FactsClient", () => {
             .build();
 
         const response = await client.facts.create("f47ac10b-58cc-4372-a567-0e02b2c3d479", {
+            tenantName: "base",
             facts: [
                 {
                     text: "text",
@@ -204,7 +225,6 @@ describe("FactsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
-            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
         const rawRequestBody = {
@@ -218,6 +238,7 @@ describe("FactsClient", () => {
         server
             .mockEndpoint()
             .post("/interactions/id/facts/")
+            .header("Tenant-Name", "tenantName")
             .jsonBody(rawRequestBody)
             .respondWith()
             .statusCode(504)
@@ -226,6 +247,7 @@ describe("FactsClient", () => {
 
         await expect(async () => {
             return await client.facts.create("id", {
+                tenantName: "tenantName",
                 facts: [
                     {
                         text: "text",
@@ -248,7 +270,6 @@ describe("FactsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
-            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
         const rawRequestBody = { facts: [{ factId: "3c9d8a12-7f44-4b3e-9e6f-9271c2bbfa08" }] };
@@ -270,6 +291,7 @@ describe("FactsClient", () => {
         server
             .mockEndpoint()
             .patch("/interactions/f47ac10b-58cc-4372-a567-0e02b2c3d479/facts/")
+            .header("Tenant-Name", "base")
             .jsonBody(rawRequestBody)
             .respondWith()
             .statusCode(200)
@@ -277,6 +299,7 @@ describe("FactsClient", () => {
             .build();
 
         const response = await client.facts.batchUpdate("f47ac10b-58cc-4372-a567-0e02b2c3d479", {
+            tenantName: "base",
             facts: [
                 {
                     factId: "3c9d8a12-7f44-4b3e-9e6f-9271c2bbfa08",
@@ -307,7 +330,6 @@ describe("FactsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
-            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
         const rawRequestBody = { facts: [{ factId: "factId" }, { factId: "factId" }] };
@@ -316,6 +338,7 @@ describe("FactsClient", () => {
         server
             .mockEndpoint()
             .patch("/interactions/id/facts/")
+            .header("Tenant-Name", "tenantName")
             .jsonBody(rawRequestBody)
             .respondWith()
             .statusCode(504)
@@ -324,6 +347,7 @@ describe("FactsClient", () => {
 
         await expect(async () => {
             return await client.facts.batchUpdate("id", {
+                tenantName: "tenantName",
                 facts: [
                     {
                         factId: "factId",
@@ -344,7 +368,6 @@ describe("FactsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
-            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
         const rawRequestBody = {};
@@ -362,6 +385,7 @@ describe("FactsClient", () => {
         server
             .mockEndpoint()
             .patch("/interactions/f47ac10b-58cc-4372-a567-0e02b2c3d479/facts/3c9d8a12-7f44-4b3e-9e6f-9271c2bbfa08")
+            .header("Tenant-Name", "base")
             .jsonBody(rawRequestBody)
             .respondWith()
             .statusCode(200)
@@ -371,6 +395,9 @@ describe("FactsClient", () => {
         const response = await client.facts.update(
             "f47ac10b-58cc-4372-a567-0e02b2c3d479",
             "3c9d8a12-7f44-4b3e-9e6f-9271c2bbfa08",
+            {
+                tenantName: "base",
+            },
         );
         expect(response).toEqual({
             id: "3c9d8a12-7f44-4b3e-9e6f-9271c2bbfa08",
@@ -392,7 +419,6 @@ describe("FactsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
-            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
         const rawRequestBody = {};
@@ -401,6 +427,7 @@ describe("FactsClient", () => {
         server
             .mockEndpoint()
             .patch("/interactions/id/facts/factId")
+            .header("Tenant-Name", "tenantName")
             .jsonBody(rawRequestBody)
             .respondWith()
             .statusCode(504)
@@ -408,7 +435,9 @@ describe("FactsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.facts.update("id", "factId");
+            return await client.facts.update("id", "factId", {
+                tenantName: "tenantName",
+            });
         }).rejects.toThrow(Corti.GatewayTimeoutError);
     });
 
@@ -420,7 +449,6 @@ describe("FactsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
-            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
         const rawRequestBody = { context: [{ type: "text", text: "text" }], outputLanguage: "outputLanguage" };
@@ -433,6 +461,7 @@ describe("FactsClient", () => {
         server
             .mockEndpoint()
             .post("/tools/extract-facts")
+            .header("Tenant-Name", "base")
             .jsonBody(rawRequestBody)
             .respondWith()
             .statusCode(200)
@@ -440,6 +469,7 @@ describe("FactsClient", () => {
             .build();
 
         const response = await client.facts.extract({
+            tenantName: "base",
             context: [
                 {
                     type: "text",
@@ -471,7 +501,6 @@ describe("FactsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
-            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
         const rawRequestBody = {
@@ -486,6 +515,7 @@ describe("FactsClient", () => {
         server
             .mockEndpoint()
             .post("/tools/extract-facts")
+            .header("Tenant-Name", "tenantName")
             .jsonBody(rawRequestBody)
             .respondWith()
             .statusCode(504)
@@ -494,6 +524,7 @@ describe("FactsClient", () => {
 
         await expect(async () => {
             return await client.facts.extract({
+                tenantName: "tenantName",
                 context: [
                     {
                         type: "text",

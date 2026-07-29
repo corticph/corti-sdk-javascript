@@ -9,7 +9,7 @@ import { CommonCodingSystemEnum } from "../../../../types/CommonCodingSystemEnum
 
 export const CodesGeneralPredictRequest: core.serialization.Schema<
     serializers.CodesGeneralPredictRequest.Raw,
-    Corti.CodesGeneralPredictRequest
+    Omit<Corti.CodesGeneralPredictRequest, "tenantName">
 > = core.serialization.object({
     system: core.serialization.list(CommonCodingSystemEnum),
     context: core.serialization.list(CommonAiContext),

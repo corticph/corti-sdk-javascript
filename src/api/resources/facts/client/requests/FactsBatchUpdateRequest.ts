@@ -5,12 +5,15 @@ import type * as Corti from "../../../../index.js";
 /**
  * @example
  *     {
+ *         tenantName: "base",
  *         facts: [{
  *                 factId: "3c9d8a12-7f44-4b3e-9e6f-9271c2bbfa08"
  *             }]
  *     }
  */
 export interface FactsBatchUpdateRequest {
+    /** Identifies a distinct entity within Corti's multi-tenant system. Ensures correct routing and authentication of the request. */
+    tenantName: string;
     /** A list of facts to be updated. */
     facts: Corti.FactsBatchUpdateInput[];
 }

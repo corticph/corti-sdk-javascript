@@ -1,6 +1,5 @@
 export * from "./agents/client/requests/index.js";
 export * as agents from "./agents/index.js";
-export * from "./agents/types/index.js";
 export * as auth from "./auth/index.js";
 export * from "./auth/types/index.js";
 export * from "./codes/client/requests/index.js";
@@ -15,6 +14,7 @@ export * from "./interactions/types/index.js";
 export * from "./languages/client/requests/index.js";
 export * as languages from "./languages/index.js";
 export * from "./languages/types/index.js";
+export * from "./recordings/client/requests/index.js";
 export * as recordings from "./recordings/index.js";
 export * as stream from "./stream/index.js";
 export * from "./templates/client/requests/index.js";

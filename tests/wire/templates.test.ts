@@ -14,7 +14,6 @@ describe("TemplatesClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
-            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
@@ -37,9 +36,18 @@ describe("TemplatesClient", () => {
             ],
         };
 
-        server.mockEndpoint().get("/templateSections/").respondWith().statusCode(200).jsonBody(rawResponseBody).build();
+        server
+            .mockEndpoint()
+            .get("/templateSections/")
+            .header("Tenant-Name", "base")
+            .respondWith()
+            .statusCode(200)
+            .jsonBody(rawResponseBody)
+            .build();
 
-        const response = await client.templates.sectionList();
+        const response = await client.templates.sectionList({
+            tenantName: "base",
+        });
         expect(response).toEqual({
             data: [
                 {
@@ -74,16 +82,24 @@ describe("TemplatesClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
-            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
         const rawResponseBody = { key: "value" };
 
-        server.mockEndpoint().get("/templateSections/").respondWith().statusCode(401).jsonBody(rawResponseBody).build();
+        server
+            .mockEndpoint()
+            .get("/templateSections/")
+            .header("Tenant-Name", "tenantName")
+            .respondWith()
+            .statusCode(401)
+            .jsonBody(rawResponseBody)
+            .build();
 
         await expect(async () => {
-            return await client.templates.sectionList();
+            return await client.templates.sectionList({
+                tenantName: "tenantName",
+            });
         }).rejects.toThrow(Corti.UnauthorizedError);
     });
 
@@ -95,16 +111,24 @@ describe("TemplatesClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
-            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
         const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
 
-        server.mockEndpoint().get("/templateSections/").respondWith().statusCode(500).jsonBody(rawResponseBody).build();
+        server
+            .mockEndpoint()
+            .get("/templateSections/")
+            .header("Tenant-Name", "tenantName")
+            .respondWith()
+            .statusCode(500)
+            .jsonBody(rawResponseBody)
+            .build();
 
         await expect(async () => {
-            return await client.templates.sectionList();
+            return await client.templates.sectionList({
+                tenantName: "tenantName",
+            });
         }).rejects.toThrow(Corti.InternalServerError);
     });
 
@@ -116,7 +140,6 @@ describe("TemplatesClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
-            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
@@ -148,9 +171,18 @@ describe("TemplatesClient", () => {
             ],
         };
 
-        server.mockEndpoint().get("/templates/").respondWith().statusCode(200).jsonBody(rawResponseBody).build();
+        server
+            .mockEndpoint()
+            .get("/templates/")
+            .header("Tenant-Name", "base")
+            .respondWith()
+            .statusCode(200)
+            .jsonBody(rawResponseBody)
+            .build();
 
-        const response = await client.templates.list();
+        const response = await client.templates.list({
+            tenantName: "base",
+        });
         expect(response).toEqual({
             data: [
                 {
@@ -198,16 +230,24 @@ describe("TemplatesClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
-            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
         const rawResponseBody = { key: "value" };
 
-        server.mockEndpoint().get("/templates/").respondWith().statusCode(401).jsonBody(rawResponseBody).build();
+        server
+            .mockEndpoint()
+            .get("/templates/")
+            .header("Tenant-Name", "tenantName")
+            .respondWith()
+            .statusCode(401)
+            .jsonBody(rawResponseBody)
+            .build();
 
         await expect(async () => {
-            return await client.templates.list();
+            return await client.templates.list({
+                tenantName: "tenantName",
+            });
         }).rejects.toThrow(Corti.UnauthorizedError);
     });
 
@@ -219,16 +259,24 @@ describe("TemplatesClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
-            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
         const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
 
-        server.mockEndpoint().get("/templates/").respondWith().statusCode(500).jsonBody(rawResponseBody).build();
+        server
+            .mockEndpoint()
+            .get("/templates/")
+            .header("Tenant-Name", "tenantName")
+            .respondWith()
+            .statusCode(500)
+            .jsonBody(rawResponseBody)
+            .build();
 
         await expect(async () => {
-            return await client.templates.list();
+            return await client.templates.list({
+                tenantName: "tenantName",
+            });
         }).rejects.toThrow(Corti.InternalServerError);
     });
 
@@ -240,7 +288,6 @@ describe("TemplatesClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
-            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
@@ -268,9 +315,18 @@ describe("TemplatesClient", () => {
             translations: [{ languageId: "languageId", name: "name", description: "description" }],
         };
 
-        server.mockEndpoint().get("/templates/key").respondWith().statusCode(200).jsonBody(rawResponseBody).build();
+        server
+            .mockEndpoint()
+            .get("/templates/key")
+            .header("Tenant-Name", "base")
+            .respondWith()
+            .statusCode(200)
+            .jsonBody(rawResponseBody)
+            .build();
 
-        const response = await client.templates.get("key");
+        const response = await client.templates.get("key", {
+            tenantName: "base",
+        });
         expect(response).toEqual({
             updatedAt: new Date("2024-01-15T09:30:00.000Z"),
             name: "name",
@@ -316,16 +372,24 @@ describe("TemplatesClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
-            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
         const rawResponseBody = { key: "value" };
 
-        server.mockEndpoint().get("/templates/key").respondWith().statusCode(401).jsonBody(rawResponseBody).build();
+        server
+            .mockEndpoint()
+            .get("/templates/key")
+            .header("Tenant-Name", "tenantName")
+            .respondWith()
+            .statusCode(401)
+            .jsonBody(rawResponseBody)
+            .build();
 
         await expect(async () => {
-            return await client.templates.get("key");
+            return await client.templates.get("key", {
+                tenantName: "tenantName",
+            });
         }).rejects.toThrow(Corti.UnauthorizedError);
     });
 
@@ -337,16 +401,24 @@ describe("TemplatesClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
-            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
         const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
 
-        server.mockEndpoint().get("/templates/key").respondWith().statusCode(500).jsonBody(rawResponseBody).build();
+        server
+            .mockEndpoint()
+            .get("/templates/key")
+            .header("Tenant-Name", "tenantName")
+            .respondWith()
+            .statusCode(500)
+            .jsonBody(rawResponseBody)
+            .build();
 
         await expect(async () => {
-            return await client.templates.get("key");
+            return await client.templates.get("key", {
+                tenantName: "tenantName",
+            });
         }).rejects.toThrow(Corti.InternalServerError);
     });
 });

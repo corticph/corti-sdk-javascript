@@ -14,7 +14,6 @@ describe("RecordingsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
-            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
@@ -23,12 +22,15 @@ describe("RecordingsClient", () => {
         server
             .mockEndpoint()
             .get("/interactions/f47ac10b-58cc-4372-a567-0e02b2c3d479/recordings/")
+            .header("Tenant-Name", "base")
             .respondWith()
             .statusCode(200)
             .jsonBody(rawResponseBody)
             .build();
 
-        const response = await client.recordings.list("f47ac10b-58cc-4372-a567-0e02b2c3d479");
+        const response = await client.recordings.list("f47ac10b-58cc-4372-a567-0e02b2c3d479", {
+            tenantName: "base",
+        });
         expect(response).toEqual({
             recordings: ["f47ac10b-58cc-4372-a567-0e02b2c3d479"],
         });
@@ -42,7 +44,6 @@ describe("RecordingsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
-            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
@@ -51,13 +52,16 @@ describe("RecordingsClient", () => {
         server
             .mockEndpoint()
             .get("/interactions/id/recordings/")
+            .header("Tenant-Name", "tenantName")
             .respondWith()
             .statusCode(400)
             .jsonBody(rawResponseBody)
             .build();
 
         await expect(async () => {
-            return await client.recordings.list("id");
+            return await client.recordings.list("id", {
+                tenantName: "tenantName",
+            });
         }).rejects.toThrow(Corti.BadRequestError);
     });
 
@@ -69,7 +73,6 @@ describe("RecordingsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
-            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
@@ -78,13 +81,16 @@ describe("RecordingsClient", () => {
         server
             .mockEndpoint()
             .get("/interactions/id/recordings/")
+            .header("Tenant-Name", "tenantName")
             .respondWith()
             .statusCode(403)
             .jsonBody(rawResponseBody)
             .build();
 
         await expect(async () => {
-            return await client.recordings.list("id");
+            return await client.recordings.list("id", {
+                tenantName: "tenantName",
+            });
         }).rejects.toThrow(Corti.ForbiddenError);
     });
 
@@ -96,7 +102,6 @@ describe("RecordingsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
-            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
@@ -105,13 +110,16 @@ describe("RecordingsClient", () => {
         server
             .mockEndpoint()
             .get("/interactions/id/recordings/")
+            .header("Tenant-Name", "tenantName")
             .respondWith()
             .statusCode(500)
             .jsonBody(rawResponseBody)
             .build();
 
         await expect(async () => {
-            return await client.recordings.list("id");
+            return await client.recordings.list("id", {
+                tenantName: "tenantName",
+            });
         }).rejects.toThrow(Corti.InternalServerError);
     });
 
@@ -123,7 +131,6 @@ describe("RecordingsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
-            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
@@ -132,13 +139,16 @@ describe("RecordingsClient", () => {
         server
             .mockEndpoint()
             .get("/interactions/id/recordings/")
+            .header("Tenant-Name", "tenantName")
             .respondWith()
             .statusCode(504)
             .jsonBody(rawResponseBody)
             .build();
 
         await expect(async () => {
-            return await client.recordings.list("id");
+            return await client.recordings.list("id", {
+                tenantName: "tenantName",
+            });
         }).rejects.toThrow(Corti.GatewayTimeoutError);
     });
 
@@ -150,7 +160,6 @@ describe("RecordingsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
-            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
@@ -159,6 +168,7 @@ describe("RecordingsClient", () => {
             .delete(
                 "/interactions/f47ac10b-58cc-4372-a567-0e02b2c3d479/recordings/f47ac10b-58cc-4372-a567-0e02b2c3d479",
             )
+            .header("Tenant-Name", "base")
             .respondWith()
             .statusCode(200)
             .build();
@@ -166,6 +176,9 @@ describe("RecordingsClient", () => {
         const response = await client.recordings.delete(
             "f47ac10b-58cc-4372-a567-0e02b2c3d479",
             "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+            {
+                tenantName: "base",
+            },
         );
         expect(response).toEqual(undefined);
     });
@@ -178,7 +191,6 @@ describe("RecordingsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
-            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
@@ -187,13 +199,16 @@ describe("RecordingsClient", () => {
         server
             .mockEndpoint()
             .delete("/interactions/id/recordings/recordingId")
+            .header("Tenant-Name", "tenantName")
             .respondWith()
             .statusCode(403)
             .jsonBody(rawResponseBody)
             .build();
 
         await expect(async () => {
-            return await client.recordings.delete("id", "recordingId");
+            return await client.recordings.delete("id", "recordingId", {
+                tenantName: "tenantName",
+            });
         }).rejects.toThrow(Corti.ForbiddenError);
     });
 
@@ -205,7 +220,6 @@ describe("RecordingsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
-            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
@@ -214,13 +228,16 @@ describe("RecordingsClient", () => {
         server
             .mockEndpoint()
             .delete("/interactions/id/recordings/recordingId")
+            .header("Tenant-Name", "tenantName")
             .respondWith()
             .statusCode(404)
             .jsonBody(rawResponseBody)
             .build();
 
         await expect(async () => {
-            return await client.recordings.delete("id", "recordingId");
+            return await client.recordings.delete("id", "recordingId", {
+                tenantName: "tenantName",
+            });
         }).rejects.toThrow(Corti.NotFoundError);
     });
 
@@ -232,7 +249,6 @@ describe("RecordingsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
-            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
@@ -241,13 +257,16 @@ describe("RecordingsClient", () => {
         server
             .mockEndpoint()
             .delete("/interactions/id/recordings/recordingId")
+            .header("Tenant-Name", "tenantName")
             .respondWith()
             .statusCode(500)
             .jsonBody(rawResponseBody)
             .build();
 
         await expect(async () => {
-            return await client.recordings.delete("id", "recordingId");
+            return await client.recordings.delete("id", "recordingId", {
+                tenantName: "tenantName",
+            });
         }).rejects.toThrow(Corti.InternalServerError);
     });
 
@@ -259,7 +278,6 @@ describe("RecordingsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
-            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
@@ -268,13 +286,16 @@ describe("RecordingsClient", () => {
         server
             .mockEndpoint()
             .delete("/interactions/id/recordings/recordingId")
+            .header("Tenant-Name", "tenantName")
             .respondWith()
             .statusCode(504)
             .jsonBody(rawResponseBody)
             .build();
 
         await expect(async () => {
-            return await client.recordings.delete("id", "recordingId");
+            return await client.recordings.delete("id", "recordingId", {
+                tenantName: "tenantName",
+            });
         }).rejects.toThrow(Corti.GatewayTimeoutError);
     });
 });

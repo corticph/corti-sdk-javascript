@@ -5,6 +5,7 @@ import type * as Corti from "../../../../index.js";
 /**
  * @example
  *     {
+ *         tenantName: "base",
  *         system: ["icd10cm-outpatient", "cpt"],
  *         context: [{
  *                 type: "text",
@@ -14,6 +15,7 @@ import type * as Corti from "../../../../index.js";
  *
  * @example
  *     {
+ *         tenantName: "base",
  *         system: ["icd10cm-outpatient"],
  *         context: [{
  *                 type: "text",
@@ -26,6 +28,8 @@ import type * as Corti from "../../../../index.js";
  *     }
  */
 export interface CodesGeneralPredictRequest {
+    /** Identifies a distinct entity within Corti's multi-tenant system. Ensures correct routing and authentication of the request. */
+    tenantName: string;
     /** List of coding systems for prediction */
     system: Corti.CommonCodingSystemEnum[];
     /** Select either `text` or `documentId` as input context to the model for code prediction. Evidence indices in the response map to this array. */

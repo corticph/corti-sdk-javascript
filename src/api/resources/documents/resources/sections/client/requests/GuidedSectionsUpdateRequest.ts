@@ -4,9 +4,13 @@ import type * as Corti from "../../../../../../index.js";
 
 /**
  * @example
- *     {}
+ *     {
+ *         tenantName: "base"
+ *     }
  */
 export interface GuidedSectionsUpdateRequest {
+    /** Identifies a distinct entity within Corti's multi-tenant system. Ensures correct routing and authentication of the request. */
+    tenantName: string;
     /** A human-readable identifier for this section. Not passed to the LLM. */
     name?: string;
     /** A description for this section. Not passed to the LLM. */

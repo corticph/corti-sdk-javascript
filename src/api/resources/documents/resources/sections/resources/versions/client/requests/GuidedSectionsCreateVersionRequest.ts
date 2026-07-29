@@ -5,9 +5,12 @@ import type * as Corti from "../../../../../../../../index.js";
 /**
  * @example
  *     {
+ *         tenantName: "base",
  *         generation: {}
  *     }
  */
 export interface GuidedSectionsCreateVersionRequest {
+    /** Identifies a distinct entity within Corti's multi-tenant system. Ensures correct routing and authentication of the request. */
+    tenantName: string;
     generation: Corti.GuidedSectionGenerationPartial;
 }

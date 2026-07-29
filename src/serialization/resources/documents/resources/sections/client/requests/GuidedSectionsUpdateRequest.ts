@@ -7,7 +7,7 @@ import { GuidedLabel } from "../../../../../../types/GuidedLabel.js";
 
 export const GuidedSectionsUpdateRequest: core.serialization.Schema<
     serializers.documents.GuidedSectionsUpdateRequest.Raw,
-    Corti.documents.GuidedSectionsUpdateRequest
+    Omit<Corti.documents.GuidedSectionsUpdateRequest, "tenantName">
 > = core.serialization.object({
     name: core.serialization.string().optional(),
     description: core.serialization.string().optional(),

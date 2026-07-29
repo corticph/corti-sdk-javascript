@@ -2,9 +2,13 @@
 
 /**
  * @example
- *     {}
+ *     {
+ *         tenantName: "base"
+ *     }
  */
 export interface TranscriptsListRequest {
     /** Display full transcripts in listing */
     full?: boolean;
+    /** Identifies a distinct entity within Corti's multi-tenant system. Ensures correct routing and authentication of the request. */
+    tenantName: string;
 }

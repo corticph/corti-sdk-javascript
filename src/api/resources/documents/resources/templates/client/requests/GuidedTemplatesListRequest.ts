@@ -4,7 +4,9 @@ import type * as Corti from "../../../../../../index.js";
 
 /**
  * @example
- *     {}
+ *     {
+ *         tenantName: "base"
+ *     }
  */
 export interface GuidedTemplatesListRequest {
     /** Filter templates by BCP 47 language tag (e.g. `fr`, `de`, or `en-GB`). Repeatable. */
@@ -19,4 +21,6 @@ export interface GuidedTemplatesListRequest {
     published?: boolean;
     /** Filter by source. Omit to return both. `user` returns only user/client-created templates; `corti` returns only Corti standard templates. */
     source?: Corti.GuidedSourceFilter;
+    /** Identifies a distinct entity within Corti's multi-tenant system. Ensures correct routing and authentication of the request. */
+    tenantName: string;
 }

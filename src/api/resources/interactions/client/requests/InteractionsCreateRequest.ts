@@ -5,6 +5,7 @@ import type * as Corti from "../../../../index.js";
 /**
  * @example
  *     {
+ *         tenantName: "base",
  *         encounter: {
  *             identifier: "identifier",
  *             status: "planned",
@@ -13,6 +14,8 @@ import type * as Corti from "../../../../index.js";
  *     }
  */
 export interface InteractionsCreateRequest {
+    /** Identifies a distinct entity within Corti's multi-tenant system. Ensures correct routing and authentication of the request. */
+    tenantName: string;
     /** A unique identifier for the medical professional responsible for this interaction. If nulled, automatically set to a uuid. */
     assignedUserId?: Corti.Uuid;
     /** Details about the encounter. */

@@ -14,7 +14,6 @@ describe("TranscriptsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
-            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
@@ -34,12 +33,15 @@ describe("TranscriptsClient", () => {
         server
             .mockEndpoint()
             .get("/interactions/f47ac10b-58cc-4372-a567-0e02b2c3d479/transcripts/")
+            .header("Tenant-Name", "base")
             .respondWith()
             .statusCode(200)
             .jsonBody(rawResponseBody)
             .build();
 
-        const response = await client.transcripts.list("f47ac10b-58cc-4372-a567-0e02b2c3d479");
+        const response = await client.transcripts.list("f47ac10b-58cc-4372-a567-0e02b2c3d479", {
+            tenantName: "base",
+        });
         expect(response).toEqual({
             transcripts: [
                 {
@@ -71,7 +73,6 @@ describe("TranscriptsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
-            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
@@ -80,13 +81,16 @@ describe("TranscriptsClient", () => {
         server
             .mockEndpoint()
             .get("/interactions/id/transcripts/")
+            .header("Tenant-Name", "tenantName")
             .respondWith()
             .statusCode(400)
             .jsonBody(rawResponseBody)
             .build();
 
         await expect(async () => {
-            return await client.transcripts.list("id");
+            return await client.transcripts.list("id", {
+                tenantName: "tenantName",
+            });
         }).rejects.toThrow(Corti.BadRequestError);
     });
 
@@ -98,7 +102,6 @@ describe("TranscriptsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
-            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
@@ -107,13 +110,16 @@ describe("TranscriptsClient", () => {
         server
             .mockEndpoint()
             .get("/interactions/id/transcripts/")
+            .header("Tenant-Name", "tenantName")
             .respondWith()
             .statusCode(401)
             .jsonBody(rawResponseBody)
             .build();
 
         await expect(async () => {
-            return await client.transcripts.list("id");
+            return await client.transcripts.list("id", {
+                tenantName: "tenantName",
+            });
         }).rejects.toThrow(Corti.UnauthorizedError);
     });
 
@@ -125,7 +131,6 @@ describe("TranscriptsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
-            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
@@ -134,13 +139,16 @@ describe("TranscriptsClient", () => {
         server
             .mockEndpoint()
             .get("/interactions/id/transcripts/")
+            .header("Tenant-Name", "tenantName")
             .respondWith()
             .statusCode(403)
             .jsonBody(rawResponseBody)
             .build();
 
         await expect(async () => {
-            return await client.transcripts.list("id");
+            return await client.transcripts.list("id", {
+                tenantName: "tenantName",
+            });
         }).rejects.toThrow(Corti.ForbiddenError);
     });
 
@@ -152,7 +160,6 @@ describe("TranscriptsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
-            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
@@ -161,13 +168,16 @@ describe("TranscriptsClient", () => {
         server
             .mockEndpoint()
             .get("/interactions/id/transcripts/")
+            .header("Tenant-Name", "tenantName")
             .respondWith()
             .statusCode(500)
             .jsonBody(rawResponseBody)
             .build();
 
         await expect(async () => {
-            return await client.transcripts.list("id");
+            return await client.transcripts.list("id", {
+                tenantName: "tenantName",
+            });
         }).rejects.toThrow(Corti.InternalServerError);
     });
 
@@ -179,7 +189,6 @@ describe("TranscriptsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
-            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
@@ -188,13 +197,16 @@ describe("TranscriptsClient", () => {
         server
             .mockEndpoint()
             .get("/interactions/id/transcripts/")
+            .header("Tenant-Name", "tenantName")
             .respondWith()
             .statusCode(504)
             .jsonBody(rawResponseBody)
             .build();
 
         await expect(async () => {
-            return await client.transcripts.list("id");
+            return await client.transcripts.list("id", {
+                tenantName: "tenantName",
+            });
         }).rejects.toThrow(Corti.GatewayTimeoutError);
     });
 
@@ -206,7 +218,6 @@ describe("TranscriptsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
-            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
         const rawRequestBody = { recordingId: "f47ac10b-58cc-4372-a567-0e02b2c3d479", primaryLanguage: "en" };
@@ -222,6 +233,7 @@ describe("TranscriptsClient", () => {
         server
             .mockEndpoint()
             .post("/interactions/f47ac10b-58cc-4372-a567-0e02b2c3d479/transcripts/")
+            .header("Tenant-Name", "base")
             .jsonBody(rawRequestBody)
             .respondWith()
             .statusCode(200)
@@ -229,6 +241,7 @@ describe("TranscriptsClient", () => {
             .build();
 
         const response = await client.transcripts.create("f47ac10b-58cc-4372-a567-0e02b2c3d479", {
+            tenantName: "base",
             recordingId: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
             primaryLanguage: "en",
         });
@@ -268,7 +281,6 @@ describe("TranscriptsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
-            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
         const rawRequestBody = { recordingId: "recordingId", primaryLanguage: "primaryLanguage" };
@@ -277,6 +289,7 @@ describe("TranscriptsClient", () => {
         server
             .mockEndpoint()
             .post("/interactions/id/transcripts/")
+            .header("Tenant-Name", "tenantName")
             .jsonBody(rawRequestBody)
             .respondWith()
             .statusCode(400)
@@ -285,6 +298,7 @@ describe("TranscriptsClient", () => {
 
         await expect(async () => {
             return await client.transcripts.create("id", {
+                tenantName: "tenantName",
                 recordingId: "recordingId",
                 primaryLanguage: "primaryLanguage",
             });
@@ -299,7 +313,6 @@ describe("TranscriptsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
-            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
         const rawRequestBody = { recordingId: "recordingId", primaryLanguage: "primaryLanguage" };
@@ -308,6 +321,7 @@ describe("TranscriptsClient", () => {
         server
             .mockEndpoint()
             .post("/interactions/id/transcripts/")
+            .header("Tenant-Name", "tenantName")
             .jsonBody(rawRequestBody)
             .respondWith()
             .statusCode(401)
@@ -316,6 +330,7 @@ describe("TranscriptsClient", () => {
 
         await expect(async () => {
             return await client.transcripts.create("id", {
+                tenantName: "tenantName",
                 recordingId: "recordingId",
                 primaryLanguage: "primaryLanguage",
             });
@@ -330,7 +345,6 @@ describe("TranscriptsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
-            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
         const rawRequestBody = { recordingId: "recordingId", primaryLanguage: "primaryLanguage" };
@@ -339,6 +353,7 @@ describe("TranscriptsClient", () => {
         server
             .mockEndpoint()
             .post("/interactions/id/transcripts/")
+            .header("Tenant-Name", "tenantName")
             .jsonBody(rawRequestBody)
             .respondWith()
             .statusCode(403)
@@ -347,6 +362,7 @@ describe("TranscriptsClient", () => {
 
         await expect(async () => {
             return await client.transcripts.create("id", {
+                tenantName: "tenantName",
                 recordingId: "recordingId",
                 primaryLanguage: "primaryLanguage",
             });
@@ -361,7 +377,6 @@ describe("TranscriptsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
-            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
         const rawRequestBody = { recordingId: "recordingId", primaryLanguage: "primaryLanguage" };
@@ -370,6 +385,7 @@ describe("TranscriptsClient", () => {
         server
             .mockEndpoint()
             .post("/interactions/id/transcripts/")
+            .header("Tenant-Name", "tenantName")
             .jsonBody(rawRequestBody)
             .respondWith()
             .statusCode(500)
@@ -378,6 +394,7 @@ describe("TranscriptsClient", () => {
 
         await expect(async () => {
             return await client.transcripts.create("id", {
+                tenantName: "tenantName",
                 recordingId: "recordingId",
                 primaryLanguage: "primaryLanguage",
             });
@@ -392,7 +409,6 @@ describe("TranscriptsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
-            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
         const rawRequestBody = { recordingId: "recordingId", primaryLanguage: "primaryLanguage" };
@@ -401,6 +417,7 @@ describe("TranscriptsClient", () => {
         server
             .mockEndpoint()
             .post("/interactions/id/transcripts/")
+            .header("Tenant-Name", "tenantName")
             .jsonBody(rawRequestBody)
             .respondWith()
             .statusCode(504)
@@ -409,6 +426,7 @@ describe("TranscriptsClient", () => {
 
         await expect(async () => {
             return await client.transcripts.create("id", {
+                tenantName: "tenantName",
                 recordingId: "recordingId",
                 primaryLanguage: "primaryLanguage",
             });
@@ -423,7 +441,6 @@ describe("TranscriptsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
-            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
@@ -439,6 +456,7 @@ describe("TranscriptsClient", () => {
         server
             .mockEndpoint()
             .get("/interactions/f47ac10b-58cc-4372-a567-0e02b2c3d479/transcripts/f47ac10b-58cc-4372-a567-0e02b2c3d479")
+            .header("Tenant-Name", "base")
             .respondWith()
             .statusCode(200)
             .jsonBody(rawResponseBody)
@@ -447,6 +465,9 @@ describe("TranscriptsClient", () => {
         const response = await client.transcripts.get(
             "f47ac10b-58cc-4372-a567-0e02b2c3d479",
             "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+            {
+                tenantName: "base",
+            },
         );
         expect(response).toEqual({
             id: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
@@ -484,7 +505,6 @@ describe("TranscriptsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
-            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
@@ -493,13 +513,16 @@ describe("TranscriptsClient", () => {
         server
             .mockEndpoint()
             .get("/interactions/id/transcripts/transcriptId")
+            .header("Tenant-Name", "tenantName")
             .respondWith()
             .statusCode(400)
             .jsonBody(rawResponseBody)
             .build();
 
         await expect(async () => {
-            return await client.transcripts.get("id", "transcriptId");
+            return await client.transcripts.get("id", "transcriptId", {
+                tenantName: "tenantName",
+            });
         }).rejects.toThrow(Corti.BadRequestError);
     });
 
@@ -511,7 +534,6 @@ describe("TranscriptsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
-            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
@@ -520,13 +542,16 @@ describe("TranscriptsClient", () => {
         server
             .mockEndpoint()
             .get("/interactions/id/transcripts/transcriptId")
+            .header("Tenant-Name", "tenantName")
             .respondWith()
             .statusCode(401)
             .jsonBody(rawResponseBody)
             .build();
 
         await expect(async () => {
-            return await client.transcripts.get("id", "transcriptId");
+            return await client.transcripts.get("id", "transcriptId", {
+                tenantName: "tenantName",
+            });
         }).rejects.toThrow(Corti.UnauthorizedError);
     });
 
@@ -538,7 +563,6 @@ describe("TranscriptsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
-            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
@@ -547,13 +571,16 @@ describe("TranscriptsClient", () => {
         server
             .mockEndpoint()
             .get("/interactions/id/transcripts/transcriptId")
+            .header("Tenant-Name", "tenantName")
             .respondWith()
             .statusCode(403)
             .jsonBody(rawResponseBody)
             .build();
 
         await expect(async () => {
-            return await client.transcripts.get("id", "transcriptId");
+            return await client.transcripts.get("id", "transcriptId", {
+                tenantName: "tenantName",
+            });
         }).rejects.toThrow(Corti.ForbiddenError);
     });
 
@@ -565,7 +592,6 @@ describe("TranscriptsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
-            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
@@ -574,13 +600,16 @@ describe("TranscriptsClient", () => {
         server
             .mockEndpoint()
             .get("/interactions/id/transcripts/transcriptId")
+            .header("Tenant-Name", "tenantName")
             .respondWith()
             .statusCode(500)
             .jsonBody(rawResponseBody)
             .build();
 
         await expect(async () => {
-            return await client.transcripts.get("id", "transcriptId");
+            return await client.transcripts.get("id", "transcriptId", {
+                tenantName: "tenantName",
+            });
         }).rejects.toThrow(Corti.InternalServerError);
     });
 
@@ -592,7 +621,6 @@ describe("TranscriptsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
-            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
@@ -601,13 +629,16 @@ describe("TranscriptsClient", () => {
         server
             .mockEndpoint()
             .get("/interactions/id/transcripts/transcriptId")
+            .header("Tenant-Name", "tenantName")
             .respondWith()
             .statusCode(504)
             .jsonBody(rawResponseBody)
             .build();
 
         await expect(async () => {
-            return await client.transcripts.get("id", "transcriptId");
+            return await client.transcripts.get("id", "transcriptId", {
+                tenantName: "tenantName",
+            });
         }).rejects.toThrow(Corti.GatewayTimeoutError);
     });
 
@@ -619,7 +650,6 @@ describe("TranscriptsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
-            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
@@ -628,6 +658,7 @@ describe("TranscriptsClient", () => {
             .delete(
                 "/interactions/f47ac10b-58cc-4372-a567-0e02b2c3d479/transcripts/f47ac10b-58cc-4372-a567-0e02b2c3d479",
             )
+            .header("Tenant-Name", "base")
             .respondWith()
             .statusCode(200)
             .build();
@@ -635,6 +666,9 @@ describe("TranscriptsClient", () => {
         const response = await client.transcripts.delete(
             "f47ac10b-58cc-4372-a567-0e02b2c3d479",
             "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+            {
+                tenantName: "base",
+            },
         );
         expect(response).toEqual(undefined);
     });
@@ -647,7 +681,6 @@ describe("TranscriptsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
-            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
@@ -656,13 +689,16 @@ describe("TranscriptsClient", () => {
         server
             .mockEndpoint()
             .delete("/interactions/id/transcripts/transcriptId")
+            .header("Tenant-Name", "tenantName")
             .respondWith()
             .statusCode(400)
             .jsonBody(rawResponseBody)
             .build();
 
         await expect(async () => {
-            return await client.transcripts.delete("id", "transcriptId");
+            return await client.transcripts.delete("id", "transcriptId", {
+                tenantName: "tenantName",
+            });
         }).rejects.toThrow(Corti.BadRequestError);
     });
 
@@ -674,7 +710,6 @@ describe("TranscriptsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
-            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
@@ -683,13 +718,16 @@ describe("TranscriptsClient", () => {
         server
             .mockEndpoint()
             .delete("/interactions/id/transcripts/transcriptId")
+            .header("Tenant-Name", "tenantName")
             .respondWith()
             .statusCode(401)
             .jsonBody(rawResponseBody)
             .build();
 
         await expect(async () => {
-            return await client.transcripts.delete("id", "transcriptId");
+            return await client.transcripts.delete("id", "transcriptId", {
+                tenantName: "tenantName",
+            });
         }).rejects.toThrow(Corti.UnauthorizedError);
     });
 
@@ -701,7 +739,6 @@ describe("TranscriptsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
-            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
@@ -710,13 +747,16 @@ describe("TranscriptsClient", () => {
         server
             .mockEndpoint()
             .delete("/interactions/id/transcripts/transcriptId")
+            .header("Tenant-Name", "tenantName")
             .respondWith()
             .statusCode(403)
             .jsonBody(rawResponseBody)
             .build();
 
         await expect(async () => {
-            return await client.transcripts.delete("id", "transcriptId");
+            return await client.transcripts.delete("id", "transcriptId", {
+                tenantName: "tenantName",
+            });
         }).rejects.toThrow(Corti.ForbiddenError);
     });
 
@@ -728,7 +768,6 @@ describe("TranscriptsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
-            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
@@ -737,13 +776,16 @@ describe("TranscriptsClient", () => {
         server
             .mockEndpoint()
             .delete("/interactions/id/transcripts/transcriptId")
+            .header("Tenant-Name", "tenantName")
             .respondWith()
             .statusCode(500)
             .jsonBody(rawResponseBody)
             .build();
 
         await expect(async () => {
-            return await client.transcripts.delete("id", "transcriptId");
+            return await client.transcripts.delete("id", "transcriptId", {
+                tenantName: "tenantName",
+            });
         }).rejects.toThrow(Corti.InternalServerError);
     });
 
@@ -755,7 +797,6 @@ describe("TranscriptsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
-            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
@@ -764,13 +805,16 @@ describe("TranscriptsClient", () => {
         server
             .mockEndpoint()
             .delete("/interactions/id/transcripts/transcriptId")
+            .header("Tenant-Name", "tenantName")
             .respondWith()
             .statusCode(504)
             .jsonBody(rawResponseBody)
             .build();
 
         await expect(async () => {
-            return await client.transcripts.delete("id", "transcriptId");
+            return await client.transcripts.delete("id", "transcriptId", {
+                tenantName: "tenantName",
+            });
         }).rejects.toThrow(Corti.GatewayTimeoutError);
     });
 
@@ -782,7 +826,6 @@ describe("TranscriptsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
-            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
@@ -793,6 +836,7 @@ describe("TranscriptsClient", () => {
             .get(
                 "/interactions/f47ac10b-58cc-4372-a567-0e02b2c3d479/transcripts/f47ac10b-58cc-4372-a567-0e02b2c3d479/status",
             )
+            .header("Tenant-Name", "base")
             .respondWith()
             .statusCode(200)
             .jsonBody(rawResponseBody)
@@ -801,6 +845,9 @@ describe("TranscriptsClient", () => {
         const response = await client.transcripts.getStatus(
             "f47ac10b-58cc-4372-a567-0e02b2c3d479",
             "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+            {
+                tenantName: "base",
+            },
         );
         expect(response).toEqual({
             status: "completed",
@@ -815,7 +862,6 @@ describe("TranscriptsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
-            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
@@ -824,13 +870,16 @@ describe("TranscriptsClient", () => {
         server
             .mockEndpoint()
             .get("/interactions/id/transcripts/transcriptId/status")
+            .header("Tenant-Name", "tenantName")
             .respondWith()
             .statusCode(404)
             .jsonBody(rawResponseBody)
             .build();
 
         await expect(async () => {
-            return await client.transcripts.getStatus("id", "transcriptId");
+            return await client.transcripts.getStatus("id", "transcriptId", {
+                tenantName: "tenantName",
+            });
         }).rejects.toThrow(Corti.NotFoundError);
     });
 });

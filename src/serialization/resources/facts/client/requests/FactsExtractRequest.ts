@@ -7,7 +7,7 @@ import { CommonTextContext } from "../../../../types/CommonTextContext.js";
 
 export const FactsExtractRequest: core.serialization.Schema<
     serializers.FactsExtractRequest.Raw,
-    Corti.FactsExtractRequest
+    Omit<Corti.FactsExtractRequest, "tenantName">
 > = core.serialization.object({
     context: core.serialization.list(CommonTextContext),
     outputLanguage: core.serialization.string(),

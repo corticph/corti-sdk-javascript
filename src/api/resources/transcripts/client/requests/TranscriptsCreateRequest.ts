@@ -5,11 +5,14 @@ import type * as Corti from "../../../../index.js";
 /**
  * @example
  *     {
+ *         tenantName: "base",
  *         recordingId: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
  *         primaryLanguage: "en"
  *     }
  */
 export interface TranscriptsCreateRequest {
+    /** Identifies a distinct entity within Corti's multi-tenant system. Ensures correct routing and authentication of the request. */
+    tenantName: string;
     /** The unique identifier for the recording. */
     recordingId: Corti.Uuid;
     /** The primary spoken language of the recording. Check https://docs.corti.ai/stt/languages for more. */

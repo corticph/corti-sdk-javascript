@@ -2,11 +2,15 @@
 
 /**
  * @example
- *     {}
+ *     {
+ *         tenantName: "base"
+ *     }
  */
 export interface TemplatesSectionListRequest {
     /** Filter template sections by organization. */
     org?: string | string[];
     /** Filter template sections by language. */
     lang?: string | string[];
+    /** Identifies a distinct entity within Corti's multi-tenant system. Ensures correct routing and authentication of the request. */
+    tenantName: string;
 }

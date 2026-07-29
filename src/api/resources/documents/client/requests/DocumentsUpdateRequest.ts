@@ -4,9 +4,13 @@ import type * as Corti from "../../../../index.js";
 
 /**
  * @example
- *     {}
+ *     {
+ *         tenantName: "base"
+ *     }
  */
 export interface DocumentsUpdateRequest {
+    /** Identifies a distinct entity within Corti's multi-tenant system. Ensures correct routing and authentication of the request. */
+    tenantName: string;
     /** An optional name for the document. */
     name?: string;
     sections?: Corti.DocumentsSectionInput[];

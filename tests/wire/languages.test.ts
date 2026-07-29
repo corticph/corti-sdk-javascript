@@ -14,15 +14,23 @@ describe("LanguagesClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
-            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
         const rawResponseBody = { languages: { key: "value" } };
 
-        server.mockEndpoint().get("/languages/").respondWith().statusCode(200).jsonBody(rawResponseBody).build();
+        server
+            .mockEndpoint()
+            .get("/languages/")
+            .header("Tenant-Name", "base")
+            .respondWith()
+            .statusCode(200)
+            .jsonBody(rawResponseBody)
+            .build();
 
-        const response = await client.languages.list();
+        const response = await client.languages.list({
+            tenantName: "base",
+        });
         expect(response).toEqual({
             languages: {
                 key: "value",
@@ -38,16 +46,24 @@ describe("LanguagesClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
-            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
         const rawResponseBody = { key: "value" };
 
-        server.mockEndpoint().get("/languages/").respondWith().statusCode(400).jsonBody(rawResponseBody).build();
+        server
+            .mockEndpoint()
+            .get("/languages/")
+            .header("Tenant-Name", "tenantName")
+            .respondWith()
+            .statusCode(400)
+            .jsonBody(rawResponseBody)
+            .build();
 
         await expect(async () => {
-            return await client.languages.list();
+            return await client.languages.list({
+                tenantName: "tenantName",
+            });
         }).rejects.toThrow(Corti.BadRequestError);
     });
 
@@ -59,16 +75,24 @@ describe("LanguagesClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
-            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
         const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
 
-        server.mockEndpoint().get("/languages/").respondWith().statusCode(500).jsonBody(rawResponseBody).build();
+        server
+            .mockEndpoint()
+            .get("/languages/")
+            .header("Tenant-Name", "tenantName")
+            .respondWith()
+            .statusCode(500)
+            .jsonBody(rawResponseBody)
+            .build();
 
         await expect(async () => {
-            return await client.languages.list();
+            return await client.languages.list({
+                tenantName: "tenantName",
+            });
         }).rejects.toThrow(Corti.InternalServerError);
     });
 });

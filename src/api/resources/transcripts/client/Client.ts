@@ -36,11 +36,13 @@ export class TranscriptsClient {
      * @throws {@link Corti.GatewayTimeoutError}
      *
      * @example
-     *     await client.transcripts.list("f47ac10b-58cc-4372-a567-0e02b2c3d479")
+     *     await client.transcripts.list("f47ac10b-58cc-4372-a567-0e02b2c3d479", {
+     *         tenantName: "base"
+     *     })
      */
     public list(
         id: Corti.Uuid,
-        request: Corti.TranscriptsListRequest = {},
+        request: Corti.TranscriptsListRequest,
         requestOptions?: TranscriptsClient.RequestOptions,
     ): core.HttpResponsePromise<Corti.TranscriptsListResponse> {
         return core.HttpResponsePromise.fromPromise(this.__list(id, request, requestOptions));
@@ -48,10 +50,10 @@ export class TranscriptsClient {
 
     private async __list(
         id: Corti.Uuid,
-        request: Corti.TranscriptsListRequest = {},
+        request: Corti.TranscriptsListRequest,
         requestOptions?: TranscriptsClient.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.TranscriptsListResponse>> {
-        const { full } = request;
+        const { full, tenantName } = request;
         const _queryParams: Record<string, unknown> = {
             full,
         };
@@ -59,7 +61,7 @@ export class TranscriptsClient {
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
             this._options?.headers,
-            mergeOnlyDefinedHeaders({ "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName }),
+            mergeOnlyDefinedHeaders({ "Tenant-Name": tenantName }),
             requestOptions?.headers,
         );
         const _response = await core.fetcher({
@@ -152,6 +154,7 @@ export class TranscriptsClient {
      *
      * @example
      *     await client.transcripts.create("f47ac10b-58cc-4372-a567-0e02b2c3d479", {
+     *         tenantName: "base",
      *         recordingId: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
      *         primaryLanguage: "en"
      *     })
@@ -169,11 +172,12 @@ export class TranscriptsClient {
         request: Corti.TranscriptsCreateRequest,
         requestOptions?: TranscriptsClient.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.TranscriptsResponse>> {
+        const { tenantName, ..._body } = request;
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
             this._options?.headers,
-            mergeOnlyDefinedHeaders({ "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName }),
+            mergeOnlyDefinedHeaders({ "Tenant-Name": tenantName }),
             requestOptions?.headers,
         );
         const _response = await core.fetcher({
@@ -187,7 +191,7 @@ export class TranscriptsClient {
             contentType: "application/json",
             queryParameters: requestOptions?.queryParams,
             requestType: "json",
-            body: serializers.TranscriptsCreateRequest.jsonOrThrow(request, {
+            body: serializers.TranscriptsCreateRequest.jsonOrThrow(_body, {
                 unrecognizedObjectKeys: "strip",
                 omitUndefined: true,
             }),
@@ -262,6 +266,7 @@ export class TranscriptsClient {
      *
      * @param {Corti.Uuid} id - The unique identifier of the interaction. Must be a valid UUID.
      * @param {Corti.Uuid} transcriptId - The unique identifier of the transcript. Must be a valid UUID.
+     * @param {Corti.TranscriptsGetRequest} request
      * @param {TranscriptsClient.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Corti.BadRequestError}
@@ -271,26 +276,31 @@ export class TranscriptsClient {
      * @throws {@link Corti.GatewayTimeoutError}
      *
      * @example
-     *     await client.transcripts.get("f47ac10b-58cc-4372-a567-0e02b2c3d479", "f47ac10b-58cc-4372-a567-0e02b2c3d479")
+     *     await client.transcripts.get("f47ac10b-58cc-4372-a567-0e02b2c3d479", "f47ac10b-58cc-4372-a567-0e02b2c3d479", {
+     *         tenantName: "base"
+     *     })
      */
     public get(
         id: Corti.Uuid,
         transcriptId: Corti.Uuid,
+        request: Corti.TranscriptsGetRequest,
         requestOptions?: TranscriptsClient.RequestOptions,
     ): core.HttpResponsePromise<Corti.TranscriptsResponse> {
-        return core.HttpResponsePromise.fromPromise(this.__get(id, transcriptId, requestOptions));
+        return core.HttpResponsePromise.fromPromise(this.__get(id, transcriptId, request, requestOptions));
     }
 
     private async __get(
         id: Corti.Uuid,
         transcriptId: Corti.Uuid,
+        request: Corti.TranscriptsGetRequest,
         requestOptions?: TranscriptsClient.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.TranscriptsResponse>> {
+        const { tenantName } = request;
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
             this._options?.headers,
-            mergeOnlyDefinedHeaders({ "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName }),
+            mergeOnlyDefinedHeaders({ "Tenant-Name": tenantName }),
             requestOptions?.headers,
         );
         const _response = await core.fetcher({
@@ -373,6 +383,7 @@ export class TranscriptsClient {
      *
      * @param {Corti.Uuid} id - The unique identifier of the interaction. Must be a valid UUID.
      * @param {Corti.Uuid} transcriptId - The unique identifier of the transcript. Must be a valid UUID.
+     * @param {Corti.TranscriptsDeleteRequest} request
      * @param {TranscriptsClient.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Corti.BadRequestError}
@@ -382,26 +393,31 @@ export class TranscriptsClient {
      * @throws {@link Corti.GatewayTimeoutError}
      *
      * @example
-     *     await client.transcripts.delete("f47ac10b-58cc-4372-a567-0e02b2c3d479", "f47ac10b-58cc-4372-a567-0e02b2c3d479")
+     *     await client.transcripts.delete("f47ac10b-58cc-4372-a567-0e02b2c3d479", "f47ac10b-58cc-4372-a567-0e02b2c3d479", {
+     *         tenantName: "base"
+     *     })
      */
     public delete(
         id: Corti.Uuid,
         transcriptId: Corti.Uuid,
+        request: Corti.TranscriptsDeleteRequest,
         requestOptions?: TranscriptsClient.RequestOptions,
     ): core.HttpResponsePromise<void> {
-        return core.HttpResponsePromise.fromPromise(this.__delete(id, transcriptId, requestOptions));
+        return core.HttpResponsePromise.fromPromise(this.__delete(id, transcriptId, request, requestOptions));
     }
 
     private async __delete(
         id: Corti.Uuid,
         transcriptId: Corti.Uuid,
+        request: Corti.TranscriptsDeleteRequest,
         requestOptions?: TranscriptsClient.RequestOptions,
     ): Promise<core.WithRawResponse<void>> {
+        const { tenantName } = request;
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
             this._options?.headers,
-            mergeOnlyDefinedHeaders({ "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName }),
+            mergeOnlyDefinedHeaders({ "Tenant-Name": tenantName }),
             requestOptions?.headers,
         );
         const _response = await core.fetcher({
@@ -475,31 +491,37 @@ export class TranscriptsClient {
      *
      * @param {Corti.Uuid} id - The unique identifier of the interaction. Must be a valid UUID.
      * @param {Corti.Uuid} transcriptId - The unique identifier of the transcript. Must be a valid UUID.
+     * @param {Corti.TranscriptsGetStatusRequest} request
      * @param {TranscriptsClient.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Corti.NotFoundError}
      *
      * @example
-     *     await client.transcripts.getStatus("f47ac10b-58cc-4372-a567-0e02b2c3d479", "f47ac10b-58cc-4372-a567-0e02b2c3d479")
+     *     await client.transcripts.getStatus("f47ac10b-58cc-4372-a567-0e02b2c3d479", "f47ac10b-58cc-4372-a567-0e02b2c3d479", {
+     *         tenantName: "base"
+     *     })
      */
     public getStatus(
         id: Corti.Uuid,
         transcriptId: Corti.Uuid,
+        request: Corti.TranscriptsGetStatusRequest,
         requestOptions?: TranscriptsClient.RequestOptions,
     ): core.HttpResponsePromise<Corti.TranscriptsStatusResponse> {
-        return core.HttpResponsePromise.fromPromise(this.__getStatus(id, transcriptId, requestOptions));
+        return core.HttpResponsePromise.fromPromise(this.__getStatus(id, transcriptId, request, requestOptions));
     }
 
     private async __getStatus(
         id: Corti.Uuid,
         transcriptId: Corti.Uuid,
+        request: Corti.TranscriptsGetStatusRequest,
         requestOptions?: TranscriptsClient.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.TranscriptsStatusResponse>> {
+        const { tenantName } = request;
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
             this._options?.headers,
-            mergeOnlyDefinedHeaders({ "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName }),
+            mergeOnlyDefinedHeaders({ "Tenant-Name": tenantName }),
             requestOptions?.headers,
         );
         const _response = await core.fetcher({

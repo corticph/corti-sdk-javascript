@@ -1,7 +1,3 @@
-export type { AgentsCreateAgent } from "./AgentsCreateAgent.js";
-export type { AgentsGetContextRequest } from "./AgentsGetContextRequest.js";
-export type { AgentsGetRegistryExpertsRequest } from "./AgentsGetRegistryExpertsRequest.js";
-export type { AgentsGetTaskRequest } from "./AgentsGetTaskRequest.js";
-export type { AgentsListRequest } from "./AgentsListRequest.js";
-export type { AgentsMessageSendParams } from "./AgentsMessageSendParams.js";
-export type { AgentsUpdateAgent } from "./AgentsUpdateAgent.js";
+export type { AgentsCreateRequest } from "./AgentsCreateRequest.js";
+export type { AgentsPatchRequest } from "./AgentsPatchRequest.js";
+export type { ListAgentsRequest } from "./ListAgentsRequest.js";

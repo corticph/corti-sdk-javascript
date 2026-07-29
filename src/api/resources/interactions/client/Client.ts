@@ -32,17 +32,19 @@ export class InteractionsClient {
      * @throws {@link Corti.GatewayTimeoutError}
      *
      * @example
-     *     await client.interactions.list()
+     *     await client.interactions.list({
+     *         tenantName: "base"
+     *     })
      */
     public async list(
-        request: Corti.InteractionsListRequest = {},
+        request: Corti.InteractionsListRequest,
         requestOptions?: InteractionsClient.RequestOptions,
     ): Promise<core.Page<Corti.InteractionsGetResponse, Corti.InteractionsListResponse>> {
         const list = core.HttpResponsePromise.interceptFunction(
             async (
                 request: Corti.InteractionsListRequest,
             ): Promise<core.WithRawResponse<Corti.InteractionsListResponse>> => {
-                const { sort, direction, pageSize, index, encounterStatus, patient } = request;
+                const { sort, direction, pageSize, index, encounterStatus, patient, tenantName } = request;
                 const _queryParams: Record<string, unknown> = {
                     sort:
                         sort != null
@@ -79,7 +81,7 @@ export class InteractionsClient {
                 const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
                     _authRequest.headers,
                     this._options?.headers,
-                    mergeOnlyDefinedHeaders({ "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName }),
+                    mergeOnlyDefinedHeaders({ "Tenant-Name": tenantName }),
                     requestOptions?.headers,
                 );
                 const _response = await core.fetcher({
@@ -162,6 +164,7 @@ export class InteractionsClient {
      *
      * @example
      *     await client.interactions.create({
+     *         tenantName: "base",
      *         encounter: {
      *             identifier: "identifier",
      *             status: "planned",
@@ -180,11 +183,12 @@ export class InteractionsClient {
         request: Corti.InteractionsCreateRequest,
         requestOptions?: InteractionsClient.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.InteractionsCreateResponse>> {
+        const { tenantName, ..._body } = request;
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
             this._options?.headers,
-            mergeOnlyDefinedHeaders({ "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName }),
+            mergeOnlyDefinedHeaders({ "Tenant-Name": tenantName }),
             requestOptions?.headers,
         );
         const _response = await core.fetcher({
@@ -198,7 +202,7 @@ export class InteractionsClient {
             contentType: "application/json",
             queryParameters: requestOptions?.queryParams,
             requestType: "json",
-            body: serializers.InteractionsCreateRequest.jsonOrThrow(request, {
+            body: serializers.InteractionsCreateRequest.jsonOrThrow(_body, {
                 unrecognizedObjectKeys: "strip",
                 omitUndefined: true,
             }),
@@ -265,30 +269,36 @@ export class InteractionsClient {
      * Retrieves a previously recorded interaction by its unique identifier (interaction ID).
      *
      * @param {Corti.Uuid} id - The unique identifier of the interaction. Must be a valid UUID.
+     * @param {Corti.InteractionsGetRequest} request
      * @param {InteractionsClient.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Corti.ForbiddenError}
      * @throws {@link Corti.GatewayTimeoutError}
      *
      * @example
-     *     await client.interactions.get("f47ac10b-58cc-4372-a567-0e02b2c3d479")
+     *     await client.interactions.get("f47ac10b-58cc-4372-a567-0e02b2c3d479", {
+     *         tenantName: "base"
+     *     })
      */
     public get(
         id: Corti.Uuid,
+        request: Corti.InteractionsGetRequest,
         requestOptions?: InteractionsClient.RequestOptions,
     ): core.HttpResponsePromise<Corti.InteractionsGetResponse> {
-        return core.HttpResponsePromise.fromPromise(this.__get(id, requestOptions));
+        return core.HttpResponsePromise.fromPromise(this.__get(id, request, requestOptions));
     }
 
     private async __get(
         id: Corti.Uuid,
+        request: Corti.InteractionsGetRequest,
         requestOptions?: InteractionsClient.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.InteractionsGetResponse>> {
+        const { tenantName } = request;
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
             this._options?.headers,
-            mergeOnlyDefinedHeaders({ "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName }),
+            mergeOnlyDefinedHeaders({ "Tenant-Name": tenantName }),
             requestOptions?.headers,
         );
         const _response = await core.fetcher({
@@ -350,27 +360,36 @@ export class InteractionsClient {
      * Deletes an existing interaction.
      *
      * @param {Corti.Uuid} id - The unique identifier of the interaction. Must be a valid UUID.
+     * @param {Corti.InteractionsDeleteRequest} request
      * @param {InteractionsClient.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Corti.ForbiddenError}
      * @throws {@link Corti.GatewayTimeoutError}
      *
      * @example
-     *     await client.interactions.delete("f47ac10b-58cc-4372-a567-0e02b2c3d479")
+     *     await client.interactions.delete("f47ac10b-58cc-4372-a567-0e02b2c3d479", {
+     *         tenantName: "base"
+     *     })
      */
-    public delete(id: Corti.Uuid, requestOptions?: InteractionsClient.RequestOptions): core.HttpResponsePromise<void> {
-        return core.HttpResponsePromise.fromPromise(this.__delete(id, requestOptions));
+    public delete(
+        id: Corti.Uuid,
+        request: Corti.InteractionsDeleteRequest,
+        requestOptions?: InteractionsClient.RequestOptions,
+    ): core.HttpResponsePromise<void> {
+        return core.HttpResponsePromise.fromPromise(this.__delete(id, request, requestOptions));
     }
 
     private async __delete(
         id: Corti.Uuid,
+        request: Corti.InteractionsDeleteRequest,
         requestOptions?: InteractionsClient.RequestOptions,
     ): Promise<core.WithRawResponse<void>> {
+        const { tenantName } = request;
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
             this._options?.headers,
-            mergeOnlyDefinedHeaders({ "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName }),
+            mergeOnlyDefinedHeaders({ "Tenant-Name": tenantName }),
             requestOptions?.headers,
         );
         const _response = await core.fetcher({
@@ -430,11 +449,13 @@ export class InteractionsClient {
      * @throws {@link Corti.GatewayTimeoutError}
      *
      * @example
-     *     await client.interactions.update("f47ac10b-58cc-4372-a567-0e02b2c3d479")
+     *     await client.interactions.update("f47ac10b-58cc-4372-a567-0e02b2c3d479", {
+     *         tenantName: "base"
+     *     })
      */
     public update(
         id: Corti.Uuid,
-        request: Corti.InteractionsUpdateRequest = {},
+        request: Corti.InteractionsUpdateRequest,
         requestOptions?: InteractionsClient.RequestOptions,
     ): core.HttpResponsePromise<Corti.InteractionsGetResponse> {
         return core.HttpResponsePromise.fromPromise(this.__update(id, request, requestOptions));
@@ -442,14 +463,15 @@ export class InteractionsClient {
 
     private async __update(
         id: Corti.Uuid,
-        request: Corti.InteractionsUpdateRequest = {},
+        request: Corti.InteractionsUpdateRequest,
         requestOptions?: InteractionsClient.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.InteractionsGetResponse>> {
+        const { tenantName, ..._body } = request;
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
             this._options?.headers,
-            mergeOnlyDefinedHeaders({ "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName }),
+            mergeOnlyDefinedHeaders({ "Tenant-Name": tenantName }),
             requestOptions?.headers,
         );
         const _response = await core.fetcher({
@@ -463,7 +485,7 @@ export class InteractionsClient {
             contentType: "application/json",
             queryParameters: requestOptions?.queryParams,
             requestType: "json",
-            body: serializers.InteractionsUpdateRequest.jsonOrThrow(request, {
+            body: serializers.InteractionsUpdateRequest.jsonOrThrow(_body, {
                 unrecognizedObjectKeys: "strip",
                 omitUndefined: true,
             }),

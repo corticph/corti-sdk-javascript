@@ -14,7 +14,6 @@ describe("SectionsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
-            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
@@ -40,12 +39,15 @@ describe("SectionsClient", () => {
         server
             .mockEndpoint()
             .get("/documents/sections/")
+            .header("Tenant-Name", "base")
             .respondWith()
             .statusCode(200)
             .jsonBody(rawResponseBody)
             .build();
 
-        const response = await client.documents.sections.list();
+        const response = await client.documents.sections.list({
+            tenantName: "base",
+        });
         expect(response).toEqual([
             {
                 id: "id",
@@ -79,7 +81,6 @@ describe("SectionsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
-            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
         const rawRequestBody = { name: "name", inheritFromId: "inheritFromId" };
@@ -113,6 +114,7 @@ describe("SectionsClient", () => {
         server
             .mockEndpoint()
             .post("/documents/sections/")
+            .header("Tenant-Name", "base")
             .jsonBody(rawRequestBody)
             .respondWith()
             .statusCode(200)
@@ -120,8 +122,11 @@ describe("SectionsClient", () => {
             .build();
 
         const response = await client.documents.sections.create({
-            name: "name",
-            inheritFromId: "inheritFromId",
+            tenantName: "base",
+            body: {
+                name: "name",
+                inheritFromId: "inheritFromId",
+            },
         });
         expect(response).toEqual({
             id: "id",
@@ -168,7 +173,6 @@ describe("SectionsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
-            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
         const rawRequestBody = { inheritFromId: "inheritFromId", name: "name" };
@@ -177,6 +181,7 @@ describe("SectionsClient", () => {
         server
             .mockEndpoint()
             .post("/documents/sections/")
+            .header("Tenant-Name", "tenantName")
             .jsonBody(rawRequestBody)
             .respondWith()
             .statusCode(400)
@@ -185,8 +190,11 @@ describe("SectionsClient", () => {
 
         await expect(async () => {
             return await client.documents.sections.create({
-                inheritFromId: "inheritFromId",
-                name: "name",
+                tenantName: "tenantName",
+                body: {
+                    inheritFromId: "inheritFromId",
+                    name: "name",
+                },
             });
         }).rejects.toThrow(Corti.BadRequestError);
     });
@@ -199,7 +207,6 @@ describe("SectionsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
-            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
@@ -233,12 +240,15 @@ describe("SectionsClient", () => {
         server
             .mockEndpoint()
             .get("/documents/sections/sectionID")
+            .header("Tenant-Name", "base")
             .respondWith()
             .statusCode(200)
             .jsonBody(rawResponseBody)
             .build();
 
-        const response = await client.documents.sections.get("sectionID");
+        const response = await client.documents.sections.get("sectionID", {
+            tenantName: "base",
+        });
         expect(response).toEqual({
             id: "id",
             inheritedFromId: "inheritedFromId",
@@ -284,7 +294,6 @@ describe("SectionsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
-            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
@@ -293,13 +302,16 @@ describe("SectionsClient", () => {
         server
             .mockEndpoint()
             .get("/documents/sections/sectionID")
+            .header("Tenant-Name", "tenantName")
             .respondWith()
             .statusCode(404)
             .jsonBody(rawResponseBody)
             .build();
 
         await expect(async () => {
-            return await client.documents.sections.get("sectionID");
+            return await client.documents.sections.get("sectionID", {
+                tenantName: "tenantName",
+            });
         }).rejects.toThrow(Corti.NotFoundError);
     });
 
@@ -311,13 +323,20 @@ describe("SectionsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
-            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
-        server.mockEndpoint().delete("/documents/sections/sectionID").respondWith().statusCode(200).build();
+        server
+            .mockEndpoint()
+            .delete("/documents/sections/sectionID")
+            .header("Tenant-Name", "base")
+            .respondWith()
+            .statusCode(200)
+            .build();
 
-        const response = await client.documents.sections.delete("sectionID");
+        const response = await client.documents.sections.delete("sectionID", {
+            tenantName: "base",
+        });
         expect(response).toEqual(undefined);
     });
 
@@ -329,7 +348,6 @@ describe("SectionsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
-            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
@@ -338,13 +356,16 @@ describe("SectionsClient", () => {
         server
             .mockEndpoint()
             .delete("/documents/sections/sectionID")
+            .header("Tenant-Name", "tenantName")
             .respondWith()
             .statusCode(404)
             .jsonBody(rawResponseBody)
             .build();
 
         await expect(async () => {
-            return await client.documents.sections.delete("sectionID");
+            return await client.documents.sections.delete("sectionID", {
+                tenantName: "tenantName",
+            });
         }).rejects.toThrow(Corti.NotFoundError);
     });
 
@@ -356,22 +377,24 @@ describe("SectionsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
-            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
-        const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
+        const rawResponseBody = { key: "value" };
 
         server
             .mockEndpoint()
             .delete("/documents/sections/sectionID")
+            .header("Tenant-Name", "tenantName")
             .respondWith()
             .statusCode(409)
             .jsonBody(rawResponseBody)
             .build();
 
         await expect(async () => {
-            return await client.documents.sections.delete("sectionID");
+            return await client.documents.sections.delete("sectionID", {
+                tenantName: "tenantName",
+            });
         }).rejects.toThrow(Corti.ConflictError);
     });
 
@@ -383,7 +406,6 @@ describe("SectionsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
-            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
         const rawRequestBody = {};
@@ -417,13 +439,16 @@ describe("SectionsClient", () => {
         server
             .mockEndpoint()
             .patch("/documents/sections/sectionID")
+            .header("Tenant-Name", "base")
             .jsonBody(rawRequestBody)
             .respondWith()
             .statusCode(200)
             .jsonBody(rawResponseBody)
             .build();
 
-        const response = await client.documents.sections.update("sectionID");
+        const response = await client.documents.sections.update("sectionID", {
+            tenantName: "base",
+        });
         expect(response).toEqual({
             id: "id",
             inheritedFromId: "inheritedFromId",
@@ -469,7 +494,6 @@ describe("SectionsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
-            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
         const rawRequestBody = {};
@@ -478,6 +502,7 @@ describe("SectionsClient", () => {
         server
             .mockEndpoint()
             .patch("/documents/sections/sectionID")
+            .header("Tenant-Name", "tenantName")
             .jsonBody(rawRequestBody)
             .respondWith()
             .statusCode(400)
@@ -485,7 +510,9 @@ describe("SectionsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.documents.sections.update("sectionID");
+            return await client.documents.sections.update("sectionID", {
+                tenantName: "tenantName",
+            });
         }).rejects.toThrow(Corti.BadRequestError);
     });
 
@@ -497,7 +524,6 @@ describe("SectionsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
-            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
         const rawRequestBody = {};
@@ -506,6 +532,7 @@ describe("SectionsClient", () => {
         server
             .mockEndpoint()
             .patch("/documents/sections/sectionID")
+            .header("Tenant-Name", "tenantName")
             .jsonBody(rawRequestBody)
             .respondWith()
             .statusCode(404)
@@ -513,7 +540,9 @@ describe("SectionsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.documents.sections.update("sectionID");
+            return await client.documents.sections.update("sectionID", {
+                tenantName: "tenantName",
+            });
         }).rejects.toThrow(Corti.NotFoundError);
     });
 });

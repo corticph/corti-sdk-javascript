@@ -10,7 +10,7 @@ import { TranscriptsCreateRequestReplacementsItem } from "../../types/Transcript
 
 export const TranscriptsCreateRequest: core.serialization.Schema<
     serializers.TranscriptsCreateRequest.Raw,
-    Corti.TranscriptsCreateRequest
+    Omit<Corti.TranscriptsCreateRequest, "tenantName">
 > = core.serialization.object({
     recordingId: Uuid,
     primaryLanguage: core.serialization.string(),

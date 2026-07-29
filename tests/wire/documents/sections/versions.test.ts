@@ -14,7 +14,6 @@ describe("VersionsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
-            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
@@ -34,12 +33,15 @@ describe("VersionsClient", () => {
         server
             .mockEndpoint()
             .get("/documents/sections/sectionID/versions/")
+            .header("Tenant-Name", "base")
             .respondWith()
             .statusCode(200)
             .jsonBody(rawResponseBody)
             .build();
 
-        const response = await client.documents.sections.versions.list("sectionID");
+        const response = await client.documents.sections.versions.list("sectionID", {
+            tenantName: "base",
+        });
         expect(response).toEqual([
             {
                 id: "id",
@@ -66,7 +68,6 @@ describe("VersionsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
-            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
@@ -75,13 +76,16 @@ describe("VersionsClient", () => {
         server
             .mockEndpoint()
             .get("/documents/sections/sectionID/versions/")
+            .header("Tenant-Name", "tenantName")
             .respondWith()
             .statusCode(404)
             .jsonBody(rawResponseBody)
             .build();
 
         await expect(async () => {
-            return await client.documents.sections.versions.list("sectionID");
+            return await client.documents.sections.versions.list("sectionID", {
+                tenantName: "tenantName",
+            });
         }).rejects.toThrow(Corti.NotFoundError);
     });
 
@@ -93,7 +97,6 @@ describe("VersionsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
-            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
         const rawRequestBody = { generation: {} };
@@ -121,6 +124,7 @@ describe("VersionsClient", () => {
         server
             .mockEndpoint()
             .post("/documents/sections/sectionID/versions/")
+            .header("Tenant-Name", "base")
             .jsonBody(rawRequestBody)
             .respondWith()
             .statusCode(200)
@@ -128,6 +132,7 @@ describe("VersionsClient", () => {
             .build();
 
         const response = await client.documents.sections.versions.create("sectionID", {
+            tenantName: "base",
             generation: {},
         });
         expect(response).toEqual({
@@ -160,7 +165,6 @@ describe("VersionsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
-            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
         const rawRequestBody = { generation: {} };
@@ -169,6 +173,7 @@ describe("VersionsClient", () => {
         server
             .mockEndpoint()
             .post("/documents/sections/sectionID/versions/")
+            .header("Tenant-Name", "tenantName")
             .jsonBody(rawRequestBody)
             .respondWith()
             .statusCode(400)
@@ -177,6 +182,7 @@ describe("VersionsClient", () => {
 
         await expect(async () => {
             return await client.documents.sections.versions.create("sectionID", {
+                tenantName: "tenantName",
                 generation: {},
             });
         }).rejects.toThrow(Corti.BadRequestError);
@@ -190,7 +196,6 @@ describe("VersionsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
-            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
         const rawRequestBody = { generation: {} };
@@ -199,6 +204,7 @@ describe("VersionsClient", () => {
         server
             .mockEndpoint()
             .post("/documents/sections/sectionID/versions/")
+            .header("Tenant-Name", "tenantName")
             .jsonBody(rawRequestBody)
             .respondWith()
             .statusCode(404)
@@ -207,6 +213,7 @@ describe("VersionsClient", () => {
 
         await expect(async () => {
             return await client.documents.sections.versions.create("sectionID", {
+                tenantName: "tenantName",
                 generation: {},
             });
         }).rejects.toThrow(Corti.NotFoundError);
@@ -220,7 +227,6 @@ describe("VersionsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
-            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
@@ -248,12 +254,15 @@ describe("VersionsClient", () => {
         server
             .mockEndpoint()
             .get("/documents/sections/sectionID/versions/versionID")
+            .header("Tenant-Name", "base")
             .respondWith()
             .statusCode(200)
             .jsonBody(rawResponseBody)
             .build();
 
-        const response = await client.documents.sections.versions.get("sectionID", "versionID");
+        const response = await client.documents.sections.versions.get("sectionID", "versionID", {
+            tenantName: "base",
+        });
         expect(response).toEqual({
             id: "id",
             versionNumber: 1,
@@ -284,7 +293,6 @@ describe("VersionsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
-            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
@@ -293,13 +301,16 @@ describe("VersionsClient", () => {
         server
             .mockEndpoint()
             .get("/documents/sections/sectionID/versions/versionID")
+            .header("Tenant-Name", "tenantName")
             .respondWith()
             .statusCode(404)
             .jsonBody(rawResponseBody)
             .build();
 
         await expect(async () => {
-            return await client.documents.sections.versions.get("sectionID", "versionID");
+            return await client.documents.sections.versions.get("sectionID", "versionID", {
+                tenantName: "tenantName",
+            });
         }).rejects.toThrow(Corti.NotFoundError);
     });
 
@@ -311,18 +322,20 @@ describe("VersionsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
-            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
         server
             .mockEndpoint()
             .delete("/documents/sections/sectionID/versions/versionID")
+            .header("Tenant-Name", "base")
             .respondWith()
             .statusCode(200)
             .build();
 
-        const response = await client.documents.sections.versions.delete("sectionID", "versionID");
+        const response = await client.documents.sections.versions.delete("sectionID", "versionID", {
+            tenantName: "base",
+        });
         expect(response).toEqual(undefined);
     });
 
@@ -334,7 +347,6 @@ describe("VersionsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
-            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
@@ -343,13 +355,16 @@ describe("VersionsClient", () => {
         server
             .mockEndpoint()
             .delete("/documents/sections/sectionID/versions/versionID")
+            .header("Tenant-Name", "tenantName")
             .respondWith()
             .statusCode(404)
             .jsonBody(rawResponseBody)
             .build();
 
         await expect(async () => {
-            return await client.documents.sections.versions.delete("sectionID", "versionID");
+            return await client.documents.sections.versions.delete("sectionID", "versionID", {
+                tenantName: "tenantName",
+            });
         }).rejects.toThrow(Corti.NotFoundError);
     });
 
@@ -361,7 +376,6 @@ describe("VersionsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
-            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
@@ -373,12 +387,15 @@ describe("VersionsClient", () => {
         server
             .mockEndpoint()
             .post("/documents/sections/sectionID/versions/versionID/publish")
+            .header("Tenant-Name", "base")
             .respondWith()
             .statusCode(200)
             .jsonBody(rawResponseBody)
             .build();
 
-        const response = await client.documents.sections.versions.publish("sectionID", "versionID");
+        const response = await client.documents.sections.versions.publish("sectionID", "versionID", {
+            tenantName: "base",
+        });
         expect(response).toEqual({
             status: "status",
             evidence: {
@@ -397,7 +414,6 @@ describe("VersionsClient", () => {
             maxRetries: 0,
             clientId: "client_id",
             clientSecret: "client_secret",
-            tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
@@ -406,13 +422,16 @@ describe("VersionsClient", () => {
         server
             .mockEndpoint()
             .post("/documents/sections/sectionID/versions/versionID/publish")
+            .header("Tenant-Name", "tenantName")
             .respondWith()
             .statusCode(404)
             .jsonBody(rawResponseBody)
             .build();
 
         await expect(async () => {
-            return await client.documents.sections.versions.publish("sectionID", "versionID");
+            return await client.documents.sections.versions.publish("sectionID", "versionID", {
+                tenantName: "tenantName",
+            });
         }).rejects.toThrow(Corti.NotFoundError);
     });
 });

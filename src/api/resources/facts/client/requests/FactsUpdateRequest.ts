@@ -4,9 +4,13 @@ import type * as Corti from "../../../../index.js";
 
 /**
  * @example
- *     {}
+ *     {
+ *         tenantName: "base"
+ *     }
  */
 export interface FactsUpdateRequest {
+    /** Identifies a distinct entity within Corti's multi-tenant system. Ensures correct routing and authentication of the request. */
+    tenantName: string;
     /** The updated text of the fact. */
     text?: string;
     /** The updated group key for the fact. */

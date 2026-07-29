@@ -4,7 +4,9 @@ import type * as Corti from "../../../../../../index.js";
 
 /**
  * @example
- *     {}
+ *     {
+ *         tenantName: "base"
+ *     }
  */
 export interface GuidedSectionsListRequest {
     /** Filter sections by BCP 47 language tag (e.g. `fr`, `de`, or `en-GB`). Repeatable. */
@@ -19,4 +21,6 @@ export interface GuidedSectionsListRequest {
     published?: boolean;
     /** Filter by source. Omit to return both. `user` returns only user-created sections; `corti` returns only Corti standard sections. */
     source?: Corti.GuidedSourceFilter;
+    /** Identifies a distinct entity within Corti's multi-tenant system. Ensures correct routing and authentication of the request. */
+    tenantName: string;
 }

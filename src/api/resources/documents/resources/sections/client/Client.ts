@@ -36,20 +36,22 @@ export class SectionsClient {
      * @param {SectionsClient.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @example
-     *     await client.documents.sections.list()
+     *     await client.documents.sections.list({
+     *         tenantName: "base"
+     *     })
      */
     public list(
-        request: Corti.documents.GuidedSectionsListRequest = {},
+        request: Corti.documents.GuidedSectionsListRequest,
         requestOptions?: SectionsClient.RequestOptions,
     ): core.HttpResponsePromise<Corti.GuidedSectionListItem[]> {
         return core.HttpResponsePromise.fromPromise(this.__list(request, requestOptions));
     }
 
     private async __list(
-        request: Corti.documents.GuidedSectionsListRequest = {},
+        request: Corti.documents.GuidedSectionsListRequest,
         requestOptions?: SectionsClient.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.GuidedSectionListItem[]>> {
-        const { lang, region, specialty, label, published, source } = request;
+        const { lang, region, specialty, label, published, source, tenantName } = request;
         const _queryParams: Record<string, unknown> = {
             lang,
             region,
@@ -68,7 +70,7 @@ export class SectionsClient {
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
             this._options?.headers,
-            mergeOnlyDefinedHeaders({ "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName }),
+            mergeOnlyDefinedHeaders({ "Tenant-Name": tenantName }),
             requestOptions?.headers,
         );
         const _response = await core.fetcher({
@@ -115,33 +117,37 @@ export class SectionsClient {
      * the response includes the published version with full inheritance resolution applied
      * (section inheritance chain walked to fill missing fields).
      *
-     * @param {Corti.GuidedSectionsCreateRequest} request
+     * @param {Corti.documents.CreateSectionsRequest} request
      * @param {SectionsClient.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Corti.BadRequestError}
      *
      * @example
      *     await client.documents.sections.create({
-     *         name: "name",
-     *         inheritFromId: "inheritFromId"
+     *         tenantName: "base",
+     *         body: {
+     *             name: "name",
+     *             inheritFromId: "inheritFromId"
+     *         }
      *     })
      */
     public create(
-        request: Corti.GuidedSectionsCreateRequest,
+        request: Corti.documents.CreateSectionsRequest,
         requestOptions?: SectionsClient.RequestOptions,
     ): core.HttpResponsePromise<Corti.GuidedSection> {
         return core.HttpResponsePromise.fromPromise(this.__create(request, requestOptions));
     }
 
     private async __create(
-        request: Corti.GuidedSectionsCreateRequest,
+        request: Corti.documents.CreateSectionsRequest,
         requestOptions?: SectionsClient.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.GuidedSection>> {
+        const { tenantName, body: _body } = request;
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
             this._options?.headers,
-            mergeOnlyDefinedHeaders({ "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName }),
+            mergeOnlyDefinedHeaders({ "Tenant-Name": tenantName }),
             requestOptions?.headers,
         );
         const _response = await core.fetcher({
@@ -155,7 +161,7 @@ export class SectionsClient {
             contentType: "application/json",
             queryParameters: requestOptions?.queryParams,
             requestType: "json",
-            body: serializers.GuidedSectionsCreateRequest.jsonOrThrow(request, {
+            body: serializers.GuidedSectionsCreateRequest.jsonOrThrow(_body, {
                 unrecognizedObjectKeys: "strip",
                 omitUndefined: true,
             }),
@@ -200,29 +206,35 @@ export class SectionsClient {
      * GET /documents/sections/{sectionID}/versions/{versionID}.
      *
      * @param {string} sectionID
+     * @param {Corti.documents.GetSectionsRequest} request
      * @param {SectionsClient.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Corti.NotFoundError}
      *
      * @example
-     *     await client.documents.sections.get("sectionID")
+     *     await client.documents.sections.get("sectionID", {
+     *         tenantName: "base"
+     *     })
      */
     public get(
         sectionID: string,
+        request: Corti.documents.GetSectionsRequest,
         requestOptions?: SectionsClient.RequestOptions,
     ): core.HttpResponsePromise<Corti.GuidedSection> {
-        return core.HttpResponsePromise.fromPromise(this.__get(sectionID, requestOptions));
+        return core.HttpResponsePromise.fromPromise(this.__get(sectionID, request, requestOptions));
     }
 
     private async __get(
         sectionID: string,
+        request: Corti.documents.GetSectionsRequest,
         requestOptions?: SectionsClient.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.GuidedSection>> {
+        const { tenantName } = request;
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
             this._options?.headers,
-            mergeOnlyDefinedHeaders({ "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName }),
+            mergeOnlyDefinedHeaders({ "Tenant-Name": tenantName }),
             requestOptions?.headers,
         );
         const _response = await core.fetcher({
@@ -278,27 +290,36 @@ export class SectionsClient {
      * Deletes a section and its versions. Returns 409 if other sections inherit from this section.
      *
      * @param {string} sectionID
+     * @param {Corti.documents.DeleteSectionsRequest} request
      * @param {SectionsClient.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Corti.NotFoundError}
      * @throws {@link Corti.ConflictError}
      *
      * @example
-     *     await client.documents.sections.delete("sectionID")
+     *     await client.documents.sections.delete("sectionID", {
+     *         tenantName: "base"
+     *     })
      */
-    public delete(sectionID: string, requestOptions?: SectionsClient.RequestOptions): core.HttpResponsePromise<void> {
-        return core.HttpResponsePromise.fromPromise(this.__delete(sectionID, requestOptions));
+    public delete(
+        sectionID: string,
+        request: Corti.documents.DeleteSectionsRequest,
+        requestOptions?: SectionsClient.RequestOptions,
+    ): core.HttpResponsePromise<void> {
+        return core.HttpResponsePromise.fromPromise(this.__delete(sectionID, request, requestOptions));
     }
 
     private async __delete(
         sectionID: string,
+        request: Corti.documents.DeleteSectionsRequest,
         requestOptions?: SectionsClient.RequestOptions,
     ): Promise<core.WithRawResponse<void>> {
+        const { tenantName } = request;
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
             this._options?.headers,
-            mergeOnlyDefinedHeaders({ "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName }),
+            mergeOnlyDefinedHeaders({ "Tenant-Name": tenantName }),
             requestOptions?.headers,
         );
         const _response = await core.fetcher({
@@ -325,16 +346,7 @@ export class SectionsClient {
                 case 404:
                     throw new Corti.NotFoundError(_response.error.body, _response.rawResponse);
                 case 409:
-                    throw new Corti.ConflictError(
-                        serializers.ErrorResponse.parseOrThrow(_response.error.body, {
-                            unrecognizedObjectKeys: "passthrough",
-                            allowUnrecognizedUnionMembers: true,
-                            allowUnrecognizedEnumValues: true,
-                            skipValidation: true,
-                            breadcrumbsPrefix: ["response"],
-                        }),
-                        _response.rawResponse,
-                    );
+                    throw new Corti.ConflictError(_response.error.body, _response.rawResponse);
                 default:
                     throw new errors.CortiError({
                         statusCode: _response.error.statusCode,
@@ -364,11 +376,13 @@ export class SectionsClient {
      * @throws {@link Corti.NotFoundError}
      *
      * @example
-     *     await client.documents.sections.update("sectionID")
+     *     await client.documents.sections.update("sectionID", {
+     *         tenantName: "base"
+     *     })
      */
     public update(
         sectionID: string,
-        request: Corti.documents.GuidedSectionsUpdateRequest = {},
+        request: Corti.documents.GuidedSectionsUpdateRequest,
         requestOptions?: SectionsClient.RequestOptions,
     ): core.HttpResponsePromise<Corti.GuidedSection> {
         return core.HttpResponsePromise.fromPromise(this.__update(sectionID, request, requestOptions));
@@ -376,14 +390,15 @@ export class SectionsClient {
 
     private async __update(
         sectionID: string,
-        request: Corti.documents.GuidedSectionsUpdateRequest = {},
+        request: Corti.documents.GuidedSectionsUpdateRequest,
         requestOptions?: SectionsClient.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.GuidedSection>> {
+        const { tenantName, ..._body } = request;
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
             this._options?.headers,
-            mergeOnlyDefinedHeaders({ "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName }),
+            mergeOnlyDefinedHeaders({ "Tenant-Name": tenantName }),
             requestOptions?.headers,
         );
         const _response = await core.fetcher({
@@ -397,7 +412,7 @@ export class SectionsClient {
             contentType: "application/json",
             queryParameters: requestOptions?.queryParams,
             requestType: "json",
-            body: serializers.documents.GuidedSectionsUpdateRequest.jsonOrThrow(request, {
+            body: serializers.documents.GuidedSectionsUpdateRequest.jsonOrThrow(_body, {
                 unrecognizedObjectKeys: "strip",
                 omitUndefined: true,
             }),
