@@ -8,13 +8,6 @@ import { handleNonStatusCodeError } from "../../../../errors/handleNonStatusCode
 import * as errors from "../../../../errors/index.js";
 import * as serializers from "../../../../serialization/index.js";
 import * as Corti from "../../../index.js";
-import { A2AClient } from "../resources/a2A/client/Client.js";
-import { ArtifactsClient } from "../resources/artifacts/client/Client.js";
-import { ConnectorsClient } from "../resources/connectors/client/Client.js";
-import { ContextsClient } from "../resources/contexts/client/Client.js";
-import { FeedbackClient } from "../resources/feedback/client/Client.js";
-import { RegistryClient } from "../resources/registry/client/Client.js";
-import { UsageClient } from "../resources/usage/client/Client.js";
 
 export declare namespace AgentsClient {
     export type Options = BaseClientOptions;
@@ -27,234 +20,42 @@ export declare namespace AgentsClient {
  */
 export class AgentsClient {
     protected readonly _options: NormalizedClientOptionsWithAuth<AgentsClient.Options>;
-    protected _a2A: A2AClient | undefined;
-    protected _usage: UsageClient | undefined;
-    protected _connectors: ConnectorsClient | undefined;
-    protected _contexts: ContextsClient | undefined;
-    protected _artifacts: ArtifactsClient | undefined;
-    protected _registry: RegistryClient | undefined;
-    protected _feedback: FeedbackClient | undefined;
 
     constructor(options: AgentsClient.Options) {
         this._options = normalizeClientOptionsWithAuth(options);
     }
 
-    public get a2A(): A2AClient {
-        return (this._a2A ??= new A2AClient(this._options));
-    }
-
-    public get usage(): UsageClient {
-        return (this._usage ??= new UsageClient(this._options));
-    }
-
-    public get connectors(): ConnectorsClient {
-        return (this._connectors ??= new ConnectorsClient(this._options));
-    }
-
-    public get contexts(): ContextsClient {
-        return (this._contexts ??= new ContextsClient(this._options));
-    }
-
-    public get artifacts(): ArtifactsClient {
-        return (this._artifacts ??= new ArtifactsClient(this._options));
-    }
-
-    public get registry(): RegistryClient {
-        return (this._registry ??= new RegistryClient(this._options));
-    }
-
-    public get feedback(): FeedbackClient {
-        return (this._feedback ??= new FeedbackClient(this._options));
-    }
-
     /**
-     * Lists agents visible to the caller. `private` agents are visible only to
-     * their creator/service principal; `unlisted` agents are omitted (fetch by
-     * ID instead); `public` agents are listed tenant-wide.
-     * The `visibility`, `lifecycle`, `label`, and `q` filter parameters are accepted but not yet honored by the server; the response is unfiltered.
+     * @deprecated
      *
-     * @param {Corti.ListAgentsRequest} request
+     * This endpoint retrieves a list of all agents that can be called by the Corti Agent Framework.
+     *
+     * @param {Corti.AgentsListRequest} request
      * @param {AgentsClient.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Corti.BadRequestError}
      * @throws {@link Corti.UnauthorizedError}
      *
      * @example
-     *     await client.agents.list({
-     *         label: ["team=coding"],
-     *         q: "coder"
-     *     })
+     *     await client.agents.list()
      */
-    public async list(
-        request: Corti.ListAgentsRequest = {},
+    public list(
+        request: Corti.AgentsListRequest = {},
         requestOptions?: AgentsClient.RequestOptions,
-    ): Promise<core.Page<Corti.AgentsResponse, Corti.AgentsListResponse>> {
-        const list = core.HttpResponsePromise.interceptFunction(
-            async (request: Corti.ListAgentsRequest): Promise<core.WithRawResponse<Corti.AgentsListResponse>> => {
-                const { pageSize, pageToken, visibility, lifecycle, label, q } = request;
-                const _queryParams: Record<string, unknown> = {
-                    pageSize,
-                    pageToken,
-                    visibility: Array.isArray(visibility)
-                        ? visibility.map((item) =>
-                              serializers.AgentsVisibility.jsonOrThrow(item, {
-                                  unrecognizedObjectKeys: "strip",
-                                  omitUndefined: true,
-                              }),
-                          )
-                        : visibility != null
-                          ? serializers.AgentsVisibility.jsonOrThrow(visibility, {
-                                unrecognizedObjectKeys: "strip",
-                                omitUndefined: true,
-                            })
-                          : undefined,
-                    lifecycle:
-                        lifecycle != null
-                            ? serializers.AgentsLifecycle.jsonOrThrow(lifecycle, {
-                                  unrecognizedObjectKeys: "strip",
-                                  omitUndefined: true,
-                              })
-                            : undefined,
-                    label,
-                    q,
-                };
-                const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
-                const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
-                    _authRequest.headers,
-                    this._options?.headers,
-                    mergeOnlyDefinedHeaders({ "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName }),
-                    requestOptions?.headers,
-                );
-                const _response = await core.fetcher({
-                    url: core.url.join(
-                        (await core.Supplier.get(this._options.baseUrl)) ??
-                            (await core.Supplier.get(this._options.environment)).agents,
-                        "v2/agentic/agents",
-                    ),
-                    method: "GET",
-                    headers: _headers,
-                    queryParameters: { ..._queryParams, ...requestOptions?.queryParams },
-                    timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
-                    maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
-                    abortSignal: requestOptions?.abortSignal,
-                    fetchFn: this._options?.fetch,
-                    logging: this._options.logging,
-                });
-                if (_response.ok) {
-                    return {
-                        data: serializers.AgentsListResponse.parseOrThrow(_response.body, {
-                            unrecognizedObjectKeys: "passthrough",
-                            allowUnrecognizedUnionMembers: true,
-                            allowUnrecognizedEnumValues: true,
-                            skipValidation: true,
-                            breadcrumbsPrefix: ["response"],
-                        }),
-                        rawResponse: _response.rawResponse,
-                    };
-                }
-                if (_response.error.reason === "status-code") {
-                    switch (_response.error.statusCode) {
-                        case 400:
-                            throw new Corti.BadRequestError(_response.error.body, _response.rawResponse);
-                        case 401:
-                            throw new Corti.UnauthorizedError(_response.error.body, _response.rawResponse);
-                        default:
-                            throw new errors.CortiError({
-                                statusCode: _response.error.statusCode,
-                                body: _response.error.body,
-                                rawResponse: _response.rawResponse,
-                            });
-                    }
-                }
-                return handleNonStatusCodeError(_response.error, _response.rawResponse, "GET", "/v2/agentic/agents");
-            },
-        );
-        const dataWithRawResponse = await list(request).withRawResponse();
-        return new core.Page<Corti.AgentsResponse, Corti.AgentsListResponse>({
-            response: dataWithRawResponse.data,
-            rawResponse: dataWithRawResponse.rawResponse,
-            hasNextPage: (response) =>
-                response?.nextPageToken != null &&
-                !(typeof response?.nextPageToken === "string" && response?.nextPageToken === ""),
-            getItems: (response) => response?.agents ?? [],
-            loadPage: (response) => {
-                return list(core.setObjectProperty(request, "pageToken", response?.nextPageToken));
-            },
-        });
+    ): core.HttpResponsePromise<Corti.AgentsAgentResponse[]> {
+        return core.HttpResponsePromise.fromPromise(this.__list(request, requestOptions));
     }
 
-    /**
-     * Creates a new agent. The server assigns the UUIDv7 `id`.
-     *
-     * @param {Corti.AgentsCreateRequest} request
-     * @param {AgentsClient.RequestOptions} requestOptions - Request-specific configuration.
-     *
-     * @throws {@link Corti.BadRequestError}
-     * @throws {@link Corti.UnauthorizedError}
-     * @throws {@link Corti.ForbiddenError}
-     * @throws {@link Corti.ConflictError}
-     * @throws {@link Corti.UnprocessableEntityError}
-     *
-     * @example
-     *     await client.agents.create({
-     *         name: "coder",
-     *         description: "Returns ICD-10 codes for a clinical encounter.",
-     *         systemPrompt: "Respond with only the ICD-10 code.",
-     *         model: "corti-default",
-     *         visibility: "private",
-     *         lifecycle: "persistent",
-     *         connectors: [{
-     *                 type: "registry",
-     *                 name: "@dedalus/coding-expert"
-     *             }, {
-     *                 type: "mcp",
-     *                 name: "policybot",
-     *                 url: "https://mcp.example.com",
-     *                 auth: {
-     *                     type: "oauth2",
-     *                     scope: "read:policies",
-     *                     redirectUrl: "https://app.corti.ai/oauth/callback"
-     *                 }
-     *             }, {
-     *                 type: "schema",
-     *                 name: "submit_code",
-     *                 description: "Submit the final ICD-10 code for the encounter along with a confidence score.",
-     *                 schema: {
-     *                     "type": "object",
-     *                     "properties": {
-     *                         "code": {
-     *                             "type": "string",
-     *                             "description": "The selected ICD-10 code."
-     *                         },
-     *                         "confidence": {
-     *                             "type": "number",
-     *                             "minimum": 0,
-     *                             "maximum": 1
-     *                         }
-     *                     },
-     *                     "required": [
-     *                         "code"
-     *                     ]
-     *                 },
-     *                 transition: "complete"
-     *             }],
-     *         labels: {
-     *             "team": "coding",
-     *             "env": "prod"
-     *         }
-     *     })
-     */
-    public create(
-        request: Corti.AgentsCreateRequest,
+    private async __list(
+        request: Corti.AgentsListRequest = {},
         requestOptions?: AgentsClient.RequestOptions,
-    ): core.HttpResponsePromise<Corti.AgentsResponse> {
-        return core.HttpResponsePromise.fromPromise(this.__create(request, requestOptions));
-    }
-
-    private async __create(
-        request: Corti.AgentsCreateRequest,
-        requestOptions?: AgentsClient.RequestOptions,
-    ): Promise<core.WithRawResponse<Corti.AgentsResponse>> {
+    ): Promise<core.WithRawResponse<Corti.AgentsAgentResponse[]>> {
+        const { limit, offset, ephemeral } = request;
+        const _queryParams: Record<string, unknown> = {
+            limit,
+            offset,
+            ephemeral,
+        };
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
@@ -266,17 +67,11 @@ export class AgentsClient {
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
                     (await core.Supplier.get(this._options.environment)).agents,
-                "v2/agentic/agents",
+                "agents",
             ),
-            method: "POST",
+            method: "GET",
             headers: _headers,
-            contentType: "application/json",
-            queryParameters: requestOptions?.queryParams,
-            requestType: "json",
-            body: serializers.AgentsCreateRequest.jsonOrThrow(request, {
-                unrecognizedObjectKeys: "strip",
-                omitUndefined: true,
-            }),
+            queryParameters: { ..._queryParams, ...requestOptions?.queryParams },
             timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
             maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
             abortSignal: requestOptions?.abortSignal,
@@ -285,7 +80,7 @@ export class AgentsClient {
         });
         if (_response.ok) {
             return {
-                data: serializers.AgentsResponse.parseOrThrow(_response.body, {
+                data: serializers.agents.list.Response.parseOrThrow(_response.body, {
                     unrecognizedObjectKeys: "passthrough",
                     allowUnrecognizedUnionMembers: true,
                     allowUnrecognizedEnumValues: true,
@@ -302,12 +97,6 @@ export class AgentsClient {
                     throw new Corti.BadRequestError(_response.error.body, _response.rawResponse);
                 case 401:
                     throw new Corti.UnauthorizedError(_response.error.body, _response.rawResponse);
-                case 403:
-                    throw new Corti.ForbiddenError(_response.error.body, _response.rawResponse);
-                case 409:
-                    throw new Corti.ConflictError(_response.error.body, _response.rawResponse);
-                case 422:
-                    throw new Corti.UnprocessableEntityError(_response.error.body, _response.rawResponse);
                 default:
                     throw new errors.CortiError({
                         statusCode: _response.error.statusCode,
@@ -317,31 +106,42 @@ export class AgentsClient {
             }
         }
 
-        return handleNonStatusCodeError(_response.error, _response.rawResponse, "POST", "/v2/agentic/agents");
+        return handleNonStatusCodeError(_response.error, _response.rawResponse, "GET", "/agents");
     }
 
     /**
-     * @param {Corti.CommonAgentIdValue} agentId - Agent identifier (prefixed UUIDv7).
+     * @deprecated
+     *
+     * This endpoint allows the creation of a new agent that can be utilized in the `POST /agents/{id}/v1/message:send` endpoint.
+     *
+     * @param {Corti.AgentsCreateAgent} request
      * @param {AgentsClient.RequestOptions} requestOptions - Request-specific configuration.
      *
+     * @throws {@link Corti.BadRequestError}
      * @throws {@link Corti.UnauthorizedError}
-     * @throws {@link Corti.ForbiddenError}
-     * @throws {@link Corti.NotFoundError}
+     * @throws {@link Corti.UnprocessableEntityError}
      *
      * @example
-     *     await client.agents.get("agt.0192f4c8-2c5a-7b3e-9f1a-3c8d6e2b7a40")
+     *     await client.agents.create({
+     *         name: "name",
+     *         description: "description"
+     *     })
      */
-    public get(
-        agentId: Corti.CommonAgentIdValue,
+    public create(
+        request: Corti.AgentsCreateAgent,
         requestOptions?: AgentsClient.RequestOptions,
-    ): core.HttpResponsePromise<Corti.AgentsResponse> {
-        return core.HttpResponsePromise.fromPromise(this.__get(agentId, requestOptions));
+    ): core.HttpResponsePromise<Corti.AgentsAgent> {
+        return core.HttpResponsePromise.fromPromise(this.__create(request, requestOptions));
     }
 
-    private async __get(
-        agentId: Corti.CommonAgentIdValue,
+    private async __create(
+        request: Corti.AgentsCreateAgent,
         requestOptions?: AgentsClient.RequestOptions,
-    ): Promise<core.WithRawResponse<Corti.AgentsResponse>> {
+    ): Promise<core.WithRawResponse<Corti.AgentsAgent>> {
+        const { ephemeral, ..._body } = request;
+        const _queryParams: Record<string, unknown> = {
+            ephemeral,
+        };
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
@@ -353,11 +153,17 @@ export class AgentsClient {
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
                     (await core.Supplier.get(this._options.environment)).agents,
-                `v2/agentic/agents/${core.url.encodePathParam(serializers.CommonAgentIdValue.jsonOrThrow(agentId, { omitUndefined: true }))}`,
+                "agents",
             ),
-            method: "GET",
+            method: "POST",
             headers: _headers,
-            queryParameters: requestOptions?.queryParams,
+            contentType: "application/json",
+            queryParameters: { ..._queryParams, ...requestOptions?.queryParams },
+            requestType: "json",
+            body: serializers.AgentsCreateAgent.jsonOrThrow(_body, {
+                unrecognizedObjectKeys: "strip",
+                omitUndefined: true,
+            }),
             timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
             maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
             abortSignal: requestOptions?.abortSignal,
@@ -366,7 +172,7 @@ export class AgentsClient {
         });
         if (_response.ok) {
             return {
-                data: serializers.AgentsResponse.parseOrThrow(_response.body, {
+                data: serializers.AgentsAgent.parseOrThrow(_response.body, {
                     unrecognizedObjectKeys: "passthrough",
                     allowUnrecognizedUnionMembers: true,
                     allowUnrecognizedEnumValues: true,
@@ -379,10 +185,91 @@ export class AgentsClient {
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
+                case 400:
+                    throw new Corti.BadRequestError(_response.error.body, _response.rawResponse);
                 case 401:
                     throw new Corti.UnauthorizedError(_response.error.body, _response.rawResponse);
-                case 403:
-                    throw new Corti.ForbiddenError(_response.error.body, _response.rawResponse);
+                case 422:
+                    throw new Corti.UnprocessableEntityError(_response.error.body, _response.rawResponse);
+                default:
+                    throw new errors.CortiError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                        rawResponse: _response.rawResponse,
+                    });
+            }
+        }
+
+        return handleNonStatusCodeError(_response.error, _response.rawResponse, "POST", "/agents");
+    }
+
+    /**
+     * @deprecated
+     *
+     * This endpoint retrieves an agent by its identifier. The agent contains information about its capabilities and the experts it can call.
+     *
+     * @param {string} id - The identifier of the agent associated with the context.
+     * @param {AgentsClient.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link Corti.BadRequestError}
+     * @throws {@link Corti.UnauthorizedError}
+     * @throws {@link Corti.NotFoundError}
+     *
+     * @example
+     *     await client.agents.get("12345678-90ab-cdef-gh12-34567890abc")
+     */
+    public get(
+        id: string,
+        requestOptions?: AgentsClient.RequestOptions,
+    ): core.HttpResponsePromise<Corti.AgentsAgentResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__get(id, requestOptions));
+    }
+
+    private async __get(
+        id: string,
+        requestOptions?: AgentsClient.RequestOptions,
+    ): Promise<core.WithRawResponse<Corti.AgentsAgentResponse>> {
+        const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
+        const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+            _authRequest.headers,
+            this._options?.headers,
+            mergeOnlyDefinedHeaders({ "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName }),
+            requestOptions?.headers,
+        );
+        const _response = await core.fetcher({
+            url: core.url.join(
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)).agents,
+                `agents/${core.url.encodePathParam(id)}`,
+            ),
+            method: "GET",
+            headers: _headers,
+            queryParameters: requestOptions?.queryParams,
+            timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
+            maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
+            abortSignal: requestOptions?.abortSignal,
+            fetchFn: this._options?.fetch,
+            logging: this._options.logging,
+        });
+        if (_response.ok) {
+            return {
+                data: serializers.AgentsAgentResponse.parseOrThrow(_response.body, {
+                    unrecognizedObjectKeys: "passthrough",
+                    allowUnrecognizedUnionMembers: true,
+                    allowUnrecognizedEnumValues: true,
+                    skipValidation: true,
+                    breadcrumbsPrefix: ["response"],
+                }),
+                rawResponse: _response.rawResponse,
+            };
+        }
+
+        if (_response.error.reason === "status-code") {
+            switch (_response.error.statusCode) {
+                case 400:
+                    throw new Corti.BadRequestError(_response.error.body, _response.rawResponse);
+                case 401:
+                    throw new Corti.UnauthorizedError(_response.error.body, _response.rawResponse);
                 case 404:
                     throw new Corti.NotFoundError(_response.error.body, _response.rawResponse);
                 default:
@@ -394,32 +281,30 @@ export class AgentsClient {
             }
         }
 
-        return handleNonStatusCodeError(_response.error, _response.rawResponse, "GET", "/v2/agentic/agents/{agentId}");
+        return handleNonStatusCodeError(_response.error, _response.rawResponse, "GET", "/agents/{id}");
     }
 
     /**
-     * Deletes a `persistent` agent. `ephemeral` agents are expired in place.
-     * Idempotent: deleting an already-deleted agent returns `204`.
+     * @deprecated
      *
-     * @param {Corti.CommonAgentIdValue} agentId - Agent identifier (prefixed UUIDv7).
+     * This endpoint deletes an agent by its identifier. Once deleted, the agent can no longer be used in threads.
+     *
+     * @param {string} id - The identifier of the agent associated with the context.
      * @param {AgentsClient.RequestOptions} requestOptions - Request-specific configuration.
      *
+     * @throws {@link Corti.BadRequestError}
      * @throws {@link Corti.UnauthorizedError}
-     * @throws {@link Corti.ForbiddenError}
      * @throws {@link Corti.NotFoundError}
      *
      * @example
-     *     await client.agents.delete("agt.0192f4c8-2c5a-7b3e-9f1a-3c8d6e2b7a40")
+     *     await client.agents.delete("12345678-90ab-cdef-gh12-34567890abc")
      */
-    public delete(
-        agentId: Corti.CommonAgentIdValue,
-        requestOptions?: AgentsClient.RequestOptions,
-    ): core.HttpResponsePromise<void> {
-        return core.HttpResponsePromise.fromPromise(this.__delete(agentId, requestOptions));
+    public delete(id: string, requestOptions?: AgentsClient.RequestOptions): core.HttpResponsePromise<void> {
+        return core.HttpResponsePromise.fromPromise(this.__delete(id, requestOptions));
     }
 
     private async __delete(
-        agentId: Corti.CommonAgentIdValue,
+        id: string,
         requestOptions?: AgentsClient.RequestOptions,
     ): Promise<core.WithRawResponse<void>> {
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
@@ -433,7 +318,7 @@ export class AgentsClient {
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
                     (await core.Supplier.get(this._options.environment)).agents,
-                `v2/agentic/agents/${core.url.encodePathParam(serializers.CommonAgentIdValue.jsonOrThrow(agentId, { omitUndefined: true }))}`,
+                `agents/${core.url.encodePathParam(id)}`,
             ),
             method: "DELETE",
             headers: _headers,
@@ -450,10 +335,10 @@ export class AgentsClient {
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
+                case 400:
+                    throw new Corti.BadRequestError(_response.error.body, _response.rawResponse);
                 case 401:
                     throw new Corti.UnauthorizedError(_response.error.body, _response.rawResponse);
-                case 403:
-                    throw new Corti.ForbiddenError(_response.error.body, _response.rawResponse);
                 case 404:
                     throw new Corti.NotFoundError(_response.error.body, _response.rawResponse);
                 default:
@@ -465,50 +350,39 @@ export class AgentsClient {
             }
         }
 
-        return handleNonStatusCodeError(
-            _response.error,
-            _response.rawResponse,
-            "DELETE",
-            "/v2/agentic/agents/{agentId}",
-        );
+        return handleNonStatusCodeError(_response.error, _response.rawResponse, "DELETE", "/agents/{id}");
     }
 
     /**
-     * Partially updates an agent using JSON Merge Patch (RFC 7386).
-     * Omitted fields are unchanged; `null` clears a field; arrays replace.
+     * @deprecated
      *
-     * @param {Corti.CommonAgentIdValue} agentId - Agent identifier (prefixed UUIDv7).
-     * @param {Corti.AgentsPatchRequest} request
+     * This endpoint updates an existing agent. Only the fields provided in the request body will be updated; other fields will remain unchanged.
+     *
+     * @param {string} id - The identifier of the agent associated with the context.
+     * @param {Corti.AgentsUpdateAgent} request
      * @param {AgentsClient.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Corti.BadRequestError}
      * @throws {@link Corti.UnauthorizedError}
-     * @throws {@link Corti.ForbiddenError}
      * @throws {@link Corti.NotFoundError}
      * @throws {@link Corti.UnprocessableEntityError}
      *
      * @example
-     *     await client.agents.update("agt.0192f4c8-2c5a-7b3e-9f1a-3c8d6e2b7a40", {
-     *         name: "coder-v2",
-     *         connectors: [{
-     *                 type: "registry",
-     *                 name: "@dedalus/coding-expert"
-     *             }]
-     *     })
+     *     await client.agents.update("12345678-90ab-cdef-gh12-34567890abc")
      */
     public update(
-        agentId: Corti.CommonAgentIdValue,
-        request: Corti.AgentsPatchRequest = {},
+        id: string,
+        request: Corti.AgentsUpdateAgent = {},
         requestOptions?: AgentsClient.RequestOptions,
-    ): core.HttpResponsePromise<Corti.AgentsResponse> {
-        return core.HttpResponsePromise.fromPromise(this.__update(agentId, request, requestOptions));
+    ): core.HttpResponsePromise<Corti.AgentsAgent> {
+        return core.HttpResponsePromise.fromPromise(this.__update(id, request, requestOptions));
     }
 
     private async __update(
-        agentId: Corti.CommonAgentIdValue,
-        request: Corti.AgentsPatchRequest = {},
+        id: string,
+        request: Corti.AgentsUpdateAgent = {},
         requestOptions?: AgentsClient.RequestOptions,
-    ): Promise<core.WithRawResponse<Corti.AgentsResponse>> {
+    ): Promise<core.WithRawResponse<Corti.AgentsAgent>> {
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
@@ -520,14 +394,14 @@ export class AgentsClient {
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
                     (await core.Supplier.get(this._options.environment)).agents,
-                `v2/agentic/agents/${core.url.encodePathParam(serializers.CommonAgentIdValue.jsonOrThrow(agentId, { omitUndefined: true }))}`,
+                `agents/${core.url.encodePathParam(id)}`,
             ),
             method: "PATCH",
             headers: _headers,
-            contentType: "application/merge-patch+json",
+            contentType: "application/json",
             queryParameters: requestOptions?.queryParams,
             requestType: "json",
-            body: serializers.AgentsPatchRequest.jsonOrThrow(request, {
+            body: serializers.AgentsUpdateAgent.jsonOrThrow(request, {
                 unrecognizedObjectKeys: "strip",
                 omitUndefined: true,
             }),
@@ -539,7 +413,192 @@ export class AgentsClient {
         });
         if (_response.ok) {
             return {
-                data: serializers.AgentsResponse.parseOrThrow(_response.body, {
+                data: serializers.AgentsAgent.parseOrThrow(_response.body, {
+                    unrecognizedObjectKeys: "passthrough",
+                    allowUnrecognizedUnionMembers: true,
+                    allowUnrecognizedEnumValues: true,
+                    skipValidation: true,
+                    breadcrumbsPrefix: ["response"],
+                }),
+                rawResponse: _response.rawResponse,
+            };
+        }
+
+        if (_response.error.reason === "status-code") {
+            switch (_response.error.statusCode) {
+                case 400:
+                    throw new Corti.BadRequestError(_response.error.body, _response.rawResponse);
+                case 401:
+                    throw new Corti.UnauthorizedError(_response.error.body, _response.rawResponse);
+                case 404:
+                    throw new Corti.NotFoundError(_response.error.body, _response.rawResponse);
+                case 422:
+                    throw new Corti.UnprocessableEntityError(_response.error.body, _response.rawResponse);
+                default:
+                    throw new errors.CortiError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                        rawResponse: _response.rawResponse,
+                    });
+            }
+        }
+
+        return handleNonStatusCodeError(_response.error, _response.rawResponse, "PATCH", "/agents/{id}");
+    }
+
+    /**
+     * @deprecated
+     *
+     * This endpoint retrieves the agent card in JSON format, which provides metadata about the agent, including its name, description, and the experts it can call.
+     *
+     * @param {string} id - The identifier of the agent associated with the context.
+     * @param {AgentsClient.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link Corti.BadRequestError}
+     * @throws {@link Corti.UnauthorizedError}
+     * @throws {@link Corti.NotFoundError}
+     *
+     * @example
+     *     await client.agents.getCard("12345678-90ab-cdef-gh12-34567890abc")
+     */
+    public getCard(
+        id: string,
+        requestOptions?: AgentsClient.RequestOptions,
+    ): core.HttpResponsePromise<Corti.AgentsAgentCard> {
+        return core.HttpResponsePromise.fromPromise(this.__getCard(id, requestOptions));
+    }
+
+    private async __getCard(
+        id: string,
+        requestOptions?: AgentsClient.RequestOptions,
+    ): Promise<core.WithRawResponse<Corti.AgentsAgentCard>> {
+        const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
+        const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+            _authRequest.headers,
+            this._options?.headers,
+            mergeOnlyDefinedHeaders({ "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName }),
+            requestOptions?.headers,
+        );
+        const _response = await core.fetcher({
+            url: core.url.join(
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)).agents,
+                `agents/${core.url.encodePathParam(id)}/agent-card.json`,
+            ),
+            method: "GET",
+            headers: _headers,
+            queryParameters: requestOptions?.queryParams,
+            timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
+            maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
+            abortSignal: requestOptions?.abortSignal,
+            fetchFn: this._options?.fetch,
+            logging: this._options.logging,
+        });
+        if (_response.ok) {
+            return {
+                data: serializers.AgentsAgentCard.parseOrThrow(_response.body, {
+                    unrecognizedObjectKeys: "passthrough",
+                    allowUnrecognizedUnionMembers: true,
+                    allowUnrecognizedEnumValues: true,
+                    skipValidation: true,
+                    breadcrumbsPrefix: ["response"],
+                }),
+                rawResponse: _response.rawResponse,
+            };
+        }
+
+        if (_response.error.reason === "status-code") {
+            switch (_response.error.statusCode) {
+                case 400:
+                    throw new Corti.BadRequestError(_response.error.body, _response.rawResponse);
+                case 401:
+                    throw new Corti.UnauthorizedError(_response.error.body, _response.rawResponse);
+                case 404:
+                    throw new Corti.NotFoundError(_response.error.body, _response.rawResponse);
+                default:
+                    throw new errors.CortiError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                        rawResponse: _response.rawResponse,
+                    });
+            }
+        }
+
+        return handleNonStatusCodeError(_response.error, _response.rawResponse, "GET", "/agents/{id}/agent-card.json");
+    }
+
+    /**
+     * @deprecated
+     *
+     * This endpoint sends a message to the specified agent to start or continue a task. The agent processes the message and returns a response. If the message contains a task ID that matches an ongoing task, the agent will continue that task; otherwise, it will start a new task.
+     *
+     * @param {string} id - The identifier of the agent associated with the context.
+     * @param {Corti.AgentsMessageSendBody} request
+     * @param {AgentsClient.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link Corti.BadRequestError}
+     * @throws {@link Corti.UnauthorizedError}
+     * @throws {@link Corti.ForbiddenError}
+     * @throws {@link Corti.NotFoundError}
+     * @throws {@link Corti.UnprocessableEntityError}
+     *
+     * @example
+     *     await client.agents.messageSend("12345678-90ab-cdef-gh12-34567890abc", {
+     *         message: {
+     *             role: "user",
+     *             parts: [{
+     *                     kind: "text",
+     *                     text: "text"
+     *                 }],
+     *             messageId: "messageId",
+     *             kind: "message"
+     *         }
+     *     })
+     */
+    public messageSend(
+        id: string,
+        request: Corti.AgentsMessageSendBody,
+        requestOptions?: AgentsClient.RequestOptions,
+    ): core.HttpResponsePromise<Corti.AgentsMessageSendResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__messageSend(id, request, requestOptions));
+    }
+
+    private async __messageSend(
+        id: string,
+        request: Corti.AgentsMessageSendBody,
+        requestOptions?: AgentsClient.RequestOptions,
+    ): Promise<core.WithRawResponse<Corti.AgentsMessageSendResponse>> {
+        const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
+        const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+            _authRequest.headers,
+            this._options?.headers,
+            mergeOnlyDefinedHeaders({ "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName }),
+            requestOptions?.headers,
+        );
+        const _response = await core.fetcher({
+            url: core.url.join(
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)).agents,
+                `agents/${core.url.encodePathParam(id)}/v1/message:send`,
+            ),
+            method: "POST",
+            headers: _headers,
+            contentType: "application/json",
+            queryParameters: requestOptions?.queryParams,
+            requestType: "json",
+            body: serializers.AgentsMessageSendBody.jsonOrThrow(request, {
+                unrecognizedObjectKeys: "strip",
+                omitUndefined: true,
+            }),
+            timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
+            maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
+            abortSignal: requestOptions?.abortSignal,
+            fetchFn: this._options?.fetch,
+            logging: this._options.logging,
+        });
+        if (_response.ok) {
+            return {
+                data: serializers.AgentsMessageSendResponse.parseOrThrow(_response.body, {
                     unrecognizedObjectKeys: "passthrough",
                     allowUnrecognizedUnionMembers: true,
                     allowUnrecognizedEnumValues: true,
@@ -571,39 +630,46 @@ export class AgentsClient {
             }
         }
 
-        return handleNonStatusCodeError(
-            _response.error,
-            _response.rawResponse,
-            "PATCH",
-            "/v2/agentic/agents/{agentId}",
-        );
+        return handleNonStatusCodeError(_response.error, _response.rawResponse, "POST", "/agents/{id}/v1/message:send");
     }
 
     /**
-     * Returns the A2A v1.0 agent card describing the agent's capabilities,
-     * skills, and supported protocol interfaces. Served at the standard
-     * `.well-known` location for agent discovery.
+     * @deprecated
      *
-     * @param {Corti.CommonAgentIdValue} agentId - Agent identifier (prefixed UUIDv7).
+     * This endpoint retrieves the status and details of a specific task associated with the given agent. It provides information about the task's current state, history, and any artifacts produced during its execution.
+     *
+     * @param {string} id - The identifier of the agent associated with the context.
+     * @param {string} taskId - The identifier of the task to retrieve.
+     * @param {Corti.AgentsGetTaskRequest} request
      * @param {AgentsClient.RequestOptions} requestOptions - Request-specific configuration.
      *
+     * @throws {@link Corti.BadRequestError}
      * @throws {@link Corti.UnauthorizedError}
+     * @throws {@link Corti.ForbiddenError}
      * @throws {@link Corti.NotFoundError}
      *
      * @example
-     *     await client.agents.getCard("agt.0192f4c8-2c5a-7b3e-9f1a-3c8d6e2b7a40")
+     *     await client.agents.getTask("12345678-90ab-cdef-gh12-34567890abc", "taskId")
      */
-    public getCard(
-        agentId: Corti.CommonAgentIdValue,
+    public getTask(
+        id: string,
+        taskId: string,
+        request: Corti.AgentsGetTaskRequest = {},
         requestOptions?: AgentsClient.RequestOptions,
-    ): core.HttpResponsePromise<Corti.AgentCardResponse> {
-        return core.HttpResponsePromise.fromPromise(this.__getCard(agentId, requestOptions));
+    ): core.HttpResponsePromise<Corti.AgentsTask> {
+        return core.HttpResponsePromise.fromPromise(this.__getTask(id, taskId, request, requestOptions));
     }
 
-    private async __getCard(
-        agentId: Corti.CommonAgentIdValue,
+    private async __getTask(
+        id: string,
+        taskId: string,
+        request: Corti.AgentsGetTaskRequest = {},
         requestOptions?: AgentsClient.RequestOptions,
-    ): Promise<core.WithRawResponse<Corti.AgentCardResponse>> {
+    ): Promise<core.WithRawResponse<Corti.AgentsTask>> {
+        const { historyLength } = request;
+        const _queryParams: Record<string, unknown> = {
+            historyLength,
+        };
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
@@ -615,11 +681,11 @@ export class AgentsClient {
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
                     (await core.Supplier.get(this._options.environment)).agents,
-                `v2/agentic/agents/${core.url.encodePathParam(serializers.CommonAgentIdValue.jsonOrThrow(agentId, { omitUndefined: true }))}/.well-known/agent-card.json`,
+                `agents/${core.url.encodePathParam(id)}/v1/tasks/${core.url.encodePathParam(taskId)}`,
             ),
             method: "GET",
             headers: _headers,
-            queryParameters: requestOptions?.queryParams,
+            queryParameters: { ..._queryParams, ...requestOptions?.queryParams },
             timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
             maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
             abortSignal: requestOptions?.abortSignal,
@@ -628,7 +694,7 @@ export class AgentsClient {
         });
         if (_response.ok) {
             return {
-                data: serializers.AgentCardResponse.parseOrThrow(_response.body, {
+                data: serializers.AgentsTask.parseOrThrow(_response.body, {
                     unrecognizedObjectKeys: "passthrough",
                     allowUnrecognizedUnionMembers: true,
                     allowUnrecognizedEnumValues: true,
@@ -641,6 +707,107 @@ export class AgentsClient {
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
+                case 400:
+                    throw new Corti.BadRequestError(_response.error.body, _response.rawResponse);
+                case 401:
+                    throw new Corti.UnauthorizedError(_response.error.body, _response.rawResponse);
+                case 403:
+                    throw new Corti.ForbiddenError(_response.error.body, _response.rawResponse);
+                case 404:
+                    throw new Corti.NotFoundError(_response.error.body, _response.rawResponse);
+                default:
+                    throw new errors.CortiError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                        rawResponse: _response.rawResponse,
+                    });
+            }
+        }
+
+        return handleNonStatusCodeError(
+            _response.error,
+            _response.rawResponse,
+            "GET",
+            "/agents/{id}/v1/tasks/{taskId}",
+        );
+    }
+
+    /**
+     * @deprecated
+     *
+     * This endpoint retrieves all tasks and top-level messages associated with a specific context for the given agent.
+     *
+     * @param {string} id - The identifier of the agent associated with the context.
+     * @param {string} contextId - The identifier of the context (thread) to retrieve tasks for.
+     * @param {Corti.AgentsGetContextRequest} request
+     * @param {AgentsClient.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link Corti.BadRequestError}
+     * @throws {@link Corti.UnauthorizedError}
+     * @throws {@link Corti.NotFoundError}
+     *
+     * @example
+     *     await client.agents.getContext("12345678-90ab-cdef-gh12-34567890abc", "contextId")
+     */
+    public getContext(
+        id: string,
+        contextId: string,
+        request: Corti.AgentsGetContextRequest = {},
+        requestOptions?: AgentsClient.RequestOptions,
+    ): core.HttpResponsePromise<Corti.AgentsContext> {
+        return core.HttpResponsePromise.fromPromise(this.__getContext(id, contextId, request, requestOptions));
+    }
+
+    private async __getContext(
+        id: string,
+        contextId: string,
+        request: Corti.AgentsGetContextRequest = {},
+        requestOptions?: AgentsClient.RequestOptions,
+    ): Promise<core.WithRawResponse<Corti.AgentsContext>> {
+        const { limit, offset } = request;
+        const _queryParams: Record<string, unknown> = {
+            limit,
+            offset,
+        };
+        const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
+        const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+            _authRequest.headers,
+            this._options?.headers,
+            mergeOnlyDefinedHeaders({ "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName }),
+            requestOptions?.headers,
+        );
+        const _response = await core.fetcher({
+            url: core.url.join(
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)).agents,
+                `agents/${core.url.encodePathParam(id)}/v1/contexts/${core.url.encodePathParam(contextId)}`,
+            ),
+            method: "GET",
+            headers: _headers,
+            queryParameters: { ..._queryParams, ...requestOptions?.queryParams },
+            timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
+            maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
+            abortSignal: requestOptions?.abortSignal,
+            fetchFn: this._options?.fetch,
+            logging: this._options.logging,
+        });
+        if (_response.ok) {
+            return {
+                data: serializers.AgentsContext.parseOrThrow(_response.body, {
+                    unrecognizedObjectKeys: "passthrough",
+                    allowUnrecognizedUnionMembers: true,
+                    allowUnrecognizedEnumValues: true,
+                    skipValidation: true,
+                    breadcrumbsPrefix: ["response"],
+                }),
+                rawResponse: _response.rawResponse,
+            };
+        }
+
+        if (_response.error.reason === "status-code") {
+            switch (_response.error.statusCode) {
+                case 400:
+                    throw new Corti.BadRequestError(_response.error.body, _response.rawResponse);
                 case 401:
                     throw new Corti.UnauthorizedError(_response.error.body, _response.rawResponse);
                 case 404:
@@ -658,7 +825,176 @@ export class AgentsClient {
             _response.error,
             _response.rawResponse,
             "GET",
-            "/v2/agentic/agents/{agentId}/.well-known/agent-card.json",
+            "/agents/{id}/v1/contexts/{contextId}",
         );
+    }
+
+    /**
+     * @deprecated
+     *
+     * This endpoint deletes a context (thread) and scrubs all associated data including messages, memories, and memory chunks for the given agent. Thread and task metadata is soft-deleted for audit purposes, while content columns are irreversibly overwritten.
+     *
+     * @param {string} id - The identifier of the agent associated with the context.
+     * @param {string} contextId - The identifier of the context (thread) to delete.
+     * @param {AgentsClient.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link Corti.BadRequestError}
+     * @throws {@link Corti.UnauthorizedError}
+     * @throws {@link Corti.NotFoundError}
+     *
+     * @example
+     *     await client.agents.deleteContext("12345678-90ab-cdef-gh12-34567890abc", "contextId")
+     */
+    public deleteContext(
+        id: string,
+        contextId: string,
+        requestOptions?: AgentsClient.RequestOptions,
+    ): core.HttpResponsePromise<void> {
+        return core.HttpResponsePromise.fromPromise(this.__deleteContext(id, contextId, requestOptions));
+    }
+
+    private async __deleteContext(
+        id: string,
+        contextId: string,
+        requestOptions?: AgentsClient.RequestOptions,
+    ): Promise<core.WithRawResponse<void>> {
+        const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
+        const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+            _authRequest.headers,
+            this._options?.headers,
+            mergeOnlyDefinedHeaders({ "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName }),
+            requestOptions?.headers,
+        );
+        const _response = await core.fetcher({
+            url: core.url.join(
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)).agents,
+                `agents/${core.url.encodePathParam(id)}/v1/contexts/${core.url.encodePathParam(contextId)}`,
+            ),
+            method: "DELETE",
+            headers: _headers,
+            queryParameters: requestOptions?.queryParams,
+            timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
+            maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
+            abortSignal: requestOptions?.abortSignal,
+            fetchFn: this._options?.fetch,
+            logging: this._options.logging,
+        });
+        if (_response.ok) {
+            return { data: undefined, rawResponse: _response.rawResponse };
+        }
+
+        if (_response.error.reason === "status-code") {
+            switch (_response.error.statusCode) {
+                case 400:
+                    throw new Corti.BadRequestError(_response.error.body, _response.rawResponse);
+                case 401:
+                    throw new Corti.UnauthorizedError(_response.error.body, _response.rawResponse);
+                case 404:
+                    throw new Corti.NotFoundError(_response.error.body, _response.rawResponse);
+                default:
+                    throw new errors.CortiError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                        rawResponse: _response.rawResponse,
+                    });
+            }
+        }
+
+        return handleNonStatusCodeError(
+            _response.error,
+            _response.rawResponse,
+            "DELETE",
+            "/agents/{id}/v1/contexts/{contextId}",
+        );
+    }
+
+    /**
+     * @deprecated
+     *
+     * This endpoint retrieves the experts registry, which contains information about all available experts that can be referenced when creating agents through the AgentsCreateExpertReference schema.
+     *
+     * @param {Corti.AgentsGetRegistryExpertsRequest} request
+     * @param {AgentsClient.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link Corti.BadRequestError}
+     * @throws {@link Corti.UnauthorizedError}
+     * @throws {@link Corti.UnprocessableEntityError}
+     *
+     * @example
+     *     await client.agents.getRegistryExperts({
+     *         limit: 100,
+     *         offset: 0
+     *     })
+     */
+    public getRegistryExperts(
+        request: Corti.AgentsGetRegistryExpertsRequest = {},
+        requestOptions?: AgentsClient.RequestOptions,
+    ): core.HttpResponsePromise<Corti.AgentsRegistryExpertsResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__getRegistryExperts(request, requestOptions));
+    }
+
+    private async __getRegistryExperts(
+        request: Corti.AgentsGetRegistryExpertsRequest = {},
+        requestOptions?: AgentsClient.RequestOptions,
+    ): Promise<core.WithRawResponse<Corti.AgentsRegistryExpertsResponse>> {
+        const { limit, offset } = request;
+        const _queryParams: Record<string, unknown> = {
+            limit,
+            offset,
+        };
+        const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
+        const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+            _authRequest.headers,
+            this._options?.headers,
+            mergeOnlyDefinedHeaders({ "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName }),
+            requestOptions?.headers,
+        );
+        const _response = await core.fetcher({
+            url: core.url.join(
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)).agents,
+                "agents/registry/experts",
+            ),
+            method: "GET",
+            headers: _headers,
+            queryParameters: { ..._queryParams, ...requestOptions?.queryParams },
+            timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
+            maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
+            abortSignal: requestOptions?.abortSignal,
+            fetchFn: this._options?.fetch,
+            logging: this._options.logging,
+        });
+        if (_response.ok) {
+            return {
+                data: serializers.AgentsRegistryExpertsResponse.parseOrThrow(_response.body, {
+                    unrecognizedObjectKeys: "passthrough",
+                    allowUnrecognizedUnionMembers: true,
+                    allowUnrecognizedEnumValues: true,
+                    skipValidation: true,
+                    breadcrumbsPrefix: ["response"],
+                }),
+                rawResponse: _response.rawResponse,
+            };
+        }
+
+        if (_response.error.reason === "status-code") {
+            switch (_response.error.statusCode) {
+                case 400:
+                    throw new Corti.BadRequestError(_response.error.body, _response.rawResponse);
+                case 401:
+                    throw new Corti.UnauthorizedError(_response.error.body, _response.rawResponse);
+                case 422:
+                    throw new Corti.UnprocessableEntityError(_response.error.body, _response.rawResponse);
+                default:
+                    throw new errors.CortiError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                        rawResponse: _response.rawResponse,
+                    });
+            }
+        }
+
+        return handleNonStatusCodeError(_response.error, _response.rawResponse, "GET", "/agents/registry/experts");
     }
 }

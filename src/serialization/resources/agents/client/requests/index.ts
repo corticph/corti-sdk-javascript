@@ -1,2 +1,3 @@
-export { AgentsCreateRequest } from "./AgentsCreateRequest.js";
-export { AgentsPatchRequest } from "./AgentsPatchRequest.js";
+export { AgentsCreateAgent } from "./AgentsCreateAgent.js";
+export { AgentsMessageSendBody } from "./AgentsMessageSendBody.js";
+export { AgentsUpdateAgent } from "./AgentsUpdateAgent.js";

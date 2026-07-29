@@ -1,5 +1,8 @@
+export * from "./agentic/client/requests/index.js";
+export * as agentic from "./agentic/index.js";
 export * from "./agents/client/requests/index.js";
 export * as agents from "./agents/index.js";
+export * from "./agents/types/index.js";
 export * as auth from "./auth/index.js";
 export * from "./auth/types/index.js";
 export * from "./codes/client/requests/index.js";
