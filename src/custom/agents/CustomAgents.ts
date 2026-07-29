@@ -22,7 +22,7 @@ export class CustomAgents extends AgentsClient {
     public getCardUrl = async (agentId: string): Promise<URL> => {
         const encodedAgentId = encodeURIComponent(agentId);
         return new URL(
-            `/agents/${encodedAgentId}/agent-card.json`,
+            `/v2/agentic/agents/${encodedAgentId}/.well-known/agent-card.json`,
             (await core.Supplier.get(this._options.environment)).agents,
         );
     };
