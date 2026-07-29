@@ -87,7 +87,7 @@ export class CortiClient extends BaseCortiClient {
         }));
     }
 
-    /** @deprecated */
+    /** @deprecated Migrate to the Agentic API v2. See https://docs.corti.ai/agentic/guides/migrate-v1-to-v2 */
     public override get agents(): CustomAgents {
         return (this._agents ??= new CustomAgents(this._options));
     }
