@@ -9,8 +9,6 @@ export type BaseClientOptions = {
     environment: core.Supplier<environments.CortiEnvironment | environments.CortiEnvironmentUrls>;
     /** Specify a custom URL to connect the client to. */
     baseUrl?: core.Supplier<string>;
-    /** Override the Tenant-Name header */
-    tenantName: core.Supplier<string>;
     /** Additional headers to include in requests. */
     headers?: Record<string, string | core.Supplier<string | null | undefined> | null | undefined>;
     /** The default maximum time to wait for a response in seconds. */
@@ -30,8 +28,6 @@ export interface BaseRequestOptions {
     maxRetries?: number;
     /** A hook to abort the request. */
     abortSignal?: AbortSignal;
-    /** Override the Tenant-Name header */
-    tenantName?: string;
     /** Additional query string parameters to include in the request. */
     queryParams?: Record<string, unknown>;
     /** Additional headers to include in the request. */
@@ -59,7 +55,6 @@ export function normalizeClientOptions<T extends BaseClientOptions = BaseClientO
             "User-Agent": "@corti/sdk/0.0.0-dev",
             "X-Fern-Runtime": core.RUNTIME.type,
             "X-Fern-Runtime-Version": core.RUNTIME.version,
-            "Tenant-Name": options?.tenantName,
         },
         options?.headers,
     );

@@ -9,18 +9,16 @@ import { AuthTokenRequestClientCredentials } from "../../../types/AuthTokenReque
 import { AuthTokenRequestRefresh } from "../../../types/AuthTokenRequestRefresh.js";
 import { AuthTokenRequestRopc } from "../../../types/AuthTokenRequestRopc.js";
 
-export const AuthTokenRequestBody: core.serialization.Schema<
-    serializers.AuthTokenRequestBody.Raw,
-    Corti.AuthTokenRequestBody
-> = core.serialization.undiscriminatedUnion([
-    AuthTokenRequestClientCredentials,
-    AuthTokenRequestAuthorizationCode,
-    AuthTokenRequestAuthorizationPkce,
-    AuthTokenRequestRopc,
-    AuthTokenRequestRefresh,
-]);
+export const AuthTokenRequest: core.serialization.Schema<serializers.AuthTokenRequest.Raw, Corti.AuthTokenRequest> =
+    core.serialization.undiscriminatedUnion([
+        AuthTokenRequestClientCredentials,
+        AuthTokenRequestAuthorizationCode,
+        AuthTokenRequestAuthorizationPkce,
+        AuthTokenRequestRopc,
+        AuthTokenRequestRefresh,
+    ]);
 
-export declare namespace AuthTokenRequestBody {
+export declare namespace AuthTokenRequest {
     export type Raw =
         | AuthTokenRequestClientCredentials.Raw
         | AuthTokenRequestAuthorizationCode.Raw
