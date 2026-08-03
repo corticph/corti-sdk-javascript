@@ -16,7 +16,7 @@ import type * as Corti from "../../../../index.js";
  *         }
  *     }
  */
-export interface AgentsMessageSendParams {
+export interface AgentsMessageSendBody {
     message: Corti.AgentsMessage;
     configuration?: Corti.AgentsMessageSendConfiguration;
     /** Optional metadata that will be associated with the message. */
