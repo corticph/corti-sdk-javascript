@@ -1030,7 +1030,7 @@ describe("DocumentsClient", () => {
                 name: "name",
                 templateId: "templateId",
                 templateVersionId: "templateVersionId",
-                language: "language",
+                outputLanguage: "outputLanguage",
                 interactionId: "interactionId",
                 stringDocument: { key: "value" },
                 structuredDocument: { key: "value" },
@@ -1059,7 +1059,7 @@ describe("DocumentsClient", () => {
                 name: "name",
                 templateId: "templateId",
                 templateVersionId: "templateVersionId",
-                language: "language",
+                outputLanguage: "outputLanguage",
                 interactionId: "interactionId",
                 stringDocument: {
                     key: "value",
