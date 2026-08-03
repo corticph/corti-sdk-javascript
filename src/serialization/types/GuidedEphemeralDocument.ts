@@ -12,7 +12,7 @@ export const GuidedEphemeralDocument: core.serialization.ObjectSchema<
     name: core.serialization.string(),
     templateId: core.serialization.string(),
     templateVersionId: core.serialization.string(),
-    language: core.serialization.string(),
+    outputLanguage: core.serialization.string(),
     interactionId: core.serialization.string().optionalNullable(),
     stringDocument: core.serialization.record(core.serialization.string(), core.serialization.string()),
     structuredDocument: core.serialization
@@ -26,7 +26,7 @@ export declare namespace GuidedEphemeralDocument {
         name: string;
         templateId: string;
         templateVersionId: string;
-        language: string;
+        outputLanguage: string;
         interactionId?: (string | null | undefined) | null;
         stringDocument: Record<string, string>;
         structuredDocument?: (Record<string, unknown> | null | undefined) | null;
