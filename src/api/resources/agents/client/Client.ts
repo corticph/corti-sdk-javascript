@@ -516,7 +516,7 @@ export class AgentsClient {
      * This endpoint sends a message to the specified agent to start or continue a task. The agent processes the message and returns a response. If the message contains a task ID that matches an ongoing task, the agent will continue that task; otherwise, it will start a new task.
      *
      * @param {string} id - The identifier of the agent associated with the context.
-     * @param {Corti.AgentsMessageSendParams} request
+     * @param {Corti.AgentsMessageSendBody} request
      * @param {AgentsClient.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Corti.BadRequestError}
@@ -540,7 +540,7 @@ export class AgentsClient {
      */
     public messageSend(
         id: string,
-        request: Corti.AgentsMessageSendParams,
+        request: Corti.AgentsMessageSendBody,
         requestOptions?: AgentsClient.RequestOptions,
     ): core.HttpResponsePromise<Corti.AgentsMessageSendResponse> {
         return core.HttpResponsePromise.fromPromise(this.__messageSend(id, request, requestOptions));
@@ -548,7 +548,7 @@ export class AgentsClient {
 
     private async __messageSend(
         id: string,
-        request: Corti.AgentsMessageSendParams,
+        request: Corti.AgentsMessageSendBody,
         requestOptions?: AgentsClient.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.AgentsMessageSendResponse>> {
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
@@ -569,7 +569,7 @@ export class AgentsClient {
             contentType: "application/json",
             queryParameters: requestOptions?.queryParams,
             requestType: "json",
-            body: serializers.AgentsMessageSendParams.jsonOrThrow(request, {
+            body: serializers.AgentsMessageSendBody.jsonOrThrow(request, {
                 unrecognizedObjectKeys: "strip",
                 omitUndefined: true,
             }),

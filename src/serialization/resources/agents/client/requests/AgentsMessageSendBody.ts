@@ -6,16 +6,16 @@ import type * as serializers from "../../../../index.js";
 import { AgentsMessage } from "../../../../types/AgentsMessage.js";
 import { AgentsMessageSendConfiguration } from "../../../../types/AgentsMessageSendConfiguration.js";
 
-export const AgentsMessageSendParams: core.serialization.Schema<
-    serializers.AgentsMessageSendParams.Raw,
-    Corti.AgentsMessageSendParams
+export const AgentsMessageSendBody: core.serialization.Schema<
+    serializers.AgentsMessageSendBody.Raw,
+    Corti.AgentsMessageSendBody
 > = core.serialization.object({
     message: AgentsMessage,
     configuration: AgentsMessageSendConfiguration.optional(),
     metadata: core.serialization.record(core.serialization.string(), core.serialization.unknown()).optional(),
 });
 
-export declare namespace AgentsMessageSendParams {
+export declare namespace AgentsMessageSendBody {
     export interface Raw {
         message: AgentsMessage.Raw;
         configuration?: AgentsMessageSendConfiguration.Raw | null;
