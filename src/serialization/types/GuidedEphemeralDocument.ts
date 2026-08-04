@@ -19,7 +19,7 @@ export const GuidedEphemeralDocument: core.serialization.ObjectSchema<
     structuredDocument: core.serialization
         .record(core.serialization.string(), core.serialization.unknown())
         .optionalNullable(),
-    sections: core.serialization.list(GuidedDocumentSection).optionalNullable(),
+    sections: core.serialization.list(GuidedDocumentSection).optional(),
     labels: core.serialization.list(GuidedLabel),
 });
 
@@ -32,7 +32,7 @@ export declare namespace GuidedEphemeralDocument {
         interactionId?: (string | null | undefined) | null;
         stringDocument: Record<string, string>;
         structuredDocument?: (Record<string, unknown> | null | undefined) | null;
-        sections?: (GuidedDocumentSection.Raw[] | null | undefined) | null;
+        sections?: GuidedDocumentSection.Raw[] | null;
         labels: GuidedLabel.Raw[];
     }
 }
