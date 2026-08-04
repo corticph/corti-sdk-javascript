@@ -13,8 +13,12 @@ export interface GuidedEphemeralDocument {
     outputLanguage: string;
     /** The interaction whose context was used to generate this document, if supplied. */
     interactionId?: string | null;
+    /** The generated document as a map of section ID to rendered string output. The `sections` array lists every section ID and its heading. */
     stringDocument: Record<string, string>;
+    /** The generated document as a structured object keyed by section ID. The `sections` array lists every section ID and its heading. */
     structuredDocument?: Record<string, unknown> | null;
+    /** Every section in the template version, in template order, including sections the model left empty. Use `sectionId` as the key into `stringDocument` and `structuredDocument`. The `heading` lets you render the section label without a GET request per section. */
+    sections?: Corti.GuidedDocumentSection[] | null;
     /** Key/value labels attached to this document. */
     labels: Corti.GuidedLabel[];
 }
