@@ -156,6 +156,29 @@ describe("cortiClient.agents.create", () => {
             expect(result).toBeDefined();
             expect(consoleWarnSpy).not.toHaveBeenCalled();
         });
+
+        it("should create agent with a namespaced inline expert name without errors or warnings", async () => {
+            expect.assertions(2);
+
+            const namespace = faker.string.alphanumeric(8).toLowerCase();
+            const expertName = faker.string.alphanumeric(8).toLowerCase();
+
+            const result = await cortiClient.agents.create({
+                name: faker.lorem.words(3),
+                description: faker.lorem.sentence(),
+                experts: [
+                    {
+                        type: "new",
+                        name: `@${namespace}/${expertName}`,
+                        description: faker.lorem.sentence(),
+                        systemPrompt: faker.lorem.paragraph(),
+                    },
+                ],
+            });
+
+            expect(result).toBeDefined();
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
     });
 
     describe("should throw error when invalid parameters are provided", () => {

@@ -20,7 +20,7 @@ describe("cortiClient.documents.generate", () => {
 
     describe("should generate guided document with dynamicTemplate and only required values", () => {
         it("should generate document using inline template and text context without errors or warnings", async () => {
-            expect.assertions(2);
+            expect.assertions(3);
 
             const result = await cortiClient.documents.generate({
                 outputLanguage: "en",
@@ -51,6 +51,7 @@ describe("cortiClient.documents.generate", () => {
                 },
             });
 
+            expect(result.document.outputLanguage).toBe("en");
             expect(result).toBeDefined();
             expect(consoleWarnSpy).not.toHaveBeenCalled();
         });
