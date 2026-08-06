@@ -10,13 +10,11 @@ export const GuidedDocumentSection: core.serialization.ObjectSchema<
 > = core.serialization.object({
     sectionId: core.serialization.string(),
     heading: core.serialization.string(),
-    orderIndex: core.serialization.number(),
 });
 
 export declare namespace GuidedDocumentSection {
     export interface Raw {
         sectionId: string;
         heading: string;
-        orderIndex: number;
     }
 }
