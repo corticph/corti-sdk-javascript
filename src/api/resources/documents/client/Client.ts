@@ -142,7 +142,7 @@ export class DocumentsClient {
      * This endpoint offers different ways to generate a document. Find guides to document generation [here](/textgen/documents-standard).
      *
      * @param {Corti.Uuid} id - The unique identifier of the interaction. Must be a valid UUID.
-     * @param {Corti.CreateDocumentsRequest} request
+     * @param {Corti.DocumentsCreateRequest} request
      * @param {DocumentsClient.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Corti.BadRequestError}
@@ -152,21 +152,19 @@ export class DocumentsClient {
      *
      * @example
      *     await client.documents.create("f47ac10b-58cc-4372-a567-0e02b2c3d479", {
-     *         body: {
-     *             context: [{
-     *                     type: "facts",
-     *                     data: [{
-     *                             text: "text"
-     *                         }]
-     *                 }],
-     *             templateKey: "templateKey",
-     *             outputLanguage: "outputLanguage"
-     *         }
+     *         context: [{
+     *                 type: "facts",
+     *                 data: [{
+     *                         text: "text"
+     *                     }]
+     *             }],
+     *         templateKey: "templateKey",
+     *         outputLanguage: "outputLanguage"
      *     })
      */
     public create(
         id: Corti.Uuid,
-        request: Corti.CreateDocumentsRequest,
+        request: Corti.DocumentsCreateRequest,
         requestOptions?: DocumentsClient.RequestOptions,
     ): core.HttpResponsePromise<Corti.DocumentsGetResponse> {
         return core.HttpResponsePromise.fromPromise(this.__create(id, request, requestOptions));
@@ -174,18 +172,14 @@ export class DocumentsClient {
 
     private async __create(
         id: Corti.Uuid,
-        request: Corti.CreateDocumentsRequest,
+        request: Corti.DocumentsCreateRequest,
         requestOptions?: DocumentsClient.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.DocumentsGetResponse>> {
-        const { cortiRetentionPolicy, body: _body } = request;
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
             this._options?.headers,
-            mergeOnlyDefinedHeaders({
-                "X-Corti-Retention-Policy": cortiRetentionPolicy,
-                "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName,
-            }),
+            mergeOnlyDefinedHeaders({ "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName }),
             requestOptions?.headers,
         );
         const _response = await core.fetcher({
@@ -199,7 +193,7 @@ export class DocumentsClient {
             contentType: "application/json",
             queryParameters: requestOptions?.queryParams,
             requestType: "json",
-            body: serializers.DocumentsCreateRequest.jsonOrThrow(_body, {
+            body: serializers.DocumentsCreateRequest.jsonOrThrow(request, {
                 unrecognizedObjectKeys: "strip",
                 omitUndefined: true,
             }),
@@ -598,7 +592,7 @@ export class DocumentsClient {
      * Context can combine different types or reference an interactionId to automatically fetch existing context to pass to the LLM. Note that discarded facts are not passed to the LLM.
      * With the exception of the plain `templateRef` path (no overrides), every call creates a new auto-generated template aggregate that snapshots the resolved prompts as a drift-proof receipt, persisted for 30 days.
      *
-     * @param {Corti.GenerateDocumentsRequest} request
+     * @param {Corti.GuidedDocumentsGenerateRequest} request
      * @param {DocumentsClient.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Corti.BadRequestError}
@@ -608,34 +602,28 @@ export class DocumentsClient {
      *
      * @example
      *     await client.documents.generate({
-     *         body: {
-     *             outputLanguage: "outputLanguage",
-     *             templateRef: {
-     *                 templateId: "templateId"
-     *             }
+     *         outputLanguage: "outputLanguage",
+     *         templateRef: {
+     *             templateId: "templateId"
      *         }
      *     })
      */
     public generate(
-        request: Corti.GenerateDocumentsRequest,
+        request: Corti.GuidedDocumentsGenerateRequest,
         requestOptions?: DocumentsClient.RequestOptions,
     ): core.HttpResponsePromise<Corti.GuidedDocumentsCreateEphemeralResponse> {
         return core.HttpResponsePromise.fromPromise(this.__generate(request, requestOptions));
     }
 
     private async __generate(
-        request: Corti.GenerateDocumentsRequest,
+        request: Corti.GuidedDocumentsGenerateRequest,
         requestOptions?: DocumentsClient.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.GuidedDocumentsCreateEphemeralResponse>> {
-        const { cortiRetentionPolicy, body: _body } = request;
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
             this._options?.headers,
-            mergeOnlyDefinedHeaders({
-                "X-Corti-Retention-Policy": cortiRetentionPolicy,
-                "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName,
-            }),
+            mergeOnlyDefinedHeaders({ "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName }),
             requestOptions?.headers,
         );
         const _response = await core.fetcher({
@@ -649,7 +637,7 @@ export class DocumentsClient {
             contentType: "application/json",
             queryParameters: requestOptions?.queryParams,
             requestType: "json",
-            body: serializers.GuidedDocumentsGenerateRequest.jsonOrThrow(_body, {
+            body: serializers.GuidedDocumentsGenerateRequest.jsonOrThrow(request, {
                 unrecognizedObjectKeys: "strip",
                 omitUndefined: true,
             }),
