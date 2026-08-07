@@ -535,4 +535,89 @@ export class AgentsClient {
 
         return handleNonStatusCodeError(_response.error, _response.rawResponse, "PATCH", "/agentic/agents/{agentId}");
     }
+
+    /**
+     * @beta This endpoint is in pre-release and may change.
+     *
+     * Returns the A2A v1.0 agent card describing the agent's capabilities,
+     * skills, and supported protocol interfaces. Served at the standard
+     * `.well-known` location for agent discovery.
+     *
+     * @param {Corti.CommonAgentIdValue} agentId - Agent identifier (prefixed UUIDv7).
+     * @param {AgentsClient.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link Corti.UnauthorizedError}
+     * @throws {@link Corti.NotFoundError}
+     *
+     * @example
+     *     await client.agentic.agents.getCard("agt.0192f4c8-2c5a-7b3e-9f1a-3c8d6e2b7a40")
+     */
+    public getCard(
+        agentId: Corti.CommonAgentIdValue,
+        requestOptions?: AgentsClient.RequestOptions,
+    ): core.HttpResponsePromise<Corti.AgenticAgentsAgentCard> {
+        return core.HttpResponsePromise.fromPromise(this.__getCard(agentId, requestOptions));
+    }
+
+    private async __getCard(
+        agentId: Corti.CommonAgentIdValue,
+        requestOptions?: AgentsClient.RequestOptions,
+    ): Promise<core.WithRawResponse<Corti.AgenticAgentsAgentCard>> {
+        const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
+        const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+            _authRequest.headers,
+            this._options?.headers,
+            mergeOnlyDefinedHeaders({ "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName }),
+            requestOptions?.headers,
+        );
+        const _response = await core.fetcher({
+            url: core.url.join(
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)).base,
+                `agentic/agents/${core.url.encodePathParam(serializers.CommonAgentIdValue.jsonOrThrow(agentId, { omitUndefined: true }))}/.well-known/agent-card.json`,
+            ),
+            method: "GET",
+            headers: _headers,
+            queryParameters: requestOptions?.queryParams,
+            timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
+            maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
+            abortSignal: requestOptions?.abortSignal,
+            fetchFn: this._options?.fetch,
+            logging: this._options.logging,
+        });
+        if (_response.ok) {
+            return {
+                data: serializers.AgenticAgentsAgentCard.parseOrThrow(_response.body, {
+                    unrecognizedObjectKeys: "passthrough",
+                    allowUnrecognizedUnionMembers: true,
+                    allowUnrecognizedEnumValues: true,
+                    skipValidation: true,
+                    breadcrumbsPrefix: ["response"],
+                }),
+                rawResponse: _response.rawResponse,
+            };
+        }
+
+        if (_response.error.reason === "status-code") {
+            switch (_response.error.statusCode) {
+                case 401:
+                    throw new Corti.UnauthorizedError(_response.error.body, _response.rawResponse);
+                case 404:
+                    throw new Corti.NotFoundError(_response.error.body, _response.rawResponse);
+                default:
+                    throw new errors.CortiError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                        rawResponse: _response.rawResponse,
+                    });
+            }
+        }
+
+        return handleNonStatusCodeError(
+            _response.error,
+            _response.rawResponse,
+            "GET",
+            "/agentic/agents/{agentId}/.well-known/agent-card.json",
+        );
+    }
 }

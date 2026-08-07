@@ -920,4 +920,170 @@ describe("AgentsClient", () => {
             return await client.agentic.agents.update("agentId");
         }).rejects.toThrow(Corti.UnprocessableEntityError);
     });
+
+    test("getCard (1)", async () => {
+        const server = mockServerPool.createServer();
+        mockOAuth(server);
+
+        const client = new CortiClient({
+            maxRetries: 0,
+            clientId: "client_id",
+            clientSecret: "client_secret",
+            tenantName: "test",
+            environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
+        });
+
+        const rawResponseBody = {
+            name: "coder",
+            description: "Returns ICD-10 codes for a clinical encounter.",
+            documentationUrl: "documentationUrl",
+            iconUrl: "iconUrl",
+            version: "0.1.0",
+            capabilities: { streaming: true, pushNotifications: false },
+            defaultInputModes: ["text/plain"],
+            defaultOutputModes: ["text/plain"],
+            provider: { organization: "Corti", url: "https://corti.ai" },
+            securityRequirements: [{ key: "value" }],
+            securitySchemes: { key: "value" },
+            signatures: [{ protected: "protected", header: { key: "value" }, signature: "signature" }],
+            skills: [
+                {
+                    id: "con.0192f4c8-7baf-7083-a46f-81d2bd70cf95",
+                    name: "coding-expert",
+                    description: "ICD-10 coding.",
+                    tags: ["expert"],
+                },
+            ],
+            supportedInterfaces: [
+                {
+                    protocolBinding: "JSONRPC",
+                    protocolVersion: "1.0",
+                    url: "https://api.eu.corti.app/v2/agentic/agents/agt.0192f4c8-2c5a-7b3e-9f1a-3c8d6e2b7a40/a2a",
+                },
+                {
+                    protocolBinding: "HTTP+JSON",
+                    protocolVersion: "1.0",
+                    url: "https://api.eu.corti.app/v2/agentic/agents/agt.0192f4c8-2c5a-7b3e-9f1a-3c8d6e2b7a40/a2a",
+                },
+            ],
+        };
+
+        server
+            .mockEndpoint()
+            .get("/agentic/agents/agt.0192f4c8-2c5a-7b3e-9f1a-3c8d6e2b7a40/.well-known/agent-card.json")
+            .respondWith()
+            .statusCode(200)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        const response = await client.agentic.agents.getCard("agt.0192f4c8-2c5a-7b3e-9f1a-3c8d6e2b7a40");
+        expect(response).toEqual({
+            name: "coder",
+            description: "Returns ICD-10 codes for a clinical encounter.",
+            documentationUrl: "documentationUrl",
+            iconUrl: "iconUrl",
+            version: "0.1.0",
+            capabilities: {
+                streaming: true,
+                pushNotifications: false,
+            },
+            defaultInputModes: ["text/plain"],
+            defaultOutputModes: ["text/plain"],
+            provider: {
+                organization: "Corti",
+                url: "https://corti.ai",
+            },
+            securityRequirements: [
+                {
+                    key: "value",
+                },
+            ],
+            securitySchemes: {
+                key: "value",
+            },
+            signatures: [
+                {
+                    protected: "protected",
+                    header: {
+                        key: "value",
+                    },
+                    signature: "signature",
+                },
+            ],
+            skills: [
+                {
+                    id: "con.0192f4c8-7baf-7083-a46f-81d2bd70cf95",
+                    name: "coding-expert",
+                    description: "ICD-10 coding.",
+                    tags: ["expert"],
+                },
+            ],
+            supportedInterfaces: [
+                {
+                    protocolBinding: "JSONRPC",
+                    protocolVersion: "1.0",
+                    url: "https://api.eu.corti.app/v2/agentic/agents/agt.0192f4c8-2c5a-7b3e-9f1a-3c8d6e2b7a40/a2a",
+                },
+                {
+                    protocolBinding: "HTTP+JSON",
+                    protocolVersion: "1.0",
+                    url: "https://api.eu.corti.app/v2/agentic/agents/agt.0192f4c8-2c5a-7b3e-9f1a-3c8d6e2b7a40/a2a",
+                },
+            ],
+        });
+    });
+
+    test("getCard (2)", async () => {
+        const server = mockServerPool.createServer();
+        mockOAuth(server);
+
+        const client = new CortiClient({
+            maxRetries: 0,
+            clientId: "client_id",
+            clientSecret: "client_secret",
+            tenantName: "test",
+            environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
+        });
+
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .get("/agentic/agents/agentId/.well-known/agent-card.json")
+            .respondWith()
+            .statusCode(401)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.agentic.agents.getCard("agentId");
+        }).rejects.toThrow(Corti.UnauthorizedError);
+    });
+
+    test("getCard (3)", async () => {
+        const server = mockServerPool.createServer();
+        mockOAuth(server);
+
+        const client = new CortiClient({
+            maxRetries: 0,
+            clientId: "client_id",
+            clientSecret: "client_secret",
+            tenantName: "test",
+            environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
+        });
+
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .get("/agentic/agents/agentId/.well-known/agent-card.json")
+            .respondWith()
+            .statusCode(404)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.agentic.agents.getCard("agentId");
+        }).rejects.toThrow(Corti.NotFoundError);
+    });
 });
