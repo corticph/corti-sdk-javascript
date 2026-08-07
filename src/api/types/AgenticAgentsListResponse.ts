@@ -5,9 +5,9 @@ import type * as Corti from "../index.js";
 /**
  * A page of agents.
  */
-export interface AgenticListResponse {
+export interface AgenticAgentsListResponse {
     /** Agents on the current page. */
-    agents: Corti.AgenticResponse[];
+    agents: Corti.AgenticAgentsResponse[];
     nextPageToken?: Corti.CommonNextPageToken | null;
     totalSize?: Corti.CommonTotalSize;
 }

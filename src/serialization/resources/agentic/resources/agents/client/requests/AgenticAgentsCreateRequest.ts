@@ -3,34 +3,34 @@
 import type * as Corti from "../../../../../../../api/index.js";
 import * as core from "../../../../../../../core/index.js";
 import type * as serializers from "../../../../../../index.js";
-import { AgenticLabels } from "../../../../../../types/AgenticLabels.js";
-import { AgenticLifecycle } from "../../../../../../types/AgenticLifecycle.js";
-import { AgenticVisibility } from "../../../../../../types/AgenticVisibility.js";
+import { AgentsLabels } from "../../../../../../types/AgentsLabels.js";
+import { AgentsLifecycle } from "../../../../../../types/AgentsLifecycle.js";
+import { AgentsVisibility } from "../../../../../../types/AgentsVisibility.js";
 import { CommonConnectorCreateRequest } from "../../../../../../types/CommonConnectorCreateRequest.js";
 
-export const AgenticCreateRequest: core.serialization.Schema<
-    serializers.agentic.AgenticCreateRequest.Raw,
-    Corti.agentic.AgenticCreateRequest
+export const AgenticAgentsCreateRequest: core.serialization.Schema<
+    serializers.agentic.AgenticAgentsCreateRequest.Raw,
+    Corti.agentic.AgenticAgentsCreateRequest
 > = core.serialization.object({
     name: core.serialization.string(),
     description: core.serialization.string().optional(),
     systemPrompt: core.serialization.string().optional(),
     model: core.serialization.string().optional(),
-    visibility: AgenticVisibility.optional(),
-    lifecycle: AgenticLifecycle.optional(),
+    visibility: AgentsVisibility.optional(),
+    lifecycle: AgentsLifecycle.optional(),
     connectors: core.serialization.list(CommonConnectorCreateRequest).optional(),
-    labels: AgenticLabels.optional(),
+    labels: AgentsLabels.optional(),
 });
 
-export declare namespace AgenticCreateRequest {
+export declare namespace AgenticAgentsCreateRequest {
     export interface Raw {
         name: string;
         description?: string | null;
         systemPrompt?: string | null;
         model?: string | null;
-        visibility?: AgenticVisibility.Raw | null;
-        lifecycle?: AgenticLifecycle.Raw | null;
+        visibility?: AgentsVisibility.Raw | null;
+        lifecycle?: AgentsLifecycle.Raw | null;
         connectors?: CommonConnectorCreateRequest.Raw[] | null;
-        labels?: AgenticLabels.Raw | null;
+        labels?: AgentsLabels.Raw | null;
     }
 }

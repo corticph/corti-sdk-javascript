@@ -12,7 +12,7 @@ import type * as Corti from "../../../../../../index.js";
  *             }]
  *     }
  */
-export interface AgenticPatchRequest {
+export interface AgenticAgentsPatchRequest {
     /** New agent name. */
     name?: string;
     /** New description; `null` clears it. */
@@ -21,8 +21,8 @@ export interface AgenticPatchRequest {
     systemPrompt?: string | null;
     /** New model identifier; `null` falls back to the tenant default. */
     model?: string | null;
-    visibility?: Corti.AgenticVisibility;
-    lifecycle?: Corti.AgenticLifecycle;
+    visibility?: Corti.AgentsVisibility;
+    lifecycle?: Corti.AgentsLifecycle;
     /** Replacement connector list; `null` clears connectors. */
     connectors?: Corti.CommonConnectorCreateRequest[] | null;
     /** Replacement labels; `null` clears labels. */

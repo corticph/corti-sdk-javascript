@@ -4,8 +4,8 @@
  * - `ephemeral` — short-lived; expired automatically.
  * - `persistent` — retained until explicitly deleted.
  */
-export const AgenticLifecycle = {
+export const AgentsLifecycle = {
     Ephemeral: "ephemeral",
     Persistent: "persistent",
 } as const;
-export type AgenticLifecycle = (typeof AgenticLifecycle)[keyof typeof AgenticLifecycle];
+export type AgentsLifecycle = (typeof AgentsLifecycle)[keyof typeof AgentsLifecycle];

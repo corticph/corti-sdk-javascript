@@ -4,9 +4,9 @@ import type * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
 import type * as serializers from "../index.js";
 
-export const AgenticLifecycle: core.serialization.Schema<serializers.AgenticLifecycle.Raw, Corti.AgenticLifecycle> =
+export const AgentsLifecycle: core.serialization.Schema<serializers.AgentsLifecycle.Raw, Corti.AgentsLifecycle> =
     core.serialization.enum_(["ephemeral", "persistent"]);
 
-export declare namespace AgenticLifecycle {
+export declare namespace AgentsLifecycle {
     export type Raw = "ephemeral" | "persistent";
 }

@@ -1,3 +1,3 @@
-export type { AgenticCreateRequest } from "./AgenticCreateRequest.js";
-export type { AgenticListRequest } from "./AgenticListRequest.js";
-export type { AgenticPatchRequest } from "./AgenticPatchRequest.js";
+export type { AgenticAgentsCreateRequest } from "./AgenticAgentsCreateRequest.js";
+export type { AgenticAgentsListRequest } from "./AgenticAgentsListRequest.js";
+export type { AgenticAgentsPatchRequest } from "./AgenticAgentsPatchRequest.js";

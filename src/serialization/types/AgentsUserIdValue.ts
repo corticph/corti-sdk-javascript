@@ -4,11 +4,9 @@ import type * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
 import type * as serializers from "../index.js";
 
-export const AgenticUserIdValue: core.serialization.Schema<
-    serializers.AgenticUserIdValue.Raw,
-    Corti.AgenticUserIdValue
-> = core.serialization.string();
+export const AgentsUserIdValue: core.serialization.Schema<serializers.AgentsUserIdValue.Raw, Corti.AgentsUserIdValue> =
+    core.serialization.string();
 
-export declare namespace AgenticUserIdValue {
+export declare namespace AgentsUserIdValue {
     export type Raw = string;
 }

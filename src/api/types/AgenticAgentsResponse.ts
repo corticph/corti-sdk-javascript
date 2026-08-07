@@ -5,7 +5,7 @@ import type * as Corti from "../index.js";
 /**
  * A configured agent — its metadata, model, and attached connectors.
  */
-export interface AgenticResponse {
+export interface AgenticAgentsResponse {
     id: Corti.CommonAgentIdValue;
     /** Human-readable, unique-per-tenant agent name. */
     name: string;
@@ -18,15 +18,15 @@ export interface AgenticResponse {
      * **Open question** — in the current implementation a model is configured per *expert*, not per *agent* (`Expert.modelName`), and an `Agent` has no model field at all. The desired end state is that there is **no distinction between an expert and an agent**, so `model` lives uniformly on this resource. Until that convergence lands, the precedence of an agent-level `model` over a connector/expert-level override is undecided and MUST be resolved before this field ships.
      */
     model?: string | null;
-    visibility: Corti.AgenticVisibility;
-    lifecycle: Corti.AgenticLifecycle;
+    visibility: Corti.AgentsVisibility;
+    lifecycle: Corti.AgentsLifecycle;
     /** Connectors attached to the agent, discriminated by `type`. */
     connectors: Corti.CommonConnectorResponse[];
-    labels?: Corti.AgenticLabels;
+    labels?: Corti.AgentsLabels;
     /** When the agent was created. */
     createdAt?: Date;
     /** When the agent was last updated. */
     updatedAt?: Date;
     /** Principal (user or service principal) that created the agent. */
-    createdBy?: Corti.AgenticUserIdValue;
+    createdBy?: Corti.AgentsUserIdValue;
 }

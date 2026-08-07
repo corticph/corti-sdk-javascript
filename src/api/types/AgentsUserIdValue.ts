@@ -3,4 +3,4 @@
 /**
  * Principal identifier. Accepts `usr.<uuidv7>` or a bare UUIDv7 on input; always returned prefixed.
  */
-export type AgenticUserIdValue = string;
+export type AgentsUserIdValue = string;
