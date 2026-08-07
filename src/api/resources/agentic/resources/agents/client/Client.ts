@@ -276,4 +276,253 @@ export class AgentsClient {
 
         return handleNonStatusCodeError(_response.error, _response.rawResponse, "POST", "/agentic/agents");
     }
+
+    /**
+     * @param {Corti.CommonAgentIdValue} agentId - Agent identifier (prefixed UUIDv7).
+     * @param {AgentsClient.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link Corti.UnauthorizedError}
+     * @throws {@link Corti.ForbiddenError}
+     * @throws {@link Corti.NotFoundError}
+     *
+     * @example
+     *     await client.agentic.agents.get("agt.0192f4c8-2c5a-7b3e-9f1a-3c8d6e2b7a40")
+     */
+    public get(
+        agentId: Corti.CommonAgentIdValue,
+        requestOptions?: AgentsClient.RequestOptions,
+    ): core.HttpResponsePromise<Corti.AgenticResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__get(agentId, requestOptions));
+    }
+
+    private async __get(
+        agentId: Corti.CommonAgentIdValue,
+        requestOptions?: AgentsClient.RequestOptions,
+    ): Promise<core.WithRawResponse<Corti.AgenticResponse>> {
+        const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
+        const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+            _authRequest.headers,
+            this._options?.headers,
+            mergeOnlyDefinedHeaders({ "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName }),
+            requestOptions?.headers,
+        );
+        const _response = await core.fetcher({
+            url: core.url.join(
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)).base,
+                `agentic/agents/${core.url.encodePathParam(serializers.CommonAgentIdValue.jsonOrThrow(agentId, { omitUndefined: true }))}`,
+            ),
+            method: "GET",
+            headers: _headers,
+            queryParameters: requestOptions?.queryParams,
+            timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
+            maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
+            abortSignal: requestOptions?.abortSignal,
+            fetchFn: this._options?.fetch,
+            logging: this._options.logging,
+        });
+        if (_response.ok) {
+            return {
+                data: serializers.AgenticResponse.parseOrThrow(_response.body, {
+                    unrecognizedObjectKeys: "passthrough",
+                    allowUnrecognizedUnionMembers: true,
+                    allowUnrecognizedEnumValues: true,
+                    skipValidation: true,
+                    breadcrumbsPrefix: ["response"],
+                }),
+                rawResponse: _response.rawResponse,
+            };
+        }
+
+        if (_response.error.reason === "status-code") {
+            switch (_response.error.statusCode) {
+                case 401:
+                    throw new Corti.UnauthorizedError(_response.error.body, _response.rawResponse);
+                case 403:
+                    throw new Corti.ForbiddenError(_response.error.body, _response.rawResponse);
+                case 404:
+                    throw new Corti.NotFoundError(_response.error.body, _response.rawResponse);
+                default:
+                    throw new errors.CortiError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                        rawResponse: _response.rawResponse,
+                    });
+            }
+        }
+
+        return handleNonStatusCodeError(_response.error, _response.rawResponse, "GET", "/agentic/agents/{agentId}");
+    }
+
+    /**
+     * Deletes a `persistent` agent. `ephemeral` agents are expired in place.
+     * Idempotent: deleting an already-deleted agent returns `204`.
+     *
+     * @param {Corti.CommonAgentIdValue} agentId - Agent identifier (prefixed UUIDv7).
+     * @param {AgentsClient.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link Corti.UnauthorizedError}
+     * @throws {@link Corti.ForbiddenError}
+     * @throws {@link Corti.NotFoundError}
+     *
+     * @example
+     *     await client.agentic.agents.delete("agt.0192f4c8-2c5a-7b3e-9f1a-3c8d6e2b7a40")
+     */
+    public delete(
+        agentId: Corti.CommonAgentIdValue,
+        requestOptions?: AgentsClient.RequestOptions,
+    ): core.HttpResponsePromise<void> {
+        return core.HttpResponsePromise.fromPromise(this.__delete(agentId, requestOptions));
+    }
+
+    private async __delete(
+        agentId: Corti.CommonAgentIdValue,
+        requestOptions?: AgentsClient.RequestOptions,
+    ): Promise<core.WithRawResponse<void>> {
+        const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
+        const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+            _authRequest.headers,
+            this._options?.headers,
+            mergeOnlyDefinedHeaders({ "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName }),
+            requestOptions?.headers,
+        );
+        const _response = await core.fetcher({
+            url: core.url.join(
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)).base,
+                `agentic/agents/${core.url.encodePathParam(serializers.CommonAgentIdValue.jsonOrThrow(agentId, { omitUndefined: true }))}`,
+            ),
+            method: "DELETE",
+            headers: _headers,
+            queryParameters: requestOptions?.queryParams,
+            timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
+            maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
+            abortSignal: requestOptions?.abortSignal,
+            fetchFn: this._options?.fetch,
+            logging: this._options.logging,
+        });
+        if (_response.ok) {
+            return { data: undefined, rawResponse: _response.rawResponse };
+        }
+
+        if (_response.error.reason === "status-code") {
+            switch (_response.error.statusCode) {
+                case 401:
+                    throw new Corti.UnauthorizedError(_response.error.body, _response.rawResponse);
+                case 403:
+                    throw new Corti.ForbiddenError(_response.error.body, _response.rawResponse);
+                case 404:
+                    throw new Corti.NotFoundError(_response.error.body, _response.rawResponse);
+                default:
+                    throw new errors.CortiError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                        rawResponse: _response.rawResponse,
+                    });
+            }
+        }
+
+        return handleNonStatusCodeError(_response.error, _response.rawResponse, "DELETE", "/agentic/agents/{agentId}");
+    }
+
+    /**
+     * Partially updates an agent using JSON Merge Patch (RFC 7386).
+     * Omitted fields are unchanged; `null` clears a field; arrays replace.
+     *
+     * @param {Corti.CommonAgentIdValue} agentId - Agent identifier (prefixed UUIDv7).
+     * @param {Corti.agentic.AgenticPatchRequest} request
+     * @param {AgentsClient.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link Corti.BadRequestError}
+     * @throws {@link Corti.UnauthorizedError}
+     * @throws {@link Corti.ForbiddenError}
+     * @throws {@link Corti.NotFoundError}
+     * @throws {@link Corti.UnprocessableEntityError}
+     *
+     * @example
+     *     await client.agentic.agents.update("agt.0192f4c8-2c5a-7b3e-9f1a-3c8d6e2b7a40", {
+     *         name: "coder-v2",
+     *         connectors: [{
+     *                 type: "registry",
+     *                 name: "@corti/coding-expert"
+     *             }]
+     *     })
+     */
+    public update(
+        agentId: Corti.CommonAgentIdValue,
+        request: Corti.agentic.AgenticPatchRequest = {},
+        requestOptions?: AgentsClient.RequestOptions,
+    ): core.HttpResponsePromise<Corti.AgenticResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__update(agentId, request, requestOptions));
+    }
+
+    private async __update(
+        agentId: Corti.CommonAgentIdValue,
+        request: Corti.agentic.AgenticPatchRequest = {},
+        requestOptions?: AgentsClient.RequestOptions,
+    ): Promise<core.WithRawResponse<Corti.AgenticResponse>> {
+        const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
+        const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+            _authRequest.headers,
+            this._options?.headers,
+            mergeOnlyDefinedHeaders({ "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName }),
+            requestOptions?.headers,
+        );
+        const _response = await core.fetcher({
+            url: core.url.join(
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)).base,
+                `agentic/agents/${core.url.encodePathParam(serializers.CommonAgentIdValue.jsonOrThrow(agentId, { omitUndefined: true }))}`,
+            ),
+            method: "PATCH",
+            headers: _headers,
+            contentType: "application/merge-patch+json",
+            queryParameters: requestOptions?.queryParams,
+            requestType: "json",
+            body: serializers.agentic.AgenticPatchRequest.jsonOrThrow(request, {
+                unrecognizedObjectKeys: "strip",
+                omitUndefined: true,
+            }),
+            timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
+            maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
+            abortSignal: requestOptions?.abortSignal,
+            fetchFn: this._options?.fetch,
+            logging: this._options.logging,
+        });
+        if (_response.ok) {
+            return {
+                data: serializers.AgenticResponse.parseOrThrow(_response.body, {
+                    unrecognizedObjectKeys: "passthrough",
+                    allowUnrecognizedUnionMembers: true,
+                    allowUnrecognizedEnumValues: true,
+                    skipValidation: true,
+                    breadcrumbsPrefix: ["response"],
+                }),
+                rawResponse: _response.rawResponse,
+            };
+        }
+
+        if (_response.error.reason === "status-code") {
+            switch (_response.error.statusCode) {
+                case 400:
+                    throw new Corti.BadRequestError(_response.error.body, _response.rawResponse);
+                case 401:
+                    throw new Corti.UnauthorizedError(_response.error.body, _response.rawResponse);
+                case 403:
+                    throw new Corti.ForbiddenError(_response.error.body, _response.rawResponse);
+                case 404:
+                    throw new Corti.NotFoundError(_response.error.body, _response.rawResponse);
+                case 422:
+                    throw new Corti.UnprocessableEntityError(_response.error.body, _response.rawResponse);
+                default:
+                    throw new errors.CortiError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                        rawResponse: _response.rawResponse,
+                    });
+            }
+        }
+
+        return handleNonStatusCodeError(_response.error, _response.rawResponse, "PATCH", "/agentic/agents/{agentId}");
+    }
 }

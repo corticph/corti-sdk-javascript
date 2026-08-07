@@ -440,4 +440,484 @@ describe("AgentsClient", () => {
             });
         }).rejects.toThrow(Corti.UnprocessableEntityError);
     });
+
+    test("get (1)", async () => {
+        const server = mockServerPool.createServer();
+        mockOAuth(server);
+
+        const client = new CortiClient({
+            maxRetries: 0,
+            clientId: "client_id",
+            clientSecret: "client_secret",
+            tenantName: "test",
+            environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
+        });
+
+        const rawResponseBody = {
+            id: "agt.0192f4c8-2c5a-7b3e-9f1a-3c8d6e2b7a40",
+            name: "coder",
+            description: "Returns ICD-10 codes for a clinical encounter.",
+            systemPrompt: "Respond with only the ICD-10 code.",
+            model: "corti-default",
+            visibility: "private",
+            lifecycle: "persistent",
+            connectors: [
+                {
+                    id: "con.0192f4c8-7baf-7083-a46f-81d2bd70cf95",
+                    type: "registry",
+                    enabled: true,
+                    name: "@corti/coding-expert",
+                    config: { key: "value" },
+                },
+            ],
+            labels: { team: "coding", env: "prod" },
+            createdAt: "2026-05-19T12:00:00Z",
+            updatedAt: "2026-05-19T12:00:00Z",
+            createdBy: "usr.0192f4c8-8bc0-7194-8570-92e3ce81d0a6",
+        };
+
+        server
+            .mockEndpoint()
+            .get("/agentic/agents/agt.0192f4c8-2c5a-7b3e-9f1a-3c8d6e2b7a40")
+            .respondWith()
+            .statusCode(200)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        const response = await client.agentic.agents.get("agt.0192f4c8-2c5a-7b3e-9f1a-3c8d6e2b7a40");
+        expect(response).toEqual({
+            id: "agt.0192f4c8-2c5a-7b3e-9f1a-3c8d6e2b7a40",
+            name: "coder",
+            description: "Returns ICD-10 codes for a clinical encounter.",
+            systemPrompt: "Respond with only the ICD-10 code.",
+            model: "corti-default",
+            visibility: "private",
+            lifecycle: "persistent",
+            connectors: [
+                {
+                    id: "con.0192f4c8-7baf-7083-a46f-81d2bd70cf95",
+                    type: "registry",
+                    enabled: true,
+                    name: "@corti/coding-expert",
+                    config: {
+                        key: "value",
+                    },
+                },
+            ],
+            labels: {
+                team: "coding",
+                env: "prod",
+            },
+            createdAt: new Date("2026-05-19T12:00:00.000Z"),
+            updatedAt: new Date("2026-05-19T12:00:00.000Z"),
+            createdBy: "usr.0192f4c8-8bc0-7194-8570-92e3ce81d0a6",
+        });
+    });
+
+    test("get (2)", async () => {
+        const server = mockServerPool.createServer();
+        mockOAuth(server);
+
+        const client = new CortiClient({
+            maxRetries: 0,
+            clientId: "client_id",
+            clientSecret: "client_secret",
+            tenantName: "test",
+            environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
+        });
+
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .get("/agentic/agents/agentId")
+            .respondWith()
+            .statusCode(401)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.agentic.agents.get("agentId");
+        }).rejects.toThrow(Corti.UnauthorizedError);
+    });
+
+    test("get (3)", async () => {
+        const server = mockServerPool.createServer();
+        mockOAuth(server);
+
+        const client = new CortiClient({
+            maxRetries: 0,
+            clientId: "client_id",
+            clientSecret: "client_secret",
+            tenantName: "test",
+            environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
+        });
+
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .get("/agentic/agents/agentId")
+            .respondWith()
+            .statusCode(403)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.agentic.agents.get("agentId");
+        }).rejects.toThrow(Corti.ForbiddenError);
+    });
+
+    test("get (4)", async () => {
+        const server = mockServerPool.createServer();
+        mockOAuth(server);
+
+        const client = new CortiClient({
+            maxRetries: 0,
+            clientId: "client_id",
+            clientSecret: "client_secret",
+            tenantName: "test",
+            environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
+        });
+
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .get("/agentic/agents/agentId")
+            .respondWith()
+            .statusCode(404)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.agentic.agents.get("agentId");
+        }).rejects.toThrow(Corti.NotFoundError);
+    });
+
+    test("delete (1)", async () => {
+        const server = mockServerPool.createServer();
+        mockOAuth(server);
+
+        const client = new CortiClient({
+            maxRetries: 0,
+            clientId: "client_id",
+            clientSecret: "client_secret",
+            tenantName: "test",
+            environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
+        });
+
+        server
+            .mockEndpoint()
+            .delete("/agentic/agents/agt.0192f4c8-2c5a-7b3e-9f1a-3c8d6e2b7a40")
+            .respondWith()
+            .statusCode(200)
+            .build();
+
+        const response = await client.agentic.agents.delete("agt.0192f4c8-2c5a-7b3e-9f1a-3c8d6e2b7a40");
+        expect(response).toEqual(undefined);
+    });
+
+    test("delete (2)", async () => {
+        const server = mockServerPool.createServer();
+        mockOAuth(server);
+
+        const client = new CortiClient({
+            maxRetries: 0,
+            clientId: "client_id",
+            clientSecret: "client_secret",
+            tenantName: "test",
+            environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
+        });
+
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .delete("/agentic/agents/agentId")
+            .respondWith()
+            .statusCode(401)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.agentic.agents.delete("agentId");
+        }).rejects.toThrow(Corti.UnauthorizedError);
+    });
+
+    test("delete (3)", async () => {
+        const server = mockServerPool.createServer();
+        mockOAuth(server);
+
+        const client = new CortiClient({
+            maxRetries: 0,
+            clientId: "client_id",
+            clientSecret: "client_secret",
+            tenantName: "test",
+            environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
+        });
+
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .delete("/agentic/agents/agentId")
+            .respondWith()
+            .statusCode(403)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.agentic.agents.delete("agentId");
+        }).rejects.toThrow(Corti.ForbiddenError);
+    });
+
+    test("delete (4)", async () => {
+        const server = mockServerPool.createServer();
+        mockOAuth(server);
+
+        const client = new CortiClient({
+            maxRetries: 0,
+            clientId: "client_id",
+            clientSecret: "client_secret",
+            tenantName: "test",
+            environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
+        });
+
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .delete("/agentic/agents/agentId")
+            .respondWith()
+            .statusCode(404)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.agentic.agents.delete("agentId");
+        }).rejects.toThrow(Corti.NotFoundError);
+    });
+
+    test("update (1)", async () => {
+        const server = mockServerPool.createServer();
+        mockOAuth(server);
+
+        const client = new CortiClient({
+            maxRetries: 0,
+            clientId: "client_id",
+            clientSecret: "client_secret",
+            tenantName: "test",
+            environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
+        });
+        const rawRequestBody = { name: "coder-v2", connectors: [{ type: "registry", name: "@corti/coding-expert" }] };
+        const rawResponseBody = {
+            id: "agt.0192f4c8-2c5a-7b3e-9f1a-3c8d6e2b7a40",
+            name: "coder",
+            description: "Returns ICD-10 codes for a clinical encounter.",
+            systemPrompt: "Respond with only the ICD-10 code.",
+            model: "corti-default",
+            visibility: "private",
+            lifecycle: "persistent",
+            connectors: [
+                {
+                    id: "con.0192f4c8-7baf-7083-a46f-81d2bd70cf95",
+                    type: "registry",
+                    enabled: true,
+                    name: "@corti/coding-expert",
+                    config: { key: "value" },
+                },
+            ],
+            labels: { team: "coding", env: "prod" },
+            createdAt: "2026-05-19T12:00:00Z",
+            updatedAt: "2026-05-19T12:00:00Z",
+            createdBy: "usr.0192f4c8-8bc0-7194-8570-92e3ce81d0a6",
+        };
+
+        server
+            .mockEndpoint()
+            .patch("/agentic/agents/agt.0192f4c8-2c5a-7b3e-9f1a-3c8d6e2b7a40")
+            .jsonBody(rawRequestBody)
+            .respondWith()
+            .statusCode(200)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        const response = await client.agentic.agents.update("agt.0192f4c8-2c5a-7b3e-9f1a-3c8d6e2b7a40", {
+            name: "coder-v2",
+            connectors: [
+                {
+                    type: "registry",
+                    name: "@corti/coding-expert",
+                },
+            ],
+        });
+        expect(response).toEqual({
+            id: "agt.0192f4c8-2c5a-7b3e-9f1a-3c8d6e2b7a40",
+            name: "coder",
+            description: "Returns ICD-10 codes for a clinical encounter.",
+            systemPrompt: "Respond with only the ICD-10 code.",
+            model: "corti-default",
+            visibility: "private",
+            lifecycle: "persistent",
+            connectors: [
+                {
+                    id: "con.0192f4c8-7baf-7083-a46f-81d2bd70cf95",
+                    type: "registry",
+                    enabled: true,
+                    name: "@corti/coding-expert",
+                    config: {
+                        key: "value",
+                    },
+                },
+            ],
+            labels: {
+                team: "coding",
+                env: "prod",
+            },
+            createdAt: new Date("2026-05-19T12:00:00.000Z"),
+            updatedAt: new Date("2026-05-19T12:00:00.000Z"),
+            createdBy: "usr.0192f4c8-8bc0-7194-8570-92e3ce81d0a6",
+        });
+    });
+
+    test("update (2)", async () => {
+        const server = mockServerPool.createServer();
+        mockOAuth(server);
+
+        const client = new CortiClient({
+            maxRetries: 0,
+            clientId: "client_id",
+            clientSecret: "client_secret",
+            tenantName: "test",
+            environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
+        });
+        const rawRequestBody = {};
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .patch("/agentic/agents/agentId")
+            .jsonBody(rawRequestBody)
+            .respondWith()
+            .statusCode(400)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.agentic.agents.update("agentId");
+        }).rejects.toThrow(Corti.BadRequestError);
+    });
+
+    test("update (3)", async () => {
+        const server = mockServerPool.createServer();
+        mockOAuth(server);
+
+        const client = new CortiClient({
+            maxRetries: 0,
+            clientId: "client_id",
+            clientSecret: "client_secret",
+            tenantName: "test",
+            environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
+        });
+        const rawRequestBody = {};
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .patch("/agentic/agents/agentId")
+            .jsonBody(rawRequestBody)
+            .respondWith()
+            .statusCode(401)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.agentic.agents.update("agentId");
+        }).rejects.toThrow(Corti.UnauthorizedError);
+    });
+
+    test("update (4)", async () => {
+        const server = mockServerPool.createServer();
+        mockOAuth(server);
+
+        const client = new CortiClient({
+            maxRetries: 0,
+            clientId: "client_id",
+            clientSecret: "client_secret",
+            tenantName: "test",
+            environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
+        });
+        const rawRequestBody = {};
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .patch("/agentic/agents/agentId")
+            .jsonBody(rawRequestBody)
+            .respondWith()
+            .statusCode(403)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.agentic.agents.update("agentId");
+        }).rejects.toThrow(Corti.ForbiddenError);
+    });
+
+    test("update (5)", async () => {
+        const server = mockServerPool.createServer();
+        mockOAuth(server);
+
+        const client = new CortiClient({
+            maxRetries: 0,
+            clientId: "client_id",
+            clientSecret: "client_secret",
+            tenantName: "test",
+            environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
+        });
+        const rawRequestBody = {};
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .patch("/agentic/agents/agentId")
+            .jsonBody(rawRequestBody)
+            .respondWith()
+            .statusCode(404)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.agentic.agents.update("agentId");
+        }).rejects.toThrow(Corti.NotFoundError);
+    });
+
+    test("update (6)", async () => {
+        const server = mockServerPool.createServer();
+        mockOAuth(server);
+
+        const client = new CortiClient({
+            maxRetries: 0,
+            clientId: "client_id",
+            clientSecret: "client_secret",
+            tenantName: "test",
+            environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
+        });
+        const rawRequestBody = {};
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .patch("/agentic/agents/agentId")
+            .jsonBody(rawRequestBody)
+            .respondWith()
+            .statusCode(422)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.agentic.agents.update("agentId");
+        }).rejects.toThrow(Corti.UnprocessableEntityError);
+    });
 });
