@@ -3,22 +3,22 @@
 import type * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
 import type * as serializers from "../index.js";
-import { AgenticAgentsResponse } from "./AgenticAgentsResponse.js";
+import { AgentsResponse } from "./AgentsResponse.js";
 import { CommonNextPageToken } from "./CommonNextPageToken.js";
 import { CommonTotalSize } from "./CommonTotalSize.js";
 
-export const AgenticAgentsListResponse: core.serialization.ObjectSchema<
-    serializers.AgenticAgentsListResponse.Raw,
-    Corti.AgenticAgentsListResponse
+export const AgentsListResponse: core.serialization.ObjectSchema<
+    serializers.AgentsListResponse.Raw,
+    Corti.AgentsListResponse
 > = core.serialization.object({
-    agents: core.serialization.list(AgenticAgentsResponse),
+    agents: core.serialization.list(AgentsResponse),
     nextPageToken: CommonNextPageToken.optionalNullable(),
     totalSize: CommonTotalSize.optional(),
 });
 
-export declare namespace AgenticAgentsListResponse {
+export declare namespace AgentsListResponse {
     export interface Raw {
-        agents: AgenticAgentsResponse.Raw[];
+        agents: AgentsResponse.Raw[];
         nextPageToken?: ((CommonNextPageToken.Raw | undefined) | null | undefined) | null;
         totalSize?: CommonTotalSize.Raw | null;
     }

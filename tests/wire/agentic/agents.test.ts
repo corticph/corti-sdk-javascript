@@ -133,4 +133,311 @@ describe("AgentsClient", () => {
             return await client.agentic.agents.list();
         }).rejects.toThrow(Corti.UnauthorizedError);
     });
+
+    test("create (1)", async () => {
+        const server = mockServerPool.createServer();
+        mockOAuth(server);
+
+        const client = new CortiClient({
+            maxRetries: 0,
+            clientId: "client_id",
+            clientSecret: "client_secret",
+            tenantName: "test",
+            environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
+        });
+        const rawRequestBody = {
+            name: "coder",
+            description: "Returns ICD-10 codes for a clinical encounter.",
+            systemPrompt: "Respond with only the ICD-10 code.",
+            model: "corti-default",
+            visibility: "private",
+            lifecycle: "persistent",
+            connectors: [
+                { type: "registry", name: "@corti/coding-expert" },
+                {
+                    type: "mcp",
+                    name: "policybot",
+                    url: "https://mcp.example.com",
+                    auth: {
+                        type: "oauth2",
+                        scope: "read:policies",
+                        redirectUrl: "https://app.corti.ai/oauth/callback",
+                    },
+                },
+                {
+                    type: "schema",
+                    name: "submit_code",
+                    description: "Submit the final ICD-10 code for the encounter along with a confidence score.",
+                    schema: {
+                        type: "object",
+                        properties: {
+                            code: { type: "string", description: "The selected ICD-10 code." },
+                            confidence: { type: "number", minimum: 0, maximum: 1 },
+                        },
+                        required: ["code"],
+                    },
+                    transition: "complete",
+                },
+            ],
+            labels: { team: "coding", env: "prod" },
+        };
+        const rawResponseBody = {
+            id: "agt.0192f4c8-2c5a-7b3e-9f1a-3c8d6e2b7a40",
+            name: "coder",
+            description: "Returns ICD-10 codes for a clinical encounter.",
+            systemPrompt: "Respond with only the ICD-10 code.",
+            model: "corti-default",
+            visibility: "private",
+            lifecycle: "persistent",
+            connectors: [
+                {
+                    id: "con.0192f4c8-7baf-7083-a46f-81d2bd70cf95",
+                    type: "registry",
+                    enabled: true,
+                    name: "@corti/coding-expert",
+                    config: { key: "value" },
+                },
+            ],
+            labels: { team: "coding", env: "prod" },
+            createdAt: "2026-05-19T12:00:00Z",
+            updatedAt: "2026-05-19T12:00:00Z",
+            createdBy: "usr.0192f4c8-8bc0-7194-8570-92e3ce81d0a6",
+        };
+
+        server
+            .mockEndpoint()
+            .post("/agentic/agents")
+            .jsonBody(rawRequestBody)
+            .respondWith()
+            .statusCode(200)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        const response = await client.agentic.agents.create({
+            name: "coder",
+            description: "Returns ICD-10 codes for a clinical encounter.",
+            systemPrompt: "Respond with only the ICD-10 code.",
+            model: "corti-default",
+            visibility: "private",
+            lifecycle: "persistent",
+            connectors: [
+                {
+                    type: "registry",
+                    name: "@corti/coding-expert",
+                },
+                {
+                    type: "mcp",
+                    name: "policybot",
+                    url: "https://mcp.example.com",
+                    auth: {
+                        type: "oauth2",
+                        scope: "read:policies",
+                        redirectUrl: "https://app.corti.ai/oauth/callback",
+                    },
+                },
+                {
+                    type: "schema",
+                    name: "submit_code",
+                    description: "Submit the final ICD-10 code for the encounter along with a confidence score.",
+                    schema: {
+                        type: "object",
+                        properties: {
+                            code: {
+                                type: "string",
+                                description: "The selected ICD-10 code.",
+                            },
+                            confidence: {
+                                type: "number",
+                                minimum: 0,
+                                maximum: 1,
+                            },
+                        },
+                        required: ["code"],
+                    },
+                    transition: "complete",
+                },
+            ],
+            labels: {
+                team: "coding",
+                env: "prod",
+            },
+        });
+        expect(response).toEqual({
+            id: "agt.0192f4c8-2c5a-7b3e-9f1a-3c8d6e2b7a40",
+            name: "coder",
+            description: "Returns ICD-10 codes for a clinical encounter.",
+            systemPrompt: "Respond with only the ICD-10 code.",
+            model: "corti-default",
+            visibility: "private",
+            lifecycle: "persistent",
+            connectors: [
+                {
+                    id: "con.0192f4c8-7baf-7083-a46f-81d2bd70cf95",
+                    type: "registry",
+                    enabled: true,
+                    name: "@corti/coding-expert",
+                    config: {
+                        key: "value",
+                    },
+                },
+            ],
+            labels: {
+                team: "coding",
+                env: "prod",
+            },
+            createdAt: new Date("2026-05-19T12:00:00.000Z"),
+            updatedAt: new Date("2026-05-19T12:00:00.000Z"),
+            createdBy: "usr.0192f4c8-8bc0-7194-8570-92e3ce81d0a6",
+        });
+    });
+
+    test("create (2)", async () => {
+        const server = mockServerPool.createServer();
+        mockOAuth(server);
+
+        const client = new CortiClient({
+            maxRetries: 0,
+            clientId: "client_id",
+            clientSecret: "client_secret",
+            tenantName: "test",
+            environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
+        });
+        const rawRequestBody = { name: "x" };
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .post("/agentic/agents")
+            .jsonBody(rawRequestBody)
+            .respondWith()
+            .statusCode(400)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.agentic.agents.create({
+                name: "x",
+            });
+        }).rejects.toThrow(Corti.BadRequestError);
+    });
+
+    test("create (3)", async () => {
+        const server = mockServerPool.createServer();
+        mockOAuth(server);
+
+        const client = new CortiClient({
+            maxRetries: 0,
+            clientId: "client_id",
+            clientSecret: "client_secret",
+            tenantName: "test",
+            environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
+        });
+        const rawRequestBody = { name: "x" };
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .post("/agentic/agents")
+            .jsonBody(rawRequestBody)
+            .respondWith()
+            .statusCode(401)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.agentic.agents.create({
+                name: "x",
+            });
+        }).rejects.toThrow(Corti.UnauthorizedError);
+    });
+
+    test("create (4)", async () => {
+        const server = mockServerPool.createServer();
+        mockOAuth(server);
+
+        const client = new CortiClient({
+            maxRetries: 0,
+            clientId: "client_id",
+            clientSecret: "client_secret",
+            tenantName: "test",
+            environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
+        });
+        const rawRequestBody = { name: "x" };
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .post("/agentic/agents")
+            .jsonBody(rawRequestBody)
+            .respondWith()
+            .statusCode(403)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.agentic.agents.create({
+                name: "x",
+            });
+        }).rejects.toThrow(Corti.ForbiddenError);
+    });
+
+    test("create (5)", async () => {
+        const server = mockServerPool.createServer();
+        mockOAuth(server);
+
+        const client = new CortiClient({
+            maxRetries: 0,
+            clientId: "client_id",
+            clientSecret: "client_secret",
+            tenantName: "test",
+            environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
+        });
+        const rawRequestBody = { name: "x" };
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .post("/agentic/agents")
+            .jsonBody(rawRequestBody)
+            .respondWith()
+            .statusCode(409)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.agentic.agents.create({
+                name: "x",
+            });
+        }).rejects.toThrow(Corti.ConflictError);
+    });
+
+    test("create (6)", async () => {
+        const server = mockServerPool.createServer();
+        mockOAuth(server);
+
+        const client = new CortiClient({
+            maxRetries: 0,
+            clientId: "client_id",
+            clientSecret: "client_secret",
+            tenantName: "test",
+            environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
+        });
+        const rawRequestBody = { name: "x" };
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .post("/agentic/agents")
+            .jsonBody(rawRequestBody)
+            .respondWith()
+            .statusCode(422)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.agentic.agents.create({
+                name: "x",
+            });
+        }).rejects.toThrow(Corti.UnprocessableEntityError);
+    });
 });

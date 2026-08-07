@@ -3,4 +3,4 @@
 /**
  * Free-form `string → string` metadata for filtering and organisation. Not used for routing or auth.
  */
-export type AgenticLabels = Record<string, string>;
+export type AgentsLabels = Record<string, string>;

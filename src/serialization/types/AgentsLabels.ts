@@ -4,9 +4,9 @@ import type * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
 import type * as serializers from "../index.js";
 
-export const AgenticLabels: core.serialization.Schema<serializers.AgenticLabels.Raw, Corti.AgenticLabels> =
+export const AgentsLabels: core.serialization.Schema<serializers.AgentsLabels.Raw, Corti.AgentsLabels> =
     core.serialization.record(core.serialization.string(), core.serialization.string());
 
-export declare namespace AgenticLabels {
+export declare namespace AgentsLabels {
     export type Raw = Record<string, string>;
 }
