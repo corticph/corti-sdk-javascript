@@ -28,7 +28,7 @@ export class AgentsClient {
      * ID instead); `public` agents are listed tenant-wide.
      * The `visibility`, `lifecycle`, `label`, and `q` filter parameters are accepted but not yet honored by the server; the response is unfiltered.
      *
-     * @param {Corti.agentic.AgentsListParams} request
+     * @param {Corti.agentic.ListAgentsRequest} request
      * @param {AgentsClient.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Corti.BadRequestError}
@@ -41,12 +41,12 @@ export class AgentsClient {
      *     })
      */
     public async list(
-        request: Corti.agentic.AgentsListParams = {},
+        request: Corti.agentic.ListAgentsRequest = {},
         requestOptions?: AgentsClient.RequestOptions,
     ): Promise<core.Page<Corti.AgentsResponse, Corti.AgentsListResponse>> {
         const list = core.HttpResponsePromise.interceptFunction(
             async (
-                request: Corti.agentic.AgentsListParams,
+                request: Corti.agentic.ListAgentsRequest,
             ): Promise<core.WithRawResponse<Corti.AgentsListResponse>> => {
                 const { pageSize, pageToken, visibility, lifecycle, label, q } = request;
                 const _queryParams: Record<string, unknown> = {
