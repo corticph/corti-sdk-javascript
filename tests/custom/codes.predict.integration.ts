@@ -209,6 +209,138 @@ describe("cortiClient.codes.predict", () => {
             expect(result).toBeDefined();
             expect(consoleWarnSpy).not.toHaveBeenCalled();
         });
+
+        it("should predict codes with system snomedctint without errors or warnings", async () => {
+            expect.assertions(2);
+
+            const result = await cortiClient.codes.predict({
+                system: ["snomedctint"],
+                context: [{ type: "text", text: faker.lorem.sentence() }],
+            });
+
+            expect(result).toBeDefined();
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
+
+        it("should predict codes with system snomedctde without errors or warnings", async () => {
+            expect.assertions(2);
+
+            const result = await cortiClient.codes.predict({
+                system: ["snomedctde"],
+                context: [{ type: "text", text: faker.lorem.sentence() }],
+            });
+
+            expect(result).toBeDefined();
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
+
+        it("should predict codes with system snomedctfr without errors or warnings", async () => {
+            expect.assertions(2);
+
+            const result = await cortiClient.codes.predict({
+                system: ["snomedctfr"],
+                context: [{ type: "text", text: faker.lorem.sentence() }],
+            });
+
+            expect(result).toBeDefined();
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
+
+        it("should predict codes with system snomedctuk without errors or warnings", async () => {
+            expect.assertions(2);
+
+            const result = await cortiClient.codes.predict({
+                system: ["snomedctuk"],
+                context: [{ type: "text", text: faker.lorem.sentence() }],
+            });
+
+            expect(result).toBeDefined();
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
+
+        it("should predict codes with system snomedctes without errors or warnings", async () => {
+            expect.assertions(2);
+
+            const result = await cortiClient.codes.predict({
+                system: ["snomedctes"],
+                context: [{ type: "text", text: faker.lorem.sentence() }],
+            });
+
+            expect(result).toBeDefined();
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
+
+        it("should predict codes with system snomedctdk without errors or warnings", async () => {
+            expect.assertions(2);
+
+            const result = await cortiClient.codes.predict({
+                system: ["snomedctdk"],
+                context: [{ type: "text", text: faker.lorem.sentence() }],
+            });
+
+            expect(result).toBeDefined();
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
+
+        it("should predict codes with system snomedctse without errors or warnings", async () => {
+            expect.assertions(2);
+
+            const result = await cortiClient.codes.predict({
+                system: ["snomedctse"],
+                context: [{ type: "text", text: faker.lorem.sentence() }],
+            });
+
+            expect(result).toBeDefined();
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
+
+        it("should predict codes with system snomedctus without errors or warnings", async () => {
+            expect.assertions(2);
+
+            const result = await cortiClient.codes.predict({
+                system: ["snomedctus"],
+                context: [{ type: "text", text: faker.lorem.sentence() }],
+            });
+
+            expect(result).toBeDefined();
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
+
+        it("should predict codes with max allowed system enum values without errors or warnings", async () => {
+            expect.assertions(2);
+
+            const result = await cortiClient.codes.predict({
+                system: [
+                    "icd10cm-inpatient",
+                    "icd10cm-outpatient",
+                    "icd10pcs",
+                    "cpt",
+                    "icd10int-inpatient",
+                    "icd10int-outpatient",
+                    "icd10uk-inpatient",
+                    "icd10uk-outpatient",
+                    "cim10fr-inpatient",
+                    "cim10fr-outpatient",
+                    "icd10gm-inpatient",
+                    "icd10gm-outpatient",
+                    "opcs4",
+                    "ops",
+                    "ccam",
+                    "snomedctint",
+                    "snomedctde",
+                    "snomedctfr",
+                    "snomedctuk",
+                    "snomedctes",
+                    "snomedctdk",
+                    "snomedctse",
+                    "snomedctus",
+                ],
+                context: [{ type: "text", text: faker.lorem.sentence() }],
+            });
+
+            expect(result).toBeDefined();
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
     });
 
     describe("should predict codes with documentId context", () => {

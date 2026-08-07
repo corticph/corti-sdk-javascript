@@ -10,7 +10,7 @@ export interface GuidedEphemeralDocument {
     templateId: string;
     templateVersionId: string;
     /** The BCP 47 language tag of the generated output. */
-    language: string;
+    outputLanguage: string;
     /** The interaction whose context was used to generate this document, if supplied. */
     interactionId?: string | null;
     stringDocument: Record<string, string>;

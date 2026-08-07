@@ -24,6 +24,13 @@ export const CommonCodingSystemEnum: core.serialization.Schema<
     "ops",
     "ccam",
     "snomedctint",
+    "snomedctde",
+    "snomedctfr",
+    "snomedctuk",
+    "snomedctes",
+    "snomedctdk",
+    "snomedctse",
+    "snomedctus",
 ]);
 
 export declare namespace CommonCodingSystemEnum {
@@ -43,5 +50,12 @@ export declare namespace CommonCodingSystemEnum {
         | "opcs4"
         | "ops"
         | "ccam"
-        | "snomedctint";
+        | "snomedctint"
+        | "snomedctde"
+        | "snomedctfr"
+        | "snomedctuk"
+        | "snomedctes"
+        | "snomedctdk"
+        | "snomedctse"
+        | "snomedctus";
 }
