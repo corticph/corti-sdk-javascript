@@ -4,9 +4,9 @@ import type * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
 import type * as serializers from "../index.js";
 
-export const AgentsVisibility: core.serialization.Schema<serializers.AgentsVisibility.Raw, Corti.AgentsVisibility> =
+export const AgenticVisibility: core.serialization.Schema<serializers.AgenticVisibility.Raw, Corti.AgenticVisibility> =
     core.serialization.enum_(["private", "unlisted", "public"]);
 
-export declare namespace AgentsVisibility {
+export declare namespace AgenticVisibility {
     export type Raw = "private" | "unlisted" | "public";
 }

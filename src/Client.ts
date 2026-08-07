@@ -34,9 +34,9 @@ export class CortiClient {
     protected _codes: CodesClient | undefined;
     protected _languages: LanguagesClient | undefined;
     protected _agents: AgentsClient | undefined;
-    protected _agentic: AgenticClient | undefined;
     protected _stream: StreamClient | undefined;
     protected _transcribe: TranscribeClient | undefined;
+    protected _agentic: AgenticClient | undefined;
 
     constructor(options: CortiClient.Options) {
         this._options = normalizeClientOptionsWithAuth(options);
@@ -82,15 +82,15 @@ export class CortiClient {
         return (this._agents ??= new AgentsClient(this._options));
     }
 
-    public get agentic(): AgenticClient {
-        return (this._agentic ??= new AgenticClient(this._options));
-    }
-
     public get stream(): StreamClient {
         return (this._stream ??= new StreamClient(this._options));
     }
 
     public get transcribe(): TranscribeClient {
         return (this._transcribe ??= new TranscribeClient(this._options));
+    }
+
+    public get agentic(): AgenticClient {
+        return (this._agentic ??= new AgenticClient(this._options));
     }
 }

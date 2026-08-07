@@ -3,42 +3,42 @@
 import type * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
 import type * as serializers from "../index.js";
-import { AgentsLabels } from "./AgentsLabels.js";
-import { AgentsLifecycle } from "./AgentsLifecycle.js";
-import { AgentsUserIdValue } from "./AgentsUserIdValue.js";
-import { AgentsVisibility } from "./AgentsVisibility.js";
+import { AgenticLabels } from "./AgenticLabels.js";
+import { AgenticLifecycle } from "./AgenticLifecycle.js";
+import { AgenticUserIdValue } from "./AgenticUserIdValue.js";
+import { AgenticVisibility } from "./AgenticVisibility.js";
 import { CommonAgentIdValue } from "./CommonAgentIdValue.js";
 import { CommonConnectorResponse } from "./CommonConnectorResponse.js";
 
-export const AgentsResponse: core.serialization.ObjectSchema<serializers.AgentsResponse.Raw, Corti.AgentsResponse> =
+export const AgenticResponse: core.serialization.ObjectSchema<serializers.AgenticResponse.Raw, Corti.AgenticResponse> =
     core.serialization.object({
         id: CommonAgentIdValue,
         name: core.serialization.string(),
         description: core.serialization.string().optionalNullable(),
         systemPrompt: core.serialization.string().optionalNullable(),
         model: core.serialization.string().optionalNullable(),
-        visibility: AgentsVisibility,
-        lifecycle: AgentsLifecycle,
+        visibility: AgenticVisibility,
+        lifecycle: AgenticLifecycle,
         connectors: core.serialization.list(CommonConnectorResponse),
-        labels: AgentsLabels.optional(),
+        labels: AgenticLabels.optional(),
         createdAt: core.serialization.date().optional(),
         updatedAt: core.serialization.date().optional(),
-        createdBy: AgentsUserIdValue.optional(),
+        createdBy: AgenticUserIdValue.optional(),
     });
 
-export declare namespace AgentsResponse {
+export declare namespace AgenticResponse {
     export interface Raw {
         id: CommonAgentIdValue.Raw;
         name: string;
         description?: (string | null | undefined) | null;
         systemPrompt?: (string | null | undefined) | null;
         model?: (string | null | undefined) | null;
-        visibility: AgentsVisibility.Raw;
-        lifecycle: AgentsLifecycle.Raw;
+        visibility: AgenticVisibility.Raw;
+        lifecycle: AgenticLifecycle.Raw;
         connectors: CommonConnectorResponse.Raw[];
-        labels?: AgentsLabels.Raw | null;
+        labels?: AgenticLabels.Raw | null;
         createdAt?: string | null;
         updatedAt?: string | null;
-        createdBy?: AgentsUserIdValue.Raw | null;
+        createdBy?: AgenticUserIdValue.Raw | null;
     }
 }
