@@ -3,7 +3,7 @@
 /**
  * Publishing organization and URL.
  */
-export interface AgenticAgentsAgentCardProvider {
+export interface AgenticAgentCardResponseProvider {
     /** Publishing organization name. */
     organization?: string;
     /** Publishing organization URL. */

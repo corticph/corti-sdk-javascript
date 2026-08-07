@@ -4,15 +4,15 @@ import type * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
 import type * as serializers from "../index.js";
 
-export const AgenticAgentsAgentCardProvider: core.serialization.ObjectSchema<
-    serializers.AgenticAgentsAgentCardProvider.Raw,
-    Corti.AgenticAgentsAgentCardProvider
+export const AgenticAgentCardResponseProvider: core.serialization.ObjectSchema<
+    serializers.AgenticAgentCardResponseProvider.Raw,
+    Corti.AgenticAgentCardResponseProvider
 > = core.serialization.object({
     organization: core.serialization.string().optional(),
     url: core.serialization.string().optional(),
 });
 
-export declare namespace AgenticAgentsAgentCardProvider {
+export declare namespace AgenticAgentCardResponseProvider {
     export interface Raw {
         organization?: string | null;
         url?: string | null;

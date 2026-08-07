@@ -2,9 +2,9 @@
 
 import type * as Corti from "../index.js";
 
-export interface AgenticAgentsAgentCardSupportedInterfacesItem {
+export interface AgenticAgentCardResponseSupportedInterfacesItem {
     /** A2A protocol binding type. */
-    protocolBinding: Corti.AgenticAgentsAgentCardSupportedInterfacesItemProtocolBinding;
+    protocolBinding: Corti.AgenticAgentCardResponseSupportedInterfacesItemProtocolBinding;
     /** A2A protocol version; always `1.0`. */
     protocolVersion: "1.0";
     /** Endpoint URL for this protocol binding. */

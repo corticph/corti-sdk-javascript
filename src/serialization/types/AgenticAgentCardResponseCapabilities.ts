@@ -4,15 +4,15 @@ import type * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
 import type * as serializers from "../index.js";
 
-export const AgenticAgentsAgentCardCapabilities: core.serialization.ObjectSchema<
-    serializers.AgenticAgentsAgentCardCapabilities.Raw,
-    Corti.AgenticAgentsAgentCardCapabilities
+export const AgenticAgentCardResponseCapabilities: core.serialization.ObjectSchema<
+    serializers.AgenticAgentCardResponseCapabilities.Raw,
+    Corti.AgenticAgentCardResponseCapabilities
 > = core.serialization.object({
     streaming: core.serialization.boolean().optional(),
     pushNotifications: core.serialization.boolean().optional(),
 });
 
-export declare namespace AgenticAgentsAgentCardCapabilities {
+export declare namespace AgenticAgentCardResponseCapabilities {
     export interface Raw {
         streaming?: boolean | null;
         pushNotifications?: boolean | null;

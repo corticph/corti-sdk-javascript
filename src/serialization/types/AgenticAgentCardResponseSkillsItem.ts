@@ -4,9 +4,9 @@ import type * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
 import type * as serializers from "../index.js";
 
-export const AgenticAgentsAgentCardSkillsItem: core.serialization.ObjectSchema<
-    serializers.AgenticAgentsAgentCardSkillsItem.Raw,
-    Corti.AgenticAgentsAgentCardSkillsItem
+export const AgenticAgentCardResponseSkillsItem: core.serialization.ObjectSchema<
+    serializers.AgenticAgentCardResponseSkillsItem.Raw,
+    Corti.AgenticAgentCardResponseSkillsItem
 > = core.serialization.object({
     id: core.serialization.string(),
     name: core.serialization.string(),
@@ -14,7 +14,7 @@ export const AgenticAgentsAgentCardSkillsItem: core.serialization.ObjectSchema<
     tags: core.serialization.list(core.serialization.string()).optional(),
 });
 
-export declare namespace AgenticAgentsAgentCardSkillsItem {
+export declare namespace AgenticAgentCardResponseSkillsItem {
     export interface Raw {
         id: string;
         name: string;

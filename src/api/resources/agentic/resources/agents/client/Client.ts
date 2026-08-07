@@ -555,14 +555,14 @@ export class AgentsClient {
     public getCard(
         agentId: Corti.CommonAgentIdValue,
         requestOptions?: AgentsClient.RequestOptions,
-    ): core.HttpResponsePromise<Corti.AgenticAgentsAgentCard> {
+    ): core.HttpResponsePromise<Corti.AgenticAgentCardResponse> {
         return core.HttpResponsePromise.fromPromise(this.__getCard(agentId, requestOptions));
     }
 
     private async __getCard(
         agentId: Corti.CommonAgentIdValue,
         requestOptions?: AgentsClient.RequestOptions,
-    ): Promise<core.WithRawResponse<Corti.AgenticAgentsAgentCard>> {
+    ): Promise<core.WithRawResponse<Corti.AgenticAgentCardResponse>> {
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
@@ -587,7 +587,7 @@ export class AgentsClient {
         });
         if (_response.ok) {
             return {
-                data: serializers.AgenticAgentsAgentCard.parseOrThrow(_response.body, {
+                data: serializers.AgenticAgentCardResponse.parseOrThrow(_response.body, {
                     unrecognizedObjectKeys: "passthrough",
                     allowUnrecognizedUnionMembers: true,
                     allowUnrecognizedEnumValues: true,

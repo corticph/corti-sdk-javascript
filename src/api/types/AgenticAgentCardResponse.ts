@@ -5,7 +5,7 @@ import type * as Corti from "../index.js";
 /**
  * An A2A agent card describing capabilities, skills, and supported interfaces.
  */
-export interface AgenticAgentsAgentCard {
+export interface AgenticAgentCardResponse {
     /** Agent display name. */
     name: string;
     /** Agent description. */
@@ -17,21 +17,21 @@ export interface AgenticAgentsAgentCard {
     /** Agent card version (SemVer). */
     version: string;
     /** Agent capability flags (streaming, push notifications). */
-    capabilities: Corti.AgenticAgentsAgentCardCapabilities;
+    capabilities: Corti.AgenticAgentCardResponseCapabilities;
     /** Default input media types. */
     defaultInputModes?: string[];
     /** Default output media types. */
     defaultOutputModes?: string[];
     /** Publishing organization and URL. */
-    provider?: Corti.AgenticAgentsAgentCardProvider;
+    provider?: Corti.AgenticAgentCardResponseProvider;
     /** Security requirements for contacting the agent. */
     securityRequirements?: Record<string, unknown>[];
     /** The security scheme details used for authenticating with this agent. */
     securitySchemes?: Record<string, unknown>;
     /** JSON Web Signatures (JWS, RFC 7515) computed for this agent card. */
-    signatures?: Corti.AgenticAgentsAgentCardSignaturesItem[];
+    signatures?: Corti.AgenticAgentCardResponseSignaturesItem[];
     /** Skills the agent exposes. */
-    skills?: Corti.AgenticAgentsAgentCardSkillsItem[];
+    skills?: Corti.AgenticAgentCardResponseSkillsItem[];
     /** A2A protocol bindings. v2 advertises protocolVersion `1.0` only. */
-    supportedInterfaces: Corti.AgenticAgentsAgentCardSupportedInterfacesItem[];
+    supportedInterfaces: Corti.AgenticAgentCardResponseSupportedInterfacesItem[];
 }

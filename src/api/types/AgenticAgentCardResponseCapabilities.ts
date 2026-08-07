@@ -3,7 +3,7 @@
 /**
  * Agent capability flags (streaming, push notifications).
  */
-export interface AgenticAgentsAgentCardCapabilities {
+export interface AgenticAgentCardResponseCapabilities {
     /** Whether the agent supports streaming responses. */
     streaming?: boolean;
     /**
