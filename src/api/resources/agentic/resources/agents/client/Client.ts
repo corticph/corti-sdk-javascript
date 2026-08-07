@@ -23,6 +23,8 @@ export class AgentsClient {
     }
 
     /**
+     * @beta This endpoint is in pre-release and may change.
+     *
      * Lists agents visible to the caller. `private` agents are visible only to
      * their creator/service principal; `unlisted` agents are omitted (fetch by
      * ID instead); `public` agents are listed tenant-wide.
@@ -141,6 +143,8 @@ export class AgentsClient {
     }
 
     /**
+     * @beta This endpoint is in pre-release and may change.
+     *
      * Creates a new agent. The server assigns the UUIDv7 `id`.
      *
      * @param {Corti.agentic.AgenticCreateRequest} request
@@ -278,6 +282,8 @@ export class AgentsClient {
     }
 
     /**
+     * @beta This endpoint is in pre-release and may change.
+     *
      * @param {Corti.CommonAgentIdValue} agentId - Agent identifier (prefixed UUIDv7).
      * @param {AgentsClient.RequestOptions} requestOptions - Request-specific configuration.
      *
@@ -355,6 +361,8 @@ export class AgentsClient {
     }
 
     /**
+     * @beta This endpoint is in pre-release and may change.
+     *
      * Deletes a `persistent` agent. `ephemeral` agents are expired in place.
      * Idempotent: deleting an already-deleted agent returns `204`.
      *
@@ -426,6 +434,8 @@ export class AgentsClient {
     }
 
     /**
+     * @beta This endpoint is in pre-release and may change.
+     *
      * Partially updates an agent using JSON Merge Patch (RFC 7386).
      * Omitted fields are unchanged; `null` clears a field; arrays replace.
      *
