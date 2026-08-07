@@ -9,15 +9,15 @@ import type * as Corti from "../../../../../../index.js";
  *         q: "coder"
  *     }
  */
-export interface ListAgentsRequest {
+export interface AgenticListRequest {
     /** Maximum number of items per page. */
     pageSize?: number;
     /** Opaque cursor from a prior response's `nextPageToken`. Omit on the first request. */
     pageToken?: string;
     /** Filter by one or more visibility levels. */
-    visibility?: Corti.AgentsVisibility | Corti.AgentsVisibility[];
+    visibility?: Corti.AgenticVisibility | Corti.AgenticVisibility[];
     /** Filter by lifecycle. */
-    lifecycle?: Corti.AgentsLifecycle;
+    lifecycle?: Corti.AgenticLifecycle;
     /** Filter by label equality, repeated `key=value` pairs (AND-combined). */
     label?: string | string[];
     /** Free-text search over `name` and `description`. */

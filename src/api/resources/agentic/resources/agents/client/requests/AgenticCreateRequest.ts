@@ -52,7 +52,7 @@ import type * as Corti from "../../../../../../index.js";
  *         }
  *     }
  */
-export interface AgentsCreateRequest {
+export interface AgenticCreateRequest {
     /** Human-readable, unique-per-tenant agent name. */
     name: string;
     /** Free-form agent description. */
@@ -61,9 +61,9 @@ export interface AgentsCreateRequest {
     systemPrompt?: string;
     /** Tenant default if omitted. */
     model?: string;
-    visibility?: Corti.AgentsVisibility;
-    lifecycle?: Corti.AgentsLifecycle;
+    visibility?: Corti.AgenticVisibility;
+    lifecycle?: Corti.AgenticLifecycle;
     /** Connectors to attach at creation. Defaults to an empty array. */
     connectors?: Corti.CommonConnectorCreateRequest[];
-    labels?: Corti.AgentsLabels;
+    labels?: Corti.AgenticLabels;
 }

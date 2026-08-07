@@ -1,1 +1,1 @@
-export { AgentsCreateRequest } from "./AgentsCreateRequest.js";
+export { AgenticCreateRequest } from "./AgenticCreateRequest.js";

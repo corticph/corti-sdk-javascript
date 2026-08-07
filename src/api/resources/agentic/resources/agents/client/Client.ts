@@ -28,7 +28,7 @@ export class AgentsClient {
      * ID instead); `public` agents are listed tenant-wide.
      * The `visibility`, `lifecycle`, `label`, and `q` filter parameters are accepted but not yet honored by the server; the response is unfiltered.
      *
-     * @param {Corti.agentic.ListAgentsRequest} request
+     * @param {Corti.agentic.AgenticListRequest} request
      * @param {AgentsClient.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Corti.BadRequestError}
@@ -41,33 +41,33 @@ export class AgentsClient {
      *     })
      */
     public async list(
-        request: Corti.agentic.ListAgentsRequest = {},
+        request: Corti.agentic.AgenticListRequest = {},
         requestOptions?: AgentsClient.RequestOptions,
-    ): Promise<core.Page<Corti.AgentsResponse, Corti.AgentsListResponse>> {
+    ): Promise<core.Page<Corti.AgenticResponse, Corti.AgenticListResponse>> {
         const list = core.HttpResponsePromise.interceptFunction(
             async (
-                request: Corti.agentic.ListAgentsRequest,
-            ): Promise<core.WithRawResponse<Corti.AgentsListResponse>> => {
+                request: Corti.agentic.AgenticListRequest,
+            ): Promise<core.WithRawResponse<Corti.AgenticListResponse>> => {
                 const { pageSize, pageToken, visibility, lifecycle, label, q } = request;
                 const _queryParams: Record<string, unknown> = {
                     pageSize,
                     pageToken,
                     visibility: Array.isArray(visibility)
                         ? visibility.map((item) =>
-                              serializers.AgentsVisibility.jsonOrThrow(item, {
+                              serializers.AgenticVisibility.jsonOrThrow(item, {
                                   unrecognizedObjectKeys: "strip",
                                   omitUndefined: true,
                               }),
                           )
                         : visibility != null
-                          ? serializers.AgentsVisibility.jsonOrThrow(visibility, {
+                          ? serializers.AgenticVisibility.jsonOrThrow(visibility, {
                                 unrecognizedObjectKeys: "strip",
                                 omitUndefined: true,
                             })
                           : undefined,
                     lifecycle:
                         lifecycle != null
-                            ? serializers.AgentsLifecycle.jsonOrThrow(lifecycle, {
+                            ? serializers.AgenticLifecycle.jsonOrThrow(lifecycle, {
                                   unrecognizedObjectKeys: "strip",
                                   omitUndefined: true,
                               })
@@ -99,7 +99,7 @@ export class AgentsClient {
                 });
                 if (_response.ok) {
                     return {
-                        data: serializers.AgentsListResponse.parseOrThrow(_response.body, {
+                        data: serializers.AgenticListResponse.parseOrThrow(_response.body, {
                             unrecognizedObjectKeys: "passthrough",
                             allowUnrecognizedUnionMembers: true,
                             allowUnrecognizedEnumValues: true,
@@ -127,7 +127,7 @@ export class AgentsClient {
             },
         );
         const dataWithRawResponse = await list(request).withRawResponse();
-        return new core.Page<Corti.AgentsResponse, Corti.AgentsListResponse>({
+        return new core.Page<Corti.AgenticResponse, Corti.AgenticListResponse>({
             response: dataWithRawResponse.data,
             rawResponse: dataWithRawResponse.rawResponse,
             hasNextPage: (response) =>
@@ -143,7 +143,7 @@ export class AgentsClient {
     /**
      * Creates a new agent. The server assigns the UUIDv7 `id`.
      *
-     * @param {Corti.agentic.AgentsCreateRequest} request
+     * @param {Corti.agentic.AgenticCreateRequest} request
      * @param {AgentsClient.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Corti.BadRequestError}
@@ -202,16 +202,16 @@ export class AgentsClient {
      *     })
      */
     public create(
-        request: Corti.agentic.AgentsCreateRequest,
+        request: Corti.agentic.AgenticCreateRequest,
         requestOptions?: AgentsClient.RequestOptions,
-    ): core.HttpResponsePromise<Corti.AgentsResponse> {
+    ): core.HttpResponsePromise<Corti.AgenticResponse> {
         return core.HttpResponsePromise.fromPromise(this.__create(request, requestOptions));
     }
 
     private async __create(
-        request: Corti.agentic.AgentsCreateRequest,
+        request: Corti.agentic.AgenticCreateRequest,
         requestOptions?: AgentsClient.RequestOptions,
-    ): Promise<core.WithRawResponse<Corti.AgentsResponse>> {
+    ): Promise<core.WithRawResponse<Corti.AgenticResponse>> {
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
@@ -230,7 +230,7 @@ export class AgentsClient {
             contentType: "application/json",
             queryParameters: requestOptions?.queryParams,
             requestType: "json",
-            body: serializers.agentic.AgentsCreateRequest.jsonOrThrow(request, {
+            body: serializers.agentic.AgenticCreateRequest.jsonOrThrow(request, {
                 unrecognizedObjectKeys: "strip",
                 omitUndefined: true,
             }),
@@ -242,7 +242,7 @@ export class AgentsClient {
         });
         if (_response.ok) {
             return {
-                data: serializers.AgentsResponse.parseOrThrow(_response.body, {
+                data: serializers.AgenticResponse.parseOrThrow(_response.body, {
                     unrecognizedObjectKeys: "passthrough",
                     allowUnrecognizedUnionMembers: true,
                     allowUnrecognizedEnumValues: true,

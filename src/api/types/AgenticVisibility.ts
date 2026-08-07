@@ -5,9 +5,9 @@
  * - `unlisted` — usable by ID, hidden from list results.
  * - `public` — listed tenant-wide.
  */
-export const AgentsVisibility = {
+export const AgenticVisibility = {
     Private: "private",
     Unlisted: "unlisted",
     Public: "public",
 } as const;
-export type AgentsVisibility = (typeof AgentsVisibility)[keyof typeof AgentsVisibility];
+export type AgenticVisibility = (typeof AgenticVisibility)[keyof typeof AgenticVisibility];

@@ -1,2 +1,2 @@
-export type { AgentsCreateRequest } from "./AgentsCreateRequest.js";
-export type { ListAgentsRequest } from "./ListAgentsRequest.js";
+export type { AgenticCreateRequest } from "./AgenticCreateRequest.js";
+export type { AgenticListRequest } from "./AgenticListRequest.js";
