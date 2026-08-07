@@ -28,7 +28,7 @@ export class AgentsClient {
      * ID instead); `public` agents are listed tenant-wide.
      * The `visibility`, `lifecycle`, `label`, and `q` filter parameters are accepted but not yet honored by the server; the response is unfiltered.
      *
-     * @param {Corti.agentic.ListAgentsRequest} request
+     * @param {Corti.agentic.AgenticAgentsListRequest} request
      * @param {AgentsClient.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Corti.BadRequestError}
@@ -41,13 +41,13 @@ export class AgentsClient {
      *     })
      */
     public async list(
-        request: Corti.agentic.ListAgentsRequest = {},
+        request: Corti.agentic.AgenticAgentsListRequest = {},
         requestOptions?: AgentsClient.RequestOptions,
-    ): Promise<core.Page<Corti.AgenticResponse, Corti.AgenticListResponse>> {
+    ): Promise<core.Page<Corti.AgenticAgentsResponse, Corti.AgenticAgentsListResponse>> {
         const list = core.HttpResponsePromise.interceptFunction(
             async (
-                request: Corti.agentic.ListAgentsRequest,
-            ): Promise<core.WithRawResponse<Corti.AgenticListResponse>> => {
+                request: Corti.agentic.AgenticAgentsListRequest,
+            ): Promise<core.WithRawResponse<Corti.AgenticAgentsListResponse>> => {
                 const { pageSize, pageToken, visibility, lifecycle, label, q } = request;
                 const _queryParams: Record<string, unknown> = {
                     pageSize,
@@ -99,7 +99,7 @@ export class AgentsClient {
                 });
                 if (_response.ok) {
                     return {
-                        data: serializers.AgenticListResponse.parseOrThrow(_response.body, {
+                        data: serializers.AgenticAgentsListResponse.parseOrThrow(_response.body, {
                             unrecognizedObjectKeys: "passthrough",
                             allowUnrecognizedUnionMembers: true,
                             allowUnrecognizedEnumValues: true,
@@ -127,7 +127,7 @@ export class AgentsClient {
             },
         );
         const dataWithRawResponse = await list(request).withRawResponse();
-        return new core.Page<Corti.AgenticResponse, Corti.AgenticListResponse>({
+        return new core.Page<Corti.AgenticAgentsResponse, Corti.AgenticAgentsListResponse>({
             response: dataWithRawResponse.data,
             rawResponse: dataWithRawResponse.rawResponse,
             hasNextPage: (response) =>

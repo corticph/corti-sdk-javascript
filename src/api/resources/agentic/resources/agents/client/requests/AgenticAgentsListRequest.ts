@@ -9,7 +9,7 @@ import type * as Corti from "../../../../../../index.js";
  *         q: "coder"
  *     }
  */
-export interface ListAgentsRequest {
+export interface AgenticAgentsListRequest {
     /** Maximum number of items per page. */
     pageSize?: number;
     /** Opaque cursor from a prior response's `nextPageToken`. Omit on the first request. */

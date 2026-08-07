@@ -5,7 +5,7 @@ import type * as Corti from "../index.js";
 /**
  * A configured agent — its metadata, model, and attached connectors.
  */
-export interface AgenticResponse {
+export interface AgenticAgentsResponse {
     id: Corti.CommonAgentIdValue;
     /** Human-readable, unique-per-tenant agent name. */
     name: string;

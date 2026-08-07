@@ -10,23 +10,25 @@ import { AgenticVisibility } from "./AgenticVisibility.js";
 import { CommonAgentIdValue } from "./CommonAgentIdValue.js";
 import { CommonConnectorResponse } from "./CommonConnectorResponse.js";
 
-export const AgenticResponse: core.serialization.ObjectSchema<serializers.AgenticResponse.Raw, Corti.AgenticResponse> =
-    core.serialization.object({
-        id: CommonAgentIdValue,
-        name: core.serialization.string(),
-        description: core.serialization.string().optionalNullable(),
-        systemPrompt: core.serialization.string().optionalNullable(),
-        model: core.serialization.string().optionalNullable(),
-        visibility: AgenticVisibility,
-        lifecycle: AgenticLifecycle,
-        connectors: core.serialization.list(CommonConnectorResponse),
-        labels: AgenticLabels.optional(),
-        createdAt: core.serialization.date().optional(),
-        updatedAt: core.serialization.date().optional(),
-        createdBy: AgenticUserIdValue.optional(),
-    });
+export const AgenticAgentsResponse: core.serialization.ObjectSchema<
+    serializers.AgenticAgentsResponse.Raw,
+    Corti.AgenticAgentsResponse
+> = core.serialization.object({
+    id: CommonAgentIdValue,
+    name: core.serialization.string(),
+    description: core.serialization.string().optionalNullable(),
+    systemPrompt: core.serialization.string().optionalNullable(),
+    model: core.serialization.string().optionalNullable(),
+    visibility: AgenticVisibility,
+    lifecycle: AgenticLifecycle,
+    connectors: core.serialization.list(CommonConnectorResponse),
+    labels: AgenticLabels.optional(),
+    createdAt: core.serialization.date().optional(),
+    updatedAt: core.serialization.date().optional(),
+    createdBy: AgenticUserIdValue.optional(),
+});
 
-export declare namespace AgenticResponse {
+export declare namespace AgenticAgentsResponse {
     export interface Raw {
         id: CommonAgentIdValue.Raw;
         name: string;
