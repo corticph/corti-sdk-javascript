@@ -620,4 +620,113 @@ export class AgentsClient {
             "/agentic/agents/{agentId}/.well-known/agent-card.json",
         );
     }
+
+    /**
+     * @beta This endpoint is in pre-release and may change.
+     *
+     * Returns invocation metrics for the agent over the half-open `[from, to)`
+     * time range (UTC), bucketed at the requested `granularity`. The response
+     * echoes the resolved range and granularity, a `totals` summary across the
+     * whole range, and one `buckets` entry per period that had activity (the
+     * array is empty when there was none). When `from`/`to` are omitted, the
+     * range defaults to the last 30 days.
+     *
+     * @param {Corti.CommonAgentIdValue} agentId - Agent identifier (prefixed UUIDv7).
+     * @param {Corti.agentic.AgenticAgentsGetUsageRequest} request
+     * @param {AgentsClient.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link Corti.BadRequestError}
+     * @throws {@link Corti.UnauthorizedError}
+     * @throws {@link Corti.NotFoundError}
+     *
+     * @example
+     *     await client.agentic.agents.getUsage("agt.0192f4c8-2c5a-7b3e-9f1a-3c8d6e2b7a40", {
+     *         from: new Date("2026-05-19T00:00:00.000Z"),
+     *         to: new Date("2026-05-20T00:00:00.000Z")
+     *     })
+     */
+    public getUsage(
+        agentId: Corti.CommonAgentIdValue,
+        request: Corti.agentic.AgenticAgentsGetUsageRequest = {},
+        requestOptions?: AgentsClient.RequestOptions,
+    ): core.HttpResponsePromise<Corti.UsageReportResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__getUsage(agentId, request, requestOptions));
+    }
+
+    private async __getUsage(
+        agentId: Corti.CommonAgentIdValue,
+        request: Corti.agentic.AgenticAgentsGetUsageRequest = {},
+        requestOptions?: AgentsClient.RequestOptions,
+    ): Promise<core.WithRawResponse<Corti.UsageReportResponse>> {
+        const { from: from_, to, granularity } = request;
+        const _queryParams: Record<string, unknown> = {
+            from: from_ != null ? from_?.toISOString() : undefined,
+            to: to != null ? to?.toISOString() : undefined,
+            granularity:
+                granularity != null
+                    ? serializers.UsageGranularity.jsonOrThrow(granularity, {
+                          unrecognizedObjectKeys: "strip",
+                          omitUndefined: true,
+                      })
+                    : undefined,
+        };
+        const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
+        const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+            _authRequest.headers,
+            this._options?.headers,
+            mergeOnlyDefinedHeaders({ "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName }),
+            requestOptions?.headers,
+        );
+        const _response = await core.fetcher({
+            url: core.url.join(
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)).base,
+                `agentic/agents/${core.url.encodePathParam(serializers.CommonAgentIdValue.jsonOrThrow(agentId, { omitUndefined: true }))}/usage`,
+            ),
+            method: "GET",
+            headers: _headers,
+            queryParameters: { ..._queryParams, ...requestOptions?.queryParams },
+            timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
+            maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
+            abortSignal: requestOptions?.abortSignal,
+            fetchFn: this._options?.fetch,
+            logging: this._options.logging,
+        });
+        if (_response.ok) {
+            return {
+                data: serializers.UsageReportResponse.parseOrThrow(_response.body, {
+                    unrecognizedObjectKeys: "passthrough",
+                    allowUnrecognizedUnionMembers: true,
+                    allowUnrecognizedEnumValues: true,
+                    skipValidation: true,
+                    breadcrumbsPrefix: ["response"],
+                }),
+                rawResponse: _response.rawResponse,
+            };
+        }
+
+        if (_response.error.reason === "status-code") {
+            switch (_response.error.statusCode) {
+                case 400:
+                    throw new Corti.BadRequestError(_response.error.body, _response.rawResponse);
+                case 401:
+                    throw new Corti.UnauthorizedError(_response.error.body, _response.rawResponse);
+                case 404:
+                    throw new Corti.NotFoundError(_response.error.body, _response.rawResponse);
+                default:
+                    throw new errors.CortiError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                        rawResponse: _response.rawResponse,
+                    });
+            }
+        }
+
+        return handleNonStatusCodeError(
+            _response.error,
+            _response.rawResponse,
+            "GET",
+            "/agentic/agents/{agentId}/usage",
+        );
+    }
 }

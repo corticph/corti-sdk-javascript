@@ -307,4 +307,8 @@ export * from "./TranscriptsParticipantRoleEnum.js";
 export * from "./TranscriptsResponse.js";
 export * from "./TranscriptsStatusEnum.js";
 export * from "./TranscriptsStatusResponse.js";
+export * from "./UsageBucket.js";
+export * from "./UsageGranularity.js";
+export * from "./UsageMetrics.js";
+export * from "./UsageReportResponse.js";
 export * from "./Uuid.js";

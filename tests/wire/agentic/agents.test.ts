@@ -1086,4 +1086,155 @@ describe("AgentsClient", () => {
             return await client.agentic.agents.getCard("agentId");
         }).rejects.toThrow(Corti.NotFoundError);
     });
+
+    test("getUsage (1)", async () => {
+        const server = mockServerPool.createServer();
+        mockOAuth(server);
+
+        const client = new CortiClient({
+            maxRetries: 0,
+            clientId: "client_id",
+            clientSecret: "client_secret",
+            tenantName: "test",
+            environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
+        });
+
+        const rawResponseBody = {
+            granularity: "day",
+            from: "2026-05-19T00:00:00Z",
+            to: "2026-05-21T00:00:00Z",
+            totals: { invocations: 15, uniqueContexts: 6 },
+            buckets: [
+                {
+                    invocations: 12,
+                    uniqueContexts: 5,
+                    periodStart: "2026-05-19T00:00:00Z",
+                    periodEnd: "2026-05-20T00:00:00Z",
+                },
+                {
+                    invocations: 3,
+                    uniqueContexts: 2,
+                    periodStart: "2026-05-20T00:00:00Z",
+                    periodEnd: "2026-05-21T00:00:00Z",
+                },
+            ],
+        };
+
+        server
+            .mockEndpoint()
+            .get("/agentic/agents/agt.0192f4c8-2c5a-7b3e-9f1a-3c8d6e2b7a40/usage")
+            .respondWith()
+            .statusCode(200)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        const response = await client.agentic.agents.getUsage("agt.0192f4c8-2c5a-7b3e-9f1a-3c8d6e2b7a40", {
+            from: new Date("2026-05-19T00:00:00.000Z"),
+            to: new Date("2026-05-20T00:00:00.000Z"),
+        });
+        expect(response).toEqual({
+            granularity: "day",
+            from: new Date("2026-05-19T00:00:00.000Z"),
+            to: new Date("2026-05-21T00:00:00.000Z"),
+            totals: {
+                invocations: 15,
+                uniqueContexts: 6,
+            },
+            buckets: [
+                {
+                    invocations: 12,
+                    uniqueContexts: 5,
+                    periodStart: new Date("2026-05-19T00:00:00.000Z"),
+                    periodEnd: new Date("2026-05-20T00:00:00.000Z"),
+                },
+                {
+                    invocations: 3,
+                    uniqueContexts: 2,
+                    periodStart: new Date("2026-05-20T00:00:00.000Z"),
+                    periodEnd: new Date("2026-05-21T00:00:00.000Z"),
+                },
+            ],
+        });
+    });
+
+    test("getUsage (2)", async () => {
+        const server = mockServerPool.createServer();
+        mockOAuth(server);
+
+        const client = new CortiClient({
+            maxRetries: 0,
+            clientId: "client_id",
+            clientSecret: "client_secret",
+            tenantName: "test",
+            environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
+        });
+
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .get("/agentic/agents/agentId/usage")
+            .respondWith()
+            .statusCode(400)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.agentic.agents.getUsage("agentId");
+        }).rejects.toThrow(Corti.BadRequestError);
+    });
+
+    test("getUsage (3)", async () => {
+        const server = mockServerPool.createServer();
+        mockOAuth(server);
+
+        const client = new CortiClient({
+            maxRetries: 0,
+            clientId: "client_id",
+            clientSecret: "client_secret",
+            tenantName: "test",
+            environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
+        });
+
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .get("/agentic/agents/agentId/usage")
+            .respondWith()
+            .statusCode(401)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.agentic.agents.getUsage("agentId");
+        }).rejects.toThrow(Corti.UnauthorizedError);
+    });
+
+    test("getUsage (4)", async () => {
+        const server = mockServerPool.createServer();
+        mockOAuth(server);
+
+        const client = new CortiClient({
+            maxRetries: 0,
+            clientId: "client_id",
+            clientSecret: "client_secret",
+            tenantName: "test",
+            environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
+        });
+
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .get("/agentic/agents/agentId/usage")
+            .respondWith()
+            .statusCode(404)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.agentic.agents.getUsage("agentId");
+        }).rejects.toThrow(Corti.NotFoundError);
+    });
 });
