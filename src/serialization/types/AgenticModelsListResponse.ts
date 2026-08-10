@@ -3,17 +3,17 @@
 import type * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
 import type * as serializers from "../index.js";
-import { AgenticModelsModel } from "./AgenticModelsModel.js";
+import { AgenticModel } from "./AgenticModel.js";
 
 export const AgenticModelsListResponse: core.serialization.ObjectSchema<
     serializers.AgenticModelsListResponse.Raw,
     Corti.AgenticModelsListResponse
 > = core.serialization.object({
-    data: core.serialization.list(AgenticModelsModel),
+    data: core.serialization.list(AgenticModel),
 });
 
 export declare namespace AgenticModelsListResponse {
     export interface Raw {
-        data: AgenticModelsModel.Raw[];
+        data: AgenticModel.Raw[];
     }
 }

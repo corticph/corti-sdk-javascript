@@ -7,5 +7,5 @@ import type * as Corti from "../index.js";
  */
 export interface AgenticModelsListResponse {
     /** Available models. */
-    data: Corti.AgenticModelsModel[];
+    data: Corti.AgenticModel[];
 }
