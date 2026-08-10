@@ -4,7 +4,7 @@
  * @example
  *     {}
  */
-export interface AgenticContextsGetTraceRequest {
+export interface AgenticContextsTraceRequest {
     /** Maximum number of items per page. */
     pageSize?: number;
     /** Opaque cursor from a prior response's `nextPageToken`. Omit on the first request. */

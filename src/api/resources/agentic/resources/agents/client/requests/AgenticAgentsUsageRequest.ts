@@ -9,7 +9,7 @@ import type * as Corti from "../../../../../../index.js";
  *         to: new Date("2026-05-20T00:00:00.000Z")
  *     }
  */
-export interface AgenticAgentsGetUsageRequest {
+export interface AgenticAgentsUsageRequest {
     /**
      * Inclusive start of the range, as an RFC 3339 timestamp (UTC).
      * Defaults to 30 days before `to`. Must not be after `to`.

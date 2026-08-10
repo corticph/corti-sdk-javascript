@@ -632,7 +632,7 @@ export class AgentsClient {
      * range defaults to the last 30 days.
      *
      * @param {Corti.CommonAgentIdValue} agentId - Agent identifier (prefixed UUIDv7).
-     * @param {Corti.agentic.AgenticAgentsGetUsageRequest} request
+     * @param {Corti.agentic.AgenticAgentsUsageRequest} request
      * @param {AgentsClient.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Corti.BadRequestError}
@@ -640,22 +640,22 @@ export class AgentsClient {
      * @throws {@link Corti.NotFoundError}
      *
      * @example
-     *     await client.agentic.agents.getUsage("agt.0192f4c8-2c5a-7b3e-9f1a-3c8d6e2b7a40", {
+     *     await client.agentic.agents.usage("agt.0192f4c8-2c5a-7b3e-9f1a-3c8d6e2b7a40", {
      *         from: new Date("2026-05-19T00:00:00.000Z"),
      *         to: new Date("2026-05-20T00:00:00.000Z")
      *     })
      */
-    public getUsage(
+    public usage(
         agentId: Corti.CommonAgentIdValue,
-        request: Corti.agentic.AgenticAgentsGetUsageRequest = {},
+        request: Corti.agentic.AgenticAgentsUsageRequest = {},
         requestOptions?: AgentsClient.RequestOptions,
     ): core.HttpResponsePromise<Corti.AgentsUsageReportResponse> {
-        return core.HttpResponsePromise.fromPromise(this.__getUsage(agentId, request, requestOptions));
+        return core.HttpResponsePromise.fromPromise(this.__usage(agentId, request, requestOptions));
     }
 
-    private async __getUsage(
+    private async __usage(
         agentId: Corti.CommonAgentIdValue,
-        request: Corti.agentic.AgenticAgentsGetUsageRequest = {},
+        request: Corti.agentic.AgenticAgentsUsageRequest = {},
         requestOptions?: AgentsClient.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.AgentsUsageReportResponse>> {
         const { from: from_, to, granularity } = request;

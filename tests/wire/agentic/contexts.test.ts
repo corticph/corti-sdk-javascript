@@ -373,7 +373,7 @@ describe("ContextsClient", () => {
         }).rejects.toThrow(Corti.NotFoundError);
     });
 
-    test("getTrace (1)", async () => {
+    test("trace (1)", async () => {
         const server = mockServerPool.createServer();
         mockOAuth(server);
 
@@ -436,7 +436,7 @@ describe("ContextsClient", () => {
             nextPageToken: "nextPageToken",
             totalSize: 42,
         };
-        const page = await client.agentic.contexts.getTrace("ctx.0192f4c8-3d6b-7c4f-a02b-4d9e7f3c8b51");
+        const page = await client.agentic.contexts.trace("ctx.0192f4c8-3d6b-7c4f-a02b-4d9e7f3c8b51");
 
         expect(expected.traces).toEqual(page.data);
         expect(page.hasNextPage()).toBe(true);
@@ -444,7 +444,7 @@ describe("ContextsClient", () => {
         expect(expected.traces).toEqual(nextPage.data);
     });
 
-    test("getTrace (2)", async () => {
+    test("trace (2)", async () => {
         const server = mockServerPool.createServer();
         mockOAuth(server);
 
@@ -467,11 +467,11 @@ describe("ContextsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.agentic.contexts.getTrace("contextId");
+            return await client.agentic.contexts.trace("contextId");
         }).rejects.toThrow(Corti.BadRequestError);
     });
 
-    test("getTrace (3)", async () => {
+    test("trace (3)", async () => {
         const server = mockServerPool.createServer();
         mockOAuth(server);
 
@@ -494,11 +494,11 @@ describe("ContextsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.agentic.contexts.getTrace("contextId");
+            return await client.agentic.contexts.trace("contextId");
         }).rejects.toThrow(Corti.UnauthorizedError);
     });
 
-    test("getTrace (4)", async () => {
+    test("trace (4)", async () => {
         const server = mockServerPool.createServer();
         mockOAuth(server);
 
@@ -521,7 +521,7 @@ describe("ContextsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.agentic.contexts.getTrace("contextId");
+            return await client.agentic.contexts.trace("contextId");
         }).rejects.toThrow(Corti.NotFoundError);
     });
 });

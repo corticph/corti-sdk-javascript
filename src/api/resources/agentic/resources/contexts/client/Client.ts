@@ -290,7 +290,7 @@ export class ContextsClient {
      * traces with their spans inlined.
      *
      * @param {Corti.CommonContextIdValue} contextId - Context identifier (prefixed UUIDv7).
-     * @param {Corti.agentic.AgenticContextsGetTraceRequest} request
+     * @param {Corti.agentic.AgenticContextsTraceRequest} request
      * @param {ContextsClient.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Corti.BadRequestError}
@@ -298,16 +298,16 @@ export class ContextsClient {
      * @throws {@link Corti.NotFoundError}
      *
      * @example
-     *     await client.agentic.contexts.getTrace("ctx.0192f4c8-3d6b-7c4f-a02b-4d9e7f3c8b51")
+     *     await client.agentic.contexts.trace("ctx.0192f4c8-3d6b-7c4f-a02b-4d9e7f3c8b51")
      */
-    public async getTrace(
+    public async trace(
         contextId: Corti.CommonContextIdValue,
-        request: Corti.agentic.AgenticContextsGetTraceRequest = {},
+        request: Corti.agentic.AgenticContextsTraceRequest = {},
         requestOptions?: ContextsClient.RequestOptions,
     ): Promise<core.Page<Corti.AgenticContextsTraceItem, Corti.AgenticContextsTraceResponse>> {
         const list = core.HttpResponsePromise.interceptFunction(
             async (
-                request: Corti.agentic.AgenticContextsGetTraceRequest,
+                request: Corti.agentic.AgenticContextsTraceRequest,
             ): Promise<core.WithRawResponse<Corti.AgenticContextsTraceResponse>> => {
                 const { pageSize, pageToken } = request;
                 const _queryParams: Record<string, unknown> = {

@@ -1087,7 +1087,7 @@ describe("AgentsClient", () => {
         }).rejects.toThrow(Corti.NotFoundError);
     });
 
-    test("getUsage (1)", async () => {
+    test("usage (1)", async () => {
         const server = mockServerPool.createServer();
         mockOAuth(server);
 
@@ -1128,7 +1128,7 @@ describe("AgentsClient", () => {
             .jsonBody(rawResponseBody)
             .build();
 
-        const response = await client.agentic.agents.getUsage("agt.0192f4c8-2c5a-7b3e-9f1a-3c8d6e2b7a40", {
+        const response = await client.agentic.agents.usage("agt.0192f4c8-2c5a-7b3e-9f1a-3c8d6e2b7a40", {
             from: new Date("2026-05-19T00:00:00.000Z"),
             to: new Date("2026-05-20T00:00:00.000Z"),
         });
@@ -1157,7 +1157,7 @@ describe("AgentsClient", () => {
         });
     });
 
-    test("getUsage (2)", async () => {
+    test("usage (2)", async () => {
         const server = mockServerPool.createServer();
         mockOAuth(server);
 
@@ -1180,11 +1180,11 @@ describe("AgentsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.agentic.agents.getUsage("agentId");
+            return await client.agentic.agents.usage("agentId");
         }).rejects.toThrow(Corti.BadRequestError);
     });
 
-    test("getUsage (3)", async () => {
+    test("usage (3)", async () => {
         const server = mockServerPool.createServer();
         mockOAuth(server);
 
@@ -1207,11 +1207,11 @@ describe("AgentsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.agentic.agents.getUsage("agentId");
+            return await client.agentic.agents.usage("agentId");
         }).rejects.toThrow(Corti.UnauthorizedError);
     });
 
-    test("getUsage (4)", async () => {
+    test("usage (4)", async () => {
         const server = mockServerPool.createServer();
         mockOAuth(server);
 
@@ -1234,7 +1234,7 @@ describe("AgentsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.agentic.agents.getUsage("agentId");
+            return await client.agentic.agents.usage("agentId");
         }).rejects.toThrow(Corti.NotFoundError);
     });
 });
