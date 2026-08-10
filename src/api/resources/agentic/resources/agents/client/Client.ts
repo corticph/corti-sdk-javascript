@@ -8,8 +8,8 @@ import { handleNonStatusCodeError } from "../../../../../../errors/handleNonStat
 import * as errors from "../../../../../../errors/index.js";
 import * as serializers from "../../../../../../serialization/index.js";
 import * as Corti from "../../../../../index.js";
-import { A2AClient } from "../resources/a2A/client/Client.js";
 import { ConnectorsClient } from "../resources/connectors/client/Client.js";
+import { TasksClient } from "../resources/tasks/client/Client.js";
 
 export declare namespace AgentsClient {
     export type Options = BaseClientOptions;
@@ -19,15 +19,15 @@ export declare namespace AgentsClient {
 
 export class AgentsClient {
     protected readonly _options: NormalizedClientOptionsWithAuth<AgentsClient.Options>;
-    protected _a2A: A2AClient | undefined;
+    protected _tasks: TasksClient | undefined;
     protected _connectors: ConnectorsClient | undefined;
 
     constructor(options: AgentsClient.Options) {
         this._options = normalizeClientOptionsWithAuth(options);
     }
 
-    public get a2A(): A2AClient {
-        return (this._a2A ??= new A2AClient(this._options));
+    public get tasks(): TasksClient {
+        return (this._tasks ??= new TasksClient(this._options));
     }
 
     public get connectors(): ConnectorsClient {
@@ -630,6 +630,327 @@ export class AgentsClient {
             _response.rawResponse,
             "GET",
             "/agentic/agents/{agentId}/.well-known/agent-card.json",
+        );
+    }
+
+    /**
+     * @beta This endpoint is in pre-release and may change.
+     *
+     * The `JSONRPC` protocol binding for A2A v1.0. Accepts a single JSON-RPC 2.0
+     * request whose `method` is one of `SendMessage`, `SendStreamingMessage`,
+     * `GetTask`, `ListTasks`, `CancelTask`, or `SubscribeToTask`.
+     *
+     * Streaming methods (`SendStreamingMessage`, `SubscribeToTask`) respond with
+     * `text/event-stream`; all others respond with a single JSON-RPC response.
+     *
+     * @param {Corti.CommonAgentIdValue} agentId - Agent identifier (prefixed UUIDv7).
+     * @param {Corti.agentic.A2AjsonrpcRequest} request
+     * @param {AgentsClient.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link Corti.UnauthorizedError}
+     * @throws {@link Corti.NotFoundError}
+     *
+     * @example
+     *     await client.agentic.agents.jsonRpc("agt.0192f4c8-2c5a-7b3e-9f1a-3c8d6e2b7a40", {
+     *         id: "1",
+     *         method: "SendMessage",
+     *         params: {
+     *             "message": {
+     *                 "role": "ROLE_USER",
+     *                 "messageId": "msg.0192f4c8-5f8d-7e61-924d-6fb09b5ead73",
+     *                 "parts": [
+     *                     {
+     *                         "text": "Code this encounter."
+     *                     }
+     *                 ]
+     *             }
+     *         }
+     *     })
+     */
+    public jsonRpc(
+        agentId: Corti.CommonAgentIdValue,
+        request: Corti.agentic.A2AjsonrpcRequest,
+        requestOptions?: AgentsClient.RequestOptions,
+    ): core.HttpResponsePromise<Corti.A2AjsonrpcResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__jsonRpc(agentId, request, requestOptions));
+    }
+
+    private async __jsonRpc(
+        agentId: Corti.CommonAgentIdValue,
+        request: Corti.agentic.A2AjsonrpcRequest,
+        requestOptions?: AgentsClient.RequestOptions,
+    ): Promise<core.WithRawResponse<Corti.A2AjsonrpcResponse>> {
+        const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
+        const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+            _authRequest.headers,
+            this._options?.headers,
+            mergeOnlyDefinedHeaders({
+                "A2A-Version": "1.0",
+                "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName,
+            }),
+            requestOptions?.headers,
+        );
+        const _response = await core.fetcher({
+            url: core.url.join(
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)).base,
+                `agentic/agents/${core.url.encodePathParam(serializers.CommonAgentIdValue.jsonOrThrow(agentId, { omitUndefined: true }))}/a2a`,
+            ),
+            method: "POST",
+            headers: _headers,
+            contentType: "application/json",
+            queryParameters: requestOptions?.queryParams,
+            requestType: "json",
+            body: {
+                ...serializers.agentic.A2AjsonrpcRequest.jsonOrThrow(request, {
+                    unrecognizedObjectKeys: "strip",
+                    omitUndefined: true,
+                }),
+                jsonrpc: "2.0",
+            },
+            timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
+            maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
+            abortSignal: requestOptions?.abortSignal,
+            fetchFn: this._options?.fetch,
+            logging: this._options.logging,
+        });
+        if (_response.ok) {
+            return {
+                data: serializers.A2AjsonrpcResponse.parseOrThrow(_response.body, {
+                    unrecognizedObjectKeys: "passthrough",
+                    allowUnrecognizedUnionMembers: true,
+                    allowUnrecognizedEnumValues: true,
+                    skipValidation: true,
+                    breadcrumbsPrefix: ["response"],
+                }),
+                rawResponse: _response.rawResponse,
+            };
+        }
+
+        if (_response.error.reason === "status-code") {
+            switch (_response.error.statusCode) {
+                case 401:
+                    throw new Corti.UnauthorizedError(_response.error.body, _response.rawResponse);
+                case 404:
+                    throw new Corti.NotFoundError(_response.error.body, _response.rawResponse);
+                default:
+                    throw new errors.CortiError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                        rawResponse: _response.rawResponse,
+                    });
+            }
+        }
+
+        return handleNonStatusCodeError(
+            _response.error,
+            _response.rawResponse,
+            "POST",
+            "/agentic/agents/{agentId}/a2a",
+        );
+    }
+
+    /**
+     * @beta This endpoint is in pre-release and may change.
+     *
+     * The `HTTP+JSON` binding of A2A `SendMessage`.
+     *
+     * @param {Corti.CommonAgentIdValue} agentId - Agent identifier (prefixed UUIDv7).
+     * @param {Corti.A2ASendMessageRequest} request
+     * @param {AgentsClient.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link Corti.BadRequestError}
+     * @throws {@link Corti.UnauthorizedError}
+     * @throws {@link Corti.NotFoundError}
+     *
+     * @example
+     *     await client.agentic.agents.sendMessage("agt.0192f4c8-2c5a-7b3e-9f1a-3c8d6e2b7a40", {
+     *         message: {
+     *             messageId: "msg.0192f4c8-5f8d-7e61-924d-6fb09b5ead73",
+     *             role: "ROLE_USER",
+     *             parts: [{
+     *                     text: "What is the ICD-10 code for asthma?"
+     *                 }]
+     *         }
+     *     })
+     */
+    public sendMessage(
+        agentId: Corti.CommonAgentIdValue,
+        request: Corti.A2ASendMessageRequest,
+        requestOptions?: AgentsClient.RequestOptions,
+    ): core.HttpResponsePromise<Corti.A2ASendMessageResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__sendMessage(agentId, request, requestOptions));
+    }
+
+    private async __sendMessage(
+        agentId: Corti.CommonAgentIdValue,
+        request: Corti.A2ASendMessageRequest,
+        requestOptions?: AgentsClient.RequestOptions,
+    ): Promise<core.WithRawResponse<Corti.A2ASendMessageResponse>> {
+        const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
+        const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+            _authRequest.headers,
+            this._options?.headers,
+            mergeOnlyDefinedHeaders({
+                "A2A-Version": "1.0",
+                "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName,
+            }),
+            requestOptions?.headers,
+        );
+        const _response = await core.fetcher({
+            url: core.url.join(
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)).base,
+                `agentic/agents/${core.url.encodePathParam(serializers.CommonAgentIdValue.jsonOrThrow(agentId, { omitUndefined: true }))}/a2a/message:send`,
+            ),
+            method: "POST",
+            headers: _headers,
+            contentType: "application/json",
+            queryParameters: requestOptions?.queryParams,
+            requestType: "json",
+            body: serializers.A2ASendMessageRequest.jsonOrThrow(request, {
+                unrecognizedObjectKeys: "strip",
+                omitUndefined: true,
+            }),
+            timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
+            maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
+            abortSignal: requestOptions?.abortSignal,
+            fetchFn: this._options?.fetch,
+            logging: this._options.logging,
+        });
+        if (_response.ok) {
+            return {
+                data: serializers.A2ASendMessageResponse.parseOrThrow(_response.body, {
+                    unrecognizedObjectKeys: "passthrough",
+                    allowUnrecognizedUnionMembers: true,
+                    allowUnrecognizedEnumValues: true,
+                    skipValidation: true,
+                    breadcrumbsPrefix: ["response"],
+                }),
+                rawResponse: _response.rawResponse,
+            };
+        }
+
+        if (_response.error.reason === "status-code") {
+            switch (_response.error.statusCode) {
+                case 400:
+                    throw new Corti.BadRequestError(_response.error.body, _response.rawResponse);
+                case 401:
+                    throw new Corti.UnauthorizedError(_response.error.body, _response.rawResponse);
+                case 404:
+                    throw new Corti.NotFoundError(_response.error.body, _response.rawResponse);
+                default:
+                    throw new errors.CortiError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                        rawResponse: _response.rawResponse,
+                    });
+            }
+        }
+
+        return handleNonStatusCodeError(
+            _response.error,
+            _response.rawResponse,
+            "POST",
+            "/agentic/agents/{agentId}/a2a/message:send",
+        );
+    }
+
+    /**
+     * @beta This endpoint is in pre-release and may change.
+     *
+     * The `HTTP+JSON` binding of A2A `SendStreamingMessage`. Responds with a
+     * `text/event-stream` of `Task`, `statusUpdate`, and `artifactUpdate` events.
+     */
+    public streamMessage(
+        agentId: Corti.CommonAgentIdValue,
+        request: Corti.A2ASendMessageRequest,
+        requestOptions?: AgentsClient.RequestOptions,
+    ): core.HttpResponsePromise<core.Stream<Corti.A2AStreamEventResponse>> {
+        return core.HttpResponsePromise.fromPromise(this.__streamMessage(agentId, request, requestOptions));
+    }
+
+    private async __streamMessage(
+        agentId: Corti.CommonAgentIdValue,
+        request: Corti.A2ASendMessageRequest,
+        requestOptions?: AgentsClient.RequestOptions,
+    ): Promise<core.WithRawResponse<core.Stream<Corti.A2AStreamEventResponse>>> {
+        const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
+        const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+            _authRequest.headers,
+            this._options?.headers,
+            mergeOnlyDefinedHeaders({
+                "A2A-Version": "1.0",
+                "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName,
+            }),
+            requestOptions?.headers,
+        );
+        const _response = await core.fetcher<ReadableStream>({
+            url: core.url.join(
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)).base,
+                `agentic/agents/${core.url.encodePathParam(serializers.CommonAgentIdValue.jsonOrThrow(agentId, { omitUndefined: true }))}/a2a/message:stream`,
+            ),
+            method: "POST",
+            headers: _headers,
+            contentType: "application/json",
+            queryParameters: requestOptions?.queryParams,
+            requestType: "json",
+            body: serializers.A2ASendMessageRequest.jsonOrThrow(request, {
+                unrecognizedObjectKeys: "strip",
+                omitUndefined: true,
+            }),
+            responseType: "sse",
+            timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
+            maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
+            abortSignal: requestOptions?.abortSignal,
+            fetchFn: this._options?.fetch,
+            logging: this._options.logging,
+        });
+        if (_response.ok) {
+            return {
+                data: new core.Stream({
+                    stream: _response.body,
+                    parse: async (data) => {
+                        return serializers.A2AStreamEventResponse.parseOrThrow(data, {
+                            unrecognizedObjectKeys: "passthrough",
+                            allowUnrecognizedUnionMembers: true,
+                            allowUnrecognizedEnumValues: true,
+                            skipValidation: true,
+                            breadcrumbsPrefix: ["response"],
+                        });
+                    },
+                    signal: requestOptions?.abortSignal,
+                    eventShape: {
+                        type: "sse",
+                    },
+                }),
+                rawResponse: _response.rawResponse,
+            };
+        }
+
+        if (_response.error.reason === "status-code") {
+            switch (_response.error.statusCode) {
+                case 400:
+                    throw new Corti.BadRequestError(_response.error.body, _response.rawResponse);
+                case 401:
+                    throw new Corti.UnauthorizedError(_response.error.body, _response.rawResponse);
+                case 404:
+                    throw new Corti.NotFoundError(_response.error.body, _response.rawResponse);
+                default:
+                    throw new errors.CortiError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                        rawResponse: _response.rawResponse,
+                    });
+            }
+        }
+
+        return handleNonStatusCodeError(
+            _response.error,
+            _response.rawResponse,
+            "POST",
+            "/agentic/agents/{agentId}/a2a/message:stream",
         );
     }
 
