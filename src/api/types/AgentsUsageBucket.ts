@@ -5,7 +5,7 @@ import type * as Corti from "../index.js";
 /**
  * Usage metrics for a single time bucket.
  */
-export interface AgenticUsageBucket extends Corti.AgenticUsageMetrics {
+export interface AgentsUsageBucket extends Corti.AgentsUsageMetrics {
     /** Inclusive start of the bucket (UTC). */
     periodStart: Date;
     /** Exclusive end of the bucket (UTC). */

@@ -4,15 +4,15 @@ import type * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
 import type * as serializers from "../index.js";
 
-export const AgenticUsageMetrics: core.serialization.ObjectSchema<
-    serializers.AgenticUsageMetrics.Raw,
-    Corti.AgenticUsageMetrics
+export const AgentsUsageMetrics: core.serialization.ObjectSchema<
+    serializers.AgentsUsageMetrics.Raw,
+    Corti.AgentsUsageMetrics
 > = core.serialization.object({
     invocations: core.serialization.number(),
     uniqueContexts: core.serialization.number(),
 });
 
-export declare namespace AgenticUsageMetrics {
+export declare namespace AgentsUsageMetrics {
     export interface Raw {
         invocations: number;
         uniqueContexts: number;

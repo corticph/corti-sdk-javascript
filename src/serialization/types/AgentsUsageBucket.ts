@@ -3,20 +3,20 @@
 import type * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
 import type * as serializers from "../index.js";
-import { AgenticUsageMetrics } from "./AgenticUsageMetrics.js";
+import { AgentsUsageMetrics } from "./AgentsUsageMetrics.js";
 
-export const AgenticUsageBucket: core.serialization.ObjectSchema<
-    serializers.AgenticUsageBucket.Raw,
-    Corti.AgenticUsageBucket
+export const AgentsUsageBucket: core.serialization.ObjectSchema<
+    serializers.AgentsUsageBucket.Raw,
+    Corti.AgentsUsageBucket
 > = core.serialization
     .object({
         periodStart: core.serialization.date(),
         periodEnd: core.serialization.date(),
     })
-    .extend(AgenticUsageMetrics);
+    .extend(AgentsUsageMetrics);
 
-export declare namespace AgenticUsageBucket {
-    export interface Raw extends AgenticUsageMetrics.Raw {
+export declare namespace AgentsUsageBucket {
+    export interface Raw extends AgentsUsageMetrics.Raw {
         periodStart: string;
         periodEnd: string;
     }

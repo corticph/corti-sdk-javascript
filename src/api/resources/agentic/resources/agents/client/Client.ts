@@ -649,7 +649,7 @@ export class AgentsClient {
         agentId: Corti.CommonAgentIdValue,
         request: Corti.agentic.AgenticAgentsGetUsageRequest = {},
         requestOptions?: AgentsClient.RequestOptions,
-    ): core.HttpResponsePromise<Corti.AgenticUsageReportResponse> {
+    ): core.HttpResponsePromise<Corti.AgentsUsageReportResponse> {
         return core.HttpResponsePromise.fromPromise(this.__getUsage(agentId, request, requestOptions));
     }
 
@@ -657,14 +657,14 @@ export class AgentsClient {
         agentId: Corti.CommonAgentIdValue,
         request: Corti.agentic.AgenticAgentsGetUsageRequest = {},
         requestOptions?: AgentsClient.RequestOptions,
-    ): Promise<core.WithRawResponse<Corti.AgenticUsageReportResponse>> {
+    ): Promise<core.WithRawResponse<Corti.AgentsUsageReportResponse>> {
         const { from: from_, to, granularity } = request;
         const _queryParams: Record<string, unknown> = {
             from: from_ != null ? from_?.toISOString() : undefined,
             to: to != null ? to?.toISOString() : undefined,
             granularity:
                 granularity != null
-                    ? serializers.AgenticUsageGranularity.jsonOrThrow(granularity, {
+                    ? serializers.AgentsUsageGranularity.jsonOrThrow(granularity, {
                           unrecognizedObjectKeys: "strip",
                           omitUndefined: true,
                       })
@@ -694,7 +694,7 @@ export class AgentsClient {
         });
         if (_response.ok) {
             return {
-                data: serializers.AgenticUsageReportResponse.parseOrThrow(_response.body, {
+                data: serializers.AgentsUsageReportResponse.parseOrThrow(_response.body, {
                     unrecognizedObjectKeys: "passthrough",
                     allowUnrecognizedUnionMembers: true,
                     allowUnrecognizedEnumValues: true,

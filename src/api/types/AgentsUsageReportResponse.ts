@@ -5,14 +5,14 @@ import type * as Corti from "../index.js";
 /**
  * An agent's bucketed usage over a date range, with range-wide totals.
  */
-export interface AgenticUsageReportResponse {
-    granularity: Corti.AgenticUsageGranularity;
+export interface AgentsUsageReportResponse {
+    granularity: Corti.AgentsUsageGranularity;
     /** Resolved inclusive start of the range (UTC). */
     from: Date;
     /** Resolved exclusive end of the range (UTC). */
     to: Date;
     /** Aggregate metrics across the whole range. */
-    totals: Corti.AgenticUsageMetrics;
+    totals: Corti.AgentsUsageMetrics;
     /** One entry per period with activity, ordered oldest first. */
-    buckets: Corti.AgenticUsageBucket[];
+    buckets: Corti.AgentsUsageBucket[];
 }

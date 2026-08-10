@@ -4,11 +4,11 @@ import type * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
 import type * as serializers from "../index.js";
 
-export const AgenticUsageGranularity: core.serialization.Schema<
-    serializers.AgenticUsageGranularity.Raw,
-    Corti.AgenticUsageGranularity
+export const AgentsUsageGranularity: core.serialization.Schema<
+    serializers.AgentsUsageGranularity.Raw,
+    Corti.AgentsUsageGranularity
 > = core.serialization.enum_(["minute", "hour", "day", "week"]);
 
-export declare namespace AgenticUsageGranularity {
+export declare namespace AgentsUsageGranularity {
     export type Raw = "minute" | "hour" | "day" | "week";
 }
