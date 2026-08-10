@@ -4,9 +4,9 @@
  * Extends the auto-generated AgentsClient with helper methods.
  */
 
+import type * as Corti from "../../api/index.js";
 import { AgentsClient } from "../../api/resources/agentic/resources/agents/client/Client.js";
 import type { A2AClient } from "../../api/resources/agentic/resources/agents/resources/a2A/client/Client.js";
-import type * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
 
 export class CustomAgenticAgents extends AgentsClient {
@@ -31,10 +31,7 @@ export class CustomAgenticAgents extends AgentsClient {
             (await core.Supplier.get(this._options.baseUrl)) ??
             (await core.Supplier.get(this._options.environment)).base;
         return new URL(
-            core.url.join(
-                base,
-                `agentic/agents/${core.url.encodePathParam(agentId)}/.well-known/agent-card.json`,
-            ),
+            core.url.join(base, `agentic/agents/${core.url.encodePathParam(agentId)}/.well-known/agent-card.json`),
         );
     };
 }
