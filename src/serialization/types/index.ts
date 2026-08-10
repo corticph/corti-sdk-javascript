@@ -7,6 +7,7 @@ export * from "./AgenticAgentCardResponseSupportedInterfacesItem.js";
 export * from "./AgenticAgentCardResponseSupportedInterfacesItemProtocolBinding.js";
 export * from "./AgenticAgentsListResponse.js";
 export * from "./AgenticAgentsResponse.js";
+export * from "./AgenticConnectorsListResponse.js";
 export * from "./AgenticContext.js";
 export * from "./AgenticContextsDetailResponse.js";
 export * from "./AgenticContextsListResponse.js";

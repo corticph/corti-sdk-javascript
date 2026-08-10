@@ -8,6 +8,7 @@ import { handleNonStatusCodeError } from "../../../../../../errors/handleNonStat
 import * as errors from "../../../../../../errors/index.js";
 import * as serializers from "../../../../../../serialization/index.js";
 import * as Corti from "../../../../../index.js";
+import { ConnectorsClient } from "../resources/connectors/client/Client.js";
 
 export declare namespace AgentsClient {
     export type Options = BaseClientOptions;
@@ -17,9 +18,14 @@ export declare namespace AgentsClient {
 
 export class AgentsClient {
     protected readonly _options: NormalizedClientOptionsWithAuth<AgentsClient.Options>;
+    protected _connectors: ConnectorsClient | undefined;
 
     constructor(options: AgentsClient.Options) {
         this._options = normalizeClientOptionsWithAuth(options);
+    }
+
+    public get connectors(): ConnectorsClient {
+        return (this._connectors ??= new ConnectorsClient(this._options));
     }
 
     /**
