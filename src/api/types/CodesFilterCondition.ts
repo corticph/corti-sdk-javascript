@@ -6,7 +6,7 @@ import type * as Corti from "../index.js";
  * Single property/op/value filter clause for attribute-based code filtering.
  */
 export interface CodesFilterCondition {
-    /** The attribute to filter on, e.g. `code` (matches the `code` field on predicted codes), or a system-specific attribute such as `semantic_tag`. */
+    /** The attribute to filter on, e.g. `code`. */
     property: string;
     /** Comparison operator: `=` (equal), `is-a` (code plus descendants), `descendent-of` (strict descendants), `exists` (has any value), `in` (membership). */
     op?: Corti.CodesFilterConditionOp;
