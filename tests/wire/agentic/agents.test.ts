@@ -921,7 +921,7 @@ describe("AgentsClient", () => {
         }).rejects.toThrow(Corti.UnprocessableEntityError);
     });
 
-    test("getCard (1)", async () => {
+    test("card (1)", async () => {
         const server = mockServerPool.createServer();
         mockOAuth(server);
 
@@ -976,7 +976,7 @@ describe("AgentsClient", () => {
             .jsonBody(rawResponseBody)
             .build();
 
-        const response = await client.agentic.agents.getCard("agt.0192f4c8-2c5a-7b3e-9f1a-3c8d6e2b7a40");
+        const response = await client.agentic.agents.card("agt.0192f4c8-2c5a-7b3e-9f1a-3c8d6e2b7a40");
         expect(response).toEqual({
             name: "coder",
             description: "Returns ICD-10 codes for a clinical encounter.",
@@ -1033,7 +1033,7 @@ describe("AgentsClient", () => {
         });
     });
 
-    test("getCard (2)", async () => {
+    test("card (2)", async () => {
         const server = mockServerPool.createServer();
         mockOAuth(server);
 
@@ -1056,11 +1056,11 @@ describe("AgentsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.agentic.agents.getCard("agentId");
+            return await client.agentic.agents.card("agentId");
         }).rejects.toThrow(Corti.UnauthorizedError);
     });
 
-    test("getCard (3)", async () => {
+    test("card (3)", async () => {
         const server = mockServerPool.createServer();
         mockOAuth(server);
 
@@ -1083,7 +1083,7 @@ describe("AgentsClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.agentic.agents.getCard("agentId");
+            return await client.agentic.agents.card("agentId");
         }).rejects.toThrow(Corti.NotFoundError);
     });
 

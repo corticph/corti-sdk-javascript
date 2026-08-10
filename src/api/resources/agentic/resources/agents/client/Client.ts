@@ -8,6 +8,7 @@ import { handleNonStatusCodeError } from "../../../../../../errors/handleNonStat
 import * as errors from "../../../../../../errors/index.js";
 import * as serializers from "../../../../../../serialization/index.js";
 import * as Corti from "../../../../../index.js";
+import { A2AClient } from "../resources/a2A/client/Client.js";
 import { ConnectorsClient } from "../resources/connectors/client/Client.js";
 
 export declare namespace AgentsClient {
@@ -18,10 +19,15 @@ export declare namespace AgentsClient {
 
 export class AgentsClient {
     protected readonly _options: NormalizedClientOptionsWithAuth<AgentsClient.Options>;
+    protected _a2A: A2AClient | undefined;
     protected _connectors: ConnectorsClient | undefined;
 
     constructor(options: AgentsClient.Options) {
         this._options = normalizeClientOptionsWithAuth(options);
+    }
+
+    public get a2A(): A2AClient {
+        return (this._a2A ??= new A2AClient(this._options));
     }
 
     public get connectors(): ConnectorsClient {
@@ -556,16 +562,16 @@ export class AgentsClient {
      * @throws {@link Corti.NotFoundError}
      *
      * @example
-     *     await client.agentic.agents.getCard("agt.0192f4c8-2c5a-7b3e-9f1a-3c8d6e2b7a40")
+     *     await client.agentic.agents.card("agt.0192f4c8-2c5a-7b3e-9f1a-3c8d6e2b7a40")
      */
-    public getCard(
+    public card(
         agentId: Corti.CommonAgentIdValue,
         requestOptions?: AgentsClient.RequestOptions,
     ): core.HttpResponsePromise<Corti.AgenticAgentCardResponse> {
-        return core.HttpResponsePromise.fromPromise(this.__getCard(agentId, requestOptions));
+        return core.HttpResponsePromise.fromPromise(this.__card(agentId, requestOptions));
     }
 
-    private async __getCard(
+    private async __card(
         agentId: Corti.CommonAgentIdValue,
         requestOptions?: AgentsClient.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.AgenticAgentCardResponse>> {
