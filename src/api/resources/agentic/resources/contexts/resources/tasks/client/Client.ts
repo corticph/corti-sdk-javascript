@@ -11,6 +11,7 @@ import { handleNonStatusCodeError } from "../../../../../../../../errors/handleN
 import * as errors from "../../../../../../../../errors/index.js";
 import * as serializers from "../../../../../../../../serialization/index.js";
 import * as Corti from "../../../../../../../index.js";
+import { FeedbackClient } from "../resources/feedback/client/Client.js";
 
 export declare namespace TasksClient {
     export type Options = BaseClientOptions;
@@ -20,9 +21,14 @@ export declare namespace TasksClient {
 
 export class TasksClient {
     protected readonly _options: NormalizedClientOptionsWithAuth<TasksClient.Options>;
+    protected _feedback: FeedbackClient | undefined;
 
     constructor(options: TasksClient.Options) {
         this._options = normalizeClientOptionsWithAuth(options);
+    }
+
+    public get feedback(): FeedbackClient {
+        return (this._feedback ??= new FeedbackClient(this._options));
     }
 
     /**
