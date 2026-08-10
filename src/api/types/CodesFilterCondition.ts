@@ -11,5 +11,5 @@ export interface CodesFilterCondition {
     /** Comparison operator: `=` (equal), `is-a` (code plus descendants), `descendent-of` (strict descendants), `exists` (has any value), `in` (membership). */
     op?: Corti.CodesFilterConditionOp;
     /** Comparison value; type depends on `op`. */
-    value?: Corti.CodesFilterConditionValue;
+    value: Corti.CodesFilterConditionValue;
 }

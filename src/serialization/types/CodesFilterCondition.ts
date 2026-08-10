@@ -12,13 +12,13 @@ export const CodesFilterCondition: core.serialization.ObjectSchema<
 > = core.serialization.object({
     property: core.serialization.string(),
     op: CodesFilterConditionOp.optional(),
-    value: CodesFilterConditionValue.optional(),
+    value: CodesFilterConditionValue,
 });
 
 export declare namespace CodesFilterCondition {
     export interface Raw {
         property: string;
         op?: CodesFilterConditionOp.Raw | null;
-        value?: CodesFilterConditionValue.Raw | null;
+        value: CodesFilterConditionValue.Raw;
     }
 }
