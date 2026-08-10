@@ -11,6 +11,7 @@ import { handleNonStatusCodeError } from "../../../../../../../../errors/handleN
 import * as errors from "../../../../../../../../errors/index.js";
 import * as serializers from "../../../../../../../../serialization/index.js";
 import * as Corti from "../../../../../../../index.js";
+import { ArtifactsClient } from "../resources/artifacts/client/Client.js";
 import { FeedbackClient } from "../resources/feedback/client/Client.js";
 
 export declare namespace TasksClient {
@@ -21,10 +22,15 @@ export declare namespace TasksClient {
 
 export class TasksClient {
     protected readonly _options: NormalizedClientOptionsWithAuth<TasksClient.Options>;
+    protected _artifacts: ArtifactsClient | undefined;
     protected _feedback: FeedbackClient | undefined;
 
     constructor(options: TasksClient.Options) {
         this._options = normalizeClientOptionsWithAuth(options);
+    }
+
+    public get artifacts(): ArtifactsClient {
+        return (this._artifacts ??= new ArtifactsClient(this._options));
     }
 
     public get feedback(): FeedbackClient {
