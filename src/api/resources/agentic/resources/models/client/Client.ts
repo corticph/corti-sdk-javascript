@@ -37,13 +37,15 @@ export class ModelsClient {
      * @example
      *     await client.agentic.models.list()
      */
-    public list(requestOptions?: ModelsClient.RequestOptions): core.HttpResponsePromise<Corti.ModelsListResponse> {
+    public list(
+        requestOptions?: ModelsClient.RequestOptions,
+    ): core.HttpResponsePromise<Corti.AgenticModelsListResponse> {
         return core.HttpResponsePromise.fromPromise(this.__list(requestOptions));
     }
 
     private async __list(
         requestOptions?: ModelsClient.RequestOptions,
-    ): Promise<core.WithRawResponse<Corti.ModelsListResponse>> {
+    ): Promise<core.WithRawResponse<Corti.AgenticModelsListResponse>> {
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
@@ -68,7 +70,7 @@ export class ModelsClient {
         });
         if (_response.ok) {
             return {
-                data: serializers.ModelsListResponse.parseOrThrow(_response.body, {
+                data: serializers.AgenticModelsListResponse.parseOrThrow(_response.body, {
                     unrecognizedObjectKeys: "passthrough",
                     allowUnrecognizedUnionMembers: true,
                     allowUnrecognizedEnumValues: true,

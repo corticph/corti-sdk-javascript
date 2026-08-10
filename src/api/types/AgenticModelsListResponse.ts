@@ -5,7 +5,7 @@ import type * as Corti from "../index.js";
 /**
  * List of available LLM models.
  */
-export interface ModelsListResponse {
+export interface AgenticModelsListResponse {
     /** Available models. */
-    data: Corti.ModelsModel[];
+    data: Corti.AgenticModelsModel[];
 }

@@ -3,7 +3,7 @@
 /**
  * An LLM model available on the gateway.
  */
-export interface ModelsModel {
+export interface AgenticModelsModel {
     /** Model identifier, usable as the `model` field on agent create/update. */
     id: string;
     /** Unix timestamp (seconds) when the model was created. */
