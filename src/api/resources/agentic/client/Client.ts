@@ -3,6 +3,7 @@
 import type { BaseClientOptions } from "../../../../BaseClient.js";
 import { type NormalizedClientOptionsWithAuth, normalizeClientOptionsWithAuth } from "../../../../BaseClient.js";
 import { AgentsClient } from "../resources/agents/client/Client.js";
+import { ModelsClient } from "../resources/models/client/Client.js";
 
 export declare namespace AgenticClient {
     export type Options = BaseClientOptions;
@@ -11,6 +12,7 @@ export declare namespace AgenticClient {
 export class AgenticClient {
     protected readonly _options: NormalizedClientOptionsWithAuth<AgenticClient.Options>;
     protected _agents: AgentsClient | undefined;
+    protected _models: ModelsClient | undefined;
 
     constructor(options: AgenticClient.Options) {
         this._options = normalizeClientOptionsWithAuth(options);
@@ -18,5 +20,9 @@ export class AgenticClient {
 
     public get agents(): AgentsClient {
         return (this._agents ??= new AgentsClient(this._options));
+    }
+
+    public get models(): ModelsClient {
+        return (this._models ??= new ModelsClient(this._options));
     }
 }
