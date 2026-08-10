@@ -21,5 +21,5 @@ export interface AgenticAgentsGetUsageRequest {
      */
     to?: Date;
     /** Size of each reporting bucket. Defaults to `day`. */
-    granularity?: Corti.UsageGranularity;
+    granularity?: Corti.AgenticUsageGranularity;
 }

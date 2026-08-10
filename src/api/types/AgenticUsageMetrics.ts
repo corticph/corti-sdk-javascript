@@ -3,7 +3,7 @@
 /**
  * Invocation metrics for a single period.
  */
-export interface UsageMetrics {
+export interface AgenticUsageMetrics {
     /** Number of agent invocations in the period. */
     invocations: number;
     /** Number of distinct contexts invoked in the period. */
