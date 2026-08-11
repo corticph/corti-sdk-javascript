@@ -3,6 +3,7 @@
 import type * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
 import type * as serializers from "../index.js";
+import { GuidedLabel } from "./GuidedLabel.js";
 
 export const GuidedDocumentSection: core.serialization.ObjectSchema<
     serializers.GuidedDocumentSection.Raw,
@@ -10,11 +11,13 @@ export const GuidedDocumentSection: core.serialization.ObjectSchema<
 > = core.serialization.object({
     sectionId: core.serialization.string(),
     heading: core.serialization.string(),
+    labels: core.serialization.list(GuidedLabel).optional(),
 });
 
 export declare namespace GuidedDocumentSection {
     export interface Raw {
         sectionId: string;
         heading: string;
+        labels?: GuidedLabel.Raw[] | null;
     }
 }
