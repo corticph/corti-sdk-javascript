@@ -2,6 +2,7 @@ import * as Corti from "../../api/index.js";
 import { StreamClient } from "../../api/resources/stream/client/Client.js";
 import * as core from "../../core/index.js";
 import { ErrorEvent } from "../../core/websocket/events.js";
+import { getAnalyticsFromOptions, mergeAnalyticsQueryParams } from "../utils/analytics.js";
 import { getWsProtocols, type ProxyOptions } from "../utils/encodeHeadersAsWsProtocols.js";
 import { CustomStreamSocket } from "./CustomStreamSocket.js";
 import { parseStreamResponseType } from "./parseStreamResponseType.js";
@@ -45,6 +46,8 @@ export class CustomStream extends StreamClient {
             proxy?.protocols,
         );
 
+        const analytics = getAnalyticsFromOptions(this._options);
+
         const socket = useProxyPath
             ? new core.ReconnectingWebSocket({
                   url:
@@ -55,7 +58,7 @@ export class CustomStream extends StreamClient {
                           `/interactions/${core.url.encodePathParam(rest.id)}/streams`,
                       ),
                   protocols,
-                  queryParameters: proxy?.queryParameters ?? {},
+                  queryParameters: mergeAnalyticsQueryParams(proxy?.queryParameters, analytics),
                   headers: rest.headers ?? {},
                   options: { debug: rest.debug ?? false, maxRetries: rest.reconnectAttempts ?? 30 },
               })
@@ -64,6 +67,10 @@ export class CustomStream extends StreamClient {
                       ...rest,
                       token: (await this._options.authProvider?.getAuthRequest())?.headers.Authorization || "",
                       tenantName: await core.Supplier.get(this._options.tenantName),
+                      queryParams: mergeAnalyticsQueryParams(
+                          (rest as { queryParams?: Record<string, unknown> }).queryParams,
+                          analytics,
+                      ),
                   })
               ).socket;
 

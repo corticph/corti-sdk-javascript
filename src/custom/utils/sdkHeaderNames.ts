@@ -1,5 +1,6 @@
 export const SDK_HEADER_NAMES: ReadonlySet<string> = new Set([
     "Tenant-Name",
+    "X-Corti-Analytics",
     "X-Fern-Language",
     "X-Fern-SDK-Name",
     "X-Fern-SDK-Version",
