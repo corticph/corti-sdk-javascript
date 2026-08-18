@@ -70,6 +70,19 @@ describe("mergeHeaders", () => {
         expect(payload.sdk_version).toBe(SDK_VERSION);
     });
 
+    it("lowercases analytics keys", () => {
+        const merged = mergeHeaders({
+            "x-corti-analytics": JSON.stringify({ Source: "web", SDK_VERSION: "hack" }),
+        });
+        const payload = JSON.parse(merged["x-corti-analytics"] as string);
+        expect(payload.Source).toBeUndefined();
+        expect(payload.SDK_VERSION).toBeUndefined();
+        expect(payload.source).toBe("web");
+        expect(payload.sdk_version).toBe(SDK_VERSION);
+        expect(payload.sdk_type).toBe("corti-sdk-javascript");
+        expect(Object.keys(payload)).toHaveLength(3);
+    });
+
     it("does not change mergeOnlyDefinedHeaders last-write-wins", () => {
         const merged = mergeOnlyDefinedHeaders(
             { "x-corti-analytics": JSON.stringify({ source: "a" }) },
