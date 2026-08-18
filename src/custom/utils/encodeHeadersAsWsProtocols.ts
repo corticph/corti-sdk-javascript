@@ -22,7 +22,7 @@ export async function buildProtocolsFromHeaders(
     }
     const protocols: string[] = [];
     for (const [name, valueOrSupplier] of Object.entries(headers)) {
-        if (filterSdkHeaders && SDK_HEADER_NAMES.has(name)) {
+        if (filterSdkHeaders && SDK_HEADER_NAMES.has(name.toLowerCase())) {
             continue;
         }
         const value = await core.Supplier.get(valueOrSupplier);

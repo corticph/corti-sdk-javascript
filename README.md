@@ -18,6 +18,7 @@ The Corti JavaScript library provides convenient access to the Corti APIs from J
 - [Pagination](#pagination)
 - [Advanced](#advanced)
   - [Additional Headers](#additional-headers)
+  - [Analytics](#analytics)
   - [Additional Query String Parameters](#additional-query-string-parameters)
   - [Retries](#retries)
   - [Timeouts](#timeouts)
@@ -687,6 +688,57 @@ const response = await client.interactions.create(..., {
     }
 });
 ```
+
+### Analytics
+
+The SDK sends metadata about itself (`sdk_version`, `sdk_type`) with every request via the `X-Corti-Analytics` header (REST) or the `x-corti-analytics` query parameter (WebSocket). You can extend this payload with your own fields on the client constructor, and overlay extra fields on individual REST calls or WebSocket connections.
+
+> **Reserved keys**: `sdk_version` and `sdk_type` are always set by the SDK and cannot be overridden at any level.
+
+#### Client-level
+
+Pass `analytics` when constructing the client. The payload is sent with every request.
+
+```typescript
+import { CortiClient } from "@corti/sdk";
+
+const client = new CortiClient({
+    ...
+    analytics: { integration: "epic-hyperspace", workflow: "ambient-scribe" },
+});
+
+// Every REST call includes: X-Corti-Analytics: {"sdk_version":"...","sdk_type":"corti-sdk-javascript","integration":"epic-hyperspace","workflow":"ambient-scribe"}
+await client.interactions.list();
+```
+
+#### Per-request (HTTP)
+
+For a single REST call, pass an `x-corti-analytics` header in `requestOptions.headers`. The value is a JSON string. Per-request fields are merged with the client-level context — they extend rather than replace it.
+
+```typescript
+await client.documents.generate({ ... }, {
+    headers: {
+        "x-corti-analytics": JSON.stringify({ document_type: "progress-note" }),
+    },
+});
+// X-Corti-Analytics includes: {"sdk_version":"...","sdk_type":"corti-sdk-javascript","integration":"epic-hyperspace","workflow":"ambient-scribe","document_type":"progress-note"}
+```
+
+#### Per-connection (WebSocket)
+
+Browsers cannot set custom headers on the WebSocket handshake, so pass `x-corti-analytics` in `queryParams`. Per-connection fields are merged with the client-level context.
+
+```typescript
+const socket = await client.stream.connect({
+    id: interactionId,
+    queryParams: {
+        "x-corti-analytics": JSON.stringify({ visit_type: "inpatient" }),
+    },
+});
+// Handshake query includes: x-corti-analytics={"sdk_version":"...","sdk_type":"corti-sdk-javascript","integration":"epic-hyperspace","workflow":"ambient-scribe","visit_type":"inpatient"}
+```
+
+> **Note**: This value is in the query string and may appear in access logs — avoid personally identifiable information.
 
 ### Additional Query String Parameters
 

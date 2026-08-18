@@ -2,6 +2,7 @@ import * as Corti from "../../api/index.js";
 import { StreamClient } from "../../api/resources/stream/client/Client.js";
 import * as core from "../../core/index.js";
 import { ErrorEvent } from "../../core/websocket/events.js";
+import { withAnalytics } from "../utils/analytics.js";
 import { getWsProtocols, type ProxyOptions } from "../utils/encodeHeadersAsWsProtocols.js";
 import { CustomStreamSocket } from "./CustomStreamSocket.js";
 import { parseStreamResponseType } from "./parseStreamResponseType.js";
@@ -30,10 +31,17 @@ export type CustomStreamConnectArgs = {
 
 export class CustomStream extends StreamClient {
     private readonly _encodeHeadersAsWsProtocols: boolean | undefined;
+    private readonly _analytics: Record<string, string> | undefined;
 
-    constructor(options: StreamClient.Options & { encodeHeadersAsWsProtocols?: boolean }) {
+    constructor(
+        options: StreamClient.Options & {
+            encodeHeadersAsWsProtocols?: boolean;
+            analytics?: Record<string, string>;
+        },
+    ) {
         super(options);
         this._encodeHeadersAsWsProtocols = options.encodeHeadersAsWsProtocols;
+        this._analytics = options.analytics;
     }
 
     public override async connect(args: CustomStreamConnectArgs): Promise<CustomStreamSocket> {
@@ -55,7 +63,7 @@ export class CustomStream extends StreamClient {
                           `/interactions/${core.url.encodePathParam(rest.id)}/streams`,
                       ),
                   protocols,
-                  queryParameters: proxy?.queryParameters ?? {},
+                  queryParameters: withAnalytics(this._analytics, proxy?.queryParameters),
                   headers: rest.headers ?? {},
                   options: { debug: rest.debug ?? false, maxRetries: rest.reconnectAttempts ?? 30 },
               })
@@ -64,6 +72,7 @@ export class CustomStream extends StreamClient {
                       ...rest,
                       token: (await this._options.authProvider?.getAuthRequest())?.headers.Authorization || "",
                       tenantName: await core.Supplier.get(this._options.tenantName),
+                      queryParams: withAnalytics(this._analytics, rest.queryParams),
                   })
               ).socket;
 
