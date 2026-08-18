@@ -18,13 +18,14 @@ export interface TranscriptsCreateRequest {
     spokenPunctuation?: boolean;
     /** When true, automatically punctuates and capitalizes the transcript. Defaults to true. Overridden by `spokenPunctuation` when both are enabled. */
     automaticPunctuation?: boolean;
+    formatting?: Corti.TranscriptsFormatting;
     /** **Deprecated** — replaced by `spokenPunctuation` and `automaticPunctuation`. Ignored when either of those fields is provided. When `true` and neither new field is provided, it is treated as `spokenPunctuation: true` (automatic punctuation off). No removal date is currently planned. */
     isDictation?: boolean;
     /** If true, each audio channel is transcribed separately. */
     isMultichannel?: boolean;
     /** If true, separates speakers within an audio channel returning incrementing ids for transcript segments. */
     diarize?: boolean;
-    /** An array of participants, each specifying a role and an assigned audio channel in the recording. Leave empty when shouldDiarize: true */
+    /** An array of participants, each specifying a free-form role and an assigned audio channel in the recording. The number of audio channels is resolved from the audio itself, not from the declared participants. Leave empty when diarize: true. */
     participants?: Corti.TranscriptsParticipant[];
     /** If true, the request will return immediately with a 202 status and the transcript will be processed asynchronously. Poll [Get Transcript Status](/api-reference/transcripts/get-transcript-status) to check transcript processing status - `processing`, `completed`, `failed`. */
     async?: boolean;
