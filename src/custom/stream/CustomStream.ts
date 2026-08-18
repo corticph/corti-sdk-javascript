@@ -2,10 +2,7 @@ import * as Corti from "../../api/index.js";
 import { StreamClient } from "../../api/resources/stream/client/Client.js";
 import * as core from "../../core/index.js";
 import { ErrorEvent } from "../../core/websocket/events.js";
-import {
-    liftConnectAnalytics,
-    mergeAnalyticsQueryParams,
-} from "../utils/analytics.js";
+import { liftConnectAnalytics, mergeAnalyticsQueryParams } from "../utils/analytics.js";
 import { getWsProtocols, type ProxyOptions } from "../utils/encodeHeadersAsWsProtocols.js";
 import { CustomStreamSocket } from "./CustomStreamSocket.js";
 import { parseStreamResponseType } from "./parseStreamResponseType.js";
@@ -30,8 +27,7 @@ export type CustomStreamConnectArgs = {
      * directly to proxy.url. Useful for proxy backends that handle auth themselves.
      */
     proxy?: ProxyOptions;
-    headers?: Record<string, string>;
-} & Partial<Omit<StreamClient.ConnectArgs, "id" | "tenantName" | "token" | "headers">>;
+} & Partial<Omit<StreamClient.ConnectArgs, "id" | "tenantName" | "token">>;
 
 export class CustomStream extends StreamClient {
     private readonly _encodeHeadersAsWsProtocols: boolean | undefined;

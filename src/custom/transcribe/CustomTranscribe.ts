@@ -2,10 +2,7 @@ import * as Corti from "../../api/index.js";
 import { TranscribeClient } from "../../api/resources/transcribe/client/Client.js";
 import * as core from "../../core/index.js";
 import { ErrorEvent } from "../../core/websocket/events.js";
-import {
-    liftConnectAnalytics,
-    mergeAnalyticsQueryParams,
-} from "../utils/analytics.js";
+import { liftConnectAnalytics, mergeAnalyticsQueryParams } from "../utils/analytics.js";
 import { getWsProtocols, type ProxyOptions } from "../utils/encodeHeadersAsWsProtocols.js";
 import { CustomTranscribeSocket } from "./CustomTranscribeSocket.js";
 import { parseTranscribeResponseType } from "./parseTranscribeResponseType.js";
@@ -29,8 +26,7 @@ export type CustomTranscribeConnectArgs = {
      * directly to proxy.url. Useful for proxy backends that handle auth themselves.
      */
     proxy?: ProxyOptions;
-    headers?: Record<string, string>;
-} & Partial<Omit<TranscribeClient.ConnectArgs, "tenantName" | "token" | "headers">>;
+} & Partial<Omit<TranscribeClient.ConnectArgs, "tenantName" | "token">>;
 
 export class CustomTranscribe extends TranscribeClient {
     private readonly _encodeHeadersAsWsProtocols: boolean | undefined;
