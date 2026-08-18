@@ -16,8 +16,14 @@ src/auth/OAuthAuthProvider.ts
 # Fetcher barrel re-exports from custom/ where fetcher injects global withCredentials default.
 src/core/fetcher/index.ts
 
+# Generated mergeHeaders renamed in place; public mergeHeaders re-exported from custom wrap.
+src/core/headers.ts
+
 # Wire tests authentication
 tests/wire/mockAuth.ts
+
+# Custom unit tests — hand-maintained, Fern must not overwrite
+tests/unit/custom/
 
 # Integration tests — hand-maintained, not generated
 tests/custom/

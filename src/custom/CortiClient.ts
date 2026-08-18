@@ -1,4 +1,5 @@
 import { CortiClient as BaseCortiClient } from "../Client.js";
+import { mergeHeaders } from "../core/headers.js";
 import * as core from "../core/index.js";
 import type * as environments from "../environments.js";
 import { CustomAgentic } from "./agentic/CustomAgentic.js";
@@ -6,9 +7,9 @@ import { CustomAgents } from "./agents/CustomAgents.js";
 import { CortiAuth } from "./auth/CortiAuth.js";
 import { CustomStream } from "./stream/CustomStream.js";
 import { CustomTranscribe } from "./transcribe/CustomTranscribe.js";
+import { X_CORTI_ANALYTICS } from "./utils/analytics.js";
 import { authToBaseOptions } from "./utils/authToBaseOptions.js";
 import { type Environment, getEnvironment } from "./utils/environment.js";
-
 import { resolveClientOptions } from "./utils/resolveClientOptions.js";
 import { setDefaultWithCredentials } from "./utils/withCredentialsConfig.js";
 
@@ -17,6 +18,11 @@ type OptionsBase = Omit<
     "clientId" | "clientSecret" | "token" | "environment" | "tenantName" | "baseUrl"
 > & {
     withCredentials?: boolean;
+    /**
+     * Additional call-site metadata merged into the X-Corti-Analytics payload.
+     * `sdk_version` and `sdk_type` are reserved and always set by the SDK.
+     */
+    analytics?: Record<string, string>;
     /**
      * When true, encodes the client's auth headers as WebSocket subprotocol pairs instead of
      * HTTP headers on every WebSocket connection. Useful when connecting through a gateway
@@ -49,6 +55,7 @@ export class CortiClient extends BaseCortiClient {
     protected override _agentic: CustomAgentic | undefined;
 
     private readonly _encodeHeadersAsWsProtocols: boolean | undefined;
+    private readonly _analytics: Record<string, string> | undefined;
 
     constructor(options: CortiClient.Options) {
         const opts = options as {
@@ -58,8 +65,12 @@ export class CortiClient extends BaseCortiClient {
             baseUrl?: string;
         };
         const ctx = resolveClientOptions(options);
+
         const restOptions = {
             ...opts,
+            headers: mergeHeaders(options.headers, {
+                [X_CORTI_ANALYTICS]: options.analytics,
+            }),
             tenantName: ctx.tenantName,
             environment: getEnvironment(ctx.environment),
             ...(ctx.initialTokenResponse != null ? { initialTokenResponse: ctx.initialTokenResponse } : {}),
@@ -69,6 +80,7 @@ export class CortiClient extends BaseCortiClient {
 
         setDefaultWithCredentials((options as OptionsBase).withCredentials);
         this._encodeHeadersAsWsProtocols = (options as OptionsBase).encodeHeadersAsWsProtocols;
+        this._analytics = options.analytics;
     }
 
     public override get auth(): CortiAuth {
@@ -79,6 +91,7 @@ export class CortiClient extends BaseCortiClient {
         return (this._stream ??= new CustomStream({
             ...this._options,
             encodeHeadersAsWsProtocols: this._encodeHeadersAsWsProtocols,
+            analytics: this._analytics,
         }));
     }
 
@@ -86,6 +99,7 @@ export class CortiClient extends BaseCortiClient {
         return (this._transcribe ??= new CustomTranscribe({
             ...this._options,
             encodeHeadersAsWsProtocols: this._encodeHeadersAsWsProtocols,
+            analytics: this._analytics,
         }));
     }
 
