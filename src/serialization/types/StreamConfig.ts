@@ -9,6 +9,7 @@ import { StreamConfigMode } from "./StreamConfigMode.js";
 import { StreamConfigReplacementsItem } from "./StreamConfigReplacementsItem.js";
 import { StreamConfigRetentionPolicy } from "./StreamConfigRetentionPolicy.js";
 import { StreamConfigTranscription } from "./StreamConfigTranscription.js";
+import { StreamFormatting } from "./StreamFormatting.js";
 
 export const StreamConfig: core.serialization.ObjectSchema<serializers.StreamConfig.Raw, Corti.StreamConfig> =
     core.serialization.object({
@@ -16,6 +17,7 @@ export const StreamConfig: core.serialization.ObjectSchema<serializers.StreamCon
         mode: StreamConfigMode,
         retentionPolicy: StreamConfigRetentionPolicy.optional(),
         audioEvents: StreamAudioEventsConfig.optional(),
+        formatting: StreamFormatting.optional(),
         audioFormat: core.serialization.string().optional(),
         replacements: core.serialization.list(StreamConfigReplacementsItem).optional(),
         keyterms: StreamConfigKeyterms.optional(),
@@ -27,6 +29,7 @@ export declare namespace StreamConfig {
         mode: StreamConfigMode.Raw;
         retentionPolicy?: StreamConfigRetentionPolicy.Raw | null;
         audioEvents?: StreamAudioEventsConfig.Raw | null;
+        formatting?: StreamFormatting.Raw | null;
         audioFormat?: string | null;
         replacements?: StreamConfigReplacementsItem.Raw[] | null;
         keyterms?: StreamConfigKeyterms.Raw | null;

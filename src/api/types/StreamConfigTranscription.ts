@@ -9,8 +9,8 @@ export interface StreamConfigTranscription {
     diarize?: boolean;
     /** **Deprecated** — renamed to `diarize`. Still accepted for backward compatibility; `diarize` takes precedence when both are provided. `CONFIG_ACCEPTED` echoes both fields during the deprecation period. No removal date is currently planned. */
     isDiarization?: boolean;
-    /** Enable multi-channel audio processing */
+    /** Enable multi-channel audio processing. When false, all participants are collapsed to channel 0 and the audio is downmixed to mono. */
     isMultichannel?: boolean;
-    /** List of participants with roles assigned to a channel */
+    /** List of participants, each assigning a free-form role to a channel. The number of audio channels is resolved from the audio stream, not from the declared participants. When isMultichannel is false, all participants are collapsed to channel 0. */
     participants: Corti.StreamConfigParticipant[];
 }

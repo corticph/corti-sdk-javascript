@@ -8,6 +8,7 @@ import { handleNonStatusCodeError } from "../../../../errors/handleNonStatusCode
 import * as errors from "../../../../errors/index.js";
 import * as serializers from "../../../../serialization/index.js";
 import * as Corti from "../../../index.js";
+import { ClassicClient } from "../resources/classic/client/Client.js";
 import { SectionsClient } from "../resources/sections/client/Client.js";
 import { TemplatesClient } from "../resources/templates/client/Client.js";
 
@@ -19,11 +20,16 @@ export declare namespace DocumentsClient {
 
 export class DocumentsClient {
     protected readonly _options: NormalizedClientOptionsWithAuth<DocumentsClient.Options>;
+    protected _classic: ClassicClient | undefined;
     protected _templates: TemplatesClient | undefined;
     protected _sections: SectionsClient | undefined;
 
     constructor(options: DocumentsClient.Options) {
         this._options = normalizeClientOptionsWithAuth(options);
+    }
+
+    public get classic(): ClassicClient {
+        return (this._classic ??= new ClassicClient(this._options));
     }
 
     public get templates(): TemplatesClient {
@@ -35,32 +41,36 @@ export class DocumentsClient {
     }
 
     /**
-     * @deprecated
+     * Guided Documents list (`GET /documents/`). For classic interaction-scoped documents, use `client.documents.classic.list`.
      *
-     * List Documents
+     * Returns a list of previously generated documents.
+     * Use query parameters to filter by template, interaction, or label.
      *
-     * @param {Corti.Uuid} id - The unique identifier of the interaction. Must be a valid UUID.
+     * @param {Corti.GuidedDocumentsListRequest} request
      * @param {DocumentsClient.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Corti.BadRequestError}
-     * @throws {@link Corti.ForbiddenError}
-     * @throws {@link Corti.InternalServerError}
-     * @throws {@link Corti.GatewayTimeoutError}
      *
      * @example
-     *     await client.documents.list("f47ac10b-58cc-4372-a567-0e02b2c3d479")
+     *     await client.documents.list()
      */
     public list(
-        id: Corti.Uuid,
+        request: Corti.GuidedDocumentsListRequest = {},
         requestOptions?: DocumentsClient.RequestOptions,
-    ): core.HttpResponsePromise<Corti.DocumentsListResponse> {
-        return core.HttpResponsePromise.fromPromise(this.__list(id, requestOptions));
+    ): core.HttpResponsePromise<Corti.GuidedDocument[]> {
+        return core.HttpResponsePromise.fromPromise(this.__list(request, requestOptions));
     }
 
     private async __list(
-        id: Corti.Uuid,
+        request: Corti.GuidedDocumentsListRequest = {},
         requestOptions?: DocumentsClient.RequestOptions,
-    ): Promise<core.WithRawResponse<Corti.DocumentsListResponse>> {
+    ): Promise<core.WithRawResponse<Corti.GuidedDocument[]>> {
+        const { templateId, interactionId, label } = request;
+        const _queryParams: Record<string, unknown> = {
+            templateId,
+            interactionId,
+            label,
+        };
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
@@ -72,11 +82,11 @@ export class DocumentsClient {
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
                     (await core.Supplier.get(this._options.environment)).base,
-                `interactions/${core.url.encodePathParam(serializers.Uuid.jsonOrThrow(id, { omitUndefined: true }))}/documents/`,
+                "documents/",
             ),
             method: "GET",
             headers: _headers,
-            queryParameters: requestOptions?.queryParams,
+            queryParameters: { ..._queryParams, ...requestOptions?.queryParams },
             timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
             maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
             abortSignal: requestOptions?.abortSignal,
@@ -85,7 +95,7 @@ export class DocumentsClient {
         });
         if (_response.ok) {
             return {
-                data: serializers.DocumentsListResponse.parseOrThrow(_response.body, {
+                data: serializers.documents.list.Response.parseOrThrow(_response.body, {
                     unrecognizedObjectKeys: "passthrough",
                     allowUnrecognizedUnionMembers: true,
                     allowUnrecognizedEnumValues: true,
@@ -100,30 +110,6 @@ export class DocumentsClient {
             switch (_response.error.statusCode) {
                 case 400:
                     throw new Corti.BadRequestError(_response.error.body, _response.rawResponse);
-                case 403:
-                    throw new Corti.ForbiddenError(_response.error.body, _response.rawResponse);
-                case 500:
-                    throw new Corti.InternalServerError(
-                        serializers.ErrorResponse.parseOrThrow(_response.error.body, {
-                            unrecognizedObjectKeys: "passthrough",
-                            allowUnrecognizedUnionMembers: true,
-                            allowUnrecognizedEnumValues: true,
-                            skipValidation: true,
-                            breadcrumbsPrefix: ["response"],
-                        }),
-                        _response.rawResponse,
-                    );
-                case 504:
-                    throw new Corti.GatewayTimeoutError(
-                        serializers.ErrorResponse.parseOrThrow(_response.error.body, {
-                            unrecognizedObjectKeys: "passthrough",
-                            allowUnrecognizedUnionMembers: true,
-                            allowUnrecognizedEnumValues: true,
-                            skipValidation: true,
-                            breadcrumbsPrefix: ["response"],
-                        }),
-                        _response.rawResponse,
-                    );
                 default:
                     throw new errors.CortiError({
                         statusCode: _response.error.statusCode,
@@ -133,458 +119,7 @@ export class DocumentsClient {
             }
         }
 
-        return handleNonStatusCodeError(_response.error, _response.rawResponse, "GET", "/interactions/{id}/documents/");
-    }
-
-    /**
-     * @deprecated
-     *
-     * This endpoint offers different ways to generate a document. Find guides to document generation [here](/textgen/documents-standard).
-     *
-     * @param {Corti.Uuid} id - The unique identifier of the interaction. Must be a valid UUID.
-     * @param {Corti.DocumentsCreateRequest} request
-     * @param {DocumentsClient.RequestOptions} requestOptions - Request-specific configuration.
-     *
-     * @throws {@link Corti.BadRequestError}
-     * @throws {@link Corti.ForbiddenError}
-     * @throws {@link Corti.InternalServerError}
-     * @throws {@link Corti.GatewayTimeoutError}
-     *
-     * @example
-     *     await client.documents.create("f47ac10b-58cc-4372-a567-0e02b2c3d479", {
-     *         context: [{
-     *                 type: "facts",
-     *                 data: [{
-     *                         text: "text"
-     *                     }]
-     *             }],
-     *         templateKey: "templateKey",
-     *         outputLanguage: "outputLanguage"
-     *     })
-     */
-    public create(
-        id: Corti.Uuid,
-        request: Corti.DocumentsCreateRequest,
-        requestOptions?: DocumentsClient.RequestOptions,
-    ): core.HttpResponsePromise<Corti.DocumentsGetResponse> {
-        return core.HttpResponsePromise.fromPromise(this.__create(id, request, requestOptions));
-    }
-
-    private async __create(
-        id: Corti.Uuid,
-        request: Corti.DocumentsCreateRequest,
-        requestOptions?: DocumentsClient.RequestOptions,
-    ): Promise<core.WithRawResponse<Corti.DocumentsGetResponse>> {
-        const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
-        const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
-            _authRequest.headers,
-            this._options?.headers,
-            mergeOnlyDefinedHeaders({ "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName }),
-            requestOptions?.headers,
-        );
-        const _response = await core.fetcher({
-            url: core.url.join(
-                (await core.Supplier.get(this._options.baseUrl)) ??
-                    (await core.Supplier.get(this._options.environment)).base,
-                `interactions/${core.url.encodePathParam(serializers.Uuid.jsonOrThrow(id, { omitUndefined: true }))}/documents/`,
-            ),
-            method: "POST",
-            headers: _headers,
-            contentType: "application/json",
-            queryParameters: requestOptions?.queryParams,
-            requestType: "json",
-            body: serializers.DocumentsCreateRequest.jsonOrThrow(request, {
-                unrecognizedObjectKeys: "strip",
-                omitUndefined: true,
-            }),
-            timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
-            maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
-            abortSignal: requestOptions?.abortSignal,
-            fetchFn: this._options?.fetch,
-            logging: this._options.logging,
-        });
-        if (_response.ok) {
-            return {
-                data: serializers.DocumentsGetResponse.parseOrThrow(_response.body, {
-                    unrecognizedObjectKeys: "passthrough",
-                    allowUnrecognizedUnionMembers: true,
-                    allowUnrecognizedEnumValues: true,
-                    skipValidation: true,
-                    breadcrumbsPrefix: ["response"],
-                }),
-                rawResponse: _response.rawResponse,
-            };
-        }
-
-        if (_response.error.reason === "status-code") {
-            switch (_response.error.statusCode) {
-                case 400:
-                    throw new Corti.BadRequestError(_response.error.body, _response.rawResponse);
-                case 403:
-                    throw new Corti.ForbiddenError(_response.error.body, _response.rawResponse);
-                case 500:
-                    throw new Corti.InternalServerError(
-                        serializers.ErrorResponse.parseOrThrow(_response.error.body, {
-                            unrecognizedObjectKeys: "passthrough",
-                            allowUnrecognizedUnionMembers: true,
-                            allowUnrecognizedEnumValues: true,
-                            skipValidation: true,
-                            breadcrumbsPrefix: ["response"],
-                        }),
-                        _response.rawResponse,
-                    );
-                case 504:
-                    throw new Corti.GatewayTimeoutError(
-                        serializers.ErrorResponse.parseOrThrow(_response.error.body, {
-                            unrecognizedObjectKeys: "passthrough",
-                            allowUnrecognizedUnionMembers: true,
-                            allowUnrecognizedEnumValues: true,
-                            skipValidation: true,
-                            breadcrumbsPrefix: ["response"],
-                        }),
-                        _response.rawResponse,
-                    );
-                default:
-                    throw new errors.CortiError({
-                        statusCode: _response.error.statusCode,
-                        body: _response.error.body,
-                        rawResponse: _response.rawResponse,
-                    });
-            }
-        }
-
-        return handleNonStatusCodeError(
-            _response.error,
-            _response.rawResponse,
-            "POST",
-            "/interactions/{id}/documents/",
-        );
-    }
-
-    /**
-     * @deprecated
-     *
-     * Get Document.
-     *
-     * @param {Corti.Uuid} id - The unique identifier of the interaction. Must be a valid UUID.
-     * @param {Corti.Uuid} documentId - The document ID representing the context for the request. Must be a valid UUID.
-     * @param {DocumentsClient.RequestOptions} requestOptions - Request-specific configuration.
-     *
-     * @throws {@link Corti.BadRequestError}
-     * @throws {@link Corti.ForbiddenError}
-     * @throws {@link Corti.InternalServerError}
-     * @throws {@link Corti.GatewayTimeoutError}
-     *
-     * @example
-     *     await client.documents.get("f47ac10b-58cc-4372-a567-0e02b2c3d479", "f47ac10b-58cc-4372-a567-0e02b2c3d479")
-     */
-    public get(
-        id: Corti.Uuid,
-        documentId: Corti.Uuid,
-        requestOptions?: DocumentsClient.RequestOptions,
-    ): core.HttpResponsePromise<Corti.DocumentsGetResponse> {
-        return core.HttpResponsePromise.fromPromise(this.__get(id, documentId, requestOptions));
-    }
-
-    private async __get(
-        id: Corti.Uuid,
-        documentId: Corti.Uuid,
-        requestOptions?: DocumentsClient.RequestOptions,
-    ): Promise<core.WithRawResponse<Corti.DocumentsGetResponse>> {
-        const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
-        const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
-            _authRequest.headers,
-            this._options?.headers,
-            mergeOnlyDefinedHeaders({ "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName }),
-            requestOptions?.headers,
-        );
-        const _response = await core.fetcher({
-            url: core.url.join(
-                (await core.Supplier.get(this._options.baseUrl)) ??
-                    (await core.Supplier.get(this._options.environment)).base,
-                `interactions/${core.url.encodePathParam(serializers.Uuid.jsonOrThrow(id, { omitUndefined: true }))}/documents/${core.url.encodePathParam(serializers.Uuid.jsonOrThrow(documentId, { omitUndefined: true }))}`,
-            ),
-            method: "GET",
-            headers: _headers,
-            queryParameters: requestOptions?.queryParams,
-            timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
-            maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
-            abortSignal: requestOptions?.abortSignal,
-            fetchFn: this._options?.fetch,
-            logging: this._options.logging,
-        });
-        if (_response.ok) {
-            return {
-                data: serializers.DocumentsGetResponse.parseOrThrow(_response.body, {
-                    unrecognizedObjectKeys: "passthrough",
-                    allowUnrecognizedUnionMembers: true,
-                    allowUnrecognizedEnumValues: true,
-                    skipValidation: true,
-                    breadcrumbsPrefix: ["response"],
-                }),
-                rawResponse: _response.rawResponse,
-            };
-        }
-
-        if (_response.error.reason === "status-code") {
-            switch (_response.error.statusCode) {
-                case 400:
-                    throw new Corti.BadRequestError(_response.error.body, _response.rawResponse);
-                case 403:
-                    throw new Corti.ForbiddenError(_response.error.body, _response.rawResponse);
-                case 500:
-                    throw new Corti.InternalServerError(
-                        serializers.ErrorResponse.parseOrThrow(_response.error.body, {
-                            unrecognizedObjectKeys: "passthrough",
-                            allowUnrecognizedUnionMembers: true,
-                            allowUnrecognizedEnumValues: true,
-                            skipValidation: true,
-                            breadcrumbsPrefix: ["response"],
-                        }),
-                        _response.rawResponse,
-                    );
-                case 504:
-                    throw new Corti.GatewayTimeoutError(
-                        serializers.ErrorResponse.parseOrThrow(_response.error.body, {
-                            unrecognizedObjectKeys: "passthrough",
-                            allowUnrecognizedUnionMembers: true,
-                            allowUnrecognizedEnumValues: true,
-                            skipValidation: true,
-                            breadcrumbsPrefix: ["response"],
-                        }),
-                        _response.rawResponse,
-                    );
-                default:
-                    throw new errors.CortiError({
-                        statusCode: _response.error.statusCode,
-                        body: _response.error.body,
-                        rawResponse: _response.rawResponse,
-                    });
-            }
-        }
-
-        return handleNonStatusCodeError(
-            _response.error,
-            _response.rawResponse,
-            "GET",
-            "/interactions/{id}/documents/{documentId}",
-        );
-    }
-
-    /**
-     * @deprecated
-     *
-     * @param {Corti.Uuid} id - The unique identifier of the interaction. Must be a valid UUID.
-     * @param {Corti.Uuid} documentId - The document ID representing the context for the request. Must be a valid UUID.
-     * @param {DocumentsClient.RequestOptions} requestOptions - Request-specific configuration.
-     *
-     * @throws {@link Corti.ForbiddenError}
-     * @throws {@link Corti.NotFoundError}
-     * @throws {@link Corti.InternalServerError}
-     * @throws {@link Corti.GatewayTimeoutError}
-     *
-     * @example
-     *     await client.documents.delete("f47ac10b-58cc-4372-a567-0e02b2c3d479", "f47ac10b-58cc-4372-a567-0e02b2c3d479")
-     */
-    public delete(
-        id: Corti.Uuid,
-        documentId: Corti.Uuid,
-        requestOptions?: DocumentsClient.RequestOptions,
-    ): core.HttpResponsePromise<void> {
-        return core.HttpResponsePromise.fromPromise(this.__delete(id, documentId, requestOptions));
-    }
-
-    private async __delete(
-        id: Corti.Uuid,
-        documentId: Corti.Uuid,
-        requestOptions?: DocumentsClient.RequestOptions,
-    ): Promise<core.WithRawResponse<void>> {
-        const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
-        const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
-            _authRequest.headers,
-            this._options?.headers,
-            mergeOnlyDefinedHeaders({ "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName }),
-            requestOptions?.headers,
-        );
-        const _response = await core.fetcher({
-            url: core.url.join(
-                (await core.Supplier.get(this._options.baseUrl)) ??
-                    (await core.Supplier.get(this._options.environment)).base,
-                `interactions/${core.url.encodePathParam(serializers.Uuid.jsonOrThrow(id, { omitUndefined: true }))}/documents/${core.url.encodePathParam(serializers.Uuid.jsonOrThrow(documentId, { omitUndefined: true }))}`,
-            ),
-            method: "DELETE",
-            headers: _headers,
-            queryParameters: requestOptions?.queryParams,
-            timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
-            maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
-            abortSignal: requestOptions?.abortSignal,
-            fetchFn: this._options?.fetch,
-            logging: this._options.logging,
-        });
-        if (_response.ok) {
-            return { data: undefined, rawResponse: _response.rawResponse };
-        }
-
-        if (_response.error.reason === "status-code") {
-            switch (_response.error.statusCode) {
-                case 403:
-                    throw new Corti.ForbiddenError(_response.error.body, _response.rawResponse);
-                case 404:
-                    throw new Corti.NotFoundError(_response.error.body, _response.rawResponse);
-                case 500:
-                    throw new Corti.InternalServerError(
-                        serializers.ErrorResponse.parseOrThrow(_response.error.body, {
-                            unrecognizedObjectKeys: "passthrough",
-                            allowUnrecognizedUnionMembers: true,
-                            allowUnrecognizedEnumValues: true,
-                            skipValidation: true,
-                            breadcrumbsPrefix: ["response"],
-                        }),
-                        _response.rawResponse,
-                    );
-                case 504:
-                    throw new Corti.GatewayTimeoutError(
-                        serializers.ErrorResponse.parseOrThrow(_response.error.body, {
-                            unrecognizedObjectKeys: "passthrough",
-                            allowUnrecognizedUnionMembers: true,
-                            allowUnrecognizedEnumValues: true,
-                            skipValidation: true,
-                            breadcrumbsPrefix: ["response"],
-                        }),
-                        _response.rawResponse,
-                    );
-                default:
-                    throw new errors.CortiError({
-                        statusCode: _response.error.statusCode,
-                        body: _response.error.body,
-                        rawResponse: _response.rawResponse,
-                    });
-            }
-        }
-
-        return handleNonStatusCodeError(
-            _response.error,
-            _response.rawResponse,
-            "DELETE",
-            "/interactions/{id}/documents/{documentId}",
-        );
-    }
-
-    /**
-     * @deprecated
-     *
-     * @param {Corti.Uuid} id - The unique identifier of the interaction. Must be a valid UUID.
-     * @param {Corti.Uuid} documentId - The document ID representing the context for the request. Must be a valid UUID.
-     * @param {Corti.DocumentsUpdateRequest} request
-     * @param {DocumentsClient.RequestOptions} requestOptions - Request-specific configuration.
-     *
-     * @throws {@link Corti.BadRequestError}
-     * @throws {@link Corti.ForbiddenError}
-     * @throws {@link Corti.InternalServerError}
-     * @throws {@link Corti.GatewayTimeoutError}
-     *
-     * @example
-     *     await client.documents.update("f47ac10b-58cc-4372-a567-0e02b2c3d479", "f47ac10b-58cc-4372-a567-0e02b2c3d479")
-     */
-    public update(
-        id: Corti.Uuid,
-        documentId: Corti.Uuid,
-        request: Corti.DocumentsUpdateRequest = {},
-        requestOptions?: DocumentsClient.RequestOptions,
-    ): core.HttpResponsePromise<Corti.DocumentsGetResponse> {
-        return core.HttpResponsePromise.fromPromise(this.__update(id, documentId, request, requestOptions));
-    }
-
-    private async __update(
-        id: Corti.Uuid,
-        documentId: Corti.Uuid,
-        request: Corti.DocumentsUpdateRequest = {},
-        requestOptions?: DocumentsClient.RequestOptions,
-    ): Promise<core.WithRawResponse<Corti.DocumentsGetResponse>> {
-        const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
-        const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
-            _authRequest.headers,
-            this._options?.headers,
-            mergeOnlyDefinedHeaders({ "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName }),
-            requestOptions?.headers,
-        );
-        const _response = await core.fetcher({
-            url: core.url.join(
-                (await core.Supplier.get(this._options.baseUrl)) ??
-                    (await core.Supplier.get(this._options.environment)).base,
-                `interactions/${core.url.encodePathParam(serializers.Uuid.jsonOrThrow(id, { omitUndefined: true }))}/documents/${core.url.encodePathParam(serializers.Uuid.jsonOrThrow(documentId, { omitUndefined: true }))}`,
-            ),
-            method: "PATCH",
-            headers: _headers,
-            contentType: "application/json",
-            queryParameters: requestOptions?.queryParams,
-            requestType: "json",
-            body: serializers.DocumentsUpdateRequest.jsonOrThrow(request, {
-                unrecognizedObjectKeys: "strip",
-                omitUndefined: true,
-            }),
-            timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
-            maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
-            abortSignal: requestOptions?.abortSignal,
-            fetchFn: this._options?.fetch,
-            logging: this._options.logging,
-        });
-        if (_response.ok) {
-            return {
-                data: serializers.DocumentsGetResponse.parseOrThrow(_response.body, {
-                    unrecognizedObjectKeys: "passthrough",
-                    allowUnrecognizedUnionMembers: true,
-                    allowUnrecognizedEnumValues: true,
-                    skipValidation: true,
-                    breadcrumbsPrefix: ["response"],
-                }),
-                rawResponse: _response.rawResponse,
-            };
-        }
-
-        if (_response.error.reason === "status-code") {
-            switch (_response.error.statusCode) {
-                case 400:
-                    throw new Corti.BadRequestError(_response.error.body, _response.rawResponse);
-                case 403:
-                    throw new Corti.ForbiddenError(_response.error.body, _response.rawResponse);
-                case 500:
-                    throw new Corti.InternalServerError(
-                        serializers.ErrorResponse.parseOrThrow(_response.error.body, {
-                            unrecognizedObjectKeys: "passthrough",
-                            allowUnrecognizedUnionMembers: true,
-                            allowUnrecognizedEnumValues: true,
-                            skipValidation: true,
-                            breadcrumbsPrefix: ["response"],
-                        }),
-                        _response.rawResponse,
-                    );
-                case 504:
-                    throw new Corti.GatewayTimeoutError(
-                        serializers.ErrorResponse.parseOrThrow(_response.error.body, {
-                            unrecognizedObjectKeys: "passthrough",
-                            allowUnrecognizedUnionMembers: true,
-                            allowUnrecognizedEnumValues: true,
-                            skipValidation: true,
-                            breadcrumbsPrefix: ["response"],
-                        }),
-                        _response.rawResponse,
-                    );
-                default:
-                    throw new errors.CortiError({
-                        statusCode: _response.error.statusCode,
-                        body: _response.error.body,
-                        rawResponse: _response.rawResponse,
-                    });
-            }
-        }
-
-        return handleNonStatusCodeError(
-            _response.error,
-            _response.rawResponse,
-            "PATCH",
-            "/interactions/{id}/documents/{documentId}",
-        );
+        return handleNonStatusCodeError(_response.error, _response.rawResponse, "GET", "/documents/");
     }
 
     /**
@@ -689,5 +224,232 @@ export class DocumentsClient {
         }
 
         return handleNonStatusCodeError(_response.error, _response.rawResponse, "POST", "/documents/");
+    }
+
+    /**
+     * Guided Documents get (`GET /documents/{documentID}`). For classic interaction-scoped documents, use `client.documents.classic.get`.
+     *
+     * Returns a previously generated document by ID, including its rendered string output
+     * and structured object.
+     *
+     * @param {string} documentID
+     * @param {DocumentsClient.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link Corti.NotFoundError}
+     *
+     * @example
+     *     await client.documents.get("documentID")
+     */
+    public get(
+        documentID: string,
+        requestOptions?: DocumentsClient.RequestOptions,
+    ): core.HttpResponsePromise<Corti.GuidedDocument> {
+        return core.HttpResponsePromise.fromPromise(this.__get(documentID, requestOptions));
+    }
+
+    private async __get(
+        documentID: string,
+        requestOptions?: DocumentsClient.RequestOptions,
+    ): Promise<core.WithRawResponse<Corti.GuidedDocument>> {
+        const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
+        const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+            _authRequest.headers,
+            this._options?.headers,
+            mergeOnlyDefinedHeaders({ "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName }),
+            requestOptions?.headers,
+        );
+        const _response = await core.fetcher({
+            url: core.url.join(
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)).base,
+                `documents/${core.url.encodePathParam(documentID)}`,
+            ),
+            method: "GET",
+            headers: _headers,
+            queryParameters: requestOptions?.queryParams,
+            timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
+            maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
+            abortSignal: requestOptions?.abortSignal,
+            fetchFn: this._options?.fetch,
+            logging: this._options.logging,
+        });
+        if (_response.ok) {
+            return {
+                data: serializers.GuidedDocument.parseOrThrow(_response.body, {
+                    unrecognizedObjectKeys: "passthrough",
+                    allowUnrecognizedUnionMembers: true,
+                    allowUnrecognizedEnumValues: true,
+                    skipValidation: true,
+                    breadcrumbsPrefix: ["response"],
+                }),
+                rawResponse: _response.rawResponse,
+            };
+        }
+
+        if (_response.error.reason === "status-code") {
+            switch (_response.error.statusCode) {
+                case 404:
+                    throw new Corti.NotFoundError(_response.error.body, _response.rawResponse);
+                default:
+                    throw new errors.CortiError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                        rawResponse: _response.rawResponse,
+                    });
+            }
+        }
+
+        return handleNonStatusCodeError(_response.error, _response.rawResponse, "GET", "/documents/{documentID}");
+    }
+
+    /**
+     * Guided Documents delete (`DELETE /documents/{documentID}`). For classic interaction-scoped documents, use `client.documents.classic.delete`.
+     *
+     * Deletes the document. This cannot be undone.
+     *
+     * @param {string} documentID
+     * @param {DocumentsClient.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link Corti.NotFoundError}
+     *
+     * @example
+     *     await client.documents.delete("documentID")
+     */
+    public delete(documentID: string, requestOptions?: DocumentsClient.RequestOptions): core.HttpResponsePromise<void> {
+        return core.HttpResponsePromise.fromPromise(this.__delete(documentID, requestOptions));
+    }
+
+    private async __delete(
+        documentID: string,
+        requestOptions?: DocumentsClient.RequestOptions,
+    ): Promise<core.WithRawResponse<void>> {
+        const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
+        const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+            _authRequest.headers,
+            this._options?.headers,
+            mergeOnlyDefinedHeaders({ "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName }),
+            requestOptions?.headers,
+        );
+        const _response = await core.fetcher({
+            url: core.url.join(
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)).base,
+                `documents/${core.url.encodePathParam(documentID)}`,
+            ),
+            method: "DELETE",
+            headers: _headers,
+            queryParameters: requestOptions?.queryParams,
+            timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
+            maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
+            abortSignal: requestOptions?.abortSignal,
+            fetchFn: this._options?.fetch,
+            logging: this._options.logging,
+        });
+        if (_response.ok) {
+            return { data: undefined, rawResponse: _response.rawResponse };
+        }
+
+        if (_response.error.reason === "status-code") {
+            switch (_response.error.statusCode) {
+                case 404:
+                    throw new Corti.NotFoundError(_response.error.body, _response.rawResponse);
+                default:
+                    throw new errors.CortiError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                        rawResponse: _response.rawResponse,
+                    });
+            }
+        }
+
+        return handleNonStatusCodeError(_response.error, _response.rawResponse, "DELETE", "/documents/{documentID}");
+    }
+
+    /**
+     * Guided Documents update (`PATCH /documents/{documentID}`). For classic interaction-scoped documents, use `client.documents.classic.update`.
+     *
+     * Updates the document's `name`, `labels`, or rendered output (`stringDocument` / `structuredDocument`).
+     * Use this to persist edits made to a previously generated document.
+     *
+     * @param {string} documentID
+     * @param {Corti.GuidedDocumentsUpdateRequest} request
+     * @param {DocumentsClient.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link Corti.BadRequestError}
+     * @throws {@link Corti.NotFoundError}
+     *
+     * @example
+     *     await client.documents.update("documentID")
+     */
+    public update(
+        documentID: string,
+        request: Corti.GuidedDocumentsUpdateRequest = {},
+        requestOptions?: DocumentsClient.RequestOptions,
+    ): core.HttpResponsePromise<Corti.GuidedDocument> {
+        return core.HttpResponsePromise.fromPromise(this.__update(documentID, request, requestOptions));
+    }
+
+    private async __update(
+        documentID: string,
+        request: Corti.GuidedDocumentsUpdateRequest = {},
+        requestOptions?: DocumentsClient.RequestOptions,
+    ): Promise<core.WithRawResponse<Corti.GuidedDocument>> {
+        const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
+        const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+            _authRequest.headers,
+            this._options?.headers,
+            mergeOnlyDefinedHeaders({ "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName }),
+            requestOptions?.headers,
+        );
+        const _response = await core.fetcher({
+            url: core.url.join(
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)).base,
+                `documents/${core.url.encodePathParam(documentID)}`,
+            ),
+            method: "PATCH",
+            headers: _headers,
+            contentType: "application/json",
+            queryParameters: requestOptions?.queryParams,
+            requestType: "json",
+            body: serializers.GuidedDocumentsUpdateRequest.jsonOrThrow(request, {
+                unrecognizedObjectKeys: "strip",
+                omitUndefined: true,
+            }),
+            timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
+            maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
+            abortSignal: requestOptions?.abortSignal,
+            fetchFn: this._options?.fetch,
+            logging: this._options.logging,
+        });
+        if (_response.ok) {
+            return {
+                data: serializers.GuidedDocument.parseOrThrow(_response.body, {
+                    unrecognizedObjectKeys: "passthrough",
+                    allowUnrecognizedUnionMembers: true,
+                    allowUnrecognizedEnumValues: true,
+                    skipValidation: true,
+                    breadcrumbsPrefix: ["response"],
+                }),
+                rawResponse: _response.rawResponse,
+            };
+        }
+
+        if (_response.error.reason === "status-code") {
+            switch (_response.error.statusCode) {
+                case 400:
+                    throw new Corti.BadRequestError(_response.error.body, _response.rawResponse);
+                case 404:
+                    throw new Corti.NotFoundError(_response.error.body, _response.rawResponse);
+                default:
+                    throw new errors.CortiError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                        rawResponse: _response.rawResponse,
+                    });
+            }
+        }
+
+        return handleNonStatusCodeError(_response.error, _response.rawResponse, "PATCH", "/documents/{documentID}");
     }
 }
