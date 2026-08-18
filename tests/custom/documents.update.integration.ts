@@ -160,7 +160,9 @@ describe("cortiClient.documents.classic.update", () => {
         it("should throw error when interaction ID is missing", async () => {
             expect.assertions(1);
 
-            await expect(cortiClient.documents.classic.update(undefined as any, faker.string.uuid(), {})).rejects.toThrow();
+            await expect(
+                cortiClient.documents.classic.update(undefined as any, faker.string.uuid(), {}),
+            ).rejects.toThrow();
         });
 
         it("should throw error when document ID is missing", async () => {

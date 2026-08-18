@@ -70,9 +70,9 @@ describe("cortiClient.documents.classic.delete", () => {
         it("should throw error when interaction ID does not exist", async () => {
             expect.assertions(1);
 
-            await expect(cortiClient.documents.classic.delete(faker.string.uuid(), faker.string.uuid())).rejects.toThrow(
-                "Status code: 404",
-            );
+            await expect(
+                cortiClient.documents.classic.delete(faker.string.uuid(), faker.string.uuid()),
+            ).rejects.toThrow("Status code: 404");
         });
 
         it("should throw error when document ID does not exist", async () => {

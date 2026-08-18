@@ -62,7 +62,9 @@ describe("cortiClient.documents.classic.get", () => {
 
             const interactionId = await createTestInteraction(cortiClient);
 
-            await expect(cortiClient.documents.classic.get(interactionId, "invalid-uuid")).rejects.toThrow("Status code: 400");
+            await expect(cortiClient.documents.classic.get(interactionId, "invalid-uuid")).rejects.toThrow(
+                "Status code: 400",
+            );
         });
 
         it("should throw error when interaction ID does not exist", async () => {
