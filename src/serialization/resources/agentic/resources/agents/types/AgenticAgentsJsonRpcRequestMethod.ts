@@ -4,9 +4,9 @@ import type * as Corti from "../../../../../../api/index.js";
 import * as core from "../../../../../../core/index.js";
 import type * as serializers from "../../../../../index.js";
 
-export const A2AjsonrpcRequestMethod: core.serialization.Schema<
-    serializers.agentic.A2AjsonrpcRequestMethod.Raw,
-    Corti.agentic.A2AjsonrpcRequestMethod
+export const AgenticAgentsJsonRpcRequestMethod: core.serialization.Schema<
+    serializers.agentic.AgenticAgentsJsonRpcRequestMethod.Raw,
+    Corti.agentic.AgenticAgentsJsonRpcRequestMethod
 > = core.serialization.enum_([
     "SendMessage",
     "SendStreamingMessage",
@@ -16,7 +16,7 @@ export const A2AjsonrpcRequestMethod: core.serialization.Schema<
     "SubscribeToTask",
 ]);
 
-export declare namespace A2AjsonrpcRequestMethod {
+export declare namespace AgenticAgentsJsonRpcRequestMethod {
     export type Raw =
         | "SendMessage"
         | "SendStreamingMessage"

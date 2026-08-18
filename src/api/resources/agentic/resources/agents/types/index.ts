@@ -1,2 +1,2 @@
-export * from "./A2AjsonrpcRequestId.js";
-export * from "./A2AjsonrpcRequestMethod.js";
+export * from "./AgenticAgentsJsonRpcRequestId.js";
+export * from "./AgenticAgentsJsonRpcRequestMethod.js";

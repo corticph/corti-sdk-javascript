@@ -4,11 +4,11 @@ import type * as Corti from "../../../../../../api/index.js";
 import * as core from "../../../../../../core/index.js";
 import type * as serializers from "../../../../../index.js";
 
-export const A2AjsonrpcRequestId: core.serialization.Schema<
-    serializers.agentic.A2AjsonrpcRequestId.Raw,
-    Corti.agentic.A2AjsonrpcRequestId
+export const AgenticAgentsJsonRpcRequestId: core.serialization.Schema<
+    serializers.agentic.AgenticAgentsJsonRpcRequestId.Raw,
+    Corti.agentic.AgenticAgentsJsonRpcRequestId
 > = core.serialization.undiscriminatedUnion([core.serialization.string(), core.serialization.number()]);
 
-export declare namespace A2AjsonrpcRequestId {
+export declare namespace AgenticAgentsJsonRpcRequestId {
     export type Raw = string | number;
 }

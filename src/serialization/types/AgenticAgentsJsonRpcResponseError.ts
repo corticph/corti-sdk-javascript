@@ -4,16 +4,16 @@ import type * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
 import type * as serializers from "../index.js";
 
-export const A2AjsonrpcResponseError: core.serialization.ObjectSchema<
-    serializers.A2AjsonrpcResponseError.Raw,
-    Corti.A2AjsonrpcResponseError
+export const AgenticAgentsJsonRpcResponseError: core.serialization.ObjectSchema<
+    serializers.AgenticAgentsJsonRpcResponseError.Raw,
+    Corti.AgenticAgentsJsonRpcResponseError
 > = core.serialization.object({
     code: core.serialization.number(),
     message: core.serialization.string(),
     data: core.serialization.record(core.serialization.string(), core.serialization.unknown()).optional(),
 });
 
-export declare namespace A2AjsonrpcResponseError {
+export declare namespace AgenticAgentsJsonRpcResponseError {
     export interface Raw {
         code: number;
         message: string;

@@ -3,7 +3,7 @@
 /**
  * An SSE event carrying an A2A `HTTP+JSON` streaming response.
  */
-export interface A2AStreamEventResponse {
+export interface AgenticAgentsStreamEventResponse {
     /** SSE payload: an A2A HTTP+JSON streaming response. */
     data?: string;
     /** Event type. Absent for the default `message` event. */

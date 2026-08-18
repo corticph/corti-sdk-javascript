@@ -3,7 +3,7 @@
 /**
  * JSON-RPC error object (present on failure).
  */
-export interface A2AjsonrpcResponseError {
+export interface AgenticAgentsJsonRpcResponseError {
     /** JSON-RPC error code. */
     code: number;
     /** Human-readable error message. */

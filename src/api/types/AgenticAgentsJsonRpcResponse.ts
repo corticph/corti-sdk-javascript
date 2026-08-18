@@ -5,12 +5,12 @@ import type * as Corti from "../index.js";
 /**
  * A JSON-RPC 2.0 response envelope.
  */
-export interface A2AjsonrpcResponse {
+export interface AgenticAgentsJsonRpcResponse {
     /** JSON-RPC protocol version; always `2.0`. */
     jsonrpc: "2.0";
-    id: Corti.A2AjsonrpcResponseId | null;
+    id: Corti.AgenticAgentsJsonRpcResponseId | null;
     /** JSON-RPC result object (present on success). */
     result?: Record<string, unknown>;
     /** JSON-RPC error object (present on failure). */
-    error?: Corti.A2AjsonrpcResponseError;
+    error?: Corti.AgenticAgentsJsonRpcResponseError;
 }

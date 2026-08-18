@@ -29,7 +29,7 @@ export class TasksClient {
      * @beta This endpoint is in pre-release and may change.
      *
      * @param {Corti.CommonAgentIdValue} agentId - Agent identifier (prefixed UUIDv7).
-     * @param {Corti.agentic.agents.AgenticAgentsA2ATasksListRequest} request
+     * @param {Corti.agentic.agents.AgenticAgentsTasksListRequest} request
      * @param {TasksClient.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Corti.UnauthorizedError}
@@ -39,12 +39,12 @@ export class TasksClient {
      */
     public async list(
         agentId: Corti.CommonAgentIdValue,
-        request: Corti.agentic.agents.AgenticAgentsA2ATasksListRequest = {},
+        request: Corti.agentic.agents.AgenticAgentsTasksListRequest = {},
         requestOptions?: TasksClient.RequestOptions,
     ): Promise<core.Page<Corti.CommonTaskResponse, Corti.CommonTaskListResponse>> {
         const list = core.HttpResponsePromise.interceptFunction(
             async (
-                request: Corti.agentic.agents.AgenticAgentsA2ATasksListRequest,
+                request: Corti.agentic.agents.AgenticAgentsTasksListRequest,
             ): Promise<core.WithRawResponse<Corti.CommonTaskListResponse>> => {
                 const { pageSize, pageToken, contextId } = request;
                 const _queryParams: Record<string, unknown> = {
@@ -128,7 +128,7 @@ export class TasksClient {
      *
      * @param {Corti.CommonAgentIdValue} agentId - Agent identifier (prefixed UUIDv7).
      * @param {Corti.CommonTaskIdValue} taskId - Task identifier (prefixed UUIDv7).
-     * @param {Corti.agentic.agents.AgenticAgentsA2ATasksGetRequest} request
+     * @param {Corti.agentic.agents.AgenticAgentsTasksGetRequest} request
      * @param {TasksClient.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Corti.UnauthorizedError}
@@ -140,7 +140,7 @@ export class TasksClient {
     public get(
         agentId: Corti.CommonAgentIdValue,
         taskId: Corti.CommonTaskIdValue,
-        request: Corti.agentic.agents.AgenticAgentsA2ATasksGetRequest = {},
+        request: Corti.agentic.agents.AgenticAgentsTasksGetRequest = {},
         requestOptions?: TasksClient.RequestOptions,
     ): core.HttpResponsePromise<Corti.CommonTaskResponse> {
         return core.HttpResponsePromise.fromPromise(this.__get(agentId, taskId, request, requestOptions));
@@ -149,7 +149,7 @@ export class TasksClient {
     private async __get(
         agentId: Corti.CommonAgentIdValue,
         taskId: Corti.CommonTaskIdValue,
-        request: Corti.agentic.agents.AgenticAgentsA2ATasksGetRequest = {},
+        request: Corti.agentic.agents.AgenticAgentsTasksGetRequest = {},
         requestOptions?: TasksClient.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.CommonTaskResponse>> {
         const { historyLength } = request;
@@ -316,7 +316,7 @@ export class TasksClient {
         agentId: Corti.CommonAgentIdValue,
         taskId: Corti.CommonTaskIdValue,
         requestOptions?: TasksClient.RequestOptions,
-    ): core.HttpResponsePromise<core.Stream<Corti.A2AStreamEventResponse>> {
+    ): core.HttpResponsePromise<core.Stream<Corti.AgenticAgentsStreamEventResponse>> {
         return core.HttpResponsePromise.fromPromise(this.__subscribe(agentId, taskId, requestOptions));
     }
 
@@ -324,7 +324,7 @@ export class TasksClient {
         agentId: Corti.CommonAgentIdValue,
         taskId: Corti.CommonTaskIdValue,
         requestOptions?: TasksClient.RequestOptions,
-    ): Promise<core.WithRawResponse<core.Stream<Corti.A2AStreamEventResponse>>> {
+    ): Promise<core.WithRawResponse<core.Stream<Corti.AgenticAgentsStreamEventResponse>>> {
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
@@ -356,7 +356,7 @@ export class TasksClient {
                 data: new core.Stream({
                     stream: _response.body,
                     parse: async (data) => {
-                        return serializers.A2AStreamEventResponse.parseOrThrow(data, {
+                        return serializers.AgenticAgentsStreamEventResponse.parseOrThrow(data, {
                             unrecognizedObjectKeys: "passthrough",
                             allowUnrecognizedUnionMembers: true,
                             allowUnrecognizedEnumValues: true,

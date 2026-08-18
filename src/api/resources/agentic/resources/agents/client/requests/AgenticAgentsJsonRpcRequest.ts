@@ -20,10 +20,10 @@ import type * as Corti from "../../../../../../index.js";
  *         }
  *     }
  */
-export interface A2AjsonrpcRequest {
-    id: Corti.agentic.A2AjsonrpcRequestId;
+export interface AgenticAgentsJsonRpcRequest {
+    id: Corti.agentic.AgenticAgentsJsonRpcRequestId;
     /** JSON-RPC method name (PascalCase on the wire). */
-    method: Corti.agentic.A2AjsonrpcRequestMethod;
+    method: Corti.agentic.AgenticAgentsJsonRpcRequestMethod;
     /** JSON-RPC params object. */
     params?: Record<string, unknown>;
 }

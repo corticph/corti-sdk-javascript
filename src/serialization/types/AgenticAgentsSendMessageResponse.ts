@@ -4,11 +4,11 @@ import type * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
 import type * as serializers from "../index.js";
 
-export const A2ASendMessageResponse: core.serialization.Schema<
-    serializers.A2ASendMessageResponse.Raw,
-    Corti.A2ASendMessageResponse
+export const AgenticAgentsSendMessageResponse: core.serialization.Schema<
+    serializers.AgenticAgentsSendMessageResponse.Raw,
+    Corti.AgenticAgentsSendMessageResponse
 > = core.serialization.undiscriminatedUnion([core.serialization.unknown()]);
 
-export declare namespace A2ASendMessageResponse {
+export declare namespace AgenticAgentsSendMessageResponse {
     export type Raw = unknown;
 }

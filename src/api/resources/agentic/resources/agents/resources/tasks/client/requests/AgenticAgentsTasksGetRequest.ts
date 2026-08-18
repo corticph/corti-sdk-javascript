@@ -4,7 +4,7 @@
  * @example
  *     {}
  */
-export interface AgenticAgentsA2ATasksGetRequest {
+export interface AgenticAgentsTasksGetRequest {
     /** Cap the number of history messages returned. */
     historyLength?: number;
 }

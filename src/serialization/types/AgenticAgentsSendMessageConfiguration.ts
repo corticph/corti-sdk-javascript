@@ -4,16 +4,16 @@ import type * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
 import type * as serializers from "../index.js";
 
-export const A2ASendMessageConfiguration: core.serialization.ObjectSchema<
-    serializers.A2ASendMessageConfiguration.Raw,
-    Corti.A2ASendMessageConfiguration
+export const AgenticAgentsSendMessageConfiguration: core.serialization.ObjectSchema<
+    serializers.AgenticAgentsSendMessageConfiguration.Raw,
+    Corti.AgenticAgentsSendMessageConfiguration
 > = core.serialization.object({
     returnImmediately: core.serialization.boolean().optional(),
     historyLength: core.serialization.number().optional(),
     acceptedOutputModes: core.serialization.list(core.serialization.string()).optional(),
 });
 
-export declare namespace A2ASendMessageConfiguration {
+export declare namespace AgenticAgentsSendMessageConfiguration {
     export interface Raw {
         returnImmediately?: boolean | null;
         historyLength?: number | null;

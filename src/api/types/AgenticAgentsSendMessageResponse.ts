@@ -3,4 +3,4 @@
 /**
  * Exactly one of `task` or `message` is present.
  */
-export type A2ASendMessageResponse = unknown;
+export type AgenticAgentsSendMessageResponse = unknown;

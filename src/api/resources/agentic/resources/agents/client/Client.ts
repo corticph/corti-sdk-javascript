@@ -644,7 +644,7 @@ export class AgentsClient {
      * `text/event-stream`; all others respond with a single JSON-RPC response.
      *
      * @param {Corti.CommonAgentIdValue} agentId - Agent identifier (prefixed UUIDv7).
-     * @param {Corti.agentic.A2AjsonrpcRequest} request
+     * @param {Corti.agentic.AgenticAgentsJsonRpcRequest} request
      * @param {AgentsClient.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Corti.UnauthorizedError}
@@ -669,17 +669,17 @@ export class AgentsClient {
      */
     public jsonRpc(
         agentId: Corti.CommonAgentIdValue,
-        request: Corti.agentic.A2AjsonrpcRequest,
+        request: Corti.agentic.AgenticAgentsJsonRpcRequest,
         requestOptions?: AgentsClient.RequestOptions,
-    ): core.HttpResponsePromise<Corti.A2AjsonrpcResponse> {
+    ): core.HttpResponsePromise<Corti.AgenticAgentsJsonRpcResponse> {
         return core.HttpResponsePromise.fromPromise(this.__jsonRpc(agentId, request, requestOptions));
     }
 
     private async __jsonRpc(
         agentId: Corti.CommonAgentIdValue,
-        request: Corti.agentic.A2AjsonrpcRequest,
+        request: Corti.agentic.AgenticAgentsJsonRpcRequest,
         requestOptions?: AgentsClient.RequestOptions,
-    ): Promise<core.WithRawResponse<Corti.A2AjsonrpcResponse>> {
+    ): Promise<core.WithRawResponse<Corti.AgenticAgentsJsonRpcResponse>> {
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
@@ -702,7 +702,7 @@ export class AgentsClient {
             queryParameters: requestOptions?.queryParams,
             requestType: "json",
             body: {
-                ...serializers.agentic.A2AjsonrpcRequest.jsonOrThrow(request, {
+                ...serializers.agentic.AgenticAgentsJsonRpcRequest.jsonOrThrow(request, {
                     unrecognizedObjectKeys: "strip",
                     omitUndefined: true,
                 }),
@@ -716,7 +716,7 @@ export class AgentsClient {
         });
         if (_response.ok) {
             return {
-                data: serializers.A2AjsonrpcResponse.parseOrThrow(_response.body, {
+                data: serializers.AgenticAgentsJsonRpcResponse.parseOrThrow(_response.body, {
                     unrecognizedObjectKeys: "passthrough",
                     allowUnrecognizedUnionMembers: true,
                     allowUnrecognizedEnumValues: true,
@@ -756,7 +756,7 @@ export class AgentsClient {
      * The `HTTP+JSON` binding of A2A `SendMessage`.
      *
      * @param {Corti.CommonAgentIdValue} agentId - Agent identifier (prefixed UUIDv7).
-     * @param {Corti.A2ASendMessageRequest} request
+     * @param {Corti.AgenticAgentsSendMessageRequest} request
      * @param {AgentsClient.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Corti.BadRequestError}
@@ -776,17 +776,17 @@ export class AgentsClient {
      */
     public sendMessage(
         agentId: Corti.CommonAgentIdValue,
-        request: Corti.A2ASendMessageRequest,
+        request: Corti.AgenticAgentsSendMessageRequest,
         requestOptions?: AgentsClient.RequestOptions,
-    ): core.HttpResponsePromise<Corti.A2ASendMessageResponse> {
+    ): core.HttpResponsePromise<Corti.AgenticAgentsSendMessageResponse> {
         return core.HttpResponsePromise.fromPromise(this.__sendMessage(agentId, request, requestOptions));
     }
 
     private async __sendMessage(
         agentId: Corti.CommonAgentIdValue,
-        request: Corti.A2ASendMessageRequest,
+        request: Corti.AgenticAgentsSendMessageRequest,
         requestOptions?: AgentsClient.RequestOptions,
-    ): Promise<core.WithRawResponse<Corti.A2ASendMessageResponse>> {
+    ): Promise<core.WithRawResponse<Corti.AgenticAgentsSendMessageResponse>> {
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
@@ -808,7 +808,7 @@ export class AgentsClient {
             contentType: "application/json",
             queryParameters: requestOptions?.queryParams,
             requestType: "json",
-            body: serializers.A2ASendMessageRequest.jsonOrThrow(request, {
+            body: serializers.AgenticAgentsSendMessageRequest.jsonOrThrow(request, {
                 unrecognizedObjectKeys: "strip",
                 omitUndefined: true,
             }),
@@ -820,7 +820,7 @@ export class AgentsClient {
         });
         if (_response.ok) {
             return {
-                data: serializers.A2ASendMessageResponse.parseOrThrow(_response.body, {
+                data: serializers.AgenticAgentsSendMessageResponse.parseOrThrow(_response.body, {
                     unrecognizedObjectKeys: "passthrough",
                     allowUnrecognizedUnionMembers: true,
                     allowUnrecognizedEnumValues: true,
@@ -864,17 +864,17 @@ export class AgentsClient {
      */
     public streamMessage(
         agentId: Corti.CommonAgentIdValue,
-        request: Corti.A2ASendMessageRequest,
+        request: Corti.AgenticAgentsSendMessageRequest,
         requestOptions?: AgentsClient.RequestOptions,
-    ): core.HttpResponsePromise<core.Stream<Corti.A2AStreamEventResponse>> {
+    ): core.HttpResponsePromise<core.Stream<Corti.AgenticAgentsStreamEventResponse>> {
         return core.HttpResponsePromise.fromPromise(this.__streamMessage(agentId, request, requestOptions));
     }
 
     private async __streamMessage(
         agentId: Corti.CommonAgentIdValue,
-        request: Corti.A2ASendMessageRequest,
+        request: Corti.AgenticAgentsSendMessageRequest,
         requestOptions?: AgentsClient.RequestOptions,
-    ): Promise<core.WithRawResponse<core.Stream<Corti.A2AStreamEventResponse>>> {
+    ): Promise<core.WithRawResponse<core.Stream<Corti.AgenticAgentsStreamEventResponse>>> {
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
@@ -896,7 +896,7 @@ export class AgentsClient {
             contentType: "application/json",
             queryParameters: requestOptions?.queryParams,
             requestType: "json",
-            body: serializers.A2ASendMessageRequest.jsonOrThrow(request, {
+            body: serializers.AgenticAgentsSendMessageRequest.jsonOrThrow(request, {
                 unrecognizedObjectKeys: "strip",
                 omitUndefined: true,
             }),
@@ -912,7 +912,7 @@ export class AgentsClient {
                 data: new core.Stream({
                     stream: _response.body,
                     parse: async (data) => {
-                        return serializers.A2AStreamEventResponse.parseOrThrow(data, {
+                        return serializers.AgenticAgentsStreamEventResponse.parseOrThrow(data, {
                             unrecognizedObjectKeys: "passthrough",
                             allowUnrecognizedUnionMembers: true,
                             allowUnrecognizedEnumValues: true,

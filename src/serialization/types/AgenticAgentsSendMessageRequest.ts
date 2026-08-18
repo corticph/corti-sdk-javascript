@@ -3,23 +3,23 @@
 import type * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
 import type * as serializers from "../index.js";
-import { A2ASendMessageConfiguration } from "./A2ASendMessageConfiguration.js";
+import { AgenticAgentsSendMessageConfiguration } from "./AgenticAgentsSendMessageConfiguration.js";
 import { CommonMessage } from "./CommonMessage.js";
 
-export const A2ASendMessageRequest: core.serialization.ObjectSchema<
-    serializers.A2ASendMessageRequest.Raw,
-    Corti.A2ASendMessageRequest
+export const AgenticAgentsSendMessageRequest: core.serialization.ObjectSchema<
+    serializers.AgenticAgentsSendMessageRequest.Raw,
+    Corti.AgenticAgentsSendMessageRequest
 > = core.serialization.object({
     message: CommonMessage,
-    configuration: A2ASendMessageConfiguration.optional(),
+    configuration: AgenticAgentsSendMessageConfiguration.optional(),
     metadata: core.serialization.record(core.serialization.string(), core.serialization.unknown()).optional(),
     tenant: core.serialization.string().optional(),
 });
 
-export declare namespace A2ASendMessageRequest {
+export declare namespace AgenticAgentsSendMessageRequest {
     export interface Raw {
         message: CommonMessage.Raw;
-        configuration?: A2ASendMessageConfiguration.Raw | null;
+        configuration?: AgenticAgentsSendMessageConfiguration.Raw | null;
         metadata?: Record<string, unknown> | null;
         tenant?: string | null;
     }

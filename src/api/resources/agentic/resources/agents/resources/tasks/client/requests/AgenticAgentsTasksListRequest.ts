@@ -4,7 +4,7 @@
  * @example
  *     {}
  */
-export interface AgenticAgentsA2ATasksListRequest {
+export interface AgenticAgentsTasksListRequest {
     /** Maximum number of items per page. */
     pageSize?: number;
     /** Opaque cursor from a prior response's `nextPageToken`. Omit on the first request. */

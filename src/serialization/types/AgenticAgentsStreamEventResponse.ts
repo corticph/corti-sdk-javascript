@@ -4,9 +4,9 @@ import type * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
 import type * as serializers from "../index.js";
 
-export const A2AStreamEventResponse: core.serialization.ObjectSchema<
-    serializers.A2AStreamEventResponse.Raw,
-    Corti.A2AStreamEventResponse
+export const AgenticAgentsStreamEventResponse: core.serialization.ObjectSchema<
+    serializers.AgenticAgentsStreamEventResponse.Raw,
+    Corti.AgenticAgentsStreamEventResponse
 > = core.serialization.object({
     data: core.serialization.string().optional(),
     event: core.serialization.string().optional(),
@@ -14,7 +14,7 @@ export const A2AStreamEventResponse: core.serialization.ObjectSchema<
     retry: core.serialization.number().optional(),
 });
 
-export declare namespace A2AStreamEventResponse {
+export declare namespace AgenticAgentsStreamEventResponse {
     export interface Raw {
         data?: string | null;
         event?: string | null;

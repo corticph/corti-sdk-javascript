@@ -3,7 +3,7 @@
 /**
  * Per-request options controlling how a message is processed.
  */
-export interface A2ASendMessageConfiguration {
+export interface AgenticAgentsSendMessageConfiguration {
     /** If `true`, return as soon as the task is submitted, even if processing is still in progress. If `false` (default), wait until the task reaches a terminal (`COMPLETED`, `FAILED`, `CANCELED`, `REJECTED`) or interrupted (`INPUT_REQUIRED`, `AUTH_REQUIRED`) state. */
     returnImmediately?: boolean;
     /** Maximum number of prior messages to include as context. */

@@ -5,9 +5,9 @@ import type * as Corti from "../index.js";
 /**
  * Request body for sending a message to an agent.
  */
-export interface A2ASendMessageRequest {
+export interface AgenticAgentsSendMessageRequest {
     message: Corti.CommonMessage;
-    configuration?: Corti.A2ASendMessageConfiguration;
+    configuration?: Corti.AgenticAgentsSendMessageConfiguration;
     /** Free-form request metadata. */
     metadata?: Record<string, unknown>;
     /** Optional. Opaque routing identifier. Must match the `tenant` value from the selected `AgentInterface` in the Agent Card when that field is set. */
