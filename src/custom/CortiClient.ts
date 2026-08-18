@@ -5,10 +5,16 @@ import { CustomAgents } from "./agents/CustomAgents.js";
 import { CortiAuth } from "./auth/CortiAuth.js";
 import { CustomStream } from "./stream/CustomStream.js";
 import { CustomTranscribe } from "./transcribe/CustomTranscribe.js";
-import { mergeAnalyticsHeaders } from "./utils/analytics.js";
+import {
+    analyticsHeaderValue,
+    extractCallerAnalyticsFromHeaders,
+    mergeUserAnalytics,
+    resolveAnalytics,
+    withAnalyticsFetch,
+    X_CORTI_ANALYTICS_HEADER,
+} from "./utils/analytics.js";
 import { authToBaseOptions } from "./utils/authToBaseOptions.js";
 import { type Environment, getEnvironment } from "./utils/environment.js";
-
 import { resolveClientOptions } from "./utils/resolveClientOptions.js";
 import { setDefaultWithCredentials } from "./utils/withCredentialsConfig.js";
 
@@ -17,7 +23,10 @@ type OptionsBase = Omit<
     "clientId" | "clientSecret" | "token" | "environment" | "tenantName" | "baseUrl"
 > & {
     withCredentials?: boolean;
-    /** Additional call-site metadata merged into the X-Corti-Analytics payload (sdk_version and sdk_type are reserved and set by the SDK). */
+    /**
+     * Additional call-site metadata merged into the X-Corti-Analytics payload.
+     * `sdk_version` and `sdk_type` are reserved and always set by the SDK.
+     */
     analytics?: Record<string, unknown>;
     /**
      * When true, encodes the client's auth headers as WebSocket subprotocol pairs instead of
@@ -52,19 +61,31 @@ export class CortiClient extends BaseCortiClient {
     private readonly _encodeHeadersAsWsProtocols: boolean | undefined;
 
     constructor(options: CortiClient.Options) {
-        const opts = options as {
+        const opts = options as OptionsBase & {
             auth?: CortiClient.Auth;
             environment?: Environment;
             tenantName?: string;
             baseUrl?: string;
         };
         const ctx = resolveClientOptions(options);
-        const analytics = (options as OptionsBase).analytics;
-        const headers = mergeAnalyticsHeaders((opts as { headers?: Record<string, unknown> }).headers, analytics);
+        const analytics = opts.analytics;
+
+        const { callerAnalyticsFields, restHeaders } = extractCallerAnalyticsFromHeaders(opts.headers);
+
+        // Merge caller header fields with options.analytics — caller fields are the base layer
+        // (lower precedence). Reserved keys are stripped, so they cannot leak into _options.analytics.
+        const baseAnalytics = mergeUserAnalytics(callerAnalyticsFields, analytics);
+
+        const headers: Record<string, unknown> = {
+            ...restHeaders,
+            [X_CORTI_ANALYTICS_HEADER]: analyticsHeaderValue(resolveAnalytics(baseAnalytics)),
+        };
+
         const restOptions = {
             ...opts,
             headers,
-            analytics,
+            analytics: baseAnalytics,
+            fetch: withAnalyticsFetch(opts.fetch, baseAnalytics),
             tenantName: ctx.tenantName,
             environment: getEnvironment(ctx.environment),
             ...(ctx.initialTokenResponse != null ? { initialTokenResponse: ctx.initialTokenResponse } : {}),

@@ -17,6 +17,7 @@ The Corti JavaScript library provides convenient access to the Corti APIs from J
 - [Binary Response](#binary-response)
 - [Pagination](#pagination)
 - [Advanced](#advanced)
+  - [Analytics](#analytics)
   - [Additional Headers](#additional-headers)
   - [Additional Query String Parameters](#additional-query-string-parameters)
   - [Retries](#retries)
@@ -666,6 +667,57 @@ const response = page.response;
 ```
 
 ## Advanced
+
+### Analytics
+
+The SDK sends metadata about itself (`sdk_version`, `sdk_type`) with every request via the `X-Corti-Analytics` header (REST) or the `x-corti-analytics` query parameter (WebSocket). You can extend this payload with your own fields at two levels: client-level and per-request.
+
+> **Reserved keys**: `sdk_version` and `sdk_type` are always set by the SDK and cannot be overridden at any level.
+
+#### Client-level
+
+Pass `analytics` when constructing the client. The payload is sent with every request.
+
+```typescript
+import { CortiClient } from "@corti/sdk";
+
+const client = new CortiClient({
+    ...
+    analytics: { source: "web-app", version: "1.0.0" },
+});
+
+// Every REST call includes: X-Corti-Analytics: {"sdk_version":"...","sdk_type":"corti-sdk-javascript","source":"web-app","version":"1.0.0"}
+await client.interactions.list();
+```
+
+#### Per-request (HTTP)
+
+For a single REST call, pass an `x-corti-analytics` header in `requestOptions.headers`. The value is a JSON string. Per-request fields are merged with the client-level context — they extend rather than replace it.
+
+```typescript
+await client.interactions.list({}, {
+    headers: {
+        "x-corti-analytics": JSON.stringify({ request_id: "abc-123" }),
+    },
+});
+// X-Corti-Analytics includes: {"sdk_version":"...","sdk_type":"corti-sdk-javascript","source":"web-app","version":"1.0.0","request_id":"abc-123"}
+```
+
+#### Per-connection (WebSocket)
+
+For WebSocket connections (stream / transcribe), pass an `x-corti-analytics` header in `connect()`. The SDK lifts it into the query string because WS handshakes cannot carry custom headers in browsers.
+
+```typescript
+const socket = await client.stream.connect({
+    id: interactionId,
+    headers: {
+        "x-corti-analytics": JSON.stringify({ session: "live-123" }),
+    },
+});
+// x-corti-analytics query param includes: ..., session: "live-123"
+```
+
+> **Note**: WebSocket analytics travel in the query string and may appear in access logs — avoid including personally identifiable information.
 
 ### Additional Headers
 

@@ -2,7 +2,10 @@ import * as Corti from "../../api/index.js";
 import { TranscribeClient } from "../../api/resources/transcribe/client/Client.js";
 import * as core from "../../core/index.js";
 import { ErrorEvent } from "../../core/websocket/events.js";
-import { getAnalyticsFromOptions, mergeAnalyticsQueryParams } from "../utils/analytics.js";
+import {
+    liftConnectAnalytics,
+    mergeAnalyticsQueryParams,
+} from "../utils/analytics.js";
 import { getWsProtocols, type ProxyOptions } from "../utils/encodeHeadersAsWsProtocols.js";
 import { CustomTranscribeSocket } from "./CustomTranscribeSocket.js";
 import { parseTranscribeResponseType } from "./parseTranscribeResponseType.js";
@@ -26,7 +29,8 @@ export type CustomTranscribeConnectArgs = {
      * directly to proxy.url. Useful for proxy backends that handle auth themselves.
      */
     proxy?: ProxyOptions;
-} & Partial<Omit<TranscribeClient.ConnectArgs, "tenantName" | "token">>;
+    headers?: Record<string, string>;
+} & Partial<Omit<TranscribeClient.ConnectArgs, "tenantName" | "token" | "headers">>;
 
 export class CustomTranscribe extends TranscribeClient {
     private readonly _encodeHeadersAsWsProtocols: boolean | undefined;
@@ -39,13 +43,14 @@ export class CustomTranscribe extends TranscribeClient {
     public override async connect(args?: CustomTranscribeConnectArgs): Promise<CustomTranscribeSocket> {
         const { configuration, awaitConfiguration = true, proxy, ...rest } = args ?? {};
 
+        // Lift x-corti-analytics from headers into the query string (browsers ignore WS headers).
+        const analytics = liftConnectAnalytics(this._options, rest as { headers?: Record<string, unknown> });
+
         const useProxyPath = proxy || this._encodeHeadersAsWsProtocols;
         const protocols = await getWsProtocols(
             { ...this._options, encodeHeadersAsWsProtocols: this._encodeHeadersAsWsProtocols },
             proxy?.protocols,
         );
-
-        const analytics = getAnalyticsFromOptions(this._options);
 
         const socket = useProxyPath
             ? new core.ReconnectingWebSocket({
