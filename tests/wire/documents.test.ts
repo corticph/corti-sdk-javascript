@@ -18,66 +18,83 @@ describe("DocumentsClient", () => {
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
-        const rawResponseBody = {
-            data: [
-                {
-                    id: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
-                    name: "name",
-                    templateRef: "templateRef",
-                    isStream: true,
-                    sections: [
-                        {
-                            key: "key",
-                            name: "name",
-                            text: "text",
-                            sort: 1,
-                            createdAt: "2024-01-15T09:30:00Z",
-                            updatedAt: "2024-01-15T09:30:00Z",
-                        },
-                    ],
-                    createdAt: "2024-01-15T09:30:00Z",
-                    updatedAt: "2024-01-15T09:30:00Z",
-                    outputLanguage: "outputLanguage",
-                    usageInfo: { creditsConsumed: 1.1 },
-                },
-            ],
-        };
-
-        server
-            .mockEndpoint()
-            .get("/interactions/f47ac10b-58cc-4372-a567-0e02b2c3d479/documents/")
-            .respondWith()
-            .statusCode(200)
-            .jsonBody(rawResponseBody)
-            .build();
-
-        const response = await client.documents.list("f47ac10b-58cc-4372-a567-0e02b2c3d479");
-        expect(response).toEqual({
-            data: [
-                {
-                    id: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
-                    name: "name",
-                    templateRef: "templateRef",
-                    isStream: true,
-                    sections: [
-                        {
-                            key: "key",
-                            name: "name",
-                            text: "text",
-                            sort: 1,
-                            createdAt: new Date("2024-01-15T09:30:00.000Z"),
-                            updatedAt: new Date("2024-01-15T09:30:00.000Z"),
-                        },
-                    ],
-                    createdAt: new Date("2024-01-15T09:30:00.000Z"),
-                    updatedAt: new Date("2024-01-15T09:30:00.000Z"),
-                    outputLanguage: "outputLanguage",
-                    usageInfo: {
-                        creditsConsumed: 1.1,
+        const rawResponseBody = [
+            {
+                id: "id",
+                name: "name",
+                templateId: "templateId",
+                templateVersionId: "templateVersionId",
+                outputLanguage: "outputLanguage",
+                interactionId: "interactionId",
+                stringDocument: { key: "value" },
+                structuredDocument: { key: "value" },
+                sections: [
+                    {
+                        sectionId: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+                        heading: "Chief Complaint",
+                        labels: [{ key: "inlineTemplate", value: "true" }],
                     },
+                    {
+                        sectionId: "6ba7b810-9dad-11d1-80b4-00c04fd430c8",
+                        heading: "Assessment and Plan",
+                        labels: [{ key: "inlineTemplate", value: "true" }],
+                    },
+                ],
+                labels: [{ key: "key", value: "value" }],
+                createdAt: "2024-01-15T09:30:00Z",
+                updatedAt: "2024-01-15T09:30:00Z",
+            },
+        ];
+
+        server.mockEndpoint().get("/documents/").respondWith().statusCode(200).jsonBody(rawResponseBody).build();
+
+        const response = await client.documents.list();
+        expect(response).toEqual([
+            {
+                id: "id",
+                name: "name",
+                templateId: "templateId",
+                templateVersionId: "templateVersionId",
+                outputLanguage: "outputLanguage",
+                interactionId: "interactionId",
+                stringDocument: {
+                    key: "value",
                 },
-            ],
-        });
+                structuredDocument: {
+                    key: "value",
+                },
+                sections: [
+                    {
+                        sectionId: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+                        heading: "Chief Complaint",
+                        labels: [
+                            {
+                                key: "inlineTemplate",
+                                value: "true",
+                            },
+                        ],
+                    },
+                    {
+                        sectionId: "6ba7b810-9dad-11d1-80b4-00c04fd430c8",
+                        heading: "Assessment and Plan",
+                        labels: [
+                            {
+                                key: "inlineTemplate",
+                                value: "true",
+                            },
+                        ],
+                    },
+                ],
+                labels: [
+                    {
+                        key: "key",
+                        value: "value",
+                    },
+                ],
+                createdAt: new Date("2024-01-15T09:30:00.000Z"),
+                updatedAt: new Date("2024-01-15T09:30:00.000Z"),
+            },
+        ]);
     });
 
     test("list (2)", async () => {
@@ -94,923 +111,11 @@ describe("DocumentsClient", () => {
 
         const rawResponseBody = { key: "value" };
 
-        server
-            .mockEndpoint()
-            .get("/interactions/id/documents/")
-            .respondWith()
-            .statusCode(400)
-            .jsonBody(rawResponseBody)
-            .build();
+        server.mockEndpoint().get("/documents/").respondWith().statusCode(400).jsonBody(rawResponseBody).build();
 
         await expect(async () => {
-            return await client.documents.list("id");
+            return await client.documents.list();
         }).rejects.toThrow(Corti.BadRequestError);
-    });
-
-    test("list (3)", async () => {
-        const server = mockServerPool.createServer();
-        mockOAuth(server);
-
-        const client = new CortiClient({
-            maxRetries: 0,
-            clientId: "client_id",
-            clientSecret: "client_secret",
-            tenantName: "test",
-            environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
-        });
-
-        const rawResponseBody = { key: "value" };
-
-        server
-            .mockEndpoint()
-            .get("/interactions/id/documents/")
-            .respondWith()
-            .statusCode(403)
-            .jsonBody(rawResponseBody)
-            .build();
-
-        await expect(async () => {
-            return await client.documents.list("id");
-        }).rejects.toThrow(Corti.ForbiddenError);
-    });
-
-    test("list (4)", async () => {
-        const server = mockServerPool.createServer();
-        mockOAuth(server);
-
-        const client = new CortiClient({
-            maxRetries: 0,
-            clientId: "client_id",
-            clientSecret: "client_secret",
-            tenantName: "test",
-            environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
-        });
-
-        const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
-
-        server
-            .mockEndpoint()
-            .get("/interactions/id/documents/")
-            .respondWith()
-            .statusCode(500)
-            .jsonBody(rawResponseBody)
-            .build();
-
-        await expect(async () => {
-            return await client.documents.list("id");
-        }).rejects.toThrow(Corti.InternalServerError);
-    });
-
-    test("list (5)", async () => {
-        const server = mockServerPool.createServer();
-        mockOAuth(server);
-
-        const client = new CortiClient({
-            maxRetries: 0,
-            clientId: "client_id",
-            clientSecret: "client_secret",
-            tenantName: "test",
-            environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
-        });
-
-        const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
-
-        server
-            .mockEndpoint()
-            .get("/interactions/id/documents/")
-            .respondWith()
-            .statusCode(504)
-            .jsonBody(rawResponseBody)
-            .build();
-
-        await expect(async () => {
-            return await client.documents.list("id");
-        }).rejects.toThrow(Corti.GatewayTimeoutError);
-    });
-
-    test("create (1)", async () => {
-        const server = mockServerPool.createServer();
-        mockOAuth(server);
-
-        const client = new CortiClient({
-            maxRetries: 0,
-            clientId: "client_id",
-            clientSecret: "client_secret",
-            tenantName: "test",
-            environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
-        });
-        const rawRequestBody = {
-            context: [{ type: "facts", data: [{ text: "text" }] }],
-            templateKey: "templateKey",
-            outputLanguage: "outputLanguage",
-        };
-        const rawResponseBody = {
-            id: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
-            name: "name",
-            templateRef: "templateRef",
-            isStream: true,
-            sections: [
-                {
-                    key: "key",
-                    name: "name",
-                    text: "text",
-                    sort: 1,
-                    createdAt: "2024-01-15T09:30:00Z",
-                    updatedAt: "2024-01-15T09:30:00Z",
-                },
-            ],
-            createdAt: "2024-01-15T09:30:00Z",
-            updatedAt: "2024-01-15T09:30:00Z",
-            outputLanguage: "outputLanguage",
-            usageInfo: { creditsConsumed: 1.1 },
-        };
-
-        server
-            .mockEndpoint()
-            .post("/interactions/f47ac10b-58cc-4372-a567-0e02b2c3d479/documents/")
-            .jsonBody(rawRequestBody)
-            .respondWith()
-            .statusCode(200)
-            .jsonBody(rawResponseBody)
-            .build();
-
-        const response = await client.documents.create("f47ac10b-58cc-4372-a567-0e02b2c3d479", {
-            context: [
-                {
-                    type: "facts",
-                    data: [
-                        {
-                            text: "text",
-                        },
-                    ],
-                },
-            ],
-            templateKey: "templateKey",
-            outputLanguage: "outputLanguage",
-        });
-        expect(response).toEqual({
-            id: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
-            name: "name",
-            templateRef: "templateRef",
-            isStream: true,
-            sections: [
-                {
-                    key: "key",
-                    name: "name",
-                    text: "text",
-                    sort: 1,
-                    createdAt: new Date("2024-01-15T09:30:00.000Z"),
-                    updatedAt: new Date("2024-01-15T09:30:00.000Z"),
-                },
-            ],
-            createdAt: new Date("2024-01-15T09:30:00.000Z"),
-            updatedAt: new Date("2024-01-15T09:30:00.000Z"),
-            outputLanguage: "outputLanguage",
-            usageInfo: {
-                creditsConsumed: 1.1,
-            },
-        });
-    });
-
-    test("create (2)", async () => {
-        const server = mockServerPool.createServer();
-        mockOAuth(server);
-
-        const client = new CortiClient({
-            maxRetries: 0,
-            clientId: "client_id",
-            clientSecret: "client_secret",
-            tenantName: "test",
-            environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
-        });
-        const rawRequestBody = {
-            context: [
-                { type: "facts", data: [{ text: "text" }, { text: "text" }] },
-                { type: "facts", data: [{ text: "text" }, { text: "text" }] },
-            ],
-            templateKey: "templateKey",
-            outputLanguage: "outputLanguage",
-        };
-        const rawResponseBody = { key: "value" };
-
-        server
-            .mockEndpoint()
-            .post("/interactions/id/documents/")
-            .jsonBody(rawRequestBody)
-            .respondWith()
-            .statusCode(400)
-            .jsonBody(rawResponseBody)
-            .build();
-
-        await expect(async () => {
-            return await client.documents.create("id", {
-                context: [
-                    {
-                        type: "facts",
-                        data: [
-                            {
-                                text: "text",
-                            },
-                            {
-                                text: "text",
-                            },
-                        ],
-                    },
-                    {
-                        type: "facts",
-                        data: [
-                            {
-                                text: "text",
-                            },
-                            {
-                                text: "text",
-                            },
-                        ],
-                    },
-                ],
-                templateKey: "templateKey",
-                outputLanguage: "outputLanguage",
-            });
-        }).rejects.toThrow(Corti.BadRequestError);
-    });
-
-    test("create (3)", async () => {
-        const server = mockServerPool.createServer();
-        mockOAuth(server);
-
-        const client = new CortiClient({
-            maxRetries: 0,
-            clientId: "client_id",
-            clientSecret: "client_secret",
-            tenantName: "test",
-            environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
-        });
-        const rawRequestBody = {
-            context: [
-                { type: "facts", data: [{ text: "text" }, { text: "text" }] },
-                { type: "facts", data: [{ text: "text" }, { text: "text" }] },
-            ],
-            templateKey: "templateKey",
-            outputLanguage: "outputLanguage",
-        };
-        const rawResponseBody = { key: "value" };
-
-        server
-            .mockEndpoint()
-            .post("/interactions/id/documents/")
-            .jsonBody(rawRequestBody)
-            .respondWith()
-            .statusCode(403)
-            .jsonBody(rawResponseBody)
-            .build();
-
-        await expect(async () => {
-            return await client.documents.create("id", {
-                context: [
-                    {
-                        type: "facts",
-                        data: [
-                            {
-                                text: "text",
-                            },
-                            {
-                                text: "text",
-                            },
-                        ],
-                    },
-                    {
-                        type: "facts",
-                        data: [
-                            {
-                                text: "text",
-                            },
-                            {
-                                text: "text",
-                            },
-                        ],
-                    },
-                ],
-                templateKey: "templateKey",
-                outputLanguage: "outputLanguage",
-            });
-        }).rejects.toThrow(Corti.ForbiddenError);
-    });
-
-    test("create (4)", async () => {
-        const server = mockServerPool.createServer();
-        mockOAuth(server);
-
-        const client = new CortiClient({
-            maxRetries: 0,
-            clientId: "client_id",
-            clientSecret: "client_secret",
-            tenantName: "test",
-            environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
-        });
-        const rawRequestBody = {
-            context: [
-                { type: "facts", data: [{ text: "text" }, { text: "text" }] },
-                { type: "facts", data: [{ text: "text" }, { text: "text" }] },
-            ],
-            templateKey: "templateKey",
-            outputLanguage: "outputLanguage",
-        };
-        const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
-
-        server
-            .mockEndpoint()
-            .post("/interactions/id/documents/")
-            .jsonBody(rawRequestBody)
-            .respondWith()
-            .statusCode(500)
-            .jsonBody(rawResponseBody)
-            .build();
-
-        await expect(async () => {
-            return await client.documents.create("id", {
-                context: [
-                    {
-                        type: "facts",
-                        data: [
-                            {
-                                text: "text",
-                            },
-                            {
-                                text: "text",
-                            },
-                        ],
-                    },
-                    {
-                        type: "facts",
-                        data: [
-                            {
-                                text: "text",
-                            },
-                            {
-                                text: "text",
-                            },
-                        ],
-                    },
-                ],
-                templateKey: "templateKey",
-                outputLanguage: "outputLanguage",
-            });
-        }).rejects.toThrow(Corti.InternalServerError);
-    });
-
-    test("create (5)", async () => {
-        const server = mockServerPool.createServer();
-        mockOAuth(server);
-
-        const client = new CortiClient({
-            maxRetries: 0,
-            clientId: "client_id",
-            clientSecret: "client_secret",
-            tenantName: "test",
-            environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
-        });
-        const rawRequestBody = {
-            context: [
-                { type: "facts", data: [{ text: "text" }, { text: "text" }] },
-                { type: "facts", data: [{ text: "text" }, { text: "text" }] },
-            ],
-            templateKey: "templateKey",
-            outputLanguage: "outputLanguage",
-        };
-        const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
-
-        server
-            .mockEndpoint()
-            .post("/interactions/id/documents/")
-            .jsonBody(rawRequestBody)
-            .respondWith()
-            .statusCode(504)
-            .jsonBody(rawResponseBody)
-            .build();
-
-        await expect(async () => {
-            return await client.documents.create("id", {
-                context: [
-                    {
-                        type: "facts",
-                        data: [
-                            {
-                                text: "text",
-                            },
-                            {
-                                text: "text",
-                            },
-                        ],
-                    },
-                    {
-                        type: "facts",
-                        data: [
-                            {
-                                text: "text",
-                            },
-                            {
-                                text: "text",
-                            },
-                        ],
-                    },
-                ],
-                templateKey: "templateKey",
-                outputLanguage: "outputLanguage",
-            });
-        }).rejects.toThrow(Corti.GatewayTimeoutError);
-    });
-
-    test("get (1)", async () => {
-        const server = mockServerPool.createServer();
-        mockOAuth(server);
-
-        const client = new CortiClient({
-            maxRetries: 0,
-            clientId: "client_id",
-            clientSecret: "client_secret",
-            tenantName: "test",
-            environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
-        });
-
-        const rawResponseBody = {
-            id: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
-            name: "name",
-            templateRef: "templateRef",
-            isStream: true,
-            sections: [
-                {
-                    key: "key",
-                    name: "name",
-                    text: "text",
-                    sort: 1,
-                    createdAt: "2024-01-15T09:30:00Z",
-                    updatedAt: "2024-01-15T09:30:00Z",
-                },
-            ],
-            createdAt: "2024-01-15T09:30:00Z",
-            updatedAt: "2024-01-15T09:30:00Z",
-            outputLanguage: "outputLanguage",
-            usageInfo: { creditsConsumed: 1.1 },
-        };
-
-        server
-            .mockEndpoint()
-            .get("/interactions/f47ac10b-58cc-4372-a567-0e02b2c3d479/documents/f47ac10b-58cc-4372-a567-0e02b2c3d479")
-            .respondWith()
-            .statusCode(200)
-            .jsonBody(rawResponseBody)
-            .build();
-
-        const response = await client.documents.get(
-            "f47ac10b-58cc-4372-a567-0e02b2c3d479",
-            "f47ac10b-58cc-4372-a567-0e02b2c3d479",
-        );
-        expect(response).toEqual({
-            id: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
-            name: "name",
-            templateRef: "templateRef",
-            isStream: true,
-            sections: [
-                {
-                    key: "key",
-                    name: "name",
-                    text: "text",
-                    sort: 1,
-                    createdAt: new Date("2024-01-15T09:30:00.000Z"),
-                    updatedAt: new Date("2024-01-15T09:30:00.000Z"),
-                },
-            ],
-            createdAt: new Date("2024-01-15T09:30:00.000Z"),
-            updatedAt: new Date("2024-01-15T09:30:00.000Z"),
-            outputLanguage: "outputLanguage",
-            usageInfo: {
-                creditsConsumed: 1.1,
-            },
-        });
-    });
-
-    test("get (2)", async () => {
-        const server = mockServerPool.createServer();
-        mockOAuth(server);
-
-        const client = new CortiClient({
-            maxRetries: 0,
-            clientId: "client_id",
-            clientSecret: "client_secret",
-            tenantName: "test",
-            environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
-        });
-
-        const rawResponseBody = { key: "value" };
-
-        server
-            .mockEndpoint()
-            .get("/interactions/id/documents/documentId")
-            .respondWith()
-            .statusCode(400)
-            .jsonBody(rawResponseBody)
-            .build();
-
-        await expect(async () => {
-            return await client.documents.get("id", "documentId");
-        }).rejects.toThrow(Corti.BadRequestError);
-    });
-
-    test("get (3)", async () => {
-        const server = mockServerPool.createServer();
-        mockOAuth(server);
-
-        const client = new CortiClient({
-            maxRetries: 0,
-            clientId: "client_id",
-            clientSecret: "client_secret",
-            tenantName: "test",
-            environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
-        });
-
-        const rawResponseBody = { key: "value" };
-
-        server
-            .mockEndpoint()
-            .get("/interactions/id/documents/documentId")
-            .respondWith()
-            .statusCode(403)
-            .jsonBody(rawResponseBody)
-            .build();
-
-        await expect(async () => {
-            return await client.documents.get("id", "documentId");
-        }).rejects.toThrow(Corti.ForbiddenError);
-    });
-
-    test("get (4)", async () => {
-        const server = mockServerPool.createServer();
-        mockOAuth(server);
-
-        const client = new CortiClient({
-            maxRetries: 0,
-            clientId: "client_id",
-            clientSecret: "client_secret",
-            tenantName: "test",
-            environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
-        });
-
-        const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
-
-        server
-            .mockEndpoint()
-            .get("/interactions/id/documents/documentId")
-            .respondWith()
-            .statusCode(500)
-            .jsonBody(rawResponseBody)
-            .build();
-
-        await expect(async () => {
-            return await client.documents.get("id", "documentId");
-        }).rejects.toThrow(Corti.InternalServerError);
-    });
-
-    test("get (5)", async () => {
-        const server = mockServerPool.createServer();
-        mockOAuth(server);
-
-        const client = new CortiClient({
-            maxRetries: 0,
-            clientId: "client_id",
-            clientSecret: "client_secret",
-            tenantName: "test",
-            environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
-        });
-
-        const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
-
-        server
-            .mockEndpoint()
-            .get("/interactions/id/documents/documentId")
-            .respondWith()
-            .statusCode(504)
-            .jsonBody(rawResponseBody)
-            .build();
-
-        await expect(async () => {
-            return await client.documents.get("id", "documentId");
-        }).rejects.toThrow(Corti.GatewayTimeoutError);
-    });
-
-    test("delete (1)", async () => {
-        const server = mockServerPool.createServer();
-        mockOAuth(server);
-
-        const client = new CortiClient({
-            maxRetries: 0,
-            clientId: "client_id",
-            clientSecret: "client_secret",
-            tenantName: "test",
-            environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
-        });
-
-        server
-            .mockEndpoint()
-            .delete("/interactions/f47ac10b-58cc-4372-a567-0e02b2c3d479/documents/f47ac10b-58cc-4372-a567-0e02b2c3d479")
-            .respondWith()
-            .statusCode(200)
-            .build();
-
-        const response = await client.documents.delete(
-            "f47ac10b-58cc-4372-a567-0e02b2c3d479",
-            "f47ac10b-58cc-4372-a567-0e02b2c3d479",
-        );
-        expect(response).toEqual(undefined);
-    });
-
-    test("delete (2)", async () => {
-        const server = mockServerPool.createServer();
-        mockOAuth(server);
-
-        const client = new CortiClient({
-            maxRetries: 0,
-            clientId: "client_id",
-            clientSecret: "client_secret",
-            tenantName: "test",
-            environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
-        });
-
-        const rawResponseBody = { key: "value" };
-
-        server
-            .mockEndpoint()
-            .delete("/interactions/id/documents/documentId")
-            .respondWith()
-            .statusCode(403)
-            .jsonBody(rawResponseBody)
-            .build();
-
-        await expect(async () => {
-            return await client.documents.delete("id", "documentId");
-        }).rejects.toThrow(Corti.ForbiddenError);
-    });
-
-    test("delete (3)", async () => {
-        const server = mockServerPool.createServer();
-        mockOAuth(server);
-
-        const client = new CortiClient({
-            maxRetries: 0,
-            clientId: "client_id",
-            clientSecret: "client_secret",
-            tenantName: "test",
-            environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
-        });
-
-        const rawResponseBody = { key: "value" };
-
-        server
-            .mockEndpoint()
-            .delete("/interactions/id/documents/documentId")
-            .respondWith()
-            .statusCode(404)
-            .jsonBody(rawResponseBody)
-            .build();
-
-        await expect(async () => {
-            return await client.documents.delete("id", "documentId");
-        }).rejects.toThrow(Corti.NotFoundError);
-    });
-
-    test("delete (4)", async () => {
-        const server = mockServerPool.createServer();
-        mockOAuth(server);
-
-        const client = new CortiClient({
-            maxRetries: 0,
-            clientId: "client_id",
-            clientSecret: "client_secret",
-            tenantName: "test",
-            environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
-        });
-
-        const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
-
-        server
-            .mockEndpoint()
-            .delete("/interactions/id/documents/documentId")
-            .respondWith()
-            .statusCode(500)
-            .jsonBody(rawResponseBody)
-            .build();
-
-        await expect(async () => {
-            return await client.documents.delete("id", "documentId");
-        }).rejects.toThrow(Corti.InternalServerError);
-    });
-
-    test("delete (5)", async () => {
-        const server = mockServerPool.createServer();
-        mockOAuth(server);
-
-        const client = new CortiClient({
-            maxRetries: 0,
-            clientId: "client_id",
-            clientSecret: "client_secret",
-            tenantName: "test",
-            environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
-        });
-
-        const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
-
-        server
-            .mockEndpoint()
-            .delete("/interactions/id/documents/documentId")
-            .respondWith()
-            .statusCode(504)
-            .jsonBody(rawResponseBody)
-            .build();
-
-        await expect(async () => {
-            return await client.documents.delete("id", "documentId");
-        }).rejects.toThrow(Corti.GatewayTimeoutError);
-    });
-
-    test("update (1)", async () => {
-        const server = mockServerPool.createServer();
-        mockOAuth(server);
-
-        const client = new CortiClient({
-            maxRetries: 0,
-            clientId: "client_id",
-            clientSecret: "client_secret",
-            tenantName: "test",
-            environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
-        });
-        const rawRequestBody = {};
-        const rawResponseBody = {
-            id: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
-            name: "name",
-            templateRef: "templateRef",
-            isStream: true,
-            sections: [
-                {
-                    key: "key",
-                    name: "name",
-                    text: "text",
-                    sort: 1,
-                    createdAt: "2024-01-15T09:30:00Z",
-                    updatedAt: "2024-01-15T09:30:00Z",
-                },
-            ],
-            createdAt: "2024-01-15T09:30:00Z",
-            updatedAt: "2024-01-15T09:30:00Z",
-            outputLanguage: "outputLanguage",
-            usageInfo: { creditsConsumed: 1.1 },
-        };
-
-        server
-            .mockEndpoint()
-            .patch("/interactions/f47ac10b-58cc-4372-a567-0e02b2c3d479/documents/f47ac10b-58cc-4372-a567-0e02b2c3d479")
-            .jsonBody(rawRequestBody)
-            .respondWith()
-            .statusCode(200)
-            .jsonBody(rawResponseBody)
-            .build();
-
-        const response = await client.documents.update(
-            "f47ac10b-58cc-4372-a567-0e02b2c3d479",
-            "f47ac10b-58cc-4372-a567-0e02b2c3d479",
-        );
-        expect(response).toEqual({
-            id: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
-            name: "name",
-            templateRef: "templateRef",
-            isStream: true,
-            sections: [
-                {
-                    key: "key",
-                    name: "name",
-                    text: "text",
-                    sort: 1,
-                    createdAt: new Date("2024-01-15T09:30:00.000Z"),
-                    updatedAt: new Date("2024-01-15T09:30:00.000Z"),
-                },
-            ],
-            createdAt: new Date("2024-01-15T09:30:00.000Z"),
-            updatedAt: new Date("2024-01-15T09:30:00.000Z"),
-            outputLanguage: "outputLanguage",
-            usageInfo: {
-                creditsConsumed: 1.1,
-            },
-        });
-    });
-
-    test("update (2)", async () => {
-        const server = mockServerPool.createServer();
-        mockOAuth(server);
-
-        const client = new CortiClient({
-            maxRetries: 0,
-            clientId: "client_id",
-            clientSecret: "client_secret",
-            tenantName: "test",
-            environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
-        });
-        const rawRequestBody = {};
-        const rawResponseBody = { key: "value" };
-
-        server
-            .mockEndpoint()
-            .patch("/interactions/id/documents/documentId")
-            .jsonBody(rawRequestBody)
-            .respondWith()
-            .statusCode(400)
-            .jsonBody(rawResponseBody)
-            .build();
-
-        await expect(async () => {
-            return await client.documents.update("id", "documentId");
-        }).rejects.toThrow(Corti.BadRequestError);
-    });
-
-    test("update (3)", async () => {
-        const server = mockServerPool.createServer();
-        mockOAuth(server);
-
-        const client = new CortiClient({
-            maxRetries: 0,
-            clientId: "client_id",
-            clientSecret: "client_secret",
-            tenantName: "test",
-            environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
-        });
-        const rawRequestBody = {};
-        const rawResponseBody = { key: "value" };
-
-        server
-            .mockEndpoint()
-            .patch("/interactions/id/documents/documentId")
-            .jsonBody(rawRequestBody)
-            .respondWith()
-            .statusCode(403)
-            .jsonBody(rawResponseBody)
-            .build();
-
-        await expect(async () => {
-            return await client.documents.update("id", "documentId");
-        }).rejects.toThrow(Corti.ForbiddenError);
-    });
-
-    test("update (4)", async () => {
-        const server = mockServerPool.createServer();
-        mockOAuth(server);
-
-        const client = new CortiClient({
-            maxRetries: 0,
-            clientId: "client_id",
-            clientSecret: "client_secret",
-            tenantName: "test",
-            environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
-        });
-        const rawRequestBody = {};
-        const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
-
-        server
-            .mockEndpoint()
-            .patch("/interactions/id/documents/documentId")
-            .jsonBody(rawRequestBody)
-            .respondWith()
-            .statusCode(500)
-            .jsonBody(rawResponseBody)
-            .build();
-
-        await expect(async () => {
-            return await client.documents.update("id", "documentId");
-        }).rejects.toThrow(Corti.InternalServerError);
-    });
-
-    test("update (5)", async () => {
-        const server = mockServerPool.createServer();
-        mockOAuth(server);
-
-        const client = new CortiClient({
-            maxRetries: 0,
-            clientId: "client_id",
-            clientSecret: "client_secret",
-            tenantName: "test",
-            environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
-        });
-        const rawRequestBody = {};
-        const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
-
-        server
-            .mockEndpoint()
-            .patch("/interactions/id/documents/documentId")
-            .jsonBody(rawRequestBody)
-            .respondWith()
-            .statusCode(504)
-            .jsonBody(rawResponseBody)
-            .build();
-
-        await expect(async () => {
-            return await client.documents.update("id", "documentId");
-        }).rejects.toThrow(Corti.GatewayTimeoutError);
     });
 
     test("generate (1)", async () => {
@@ -1034,6 +139,18 @@ describe("DocumentsClient", () => {
                 interactionId: "interactionId",
                 stringDocument: { key: "value" },
                 structuredDocument: { key: "value" },
+                sections: [
+                    {
+                        sectionId: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+                        heading: "Chief Complaint",
+                        labels: [{ key: "inlineTemplate", value: "true" }],
+                    },
+                    {
+                        sectionId: "6ba7b810-9dad-11d1-80b4-00c04fd430c8",
+                        heading: "Assessment and Plan",
+                        labels: [{ key: "inlineTemplate", value: "true" }],
+                    },
+                ],
                 labels: [{ key: "key", value: "value" }],
             },
             usageInfo: { creditsConsumed: 1.1 },
@@ -1067,6 +184,28 @@ describe("DocumentsClient", () => {
                 structuredDocument: {
                     key: "value",
                 },
+                sections: [
+                    {
+                        sectionId: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+                        heading: "Chief Complaint",
+                        labels: [
+                            {
+                                key: "inlineTemplate",
+                                value: "true",
+                            },
+                        ],
+                    },
+                    {
+                        sectionId: "6ba7b810-9dad-11d1-80b4-00c04fd430c8",
+                        heading: "Assessment and Plan",
+                        labels: [
+                            {
+                                key: "inlineTemplate",
+                                value: "true",
+                            },
+                        ],
+                    },
+                ],
                 labels: [
                     {
                         key: "key",
@@ -1210,5 +349,320 @@ describe("DocumentsClient", () => {
                 outputLanguage: "outputLanguage",
             });
         }).rejects.toThrow(Corti.InternalServerError);
+    });
+
+    test("get (1)", async () => {
+        const server = mockServerPool.createServer();
+        mockOAuth(server);
+
+        const client = new CortiClient({
+            maxRetries: 0,
+            clientId: "client_id",
+            clientSecret: "client_secret",
+            tenantName: "test",
+            environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
+        });
+
+        const rawResponseBody = {
+            id: "id",
+            name: "name",
+            templateId: "templateId",
+            templateVersionId: "templateVersionId",
+            outputLanguage: "outputLanguage",
+            interactionId: "interactionId",
+            stringDocument: { key: "value" },
+            structuredDocument: { key: "value" },
+            sections: [
+                {
+                    sectionId: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+                    heading: "Chief Complaint",
+                    labels: [{ key: "inlineTemplate", value: "true" }],
+                },
+                {
+                    sectionId: "6ba7b810-9dad-11d1-80b4-00c04fd430c8",
+                    heading: "Assessment and Plan",
+                    labels: [{ key: "inlineTemplate", value: "true" }],
+                },
+            ],
+            labels: [{ key: "key", value: "value" }],
+            createdAt: "2024-01-15T09:30:00Z",
+            updatedAt: "2024-01-15T09:30:00Z",
+        };
+
+        server
+            .mockEndpoint()
+            .get("/documents/documentID")
+            .respondWith()
+            .statusCode(200)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        const response = await client.documents.get("documentID");
+        expect(response).toEqual({
+            id: "id",
+            name: "name",
+            templateId: "templateId",
+            templateVersionId: "templateVersionId",
+            outputLanguage: "outputLanguage",
+            interactionId: "interactionId",
+            stringDocument: {
+                key: "value",
+            },
+            structuredDocument: {
+                key: "value",
+            },
+            sections: [
+                {
+                    sectionId: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+                    heading: "Chief Complaint",
+                    labels: [
+                        {
+                            key: "inlineTemplate",
+                            value: "true",
+                        },
+                    ],
+                },
+                {
+                    sectionId: "6ba7b810-9dad-11d1-80b4-00c04fd430c8",
+                    heading: "Assessment and Plan",
+                    labels: [
+                        {
+                            key: "inlineTemplate",
+                            value: "true",
+                        },
+                    ],
+                },
+            ],
+            labels: [
+                {
+                    key: "key",
+                    value: "value",
+                },
+            ],
+            createdAt: new Date("2024-01-15T09:30:00.000Z"),
+            updatedAt: new Date("2024-01-15T09:30:00.000Z"),
+        });
+    });
+
+    test("get (2)", async () => {
+        const server = mockServerPool.createServer();
+        mockOAuth(server);
+
+        const client = new CortiClient({
+            maxRetries: 0,
+            clientId: "client_id",
+            clientSecret: "client_secret",
+            tenantName: "test",
+            environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
+        });
+
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .get("/documents/documentID")
+            .respondWith()
+            .statusCode(404)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.documents.get("documentID");
+        }).rejects.toThrow(Corti.NotFoundError);
+    });
+
+    test("delete (1)", async () => {
+        const server = mockServerPool.createServer();
+        mockOAuth(server);
+
+        const client = new CortiClient({
+            maxRetries: 0,
+            clientId: "client_id",
+            clientSecret: "client_secret",
+            tenantName: "test",
+            environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
+        });
+
+        server.mockEndpoint().delete("/documents/documentID").respondWith().statusCode(200).build();
+
+        const response = await client.documents.delete("documentID");
+        expect(response).toEqual(undefined);
+    });
+
+    test("delete (2)", async () => {
+        const server = mockServerPool.createServer();
+        mockOAuth(server);
+
+        const client = new CortiClient({
+            maxRetries: 0,
+            clientId: "client_id",
+            clientSecret: "client_secret",
+            tenantName: "test",
+            environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
+        });
+
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .delete("/documents/documentID")
+            .respondWith()
+            .statusCode(404)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.documents.delete("documentID");
+        }).rejects.toThrow(Corti.NotFoundError);
+    });
+
+    test("update (1)", async () => {
+        const server = mockServerPool.createServer();
+        mockOAuth(server);
+
+        const client = new CortiClient({
+            maxRetries: 0,
+            clientId: "client_id",
+            clientSecret: "client_secret",
+            tenantName: "test",
+            environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
+        });
+        const rawRequestBody = {};
+        const rawResponseBody = {
+            id: "id",
+            name: "name",
+            templateId: "templateId",
+            templateVersionId: "templateVersionId",
+            outputLanguage: "outputLanguage",
+            interactionId: "interactionId",
+            stringDocument: { key: "value" },
+            structuredDocument: { key: "value" },
+            sections: [
+                {
+                    sectionId: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+                    heading: "Chief Complaint",
+                    labels: [{ key: "inlineTemplate", value: "true" }],
+                },
+                {
+                    sectionId: "6ba7b810-9dad-11d1-80b4-00c04fd430c8",
+                    heading: "Assessment and Plan",
+                    labels: [{ key: "inlineTemplate", value: "true" }],
+                },
+            ],
+            labels: [{ key: "key", value: "value" }],
+            createdAt: "2024-01-15T09:30:00Z",
+            updatedAt: "2024-01-15T09:30:00Z",
+        };
+
+        server
+            .mockEndpoint()
+            .patch("/documents/documentID")
+            .jsonBody(rawRequestBody)
+            .respondWith()
+            .statusCode(200)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        const response = await client.documents.update("documentID");
+        expect(response).toEqual({
+            id: "id",
+            name: "name",
+            templateId: "templateId",
+            templateVersionId: "templateVersionId",
+            outputLanguage: "outputLanguage",
+            interactionId: "interactionId",
+            stringDocument: {
+                key: "value",
+            },
+            structuredDocument: {
+                key: "value",
+            },
+            sections: [
+                {
+                    sectionId: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+                    heading: "Chief Complaint",
+                    labels: [
+                        {
+                            key: "inlineTemplate",
+                            value: "true",
+                        },
+                    ],
+                },
+                {
+                    sectionId: "6ba7b810-9dad-11d1-80b4-00c04fd430c8",
+                    heading: "Assessment and Plan",
+                    labels: [
+                        {
+                            key: "inlineTemplate",
+                            value: "true",
+                        },
+                    ],
+                },
+            ],
+            labels: [
+                {
+                    key: "key",
+                    value: "value",
+                },
+            ],
+            createdAt: new Date("2024-01-15T09:30:00.000Z"),
+            updatedAt: new Date("2024-01-15T09:30:00.000Z"),
+        });
+    });
+
+    test("update (2)", async () => {
+        const server = mockServerPool.createServer();
+        mockOAuth(server);
+
+        const client = new CortiClient({
+            maxRetries: 0,
+            clientId: "client_id",
+            clientSecret: "client_secret",
+            tenantName: "test",
+            environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
+        });
+        const rawRequestBody = {};
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .patch("/documents/documentID")
+            .jsonBody(rawRequestBody)
+            .respondWith()
+            .statusCode(400)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.documents.update("documentID");
+        }).rejects.toThrow(Corti.BadRequestError);
+    });
+
+    test("update (3)", async () => {
+        const server = mockServerPool.createServer();
+        mockOAuth(server);
+
+        const client = new CortiClient({
+            maxRetries: 0,
+            clientId: "client_id",
+            clientSecret: "client_secret",
+            tenantName: "test",
+            environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
+        });
+        const rawRequestBody = {};
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .patch("/documents/documentID")
+            .jsonBody(rawRequestBody)
+            .respondWith()
+            .statusCode(404)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.documents.update("documentID");
+        }).rejects.toThrow(Corti.NotFoundError);
     });
 });
