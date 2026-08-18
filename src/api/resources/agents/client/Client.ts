@@ -15,9 +15,6 @@ export declare namespace AgentsClient {
     export interface RequestOptions extends BaseRequestOptions {}
 }
 
-/**
- * Create, read, update, and delete agents.
- */
 export class AgentsClient {
     protected readonly _options: NormalizedClientOptionsWithAuth<AgentsClient.Options>;
 
@@ -26,8 +23,6 @@ export class AgentsClient {
     }
 
     /**
-     * @deprecated
-     *
      * This endpoint retrieves a list of all agents that can be called by the Corti Agent Framework.
      *
      * @param {Corti.AgentsListRequest} request
@@ -110,8 +105,6 @@ export class AgentsClient {
     }
 
     /**
-     * @deprecated
-     *
      * This endpoint allows the creation of a new agent that can be utilized in the `POST /agents/{id}/v1/message:send` endpoint.
      *
      * @param {Corti.AgentsCreateAgent} request
@@ -204,8 +197,6 @@ export class AgentsClient {
     }
 
     /**
-     * @deprecated
-     *
      * This endpoint retrieves an agent by its identifier. The agent contains information about its capabilities and the experts it can call.
      *
      * @param {string} id - The identifier of the agent associated with the context.
@@ -285,8 +276,6 @@ export class AgentsClient {
     }
 
     /**
-     * @deprecated
-     *
      * This endpoint deletes an agent by its identifier. Once deleted, the agent can no longer be used in threads.
      *
      * @param {string} id - The identifier of the agent associated with the context.
@@ -354,8 +343,6 @@ export class AgentsClient {
     }
 
     /**
-     * @deprecated
-     *
      * This endpoint updates an existing agent. Only the fields provided in the request body will be updated; other fields will remain unchanged.
      *
      * @param {string} id - The identifier of the agent associated with the context.
@@ -447,8 +434,6 @@ export class AgentsClient {
     }
 
     /**
-     * @deprecated
-     *
      * This endpoint retrieves the agent card in JSON format, which provides metadata about the agent, including its name, description, and the experts it can call.
      *
      * @param {string} id - The identifier of the agent associated with the context.
@@ -528,8 +513,6 @@ export class AgentsClient {
     }
 
     /**
-     * @deprecated
-     *
      * This endpoint sends a message to the specified agent to start or continue a task. The agent processes the message and returns a response. If the message contains a task ID that matches an ongoing task, the agent will continue that task; otherwise, it will start a new task.
      *
      * @param {string} id - The identifier of the agent associated with the context.
@@ -634,8 +617,6 @@ export class AgentsClient {
     }
 
     /**
-     * @deprecated
-     *
      * This endpoint retrieves the status and details of a specific task associated with the given agent. It provides information about the task's current state, history, and any artifacts produced during its execution.
      *
      * @param {string} id - The identifier of the agent associated with the context.
@@ -733,8 +714,6 @@ export class AgentsClient {
     }
 
     /**
-     * @deprecated
-     *
      * This endpoint retrieves all tasks and top-level messages associated with a specific context for the given agent.
      *
      * @param {string} id - The identifier of the agent associated with the context.
@@ -830,8 +809,6 @@ export class AgentsClient {
     }
 
     /**
-     * @deprecated
-     *
      * This endpoint deletes a context (thread) and scrubs all associated data including messages, memories, and memory chunks for the given agent. Thread and task metadata is soft-deleted for audit purposes, while content columns are irreversibly overwritten.
      *
      * @param {string} id - The identifier of the agent associated with the context.
@@ -910,8 +887,6 @@ export class AgentsClient {
     }
 
     /**
-     * @deprecated
-     *
      * This endpoint retrieves the experts registry, which contains information about all available experts that can be referenced when creating agents through the AgentsCreateExpertReference schema.
      *
      * @param {Corti.AgentsGetRegistryExpertsRequest} request

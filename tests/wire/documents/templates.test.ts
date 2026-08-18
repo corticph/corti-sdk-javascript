@@ -450,7 +450,7 @@ describe("TemplatesClient", () => {
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
-        const rawResponseBody = { key: "value" };
+        const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
 
         server
             .mockEndpoint()
