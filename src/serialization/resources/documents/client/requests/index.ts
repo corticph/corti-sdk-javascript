@@ -1,1 +1,1 @@
-export { DocumentsUpdateRequest } from "./DocumentsUpdateRequest.js";
+export { GuidedDocumentsUpdateRequest } from "./GuidedDocumentsUpdateRequest.js";
