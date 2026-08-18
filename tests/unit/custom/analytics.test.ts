@@ -44,4 +44,21 @@ describe("withAnalytics", () => {
         expect(parsed.visit_type).toBe("inpatient");
         expect(parsed.sdk_version).toBe(SDK_VERSION);
     });
+
+    it("lowercases incoming keys", () => {
+        const merged = withAnalytics(
+            { SDK_VERSION: "hack", Visit_Type: "outpatient" },
+            {
+                [X_CORTI_ANALYTICS]: JSON.stringify({ VISIT_TYPE: "inpatient", Source: "ehr" }),
+            },
+        );
+        const parsed = JSON.parse(merged[X_CORTI_ANALYTICS] as string);
+        expect(parsed.SDK_VERSION).toBeUndefined();
+        expect(parsed.Visit_Type).toBeUndefined();
+        expect(parsed.visit_type).toBe("inpatient");
+        expect(parsed.source).toBe("ehr");
+        expect(parsed.sdk_version).toBe(SDK_VERSION);
+        expect(parsed.sdk_type).toBe("corti-sdk-javascript");
+        expect(Object.keys(parsed)).toHaveLength(4);
+    });
 });

@@ -9,7 +9,7 @@ import {
     setupConsoleWarnSpy,
 } from "./testUtils";
 
-describe("cortiClient.documents.create", () => {
+describe("cortiClient.documents.classic.create", () => {
     let cortiClient: CortiClient;
     let consoleWarnSpy: ReturnType<typeof setupConsoleWarnSpy>;
     let templateKey: string;
@@ -40,7 +40,7 @@ describe("cortiClient.documents.create", () => {
 
             const interactionId = await createTestInteraction(cortiClient);
 
-            const result = await cortiClient.documents.create(interactionId, {
+            const result = await cortiClient.documents.classic.create(interactionId, {
                 context: [
                     {
                         type: "facts",
@@ -65,7 +65,7 @@ describe("cortiClient.documents.create", () => {
 
             const interactionId = await createTestInteraction(cortiClient);
 
-            const result = await cortiClient.documents.create(interactionId, {
+            const result = await cortiClient.documents.classic.create(interactionId, {
                 context: [
                     {
                         type: "transcript",
@@ -92,7 +92,7 @@ describe("cortiClient.documents.create", () => {
 
             const interactionId = await createTestInteraction(cortiClient);
 
-            const result = await cortiClient.documents.create(interactionId, {
+            const result = await cortiClient.documents.classic.create(interactionId, {
                 context: [
                     {
                         type: "string",
@@ -112,7 +112,7 @@ describe("cortiClient.documents.create", () => {
 
             const interactionId = await createTestInteraction(cortiClient);
 
-            const result = await cortiClient.documents.create(interactionId, {
+            const result = await cortiClient.documents.classic.create(interactionId, {
                 context: [
                     {
                         type: "facts",
@@ -139,7 +139,7 @@ describe("cortiClient.documents.create", () => {
 
             const interactionId = await createTestInteraction(cortiClient);
 
-            const result = await cortiClient.documents.create(interactionId, {
+            const result = await cortiClient.documents.classic.create(interactionId, {
                 context: [
                     {
                         type: "transcript",
@@ -168,7 +168,7 @@ describe("cortiClient.documents.create", () => {
 
             const interactionId = await createTestInteraction(cortiClient);
 
-            const result = await cortiClient.documents.create(interactionId, {
+            const result = await cortiClient.documents.classic.create(interactionId, {
                 context: [
                     {
                         type: "string",
@@ -192,7 +192,7 @@ describe("cortiClient.documents.create", () => {
 
             const interactionId = await createTestInteraction(cortiClient);
 
-            const result = await cortiClient.documents.create(interactionId, {
+            const result = await cortiClient.documents.classic.create(interactionId, {
                 context: [
                     {
                         type: "facts",
@@ -219,7 +219,7 @@ describe("cortiClient.documents.create", () => {
 
             const interactionId = await createTestInteraction(cortiClient);
 
-            const result = await cortiClient.documents.create(interactionId, {
+            const result = await cortiClient.documents.classic.create(interactionId, {
                 context: [
                     {
                         type: "transcript",
@@ -247,7 +247,7 @@ describe("cortiClient.documents.create", () => {
 
             const interactionId = await createTestInteraction(cortiClient);
 
-            const result = await cortiClient.documents.create(interactionId, {
+            const result = await cortiClient.documents.classic.create(interactionId, {
                 context: [
                     {
                         type: "string",
@@ -268,7 +268,7 @@ describe("cortiClient.documents.create", () => {
 
             const interactionId = await createTestInteraction(cortiClient);
 
-            const result = await cortiClient.documents.create(interactionId, {
+            const result = await cortiClient.documents.classic.create(interactionId, {
                 context: [
                     {
                         type: "facts",
@@ -302,7 +302,7 @@ describe("cortiClient.documents.create", () => {
 
             const interactionId = await createTestInteraction(cortiClient);
 
-            const result = await cortiClient.documents.create(interactionId, {
+            const result = await cortiClient.documents.classic.create(interactionId, {
                 context: [
                     {
                         type: "transcript",
@@ -337,7 +337,7 @@ describe("cortiClient.documents.create", () => {
 
             const interactionId = await createTestInteraction(cortiClient);
 
-            const result = await cortiClient.documents.create(interactionId, {
+            const result = await cortiClient.documents.classic.create(interactionId, {
                 context: [
                     {
                         type: "string",
@@ -367,7 +367,7 @@ describe("cortiClient.documents.create", () => {
 
             const interactionId = await createTestInteraction(cortiClient);
 
-            const result = await cortiClient.documents.create(interactionId, {
+            const result = await cortiClient.documents.classic.create(interactionId, {
                 context: [
                     {
                         type: "facts",
@@ -394,7 +394,7 @@ describe("cortiClient.documents.create", () => {
 
             const interactionId = await createTestInteraction(cortiClient);
 
-            const result = await cortiClient.documents.create(interactionId, {
+            const result = await cortiClient.documents.classic.create(interactionId, {
                 context: [
                     {
                         type: "facts",
@@ -421,7 +421,7 @@ describe("cortiClient.documents.create", () => {
 
             const interactionId = await createTestInteraction(cortiClient);
 
-            const result = await cortiClient.documents.create(interactionId, {
+            const result = await cortiClient.documents.classic.create(interactionId, {
                 context: [
                     {
                         type: "facts",
@@ -448,7 +448,7 @@ describe("cortiClient.documents.create", () => {
 
             const interactionId = await createTestInteraction(cortiClient);
 
-            const result = await cortiClient.documents.create(interactionId, {
+            const result = await cortiClient.documents.classic.create(interactionId, {
                 context: [
                     {
                         type: "facts",
@@ -482,7 +482,7 @@ describe("cortiClient.documents.create", () => {
 
             const interactionId = await createTestInteraction(cortiClient);
 
-            const result = await cortiClient.documents.create(interactionId, {
+            const result = await cortiClient.documents.classic.create(interactionId, {
                 context: [
                     {
                         type: "facts",
@@ -516,7 +516,7 @@ describe("cortiClient.documents.create", () => {
 
             const interactionId = await createTestInteraction(cortiClient);
 
-            const result = await cortiClient.documents.create(interactionId, {
+            const result = await cortiClient.documents.classic.create(interactionId, {
                 context: [
                     {
                         type: "facts",
@@ -552,7 +552,7 @@ describe("cortiClient.documents.create", () => {
 
             const interactionId = await createTestInteraction(cortiClient);
 
-            const result = await cortiClient.documents.create(interactionId, {
+            const result = await cortiClient.documents.classic.create(interactionId, {
                 context: [
                     {
                         type: "string",
@@ -578,7 +578,7 @@ describe("cortiClient.documents.create", () => {
 
             const interactionId = await createTestInteraction(cortiClient);
 
-            const result = await cortiClient.documents.create(interactionId, {
+            const result = await cortiClient.documents.classic.create(interactionId, {
                 context: [
                     {
                         type: "string",
@@ -607,7 +607,7 @@ describe("cortiClient.documents.create", () => {
 
             const interactionId = await createTestInteraction(cortiClient);
 
-            const result = await cortiClient.documents.create(interactionId, {
+            const result = await cortiClient.documents.classic.create(interactionId, {
                 context: [
                     {
                         type: "string",
@@ -634,7 +634,7 @@ describe("cortiClient.documents.create", () => {
 
             const interactionId = await createTestInteraction(cortiClient);
 
-            const result = await cortiClient.documents.create(interactionId, {
+            const result = await cortiClient.documents.classic.create(interactionId, {
                 context: [
                     {
                         type: "string",
@@ -661,7 +661,7 @@ describe("cortiClient.documents.create", () => {
 
             const interactionId = await createTestInteraction(cortiClient);
 
-            const result = await cortiClient.documents.create(interactionId, {
+            const result = await cortiClient.documents.classic.create(interactionId, {
                 context: [
                     {
                         type: "string",
@@ -688,7 +688,7 @@ describe("cortiClient.documents.create", () => {
 
             const interactionId = await createTestInteraction(cortiClient);
 
-            const result = await cortiClient.documents.create(interactionId, {
+            const result = await cortiClient.documents.classic.create(interactionId, {
                 context: [
                     {
                         type: "string",
@@ -715,7 +715,7 @@ describe("cortiClient.documents.create", () => {
 
             const interactionId = await createTestInteraction(cortiClient);
 
-            const result = await cortiClient.documents.create(interactionId, {
+            const result = await cortiClient.documents.classic.create(interactionId, {
                 context: [
                     {
                         type: "string",
@@ -742,7 +742,7 @@ describe("cortiClient.documents.create", () => {
 
             const interactionId = await createTestInteraction(cortiClient);
 
-            const result = await cortiClient.documents.create(interactionId, {
+            const result = await cortiClient.documents.classic.create(interactionId, {
                 context: [
                     {
                         type: "string",
@@ -773,7 +773,7 @@ describe("cortiClient.documents.create", () => {
 
             const interactionId = await createTestInteraction(cortiClient);
 
-            const result = await cortiClient.documents.create(interactionId, {
+            const result = await cortiClient.documents.classic.create(interactionId, {
                 context: [
                     {
                         type: "string",
@@ -800,7 +800,7 @@ describe("cortiClient.documents.create", () => {
 
             const interactionId = await createTestInteraction(cortiClient);
 
-            const result = await cortiClient.documents.create(interactionId, {
+            const result = await cortiClient.documents.classic.create(interactionId, {
                 context: [
                     {
                         type: "string",
@@ -827,7 +827,7 @@ describe("cortiClient.documents.create", () => {
 
             const interactionId = await createTestInteraction(cortiClient);
 
-            const result = await cortiClient.documents.create(interactionId, {
+            const result = await cortiClient.documents.classic.create(interactionId, {
                 context: [
                     {
                         type: "string",
@@ -862,7 +862,7 @@ describe("cortiClient.documents.create", () => {
 
             const interactionId = await createTestInteraction(cortiClient);
 
-            const result = await cortiClient.documents.create(interactionId, {
+            const result = await cortiClient.documents.classic.create(interactionId, {
                 context: [
                     {
                         type: "string",
@@ -883,7 +883,7 @@ describe("cortiClient.documents.create", () => {
 
             const interactionId = await createTestInteraction(cortiClient);
 
-            const result = await cortiClient.documents.create(interactionId, {
+            const result = await cortiClient.documents.classic.create(interactionId, {
                 context: [
                     {
                         type: "string",
@@ -906,7 +906,7 @@ describe("cortiClient.documents.create", () => {
 
             const interactionId = await createTestInteraction(cortiClient);
 
-            const result = await cortiClient.documents.create(interactionId, {
+            const result = await cortiClient.documents.classic.create(interactionId, {
                 context: [
                     {
                         type: "string",
@@ -929,7 +929,7 @@ describe("cortiClient.documents.create", () => {
 
             const interactionId = await createTestInteraction(cortiClient);
 
-            const result = await cortiClient.documents.create(interactionId, {
+            const result = await cortiClient.documents.classic.create(interactionId, {
                 context: [
                     {
                         type: "string",
@@ -956,7 +956,7 @@ describe("cortiClient.documents.create", () => {
 
             const interactionId = await createTestInteraction(cortiClient);
 
-            const result = await cortiClient.documents.create(interactionId, {
+            const result = await cortiClient.documents.classic.create(interactionId, {
                 context: [
                     {
                         type: "string",
@@ -986,7 +986,7 @@ describe("cortiClient.documents.create", () => {
             const interactionId = await createTestInteraction(cortiClient);
 
             await expect(
-                cortiClient.documents.create(interactionId, {
+                cortiClient.documents.classic.create(interactionId, {
                     context: [
                         {
                             type: "string",
@@ -1008,7 +1008,7 @@ describe("cortiClient.documents.create", () => {
             const interactionId = await createTestInteraction(cortiClient);
 
             // API should accept this - templateKey takes precedence over template
-            const result = await cortiClient.documents.create(interactionId, {
+            const result = await cortiClient.documents.classic.create(interactionId, {
                 context: [
                     {
                         type: "string",
@@ -1034,7 +1034,7 @@ describe("cortiClient.documents.create", () => {
             const interactionId = await createTestInteraction(cortiClient);
 
             await expect(
-                cortiClient.documents.create(interactionId, {
+                cortiClient.documents.classic.create(interactionId, {
                     context: [
                         {
                             type: "string",
@@ -1055,7 +1055,7 @@ describe("cortiClient.documents.create", () => {
             const interactionId = await createTestInteraction(cortiClient);
 
             await expect(
-                cortiClient.documents.create(interactionId, {
+                cortiClient.documents.classic.create(interactionId, {
                     context: [
                         {
                             type: "string",
@@ -1076,7 +1076,7 @@ describe("cortiClient.documents.create", () => {
             const interactionId = await createTestInteraction(cortiClient);
 
             await expect(
-                cortiClient.documents.create(interactionId, {
+                cortiClient.documents.classic.create(interactionId, {
                     context: [
                         {
                             type: "string",
@@ -1103,7 +1103,7 @@ describe("cortiClient.documents.create", () => {
             const interactionId = await createTestInteraction(cortiClient);
 
             await expect(
-                cortiClient.documents.create(interactionId, {
+                cortiClient.documents.classic.create(interactionId, {
                     templateKey,
                     outputLanguage: "en",
                 } as any),
@@ -1116,7 +1116,7 @@ describe("cortiClient.documents.create", () => {
             const interactionId = await createTestInteraction(cortiClient);
 
             await expect(
-                cortiClient.documents.create(interactionId, {
+                cortiClient.documents.classic.create(interactionId, {
                     context: [],
                     templateKey,
                     outputLanguage: "en",
@@ -1130,7 +1130,7 @@ describe("cortiClient.documents.create", () => {
             const interactionId = await createTestInteraction(cortiClient);
 
             await expect(
-                cortiClient.documents.create(interactionId, {
+                cortiClient.documents.classic.create(interactionId, {
                     context: [
                         {
                             type: "facts",
@@ -1154,7 +1154,7 @@ describe("cortiClient.documents.create", () => {
             const interactionId = await createTestInteraction(cortiClient);
 
             await expect(
-                cortiClient.documents.create(interactionId, {
+                cortiClient.documents.classic.create(interactionId, {
                     context: [
                         {
                             type: "facts",
@@ -1178,7 +1178,7 @@ describe("cortiClient.documents.create", () => {
             const interactionId = await createTestInteraction(cortiClient);
 
             await expect(
-                cortiClient.documents.create(interactionId, {
+                cortiClient.documents.classic.create(interactionId, {
                     context: [
                         {
                             type: "facts",
@@ -1202,7 +1202,7 @@ describe("cortiClient.documents.create", () => {
             const interactionId = await createTestInteraction(cortiClient);
 
             await expect(
-                cortiClient.documents.create(interactionId, {
+                cortiClient.documents.classic.create(interactionId, {
                     context: [
                         {
                             type: "transcript",
@@ -1227,7 +1227,7 @@ describe("cortiClient.documents.create", () => {
             const interactionId = await createTestInteraction(cortiClient);
 
             await expect(
-                cortiClient.documents.create(interactionId, {
+                cortiClient.documents.classic.create(interactionId, {
                     context: [
                         {
                             type: "string",
@@ -1246,7 +1246,7 @@ describe("cortiClient.documents.create", () => {
             const interactionId = await createTestInteraction(cortiClient);
 
             await expect(
-                cortiClient.documents.create(interactionId, {
+                cortiClient.documents.classic.create(interactionId, {
                     context: [
                         {
                             type: "facts",
@@ -1270,7 +1270,7 @@ describe("cortiClient.documents.create", () => {
             const interactionId = await createTestInteraction(cortiClient);
 
             await expect(
-                cortiClient.documents.create(interactionId, {
+                cortiClient.documents.classic.create(interactionId, {
                     context: [
                         {
                             type: "invalid_type",
@@ -1289,7 +1289,7 @@ describe("cortiClient.documents.create", () => {
             const interactionId = await createTestInteraction(cortiClient);
 
             await expect(
-                cortiClient.documents.create(interactionId, {
+                cortiClient.documents.classic.create(interactionId, {
                     context: [
                         {
                             type: "facts",
@@ -1315,7 +1315,7 @@ describe("cortiClient.documents.create", () => {
 
             const interactionId = await createTestInteraction(cortiClient);
 
-            const result = await cortiClient.documents.create(interactionId, {
+            const result = await cortiClient.documents.classic.create(interactionId, {
                 context: [
                     {
                         type: "string",
@@ -1336,7 +1336,7 @@ describe("cortiClient.documents.create", () => {
 
             const interactionId = await createTestInteraction(cortiClient);
 
-            const result = await cortiClient.documents.create(interactionId, {
+            const result = await cortiClient.documents.classic.create(interactionId, {
                 context: [
                     {
                         type: "string",
@@ -1357,7 +1357,7 @@ describe("cortiClient.documents.create", () => {
 
             const interactionId = await createTestInteraction(cortiClient);
 
-            const result = await cortiClient.documents.create(interactionId, {
+            const result = await cortiClient.documents.classic.create(interactionId, {
                 context: [
                     {
                         type: "string",

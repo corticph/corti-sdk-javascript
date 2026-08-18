@@ -2,6 +2,14 @@ import { SDK_VERSION } from "../../version.js";
 
 export const X_CORTI_ANALYTICS = "x-corti-analytics";
 
+function withLowercasedKeys(source: Record<string, unknown>): Record<string, unknown> {
+    const result: Record<string, unknown> = {};
+    for (const [key, value] of Object.entries(source)) {
+        result[key.toLowerCase()] = value;
+    }
+    return result;
+}
+
 export function parseAnalytics(value: unknown): Record<string, unknown> | undefined {
     let parsed = value;
 
@@ -14,7 +22,7 @@ export function parseAnalytics(value: unknown): Record<string, unknown> | undefi
     }
 
     if (parsed != null && typeof parsed === "object" && !Array.isArray(parsed)) {
-        return parsed as Record<string, unknown>;
+        return withLowercasedKeys(parsed as Record<string, unknown>);
     }
 
     return undefined;
@@ -29,7 +37,7 @@ export function withAnalytics(
     return {
         ...record,
         [X_CORTI_ANALYTICS]: JSON.stringify({
-            ...analytics,
+            ...withLowercasedKeys(analytics ?? {}),
             ...overlay,
             sdk_version: SDK_VERSION,
             sdk_type: "corti-sdk-javascript",

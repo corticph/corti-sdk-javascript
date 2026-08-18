@@ -8,7 +8,7 @@ import {
     setupConsoleWarnSpy,
 } from "./testUtils";
 
-describe("cortiClient.documents.update", () => {
+describe("cortiClient.documents.classic.update", () => {
     let cortiClient: CortiClient;
     let consoleWarnSpy: ReturnType<typeof setupConsoleWarnSpy>;
     let validSectionKeys: string[] = [];
@@ -33,7 +33,7 @@ describe("cortiClient.documents.update", () => {
             const interactionId = await createTestInteraction(cortiClient);
             const documentId = await createTestDocument(cortiClient, interactionId);
 
-            const result = await cortiClient.documents.update(interactionId, documentId, {});
+            const result = await cortiClient.documents.classic.update(interactionId, documentId, {});
 
             expect(result).toBeDefined();
             expect(consoleWarnSpy).not.toHaveBeenCalled();
@@ -47,7 +47,7 @@ describe("cortiClient.documents.update", () => {
             const interactionId = await createTestInteraction(cortiClient);
             const documentId = await createTestDocument(cortiClient, interactionId);
 
-            const result = await cortiClient.documents.update(interactionId, documentId, {
+            const result = await cortiClient.documents.classic.update(interactionId, documentId, {
                 name: faker.lorem.words(3),
             });
 
@@ -61,7 +61,7 @@ describe("cortiClient.documents.update", () => {
             const interactionId = await createTestInteraction(cortiClient);
             const documentId = await createTestDocument(cortiClient, interactionId);
 
-            const result = await cortiClient.documents.update(interactionId, documentId, {
+            const result = await cortiClient.documents.classic.update(interactionId, documentId, {
                 sections: [
                     {
                         key: faker.helpers.arrayElement(validSectionKeys),
@@ -79,7 +79,7 @@ describe("cortiClient.documents.update", () => {
             const interactionId = await createTestInteraction(cortiClient);
             const documentId = await createTestDocument(cortiClient, interactionId);
 
-            const result = await cortiClient.documents.update(interactionId, documentId, {
+            const result = await cortiClient.documents.classic.update(interactionId, documentId, {
                 name: faker.lorem.words(4),
                 sections: [
                     {
@@ -103,7 +103,7 @@ describe("cortiClient.documents.update", () => {
             const interactionId = await createTestInteraction(cortiClient);
             const documentId = await createTestDocument(cortiClient, interactionId);
 
-            const result = await cortiClient.documents.update(interactionId, documentId, {
+            const result = await cortiClient.documents.classic.update(interactionId, documentId, {
                 sections: [
                     {
                         key: faker.helpers.arrayElement(validSectionKeys),
@@ -124,7 +124,7 @@ describe("cortiClient.documents.update", () => {
             const interactionId = await createTestInteraction(cortiClient);
             const documentId = await createTestDocument(cortiClient, interactionId);
 
-            const result = await cortiClient.documents.update(interactionId, documentId, {
+            const result = await cortiClient.documents.classic.update(interactionId, documentId, {
                 sections: [],
             });
 
@@ -138,7 +138,7 @@ describe("cortiClient.documents.update", () => {
             const interactionId = await createTestInteraction(cortiClient);
             const documentId = await createTestDocument(cortiClient, interactionId);
 
-            const result = await cortiClient.documents.update(interactionId, documentId, {
+            const result = await cortiClient.documents.classic.update(interactionId, documentId, {
                 sections: [
                     {
                         key: faker.helpers.arrayElement(validSectionKeys),
@@ -160,7 +160,9 @@ describe("cortiClient.documents.update", () => {
         it("should throw error when interaction ID is missing", async () => {
             expect.assertions(1);
 
-            await expect(cortiClient.documents.update(undefined as any, faker.string.uuid(), {})).rejects.toThrow();
+            await expect(
+                cortiClient.documents.classic.update(undefined as any, faker.string.uuid(), {}),
+            ).rejects.toThrow();
         });
 
         it("should throw error when document ID is missing", async () => {
@@ -168,7 +170,7 @@ describe("cortiClient.documents.update", () => {
 
             const interactionId = await createTestInteraction(cortiClient);
 
-            await expect(cortiClient.documents.update(interactionId, undefined as any, {})).rejects.toThrow();
+            await expect(cortiClient.documents.classic.update(interactionId, undefined as any, {})).rejects.toThrow();
         });
     });
 
@@ -180,7 +182,7 @@ describe("cortiClient.documents.update", () => {
             const documentId = await createTestDocument(cortiClient, interactionId);
 
             await expect(
-                cortiClient.documents.update("invalid-uuid", documentId, {
+                cortiClient.documents.classic.update("invalid-uuid", documentId, {
                     name: faker.lorem.words(3),
                 }),
             ).rejects.toThrow("Status code: 400");
@@ -192,7 +194,7 @@ describe("cortiClient.documents.update", () => {
             const interactionId = await createTestInteraction(cortiClient);
 
             await expect(
-                cortiClient.documents.update(interactionId, "invalid-uuid", {
+                cortiClient.documents.classic.update(interactionId, "invalid-uuid", {
                     name: faker.lorem.words(3),
                 }),
             ).rejects.toThrow("Status code: 400");
@@ -205,7 +207,7 @@ describe("cortiClient.documents.update", () => {
             const documentId = await createTestDocument(cortiClient, interactionId);
 
             await expect(
-                cortiClient.documents.update(faker.string.uuid(), documentId, {
+                cortiClient.documents.classic.update(faker.string.uuid(), documentId, {
                     name: faker.lorem.words(3),
                 }),
             ).rejects.toThrow("Status code: 404");
@@ -217,7 +219,7 @@ describe("cortiClient.documents.update", () => {
             const interactionId = await createTestInteraction(cortiClient);
 
             await expect(
-                cortiClient.documents.update(interactionId, faker.string.uuid(), {
+                cortiClient.documents.classic.update(interactionId, faker.string.uuid(), {
                     name: faker.lorem.words(3),
                 }),
             ).rejects.toThrow("Status code: 404");
@@ -230,7 +232,7 @@ describe("cortiClient.documents.update", () => {
             const documentId = await createTestDocument(cortiClient, interactionId);
 
             await expect(
-                cortiClient.documents.update(interactionId, documentId, {
+                cortiClient.documents.classic.update(interactionId, documentId, {
                     sections: [
                         {
                             name: faker.lorem.words(2),

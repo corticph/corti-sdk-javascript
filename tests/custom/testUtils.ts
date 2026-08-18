@@ -302,7 +302,7 @@ export async function createTestFacts(
 export async function createTestDocument(cortiClient: CortiClient, interactionId: string): Promise<string> {
     const templateData = await getValidTemplateKeyAndLanguage(cortiClient);
 
-    const response = await cortiClient.documents.create(interactionId, {
+    const response = await cortiClient.documents.classic.create(interactionId, {
         context: [
             {
                 type: "string",

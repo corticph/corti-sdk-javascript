@@ -18,8 +18,8 @@ The Corti JavaScript library provides convenient access to the Corti APIs from J
 - [Pagination](#pagination)
 - [Advanced](#advanced)
   - [Additional Headers](#additional-headers)
-  - [Analytics](#analytics)
   - [Additional Query String Parameters](#additional-query-string-parameters)
+  - [Analytics](#analytics)
   - [Retries](#retries)
   - [Timeouts](#timeouts)
   - [Aborting Requests](#aborting-requests)
@@ -689,6 +689,18 @@ const response = await client.interactions.create(..., {
 });
 ```
 
+### Additional Query String Parameters
+
+If you would like to send additional query string parameters as part of the request, use the `queryParams` request option.
+
+```typescript
+const response = await client.interactions.create(..., {
+    queryParams: {
+        'customQueryParamKey': 'custom query param value'
+    }
+});
+```
+
 ### Analytics
 
 The SDK sends metadata about itself (`sdk_version`, `sdk_type`) with every request via the `X-Corti-Analytics` header (REST) or the `x-corti-analytics` query parameter (WebSocket). You can extend this payload with your own fields on the client constructor, and overlay extra fields on individual REST calls or WebSocket connections.
@@ -739,18 +751,6 @@ const socket = await client.stream.connect({
 ```
 
 > **Note**: This value is in the query string and may appear in access logs — avoid personally identifiable information.
-
-### Additional Query String Parameters
-
-If you would like to send additional query string parameters as part of the request, use the `queryParams` request option.
-
-```typescript
-const response = await client.interactions.create(..., {
-    queryParams: {
-        'customQueryParamKey': 'custom query param value'
-    }
-});
-```
 
 ### Retries
 
