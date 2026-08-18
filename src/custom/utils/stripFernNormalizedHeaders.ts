@@ -27,7 +27,7 @@ export function stripFernNormalizedHeaders(headers: Headers): Record<string, Hea
     const normalized = normalizeHeaderKeys(headers);
 
     for (const headerName of SDK_HEADER_NAMES) {
-        delete normalized[headerName.toLowerCase()];
+        delete normalized[headerName];
     }
 
     return normalized;

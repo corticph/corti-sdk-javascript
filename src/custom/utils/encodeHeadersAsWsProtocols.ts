@@ -6,32 +6,12 @@
 import * as core from "../../core/index.js";
 import { SDK_HEADER_NAMES } from "./sdkHeaderNames.js";
 
-/**
- * Lowercased copy of {@link SDK_HEADER_NAMES} for case-insensitive matching.
- * `mergeHeaders` in core/headers.ts lowercases all keys, so the comparison must too.
- */
-const SDK_HEADER_NAMES_LOWER: ReadonlySet<string> = new Set([...SDK_HEADER_NAMES].map((name) => name.toLowerCase()));
-
-/**
- * SDK headers that must still be forwarded as WS subprotocols even when
- * `filterSdkHeaders` is true. Gateways that map subprotocol pairs back to HTTP
- * headers need this metadata on the wire.
- *
- * - `tenant-name`: required for routing/auth in proxy mode; no query-param
- *   equivalent exists, so it must travel via subprotocols.
- *
- * `x-corti-analytics` is **not** here: analytics travels on the query string, and a
- * stale copy in the subprotocol list would give the gateway two conflicting payloads.
- */
-const FORWARDED_SDK_HEADERS: ReadonlySet<string> = new Set(["tenant-name"]);
-
 export type HeadersRecord = Record<string, string | core.Supplier<string | null | undefined> | null | undefined>;
 
 /**
  * Resolves header values (including suppliers/functions) and returns a flat array
  * of [name, encodeURIComponent(value)] for each header, skipping undefined/empty values.
- * When filterSdkHeaders is true, SDK-added headers are excluded (case-insensitive match)
- * except those in {@link FORWARDED_SDK_HEADERS}, which must stay on the wire in proxy mode.
+ * When filterSdkHeaders is true, SDK-added headers are excluded.
  */
 export async function buildProtocolsFromHeaders(
     headers: HeadersRecord | undefined,
@@ -42,8 +22,7 @@ export async function buildProtocolsFromHeaders(
     }
     const protocols: string[] = [];
     for (const [name, valueOrSupplier] of Object.entries(headers)) {
-        const lowerName = name.toLowerCase();
-        if (filterSdkHeaders && SDK_HEADER_NAMES_LOWER.has(lowerName) && !FORWARDED_SDK_HEADERS.has(lowerName)) {
+        if (filterSdkHeaders && SDK_HEADER_NAMES.has(name.toLowerCase())) {
             continue;
         }
         const value = await core.Supplier.get(valueOrSupplier);
