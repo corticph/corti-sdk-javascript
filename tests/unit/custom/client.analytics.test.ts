@@ -95,6 +95,24 @@ describe("CortiClient analytics on outbound requests", () => {
         });
     });
 
+    it("sends reserved sdk keys on a REST call when no analytics is provided", async () => {
+        const fetchFn = vi.fn(async () => jsonResponse({ languages: { en: {} } }));
+        const client = new CortiClient({
+            environment: ENV,
+            tenantName: "test",
+            auth: { accessToken: "fake-token" },
+            fetch: fetchFn,
+            maxRetries: 0,
+        });
+
+        await client.languages.list();
+
+        expect(parseAnalyticsHeader(fetchFn.mock.calls[0][1]?.headers as Headers)).toEqual({
+            sdk_version: SDK_VERSION,
+            sdk_type: "corti-sdk-javascript",
+        });
+    });
+
     it("merges client analytics, per-connection overlay, and reserved keys on a WebSocket connect", async () => {
         const abort = new AbortController();
         const client = new CortiClient({
@@ -133,6 +151,35 @@ describe("CortiClient analytics on outbound requests", () => {
         }
     });
 
+    it("sends reserved sdk keys on a WebSocket connect when no analytics is provided", async () => {
+        const abort = new AbortController();
+        const client = new CortiClient({
+            environment: ENV,
+            tenantName: "test",
+            auth: { accessToken: "fake-token" },
+            maxRetries: 0,
+        });
+
+        const socket = await client.stream.connect({
+            id: "00000000-0000-0000-0000-000000000001",
+            abortSignal: abort.signal,
+            reconnectAttempts: 0,
+        });
+
+        try {
+            await vi.waitFor(() => {
+                expect(MockWebSocket.urls[0]).toBeDefined();
+            });
+            expect(JSON.parse(new URL(MockWebSocket.urls[0]).searchParams.get("x-corti-analytics") ?? "{}")).toEqual({
+                sdk_version: SDK_VERSION,
+                sdk_type: "corti-sdk-javascript",
+            });
+        } finally {
+            abort.abort();
+            socket.close();
+        }
+    });
+
     it("merges client analytics, per-connection overlay, and reserved keys on a transcribe connect", async () => {
         const abort = new AbortController();
         const client = new CortiClient({
@@ -161,6 +208,34 @@ describe("CortiClient analytics on outbound requests", () => {
             expect(JSON.parse(params.get("x-corti-analytics") ?? "{}")).toEqual({
                 integration: "epic-hyperspace",
                 visit_type: "inpatient",
+                sdk_version: SDK_VERSION,
+                sdk_type: "corti-sdk-javascript",
+            });
+        } finally {
+            abort.abort();
+            socket.close();
+        }
+    });
+
+    it("sends reserved sdk keys on a transcribe connect when no analytics is provided", async () => {
+        const abort = new AbortController();
+        const client = new CortiClient({
+            environment: ENV,
+            tenantName: "test",
+            auth: { accessToken: "fake-token" },
+            maxRetries: 0,
+        });
+
+        const socket = await client.transcribe.connect({
+            abortSignal: abort.signal,
+            reconnectAttempts: 0,
+        });
+
+        try {
+            await vi.waitFor(() => {
+                expect(MockWebSocket.urls[0]).toBeDefined();
+            });
+            expect(JSON.parse(new URL(MockWebSocket.urls[0]).searchParams.get("x-corti-analytics") ?? "{}")).toEqual({
                 sdk_version: SDK_VERSION,
                 sdk_type: "corti-sdk-javascript",
             });

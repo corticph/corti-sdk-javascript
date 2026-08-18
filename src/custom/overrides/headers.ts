@@ -28,5 +28,5 @@ export function mergeHeaders(...headersArray: (Record<string, unknown> | null | 
         rest.push(cleaned);
     }
 
-    return mergeHeadersOriginal(...rest, analytics ? withAnalytics(analytics) : undefined);
+    return mergeHeadersOriginal(...rest, withAnalytics(analytics));
 }

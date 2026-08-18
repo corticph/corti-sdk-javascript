@@ -1,15 +1,29 @@
 import { mergeHeaders, mergeOnlyDefinedHeaders } from "../../../src/core/headers";
+import { X_CORTI_ANALYTICS } from "../../../src/custom/utils/analytics";
 import { SDK_VERSION } from "../../../src/version";
+
+const DEFAULT_ANALYTICS = {
+    sdk_version: SDK_VERSION,
+    sdk_type: "corti-sdk-javascript",
+};
 
 describe("mergeHeaders", () => {
     it("last-write-wins for ordinary headers and lowercases keys", () => {
         const merged = mergeHeaders({ "X-Foo": "a", "X-Bar": "keep" }, { "x-foo": "b" });
-        expect(merged).toEqual({ "x-foo": "b", "x-bar": "keep" });
+        expect(merged["x-foo"]).toBe("b");
+        expect(merged["x-bar"]).toBe("keep");
+        expect(JSON.parse(merged[X_CORTI_ANALYTICS] as string)).toEqual(DEFAULT_ANALYTICS);
     });
 
     it("null deletes an existing header", () => {
         const merged = mergeHeaders({ "X-Foo": "a" }, { "x-foo": null });
-        expect(merged).toEqual({});
+        expect(merged["x-foo"]).toBeUndefined();
+        expect(JSON.parse(merged[X_CORTI_ANALYTICS] as string)).toEqual(DEFAULT_ANALYTICS);
+    });
+
+    it("always sets reserved sdk keys when no analytics is provided", () => {
+        const merged = mergeHeaders({ "X-Foo": "a" });
+        expect(JSON.parse(merged[X_CORTI_ANALYTICS] as string)).toEqual(DEFAULT_ANALYTICS);
     });
 
     it("deep-merges x-corti-analytics JSON payloads regardless of case", () => {
