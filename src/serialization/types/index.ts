@@ -201,6 +201,7 @@ export * from "./GuidedArrayNode.js";
 export * from "./GuidedAssemblyRequest.js";
 export * from "./GuidedAssemblySectionRef.js";
 export * from "./GuidedBoolNode.js";
+export * from "./GuidedDocument.js";
 export * from "./GuidedDocumentContext.js";
 export * from "./GuidedDocumentFactMinimal.js";
 export * from "./GuidedDocumentSection.js";
