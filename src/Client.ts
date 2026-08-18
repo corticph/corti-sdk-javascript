@@ -29,9 +29,9 @@ export class CortiClient {
     protected _recordings: RecordingsClient | undefined;
     protected _transcripts: TranscriptsClient | undefined;
     protected _facts: FactsClient | undefined;
-    protected _documents: DocumentsClient | undefined;
     protected _templates: TemplatesClient | undefined;
     protected _codes: CodesClient | undefined;
+    protected _documents: DocumentsClient | undefined;
     protected _languages: LanguagesClient | undefined;
     protected _agents: AgentsClient | undefined;
     protected _stream: StreamClient | undefined;
@@ -62,16 +62,16 @@ export class CortiClient {
         return (this._facts ??= new FactsClient(this._options));
     }
 
-    public get documents(): DocumentsClient {
-        return (this._documents ??= new DocumentsClient(this._options));
-    }
-
     public get templates(): TemplatesClient {
         return (this._templates ??= new TemplatesClient(this._options));
     }
 
     public get codes(): CodesClient {
         return (this._codes ??= new CodesClient(this._options));
+    }
+
+    public get documents(): DocumentsClient {
+        return (this._documents ??= new DocumentsClient(this._options));
     }
 
     public get languages(): LanguagesClient {
