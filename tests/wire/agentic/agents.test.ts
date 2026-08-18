@@ -29,11 +29,7 @@ describe("AgentsClient", () => {
                     visibility: "private",
                     lifecycle: "persistent",
                     connectors: [
-                        {
-                            id: "con.0192f4c8-7baf-7083-a46f-81d2bd70cf95",
-                            type: "registry",
-                            name: "@corti/coding-expert",
-                        },
+                        { id: "con.0192f4c8-7baf-7083-a46f-81d2bd70cf95", type: "registry", name: "pubmed-expert" },
                     ],
                     labels: { key: "value" },
                     createdAt: "2026-05-19T12:00:00Z",
@@ -67,7 +63,7 @@ describe("AgentsClient", () => {
                         {
                             id: "con.0192f4c8-7baf-7083-a46f-81d2bd70cf95",
                             type: "registry",
-                            name: "@corti/coding-expert",
+                            name: "pubmed-expert",
                         },
                     ],
                     labels: {
@@ -153,7 +149,7 @@ describe("AgentsClient", () => {
             visibility: "private",
             lifecycle: "persistent",
             connectors: [
-                { type: "registry", name: "@corti/coding-expert" },
+                { type: "registry", name: "pubmed-expert" },
                 {
                     type: "mcp",
                     name: "policybot",
@@ -194,7 +190,7 @@ describe("AgentsClient", () => {
                     id: "con.0192f4c8-7baf-7083-a46f-81d2bd70cf95",
                     type: "registry",
                     enabled: true,
-                    name: "@corti/coding-expert",
+                    name: "pubmed-expert",
                     config: { key: "value" },
                 },
             ],
@@ -223,7 +219,7 @@ describe("AgentsClient", () => {
             connectors: [
                 {
                     type: "registry",
-                    name: "@corti/coding-expert",
+                    name: "pubmed-expert",
                 },
                 {
                     type: "mcp",
@@ -275,7 +271,7 @@ describe("AgentsClient", () => {
                     id: "con.0192f4c8-7baf-7083-a46f-81d2bd70cf95",
                     type: "registry",
                     enabled: true,
-                    name: "@corti/coding-expert",
+                    name: "pubmed-expert",
                     config: {
                         key: "value",
                     },
@@ -466,7 +462,7 @@ describe("AgentsClient", () => {
                     id: "con.0192f4c8-7baf-7083-a46f-81d2bd70cf95",
                     type: "registry",
                     enabled: true,
-                    name: "@corti/coding-expert",
+                    name: "pubmed-expert",
                     config: { key: "value" },
                 },
             ],
@@ -498,7 +494,7 @@ describe("AgentsClient", () => {
                     id: "con.0192f4c8-7baf-7083-a46f-81d2bd70cf95",
                     type: "registry",
                     enabled: true,
-                    name: "@corti/coding-expert",
+                    name: "pubmed-expert",
                     config: {
                         key: "value",
                     },
@@ -710,7 +706,7 @@ describe("AgentsClient", () => {
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
-        const rawRequestBody = { name: "coder-v2", connectors: [{ type: "registry", name: "@corti/coding-expert" }] };
+        const rawRequestBody = { name: "coder-v2", connectors: [{ type: "registry", name: "pubmed-expert" }] };
         const rawResponseBody = {
             id: "agt.0192f4c8-2c5a-7b3e-9f1a-3c8d6e2b7a40",
             name: "coder",
@@ -724,7 +720,7 @@ describe("AgentsClient", () => {
                     id: "con.0192f4c8-7baf-7083-a46f-81d2bd70cf95",
                     type: "registry",
                     enabled: true,
-                    name: "@corti/coding-expert",
+                    name: "pubmed-expert",
                     config: { key: "value" },
                 },
             ],
@@ -748,7 +744,7 @@ describe("AgentsClient", () => {
             connectors: [
                 {
                     type: "registry",
-                    name: "@corti/coding-expert",
+                    name: "pubmed-expert",
                 },
             ],
         });
@@ -765,7 +761,7 @@ describe("AgentsClient", () => {
                     id: "con.0192f4c8-7baf-7083-a46f-81d2bd70cf95",
                     type: "registry",
                     enabled: true,
-                    name: "@corti/coding-expert",
+                    name: "pubmed-expert",
                     config: {
                         key: "value",
                     },

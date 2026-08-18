@@ -7,7 +7,7 @@ import type * as Corti from "../index.js";
  * Only `id`, `type`, `name`, `title`, `description`, and `configSchema` are populated by the server today. `version`, `provider`, `capabilities`, `tags`, and `documentationUrl` are declared for forward compatibility but are not yet returned.
  */
 export interface AgenticRegistryConnector {
-    /** Stable, namespaced registry identifier; use as a `registry` connector's `name`. */
+    /** Stable registry identifier; use as a `registry` connector's `name`. */
     id: string;
     /** The connector kind this entry provisions when attached to an agent. */
     type: Corti.CommonConnectorType;

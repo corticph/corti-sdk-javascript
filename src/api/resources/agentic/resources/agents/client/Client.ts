@@ -178,7 +178,7 @@ export class AgentsClient {
      *         lifecycle: "persistent",
      *         connectors: [{
      *                 type: "registry",
-     *                 name: "@corti/coding-expert"
+     *                 name: "pubmed-expert"
      *             }, {
      *                 type: "mcp",
      *                 name: "policybot",
@@ -466,7 +466,7 @@ export class AgentsClient {
      *         name: "coder-v2",
      *         connectors: [{
      *                 type: "registry",
-     *                 name: "@corti/coding-expert"
+     *                 name: "pubmed-expert"
      *             }]
      *     })
      */

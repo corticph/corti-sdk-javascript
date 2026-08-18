@@ -24,7 +24,7 @@ describe("ConnectorsClient", () => {
                     id: "con.0192f4c8-7baf-7083-a46f-81d2bd70cf95",
                     type: "registry",
                     enabled: true,
-                    name: "@corti/coding-expert",
+                    name: "pubmed-expert",
                     config: { key: "value" },
                 },
             ],
@@ -45,7 +45,7 @@ describe("ConnectorsClient", () => {
                     id: "con.0192f4c8-7baf-7083-a46f-81d2bd70cf95",
                     type: "registry",
                     enabled: true,
-                    name: "@corti/coding-expert",
+                    name: "pubmed-expert",
                     config: {
                         key: "value",
                     },
@@ -119,12 +119,12 @@ describe("ConnectorsClient", () => {
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
-        const rawRequestBody = { type: "registry", name: "@corti/coding-expert" };
+        const rawRequestBody = { type: "registry", name: "pubmed-expert" };
         const rawResponseBody = {
             id: "con.0192f4c8-7baf-7083-a46f-81d2bd70cf95",
             type: "registry",
             enabled: true,
-            name: "@corti/coding-expert",
+            name: "pubmed-expert",
             config: { key: "value" },
         };
 
@@ -139,13 +139,13 @@ describe("ConnectorsClient", () => {
 
         const response = await client.agentic.agents.connectors.create("agt.0192f4c8-2c5a-7b3e-9f1a-3c8d6e2b7a40", {
             type: "registry",
-            name: "@corti/coding-expert",
+            name: "pubmed-expert",
         });
         expect(response).toEqual({
             id: "con.0192f4c8-7baf-7083-a46f-81d2bd70cf95",
             type: "registry",
             enabled: true,
-            name: "@corti/coding-expert",
+            name: "pubmed-expert",
             config: {
                 key: "value",
             },
@@ -292,7 +292,7 @@ describe("ConnectorsClient", () => {
             id: "con.0192f4c8-7baf-7083-a46f-81d2bd70cf95",
             type: "registry",
             enabled: true,
-            name: "@corti/coding-expert",
+            name: "pubmed-expert",
             config: { key: "value" },
         };
 
@@ -314,7 +314,7 @@ describe("ConnectorsClient", () => {
             id: "con.0192f4c8-7baf-7083-a46f-81d2bd70cf95",
             type: "registry",
             enabled: true,
-            name: "@corti/coding-expert",
+            name: "pubmed-expert",
             config: {
                 key: "value",
             },
@@ -473,7 +473,7 @@ describe("ConnectorsClient", () => {
             id: "con.0192f4c8-7baf-7083-a46f-81d2bd70cf95",
             type: "registry",
             enabled: true,
-            name: "@corti/coding-expert",
+            name: "pubmed-expert",
             config: { key: "value" },
         };
 
@@ -499,7 +499,7 @@ describe("ConnectorsClient", () => {
             id: "con.0192f4c8-7baf-7083-a46f-81d2bd70cf95",
             type: "registry",
             enabled: true,
-            name: "@corti/coding-expert",
+            name: "pubmed-expert",
             config: {
                 key: "value",
             },

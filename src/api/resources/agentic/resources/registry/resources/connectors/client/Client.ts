@@ -121,7 +121,7 @@ export class ConnectorsClient {
     /**
      * @beta This endpoint is in pre-release and may change.
      *
-     * @param {string} connectorId - Registry connector identifier (e.g. `@corti/coding-expert`).
+     * @param {string} connectorId - Registry connector identifier (e.g. `pubmed-expert`).
      * @param {ConnectorsClient.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Corti.UnauthorizedError}

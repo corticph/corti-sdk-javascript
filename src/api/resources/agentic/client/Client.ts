@@ -4,7 +4,6 @@ import type { BaseClientOptions } from "../../../../BaseClient.js";
 import { type NormalizedClientOptionsWithAuth, normalizeClientOptionsWithAuth } from "../../../../BaseClient.js";
 import { AgentsClient } from "../resources/agents/client/Client.js";
 import { ContextsClient } from "../resources/contexts/client/Client.js";
-import { ModelsClient } from "../resources/models/client/Client.js";
 import { RegistryClient } from "../resources/registry/client/Client.js";
 
 export declare namespace AgenticClient {
@@ -15,7 +14,6 @@ export class AgenticClient {
     protected readonly _options: NormalizedClientOptionsWithAuth<AgenticClient.Options>;
     protected _agents: AgentsClient | undefined;
     protected _contexts: ContextsClient | undefined;
-    protected _models: ModelsClient | undefined;
     protected _registry: RegistryClient | undefined;
 
     constructor(options: AgenticClient.Options) {
@@ -28,10 +26,6 @@ export class AgenticClient {
 
     public get contexts(): ContextsClient {
         return (this._contexts ??= new ContextsClient(this._options));
-    }
-
-    public get models(): ModelsClient {
-        return (this._models ??= new ModelsClient(this._options));
     }
 
     public get registry(): RegistryClient {

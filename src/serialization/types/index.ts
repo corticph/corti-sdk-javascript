@@ -31,8 +31,6 @@ export * from "./AgenticFeedbackRating.js";
 export * from "./AgenticFeedbackRatingScale.js";
 export * from "./AgenticFeedbackResponse.js";
 export * from "./AgenticFeedbackTarget.js";
-export * from "./AgenticModel.js";
-export * from "./AgenticModelsListResponse.js";
 export * from "./AgenticRegistryConnector.js";
 export * from "./AgenticRegistryConnectorCapabilities.js";
 export * from "./AgenticRegistryConnectorsListResponse.js";

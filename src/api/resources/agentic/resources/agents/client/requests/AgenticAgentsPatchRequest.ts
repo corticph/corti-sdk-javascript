@@ -8,7 +8,7 @@ import type * as Corti from "../../../../../../index.js";
  *         name: "coder-v2",
  *         connectors: [{
  *                 type: "registry",
- *                 name: "@corti/coding-expert"
+ *                 name: "pubmed-expert"
  *             }]
  *     }
  */

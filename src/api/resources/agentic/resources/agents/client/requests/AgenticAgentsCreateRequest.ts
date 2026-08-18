@@ -13,7 +13,7 @@ import type * as Corti from "../../../../../../index.js";
  *         lifecycle: "persistent",
  *         connectors: [{
  *                 type: "registry",
- *                 name: "@corti/coding-expert"
+ *                 name: "pubmed-expert"
  *             }, {
  *                 type: "mcp",
  *                 name: "policybot",

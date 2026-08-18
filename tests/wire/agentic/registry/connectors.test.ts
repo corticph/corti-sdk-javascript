@@ -21,9 +21,9 @@ describe("ConnectorsClient", () => {
         const rawResponseBody = {
             connectors: [
                 {
-                    id: "@corti/coding-expert",
+                    id: "pubmed-expert",
                     type: "registry",
-                    name: "coding-expert",
+                    name: "pubmed-expert",
                     title: "ICD-10 Coding Expert",
                     description: "description",
                     version: "1.4.2",
@@ -50,9 +50,9 @@ describe("ConnectorsClient", () => {
         const expected = {
             connectors: [
                 {
-                    id: "@corti/coding-expert",
+                    id: "pubmed-expert",
                     type: "registry",
-                    name: "coding-expert",
+                    name: "pubmed-expert",
                     title: "ICD-10 Coding Expert",
                     description: "description",
                     version: "1.4.2",
@@ -123,29 +123,29 @@ describe("ConnectorsClient", () => {
         });
 
         const rawResponseBody = {
-            id: "@corti/coding-expert",
+            id: "pubmed-expert",
             type: "registry",
-            name: "coding-expert",
-            title: "ICD-10 Coding Expert",
-            description: "Returns ICD-10 codes for a clinical encounter.",
-            version: "1.4.2",
+            name: "pubmed-expert",
+            title: "PubMed",
+            description: "Search PubMed for scientific articles, abstracts, and citations.",
+            version: "1.0.0",
             icons: [
                 {
-                    src: "https://cdn.corti.ai/registry/corti/coding-expert.svg",
+                    src: "https://cdn.corti.ai/registry/corti/pubmed-expert.svg",
                     mimeType: "image/svg+xml",
                     sizes: ["any"],
                 },
             ],
             provider: "Corti",
-            websiteUrl: "https://corti.example.com/coding-expert",
-            documentationUrl: "https://docs.corti.example.com/coding-expert",
+            websiteUrl: "https://corti.example.com/pubmed-expert",
+            documentationUrl: "https://docs.corti.example.com/pubmed-expert",
             capabilities: {
-                streaming: true,
+                streaming: false,
                 inputModes: ["text/plain"],
                 outputModes: ["text/plain", "application/json"],
-                tools: ["lookup_icd10", "validate_code"],
+                tools: ["search_pubmed", "get_pubmed_abstract"],
             },
-            tags: ["icd10", "billing", "expert"],
+            tags: ["pubmed", "literature", "expert"],
             configSchema: { key: "value" },
         };
 
@@ -159,29 +159,29 @@ describe("ConnectorsClient", () => {
 
         const response = await client.agentic.registry.connectors.get("connectorId");
         expect(response).toEqual({
-            id: "@corti/coding-expert",
+            id: "pubmed-expert",
             type: "registry",
-            name: "coding-expert",
-            title: "ICD-10 Coding Expert",
-            description: "Returns ICD-10 codes for a clinical encounter.",
-            version: "1.4.2",
+            name: "pubmed-expert",
+            title: "PubMed",
+            description: "Search PubMed for scientific articles, abstracts, and citations.",
+            version: "1.0.0",
             icons: [
                 {
-                    src: "https://cdn.corti.ai/registry/corti/coding-expert.svg",
+                    src: "https://cdn.corti.ai/registry/corti/pubmed-expert.svg",
                     mimeType: "image/svg+xml",
                     sizes: ["any"],
                 },
             ],
             provider: "Corti",
-            websiteUrl: "https://corti.example.com/coding-expert",
-            documentationUrl: "https://docs.corti.example.com/coding-expert",
+            websiteUrl: "https://corti.example.com/pubmed-expert",
+            documentationUrl: "https://docs.corti.example.com/pubmed-expert",
             capabilities: {
-                streaming: true,
+                streaming: false,
                 inputModes: ["text/plain"],
                 outputModes: ["text/plain", "application/json"],
-                tools: ["lookup_icd10", "validate_code"],
+                tools: ["search_pubmed", "get_pubmed_abstract"],
             },
-            tags: ["icd10", "billing", "expert"],
+            tags: ["pubmed", "literature", "expert"],
             configSchema: {
                 key: "value",
             },
