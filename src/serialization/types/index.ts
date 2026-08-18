@@ -203,6 +203,7 @@ export * from "./GuidedAssemblySectionRef.js";
 export * from "./GuidedBoolNode.js";
 export * from "./GuidedDocumentContext.js";
 export * from "./GuidedDocumentFactMinimal.js";
+export * from "./GuidedDocumentSection.js";
 export * from "./GuidedDocumentsCreateEphemeralResponse.js";
 export * from "./GuidedDocumentsGenerateBase.js";
 export * from "./GuidedDocumentsGenerateByAssembly.js";
