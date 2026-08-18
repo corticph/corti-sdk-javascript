@@ -1034,6 +1034,18 @@ describe("DocumentsClient", () => {
                 interactionId: "interactionId",
                 stringDocument: { key: "value" },
                 structuredDocument: { key: "value" },
+                sections: [
+                    {
+                        sectionId: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+                        heading: "Chief Complaint",
+                        labels: [{ key: "inlineTemplate", value: "true" }],
+                    },
+                    {
+                        sectionId: "6ba7b810-9dad-11d1-80b4-00c04fd430c8",
+                        heading: "Assessment and Plan",
+                        labels: [{ key: "inlineTemplate", value: "true" }],
+                    },
+                ],
                 labels: [{ key: "key", value: "value" }],
             },
             usageInfo: { creditsConsumed: 1.1 },
@@ -1067,6 +1079,28 @@ describe("DocumentsClient", () => {
                 structuredDocument: {
                     key: "value",
                 },
+                sections: [
+                    {
+                        sectionId: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+                        heading: "Chief Complaint",
+                        labels: [
+                            {
+                                key: "inlineTemplate",
+                                value: "true",
+                            },
+                        ],
+                    },
+                    {
+                        sectionId: "6ba7b810-9dad-11d1-80b4-00c04fd430c8",
+                        heading: "Assessment and Plan",
+                        labels: [
+                            {
+                                key: "inlineTemplate",
+                                value: "true",
+                            },
+                        ],
+                    },
+                ],
                 labels: [
                     {
                         key: "key",

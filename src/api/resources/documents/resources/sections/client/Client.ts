@@ -325,16 +325,7 @@ export class SectionsClient {
                 case 404:
                     throw new Corti.NotFoundError(_response.error.body, _response.rawResponse);
                 case 409:
-                    throw new Corti.ConflictError(
-                        serializers.ErrorResponse.parseOrThrow(_response.error.body, {
-                            unrecognizedObjectKeys: "passthrough",
-                            allowUnrecognizedUnionMembers: true,
-                            allowUnrecognizedEnumValues: true,
-                            skipValidation: true,
-                            breadcrumbsPrefix: ["response"],
-                        }),
-                        _response.rawResponse,
-                    );
+                    throw new Corti.ConflictError(_response.error.body, _response.rawResponse);
                 default:
                     throw new errors.CortiError({
                         statusCode: _response.error.statusCode,
