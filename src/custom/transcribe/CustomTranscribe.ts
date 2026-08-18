@@ -2,7 +2,7 @@ import * as Corti from "../../api/index.js";
 import { TranscribeClient } from "../../api/resources/transcribe/client/Client.js";
 import * as core from "../../core/index.js";
 import { ErrorEvent } from "../../core/websocket/events.js";
-import { withAnalytics, X_CORTI_ANALYTICS_QUERY } from "../utils/analytics.js";
+import { withAnalytics } from "../utils/analytics.js";
 import { getWsProtocols, type ProxyOptions } from "../utils/encodeHeadersAsWsProtocols.js";
 import { CustomTranscribeSocket } from "./CustomTranscribeSocket.js";
 import { parseTranscribeResponseType } from "./parseTranscribeResponseType.js";
@@ -62,7 +62,7 @@ export class CustomTranscribe extends TranscribeClient {
                           "/transcribe",
                       ),
                   protocols,
-                  queryParameters: withAnalytics(this._analytics, X_CORTI_ANALYTICS_QUERY, proxy?.queryParameters),
+                  queryParameters: withAnalytics(this._analytics, proxy?.queryParameters),
                   headers: rest.headers ?? {},
                   options: { debug: rest.debug ?? false, maxRetries: rest.reconnectAttempts ?? 30 },
               })
@@ -71,7 +71,7 @@ export class CustomTranscribe extends TranscribeClient {
                       ...rest,
                       token: (await this._options.authProvider?.getAuthRequest())?.headers.Authorization || "",
                       tenantName: await core.Supplier.get(this._options.tenantName),
-                      queryParams: withAnalytics(this._analytics, X_CORTI_ANALYTICS_QUERY, rest.queryParams),
+                      queryParams: withAnalytics(this._analytics, rest.queryParams),
                   })
               ).socket;
 

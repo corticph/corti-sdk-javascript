@@ -6,7 +6,7 @@ import { CustomAgents } from "./agents/CustomAgents.js";
 import { CortiAuth } from "./auth/CortiAuth.js";
 import { CustomStream } from "./stream/CustomStream.js";
 import { CustomTranscribe } from "./transcribe/CustomTranscribe.js";
-import { X_CORTI_ANALYTICS_HEADER } from "./utils/analytics.js";
+import { X_CORTI_ANALYTICS } from "./utils/analytics.js";
 import { authToBaseOptions } from "./utils/authToBaseOptions.js";
 import { type Environment, getEnvironment } from "./utils/environment.js";
 import { resolveClientOptions } from "./utils/resolveClientOptions.js";
@@ -67,7 +67,7 @@ export class CortiClient extends BaseCortiClient {
         const restOptions = {
             ...opts,
             headers: mergeHeaders(options.headers, {
-                [X_CORTI_ANALYTICS_HEADER]: options.analytics,
+                [X_CORTI_ANALYTICS]: options.analytics,
             }),
             tenantName: ctx.tenantName,
             environment: getEnvironment(ctx.environment),
