@@ -7,9 +7,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  # TEMP: muted on feat/agents-v2-fern until v2 agents integration tests are rewritten.
   integration-main:
-    if: false
     runs-on: ubuntu-latest
 
     steps:
@@ -36,7 +34,7 @@ jobs:
 
   integration-empty-state:
     needs: [integration-main]
-    if: false
+    if: always()
     runs-on: ubuntu-latest
 
     steps:
