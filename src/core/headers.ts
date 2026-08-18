@@ -1,4 +1,7 @@
-export function mergeHeaders(...headersArray: (Record<string, unknown> | null | undefined)[]): Record<string, unknown> {
+/** Patch: X-Corti-Analytics - renamed generated merge; public mergeHeaders is the custom wrap */
+export function mergeHeadersOriginal(
+    ...headersArray: (Record<string, unknown> | null | undefined)[]
+): Record<string, unknown> {
     const result: Record<string, unknown> = {};
 
     for (const [key, value] of headersArray
@@ -31,3 +34,6 @@ export function mergeOnlyDefinedHeaders(
 
     return result;
 }
+
+/** Patch: X-Corti-Analytics - public mergeHeaders is the custom wrap that reuses mergeHeadersOriginal */
+export { mergeHeaders } from "../custom/overrides/headers.js";

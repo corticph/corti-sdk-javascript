@@ -2,7 +2,7 @@ import * as Corti from "../../api/index.js";
 import { StreamClient } from "../../api/resources/stream/client/Client.js";
 import * as core from "../../core/index.js";
 import { ErrorEvent } from "../../core/websocket/events.js";
-import { liftConnectAnalytics, mergeAnalyticsQueryParams } from "../utils/analytics.js";
+import { withAnalytics, X_CORTI_ANALYTICS_QUERY } from "../utils/analytics.js";
 import { getWsProtocols, type ProxyOptions } from "../utils/encodeHeadersAsWsProtocols.js";
 import { CustomStreamSocket } from "./CustomStreamSocket.js";
 import { parseStreamResponseType } from "./parseStreamResponseType.js";
@@ -31,17 +31,21 @@ export type CustomStreamConnectArgs = {
 
 export class CustomStream extends StreamClient {
     private readonly _encodeHeadersAsWsProtocols: boolean | undefined;
+    private readonly _analytics: Record<string, string> | undefined;
 
-    constructor(options: StreamClient.Options & { encodeHeadersAsWsProtocols?: boolean }) {
+    constructor(
+        options: StreamClient.Options & {
+            encodeHeadersAsWsProtocols?: boolean;
+            analytics?: Record<string, string>;
+        },
+    ) {
         super(options);
         this._encodeHeadersAsWsProtocols = options.encodeHeadersAsWsProtocols;
+        this._analytics = options.analytics;
     }
 
     public override async connect(args: CustomStreamConnectArgs): Promise<CustomStreamSocket> {
         const { configuration, awaitConfiguration = true, proxy, ...rest } = args;
-
-        // Lift x-corti-analytics from headers into the query string (browsers ignore WS headers).
-        const analytics = liftConnectAnalytics(this._options, rest as { headers?: Record<string, unknown> });
 
         const useProxyPath = proxy || this._encodeHeadersAsWsProtocols;
         const protocols = await getWsProtocols(
@@ -59,7 +63,7 @@ export class CustomStream extends StreamClient {
                           `/interactions/${core.url.encodePathParam(rest.id)}/streams`,
                       ),
                   protocols,
-                  queryParameters: mergeAnalyticsQueryParams(proxy?.queryParameters, analytics),
+                  queryParameters: withAnalytics(this._analytics, X_CORTI_ANALYTICS_QUERY, proxy?.queryParameters),
                   headers: rest.headers ?? {},
                   options: { debug: rest.debug ?? false, maxRetries: rest.reconnectAttempts ?? 30 },
               })
@@ -68,10 +72,7 @@ export class CustomStream extends StreamClient {
                       ...rest,
                       token: (await this._options.authProvider?.getAuthRequest())?.headers.Authorization || "",
                       tenantName: await core.Supplier.get(this._options.tenantName),
-                      queryParams: mergeAnalyticsQueryParams(
-                          (rest as { queryParams?: Record<string, unknown> }).queryParams,
-                          analytics,
-                      ),
+                      queryParams: withAnalytics(this._analytics, X_CORTI_ANALYTICS_QUERY, rest.queryParams),
                   })
               ).socket;
 

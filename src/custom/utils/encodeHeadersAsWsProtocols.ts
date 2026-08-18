@@ -20,9 +20,8 @@ const SDK_HEADER_NAMES_LOWER: ReadonlySet<string> = new Set([...SDK_HEADER_NAMES
  * - `tenant-name`: required for routing/auth in proxy mode; no query-param
  *   equivalent exists, so it must travel via subprotocols.
  *
- * `x-corti-analytics` is **not** here: the query string carries the fresh merged
- * value (including per-connection overrides), and a stale copy in the subprotocol
- * list would give the gateway two conflicting payloads.
+ * `x-corti-analytics` is **not** here: analytics travels on the query string, and a
+ * stale copy in the subprotocol list would give the gateway two conflicting payloads.
  */
 const FORWARDED_SDK_HEADERS: ReadonlySet<string> = new Set(["tenant-name"]);
 

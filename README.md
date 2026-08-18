@@ -670,7 +670,7 @@ const response = page.response;
 
 ### Analytics
 
-The SDK sends metadata about itself (`sdk_version`, `sdk_type`) with every request via the `X-Corti-Analytics` header (REST) or the `x-corti-analytics` query parameter (WebSocket). You can extend this payload with your own fields at two levels: client-level and per-request.
+The SDK sends metadata about itself (`sdk_version`, `sdk_type`) with every request via the `X-Corti-Analytics` header (REST) or the `x-corti-analytics` query parameter (WebSocket). You can extend this payload with your own fields on the client constructor, and overlay extra fields on individual REST calls.
 
 > **Reserved keys**: `sdk_version` and `sdk_type` are always set by the SDK and cannot be overridden at any level.
 
@@ -703,19 +703,7 @@ await client.interactions.list({}, {
 // X-Corti-Analytics includes: {"sdk_version":"...","sdk_type":"corti-sdk-javascript","source":"web-app","version":"1.0.0","request_id":"abc-123"}
 ```
 
-#### Per-connection (WebSocket)
-
-For WebSocket connections (stream / transcribe), pass an `x-corti-analytics` header in `connect()`. The SDK lifts it into the query string because WS handshakes cannot carry custom headers in browsers.
-
-```typescript
-const socket = await client.stream.connect({
-    id: interactionId,
-    headers: {
-        "x-corti-analytics": JSON.stringify({ session: "live-123" }),
-    },
-});
-// x-corti-analytics query param includes: ..., session: "live-123"
-```
+WebSocket handshakes cannot carry custom headers in browsers, so the client-level payload travels as the `x-corti-analytics` query parameter on `stream.connect` / `transcribe.connect`.
 
 > **Note**: WebSocket analytics travel in the query string and may appear in access logs — avoid including personally identifiable information.
 
