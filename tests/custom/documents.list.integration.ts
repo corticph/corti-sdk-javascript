@@ -2,7 +2,7 @@ import { faker } from "@faker-js/faker";
 import type { CortiClient } from "../../src";
 import { createTestCortiClient, createTestDocument, createTestInteraction, setupConsoleWarnSpy } from "./testUtils";
 
-describe("cortiClient.documents.list", () => {
+describe("cortiClient.documents.classic.list", () => {
     let cortiClient: CortiClient;
     let consoleWarnSpy: ReturnType<typeof setupConsoleWarnSpy>;
 
@@ -24,7 +24,7 @@ describe("cortiClient.documents.list", () => {
 
             const interactionId = await createTestInteraction(cortiClient);
 
-            const result = await cortiClient.documents.list(interactionId);
+            const result = await cortiClient.documents.classic.list(interactionId);
 
             expect(result).toBeDefined();
             expect(consoleWarnSpy).not.toHaveBeenCalled();
@@ -36,7 +36,7 @@ describe("cortiClient.documents.list", () => {
             const interactionId = await createTestInteraction(cortiClient);
             await createTestDocument(cortiClient, interactionId);
 
-            const result = await cortiClient.documents.list(interactionId);
+            const result = await cortiClient.documents.classic.list(interactionId);
 
             expect(result).toBeDefined();
             expect(consoleWarnSpy).not.toHaveBeenCalled();
@@ -47,7 +47,7 @@ describe("cortiClient.documents.list", () => {
         it("should throw error when interaction ID is missing", async () => {
             expect.assertions(1);
 
-            await expect(cortiClient.documents.list(undefined as any)).rejects.toThrow();
+            await expect(cortiClient.documents.classic.list(undefined as any)).rejects.toThrow();
         });
     });
 
@@ -55,13 +55,13 @@ describe("cortiClient.documents.list", () => {
         it("should throw error when interaction ID is invalid format", async () => {
             expect.assertions(1);
 
-            await expect(cortiClient.documents.list("invalid-uuid")).rejects.toThrow("Status code: 400");
+            await expect(cortiClient.documents.classic.list("invalid-uuid")).rejects.toThrow("Status code: 400");
         });
 
         it("should throw error when interaction ID does not exist", async () => {
             expect.assertions(1);
 
-            await expect(cortiClient.documents.list(faker.string.uuid())).rejects.toThrow("Status code: 404");
+            await expect(cortiClient.documents.classic.list(faker.string.uuid())).rejects.toThrow("Status code: 404");
         });
     });
 });

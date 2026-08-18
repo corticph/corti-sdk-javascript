@@ -2,7 +2,7 @@ import { faker } from "@faker-js/faker";
 import type { CortiClient } from "../../src";
 import { createTestCortiClient, createTestDocument, createTestInteraction, setupConsoleWarnSpy } from "./testUtils";
 
-describe("cortiClient.documents.get", () => {
+describe("cortiClient.documents.classic.get", () => {
     let cortiClient: CortiClient;
     let consoleWarnSpy: ReturnType<typeof setupConsoleWarnSpy>;
 
@@ -25,7 +25,7 @@ describe("cortiClient.documents.get", () => {
             const interactionId = await createTestInteraction(cortiClient);
             const documentId = await createTestDocument(cortiClient, interactionId);
 
-            const result = await cortiClient.documents.get(interactionId, documentId);
+            const result = await cortiClient.documents.classic.get(interactionId, documentId);
 
             expect(result).toBeDefined();
             expect(consoleWarnSpy).not.toHaveBeenCalled();
@@ -36,7 +36,7 @@ describe("cortiClient.documents.get", () => {
         it("should throw error when interaction ID is missing", async () => {
             expect.assertions(1);
 
-            await expect(cortiClient.documents.get(undefined as any, faker.string.uuid())).rejects.toThrow();
+            await expect(cortiClient.documents.classic.get(undefined as any, faker.string.uuid())).rejects.toThrow();
         });
 
         it("should throw error when document ID is missing", async () => {
@@ -44,7 +44,7 @@ describe("cortiClient.documents.get", () => {
 
             const interactionId = await createTestInteraction(cortiClient);
 
-            await expect(cortiClient.documents.get(interactionId, undefined as any)).rejects.toThrow();
+            await expect(cortiClient.documents.classic.get(interactionId, undefined as any)).rejects.toThrow();
         });
     });
 
@@ -52,7 +52,7 @@ describe("cortiClient.documents.get", () => {
         it("should throw error when interaction ID is invalid format", async () => {
             expect.assertions(1);
 
-            await expect(cortiClient.documents.get("invalid-uuid", faker.string.uuid())).rejects.toThrow(
+            await expect(cortiClient.documents.classic.get("invalid-uuid", faker.string.uuid())).rejects.toThrow(
                 "Status code: 400",
             );
         });
@@ -62,13 +62,13 @@ describe("cortiClient.documents.get", () => {
 
             const interactionId = await createTestInteraction(cortiClient);
 
-            await expect(cortiClient.documents.get(interactionId, "invalid-uuid")).rejects.toThrow("Status code: 400");
+            await expect(cortiClient.documents.classic.get(interactionId, "invalid-uuid")).rejects.toThrow("Status code: 400");
         });
 
         it("should throw error when interaction ID does not exist", async () => {
             expect.assertions(1);
 
-            await expect(cortiClient.documents.get(faker.string.uuid(), faker.string.uuid())).rejects.toThrow(
+            await expect(cortiClient.documents.classic.get(faker.string.uuid(), faker.string.uuid())).rejects.toThrow(
                 "Status code: 404",
             );
         });
@@ -78,7 +78,7 @@ describe("cortiClient.documents.get", () => {
 
             const interactionId = await createTestInteraction(cortiClient);
 
-            await expect(cortiClient.documents.get(interactionId, faker.string.uuid())).rejects.toThrow(
+            await expect(cortiClient.documents.classic.get(interactionId, faker.string.uuid())).rejects.toThrow(
                 "Status code: 404",
             );
         });
