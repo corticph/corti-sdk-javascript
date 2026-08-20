@@ -249,6 +249,7 @@ export * from "./GuidedTemplateInstructionsPartial.js";
 export * from "./GuidedTemplateListItem.js";
 export * from "./GuidedTemplateListItemSource.js";
 export * from "./GuidedTemplateOverrides.js";
+export * from "./GuidedTemplateOverridesGeneration.js";
 export * from "./GuidedTemplateRef.js";
 export * from "./GuidedTemplatesCreateBase.js";
 export * from "./GuidedTemplatesCreateFromInheritanceRequest.js";
