@@ -8,7 +8,7 @@ import type * as Corti from "../index.js";
 export interface CodesFilterCondition {
     /** The attribute to filter on, e.g. `code`. */
     property: string;
-    /** Comparison operator: `=` (equal), `is-a` (code plus descendants), `descendent-of` (strict descendants), `exists` (has any value), `in` (membership). */
+    /** Comparison operator: `=` (equal), `is-a` (code plus descendants), `descendent-of` (strict descendants), `exists` (`value: true`/`false` for set/unset), `in` (membership). */
     op?: Corti.CodesFilterConditionOp;
     /** Comparison value; type depends on `op`. */
     value: Corti.CodesFilterConditionValue;
