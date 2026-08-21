@@ -18,6 +18,7 @@ export interface TranscriptsCreateRequest {
     spokenPunctuation?: boolean;
     /** When true, automatically punctuates and capitalizes the transcript. Defaults to true. Overridden by `spokenPunctuation` when both are enabled. */
     automaticPunctuation?: boolean;
+    formatting?: Corti.TranscriptsFormatting;
     /** **Deprecated** — replaced by `spokenPunctuation` and `automaticPunctuation`. Ignored when either of those fields is provided. When `true` and neither new field is provided, it is treated as `spokenPunctuation: true` (automatic punctuation off). No removal date is currently planned. */
     isDictation?: boolean;
     /** If true, each audio channel is transcribed separately. */
@@ -32,4 +33,6 @@ export interface TranscriptsCreateRequest {
     replacements?: Corti.TranscriptsCreateRequestReplacementsItem[];
     /** Define words, terms, and phrases to be recognized by Corti speech-to-text. Especially useful for proper nouns (e.g., surnames), but also supportive of words not being recognized consistently. */
     keyterms?: Corti.TranscriptsCreateRequestKeyterms;
+    /** When enabled, the transcript is stored and returned at word level instead of phrase/utterance level. Fixed for the lifetime of the transcript once created. */
+    wordLevel?: Corti.TranscriptsCreateRequestWordLevel;
 }
