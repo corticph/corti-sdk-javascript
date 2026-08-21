@@ -18,4 +18,6 @@ export interface GuidedObjectNode {
     fieldFormat?: string;
     /** Define what fields are possible to return in the object. */
     fields?: Corti.GuidedFieldDefinition[];
+    /** Text rendered in place of the object when no field has relevant input/output and no field-level `default` is set. */
+    fallbackString?: string | null;
 }
