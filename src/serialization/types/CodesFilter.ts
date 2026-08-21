@@ -3,18 +3,17 @@
 import type * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
 import type * as serializers from "../index.js";
+import { CodesFilterCondition } from "./CodesFilterCondition.js";
 
 export const CodesFilter: core.serialization.ObjectSchema<serializers.CodesFilter.Raw, Corti.CodesFilter> =
     core.serialization.object({
-        include: core.serialization.list(core.serialization.string()).optional(),
-        exclude: core.serialization.list(core.serialization.string()).optional(),
-        expand: core.serialization.boolean().optional(),
+        include: core.serialization.list(CodesFilterCondition).optional(),
+        exclude: core.serialization.list(CodesFilterCondition).optional(),
     });
 
 export declare namespace CodesFilter {
     export interface Raw {
-        include?: string[] | null;
-        exclude?: string[] | null;
-        expand?: boolean | null;
+        include?: CodesFilterCondition.Raw[] | null;
+        exclude?: CodesFilterCondition.Raw[] | null;
     }
 }
