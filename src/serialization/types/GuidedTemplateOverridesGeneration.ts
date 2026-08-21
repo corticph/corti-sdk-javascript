@@ -5,20 +5,17 @@ import * as core from "../../core/index.js";
 import type * as serializers from "../index.js";
 import { GuidedSectionOverride } from "./GuidedSectionOverride.js";
 import { GuidedTemplateInstructions } from "./GuidedTemplateInstructions.js";
-import { GuidedTemplateOverridesGeneration } from "./GuidedTemplateOverridesGeneration.js";
 
-export const GuidedTemplateOverrides: core.serialization.ObjectSchema<
-    serializers.GuidedTemplateOverrides.Raw,
-    Corti.GuidedTemplateOverrides
+export const GuidedTemplateOverridesGeneration: core.serialization.ObjectSchema<
+    serializers.GuidedTemplateOverridesGeneration.Raw,
+    Corti.GuidedTemplateOverridesGeneration
 > = core.serialization.object({
-    generation: GuidedTemplateOverridesGeneration.optional(),
     instructions: GuidedTemplateInstructions.optional(),
     sections: core.serialization.list(GuidedSectionOverride).optional(),
 });
 
-export declare namespace GuidedTemplateOverrides {
+export declare namespace GuidedTemplateOverridesGeneration {
     export interface Raw {
-        generation?: GuidedTemplateOverridesGeneration.Raw | null;
         instructions?: GuidedTemplateInstructions.Raw | null;
         sections?: GuidedSectionOverride.Raw[] | null;
     }
