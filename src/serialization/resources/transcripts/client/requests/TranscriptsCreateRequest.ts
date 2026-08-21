@@ -3,10 +3,12 @@
 import type * as Corti from "../../../../../api/index.js";
 import * as core from "../../../../../core/index.js";
 import type * as serializers from "../../../../index.js";
+import { TranscriptsFormatting } from "../../../../types/TranscriptsFormatting.js";
 import { TranscriptsParticipant } from "../../../../types/TranscriptsParticipant.js";
 import { Uuid } from "../../../../types/Uuid.js";
 import { TranscriptsCreateRequestKeyterms } from "../../types/TranscriptsCreateRequestKeyterms.js";
 import { TranscriptsCreateRequestReplacementsItem } from "../../types/TranscriptsCreateRequestReplacementsItem.js";
+import { TranscriptsCreateRequestWordLevel } from "../../types/TranscriptsCreateRequestWordLevel.js";
 
 export const TranscriptsCreateRequest: core.serialization.Schema<
     serializers.TranscriptsCreateRequest.Raw,
@@ -16,6 +18,7 @@ export const TranscriptsCreateRequest: core.serialization.Schema<
     primaryLanguage: core.serialization.string(),
     spokenPunctuation: core.serialization.boolean().optional(),
     automaticPunctuation: core.serialization.boolean().optional(),
+    formatting: TranscriptsFormatting.optional(),
     isDictation: core.serialization.boolean().optional(),
     isMultichannel: core.serialization.boolean().optional(),
     diarize: core.serialization.boolean().optional(),
@@ -23,6 +26,7 @@ export const TranscriptsCreateRequest: core.serialization.Schema<
     async: core.serialization.boolean().optional(),
     replacements: core.serialization.list(TranscriptsCreateRequestReplacementsItem).optional(),
     keyterms: TranscriptsCreateRequestKeyterms.optional(),
+    wordLevel: TranscriptsCreateRequestWordLevel.optional(),
 });
 
 export declare namespace TranscriptsCreateRequest {
@@ -31,6 +35,7 @@ export declare namespace TranscriptsCreateRequest {
         primaryLanguage: string;
         spokenPunctuation?: boolean | null;
         automaticPunctuation?: boolean | null;
+        formatting?: TranscriptsFormatting.Raw | null;
         isDictation?: boolean | null;
         isMultichannel?: boolean | null;
         diarize?: boolean | null;
@@ -38,5 +43,6 @@ export declare namespace TranscriptsCreateRequest {
         async?: boolean | null;
         replacements?: TranscriptsCreateRequestReplacementsItem.Raw[] | null;
         keyterms?: TranscriptsCreateRequestKeyterms.Raw | null;
+        wordLevel?: TranscriptsCreateRequestWordLevel.Raw | null;
     }
 }

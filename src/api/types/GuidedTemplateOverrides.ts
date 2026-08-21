@@ -2,9 +2,14 @@
 
 import type * as Corti from "../index.js";
 
+/**
+ * Template-level override patch. `generation` is the canonical shape. The flat `instructions` and `sections` fields are deprecated and remain for backward compatibility. Use `generation` instead. If a request sets both `generation` and a flat field, the server rejects it with a 400.
+ */
 export interface GuidedTemplateOverrides {
-    /** Replaces the template-level instructions for this call. */
+    /** The canonical override wrapper for this template. */
+    generation?: Corti.GuidedTemplateOverridesGeneration;
+    /** **Deprecated** — use `generation.instructions`. Replaces the template-level instructions for this call. */
     instructions?: Corti.GuidedTemplateInstructions;
-    /** Per-section override patches. Each entry must reference a section already linked to the base template version. */
+    /** **Deprecated** — use `generation.sections`. Per-section override patches. Each entry must reference a section already linked to the base template version. */
     sections?: Corti.GuidedSectionOverride[];
 }

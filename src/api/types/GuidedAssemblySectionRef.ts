@@ -9,5 +9,6 @@ export interface GuidedAssemblySectionRef {
     sectionId: string;
     /** Optional explicit section version. Defaults to the section's published version when omitted. */
     sectionVersionId?: string | null;
-    overrides?: Corti.GuidedSectionOverrides;
+    /** Runtime override patch for this section. `generation` is the canonical shape. The flat fields are deprecated. */
+    overrides?: Corti.GuidedSectionOverridePatch;
 }
