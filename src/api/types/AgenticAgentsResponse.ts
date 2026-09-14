@@ -29,4 +29,6 @@ export interface AgenticAgentsResponse {
     updatedAt?: Date;
     /** Principal (user or service principal) that created the agent. */
     createdBy?: Corti.AgentsUserIdValue;
+    /** When the agent expires; `null` means it does not expire. Ephemeral agents get a 24h expiry at creation time; persistent agents never expire. */
+    expiresAt?: Date | null;
 }

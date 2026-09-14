@@ -26,6 +26,7 @@ export const AgenticAgentsResponse: core.serialization.ObjectSchema<
     createdAt: core.serialization.date().optional(),
     updatedAt: core.serialization.date().optional(),
     createdBy: AgentsUserIdValue.optional(),
+    expiresAt: core.serialization.date().optionalNullable(),
 });
 
 export declare namespace AgenticAgentsResponse {
@@ -42,5 +43,6 @@ export declare namespace AgenticAgentsResponse {
         createdAt?: string | null;
         updatedAt?: string | null;
         createdBy?: AgentsUserIdValue.Raw | null;
+        expiresAt?: (string | null | undefined) | null;
     }
 }
