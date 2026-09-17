@@ -18,14 +18,28 @@ describe("LanguagesClient", () => {
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
 
-        const rawResponseBody = { languages: { key: "value" } };
+        const rawResponseBody = {
+            languages: {
+                key: { streams: { enabled: false }, transcribe: { enabled: false }, transcripts: { enabled: false } },
+            },
+        };
 
         server.mockEndpoint().get("/languages/").respondWith().statusCode(200).jsonBody(rawResponseBody).build();
 
         const response = await client.languages.list();
         expect(response).toEqual({
             languages: {
-                key: "value",
+                key: {
+                    streams: {
+                        enabled: false,
+                    },
+                    transcribe: {
+                        enabled: false,
+                    },
+                    transcripts: {
+                        enabled: false,
+                    },
+                },
             },
         });
     });

@@ -21,6 +21,8 @@ export interface AgenticAgentsPatchRequest {
     systemPrompt?: string | null;
     /** New model identifier; `null` falls back to the tenant default. */
     model?: string | null;
+    /** New cap on the orchestrator's ReAct loop iterations per run. Omitted leaves the current value unchanged; there is no `null`-reset — send 10 to restore the default. */
+    maxLoops?: number;
     visibility?: Corti.AgentsVisibility;
     lifecycle?: Corti.AgentsLifecycle;
     /** Replacement connector list; `null` clears connectors. */
