@@ -11,11 +11,15 @@ export const AgentsRegistryMcpServer: core.serialization.ObjectSchema<
 > = core.serialization.object({
     name: core.serialization.string(),
     authorizationType: AgentsRegistryMcpServerAuthorizationType,
+    requiredHeaders: core.serialization.list(core.serialization.string()).optional(),
+    optionalHeaders: core.serialization.list(core.serialization.string()).optional(),
 });
 
 export declare namespace AgentsRegistryMcpServer {
     export interface Raw {
         name: string;
         authorizationType: AgentsRegistryMcpServerAuthorizationType.Raw;
+        requiredHeaders?: string[] | null;
+        optionalHeaders?: string[] | null;
     }
 }

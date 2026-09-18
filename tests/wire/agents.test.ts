@@ -148,6 +148,8 @@ describe("AgentsClient", () => {
                     authorizationScope: "authorizationScope",
                     url: "url",
                     redirectUrl: "redirectUrl",
+                    requiredHeaders: ["requiredHeaders"],
+                    optionalHeaders: ["optionalHeaders"],
                 },
             ],
         };
@@ -197,6 +199,8 @@ describe("AgentsClient", () => {
                     authorizationScope: "authorizationScope",
                     url: "url",
                     redirectUrl: "redirectUrl",
+                    requiredHeaders: ["requiredHeaders"],
+                    optionalHeaders: ["optionalHeaders"],
                 },
             ],
         });
@@ -333,6 +337,8 @@ describe("AgentsClient", () => {
                     authorizationScope: "authorizationScope",
                     url: "url",
                     redirectUrl: "redirectUrl",
+                    requiredHeaders: ["requiredHeaders"],
+                    optionalHeaders: ["optionalHeaders"],
                 },
             ],
         };
@@ -378,6 +384,8 @@ describe("AgentsClient", () => {
                     authorizationScope: "authorizationScope",
                     url: "url",
                     redirectUrl: "redirectUrl",
+                    requiredHeaders: ["requiredHeaders"],
+                    optionalHeaders: ["optionalHeaders"],
                 },
             ],
         });
@@ -570,6 +578,8 @@ describe("AgentsClient", () => {
                     authorizationScope: "authorizationScope",
                     url: "url",
                     redirectUrl: "redirectUrl",
+                    requiredHeaders: ["requiredHeaders"],
+                    optionalHeaders: ["optionalHeaders"],
                 },
             ],
         };
@@ -616,6 +626,8 @@ describe("AgentsClient", () => {
                     authorizationScope: "authorizationScope",
                     url: "url",
                     redirectUrl: "redirectUrl",
+                    requiredHeaders: ["requiredHeaders"],
+                    optionalHeaders: ["optionalHeaders"],
                 },
             ],
         });
