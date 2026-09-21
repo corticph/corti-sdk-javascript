@@ -212,7 +212,7 @@ describe("TranscriptsClient", () => {
         const rawRequestBody = { recordingId: "f47ac10b-58cc-4372-a567-0e02b2c3d479", primaryLanguage: "en" };
         const rawResponseBody = {
             id: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
-            metadata: { participantsRoles: [{ channel: 1, role: "doctor" }] },
+            metadata: { participantsRoles: [{ channel: 1, role: "role" }] },
             transcripts: [{ channel: 1, participant: 1, speakerId: 1, text: "text", start: 1, end: 1 }],
             usageInfo: { creditsConsumed: 1.1 },
             recordingId: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
@@ -238,7 +238,7 @@ describe("TranscriptsClient", () => {
                 participantsRoles: [
                     {
                         channel: 1,
-                        role: "doctor",
+                        role: "role",
                     },
                 ],
             },
@@ -429,7 +429,7 @@ describe("TranscriptsClient", () => {
 
         const rawResponseBody = {
             id: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
-            metadata: { participantsRoles: [{ channel: 1, role: "doctor" }] },
+            metadata: { participantsRoles: [{ channel: 1, role: "role" }] },
             transcripts: [{ channel: 1, participant: 1, speakerId: 1, text: "text", start: 1, end: 1 }],
             usageInfo: { creditsConsumed: 1.1 },
             recordingId: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
@@ -454,7 +454,7 @@ describe("TranscriptsClient", () => {
                 participantsRoles: [
                     {
                         channel: 1,
-                        role: "doctor",
+                        role: "role",
                     },
                 ],
             },
