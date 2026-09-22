@@ -3,16 +3,17 @@
 import type * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
 import type * as serializers from "../index.js";
+import { LanguagesEndpoint } from "./LanguagesEndpoint.js";
 
 export const LanguagesListResponse: core.serialization.ObjectSchema<
     serializers.LanguagesListResponse.Raw,
     Corti.LanguagesListResponse
 > = core.serialization.object({
-    languages: core.serialization.record(core.serialization.string(), core.serialization.unknown()),
+    languages: core.serialization.record(core.serialization.string(), LanguagesEndpoint),
 });
 
 export declare namespace LanguagesListResponse {
     export interface Raw {
-        languages: Record<string, unknown>;
+        languages: Record<string, LanguagesEndpoint.Raw>;
     }
 }

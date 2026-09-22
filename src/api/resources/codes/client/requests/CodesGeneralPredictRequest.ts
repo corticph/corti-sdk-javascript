@@ -20,8 +20,11 @@ import type * as Corti from "../../../../index.js";
  *                 text: "Patient presents with uncontrolled type 2 diabetes."
  *             }],
  *         filter: {
- *             include: ["E11"],
- *             exclude: ["exclude"]
+ *             include: [{
+ *                     property: "code",
+ *                     op: "is-a",
+ *                     value: ["E11"]
+ *                 }]
  *         }
  *     }
  */
