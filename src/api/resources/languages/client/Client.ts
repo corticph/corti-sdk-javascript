@@ -29,7 +29,6 @@ export class LanguagesClient {
      * @param {LanguagesClient.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Corti.BadRequestError}
-     * @throws {@link Corti.InternalServerError}
      *
      * @example
      *     await client.languages.list()
@@ -94,17 +93,6 @@ export class LanguagesClient {
             switch (_response.error.statusCode) {
                 case 400:
                     throw new Corti.BadRequestError(_response.error.body, _response.rawResponse);
-                case 500:
-                    throw new Corti.InternalServerError(
-                        serializers.ErrorResponse.parseOrThrow(_response.error.body, {
-                            unrecognizedObjectKeys: "passthrough",
-                            allowUnrecognizedUnionMembers: true,
-                            allowUnrecognizedEnumValues: true,
-                            skipValidation: true,
-                            breadcrumbsPrefix: ["response"],
-                        }),
-                        _response.rawResponse,
-                    );
                 default:
                     throw new errors.CortiError({
                         statusCode: _response.error.statusCode,

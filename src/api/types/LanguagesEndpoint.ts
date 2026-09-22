@@ -3,10 +3,5 @@
 import type * as Corti from "../index.js";
 
 export interface LanguagesEndpoint {
-    /** Streams endpoint with its supported attributes. */
-    streams: Corti.LanguagesEndpointAttributes;
-    /** Transcribe endpoint with its supported attributes. */
-    transcribe: Corti.LanguagesEndpointAttributes;
-    /** Transcripts endpoint with its supported attributes. */
-    transcripts: Corti.LanguagesEndpointAttributes;
+    endpoints: Corti.LanguagesEndpoints;
 }

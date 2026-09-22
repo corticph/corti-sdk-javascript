@@ -3,21 +3,17 @@
 import type * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
 import type * as serializers from "../index.js";
-import { LanguagesEndpointAttributes } from "./LanguagesEndpointAttributes.js";
+import { LanguagesEndpoints } from "./LanguagesEndpoints.js";
 
 export const LanguagesEndpoint: core.serialization.ObjectSchema<
     serializers.LanguagesEndpoint.Raw,
     Corti.LanguagesEndpoint
 > = core.serialization.object({
-    streams: LanguagesEndpointAttributes,
-    transcribe: LanguagesEndpointAttributes,
-    transcripts: LanguagesEndpointAttributes,
+    endpoints: LanguagesEndpoints,
 });
 
 export declare namespace LanguagesEndpoint {
     export interface Raw {
-        streams: LanguagesEndpointAttributes.Raw;
-        transcribe: LanguagesEndpointAttributes.Raw;
-        transcripts: LanguagesEndpointAttributes.Raw;
+        endpoints: LanguagesEndpoints.Raw;
     }
 }

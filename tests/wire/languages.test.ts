@@ -20,7 +20,13 @@ describe("LanguagesClient", () => {
 
         const rawResponseBody = {
             languages: {
-                key: { streams: { enabled: false }, transcribe: { enabled: false }, transcripts: { enabled: false } },
+                key: {
+                    endpoints: {
+                        streams: { enabled: false },
+                        transcribe: { enabled: false },
+                        transcripts: { enabled: false },
+                    },
+                },
             },
         };
 
@@ -30,14 +36,16 @@ describe("LanguagesClient", () => {
         expect(response).toEqual({
             languages: {
                 key: {
-                    streams: {
-                        enabled: false,
-                    },
-                    transcribe: {
-                        enabled: false,
-                    },
-                    transcripts: {
-                        enabled: false,
+                    endpoints: {
+                        streams: {
+                            enabled: false,
+                        },
+                        transcribe: {
+                            enabled: false,
+                        },
+                        transcripts: {
+                            enabled: false,
+                        },
                     },
                 },
             },
@@ -63,26 +71,5 @@ describe("LanguagesClient", () => {
         await expect(async () => {
             return await client.languages.list();
         }).rejects.toThrow(Corti.BadRequestError);
-    });
-
-    test("list (3)", async () => {
-        const server = mockServerPool.createServer();
-        mockOAuth(server);
-
-        const client = new CortiClient({
-            maxRetries: 0,
-            clientId: "client_id",
-            clientSecret: "client_secret",
-            tenantName: "test",
-            environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
-        });
-
-        const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
-
-        server.mockEndpoint().get("/languages/").respondWith().statusCode(500).jsonBody(rawResponseBody).build();
-
-        await expect(async () => {
-            return await client.languages.list();
-        }).rejects.toThrow(Corti.InternalServerError);
     });
 });

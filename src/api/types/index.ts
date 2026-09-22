@@ -277,6 +277,7 @@ export * from "./InteractionsListResponse.js";
 export * from "./InteractionsPatient.js";
 export * from "./LanguagesEndpoint.js";
 export * from "./LanguagesEndpointAttributes.js";
+export * from "./LanguagesEndpoints.js";
 export * from "./LanguagesListResponse.js";
 export * from "./OAuthTokenRequest.js";
 export * from "./RecordingsCreateResponse.js";
