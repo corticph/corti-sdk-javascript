@@ -15,6 +15,7 @@ export const AgenticAgentsPatchRequest: core.serialization.Schema<
     description: core.serialization.string().optionalNullable(),
     systemPrompt: core.serialization.string().optionalNullable(),
     model: core.serialization.string().optionalNullable(),
+    maxLoops: core.serialization.number().optional(),
     visibility: AgentsVisibility.optional(),
     lifecycle: AgentsLifecycle.optional(),
     connectors: core.serialization.list(CommonConnectorCreateRequest).optionalNullable(),
@@ -29,6 +30,7 @@ export declare namespace AgenticAgentsPatchRequest {
         description?: (string | null | undefined) | null;
         systemPrompt?: (string | null | undefined) | null;
         model?: (string | null | undefined) | null;
+        maxLoops?: number | null;
         visibility?: AgentsVisibility.Raw | null;
         lifecycle?: AgentsLifecycle.Raw | null;
         connectors?: (CommonConnectorCreateRequest.Raw[] | null | undefined) | null;
