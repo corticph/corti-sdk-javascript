@@ -14,4 +14,6 @@ export interface GuidedArrayNode {
     minItems?: number | null;
     /** Maximum number of array items to generate. */
     maxItems?: number | null;
+    /** Text rendered in place of the array when no items have relevant input/output. */
+    fallbackString?: string | null;
 }

@@ -3,19 +3,18 @@
 import type * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
 import type * as serializers from "../index.js";
-import { StreamConfigParticipantRole } from "./StreamConfigParticipantRole.js";
 
 export const StreamConfigParticipant: core.serialization.ObjectSchema<
     serializers.StreamConfigParticipant.Raw,
     Corti.StreamConfigParticipant
 > = core.serialization.object({
     channel: core.serialization.number(),
-    role: StreamConfigParticipantRole,
+    role: core.serialization.string(),
 });
 
 export declare namespace StreamConfigParticipant {
     export interface Raw {
         channel: number;
-        role: StreamConfigParticipantRole.Raw;
+        role: string;
     }
 }
