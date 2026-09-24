@@ -3,6 +3,7 @@
 import * as core from "../../../../core/index.js";
 import { fromJson } from "../../../../core/json.js";
 import * as serializers from "../../../../serialization/index.js";
+import { TranscribeCommandsUpdateMessage } from "../../../../serialization/types/TranscribeCommandsUpdateMessage.js";
 import { TranscribeConfigMessage } from "../../../../serialization/types/TranscribeConfigMessage.js";
 import { TranscribeEndMessage } from "../../../../serialization/types/TranscribeEndMessage.js";
 import { TranscribeFlushMessage } from "../../../../serialization/types/TranscribeFlushMessage.js";
@@ -22,7 +23,9 @@ export declare namespace TranscribeSocket {
         | Corti.TranscribeTranscriptMessage
         | Corti.TranscribeCommandMessage
         | Corti.TranscribeConfigStatusMessage
-        | Corti.TranscribeAudioEventMessage;
+        | Corti.TranscribeAudioEventMessage
+        | Corti.TranscribeCommandsUpdateAcceptedMessage
+        | Corti.TranscribeCommandsUpdateDeniedMessage;
     type EventHandlers = {
         open?: () => void;
         message?: (message: Response) => void;
@@ -123,6 +126,18 @@ export class TranscribeSocket {
     public sendEnd(message: Corti.TranscribeEndMessage): void {
         this.assertSocketIsOpen();
         const jsonPayload = TranscribeEndMessage.jsonOrThrow(message, {
+            unrecognizedObjectKeys: "passthrough",
+            allowUnrecognizedUnionMembers: true,
+            allowUnrecognizedEnumValues: true,
+            skipValidation: true,
+            omitUndefined: true,
+        });
+        this.socket.send(JSON.stringify(jsonPayload));
+    }
+
+    public sendCommandsUpdate(message: Corti.TranscribeCommandsUpdateMessage): void {
+        this.assertSocketIsOpen();
+        const jsonPayload = TranscribeCommandsUpdateMessage.jsonOrThrow(message, {
             unrecognizedObjectKeys: "passthrough",
             allowUnrecognizedUnionMembers: true,
             allowUnrecognizedEnumValues: true,
