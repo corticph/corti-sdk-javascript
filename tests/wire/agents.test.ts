@@ -147,7 +147,7 @@ describe("AgentsClient", () => {
                     authorizationType: "none",
                     authorizationScope: "authorizationScope",
                     url: "url",
-                    redirectUrl: "redirectUrl",
+                    tokenUrl: "tokenUrl",
                 },
             ],
         };
@@ -196,7 +196,7 @@ describe("AgentsClient", () => {
                     authorizationType: "none",
                     authorizationScope: "authorizationScope",
                     url: "url",
-                    redirectUrl: "redirectUrl",
+                    tokenUrl: "tokenUrl",
                 },
             ],
         });
@@ -332,7 +332,7 @@ describe("AgentsClient", () => {
                     authorizationType: "none",
                     authorizationScope: "authorizationScope",
                     url: "url",
-                    redirectUrl: "redirectUrl",
+                    tokenUrl: "tokenUrl",
                 },
             ],
         };
@@ -377,7 +377,7 @@ describe("AgentsClient", () => {
                     authorizationType: "none",
                     authorizationScope: "authorizationScope",
                     url: "url",
-                    redirectUrl: "redirectUrl",
+                    tokenUrl: "tokenUrl",
                 },
             ],
         });
@@ -569,7 +569,7 @@ describe("AgentsClient", () => {
                     authorizationType: "none",
                     authorizationScope: "authorizationScope",
                     url: "url",
-                    redirectUrl: "redirectUrl",
+                    tokenUrl: "tokenUrl",
                 },
             ],
         };
@@ -615,7 +615,7 @@ describe("AgentsClient", () => {
                     authorizationType: "none",
                     authorizationScope: "authorizationScope",
                     url: "url",
-                    redirectUrl: "redirectUrl",
+                    tokenUrl: "tokenUrl",
                 },
             ],
         });

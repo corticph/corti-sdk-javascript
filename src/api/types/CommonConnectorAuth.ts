@@ -15,8 +15,8 @@ export interface CommonConnectorAuth {
     type: Corti.CommonConnectorAuthType;
     /** OAuth2 scope requested. */
     scope?: string;
-    /** OAuth2 redirect URL. */
-    redirectUrl?: string;
+    /** Token URL override for the OAuth2.0 token endpoint. */
+    tokenUrl?: string;
     /** Reference to a server-side stored secret. Mutually exclusive with inline credentials passed at call time. */
     ref?: string;
 }

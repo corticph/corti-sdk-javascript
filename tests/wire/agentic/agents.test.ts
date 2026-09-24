@@ -26,6 +26,7 @@ describe("AgentsClient", () => {
                     description: "description",
                     systemPrompt: "systemPrompt",
                     model: "corti-default",
+                    maxLoops: 10,
                     visibility: "private",
                     lifecycle: "persistent",
                     connectors: [
@@ -35,6 +36,7 @@ describe("AgentsClient", () => {
                     createdAt: "2026-05-19T12:00:00Z",
                     updatedAt: "2026-05-19T12:00:00Z",
                     createdBy: "usr.0192f4c8-8bc0-7194-8570-92e3ce81d0a6",
+                    expiresAt: "2024-01-15T09:30:00Z",
                 },
             ],
             nextPageToken: "nextPageToken",
@@ -57,6 +59,7 @@ describe("AgentsClient", () => {
                     description: "description",
                     systemPrompt: "systemPrompt",
                     model: "corti-default",
+                    maxLoops: 10,
                     visibility: "private",
                     lifecycle: "persistent",
                     connectors: [
@@ -72,6 +75,7 @@ describe("AgentsClient", () => {
                     createdAt: new Date("2026-05-19T12:00:00.000Z"),
                     updatedAt: new Date("2026-05-19T12:00:00.000Z"),
                     createdBy: "usr.0192f4c8-8bc0-7194-8570-92e3ce81d0a6",
+                    expiresAt: new Date("2024-01-15T09:30:00.000Z"),
                 },
             ],
             nextPageToken: "nextPageToken",
@@ -154,11 +158,7 @@ describe("AgentsClient", () => {
                     type: "mcp",
                     name: "policybot",
                     url: "https://mcp.example.com",
-                    auth: {
-                        type: "oauth2",
-                        scope: "read:policies",
-                        redirectUrl: "https://app.corti.ai/oauth/callback",
-                    },
+                    auth: { type: "oauth2", scope: "read:policies", tokenUrl: "https://app.corti.ai/oauth/callback" },
                 },
                 {
                     type: "schema",
@@ -183,6 +183,7 @@ describe("AgentsClient", () => {
             description: "Returns ICD-10 codes for a clinical encounter.",
             systemPrompt: "Respond with only the ICD-10 code.",
             model: "corti-default",
+            maxLoops: 10,
             visibility: "private",
             lifecycle: "persistent",
             connectors: [
@@ -228,7 +229,7 @@ describe("AgentsClient", () => {
                     auth: {
                         type: "oauth2",
                         scope: "read:policies",
-                        redirectUrl: "https://app.corti.ai/oauth/callback",
+                        tokenUrl: "https://app.corti.ai/oauth/callback",
                     },
                 },
                 {
@@ -264,6 +265,7 @@ describe("AgentsClient", () => {
             description: "Returns ICD-10 codes for a clinical encounter.",
             systemPrompt: "Respond with only the ICD-10 code.",
             model: "corti-default",
+            maxLoops: 10,
             visibility: "private",
             lifecycle: "persistent",
             connectors: [
@@ -455,6 +457,7 @@ describe("AgentsClient", () => {
             description: "Returns ICD-10 codes for a clinical encounter.",
             systemPrompt: "Respond with only the ICD-10 code.",
             model: "corti-default",
+            maxLoops: 10,
             visibility: "private",
             lifecycle: "persistent",
             connectors: [
@@ -487,6 +490,7 @@ describe("AgentsClient", () => {
             description: "Returns ICD-10 codes for a clinical encounter.",
             systemPrompt: "Respond with only the ICD-10 code.",
             model: "corti-default",
+            maxLoops: 10,
             visibility: "private",
             lifecycle: "persistent",
             connectors: [
@@ -713,6 +717,7 @@ describe("AgentsClient", () => {
             description: "Returns ICD-10 codes for a clinical encounter.",
             systemPrompt: "Respond with only the ICD-10 code.",
             model: "corti-default",
+            maxLoops: 10,
             visibility: "private",
             lifecycle: "persistent",
             connectors: [
@@ -754,6 +759,7 @@ describe("AgentsClient", () => {
             description: "Returns ICD-10 codes for a clinical encounter.",
             systemPrompt: "Respond with only the ICD-10 code.",
             model: "corti-default",
+            maxLoops: 10,
             visibility: "private",
             lifecycle: "persistent",
             connectors: [

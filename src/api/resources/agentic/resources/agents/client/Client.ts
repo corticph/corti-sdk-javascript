@@ -186,7 +186,7 @@ export class AgentsClient {
      *                 auth: {
      *                     type: "oauth2",
      *                     scope: "read:policies",
-     *                     redirectUrl: "https://app.corti.ai/oauth/callback"
+     *                     tokenUrl: "https://app.corti.ai/oauth/callback"
      *                 }
      *             }, {
      *                 type: "schema",

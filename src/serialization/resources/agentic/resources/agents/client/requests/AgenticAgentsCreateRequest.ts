@@ -16,6 +16,7 @@ export const AgenticAgentsCreateRequest: core.serialization.Schema<
     description: core.serialization.string().optional(),
     systemPrompt: core.serialization.string().optional(),
     model: core.serialization.string().optional(),
+    maxLoops: core.serialization.number().optional(),
     visibility: AgentsVisibility.optional(),
     lifecycle: AgentsLifecycle.optional(),
     connectors: core.serialization.list(CommonConnectorCreateRequest).optional(),
@@ -28,6 +29,7 @@ export declare namespace AgenticAgentsCreateRequest {
         description?: string | null;
         systemPrompt?: string | null;
         model?: string | null;
+        maxLoops?: number | null;
         visibility?: AgentsVisibility.Raw | null;
         lifecycle?: AgentsLifecycle.Raw | null;
         connectors?: CommonConnectorCreateRequest.Raw[] | null;

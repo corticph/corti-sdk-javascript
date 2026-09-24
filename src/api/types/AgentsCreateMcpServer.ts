@@ -15,8 +15,8 @@ export interface AgentsCreateMcpServer {
     authorizationScope?: string;
     /** URL of the MCP server. */
     url: string;
-    /** Redirect URI for OAuth2.0 authorization. */
-    redirectUrl?: string;
+    /** Token URL override for the OAuth2.0 token endpoint. */
+    tokenUrl?: string;
     /** Bearer token to be used in MCP client. */
     token?: string;
 }
