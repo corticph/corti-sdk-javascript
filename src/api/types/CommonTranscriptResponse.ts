@@ -7,7 +7,7 @@ export interface CommonTranscriptResponse {
     participant: number;
     /** Id to tag an identified speaker. Auto-increments. */
     speakerId: number;
-    /** The spoken phrase or utterance extracted from the audio. */
+    /** The spoken phrase or utterance extracted from the audio. Will be a single word or entity if `wordLevel.enabled` was set to `true` when the transcript was created. */
     text: string;
     /** Start time in milliseconds for phrase/utterance. */
     start: number;
