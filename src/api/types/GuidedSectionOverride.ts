@@ -5,8 +5,7 @@ import type * as Corti from "../index.js";
 /**
  * Override patch applied to a section linked to the base template version. Override semantics are per-field for `instructions` (any field you omit is inherited from the parent's published version) and wholesale for `outputSchema` (whatever you submit fully replaces the parent schema — partial schemas are not merged). The same rule applies when a section is forked via `inheritFromId`.
  */
-export interface GuidedSectionOverride {
+export interface GuidedSectionOverride extends Corti.GuidedSectionOverridePatch {
     /** The UUID of a section linked to the base template version. */
     sectionId: string;
-    generation?: Corti.GuidedSectionOverrides;
 }

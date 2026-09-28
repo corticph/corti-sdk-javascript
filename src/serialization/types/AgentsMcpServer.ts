@@ -15,6 +15,8 @@ export const AgentsMcpServer: core.serialization.ObjectSchema<serializers.Agents
         authorizationScope: core.serialization.string().optional(),
         url: core.serialization.string(),
         redirectUrl: core.serialization.string().optionalNullable(),
+        requiredHeaders: core.serialization.list(core.serialization.string()).optional(),
+        optionalHeaders: core.serialization.list(core.serialization.string()).optional(),
     });
 
 export declare namespace AgentsMcpServer {
@@ -26,5 +28,7 @@ export declare namespace AgentsMcpServer {
         authorizationScope?: string | null;
         url: string;
         redirectUrl?: (string | null | undefined) | null;
+        requiredHeaders?: string[] | null;
+        optionalHeaders?: string[] | null;
     }
 }
