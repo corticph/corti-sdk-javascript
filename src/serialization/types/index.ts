@@ -1,3 +1,4 @@
+export * from "./A2AsseEvent.js";
 export * from "./AgenticAgentCardResponse.js";
 export * from "./AgenticAgentCardResponseCapabilities.js";
 export * from "./AgenticAgentCardResponseProvider.js";
@@ -265,6 +266,7 @@ export * from "./GuidedTemplatesVersionSectionRequest.js";
 export * from "./GuidedTemplateVersion.js";
 export * from "./GuidedTemplateVersionSectionRef.js";
 export * from "./InteractionsCreateResponse.js";
+export * from "./InteractionsDeletionReasonEnum.js";
 export * from "./InteractionsEncounterCreateRequest.js";
 export * from "./InteractionsEncounterPeriod.js";
 export * from "./InteractionsEncounterResponse.js";
