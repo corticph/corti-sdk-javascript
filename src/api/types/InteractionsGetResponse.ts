@@ -24,7 +24,7 @@ export interface InteractionsGetResponse {
     /** `null` while the interaction is live. Set with `deletedAt` when deleted. */
     deletionReason: Corti.InteractionsDeletionReasonEnum;
     /** The timestamp when the retention policy deletes the interaction (UTC). `null` when no deletion is scheduled. */
-    scheduleDeletionAt: Date | null;
+    scheduledDeletionAt: Date | null;
     /** Present when the interaction is deleted (UTC). `null` while the interaction is live. */
     deletedAt: Date | null;
 }

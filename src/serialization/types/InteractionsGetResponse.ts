@@ -22,7 +22,7 @@ export const InteractionsGetResponse: core.serialization.ObjectSchema<
     websocketUrl: core.serialization.string(),
     lastUpdated: core.serialization.date(),
     deletionReason: InteractionsDeletionReasonEnum,
-    scheduleDeletionAt: core.serialization.date().nullable(),
+    scheduledDeletionAt: core.serialization.date().nullable(),
     deletedAt: core.serialization.date().nullable(),
 });
 
@@ -38,7 +38,7 @@ export declare namespace InteractionsGetResponse {
         websocketUrl: string;
         lastUpdated: string;
         deletionReason: InteractionsDeletionReasonEnum.Raw;
-        scheduleDeletionAt?: string | null;
+        scheduledDeletionAt?: string | null;
         deletedAt?: string | null;
     }
 }

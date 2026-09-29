@@ -36,7 +36,7 @@ describe("InteractionsClient", () => {
                     websocketUrl: "websocketUrl",
                     lastUpdated: "2024-01-15T09:30:00Z",
                     deletionReason: "manual",
-                    scheduleDeletionAt: "2024-01-15T09:30:00Z",
+                    scheduledDeletionAt: "2024-01-15T09:30:00Z",
                     deletedAt: "2024-01-15T09:30:00Z",
                 },
             ],
@@ -72,7 +72,7 @@ describe("InteractionsClient", () => {
                     websocketUrl: "websocketUrl",
                     lastUpdated: new Date("2024-01-15T09:30:00.000Z"),
                     deletionReason: "manual",
-                    scheduleDeletionAt: new Date("2024-01-15T09:30:00.000Z"),
+                    scheduledDeletionAt: new Date("2024-01-15T09:30:00.000Z"),
                     deletedAt: new Date("2024-01-15T09:30:00.000Z"),
                 },
             ],
@@ -356,7 +356,7 @@ describe("InteractionsClient", () => {
             websocketUrl: "websocketUrl",
             lastUpdated: "2024-01-15T09:30:00Z",
             deletionReason: "manual",
-            scheduleDeletionAt: "2024-01-15T09:30:00Z",
+            scheduledDeletionAt: "2024-01-15T09:30:00Z",
             deletedAt: "2024-01-15T09:30:00Z",
         };
 
@@ -395,7 +395,7 @@ describe("InteractionsClient", () => {
             websocketUrl: "websocketUrl",
             lastUpdated: new Date("2024-01-15T09:30:00.000Z"),
             deletionReason: "manual",
-            scheduleDeletionAt: new Date("2024-01-15T09:30:00.000Z"),
+            scheduledDeletionAt: new Date("2024-01-15T09:30:00.000Z"),
             deletedAt: new Date("2024-01-15T09:30:00.000Z"),
         });
     });
@@ -554,7 +554,7 @@ describe("InteractionsClient", () => {
             websocketUrl: "websocketUrl",
             lastUpdated: "2024-01-15T09:30:00Z",
             deletionReason: "manual",
-            scheduleDeletionAt: "2024-01-15T09:30:00Z",
+            scheduledDeletionAt: "2024-01-15T09:30:00Z",
             deletedAt: "2024-01-15T09:30:00Z",
         };
 
@@ -594,7 +594,7 @@ describe("InteractionsClient", () => {
             websocketUrl: "websocketUrl",
             lastUpdated: new Date("2024-01-15T09:30:00.000Z"),
             deletionReason: "manual",
-            scheduleDeletionAt: new Date("2024-01-15T09:30:00.000Z"),
+            scheduledDeletionAt: new Date("2024-01-15T09:30:00.000Z"),
             deletedAt: new Date("2024-01-15T09:30:00.000Z"),
         });
     });
