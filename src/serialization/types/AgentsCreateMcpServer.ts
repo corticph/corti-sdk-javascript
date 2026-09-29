@@ -18,6 +18,8 @@ export const AgentsCreateMcpServer: core.serialization.ObjectSchema<
     url: core.serialization.string(),
     redirectUrl: core.serialization.string().optional(),
     token: core.serialization.string().optional(),
+    requiredHeaders: core.serialization.list(core.serialization.string()).optional(),
+    optionalHeaders: core.serialization.list(core.serialization.string()).optional(),
 });
 
 export declare namespace AgentsCreateMcpServer {
@@ -30,5 +32,7 @@ export declare namespace AgentsCreateMcpServer {
         url: string;
         redirectUrl?: string | null;
         token?: string | null;
+        requiredHeaders?: string[] | null;
+        optionalHeaders?: string[] | null;
     }
 }

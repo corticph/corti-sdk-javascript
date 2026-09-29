@@ -19,4 +19,8 @@ export interface CommonConnectorAuth {
     redirectUrl?: string;
     /** Reference to a server-side stored secret. Mutually exclusive with inline credentials passed at call time. */
     ref?: string;
+    /** Header names the MCP server requires the client to send in the authorization data part. The client must supply values for each listed name; missing headers trigger an auth-required challenge that lists them. */
+    requiredHeaders?: string[];
+    /** Header names the client may optionally send. Headers not in requiredHeaders or optionalHeaders are rejected as undeclared. */
+    optionalHeaders?: string[];
 }
