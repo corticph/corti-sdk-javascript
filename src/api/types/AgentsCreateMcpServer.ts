@@ -19,4 +19,8 @@ export interface AgentsCreateMcpServer {
     redirectUrl?: string;
     /** Bearer token to be used in MCP client. */
     token?: string;
+    /** Header names the MCP server requires the client to send. */
+    requiredHeaders?: string[];
+    /** Header names the client may optionally send. */
+    optionalHeaders?: string[];
 }
