@@ -2,7 +2,7 @@
 
 import type * as Corti from "../index.js";
 
-export interface LanguagesEndpoints {
+export interface LanguagesListResponseLanguagesValueEndpoints {
     /** Streams endpoint with its supported attributes. */
     streams: Corti.LanguagesEndpointAttributes;
     /** Transcribe endpoint with its supported attributes. */

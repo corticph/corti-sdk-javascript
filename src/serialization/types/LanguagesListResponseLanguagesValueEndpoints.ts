@@ -5,16 +5,16 @@ import * as core from "../../core/index.js";
 import type * as serializers from "../index.js";
 import { LanguagesEndpointAttributes } from "./LanguagesEndpointAttributes.js";
 
-export const LanguagesEndpoints: core.serialization.ObjectSchema<
-    serializers.LanguagesEndpoints.Raw,
-    Corti.LanguagesEndpoints
+export const LanguagesListResponseLanguagesValueEndpoints: core.serialization.ObjectSchema<
+    serializers.LanguagesListResponseLanguagesValueEndpoints.Raw,
+    Corti.LanguagesListResponseLanguagesValueEndpoints
 > = core.serialization.object({
     streams: LanguagesEndpointAttributes,
     transcribe: LanguagesEndpointAttributes,
     transcripts: LanguagesEndpointAttributes,
 });
 
-export declare namespace LanguagesEndpoints {
+export declare namespace LanguagesListResponseLanguagesValueEndpoints {
     export interface Raw {
         streams: LanguagesEndpointAttributes.Raw;
         transcribe: LanguagesEndpointAttributes.Raw;

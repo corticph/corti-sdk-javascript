@@ -3,5 +3,5 @@
 import type * as Corti from "../index.js";
 
 export interface LanguagesListResponse {
-    languages: Record<string, Corti.LanguagesEndpoint>;
+    languages: Record<string, Corti.LanguagesListResponseLanguagesValue>;
 }
