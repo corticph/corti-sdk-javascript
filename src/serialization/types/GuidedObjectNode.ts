@@ -12,6 +12,7 @@ export const GuidedObjectNode: core.serialization.ObjectSchema<
     description: core.serialization.string().optional(),
     fieldFormat: core.serialization.string().optional(),
     fields: core.serialization.list(core.serialization.lazyObject(() => serializers.GuidedFieldDefinition)).optional(),
+    fallbackString: core.serialization.string().optionalNullable(),
 });
 
 export declare namespace GuidedObjectNode {
@@ -20,5 +21,6 @@ export declare namespace GuidedObjectNode {
         description?: string | null;
         fieldFormat?: string | null;
         fields?: serializers.GuidedFieldDefinition.Raw[] | null;
+        fallbackString?: (string | null | undefined) | null;
     }
 }
