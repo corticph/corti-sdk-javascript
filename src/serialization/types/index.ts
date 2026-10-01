@@ -337,8 +337,6 @@ export * from "./TranscribeCommand.js";
 export * from "./TranscribeCommandData.js";
 export * from "./TranscribeCommandMessage.js";
 export * from "./TranscribeCommandRemove.js";
-export * from "./TranscribeCommandsPatchAdd.js";
-export * from "./TranscribeCommandsPatchRemove.js";
 export * from "./TranscribeCommandsUpdateAcceptedMessage.js";
 export * from "./TranscribeCommandsUpdateDeniedMessage.js";
 export * from "./TranscribeCommandsUpdateMessage.js";

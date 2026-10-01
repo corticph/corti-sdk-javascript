@@ -8,7 +8,7 @@ import type * as Corti from "../index.js";
 export interface TranscribeCommandsUpdateMessage {
     type: "commands_update";
     /** Commands to add or update. Adding a command with an id that already exists overwrites the existing command. Each command must include the full definition (id, phrases, variables). */
-    add?: Corti.TranscribeCommandsPatchAdd;
+    add?: Corti.TranscribeCommand[];
     /** Commands to remove by exact id match. Only the id field is required and allowed in remove definitions. */
-    remove?: Corti.TranscribeCommandsPatchRemove;
+    remove?: Corti.TranscribeCommandRemove[];
 }

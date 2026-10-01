@@ -3,22 +3,22 @@
 import type * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
 import type * as serializers from "../index.js";
-import { TranscribeCommandsPatchAdd } from "./TranscribeCommandsPatchAdd.js";
-import { TranscribeCommandsPatchRemove } from "./TranscribeCommandsPatchRemove.js";
+import { TranscribeCommand } from "./TranscribeCommand.js";
+import { TranscribeCommandRemove } from "./TranscribeCommandRemove.js";
 
 export const TranscribeCommandsUpdateMessage: core.serialization.ObjectSchema<
     serializers.TranscribeCommandsUpdateMessage.Raw,
     Corti.TranscribeCommandsUpdateMessage
 > = core.serialization.object({
     type: core.serialization.stringLiteral("commands_update"),
-    add: TranscribeCommandsPatchAdd.optional(),
-    remove: TranscribeCommandsPatchRemove.optional(),
+    add: core.serialization.list(TranscribeCommand).optional(),
+    remove: core.serialization.list(TranscribeCommandRemove).optional(),
 });
 
 export declare namespace TranscribeCommandsUpdateMessage {
     export interface Raw {
         type: "commands_update";
-        add?: TranscribeCommandsPatchAdd.Raw | null;
-        remove?: TranscribeCommandsPatchRemove.Raw | null;
+        add?: TranscribeCommand.Raw[] | null;
+        remove?: TranscribeCommandRemove.Raw[] | null;
     }
 }
