@@ -1274,17 +1274,7 @@ describe("AgentsClient", () => {
                     },
                 },
                 artifacts: [{ artifactId: "art.0192f4c8-6a9e-7f72-a35e-70c1ac6fbe84", parts: [{ text: "J45.909" }] }],
-                metadata: {
-                    $usage: {
-                        model: "corti-default",
-                        inputTokens: 100,
-                        outputTokens: 20,
-                        cachedInputTokens: 64,
-                        cacheCreationInputTokens: 0,
-                        totalTokens: 120,
-                        credits: 1.2,
-                    },
-                },
+                metadata: { corti: { usage: { creditsConsumed: 0.13 } } },
             },
         };
 
@@ -1339,14 +1329,10 @@ describe("AgentsClient", () => {
                     },
                 ],
                 metadata: {
-                    $usage: {
-                        model: "corti-default",
-                        inputTokens: 100,
-                        outputTokens: 20,
-                        cachedInputTokens: 64,
-                        cacheCreationInputTokens: 0,
-                        totalTokens: 120,
-                        credits: 1.2,
+                    corti: {
+                        usage: {
+                            creditsConsumed: 0.13,
+                        },
                     },
                 },
             },
