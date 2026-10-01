@@ -52,17 +52,7 @@ describe("TasksClient", () => {
                             parts: [{ text: "J45.909" }],
                         },
                     ],
-                    metadata: {
-                        $usage: {
-                            model: "corti-default",
-                            inputTokens: 100,
-                            outputTokens: 20,
-                            cachedInputTokens: 64,
-                            cacheCreationInputTokens: 0,
-                            totalTokens: 120,
-                            credits: 1.2,
-                        },
-                    },
+                    metadata: { corti: { usage: { creditsConsumed: 0.13, inputTokens: 100, outputTokens: 20 } } },
                 },
             ],
             nextPageToken: "nextPageToken",
@@ -120,14 +110,12 @@ describe("TasksClient", () => {
                         },
                     ],
                     metadata: {
-                        usage: {
-                            model: "corti-default",
-                            inputTokens: 100,
-                            outputTokens: 20,
-                            cachedInputTokens: 64,
-                            cacheCreationInputTokens: 0,
-                            totalTokens: 120,
-                            credits: 1.2,
+                        corti: {
+                            usage: {
+                                creditsConsumed: 0.13,
+                                inputTokens: 100,
+                                outputTokens: 20,
+                            },
                         },
                     },
                 },
@@ -248,17 +236,7 @@ describe("TasksClient", () => {
                     parts: [{ text: "J45.909" }],
                 },
             ],
-            metadata: {
-                $usage: {
-                    model: "corti-default",
-                    inputTokens: 100,
-                    outputTokens: 20,
-                    cachedInputTokens: 64,
-                    cacheCreationInputTokens: 0,
-                    totalTokens: 120,
-                    credits: 1.2,
-                },
-            },
+            metadata: { corti: { usage: { creditsConsumed: 0.13, inputTokens: 100, outputTokens: 20 } } },
         };
 
         server
@@ -329,14 +307,12 @@ describe("TasksClient", () => {
                 },
             ],
             metadata: {
-                usage: {
-                    model: "corti-default",
-                    inputTokens: 100,
-                    outputTokens: 20,
-                    cachedInputTokens: 64,
-                    cacheCreationInputTokens: 0,
-                    totalTokens: 120,
-                    credits: 1.2,
+                corti: {
+                    usage: {
+                        creditsConsumed: 0.13,
+                        inputTokens: 100,
+                        outputTokens: 20,
+                    },
                 },
             },
         });
