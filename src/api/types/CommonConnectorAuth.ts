@@ -15,8 +15,8 @@ export interface CommonConnectorAuth {
     type: Corti.CommonConnectorAuthType;
     /** OAuth2 scope requested. */
     scope?: string;
-    /** OAuth2 redirect URL. */
-    redirectUrl?: string;
+    /** Token URL override for the OAuth2.0 token endpoint. */
+    tokenUrl?: string;
     /** Reference to a server-side stored secret. Mutually exclusive with inline credentials passed at call time. */
     ref?: string;
     /** Header names the MCP server requires the client to send in the authorization data part. The client must supply values for each listed name; missing headers trigger an auth-required challenge that lists them. */
