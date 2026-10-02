@@ -61,6 +61,8 @@ export interface AgenticAgentsCreateRequest {
     systemPrompt?: string;
     /** Tenant default if omitted. */
     model?: string;
+    /** Caps the orchestrator's ReAct loop iterations per run. Server default 10 if omitted. */
+    maxLoops?: number;
     visibility?: Corti.AgentsVisibility;
     lifecycle?: Corti.AgentsLifecycle;
     /** Connectors to attach at creation. Defaults to an empty array. */

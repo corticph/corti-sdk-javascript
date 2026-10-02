@@ -26,6 +26,7 @@ describe("AgentsClient", () => {
                     description: "description",
                     systemPrompt: "systemPrompt",
                     model: "corti-default",
+                    maxLoops: 10,
                     visibility: "private",
                     lifecycle: "persistent",
                     connectors: [
@@ -35,6 +36,7 @@ describe("AgentsClient", () => {
                     createdAt: "2026-05-19T12:00:00Z",
                     updatedAt: "2026-05-19T12:00:00Z",
                     createdBy: "usr.0192f4c8-8bc0-7194-8570-92e3ce81d0a6",
+                    expiresAt: "2024-01-15T09:30:00Z",
                 },
             ],
             nextPageToken: "nextPageToken",
@@ -57,6 +59,7 @@ describe("AgentsClient", () => {
                     description: "description",
                     systemPrompt: "systemPrompt",
                     model: "corti-default",
+                    maxLoops: 10,
                     visibility: "private",
                     lifecycle: "persistent",
                     connectors: [
@@ -72,6 +75,7 @@ describe("AgentsClient", () => {
                     createdAt: new Date("2026-05-19T12:00:00.000Z"),
                     updatedAt: new Date("2026-05-19T12:00:00.000Z"),
                     createdBy: "usr.0192f4c8-8bc0-7194-8570-92e3ce81d0a6",
+                    expiresAt: new Date("2024-01-15T09:30:00.000Z"),
                 },
             ],
             nextPageToken: "nextPageToken",
@@ -183,6 +187,7 @@ describe("AgentsClient", () => {
             description: "Returns ICD-10 codes for a clinical encounter.",
             systemPrompt: "Respond with only the ICD-10 code.",
             model: "corti-default",
+            maxLoops: 10,
             visibility: "private",
             lifecycle: "persistent",
             connectors: [
@@ -264,6 +269,7 @@ describe("AgentsClient", () => {
             description: "Returns ICD-10 codes for a clinical encounter.",
             systemPrompt: "Respond with only the ICD-10 code.",
             model: "corti-default",
+            maxLoops: 10,
             visibility: "private",
             lifecycle: "persistent",
             connectors: [
@@ -455,6 +461,7 @@ describe("AgentsClient", () => {
             description: "Returns ICD-10 codes for a clinical encounter.",
             systemPrompt: "Respond with only the ICD-10 code.",
             model: "corti-default",
+            maxLoops: 10,
             visibility: "private",
             lifecycle: "persistent",
             connectors: [
@@ -487,6 +494,7 @@ describe("AgentsClient", () => {
             description: "Returns ICD-10 codes for a clinical encounter.",
             systemPrompt: "Respond with only the ICD-10 code.",
             model: "corti-default",
+            maxLoops: 10,
             visibility: "private",
             lifecycle: "persistent",
             connectors: [
@@ -713,6 +721,7 @@ describe("AgentsClient", () => {
             description: "Returns ICD-10 codes for a clinical encounter.",
             systemPrompt: "Respond with only the ICD-10 code.",
             model: "corti-default",
+            maxLoops: 10,
             visibility: "private",
             lifecycle: "persistent",
             connectors: [
@@ -754,6 +763,7 @@ describe("AgentsClient", () => {
             description: "Returns ICD-10 codes for a clinical encounter.",
             systemPrompt: "Respond with only the ICD-10 code.",
             model: "corti-default",
+            maxLoops: 10,
             visibility: "private",
             lifecycle: "persistent",
             connectors: [
@@ -1254,16 +1264,33 @@ describe("AgentsClient", () => {
                 contextId: "ctx.0192f4c8-3d6b-7c4f-a02b-4d9e7f3c8b51",
                 status: {
                     state: "TASK_STATE_COMPLETED",
-                    timestamp: "2026-05-19T12:00:01Z",
                     message: {
                         messageId: "msg.0192f4c8-5f8d-7e61-924d-6fb09b5ead73",
                         contextId: "ctx.0192f4c8-3d6b-7c4f-a02b-4d9e7f3c8b51",
                         taskId: "task.0192f4c8-4e7c-7d50-b13c-5eaf8a4d9c62",
                         role: "ROLE_AGENT",
                         parts: [{ text: "J45.909" }],
+                        referenceTaskIds: ["task.0192f4c8-4e7c-7d50-b13c-5eaf8a4d9c62"],
                     },
+                    timestamp: "2026-05-19T12:00:01Z",
                 },
-                artifacts: [{ artifactId: "art.0192f4c8-6a9e-7f72-a35e-70c1ac6fbe84", parts: [{ text: "J45.909" }] }],
+                history: [
+                    {
+                        messageId: "msg.0192f4c8-5f8d-7e61-924d-6fb09b5ead73",
+                        contextId: "ctx.0192f4c8-3d6b-7c4f-a02b-4d9e7f3c8b51",
+                        taskId: "task.0192f4c8-4e7c-7d50-b13c-5eaf8a4d9c62",
+                        role: "ROLE_AGENT",
+                        parts: [{ text: "J45.909" }],
+                        referenceTaskIds: ["task.0192f4c8-4e7c-7d50-b13c-5eaf8a4d9c62"],
+                    },
+                ],
+                artifacts: [
+                    {
+                        artifactId: "art.0192f4c8-6a9e-7f72-a35e-70c1ac6fbe84",
+                        name: "icd10-result",
+                        parts: [{ text: "J45.909" }],
+                    },
+                ],
                 metadata: {
                     $usage: {
                         model: "corti-default",
@@ -1275,6 +1302,16 @@ describe("AgentsClient", () => {
                         credits: 1.2,
                     },
                 },
+            },
+            message: {
+                messageId: "msg.0192f4c8-5f8d-7e61-924d-6fb09b5ead73",
+                contextId: "ctx.0192f4c8-3d6b-7c4f-a02b-4d9e7f3c8b51",
+                taskId: "task.0192f4c8-4e7c-7d50-b13c-5eaf8a4d9c62",
+                role: "ROLE_USER",
+                parts: [{}],
+                referenceTaskIds: ["task.0192f4c8-4e7c-7d50-b13c-5eaf8a4d9c62"],
+                extensions: ["extensions"],
+                metadata: { key: "value" },
             },
         };
 
@@ -1305,7 +1342,6 @@ describe("AgentsClient", () => {
                 contextId: "ctx.0192f4c8-3d6b-7c4f-a02b-4d9e7f3c8b51",
                 status: {
                     state: "TASK_STATE_COMPLETED",
-                    timestamp: "2026-05-19T12:00:01Z",
                     message: {
                         messageId: "msg.0192f4c8-5f8d-7e61-924d-6fb09b5ead73",
                         contextId: "ctx.0192f4c8-3d6b-7c4f-a02b-4d9e7f3c8b51",
@@ -1316,11 +1352,28 @@ describe("AgentsClient", () => {
                                 text: "J45.909",
                             },
                         ],
+                        referenceTaskIds: ["task.0192f4c8-4e7c-7d50-b13c-5eaf8a4d9c62"],
                     },
+                    timestamp: new Date("2026-05-19T12:00:01.000Z"),
                 },
+                history: [
+                    {
+                        messageId: "msg.0192f4c8-5f8d-7e61-924d-6fb09b5ead73",
+                        contextId: "ctx.0192f4c8-3d6b-7c4f-a02b-4d9e7f3c8b51",
+                        taskId: "task.0192f4c8-4e7c-7d50-b13c-5eaf8a4d9c62",
+                        role: "ROLE_AGENT",
+                        parts: [
+                            {
+                                text: "J45.909",
+                            },
+                        ],
+                        referenceTaskIds: ["task.0192f4c8-4e7c-7d50-b13c-5eaf8a4d9c62"],
+                    },
+                ],
                 artifacts: [
                     {
                         artifactId: "art.0192f4c8-6a9e-7f72-a35e-70c1ac6fbe84",
+                        name: "icd10-result",
                         parts: [
                             {
                                 text: "J45.909",
@@ -1329,7 +1382,7 @@ describe("AgentsClient", () => {
                     },
                 ],
                 metadata: {
-                    $usage: {
+                    usage: {
                         model: "corti-default",
                         inputTokens: 100,
                         outputTokens: 20,
@@ -1338,6 +1391,18 @@ describe("AgentsClient", () => {
                         totalTokens: 120,
                         credits: 1.2,
                     },
+                },
+            },
+            message: {
+                messageId: "msg.0192f4c8-5f8d-7e61-924d-6fb09b5ead73",
+                contextId: "ctx.0192f4c8-3d6b-7c4f-a02b-4d9e7f3c8b51",
+                taskId: "task.0192f4c8-4e7c-7d50-b13c-5eaf8a4d9c62",
+                role: "ROLE_USER",
+                parts: [{}],
+                referenceTaskIds: ["task.0192f4c8-4e7c-7d50-b13c-5eaf8a4d9c62"],
+                extensions: ["extensions"],
+                metadata: {
+                    key: "value",
                 },
             },
         });

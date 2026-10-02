@@ -19,6 +19,7 @@ export const AgenticAgentsResponse: core.serialization.ObjectSchema<
     description: core.serialization.string().optionalNullable(),
     systemPrompt: core.serialization.string().optionalNullable(),
     model: core.serialization.string().optionalNullable(),
+    maxLoops: core.serialization.number(),
     visibility: AgentsVisibility,
     lifecycle: AgentsLifecycle,
     connectors: core.serialization.list(CommonConnectorResponse),
@@ -26,6 +27,7 @@ export const AgenticAgentsResponse: core.serialization.ObjectSchema<
     createdAt: core.serialization.date().optional(),
     updatedAt: core.serialization.date().optional(),
     createdBy: AgentsUserIdValue.optional(),
+    expiresAt: core.serialization.date().optionalNullable(),
 });
 
 export declare namespace AgenticAgentsResponse {
@@ -35,6 +37,7 @@ export declare namespace AgenticAgentsResponse {
         description?: (string | null | undefined) | null;
         systemPrompt?: (string | null | undefined) | null;
         model?: (string | null | undefined) | null;
+        maxLoops: number;
         visibility: AgentsVisibility.Raw;
         lifecycle: AgentsLifecycle.Raw;
         connectors: CommonConnectorResponse.Raw[];
@@ -42,5 +45,6 @@ export declare namespace AgenticAgentsResponse {
         createdAt?: string | null;
         updatedAt?: string | null;
         createdBy?: AgentsUserIdValue.Raw | null;
+        expiresAt?: (string | null | undefined) | null;
     }
 }
