@@ -24,5 +24,14 @@ export const CommonCodingSystemEnum = {
     Snomedctdk: "snomedctdk",
     Snomedctse: "snomedctse",
     Snomedctus: "snomedctus",
+    MeddraIt: "meddra-it",
+    MeddraEn: "meddra-en",
+    MeddraFr: "meddra-fr",
+    MeddraEs: "meddra-es",
+    MeddraDe: "meddra-de",
+    MeddraDk: "meddra-dk",
+    MeddraSe: "meddra-se",
+    Sks: "sks",
+    Kvaa: "kvaa",
 } as const;
 export type CommonCodingSystemEnum = (typeof CommonCodingSystemEnum)[keyof typeof CommonCodingSystemEnum];
