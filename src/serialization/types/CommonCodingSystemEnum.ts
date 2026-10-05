@@ -31,6 +31,15 @@ export const CommonCodingSystemEnum: core.serialization.Schema<
     "snomedctdk",
     "snomedctse",
     "snomedctus",
+    "meddra-it",
+    "meddra-en",
+    "meddra-fr",
+    "meddra-es",
+    "meddra-de",
+    "meddra-dk",
+    "meddra-se",
+    "sks",
+    "kvaa",
 ]);
 
 export declare namespace CommonCodingSystemEnum {
@@ -57,5 +66,14 @@ export declare namespace CommonCodingSystemEnum {
         | "snomedctes"
         | "snomedctdk"
         | "snomedctse"
-        | "snomedctus";
+        | "snomedctus"
+        | "meddra-it"
+        | "meddra-en"
+        | "meddra-fr"
+        | "meddra-es"
+        | "meddra-de"
+        | "meddra-dk"
+        | "meddra-se"
+        | "sks"
+        | "kvaa";
 }
