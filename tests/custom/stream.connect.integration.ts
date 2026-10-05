@@ -825,8 +825,8 @@ describe("cortiClient.stream.connect", () => {
             expect(consoleWarnSpy).not.toHaveBeenCalled();
         });
 
-        it("should reject configuration with invalid participant role", async () => {
-            expect.assertions(2);
+        it("should accept configuration with a custom participant role label", async () => {
+            expect.assertions(3);
 
             const interactionId = await createTestInteraction(cortiClient);
 
@@ -839,7 +839,7 @@ describe("cortiClient.stream.connect", () => {
                         participants: [
                             {
                                 channel: 0,
-                                role: "invalid_role" as any,
+                                role: "Attending Physician",
                             },
                         ],
                     },
@@ -851,9 +851,9 @@ describe("cortiClient.stream.connect", () => {
             activeSockets.push(streamSocket);
 
             const messages: any[] = [];
-            await waitForWebSocketMessage(streamSocket, "CONFIG_DENIED", { messages, rejectOnWrongMessage: true });
+            await waitForWebSocketMessage(streamSocket, "CONFIG_ACCEPTED", { messages, rejectOnWrongMessage: true });
 
-            expect([2, 3]).toContain(streamSocket.socket.readyState); // CLOSING or CLOSED
+            expect(streamSocket.socket.readyState).toBe(1); // OPEN
             expect(consoleWarnSpy).not.toHaveBeenCalled();
         });
 

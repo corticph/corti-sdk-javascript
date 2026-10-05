@@ -407,24 +407,23 @@ describe("cortiClient.transcripts.create", () => {
             ).rejects.toThrow("Status code: 400");
         });
 
-        it("should throw error when participant role is invalid", async () => {
+        it("should accept custom participant role labels", async () => {
             expect.assertions(1);
 
             const interactionId = await createTestInteraction(cortiClient);
             const recordingId = await createTestRecording(cortiClient, interactionId);
 
-            await expect(
-                cortiClient.transcripts.create(interactionId, {
-                    recordingId,
-                    primaryLanguage: "en",
-                    participants: [
-                        {
-                            channel: 0,
-                            role: "invalid-role" as any,
-                        },
-                    ],
-                }),
-            ).rejects.toThrow('Expected enum. Received "invalid-role"');
+            const result = await cortiClient.transcripts.create(interactionId, {
+                recordingId,
+                primaryLanguage: "en",
+                participants: [
+                    {
+                        channel: 0,
+                        role: "Attending Physician",
+                    },
+                ],
+            });
+            expect(result.id).toBeDefined();
         });
 
         it("should throw error when keyterm term exceeds 50 characters", async () => {
