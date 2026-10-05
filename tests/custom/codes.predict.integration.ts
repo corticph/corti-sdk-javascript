@@ -85,7 +85,8 @@ describe("cortiClient.codes.predict", () => {
         });
     });
 
-    describe("should predict codes with all system enum values", () => {        it("should predict codes with system icd10cm-outpatient without errors or warnings", async () => {
+    describe("should predict codes with all system enum values", () => {
+        it("should predict codes with system icd10cm-outpatient without errors or warnings", async () => {
             expect.assertions(2);
 
             const result = await cortiClient.codes.predict({
