@@ -22,7 +22,7 @@ export interface InteractionsGetResponse {
     /** The timestamp indicating the last recorded update for this interaction. */
     lastUpdated: Date;
     /** `null` while the interaction is live. Set with `deletedAt` when deleted. */
-    deletionReason: Corti.InteractionsDeletionReasonEnum;
+    deletionReason: Corti.InteractionsDeletionReasonEnum | null;
     /** The timestamp when the retention policy deletes the interaction (UTC). `null` when no deletion is scheduled. */
     scheduledDeletionAt: Date | null;
     /** Present when the interaction is deleted (UTC). `null` while the interaction is live. */

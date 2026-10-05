@@ -6,5 +6,5 @@ export interface TranscriptsListItem {
     /** The unique identifier of the transcript. */
     id: Corti.Uuid;
     transcriptSample: string;
-    transcript?: Corti.TranscriptsData;
+    transcript?: Corti.TranscriptsData | null;
 }
