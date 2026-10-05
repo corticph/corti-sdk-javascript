@@ -443,26 +443,25 @@ describe("cortiClient.transcripts.create", () => {
             ).rejects.toThrow("Status code: 400");
         });
 
-        it("should throw error when diarize is true but isMultichannel is false", async () => {
-            expect.assertions(1);
+        it("should create transcript with diarize true and isMultichannel false (roles decoupled from multichannel)", async () => {
+            expect.assertions(2);
 
             const interactionId = await createTestInteraction(cortiClient);
             const recordingId = await createTestRecording(cortiClient, interactionId);
 
-            await expect(
-                cortiClient.transcripts.create(interactionId, {
-                    recordingId,
-                    primaryLanguage: "en",
-                    isMultichannel: false,
-                    diarize: true,
-                    participants: [
-                        {
-                            channel: faker.number.int({ min: 0, max: 1 }),
-                            role: faker.helpers.arrayElement(["doctor", "patient", "multiple"]),
-                        },
-                    ],
-                }),
-            ).rejects.toThrow("BadRequestError");
+            const result = await cortiClient.transcripts.create(interactionId, {
+                recordingId,
+                primaryLanguage: "en",
+                isMultichannel: false,
+                diarize: true,
+                participants: [
+                    {
+                        channel: 0,
+                        role: faker.helpers.arrayElement(["doctor", "patient", "Attending Physician"]),
+                    },
+                ],
+            });
+            expect(result.id).toBeDefined();
         });
     });
 });

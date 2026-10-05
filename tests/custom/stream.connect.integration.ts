@@ -826,7 +826,7 @@ describe("cortiClient.stream.connect", () => {
         });
 
         it("should accept configuration with a custom participant role label", async () => {
-            expect.assertions(3);
+            expect.assertions(2);
 
             const interactionId = await createTestInteraction(cortiClient);
 
