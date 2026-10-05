@@ -19,10 +19,16 @@ import type * as Corti from "../../../../index.js";
  *                 type: "text",
  *                 text: "Patient presents with uncontrolled type 2 diabetes."
  *             }],
- *         filter: {
- *             include: ["E11"],
- *             exclude: ["exclude"]
- *         }
+ *         filters: [{
+ *                 systemId: "icd10cm-outpatient",
+ *                 include: {
+ *                     conditions: [{
+ *                             property: "code",
+ *                             op: "is-a",
+ *                             value: ["E11"]
+ *                         }]
+ *                 }
+ *             }]
  *     }
  */
 export interface CodesGeneralPredictRequest {
@@ -30,6 +36,8 @@ export interface CodesGeneralPredictRequest {
     system: Corti.CommonCodingSystemEnum[];
     /** Select either `text` or `documentId` as input context to the model for code prediction. Evidence indices in the response map to this array. */
     context: Corti.CommonAiContext[];
-    /** Optional filter to restrict predicted codes. */
+    /** Deprecated: use `filters` instead. */
     filter?: Corti.CodesFilter;
+    /** Optional list of system-scoped filters to restrict predicted codes, one per coding system. */
+    filters?: Corti.CodesSystemFilter[];
 }
