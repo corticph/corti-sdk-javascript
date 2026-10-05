@@ -27,6 +27,10 @@ export class ClassicClient {
      *
      * List Documents
      *
+     * <Note>
+     * This endpoint is deprecated in favour of the corresponding GUIDED endpoint. See the [deprecation notice](/release-notes/changelog-upcoming#2026-08-21) for more details and migration guidance.
+     * </Note>
+     *
      * @param {Corti.Uuid} id - The unique identifier of the interaction. Must be a valid UUID.
      * @param {ClassicClient.RequestOptions} requestOptions - Request-specific configuration.
      *
@@ -128,6 +132,10 @@ export class ClassicClient {
      * @deprecated
      *
      * This endpoint offers different ways to generate a document. Find guides to document generation [here](/textgen/documents-standard).
+     *
+     * <Note>
+     * This endpoint is deprecated in favour of the corresponding GUIDED endpoint. See the [deprecation notice](/release-notes/changelog-upcoming#2026-08-21) for more details and migration guidance.
+     * </Note>
      *
      * @param {Corti.Uuid} id - The unique identifier of the interaction. Must be a valid UUID.
      * @param {Corti.DocumentsCreateRequest} request
@@ -254,6 +262,10 @@ export class ClassicClient {
      *
      * Get Document.
      *
+     * <Note>
+     * This endpoint is deprecated in favour of the corresponding GUIDED endpoint. See the [deprecation notice](/release-notes/changelog-upcoming#2026-08-21) for more details and migration guidance.
+     * </Note>
+     *
      * @param {Corti.Uuid} id - The unique identifier of the interaction. Must be a valid UUID.
      * @param {Corti.Uuid} documentId - The document ID representing the context for the request. Must be a valid UUID.
      * @param {ClassicClient.RequestOptions} requestOptions - Request-specific configuration.
@@ -362,6 +374,10 @@ export class ClassicClient {
     /**
      * @deprecated
      *
+     * <Note>
+     * This endpoint is deprecated in favour of the corresponding GUIDED endpoint. See the [deprecation notice](/release-notes/changelog-upcoming#2026-08-21) for more details and migration guidance.
+     * </Note>
+     *
      * @param {Corti.Uuid} id - The unique identifier of the interaction. Must be a valid UUID.
      * @param {Corti.Uuid} documentId - The document ID representing the context for the request. Must be a valid UUID.
      * @param {ClassicClient.RequestOptions} requestOptions - Request-specific configuration.
@@ -460,6 +476,10 @@ export class ClassicClient {
 
     /**
      * @deprecated
+     *
+     * <Note>
+     * This endpoint is deprecated in favour of the corresponding GUIDED endpoint. See the [deprecation notice](/release-notes/changelog-upcoming#2026-08-21) for more details and migration guidance.
+     * </Note>
      *
      * @param {Corti.Uuid} id - The unique identifier of the interaction. Must be a valid UUID.
      * @param {Corti.Uuid} documentId - The document ID representing the context for the request. Must be a valid UUID.
