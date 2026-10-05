@@ -689,6 +689,12 @@ const response = await client.interactions.create(..., {
 });
 ```
 
+Use `await client.getHeaders()` to retrieve a `Headers` object containing all configured client headers: authentication, tenant, custom headers, analytics, and SDK metadata. Tokens are refreshed if needed and header suppliers are resolved on each call. Request-specific overrides and endpoint-specific headers such as `Accept` and `Content-Type` are not included. The existing `getAuthHeaders()` helper still returns only authentication and tenant headers.
+
+```typescript
+const headers = await client.getHeaders();
+```
+
 ### Additional Query String Parameters
 
 If you would like to send additional query string parameters as part of the request, use the `queryParams` request option.
