@@ -444,7 +444,7 @@ describe("cortiClient.transcripts.create", () => {
         });
 
         it("should create transcript with diarize true and isMultichannel false (roles decoupled from multichannel)", async () => {
-            expect.assertions(2);
+            expect.assertions(1);
 
             const interactionId = await createTestInteraction(cortiClient);
             const recordingId = await createTestRecording(cortiClient, interactionId);
