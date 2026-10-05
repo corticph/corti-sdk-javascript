@@ -143,17 +143,7 @@ describe("ContextsClient", () => {
                             parts: [{ text: "J45.901" }],
                         },
                     ],
-                    metadata: {
-                        $usage: {
-                            model: "corti-default",
-                            inputTokens: 100,
-                            outputTokens: 20,
-                            cachedInputTokens: 64,
-                            cacheCreationInputTokens: 0,
-                            totalTokens: 120,
-                            credits: 1.2,
-                        },
-                    },
+                    metadata: { corti: { usage: { creditsConsumed: 0.13, inputTokens: 100, outputTokens: 20 } } },
                 },
             ],
         };
@@ -227,14 +217,12 @@ describe("ContextsClient", () => {
                         },
                     ],
                     metadata: {
-                        usage: {
-                            model: "corti-default",
-                            inputTokens: 100,
-                            outputTokens: 20,
-                            cachedInputTokens: 64,
-                            cacheCreationInputTokens: 0,
-                            totalTokens: 120,
-                            credits: 1.2,
+                        corti: {
+                            usage: {
+                                creditsConsumed: 0.13,
+                                inputTokens: 100,
+                                outputTokens: 20,
+                            },
                         },
                     },
                 },

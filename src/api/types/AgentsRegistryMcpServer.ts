@@ -7,4 +7,8 @@ export interface AgentsRegistryMcpServer {
     name: string;
     /** Type of authorization used by the MCP server. */
     authorizationType: Corti.AgentsRegistryMcpServerAuthorizationType;
+    /** Header names the MCP server requires the client to send. */
+    requiredHeaders?: string[];
+    /** Header names the client may optionally send. */
+    optionalHeaders?: string[];
 }

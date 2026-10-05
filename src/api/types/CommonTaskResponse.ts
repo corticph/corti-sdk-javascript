@@ -13,6 +13,6 @@ export interface CommonTaskResponse {
     history?: Corti.CommonMessage[];
     /** Artifacts produced by the task. */
     artifacts?: Corti.CommonArtifactResponse[];
-    /** Task metadata, including `$usage` token/credit accounting. Not yet exposed through the REST binding (deferred); only the JSON-RPC binding populates this field. */
+    /** Task metadata, including `corti.usage` credit accounting. Populated by both the REST and JSON-RPC v2 bindings; the deprecated v1 bindings do not include it. */
     metadata?: Corti.CommonTaskMetadata;
 }
