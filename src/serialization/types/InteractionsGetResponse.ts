@@ -3,6 +3,7 @@
 import type * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
 import type * as serializers from "../index.js";
+import { InteractionsDeletionReasonEnum } from "./InteractionsDeletionReasonEnum.js";
 import { InteractionsEncounterResponse } from "./InteractionsEncounterResponse.js";
 import { InteractionsPatient } from "./InteractionsPatient.js";
 import { Uuid } from "./Uuid.js";
@@ -20,6 +21,9 @@ export const InteractionsGetResponse: core.serialization.ObjectSchema<
     updatedAt: core.serialization.date(),
     websocketUrl: core.serialization.string(),
     lastUpdated: core.serialization.date(),
+    deletionReason: InteractionsDeletionReasonEnum,
+    scheduledDeletionAt: core.serialization.date().nullable(),
+    deletedAt: core.serialization.date().nullable(),
 });
 
 export declare namespace InteractionsGetResponse {
@@ -33,5 +37,8 @@ export declare namespace InteractionsGetResponse {
         updatedAt: string;
         websocketUrl: string;
         lastUpdated: string;
+        deletionReason: InteractionsDeletionReasonEnum.Raw;
+        scheduledDeletionAt?: string | null;
+        deletedAt?: string | null;
     }
 }
