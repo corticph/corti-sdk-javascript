@@ -18,6 +18,8 @@ export interface AgenticAgentsResponse {
      * **Open question** — in the current implementation a model is configured per *expert*, not per *agent* (`Expert.modelName`), and an `Agent` has no model field at all. The desired end state is that there is **no distinction between an expert and an agent**, so `model` lives uniformly on this resource. Until that convergence lands, the precedence of an agent-level `model` over a connector/expert-level override is undecided and MUST be resolved before this field ships.
      */
     model?: string | null;
+    /** Effective cap on the orchestrator's ReAct loop iterations per run. Always present: agents created without `maxLoops` report the server default (10). */
+    maxLoops: number;
     visibility: Corti.AgentsVisibility;
     lifecycle: Corti.AgentsLifecycle;
     /** Connectors attached to the agent, discriminated by `type`. */
@@ -29,4 +31,6 @@ export interface AgenticAgentsResponse {
     updatedAt?: Date;
     /** Principal (user or service principal) that created the agent. */
     createdBy?: Corti.AgentsUserIdValue;
+    /** When the agent expires; `null` means it does not expire. Ephemeral agents get a 24h expiry at creation time; persistent agents never expire. */
+    expiresAt?: Date | null;
 }
