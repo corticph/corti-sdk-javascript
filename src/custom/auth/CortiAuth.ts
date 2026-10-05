@@ -7,7 +7,7 @@ import { buildTokenRequestBody } from "../utils/buildTokenRequestBody.js";
 import { type Environment, getEnvironment } from "../utils/environment.js";
 import { CODE_VERIFIER_KEY, getLocalStorageItem, setLocalStorageItem } from "../utils/localStorageHelpers.js";
 import { generateCodeChallenge, generateCodeVerifier } from "../utils/pkceHelpers.js";
-import { stripFernNormalizedHeaders } from "../utils/stripFernNormalizedHeaders.js";
+import { stripSdkNormalizedHeaders } from "../utils/stripFernNormalizedHeaders.js";
 
 interface Options {
     skipRedirect?: boolean;
@@ -123,7 +123,7 @@ export class CortiAuth extends AuthClient {
         this._options.authProvider = new core.NoOpAuthProvider();
 
         /** Stripping Fern headers to bypass CORS on authentication requests */
-        this._options.headers = stripFernNormalizedHeaders(this._options.headers);
+        this._options.headers = stripSdkNormalizedHeaders(this._options.headers);
     }
 
     /**
