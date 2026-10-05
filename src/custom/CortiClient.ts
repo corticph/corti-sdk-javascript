@@ -1,5 +1,5 @@
 import { CortiClient as BaseCortiClient } from "../Client.js";
-import { mergeHeaders } from "../core/headers.js";
+import { mergeHeaders, mergeOnlyDefinedHeaders } from "../core/headers.js";
 import * as core from "../core/index.js";
 import type * as environments from "../environments.js";
 import { CustomAgentic } from "./agentic/CustomAgentic.js";
@@ -156,5 +156,36 @@ export class CortiClient extends BaseCortiClient {
             ...(req.headers ?? {}),
             "Tenant-Name": await core.Supplier.get(this._options.tenantName),
         });
+    };
+
+    /**
+     * Retrieves all configured client headers, including authentication, tenant,
+     * custom headers, analytics, and SDK metadata. Tokens are refreshed if needed
+     * and header suppliers are resolved on each call.
+     *
+     * Endpoint-specific headers such as Accept and Content-Type are not included.
+     *
+     * @example
+     * ```typescript
+     * const headers = await client.getHeaders();
+     * ```
+     */
+    public getHeaders = async (): Promise<Headers> => {
+        const req = await this._options.authProvider.getAuthRequest();
+        const configuredHeaders = mergeHeaders(
+            req.headers,
+            this._options.headers,
+            mergeOnlyDefinedHeaders({ "Tenant-Name": this._options.tenantName }),
+        );
+        const headers = new Headers();
+
+        for (const [key, value] of Object.entries(configuredHeaders)) {
+            const resolved = await core.Supplier.get(value);
+            if (resolved != null) {
+                headers.set(key, String(resolved));
+            }
+        }
+
+        return headers;
     };
 }
