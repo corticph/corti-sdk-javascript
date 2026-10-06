@@ -36,7 +36,7 @@ export const CommonCodingSystemEnum: core.serialization.Schema<
     "meddra-fr",
     "meddra-es",
     "meddra-de",
-    "meddra-dk",
+    "meddra-no",
     "meddra-se",
     "sks",
     "kvaa",
@@ -72,7 +72,7 @@ export declare namespace CommonCodingSystemEnum {
         | "meddra-fr"
         | "meddra-es"
         | "meddra-de"
-        | "meddra-dk"
+        | "meddra-no"
         | "meddra-se"
         | "sks"
         | "kvaa";

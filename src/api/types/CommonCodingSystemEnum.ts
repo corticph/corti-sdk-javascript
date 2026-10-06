@@ -29,7 +29,7 @@ export const CommonCodingSystemEnum = {
     MeddraFr: "meddra-fr",
     MeddraEs: "meddra-es",
     MeddraDe: "meddra-de",
-    MeddraDk: "meddra-dk",
+    MeddraNo: "meddra-no",
     MeddraSe: "meddra-se",
     Sks: "sks",
     Kvaa: "kvaa",
