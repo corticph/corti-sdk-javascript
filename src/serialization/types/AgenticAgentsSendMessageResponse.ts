@@ -3,20 +3,12 @@
 import type * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
 import type * as serializers from "../index.js";
-import { CommonMessage } from "./CommonMessage.js";
-import { CommonTaskResponse } from "./CommonTaskResponse.js";
 
-export const AgenticAgentsSendMessageResponse: core.serialization.ObjectSchema<
+export const AgenticAgentsSendMessageResponse: core.serialization.Schema<
     serializers.AgenticAgentsSendMessageResponse.Raw,
     Corti.AgenticAgentsSendMessageResponse
-> = core.serialization.object({
-    task: CommonTaskResponse.optional(),
-    message: CommonMessage.optional(),
-});
+> = core.serialization.undiscriminatedUnion([core.serialization.unknown()]);
 
 export declare namespace AgenticAgentsSendMessageResponse {
-    export interface Raw {
-        task?: CommonTaskResponse.Raw | null;
-        message?: CommonMessage.Raw | null;
-    }
+    export type Raw = unknown;
 }

@@ -3,13 +3,22 @@
 import type * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
 import type * as serializers from "../index.js";
-import { A2AsseEvent } from "./A2AsseEvent.js";
 
 export const AgenticAgentsStreamEventResponse: core.serialization.ObjectSchema<
     serializers.AgenticAgentsStreamEventResponse.Raw,
     Corti.AgenticAgentsStreamEventResponse
-> = core.serialization.object({}).extend(A2AsseEvent);
+> = core.serialization.object({
+    data: core.serialization.string().optional(),
+    event: core.serialization.string().optional(),
+    id: core.serialization.string().optional(),
+    retry: core.serialization.number().optional(),
+});
 
 export declare namespace AgenticAgentsStreamEventResponse {
-    export interface Raw extends A2AsseEvent.Raw {}
+    export interface Raw {
+        data?: string | null;
+        event?: string | null;
+        id?: string | null;
+        retry?: number | null;
+    }
 }
