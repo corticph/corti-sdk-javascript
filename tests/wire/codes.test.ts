@@ -142,7 +142,7 @@ describe("CodesClient", () => {
             context: [{ type: "text", text: "Patient presents with uncontrolled type 2 diabetes." }],
             filters: [
                 {
-                    system_id: "icd10cm-outpatient",
+                    systemId: "icd10cm-outpatient",
                     include: { conditions: [{ property: "code", op: "is-a", value: ["E11"] }] },
                 },
             ],

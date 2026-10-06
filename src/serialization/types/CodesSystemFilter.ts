@@ -8,14 +8,14 @@ export const CodesSystemFilter: core.serialization.ObjectSchema<
     serializers.CodesSystemFilter.Raw,
     Corti.CodesSystemFilter
 > = core.serialization.object({
-    systemId: core.serialization.property("system_id", core.serialization.string()),
+    systemId: core.serialization.string(),
     include: core.serialization.lazyObject(() => serializers.CodesConditionGroup).optional(),
     exclude: core.serialization.lazyObject(() => serializers.CodesConditionGroup).optional(),
 });
 
 export declare namespace CodesSystemFilter {
     export interface Raw {
-        system_id: string;
+        systemId: string;
         include?: serializers.CodesConditionGroup.Raw | null;
         exclude?: serializers.CodesConditionGroup.Raw | null;
     }
