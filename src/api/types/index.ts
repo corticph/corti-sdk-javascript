@@ -1,3 +1,4 @@
+export * from "./A2AsseEvent.js";
 export * from "./AgenticAgentCardResponse.js";
 export * from "./AgenticAgentCardResponseCapabilities.js";
 export * from "./AgenticAgentCardResponseProvider.js";
@@ -337,6 +338,10 @@ export * from "./TranscribeAudioEventsConfig.js";
 export * from "./TranscribeCommand.js";
 export * from "./TranscribeCommandData.js";
 export * from "./TranscribeCommandMessage.js";
+export * from "./TranscribeCommandRemove.js";
+export * from "./TranscribeCommandsUpdateAcceptedMessage.js";
+export * from "./TranscribeCommandsUpdateDeniedMessage.js";
+export * from "./TranscribeCommandsUpdateMessage.js";
 export * from "./TranscribeCommandVariable.js";
 export * from "./TranscribeCommandVariableType.js";
 export * from "./TranscribeConfig.js";
