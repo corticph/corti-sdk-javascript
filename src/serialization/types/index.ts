@@ -1,3 +1,4 @@
+export * from "./A2AsseEvent.js";
 export * from "./AgenticAgentCardResponse.js";
 export * from "./AgenticAgentCardResponseCapabilities.js";
 export * from "./AgenticAgentCardResponseProvider.js";
