@@ -23,7 +23,7 @@ function normalizeHeaderKeys(headers: Headers): Record<string, HeaderValue> {
     return result;
 }
 
-export function stripFernNormalizedHeaders(headers: Headers): Record<string, HeaderValue> {
+export function stripSdkNormalizedHeaders(headers: Headers): Record<string, HeaderValue> {
     const normalized = normalizeHeaderKeys(headers);
 
     for (const headerName of SDK_HEADER_NAMES) {

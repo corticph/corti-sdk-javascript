@@ -11,7 +11,7 @@ export const InteractionsPatient: core.serialization.ObjectSchema<
 > = core.serialization.object({
     identifier: core.serialization.string(),
     name: core.serialization.string().optionalNullable(),
-    gender: InteractionsGenderEnum.optional(),
+    gender: InteractionsGenderEnum.optionalNullable(),
     birthDate: core.serialization.date().optionalNullable(),
     pronouns: core.serialization.string().optionalNullable(),
 });
@@ -20,7 +20,7 @@ export declare namespace InteractionsPatient {
     export interface Raw {
         identifier: string;
         name?: (string | null | undefined) | null;
-        gender?: InteractionsGenderEnum.Raw | null;
+        gender?: (InteractionsGenderEnum.Raw | null | undefined) | null;
         birthDate?: (string | null | undefined) | null;
         pronouns?: (string | null | undefined) | null;
     }

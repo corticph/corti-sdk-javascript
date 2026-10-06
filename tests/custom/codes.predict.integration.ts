@@ -38,14 +38,14 @@ describe("cortiClient.codes.predict", () => {
     });
 
     describe("should predict codes with all optional parameters", () => {
-        it("should predict codes with filter.include without errors or warnings", async () => {
+        it("should predict codes with filter.include condition object without errors or warnings", async () => {
             expect.assertions(2);
 
             const result = await cortiClient.codes.predict({
                 system: ["icd10cm-outpatient"],
                 context: [{ type: "text", text: faker.lorem.sentence() }],
                 filter: {
-                    include: ["E11"],
+                    include: [{ property: "code", op: "is-a", value: ["E11"] }],
                 },
             });
 
@@ -53,14 +53,14 @@ describe("cortiClient.codes.predict", () => {
             expect(consoleWarnSpy).not.toHaveBeenCalled();
         });
 
-        it("should predict codes with filter.exclude without errors or warnings", async () => {
+        it("should predict codes with filter.exclude condition object without errors or warnings", async () => {
             expect.assertions(2);
 
             const result = await cortiClient.codes.predict({
                 system: ["icd10cm-outpatient"],
                 context: [{ type: "text", text: faker.lorem.sentence() }],
                 filter: {
-                    exclude: ["Z00"],
+                    exclude: [{ property: "code", op: "in", value: ["Z00"] }],
                 },
             });
 
@@ -68,31 +68,15 @@ describe("cortiClient.codes.predict", () => {
             expect(consoleWarnSpy).not.toHaveBeenCalled();
         });
 
-        it("should predict codes with filter.expand without errors or warnings", async () => {
+        it("should predict codes with filter all condition params combined without errors or warnings", async () => {
             expect.assertions(2);
 
             const result = await cortiClient.codes.predict({
                 system: ["icd10cm-outpatient"],
                 context: [{ type: "text", text: faker.lorem.sentence() }],
                 filter: {
-                    expand: true,
-                },
-            });
-
-            expect(result).toBeDefined();
-            expect(consoleWarnSpy).not.toHaveBeenCalled();
-        });
-
-        it("should predict codes with all filter params combined without errors or warnings", async () => {
-            expect.assertions(2);
-
-            const result = await cortiClient.codes.predict({
-                system: ["icd10cm-outpatient"],
-                context: [{ type: "text", text: faker.lorem.sentence() }],
-                filter: {
-                    include: ["E11"],
-                    exclude: ["E11.9"],
-                    expand: true,
+                    include: [{ property: "code", op: "is-a", value: ["E11"] }],
+                    exclude: [{ property: "code", op: "in", value: ["E11.9"] }],
                 },
             });
 

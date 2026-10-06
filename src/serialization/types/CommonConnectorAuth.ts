@@ -11,15 +11,19 @@ export const CommonConnectorAuth: core.serialization.ObjectSchema<
 > = core.serialization.object({
     type: CommonConnectorAuthType,
     scope: core.serialization.string().optional(),
-    redirectUrl: core.serialization.string().optional(),
+    tokenUrl: core.serialization.string().optional(),
     ref: core.serialization.string().optional(),
+    requiredHeaders: core.serialization.list(core.serialization.string()).optional(),
+    optionalHeaders: core.serialization.list(core.serialization.string()).optional(),
 });
 
 export declare namespace CommonConnectorAuth {
     export interface Raw {
         type: CommonConnectorAuthType.Raw;
         scope?: string | null;
-        redirectUrl?: string | null;
+        tokenUrl?: string | null;
         ref?: string | null;
+        requiredHeaders?: string[] | null;
+        optionalHeaders?: string[] | null;
     }
 }

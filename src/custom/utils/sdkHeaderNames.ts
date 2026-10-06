@@ -7,4 +7,5 @@ export const SDK_HEADER_NAMES: ReadonlySet<string> = new Set([
     "user-agent",
     "x-fern-runtime",
     "x-fern-runtime-version",
+    "x-corti-analytics",
 ]);
