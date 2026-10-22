@@ -16,8 +16,10 @@ export const AgentsCreateMcpServer: core.serialization.ObjectSchema<
     authorizationType: AgentsCreateMcpServerAuthorizationType,
     authorizationScope: core.serialization.string().optional(),
     url: core.serialization.string(),
-    redirectUrl: core.serialization.string().optional(),
+    tokenUrl: core.serialization.string().optional(),
     token: core.serialization.string().optional(),
+    requiredHeaders: core.serialization.list(core.serialization.string()).optional(),
+    optionalHeaders: core.serialization.list(core.serialization.string()).optional(),
 });
 
 export declare namespace AgentsCreateMcpServer {
@@ -28,7 +30,9 @@ export declare namespace AgentsCreateMcpServer {
         authorizationType: AgentsCreateMcpServerAuthorizationType.Raw;
         authorizationScope?: string | null;
         url: string;
-        redirectUrl?: string | null;
+        tokenUrl?: string | null;
         token?: string | null;
+        requiredHeaders?: string[] | null;
+        optionalHeaders?: string[] | null;
     }
 }

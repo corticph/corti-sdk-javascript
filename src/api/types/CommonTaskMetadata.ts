@@ -3,13 +3,12 @@
 import type * as Corti from "../index.js";
 
 /**
- * Free-form A2A task metadata. Corti's first-party keys are prefixed with
- * `$` (à la Mixpanel) to set them apart from caller-supplied keys. Token and
- * credit accounting is carried under `$usage`. Arbitrary additional keys are
- * permitted.
+ * Free-form A2A task metadata. Corti's first-party keys live under the
+ * `corti` namespace. Token and credit accounting is carried under
+ * `corti.usage`. Arbitrary additional keys are permitted.
  */
 export interface CommonTaskMetadata {
-    usage?: Corti.CommonUsage;
+    corti?: Corti.CommonCortiMetadata;
     /** Accepts any additional properties */
     [key: string]: any;
 }

@@ -12,13 +12,13 @@ export const TranscriptsListItem: core.serialization.ObjectSchema<
 > = core.serialization.object({
     id: Uuid,
     transcriptSample: core.serialization.string(),
-    transcript: TranscriptsData.optional(),
+    transcript: TranscriptsData.optionalNullable(),
 });
 
 export declare namespace TranscriptsListItem {
     export interface Raw {
         id: Uuid.Raw;
         transcriptSample: string;
-        transcript?: TranscriptsData.Raw | null;
+        transcript?: (TranscriptsData.Raw | null | undefined) | null;
     }
 }

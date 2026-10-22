@@ -158,11 +158,7 @@ describe("AgentsClient", () => {
                     type: "mcp",
                     name: "policybot",
                     url: "https://mcp.example.com",
-                    auth: {
-                        type: "oauth2",
-                        scope: "read:policies",
-                        redirectUrl: "https://app.corti.ai/oauth/callback",
-                    },
+                    auth: { type: "oauth2", scope: "read:policies", tokenUrl: "https://app.corti.ai/oauth/token" },
                 },
                 {
                     type: "schema",
@@ -233,7 +229,7 @@ describe("AgentsClient", () => {
                     auth: {
                         type: "oauth2",
                         scope: "read:policies",
-                        redirectUrl: "https://app.corti.ai/oauth/callback",
+                        tokenUrl: "https://app.corti.ai/oauth/token",
                     },
                 },
                 {
@@ -1291,17 +1287,7 @@ describe("AgentsClient", () => {
                         parts: [{ text: "J45.909" }],
                     },
                 ],
-                metadata: {
-                    $usage: {
-                        model: "corti-default",
-                        inputTokens: 100,
-                        outputTokens: 20,
-                        cachedInputTokens: 64,
-                        cacheCreationInputTokens: 0,
-                        totalTokens: 120,
-                        credits: 1.2,
-                    },
-                },
+                metadata: { corti: { usage: { creditsConsumed: 0.13, inputTokens: 100, outputTokens: 20 } } },
             },
             message: {
                 messageId: "msg.0192f4c8-5f8d-7e61-924d-6fb09b5ead73",
@@ -1382,14 +1368,12 @@ describe("AgentsClient", () => {
                     },
                 ],
                 metadata: {
-                    usage: {
-                        model: "corti-default",
-                        inputTokens: 100,
-                        outputTokens: 20,
-                        cachedInputTokens: 64,
-                        cacheCreationInputTokens: 0,
-                        totalTokens: 120,
-                        credits: 1.2,
+                    corti: {
+                        usage: {
+                            creditsConsumed: 0.13,
+                            inputTokens: 100,
+                            outputTokens: 20,
+                        },
                     },
                 },
             },
