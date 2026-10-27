@@ -7,6 +7,8 @@ export interface StreamConfigTranscription {
     primaryLanguage: Corti.StreamSupportedLanguage;
     /** Enable speaker diarization. */
     diarize?: boolean;
+    /** When enabled, transcripts are returned at word level instead of phrase/utterance level: each transcript list item is a single word with its own timing. Defaults to false. */
+    wordLevel?: Corti.StreamConfigTranscriptionWordLevel;
     /** **Deprecated** — renamed to `diarize`. Still accepted for backward compatibility; `diarize` takes precedence when both are provided. `CONFIG_ACCEPTED` echoes both fields during the deprecation period. No removal date is currently planned. */
     isDiarization?: boolean;
     /** Enable multi-channel audio processing. When false, all participants are collapsed to channel 0 and the audio is converted to mono. */

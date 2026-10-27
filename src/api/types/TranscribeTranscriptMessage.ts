@@ -4,5 +4,6 @@ import type * as Corti from "../index.js";
 
 export interface TranscribeTranscriptMessage {
     type: "transcript";
-    data: Corti.TranscribeTranscriptData;
+    /** The singular segment object, or a list of items when `wordLevel` is enabled: all word items finalized together in one message, or a one-element list carrying the in-progress segment for interim previews when `interimResults` is also enabled. */
+    data: Corti.TranscribeTranscriptMessageData;
 }

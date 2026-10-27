@@ -14,6 +14,7 @@ export const CommonTranscriptResponse: core.serialization.ObjectSchema<
     text: core.serialization.string(),
     start: core.serialization.number(),
     end: core.serialization.number(),
+    delimiterBefore: core.serialization.string().optional(),
 });
 
 export declare namespace CommonTranscriptResponse {
@@ -24,5 +25,6 @@ export declare namespace CommonTranscriptResponse {
         text: string;
         start: number;
         end: number;
+        delimiterBefore?: string | null;
     }
 }
