@@ -14,6 +14,7 @@ export const CommonTranscriptRequest: core.serialization.ObjectSchema<
     text: core.serialization.string(),
     start: core.serialization.number().optional(),
     end: core.serialization.number().optional(),
+    delimiterBefore: core.serialization.string().optional(),
 });
 
 export declare namespace CommonTranscriptRequest {
@@ -24,5 +25,6 @@ export declare namespace CommonTranscriptRequest {
         text: string;
         start?: number | null;
         end?: number | null;
+        delimiterBefore?: string | null;
     }
 }
