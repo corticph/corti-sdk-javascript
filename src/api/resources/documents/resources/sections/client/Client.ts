@@ -433,4 +433,99 @@ export class SectionsClient {
             "/documents/sections/{sectionID}",
         );
     }
+
+    /**
+     * Returns the templates and sections that a change to this section can affect.
+     *
+     * The `templates` group lists templates whose published version links this section or a
+     * descendant section. It also lists templates that inherit their section list from a parent
+     * template that links the section. The `sections` group lists the descendant sections that
+     * inherit from this section.
+     *
+     * Counts respect the caller's visibility, so the same section can return different
+     * counts for different callers.
+     *
+     * A template appears once. When a template reaches the section through more than one
+     * path, the response keeps the strongest path. The order is `direct`, then
+     * `inheritedSection`, then `inheritedTemplate`.
+     *
+     * Each `items` array holds at most 50 entries. When the 50-entry display cap or the
+     * inheritance depth cap removes entries, `truncated` is true.
+     *
+     * Returns 404 when the caller cannot see the section.
+     *
+     * @param {string} sectionID
+     * @param {SectionsClient.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link Corti.NotFoundError}
+     *
+     * @example
+     *     await client.documents.sections.impact("sectionID")
+     */
+    public impact(
+        sectionID: string,
+        requestOptions?: SectionsClient.RequestOptions,
+    ): core.HttpResponsePromise<Corti.GuidedSectionImpactResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__impact(sectionID, requestOptions));
+    }
+
+    private async __impact(
+        sectionID: string,
+        requestOptions?: SectionsClient.RequestOptions,
+    ): Promise<core.WithRawResponse<Corti.GuidedSectionImpactResponse>> {
+        const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
+        const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+            _authRequest.headers,
+            this._options?.headers,
+            mergeOnlyDefinedHeaders({ "Tenant-Name": requestOptions?.tenantName ?? this._options?.tenantName }),
+            requestOptions?.headers,
+        );
+        const _response = await core.fetcher({
+            url: core.url.join(
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)).base,
+                `documents/sections/${core.url.encodePathParam(sectionID)}/impact`,
+            ),
+            method: "GET",
+            headers: _headers,
+            queryParameters: requestOptions?.queryParams,
+            timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
+            maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
+            abortSignal: requestOptions?.abortSignal,
+            fetchFn: this._options?.fetch,
+            logging: this._options.logging,
+        });
+        if (_response.ok) {
+            return {
+                data: serializers.GuidedSectionImpactResponse.parseOrThrow(_response.body, {
+                    unrecognizedObjectKeys: "passthrough",
+                    allowUnrecognizedUnionMembers: true,
+                    allowUnrecognizedEnumValues: true,
+                    skipValidation: true,
+                    breadcrumbsPrefix: ["response"],
+                }),
+                rawResponse: _response.rawResponse,
+            };
+        }
+
+        if (_response.error.reason === "status-code") {
+            switch (_response.error.statusCode) {
+                case 404:
+                    throw new Corti.NotFoundError(_response.error.body, _response.rawResponse);
+                default:
+                    throw new errors.CortiError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                        rawResponse: _response.rawResponse,
+                    });
+            }
+        }
+
+        return handleNonStatusCodeError(
+            _response.error,
+            _response.rawResponse,
+            "GET",
+            "/documents/sections/{sectionID}/impact",
+        );
+    }
 }
