@@ -36,5 +36,8 @@ export const CommonCodingSystemEnum = {
     MeddraSe: "meddra-se",
     Sks: "sks",
     Kvaa: "kvaa",
+    Icdo3Int: "icdo3int",
+    Icdo3Fr: "icdo3fr",
+    Icdo3De: "icdo3de",
 } as const;
 export type CommonCodingSystemEnum = (typeof CommonCodingSystemEnum)[keyof typeof CommonCodingSystemEnum];
