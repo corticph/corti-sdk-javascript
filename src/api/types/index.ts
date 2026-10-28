@@ -145,6 +145,7 @@ export * from "./CommonMessage.js";
 export * from "./CommonMessageIdValue.js";
 export * from "./CommonNextPageToken.js";
 export * from "./CommonPart.js";
+export * from "./CommonRegistryConnectorAuthEntry.js";
 export * from "./CommonRegistryConnectorCreate.js";
 export * from "./CommonRegistryConnectorProvisioned.js";
 export * from "./CommonRole.js";

@@ -24,6 +24,10 @@ describe("ConnectorsClient", () => {
                     id: "con.0192f4c8-7baf-7083-a46f-81d2bd70cf95",
                     type: "registry",
                     enabled: true,
+                    auth: [
+                        { type: "none", server: "pubmed" },
+                        { type: "bearer", requiredHeaders: ["X-Api-Key"], server: "drugbank" },
+                    ],
                     name: "pubmed-expert",
                     config: { key: "value" },
                 },
@@ -45,6 +49,17 @@ describe("ConnectorsClient", () => {
                     id: "con.0192f4c8-7baf-7083-a46f-81d2bd70cf95",
                     type: "registry",
                     enabled: true,
+                    auth: [
+                        {
+                            type: "none",
+                            server: "pubmed",
+                        },
+                        {
+                            type: "bearer",
+                            requiredHeaders: ["X-Api-Key"],
+                            server: "drugbank",
+                        },
+                    ],
                     name: "pubmed-expert",
                     config: {
                         key: "value",
@@ -124,6 +139,26 @@ describe("ConnectorsClient", () => {
             id: "con.0192f4c8-7baf-7083-a46f-81d2bd70cf95",
             type: "registry",
             enabled: true,
+            auth: [
+                {
+                    type: "none",
+                    scope: "scope",
+                    tokenUrl: "tokenUrl",
+                    ref: "ref",
+                    requiredHeaders: ["requiredHeaders"],
+                    optionalHeaders: ["optionalHeaders"],
+                    server: "pubmed",
+                },
+                {
+                    type: "bearer",
+                    scope: "scope",
+                    tokenUrl: "tokenUrl",
+                    ref: "ref",
+                    requiredHeaders: ["X-Api-Key"],
+                    optionalHeaders: ["optionalHeaders"],
+                    server: "drugbank",
+                },
+            ],
             name: "pubmed-expert",
             config: { key: "value" },
         };
@@ -145,6 +180,26 @@ describe("ConnectorsClient", () => {
             id: "con.0192f4c8-7baf-7083-a46f-81d2bd70cf95",
             type: "registry",
             enabled: true,
+            auth: [
+                {
+                    type: "none",
+                    scope: "scope",
+                    tokenUrl: "tokenUrl",
+                    ref: "ref",
+                    requiredHeaders: ["requiredHeaders"],
+                    optionalHeaders: ["optionalHeaders"],
+                    server: "pubmed",
+                },
+                {
+                    type: "bearer",
+                    scope: "scope",
+                    tokenUrl: "tokenUrl",
+                    ref: "ref",
+                    requiredHeaders: ["X-Api-Key"],
+                    optionalHeaders: ["optionalHeaders"],
+                    server: "drugbank",
+                },
+            ],
             name: "pubmed-expert",
             config: {
                 key: "value",
@@ -292,6 +347,26 @@ describe("ConnectorsClient", () => {
             id: "con.0192f4c8-7baf-7083-a46f-81d2bd70cf95",
             type: "registry",
             enabled: true,
+            auth: [
+                {
+                    type: "none",
+                    scope: "scope",
+                    tokenUrl: "tokenUrl",
+                    ref: "ref",
+                    requiredHeaders: ["requiredHeaders"],
+                    optionalHeaders: ["optionalHeaders"],
+                    server: "pubmed",
+                },
+                {
+                    type: "bearer",
+                    scope: "scope",
+                    tokenUrl: "tokenUrl",
+                    ref: "ref",
+                    requiredHeaders: ["X-Api-Key"],
+                    optionalHeaders: ["optionalHeaders"],
+                    server: "drugbank",
+                },
+            ],
             name: "pubmed-expert",
             config: { key: "value" },
         };
@@ -314,6 +389,26 @@ describe("ConnectorsClient", () => {
             id: "con.0192f4c8-7baf-7083-a46f-81d2bd70cf95",
             type: "registry",
             enabled: true,
+            auth: [
+                {
+                    type: "none",
+                    scope: "scope",
+                    tokenUrl: "tokenUrl",
+                    ref: "ref",
+                    requiredHeaders: ["requiredHeaders"],
+                    optionalHeaders: ["optionalHeaders"],
+                    server: "pubmed",
+                },
+                {
+                    type: "bearer",
+                    scope: "scope",
+                    tokenUrl: "tokenUrl",
+                    ref: "ref",
+                    requiredHeaders: ["X-Api-Key"],
+                    optionalHeaders: ["optionalHeaders"],
+                    server: "drugbank",
+                },
+            ],
             name: "pubmed-expert",
             config: {
                 key: "value",
@@ -473,6 +568,17 @@ describe("ConnectorsClient", () => {
             id: "con.0192f4c8-7baf-7083-a46f-81d2bd70cf95",
             type: "registry",
             enabled: true,
+            auth: [
+                {
+                    type: "none",
+                    scope: "scope",
+                    tokenUrl: "tokenUrl",
+                    ref: "ref",
+                    requiredHeaders: ["requiredHeaders"],
+                    optionalHeaders: ["optionalHeaders"],
+                    server: "server",
+                },
+            ],
             name: "pubmed-expert",
             config: { key: "value" },
         };
@@ -499,6 +605,17 @@ describe("ConnectorsClient", () => {
             id: "con.0192f4c8-7baf-7083-a46f-81d2bd70cf95",
             type: "registry",
             enabled: true,
+            auth: [
+                {
+                    type: "none",
+                    scope: "scope",
+                    tokenUrl: "tokenUrl",
+                    ref: "ref",
+                    requiredHeaders: ["requiredHeaders"],
+                    optionalHeaders: ["optionalHeaders"],
+                    server: "server",
+                },
+            ],
             name: "pubmed-expert",
             config: {
                 key: "value",

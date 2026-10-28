@@ -11,6 +11,8 @@ export interface CommonRegistryConnectorProvisioned {
     name: string;
     /** Connector-specific configuration validated against the registry schema. */
     config?: Record<string, unknown>;
+    /** Per-server auth entries, overriding the connector's singular `auth`. One entry per backing registry MCP server, keyed by the server's unique name; a registry expert that provisions no MCP servers yields a single fallback entry `{ type: none }` with no `server`. */
+    auth?: Corti.CommonRegistryConnectorAuthEntry[];
     /**
      * Server-generated connector identifier (prefixed UUIDv7). Stable across PATCH
      * replacements where the underlying spec is unchanged. Used by

@@ -191,6 +191,7 @@ describe("AgentsClient", () => {
                     id: "con.0192f4c8-7baf-7083-a46f-81d2bd70cf95",
                     type: "registry",
                     enabled: true,
+                    auth: [{ type: "none" }],
                     name: "pubmed-expert",
                     config: { key: "value" },
                 },
@@ -273,6 +274,11 @@ describe("AgentsClient", () => {
                     id: "con.0192f4c8-7baf-7083-a46f-81d2bd70cf95",
                     type: "registry",
                     enabled: true,
+                    auth: [
+                        {
+                            type: "none",
+                        },
+                    ],
                     name: "pubmed-expert",
                     config: {
                         key: "value",
@@ -465,6 +471,7 @@ describe("AgentsClient", () => {
                     id: "con.0192f4c8-7baf-7083-a46f-81d2bd70cf95",
                     type: "registry",
                     enabled: true,
+                    auth: [{ type: "none" }],
                     name: "pubmed-expert",
                     config: { key: "value" },
                 },
@@ -498,6 +505,11 @@ describe("AgentsClient", () => {
                     id: "con.0192f4c8-7baf-7083-a46f-81d2bd70cf95",
                     type: "registry",
                     enabled: true,
+                    auth: [
+                        {
+                            type: "none",
+                        },
+                    ],
                     name: "pubmed-expert",
                     config: {
                         key: "value",
@@ -725,6 +737,7 @@ describe("AgentsClient", () => {
                     id: "con.0192f4c8-7baf-7083-a46f-81d2bd70cf95",
                     type: "registry",
                     enabled: true,
+                    auth: [{ type: "none" }],
                     name: "pubmed-expert",
                     config: { key: "value" },
                 },
@@ -767,6 +780,11 @@ describe("AgentsClient", () => {
                     id: "con.0192f4c8-7baf-7083-a46f-81d2bd70cf95",
                     type: "registry",
                     enabled: true,
+                    auth: [
+                        {
+                            type: "none",
+                        },
+                    ],
                     name: "pubmed-expert",
                     config: {
                         key: "value",
