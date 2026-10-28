@@ -11,14 +11,18 @@ export const TranscriptsListItem: core.serialization.ObjectSchema<
     Corti.TranscriptsListItem
 > = core.serialization.object({
     id: Uuid,
+    recordingId: Uuid,
     transcriptSample: core.serialization.string(),
+    createdAt: core.serialization.date(),
     transcript: TranscriptsData.optionalNullable(),
 });
 
 export declare namespace TranscriptsListItem {
     export interface Raw {
         id: Uuid.Raw;
+        recordingId: Uuid.Raw;
         transcriptSample: string;
+        createdAt: string;
         transcript?: (TranscriptsData.Raw | null | undefined) | null;
     }
 }
