@@ -3,9 +3,9 @@
 import type * as Corti from "../index.js";
 
 /**
- * Auth configuration for a single backing registry MCP server.
+ * Authentication configuration for a single backing registry MCP server.
  */
-export interface CommonRegistryConnectorAuthEntry extends Corti.CommonConnectorAuth {
+export interface CommonConnectorAuthEntry extends Corti.CommonConnectorAuth {
     /** Name of the backing registry MCP server this entry describes. Registry MCP server names are unique across the registry. */
     server?: string;
 }

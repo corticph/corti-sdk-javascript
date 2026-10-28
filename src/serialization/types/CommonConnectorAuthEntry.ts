@@ -5,16 +5,16 @@ import * as core from "../../core/index.js";
 import type * as serializers from "../index.js";
 import { CommonConnectorAuth } from "./CommonConnectorAuth.js";
 
-export const CommonRegistryConnectorAuthEntry: core.serialization.ObjectSchema<
-    serializers.CommonRegistryConnectorAuthEntry.Raw,
-    Corti.CommonRegistryConnectorAuthEntry
+export const CommonConnectorAuthEntry: core.serialization.ObjectSchema<
+    serializers.CommonConnectorAuthEntry.Raw,
+    Corti.CommonConnectorAuthEntry
 > = core.serialization
     .object({
         server: core.serialization.string().optional(),
     })
     .extend(CommonConnectorAuth);
 
-export declare namespace CommonRegistryConnectorAuthEntry {
+export declare namespace CommonConnectorAuthEntry {
     export interface Raw extends CommonConnectorAuth.Raw {
         server?: string | null;
     }

@@ -3,8 +3,8 @@
 import type * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
 import type * as serializers from "../index.js";
+import { CommonConnectorAuthEntry } from "./CommonConnectorAuthEntry.js";
 import { CommonConnectorIdValue } from "./CommonConnectorIdValue.js";
-import { CommonRegistryConnectorAuthEntry } from "./CommonRegistryConnectorAuthEntry.js";
 
 export const CommonRegistryConnectorProvisioned: core.serialization.ObjectSchema<
     serializers.CommonRegistryConnectorProvisioned.Raw,
@@ -13,9 +13,9 @@ export const CommonRegistryConnectorProvisioned: core.serialization.ObjectSchema
     type: core.serialization.stringLiteral("registry"),
     name: core.serialization.string(),
     config: core.serialization.record(core.serialization.string(), core.serialization.unknown()).optional(),
-    auth: core.serialization.list(CommonRegistryConnectorAuthEntry).optional(),
     id: CommonConnectorIdValue.optional(),
     enabled: core.serialization.boolean().optional(),
+    auth: core.serialization.list(CommonConnectorAuthEntry).optional(),
 });
 
 export declare namespace CommonRegistryConnectorProvisioned {
@@ -23,8 +23,8 @@ export declare namespace CommonRegistryConnectorProvisioned {
         type: "registry";
         name: string;
         config?: Record<string, unknown> | null;
-        auth?: CommonRegistryConnectorAuthEntry.Raw[] | null;
         id?: CommonConnectorIdValue.Raw | null;
         enabled?: boolean | null;
+        auth?: CommonConnectorAuthEntry.Raw[] | null;
     }
 }
