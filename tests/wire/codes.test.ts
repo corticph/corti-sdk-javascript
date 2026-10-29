@@ -140,7 +140,12 @@ describe("CodesClient", () => {
         const rawRequestBody = {
             system: ["icd10cm-outpatient"],
             context: [{ type: "text", text: "Patient presents with uncontrolled type 2 diabetes." }],
-            filter: { include: [{ property: "code", op: "is-a", value: ["E11"] }] },
+            filters: [
+                {
+                    systemId: "icd10cm-outpatient",
+                    include: { conditions: [{ property: "code", op: "is-a", value: ["E11"] }] },
+                },
+            ],
         };
         const rawResponseBody = {
             codes: [
@@ -189,15 +194,20 @@ describe("CodesClient", () => {
                     text: "Patient presents with uncontrolled type 2 diabetes.",
                 },
             ],
-            filter: {
-                include: [
-                    {
-                        property: "code",
-                        op: "is-a",
-                        value: ["E11"],
+            filters: [
+                {
+                    systemId: "icd10cm-outpatient",
+                    include: {
+                        conditions: [
+                            {
+                                property: "code",
+                                op: "is-a",
+                                value: ["E11"],
+                            },
+                        ],
                     },
-                ],
-            },
+                },
+            ],
         });
         expect(response).toEqual({
             codes: [

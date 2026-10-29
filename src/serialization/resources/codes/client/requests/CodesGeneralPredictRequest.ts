@@ -4,6 +4,7 @@ import type * as Corti from "../../../../../api/index.js";
 import * as core from "../../../../../core/index.js";
 import type * as serializers from "../../../../index.js";
 import { CodesFilter } from "../../../../types/CodesFilter.js";
+import { CodesSystemFilter } from "../../../../types/CodesSystemFilter.js";
 import { CommonAiContext } from "../../../../types/CommonAiContext.js";
 import { CommonCodingSystemEnum } from "../../../../types/CommonCodingSystemEnum.js";
 
@@ -14,6 +15,7 @@ export const CodesGeneralPredictRequest: core.serialization.Schema<
     system: core.serialization.list(CommonCodingSystemEnum),
     context: core.serialization.list(CommonAiContext),
     filter: CodesFilter.optional(),
+    filters: core.serialization.list(CodesSystemFilter).optional(),
 });
 
 export declare namespace CodesGeneralPredictRequest {
@@ -21,5 +23,6 @@ export declare namespace CodesGeneralPredictRequest {
         system: CommonCodingSystemEnum.Raw[];
         context: CommonAiContext.Raw[];
         filter?: CodesFilter.Raw | null;
+        filters?: CodesSystemFilter.Raw[] | null;
     }
 }
