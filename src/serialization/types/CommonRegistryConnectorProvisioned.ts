@@ -3,6 +3,7 @@
 import type * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
 import type * as serializers from "../index.js";
+import { CommonConnectorAuth } from "./CommonConnectorAuth.js";
 import { CommonConnectorIdValue } from "./CommonConnectorIdValue.js";
 
 export const CommonRegistryConnectorProvisioned: core.serialization.ObjectSchema<
@@ -14,6 +15,7 @@ export const CommonRegistryConnectorProvisioned: core.serialization.ObjectSchema
     config: core.serialization.record(core.serialization.string(), core.serialization.unknown()).optional(),
     id: CommonConnectorIdValue.optional(),
     enabled: core.serialization.boolean().optional(),
+    auth: CommonConnectorAuth.optional(),
 });
 
 export declare namespace CommonRegistryConnectorProvisioned {
@@ -23,5 +25,6 @@ export declare namespace CommonRegistryConnectorProvisioned {
         config?: Record<string, unknown> | null;
         id?: CommonConnectorIdValue.Raw | null;
         enabled?: boolean | null;
+        auth?: CommonConnectorAuth.Raw | null;
     }
 }
