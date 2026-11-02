@@ -5,6 +5,10 @@ import type * as Corti from "../index.js";
 export interface TranscriptsListItem {
     /** The unique identifier of the transcript. */
     id: Corti.Uuid;
+    /** The unique identifier for the associated recording. */
+    recordingId: Corti.Uuid;
     transcriptSample: string;
+    /** The timestamp when the transcript was created. */
+    createdAt: Date;
     transcript?: Corti.TranscriptsData | null;
 }
