@@ -13,6 +13,7 @@ export const TranscribeTranscriptData: core.serialization.ObjectSchema<
     start: core.serialization.number(),
     end: core.serialization.number(),
     isFinal: core.serialization.boolean(),
+    delimiterBefore: core.serialization.string().optional(),
 });
 
 export declare namespace TranscribeTranscriptData {
@@ -22,5 +23,6 @@ export declare namespace TranscribeTranscriptData {
         start: number;
         end: number;
         isFinal: boolean;
+        delimiterBefore?: string | null;
     }
 }

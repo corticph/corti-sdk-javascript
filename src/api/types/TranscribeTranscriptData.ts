@@ -11,4 +11,6 @@ export interface TranscribeTranscriptData {
     end: number;
     /** If false, then interim transcript result */
     isFinal: boolean;
+    /** The separator to prepend to this item's `text` when joining: an ordinary space " ", no separator "" (for example, a punctuation mark that attaches to the previous item, or the first item of a session or of a finalized batch), or a non-breaking space "\u00A0" used before some punctuation marks in some locales. If the property is omitted, treat it as an empty string. When joining one finalized batch to another, add the separator yourself, typically a single space. See the join rule in [Transcript Text Handling](https://docs.corti.ai/stt/best-practices-transcribe#join-words-and-segments-with-delimiterbefore) */
+    delimiterBefore?: string;
 }

@@ -22,7 +22,9 @@ describe("TranscriptsClient", () => {
             transcripts: [
                 {
                     id: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+                    recordingId: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
                     transcriptSample: "transcriptSample",
+                    createdAt: "2024-01-15T09:30:00Z",
                     transcript: {
                         metadata: {},
                         transcripts: [{ channel: 1, participant: 1, speakerId: 1, text: "text", start: 1, end: 1 }],
@@ -44,7 +46,9 @@ describe("TranscriptsClient", () => {
             transcripts: [
                 {
                     id: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+                    recordingId: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
                     transcriptSample: "transcriptSample",
+                    createdAt: new Date("2024-01-15T09:30:00.000Z"),
                     transcript: {
                         metadata: {},
                         transcripts: [
@@ -213,7 +217,17 @@ describe("TranscriptsClient", () => {
         const rawResponseBody = {
             id: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
             metadata: { participantsRoles: [{ channel: 1, role: "role" }] },
-            transcripts: [{ channel: 1, participant: 1, speakerId: 1, text: "text", start: 1, end: 1 }],
+            transcripts: [
+                {
+                    channel: 1,
+                    participant: 1,
+                    speakerId: 1,
+                    text: "text",
+                    start: 1,
+                    end: 1,
+                    delimiterBefore: "delimiterBefore",
+                },
+            ],
             usageInfo: { creditsConsumed: 1.1 },
             recordingId: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
             status: "completed",
@@ -250,6 +264,7 @@ describe("TranscriptsClient", () => {
                     text: "text",
                     start: 1,
                     end: 1,
+                    delimiterBefore: "delimiterBefore",
                 },
             ],
             usageInfo: {
@@ -430,7 +445,17 @@ describe("TranscriptsClient", () => {
         const rawResponseBody = {
             id: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
             metadata: { participantsRoles: [{ channel: 1, role: "role" }] },
-            transcripts: [{ channel: 1, participant: 1, speakerId: 1, text: "text", start: 1, end: 1 }],
+            transcripts: [
+                {
+                    channel: 1,
+                    participant: 1,
+                    speakerId: 1,
+                    text: "text",
+                    start: 1,
+                    end: 1,
+                    delimiterBefore: "delimiterBefore",
+                },
+            ],
             usageInfo: { creditsConsumed: 1.1 },
             recordingId: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
             status: "completed",
@@ -466,6 +491,7 @@ describe("TranscriptsClient", () => {
                     text: "text",
                     start: 1,
                     end: 1,
+                    delimiterBefore: "delimiterBefore",
                 },
             ],
             usageInfo: {

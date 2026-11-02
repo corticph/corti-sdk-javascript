@@ -16,6 +16,7 @@ export const StreamTranscript: core.serialization.ObjectSchema<
     speakerId: core.serialization.number(),
     participant: StreamParticipant,
     time: StreamTranscriptTime,
+    delimiterBefore: core.serialization.string().optional(),
 });
 
 export declare namespace StreamTranscript {
@@ -26,5 +27,6 @@ export declare namespace StreamTranscript {
         speakerId: number;
         participant: StreamParticipant.Raw;
         time: StreamTranscriptTime.Raw;
+        delimiterBefore?: string | null;
     }
 }
