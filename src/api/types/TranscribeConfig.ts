@@ -21,4 +21,6 @@ export interface TranscribeConfig {
     replacements?: Corti.TranscribeConfigReplacementsItem[];
     /** Define words, terms, and phrases to be recognized by Corti speech-to-text. Especially useful for proper nouns (e.g., surnames), but also supportive of words not being recognized consistently. */
     keyterms?: Corti.TranscribeConfigKeyterms;
+    /** When enabled, final transcripts are returned at word level instead of phrase/utterance level: all word items finalized together are delivered in a single message with `data` as a list. Interim previews remain segment level and arrive as a one-element list when `interimResults` is also enabled. Defaults to false. */
+    wordLevel?: Corti.TranscribeConfigWordLevel;
 }
