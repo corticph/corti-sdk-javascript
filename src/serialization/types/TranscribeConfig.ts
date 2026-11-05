@@ -7,6 +7,7 @@ import { TranscribeAudioEventsConfig } from "./TranscribeAudioEventsConfig.js";
 import { TranscribeCommand } from "./TranscribeCommand.js";
 import { TranscribeConfigKeyterms } from "./TranscribeConfigKeyterms.js";
 import { TranscribeConfigReplacementsItem } from "./TranscribeConfigReplacementsItem.js";
+import { TranscribeConfigWordLevel } from "./TranscribeConfigWordLevel.js";
 import { TranscribeFormatting } from "./TranscribeFormatting.js";
 import { TranscribeSupportedLanguage } from "./TranscribeSupportedLanguage.js";
 
@@ -24,6 +25,7 @@ export const TranscribeConfig: core.serialization.ObjectSchema<
     audioFormat: core.serialization.string().optional(),
     replacements: core.serialization.list(TranscribeConfigReplacementsItem).optional(),
     keyterms: TranscribeConfigKeyterms.optional(),
+    wordLevel: TranscribeConfigWordLevel.optional(),
 });
 
 export declare namespace TranscribeConfig {
@@ -38,5 +40,6 @@ export declare namespace TranscribeConfig {
         audioFormat?: string | null;
         replacements?: TranscribeConfigReplacementsItem.Raw[] | null;
         keyterms?: TranscribeConfigKeyterms.Raw | null;
+        wordLevel?: TranscribeConfigWordLevel.Raw | null;
     }
 }

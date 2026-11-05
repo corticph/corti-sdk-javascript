@@ -113,6 +113,43 @@ describe("cortiClient.stream.connect", () => {
         });
     });
 
+    describe("should connect with wordLevel configuration", () => {
+        it("should connect with wordLevel enabled without errors or warnings", async () => {
+            expect.assertions(2);
+
+            const interactionId = await createTestInteraction(cortiClient);
+
+            const streamSocket = await cortiClient.stream.connect({
+                id: interactionId,
+                awaitConfiguration: false,
+                configuration: {
+                    transcription: {
+                        primaryLanguage: "en",
+                        participants: [
+                            {
+                                channel: 0,
+                                role: "multiple",
+                            },
+                        ],
+                        wordLevel: {
+                            enabled: true,
+                        },
+                    },
+                    mode: {
+                        type: "facts",
+                        outputLocale: "en-US",
+                    },
+                },
+            });
+            activeSockets.push(streamSocket);
+
+            await waitForWebSocketMessage(streamSocket, "CONFIG_ACCEPTED", { rejectOnWrongMessage: true });
+
+            expect(streamSocket.socket.readyState).toBe(1); // OPEN
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
+    });
+
     describe("should connect with replacements and keyterms configuration", () => {
         it("should connect with replacements and keyterms without errors or warnings", async () => {
             expect.assertions(2);

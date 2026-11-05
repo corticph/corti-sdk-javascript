@@ -1,6 +1,12 @@
 import { faker } from "@faker-js/faker";
 import type { CortiClient } from "../../src";
-import { createTestCortiClient, createTestInteraction, createTestRecording, setupConsoleWarnSpy } from "./testUtils";
+import {
+    createTestCortiClient,
+    createTestInteraction,
+    createTestRecording,
+    pause,
+    setupConsoleWarnSpy,
+} from "./testUtils";
 
 describe("cortiClient.recordings.list", () => {
     let cortiClient: CortiClient;
@@ -55,6 +61,57 @@ describe("cortiClient.recordings.list", () => {
             expect(result.recordings.length).toBeGreaterThanOrEqual(2);
             expect(result.recordings.includes(recordingId1)).toBe(true);
             expect(result.recordings.includes(recordingId2)).toBe(true);
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
+    });
+
+    describe("should list recordings with all direction enum values", () => {
+        it("should return oldest recording first when direction is asc", async () => {
+            expect.assertions(3);
+
+            const interactionId = await createTestInteraction(cortiClient);
+            const firstRecordingId = await createTestRecording(cortiClient, interactionId);
+            await pause(100);
+            const secondRecordingId = await createTestRecording(cortiClient, interactionId);
+
+            const result = await cortiClient.recordings.list(interactionId, { direction: "asc" });
+
+            expect(result.recordings.indexOf(firstRecordingId)).toBeGreaterThanOrEqual(0);
+            expect(result.recordings.indexOf(firstRecordingId)).toBeLessThan(
+                result.recordings.indexOf(secondRecordingId),
+            );
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
+
+        it("should return newest recording first when direction is desc", async () => {
+            expect.assertions(3);
+
+            const interactionId = await createTestInteraction(cortiClient);
+            const firstRecordingId = await createTestRecording(cortiClient, interactionId);
+            await pause(100);
+            const secondRecordingId = await createTestRecording(cortiClient, interactionId);
+
+            const result = await cortiClient.recordings.list(interactionId, { direction: "desc" });
+
+            expect(result.recordings.indexOf(secondRecordingId)).toBeGreaterThanOrEqual(0);
+            expect(result.recordings.indexOf(secondRecordingId)).toBeLessThan(
+                result.recordings.indexOf(firstRecordingId),
+            );
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
+
+        it("should default to desc order when direction is not specified", async () => {
+            expect.assertions(2);
+
+            const interactionId = await createTestInteraction(cortiClient);
+            await createTestRecording(cortiClient, interactionId);
+            await pause(100);
+            await createTestRecording(cortiClient, interactionId);
+
+            const defaultResult = await cortiClient.recordings.list(interactionId);
+            const descResult = await cortiClient.recordings.list(interactionId, { direction: "desc" });
+
+            expect(defaultResult.recordings).toEqual(descResult.recordings);
             expect(consoleWarnSpy).not.toHaveBeenCalled();
         });
     });
