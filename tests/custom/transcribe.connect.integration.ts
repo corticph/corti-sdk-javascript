@@ -220,6 +220,26 @@ describe("cortiClient.transcribe.connect", () => {
             expect(consoleWarnSpy).not.toHaveBeenCalled();
         });
 
+        it("should connect with wordLevel enabled without errors or warnings", async () => {
+            expect.assertions(2);
+
+            const transcribeSocket = await cortiClient.transcribe.connect({
+                awaitConfiguration: false,
+                configuration: {
+                    primaryLanguage: "en",
+                    wordLevel: {
+                        enabled: true,
+                    },
+                },
+            });
+            activeSockets.push(transcribeSocket);
+
+            await waitForWebSocketMessage(transcribeSocket, "CONFIG_ACCEPTED", { rejectOnWrongMessage: true });
+
+            expect(transcribeSocket.socket.readyState).toBe(1); // OPEN
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
+
         it("should connect with wildcard command variable without errors or warnings", async () => {
             expect.assertions(2);
 
@@ -323,6 +343,77 @@ describe("cortiClient.transcribe.connect", () => {
             // await waitForWebSocketMessage(transcribeSocket, 'ended', { messages });
 
             // expect([2, 3]).toContain(transcribeSocket.socket.readyState); // CLOSING or CLOSED
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
+
+        it("should receive transcript data as a single segment when wordLevel is not enabled", async () => {
+            expect.assertions(3);
+
+            const transcribeSocket = await cortiClient.transcribe.connect({
+                awaitConfiguration: false,
+                configuration: {
+                    primaryLanguage: "en",
+                    audioFormat: "audio/mp3",
+                },
+            });
+            activeSockets.push(transcribeSocket);
+
+            const messages: any[] = [];
+            await waitForWebSocketMessage(transcribeSocket, "CONFIG_ACCEPTED", {
+                messages,
+                rejectOnWrongMessage: true,
+            });
+
+            const audioBuffer = fs.readFileSync(path.join(__dirname, "trouble-breathing.mp3"));
+            for (let i = 0; i < 3; i++) {
+                transcribeSocket.sendAudio(audioBuffer.subarray(i * 60 * 1024, (i + 1) * 60 * 1024));
+            }
+            transcribeSocket.sendFlush({ type: "flush" });
+
+            await waitForWebSocketMessage(transcribeSocket, "transcript", { messages, timeoutMs: 60000 });
+            transcribeSocket.sendEnd({ type: "end" });
+
+            const transcript = messages.find((message) => message.type === "transcript");
+
+            expect(Array.isArray(transcript.data)).toBe(false);
+            expect(typeof transcript.data.text).toBe("string");
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
+
+        it("should receive transcript data as a list of words when wordLevel is enabled", async () => {
+            expect.assertions(3);
+
+            const transcribeSocket = await cortiClient.transcribe.connect({
+                awaitConfiguration: false,
+                configuration: {
+                    primaryLanguage: "en",
+                    audioFormat: "audio/mp3",
+                    wordLevel: {
+                        enabled: true,
+                    },
+                },
+            });
+            activeSockets.push(transcribeSocket);
+
+            const messages: any[] = [];
+            await waitForWebSocketMessage(transcribeSocket, "CONFIG_ACCEPTED", {
+                messages,
+                rejectOnWrongMessage: true,
+            });
+
+            const audioBuffer = fs.readFileSync(path.join(__dirname, "trouble-breathing.mp3"));
+            for (let i = 0; i < 3; i++) {
+                transcribeSocket.sendAudio(audioBuffer.subarray(i * 60 * 1024, (i + 1) * 60 * 1024));
+            }
+            transcribeSocket.sendFlush({ type: "flush" });
+
+            await waitForWebSocketMessage(transcribeSocket, "transcript", { messages, timeoutMs: 60000 });
+            transcribeSocket.sendEnd({ type: "end" });
+
+            const transcript = messages.find((message) => message.type === "transcript");
+
+            expect(Array.isArray(transcript.data)).toBe(true);
+            expect(transcript.data.every((item: any) => typeof item.text === "string")).toBe(true);
             expect(consoleWarnSpy).not.toHaveBeenCalled();
         });
     });

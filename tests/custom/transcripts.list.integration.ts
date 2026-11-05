@@ -66,6 +66,22 @@ describe("cortiClient.transcripts.list", () => {
             expect(result.transcripts?.some((transcript) => transcript.id === transcriptId2)).toBe(true);
             expect(consoleWarnSpy).not.toHaveBeenCalled();
         });
+
+        it("should return recordingId and createdAt for each transcript", async () => {
+            expect.assertions(4);
+
+            const interactionId = await createTestInteraction(cortiClient);
+            const recordingId = await createTestRecording(cortiClient, interactionId);
+            const transcriptId = await createTestTranscript(cortiClient, interactionId, recordingId);
+
+            const result = await cortiClient.transcripts.list(interactionId);
+            const transcript = result.transcripts?.find((item) => item.id === transcriptId);
+
+            expect(transcript).toBeDefined();
+            expect(transcript?.recordingId).toBe(recordingId);
+            expect(transcript?.createdAt).toBeInstanceOf(Date);
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
     });
 
     describe("should list transcripts with all optional values", () => {
