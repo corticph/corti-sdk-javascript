@@ -4,11 +4,17 @@ import type * as Corti from "../../../../index.js";
 
 /**
  * @example
- *     {}
+ *     {
+ *         recordingId: "f47ac10b-58cc-4372-a567-0e02b2c3d479"
+ *     }
  */
 export interface TranscriptsListRequest {
     /** Display full transcripts in listing */
     full?: boolean;
+    /** Return only the transcripts of this recording. Must be a valid UUID. */
+    recordingId?: Corti.Uuid;
+    /** Field used to sort transcripts. Default is createdAt. */
+    sort?: Corti.TranscriptsListRequestSort;
     /** Sorting order. Allowed values: [asc, desc]. Default is desc. */
     direction?: Corti.CommonSortingDirectionEnum;
 }

@@ -4,6 +4,7 @@ import type * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
 import type * as serializers from "../index.js";
 import { StreamConfigParticipant } from "./StreamConfigParticipant.js";
+import { StreamConfigTranscriptionWordLevel } from "./StreamConfigTranscriptionWordLevel.js";
 import { StreamSupportedLanguage } from "./StreamSupportedLanguage.js";
 
 export const StreamConfigTranscription: core.serialization.ObjectSchema<
@@ -12,6 +13,7 @@ export const StreamConfigTranscription: core.serialization.ObjectSchema<
 > = core.serialization.object({
     primaryLanguage: StreamSupportedLanguage,
     diarize: core.serialization.boolean().optional(),
+    wordLevel: StreamConfigTranscriptionWordLevel.optional(),
     isDiarization: core.serialization.boolean().optional(),
     isMultichannel: core.serialization.boolean().optional(),
     participants: core.serialization.list(StreamConfigParticipant),
@@ -21,6 +23,7 @@ export declare namespace StreamConfigTranscription {
     export interface Raw {
         primaryLanguage: StreamSupportedLanguage.Raw;
         diarize?: boolean | null;
+        wordLevel?: StreamConfigTranscriptionWordLevel.Raw | null;
         isDiarization?: boolean | null;
         isMultichannel?: boolean | null;
         participants: StreamConfigParticipant.Raw[];
