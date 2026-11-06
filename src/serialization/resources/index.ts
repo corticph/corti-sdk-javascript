@@ -13,6 +13,8 @@ export * as interactions from "./interactions/index.js";
 export * from "./interactions/types/index.js";
 export * as languages from "./languages/index.js";
 export * from "./languages/types/index.js";
+export * as recordings from "./recordings/index.js";
+export * from "./recordings/types/index.js";
 export * from "./stream/client/socket/index.js";
 export * as stream from "./stream/index.js";
 export * from "./transcribe/client/socket/index.js";

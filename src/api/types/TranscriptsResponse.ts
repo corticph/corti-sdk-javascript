@@ -14,4 +14,6 @@ export interface TranscriptsResponse {
     recordingId: Corti.Uuid;
     /** The current status of the transcript processing. */
     status: Corti.TranscriptsStatusEnum;
+    /** Key terms echoed from the create request. Not persisted; may be omitted on subsequent GETs. */
+    keyTerms?: Corti.TranscriptsResponseKeyTerms;
 }

@@ -23,7 +23,7 @@ export class TranscriptsClient {
     }
 
     /**
-     * Retrieves a list of transcripts for a given interaction. Transcripts are ordered based on their creation time. Default ordering (desc) will return the most recent transcript first in the list. Use query parameter `direction` to define the order of the list (`asc` for ascending and `desc` for descending).
+     * Retrieves a list of transcripts for a given interaction. Transcripts are ordered based on their creation time by default. Default ordering (desc) will return the most recent transcript first in the list. Use query parameter `sort` to choose the field and `direction` to define the order of the list (`asc` for ascending and `desc` for descending).
      *
      * @param {Corti.Uuid} id - The unique identifier of the interaction. Must be a valid UUID.
      * @param {Corti.TranscriptsListRequest} request
@@ -36,7 +36,9 @@ export class TranscriptsClient {
      * @throws {@link Corti.GatewayTimeoutError}
      *
      * @example
-     *     await client.transcripts.list("f47ac10b-58cc-4372-a567-0e02b2c3d479")
+     *     await client.transcripts.list("f47ac10b-58cc-4372-a567-0e02b2c3d479", {
+     *         recordingId: "f47ac10b-58cc-4372-a567-0e02b2c3d479"
+     *     })
      */
     public list(
         id: Corti.Uuid,
@@ -51,9 +53,17 @@ export class TranscriptsClient {
         request: Corti.TranscriptsListRequest = {},
         requestOptions?: TranscriptsClient.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.TranscriptsListResponse>> {
-        const { full, direction } = request;
+        const { full, recordingId, sort, direction } = request;
         const _queryParams: Record<string, unknown> = {
             full,
+            recordingId,
+            sort:
+                sort != null
+                    ? serializers.TranscriptsListRequestSort.jsonOrThrow(sort, {
+                          unrecognizedObjectKeys: "strip",
+                          omitUndefined: true,
+                      })
+                    : undefined,
             direction:
                 direction != null
                     ? serializers.CommonSortingDirectionEnum.jsonOrThrow(direction, {
