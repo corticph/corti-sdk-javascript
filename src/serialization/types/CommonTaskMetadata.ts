@@ -3,20 +3,20 @@
 import type * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
 import type * as serializers from "../index.js";
-import { CommonUsage } from "./CommonUsage.js";
+import { CommonCortiMetadata } from "./CommonCortiMetadata.js";
 
 export const CommonTaskMetadata: core.serialization.ObjectSchema<
     serializers.CommonTaskMetadata.Raw,
     Corti.CommonTaskMetadata
 > = core.serialization
     .object({
-        usage: core.serialization.property("$usage", CommonUsage.optional()),
+        corti: CommonCortiMetadata.optional(),
     })
     .passthrough();
 
 export declare namespace CommonTaskMetadata {
     export interface Raw {
-        $usage?: CommonUsage.Raw | null;
+        corti?: CommonCortiMetadata.Raw | null;
         [key: string]: any;
     }
 }

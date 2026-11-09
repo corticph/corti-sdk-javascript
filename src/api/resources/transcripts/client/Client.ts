@@ -23,7 +23,7 @@ export class TranscriptsClient {
     }
 
     /**
-     * Retrieves a list of transcripts for a given interaction.
+     * Retrieves a list of transcripts for a given interaction. Transcripts are ordered based on their creation time. Default ordering (desc) will return the most recent transcript first in the list. Use query parameter `direction` to define the order of the list (`asc` for ascending and `desc` for descending).
      *
      * @param {Corti.Uuid} id - The unique identifier of the interaction. Must be a valid UUID.
      * @param {Corti.TranscriptsListRequest} request
@@ -51,9 +51,16 @@ export class TranscriptsClient {
         request: Corti.TranscriptsListRequest = {},
         requestOptions?: TranscriptsClient.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.TranscriptsListResponse>> {
-        const { full } = request;
+        const { full, direction } = request;
         const _queryParams: Record<string, unknown> = {
             full,
+            direction:
+                direction != null
+                    ? serializers.CommonSortingDirectionEnum.jsonOrThrow(direction, {
+                          unrecognizedObjectKeys: "strip",
+                          omitUndefined: true,
+                      })
+                    : undefined,
         };
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
