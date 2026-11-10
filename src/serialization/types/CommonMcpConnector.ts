@@ -13,9 +13,9 @@ export const CommonMcpConnector: core.serialization.ObjectSchema<
     type: core.serialization.stringLiteral("mcp"),
     name: core.serialization.string(),
     url: core.serialization.string(),
-    auth: CommonConnectorAuth.optional(),
     id: CommonConnectorIdValue.optional(),
     enabled: core.serialization.boolean().optional(),
+    auth: CommonConnectorAuth.optional(),
 });
 
 export declare namespace CommonMcpConnector {
@@ -23,8 +23,8 @@ export declare namespace CommonMcpConnector {
         type: "mcp";
         name: string;
         url: string;
-        auth?: CommonConnectorAuth.Raw | null;
         id?: CommonConnectorIdValue.Raw | null;
         enabled?: boolean | null;
+        auth?: CommonConnectorAuth.Raw | null;
     }
 }
