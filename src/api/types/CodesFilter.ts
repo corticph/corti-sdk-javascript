@@ -3,7 +3,7 @@
 import type * as Corti from "../index.js";
 
 /**
- * Optional filter to restrict the set of codes the model can predict.
+ * Deprecated: use `filters` with `CodesSystemFilter` instead.
  */
 export interface CodesFilter {
     /** Condition objects to include. When empty, the full set of codes for the requested systems is used. */
