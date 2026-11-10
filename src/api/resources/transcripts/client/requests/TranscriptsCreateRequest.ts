@@ -25,7 +25,7 @@ export interface TranscriptsCreateRequest {
     isMultichannel?: boolean;
     /** If true, separates speakers within an audio channel returning incrementing ids for transcript segments. */
     diarize?: boolean;
-    /** An array of participants, each specifying a free-form role and an assigned audio channel in the recording. For raw PCM, the channel count must be defined; otherwise, the number of audio channels is resolved from the audio itself, not from the declared participants. Leave empty when diarize: true. See [audio formatting](https://docs.corti.ai/stt/audio) for full details. */
+    /** An array of participants, each specifying a free-form role and an assigned audio channel in the recording. For raw PCM, the channel count must be defined; otherwise, the number of audio channels is resolved from the audio itself, not from the declared participants. Optional regardless of isMultichannel or diarize settings. Multiple participants may be assigned to the same channel. See [audio formatting](https://docs.corti.ai/stt/audio) for full details. */
     participants?: Corti.TranscriptsParticipant[];
     /** If true, the request will return immediately with a 202 status and the transcript will be processed asynchronously. Poll [Get Transcript Status](/api-reference/transcripts/get-transcript-status) to check transcript processing status - `processing`, `completed`, `failed`. */
     async?: boolean;

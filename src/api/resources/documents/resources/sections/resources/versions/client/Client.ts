@@ -26,7 +26,7 @@ export class VersionsClient {
     }
 
     /**
-     * Returns raw authored section versions without inheritance resolution. To see resolved content, use GET /sections/{sectionID} instead.
+     * Returns raw authored section versions without inheritance resolution. To see resolved content, use GET /sections/:id instead.
      *
      * @param {string} sectionID
      * @param {VersionsClient.RequestOptions} requestOptions - Request-specific configuration.
@@ -196,7 +196,7 @@ export class VersionsClient {
     }
 
     /**
-     * Returns raw authored section version without inheritance resolution. To see resolved content, use GET /sections/{sectionID} instead.
+     * Returns raw authored section version without inheritance resolution. To see resolved content, use GET /sections/:id instead.
      *
      * @param {string} sectionID
      * @param {string} versionID

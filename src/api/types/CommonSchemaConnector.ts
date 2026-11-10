@@ -23,4 +23,6 @@ export interface CommonSchemaConnector {
     id?: Corti.CommonConnectorIdValue;
     /** Whether the connector is active for invocations. Only `schema` connectors return this field today; `mcp`, `registry`, `agent`, and `a2a` connectors omit it (treat as enabled). */
     enabled?: boolean;
+    /** Authentication configuration. */
+    auth?: Corti.CommonConnectorAuth;
 }
