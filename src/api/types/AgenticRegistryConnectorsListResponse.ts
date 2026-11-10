@@ -3,11 +3,10 @@
 import type * as Corti from "../index.js";
 
 /**
- * A page of registry connectors.
+ * A page of registry connector records (list view, without per-version records).
  */
 export interface AgenticRegistryConnectorsListResponse {
-    /** Registry connectors on the current page. */
+    /** Registry connector records on the current page. */
     connectors: Corti.AgenticRegistryConnector[];
     nextPageToken?: Corti.CommonNextPageToken | null;
-    totalSize?: Corti.CommonTotalSize;
 }

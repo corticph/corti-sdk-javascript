@@ -3,8 +3,9 @@
 import type * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
 import type * as serializers from "../index.js";
-import { AgenticRegistryConnectorCapabilities } from "./AgenticRegistryConnectorCapabilities.js";
-import { AgenticRegistryIcon } from "./AgenticRegistryIcon.js";
+import { AgenticRegistryConnectorLinks } from "./AgenticRegistryConnectorLinks.js";
+import { AgenticRegistryConnectorMedia } from "./AgenticRegistryConnectorMedia.js";
+import { AgenticRegistryConnectorStatus } from "./AgenticRegistryConnectorStatus.js";
 import { CommonConnectorType } from "./CommonConnectorType.js";
 
 export const AgenticRegistryConnector: core.serialization.ObjectSchema<
@@ -12,34 +13,40 @@ export const AgenticRegistryConnector: core.serialization.ObjectSchema<
     Corti.AgenticRegistryConnector
 > = core.serialization.object({
     id: core.serialization.string(),
-    type: CommonConnectorType,
     name: core.serialization.string(),
+    type: CommonConnectorType,
+    latest: core.serialization.string(),
+    status: AgenticRegistryConnectorStatus,
+    publisher: core.serialization.string().optional(),
     title: core.serialization.string().optional(),
+    summary: core.serialization.string().optional(),
+    capabilityStatement: core.serialization.string().optional(),
     description: core.serialization.string().optional(),
-    version: core.serialization.string().optional(),
-    icons: core.serialization.list(AgenticRegistryIcon).optional(),
-    provider: core.serialization.string().optional(),
-    websiteUrl: core.serialization.string().optional(),
-    documentationUrl: core.serialization.string().optional(),
-    capabilities: AgenticRegistryConnectorCapabilities.optional(),
+    category: core.serialization.string().optional(),
     tags: core.serialization.list(core.serialization.string()).optional(),
-    configSchema: core.serialization.record(core.serialization.string(), core.serialization.unknown()).optional(),
+    media: AgenticRegistryConnectorMedia.optional(),
+    links: AgenticRegistryConnectorLinks.optional(),
+    createdAt: core.serialization.date().optional(),
+    updatedAt: core.serialization.date().optional(),
 });
 
 export declare namespace AgenticRegistryConnector {
     export interface Raw {
         id: string;
-        type: CommonConnectorType.Raw;
         name: string;
+        type: CommonConnectorType.Raw;
+        latest: string;
+        status: AgenticRegistryConnectorStatus.Raw;
+        publisher?: string | null;
         title?: string | null;
+        summary?: string | null;
+        capabilityStatement?: string | null;
         description?: string | null;
-        version?: string | null;
-        icons?: AgenticRegistryIcon.Raw[] | null;
-        provider?: string | null;
-        websiteUrl?: string | null;
-        documentationUrl?: string | null;
-        capabilities?: AgenticRegistryConnectorCapabilities.Raw | null;
+        category?: string | null;
         tags?: string[] | null;
-        configSchema?: Record<string, unknown> | null;
+        media?: AgenticRegistryConnectorMedia.Raw | null;
+        links?: AgenticRegistryConnectorLinks.Raw | null;
+        createdAt?: string | null;
+        updatedAt?: string | null;
     }
 }

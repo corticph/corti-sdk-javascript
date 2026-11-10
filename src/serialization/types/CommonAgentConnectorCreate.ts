@@ -3,6 +3,7 @@
 import type * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
 import type * as serializers from "../index.js";
+import { AgenticRegistryConnectorReference } from "./AgenticRegistryConnectorReference.js";
 import { CommonAgentIdValue } from "./CommonAgentIdValue.js";
 
 export const CommonAgentConnectorCreate: core.serialization.ObjectSchema<
@@ -10,14 +11,16 @@ export const CommonAgentConnectorCreate: core.serialization.ObjectSchema<
     Corti.CommonAgentConnectorCreate
 > = core.serialization.object({
     type: core.serialization.stringLiteral("agent"),
-    agentId: CommonAgentIdValue,
+    agentId: CommonAgentIdValue.optional(),
+    registry: AgenticRegistryConnectorReference.optional(),
     enabled: core.serialization.boolean().optional(),
 });
 
 export declare namespace CommonAgentConnectorCreate {
     export interface Raw {
         type: "agent";
-        agentId: CommonAgentIdValue.Raw;
+        agentId?: CommonAgentIdValue.Raw | null;
+        registry?: AgenticRegistryConnectorReference.Raw | null;
         enabled?: boolean | null;
     }
 }

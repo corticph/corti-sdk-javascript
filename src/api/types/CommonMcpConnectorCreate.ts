@@ -3,14 +3,16 @@
 import type * as Corti from "../index.js";
 
 /**
- * Request body for attaching an MCP connector.
+ * Request body for attaching an MCP connector, either inline or from the registry. Exactly one of the inline definition (`name` + `url`) or the `registry` reference must be present; sending both, or neither, is rejected with `400`.
  */
 export interface CommonMcpConnectorCreate {
     type: "mcp";
-    /** Display name for the MCP connector. */
-    name: string;
-    /** MCP server endpoint URL. */
-    url: string;
+    /** Required for inline definitions; must be omitted when `registry` is present. */
+    name?: string;
+    /** Required for inline definitions; must be omitted when `registry` is present. */
+    url?: string;
+    /** Marks the connector as registry-sourced. */
+    registry?: Corti.AgenticRegistryConnectorReference;
     /** Whether the connector is active for invocations. */
     enabled?: boolean;
     auth?: Corti.CommonConnectorAuth;

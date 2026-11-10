@@ -5,7 +5,6 @@ import * as core from "../../core/index.js";
 import type * as serializers from "../index.js";
 import { AgenticRegistryConnector } from "./AgenticRegistryConnector.js";
 import { CommonNextPageToken } from "./CommonNextPageToken.js";
-import { CommonTotalSize } from "./CommonTotalSize.js";
 
 export const AgenticRegistryConnectorsListResponse: core.serialization.ObjectSchema<
     serializers.AgenticRegistryConnectorsListResponse.Raw,
@@ -13,13 +12,11 @@ export const AgenticRegistryConnectorsListResponse: core.serialization.ObjectSch
 > = core.serialization.object({
     connectors: core.serialization.list(AgenticRegistryConnector),
     nextPageToken: CommonNextPageToken.optionalNullable(),
-    totalSize: CommonTotalSize.optional(),
 });
 
 export declare namespace AgenticRegistryConnectorsListResponse {
     export interface Raw {
         connectors: AgenticRegistryConnector.Raw[];
         nextPageToken?: ((CommonNextPageToken.Raw | undefined) | null | undefined) | null;
-        totalSize?: CommonTotalSize.Raw | null;
     }
 }

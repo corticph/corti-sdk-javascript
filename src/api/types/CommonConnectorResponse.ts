@@ -6,7 +6,6 @@ import type * as Corti from "../index.js";
  * A connector attached to an agent, discriminated by `type`.
  */
 export type CommonConnectorResponse =
-    | Corti.CommonRegistryConnectorProvisioned
     | Corti.CommonMcpConnector
     | Corti.CommonAgentConnector
     | Corti.CommonA2AConnector

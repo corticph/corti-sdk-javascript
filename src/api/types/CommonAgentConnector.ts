@@ -3,17 +3,21 @@
 import type * as Corti from "../index.js";
 
 /**
- * A connector that delegates to another agent.
+ * A connector that delegates to another agent, either an inline agent reference or a registry entry of type `agent`.
  */
 export interface CommonAgentConnector {
     type: "agent";
-    agentId: Corti.CommonAgentIdValue;
+    agentId?: Corti.CommonAgentIdValue;
+    /** Registry source of the connector. Present only on registry-sourced connectors; inline connectors omit `registry` entirely. For `agent`-type registry connectors, the registry entry's `payload.systemPrompt` is required and always exposed by the API. */
+    registry?: Corti.AgenticRegistryConnectorReferenceResolved;
     /**
      * Server-generated connector identifier (prefixed UUIDv7). Stable across PATCH
      * replacements where the underlying spec is unchanged. Used by
      * observability/HITL to reference a connector unambiguously.
      */
     id?: Corti.CommonConnectorIdValue;
-    /** Whether the connector is active for invocations. Only `schema` connectors return this field today; `mcp`, `registry`, `agent`, and `a2a` connectors omit it (treat as enabled). */
+    /** Whether the connector is active for invocations. Only `schema` connectors return this field today; `mcp`, `agent`, and `a2a` connectors omit it (treat as enabled). */
     enabled?: boolean;
+    /** Authentication configuration */
+    auth?: Corti.CommonConnectorAuthEntry[];
 }

@@ -3,6 +3,7 @@
 import type * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
 import type * as serializers from "../index.js";
+import { AgenticRegistryConnectorReference } from "./AgenticRegistryConnectorReference.js";
 
 export const CommonA2AConnectorCreate: core.serialization.ObjectSchema<
     serializers.CommonA2AConnectorCreate.Raw,
@@ -10,7 +11,8 @@ export const CommonA2AConnectorCreate: core.serialization.ObjectSchema<
 > = core.serialization.object({
     type: core.serialization.stringLiteral("a2a"),
     name: core.serialization.string().optional(),
-    url: core.serialization.string(),
+    url: core.serialization.string().optional(),
+    registry: AgenticRegistryConnectorReference.optional(),
     enabled: core.serialization.boolean().optional(),
 });
 
@@ -18,7 +20,8 @@ export declare namespace CommonA2AConnectorCreate {
     export interface Raw {
         type: "a2a";
         name?: string | null;
-        url: string;
+        url?: string | null;
+        registry?: AgenticRegistryConnectorReference.Raw | null;
         enabled?: boolean | null;
     }
 }

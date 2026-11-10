@@ -30,7 +30,18 @@ describe("AgentsClient", () => {
                     visibility: "private",
                     lifecycle: "persistent",
                     connectors: [
-                        { id: "con.0192f4c8-7baf-7083-a46f-81d2bd70cf95", type: "registry", name: "pubmed-expert" },
+                        {
+                            id: "con.0192f4c8-7baf-7083-a46f-81d2bd70cf95",
+                            type: "mcp",
+                            auth: [
+                                {
+                                    type: "oauth2",
+                                    scope: "read:policies",
+                                    tokenUrl: "https://app.corti.ai/oauth/token",
+                                },
+                            ],
+                            registry: { id: "@corti/pubmed-expert", version: "1.4.2" },
+                        },
                     ],
                     labels: { key: "value" },
                     createdAt: "2026-05-19T12:00:00Z",
@@ -65,8 +76,18 @@ describe("AgentsClient", () => {
                     connectors: [
                         {
                             id: "con.0192f4c8-7baf-7083-a46f-81d2bd70cf95",
-                            type: "registry",
-                            name: "pubmed-expert",
+                            type: "mcp",
+                            auth: [
+                                {
+                                    type: "oauth2",
+                                    scope: "read:policies",
+                                    tokenUrl: "https://app.corti.ai/oauth/token",
+                                },
+                            ],
+                            registry: {
+                                id: "@corti/pubmed-expert",
+                                version: "1.4.2",
+                            },
                         },
                     ],
                     labels: {
@@ -153,7 +174,7 @@ describe("AgentsClient", () => {
             visibility: "private",
             lifecycle: "persistent",
             connectors: [
-                { type: "registry", name: "pubmed-expert" },
+                { type: "agent", registry: { id: "@corti/pubmed-expert" } },
                 {
                     type: "mcp",
                     name: "policybot",
@@ -189,10 +210,11 @@ describe("AgentsClient", () => {
             connectors: [
                 {
                     id: "con.0192f4c8-7baf-7083-a46f-81d2bd70cf95",
-                    type: "registry",
+                    type: "agent",
                     enabled: true,
-                    name: "pubmed-expert",
-                    config: { key: "value" },
+                    auth: [{ type: "oauth2", scope: "read:policies", tokenUrl: "https://app.corti.ai/oauth/token" }],
+                    agentId: "agt.0192f4c8-2c5a-7b3e-9f1a-3c8d6e2b7a40",
+                    registry: { id: "@corti/pubmed-expert", version: "1.4.2" },
                 },
             ],
             labels: { team: "coding", env: "prod" },
@@ -219,8 +241,10 @@ describe("AgentsClient", () => {
             lifecycle: "persistent",
             connectors: [
                 {
-                    type: "registry",
-                    name: "pubmed-expert",
+                    type: "agent",
+                    registry: {
+                        id: "@corti/pubmed-expert",
+                    },
                 },
                 {
                     type: "mcp",
@@ -271,11 +295,19 @@ describe("AgentsClient", () => {
             connectors: [
                 {
                     id: "con.0192f4c8-7baf-7083-a46f-81d2bd70cf95",
-                    type: "registry",
+                    type: "agent",
                     enabled: true,
-                    name: "pubmed-expert",
-                    config: {
-                        key: "value",
+                    auth: [
+                        {
+                            type: "oauth2",
+                            scope: "read:policies",
+                            tokenUrl: "https://app.corti.ai/oauth/token",
+                        },
+                    ],
+                    agentId: "agt.0192f4c8-2c5a-7b3e-9f1a-3c8d6e2b7a40",
+                    registry: {
+                        id: "@corti/pubmed-expert",
+                        version: "1.4.2",
                     },
                 },
             ],
@@ -463,10 +495,11 @@ describe("AgentsClient", () => {
             connectors: [
                 {
                     id: "con.0192f4c8-7baf-7083-a46f-81d2bd70cf95",
-                    type: "registry",
+                    type: "agent",
                     enabled: true,
-                    name: "pubmed-expert",
-                    config: { key: "value" },
+                    auth: [{ type: "oauth2", scope: "read:policies", tokenUrl: "https://app.corti.ai/oauth/token" }],
+                    agentId: "agt.0192f4c8-2c5a-7b3e-9f1a-3c8d6e2b7a40",
+                    registry: { id: "@corti/pubmed-expert", version: "1.4.2" },
                 },
             ],
             labels: { team: "coding", env: "prod" },
@@ -496,11 +529,19 @@ describe("AgentsClient", () => {
             connectors: [
                 {
                     id: "con.0192f4c8-7baf-7083-a46f-81d2bd70cf95",
-                    type: "registry",
+                    type: "agent",
                     enabled: true,
-                    name: "pubmed-expert",
-                    config: {
-                        key: "value",
+                    auth: [
+                        {
+                            type: "oauth2",
+                            scope: "read:policies",
+                            tokenUrl: "https://app.corti.ai/oauth/token",
+                        },
+                    ],
+                    agentId: "agt.0192f4c8-2c5a-7b3e-9f1a-3c8d6e2b7a40",
+                    registry: {
+                        id: "@corti/pubmed-expert",
+                        version: "1.4.2",
                     },
                 },
             ],
@@ -710,7 +751,10 @@ describe("AgentsClient", () => {
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
-        const rawRequestBody = { name: "coder-v2", connectors: [{ type: "registry", name: "pubmed-expert" }] };
+        const rawRequestBody = {
+            name: "coder-v2",
+            connectors: [{ type: "agent", registry: { id: "@corti/pubmed-expert" } }],
+        };
         const rawResponseBody = {
             id: "agt.0192f4c8-2c5a-7b3e-9f1a-3c8d6e2b7a40",
             name: "coder",
@@ -723,10 +767,11 @@ describe("AgentsClient", () => {
             connectors: [
                 {
                     id: "con.0192f4c8-7baf-7083-a46f-81d2bd70cf95",
-                    type: "registry",
+                    type: "agent",
                     enabled: true,
-                    name: "pubmed-expert",
-                    config: { key: "value" },
+                    auth: [{ type: "oauth2", scope: "read:policies", tokenUrl: "https://app.corti.ai/oauth/token" }],
+                    agentId: "agt.0192f4c8-2c5a-7b3e-9f1a-3c8d6e2b7a40",
+                    registry: { id: "@corti/pubmed-expert", version: "1.4.2" },
                 },
             ],
             labels: { team: "coding", env: "prod" },
@@ -748,8 +793,10 @@ describe("AgentsClient", () => {
             name: "coder-v2",
             connectors: [
                 {
-                    type: "registry",
-                    name: "pubmed-expert",
+                    type: "agent",
+                    registry: {
+                        id: "@corti/pubmed-expert",
+                    },
                 },
             ],
         });
@@ -765,11 +812,19 @@ describe("AgentsClient", () => {
             connectors: [
                 {
                     id: "con.0192f4c8-7baf-7083-a46f-81d2bd70cf95",
-                    type: "registry",
+                    type: "agent",
                     enabled: true,
-                    name: "pubmed-expert",
-                    config: {
-                        key: "value",
+                    auth: [
+                        {
+                            type: "oauth2",
+                            scope: "read:policies",
+                            tokenUrl: "https://app.corti.ai/oauth/token",
+                        },
+                    ],
+                    agentId: "agt.0192f4c8-2c5a-7b3e-9f1a-3c8d6e2b7a40",
+                    registry: {
+                        id: "@corti/pubmed-expert",
+                        version: "1.4.2",
                     },
                 },
             ],

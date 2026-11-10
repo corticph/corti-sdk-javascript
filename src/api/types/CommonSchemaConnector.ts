@@ -3,24 +3,28 @@
 import type * as Corti from "../index.js";
 
 /**
- * A connector backed by a schema definition.
+ * A connector backed by a schema definition, either inline or provisioned from a registry entry.
  */
 export interface CommonSchemaConnector {
     type: "schema";
-    /** Schema connector name. Used as the tool name the LLM calls. */
-    name: string;
+    /** Schema connector name. Used as the tool name the LLM calls. Present on inline connectors; registry-sourced connectors take it from the registry entry's `name`. */
+    name?: string;
     /** What the tool does. Read by the LLM to decide when to call it. */
     description?: string;
-    /** JSON Schema defining the tool's output shape. */
-    schema: Record<string, unknown>;
-    /** If set, calling this tool terminates the loop in the given state after validating and storing the data part. No further LLM call. */
+    /** JSON Schema defining the tool's output shape. Present on inline connectors; registry-sourced connectors carry bundled schema definitions in the registry payload instead. */
+    schema?: Record<string, unknown>;
+    /** If set, `complete`/`input_required` terminate the loop in that state after validating and storing the data part (no further LLM call). `send` is non-terminal: it validates and stores the data part, delivers it to the user as a data part, and continues the loop. */
     transition?: Corti.CommonSchemaConnectorTransition;
+    /** Registry source of the connector. Present only on registry-sourced connectors; inline connectors omit `registry` entirely. */
+    registry?: Corti.AgenticRegistryConnectorReferenceResolved;
     /**
      * Server-generated connector identifier (prefixed UUIDv7). Stable across PATCH
      * replacements where the underlying spec is unchanged. Used by
      * observability/HITL to reference a connector unambiguously.
      */
     id?: Corti.CommonConnectorIdValue;
-    /** Whether the connector is active for invocations. Only `schema` connectors return this field today; `mcp`, `registry`, `agent`, and `a2a` connectors omit it (treat as enabled). */
+    /** Whether the connector is active for invocations. Only `schema` connectors return this field today; `mcp`, `agent`, and `a2a` connectors omit it (treat as enabled). */
     enabled?: boolean;
+    /** Authentication configuration */
+    auth?: Corti.CommonConnectorAuthEntry[];
 }

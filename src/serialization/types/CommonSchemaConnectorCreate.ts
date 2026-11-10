@@ -3,6 +3,7 @@
 import type * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
 import type * as serializers from "../index.js";
+import { AgenticRegistryConnectorReference } from "./AgenticRegistryConnectorReference.js";
 import { CommonSchemaConnectorCreateTransition } from "./CommonSchemaConnectorCreateTransition.js";
 
 export const CommonSchemaConnectorCreate: core.serialization.ObjectSchema<
@@ -10,20 +11,22 @@ export const CommonSchemaConnectorCreate: core.serialization.ObjectSchema<
     Corti.CommonSchemaConnectorCreate
 > = core.serialization.object({
     type: core.serialization.stringLiteral("schema"),
-    name: core.serialization.string(),
+    name: core.serialization.string().optional(),
     description: core.serialization.string().optional(),
-    schema: core.serialization.record(core.serialization.string(), core.serialization.unknown()),
+    schema: core.serialization.record(core.serialization.string(), core.serialization.unknown()).optional(),
     transition: CommonSchemaConnectorCreateTransition.optional(),
+    registry: AgenticRegistryConnectorReference.optional(),
     enabled: core.serialization.boolean().optional(),
 });
 
 export declare namespace CommonSchemaConnectorCreate {
     export interface Raw {
         type: "schema";
-        name: string;
+        name?: string | null;
         description?: string | null;
-        schema: Record<string, unknown>;
+        schema?: Record<string, unknown> | null;
         transition?: CommonSchemaConnectorCreateTransition.Raw | null;
+        registry?: AgenticRegistryConnectorReference.Raw | null;
         enabled?: boolean | null;
     }
 }

@@ -7,8 +7,8 @@ import type * as serializers from "../index.js";
 export const CommonConnectorType: core.serialization.Schema<
     serializers.CommonConnectorType.Raw,
     Corti.CommonConnectorType
-> = core.serialization.enum_(["registry", "mcp", "agent", "a2a", "schema"]);
+> = core.serialization.enum_(["mcp", "agent", "a2a", "schema"]);
 
 export declare namespace CommonConnectorType {
-    export type Raw = "registry" | "mcp" | "agent" | "a2a" | "schema";
+    export type Raw = "mcp" | "agent" | "a2a" | "schema";
 }

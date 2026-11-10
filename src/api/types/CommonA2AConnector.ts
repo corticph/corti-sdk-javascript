@@ -3,20 +3,24 @@
 import type * as Corti from "../index.js";
 
 /**
- * A connector that delegates to a remote A2A agent by endpoint URL.
+ * A connector that delegates to a remote A2A agent by endpoint URL, either inline or provisioned from a registry entry.
  */
 export interface CommonA2AConnector {
     type: "a2a";
     /** Optional display name for the remote A2A agent. */
     name?: string;
-    /** The remote agent's A2A endpoint (typically a `.well-known/agent-card.json`). */
-    url: string;
+    /** The remote agent's A2A endpoint (typically a `.well-known/agent-card.json`). Present on inline connectors. */
+    url?: string;
+    /** Registry source of the connector. Present only on registry-sourced connectors; inline connectors omit `registry` entirely. */
+    registry?: Corti.AgenticRegistryConnectorReferenceResolved;
     /**
      * Server-generated connector identifier (prefixed UUIDv7). Stable across PATCH
      * replacements where the underlying spec is unchanged. Used by
      * observability/HITL to reference a connector unambiguously.
      */
     id?: Corti.CommonConnectorIdValue;
-    /** Whether the connector is active for invocations. Only `schema` connectors return this field today; `mcp`, `registry`, `agent`, and `a2a` connectors omit it (treat as enabled). */
+    /** Whether the connector is active for invocations. Only `schema` connectors return this field today; `mcp`, `agent`, and `a2a` connectors omit it (treat as enabled). */
     enabled?: boolean;
+    /** Authentication configuration */
+    auth?: Corti.CommonConnectorAuthEntry[];
 }

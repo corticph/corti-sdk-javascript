@@ -12,8 +12,10 @@ import type * as Corti from "../../../../../../index.js";
  *         visibility: "private",
  *         lifecycle: "persistent",
  *         connectors: [{
- *                 type: "registry",
- *                 name: "pubmed-expert"
+ *                 type: "agent",
+ *                 registry: {
+ *                     id: "@corti/pubmed-expert"
+ *                 }
  *             }, {
  *                 type: "mcp",
  *                 name: "policybot",

@@ -120,8 +120,11 @@ export class ConnectorsClient {
      *
      * @example
      *     await client.agentic.agents.connectors.create("agt.0192f4c8-2c5a-7b3e-9f1a-3c8d6e2b7a40", {
-     *         type: "registry",
-     *         name: "pubmed-expert"
+     *         type: "agent",
+     *         registry: {
+     *             id: "@corti/pubmed-expert",
+     *             version: "1.4.2"
+     *         }
      *     })
      */
     public create(

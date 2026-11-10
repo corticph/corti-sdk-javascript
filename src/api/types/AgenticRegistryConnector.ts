@@ -3,33 +3,35 @@
 import type * as Corti from "../index.js";
 
 /**
- * A discoverable, pre-built connector offered by the platform registry.
- * Only `id`, `type`, `name`, `title`, `description`, and `configSchema` are populated by the server today. `version`, `provider`, `capabilities`, `tags`, and `documentationUrl` are declared for forward compatibility but are not yet returned.
+ * A registry connector record: identity, lifecycle, and presentation metadata. This is the mutable view returned by the list endpoint; the immutable per-version configuration records (`versions`) are included by the detail endpoint.
  */
 export interface AgenticRegistryConnector {
-    /** Stable registry identifier; use as a `registry` connector's `name`. */
+    /** Scoped slug `@namespace/name` uniquely identifying the registry connector. */
     id: string;
-    /** The connector kind this entry provisions when attached to an agent. */
-    type: Corti.CommonConnectorType;
-    /** Programmatic name (MCP convention). */
+    /** Unscoped connector name. */
     name: string;
-    /** Human-readable display name (MCP convention). */
+    type: Corti.CommonConnectorType;
+    /** Latest published configuration version. */
+    latest: string;
+    status: Corti.AgenticRegistryConnectorStatus;
+    /** Publishing namespace (e.g. `corti`). */
+    publisher?: string;
+    /** Human-readable display name. */
     title?: string;
-    /** Description for list and detail views. May contain CommonMark. */
+    /** One-line summary for list views. */
+    summary?: string;
+    /** Statement of what the connector does once attached to an agent. */
+    capabilityStatement?: string;
+    /** Full description in CommonMark (rendered by Console). */
     description?: string;
-    /** Latest published version (SemVer recommended). */
-    version?: string;
-    /** Display icons (MCP convention). */
-    icons?: Corti.AgenticRegistryIcon[];
-    /** Name of the publishing organisation. */
-    provider?: string;
-    /** Connector homepage (MCP convention). */
-    websiteUrl?: string;
-    /** Documentation URL for the connector. */
-    documentationUrl?: string;
-    capabilities?: Corti.AgenticRegistryConnectorCapabilities;
+    /** Category for filtering (e.g. `literature`). */
+    category?: string;
     /** Keywords for search and filtering. */
     tags?: string[];
-    /** JSON Schema (draft 2020-12) describing the connector's accepted `config`. */
-    configSchema?: Record<string, unknown>;
+    media?: Corti.AgenticRegistryConnectorMedia;
+    links?: Corti.AgenticRegistryConnectorLinks;
+    /** When the connector record was created. */
+    createdAt?: Date;
+    /** When the connector record was last updated. */
+    updatedAt?: Date;
 }
