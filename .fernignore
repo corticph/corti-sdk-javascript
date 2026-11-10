@@ -33,3 +33,6 @@ vitest.integration.config.mts
 
 # CI/release workflows and GitHub config — hand-maintained, Fern must not overwrite
 .github/
+
+# License — newer Fern CLI versions no longer generate it from metadata.license; keep the hand-maintained file
+LICENSE
