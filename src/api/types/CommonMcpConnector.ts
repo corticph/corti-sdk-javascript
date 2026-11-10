@@ -11,7 +11,6 @@ export interface CommonMcpConnector {
     name: string;
     /** MCP server endpoint URL. */
     url: string;
-    auth?: Corti.CommonConnectorAuth;
     /**
      * Server-generated connector identifier (prefixed UUIDv7). Stable across PATCH
      * replacements where the underlying spec is unchanged. Used by
@@ -20,4 +19,6 @@ export interface CommonMcpConnector {
     id?: Corti.CommonConnectorIdValue;
     /** Whether the connector is active for invocations. Only `schema` connectors return this field today; `mcp`, `registry`, `agent`, and `a2a` connectors omit it (treat as enabled). */
     enabled?: boolean;
+    /** Authentication configuration. */
+    auth?: Corti.CommonConnectorAuth;
 }
