@@ -3,7 +3,7 @@
 import type * as Corti from "../index.js";
 
 /**
- * Minimal transcript shape accepted as guided-document input context. Decoupled from the transcript resource: only `transcripts` is required, and within each segment only `text` is required.
+ * Minimal transcript shape accepted as input context. Decoupled from the transcript resource: only `transcripts` is required, and within each segment only `text` is required.
  */
 export interface GuidedDocumentTranscriptMinimal {
     metadata?: Corti.GuidedDocumentTranscriptMetadataMinimal;
