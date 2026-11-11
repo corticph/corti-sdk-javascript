@@ -23,9 +23,10 @@ export class RecordingsClient {
     }
 
     /**
-     * Retrieve a list of recordings for a given interaction.
+     * Retrieve a list of recordings for a given interaction. Recordings are ordered based on their creation time. Default ordering (desc) will return the most recent recording first in the list. Use query parameter `direction` to define the order of the list (`asc` for ascending and `desc` for descending).
      *
      * @param {Corti.Uuid} id - The unique identifier of the interaction. Must be a valid UUID.
+     * @param {Corti.RecordingsListRequest} request
      * @param {RecordingsClient.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Corti.BadRequestError}
@@ -38,15 +39,27 @@ export class RecordingsClient {
      */
     public list(
         id: Corti.Uuid,
+        request: Corti.RecordingsListRequest = {},
         requestOptions?: RecordingsClient.RequestOptions,
     ): core.HttpResponsePromise<Corti.RecordingsListResponse> {
-        return core.HttpResponsePromise.fromPromise(this.__list(id, requestOptions));
+        return core.HttpResponsePromise.fromPromise(this.__list(id, request, requestOptions));
     }
 
     private async __list(
         id: Corti.Uuid,
+        request: Corti.RecordingsListRequest = {},
         requestOptions?: RecordingsClient.RequestOptions,
     ): Promise<core.WithRawResponse<Corti.RecordingsListResponse>> {
+        const { direction } = request;
+        const _queryParams: Record<string, unknown> = {
+            direction:
+                direction != null
+                    ? serializers.CommonSortingDirectionEnum.jsonOrThrow(direction, {
+                          unrecognizedObjectKeys: "strip",
+                          omitUndefined: true,
+                      })
+                    : undefined,
+        };
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
@@ -62,7 +75,7 @@ export class RecordingsClient {
             ),
             method: "GET",
             headers: _headers,
-            queryParameters: requestOptions?.queryParams,
+            queryParameters: { ..._queryParams, ...requestOptions?.queryParams },
             timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
             maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
             abortSignal: requestOptions?.abortSignal,

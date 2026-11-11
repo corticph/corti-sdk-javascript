@@ -3,21 +3,12 @@
 import type * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
 import type * as serializers from "../index.js";
-import { CommonAgentIdValue } from "./CommonAgentIdValue.js";
 
-export const CommonAgentConnectorCreate: core.serialization.ObjectSchema<
+export const CommonAgentConnectorCreate: core.serialization.Schema<
     serializers.CommonAgentConnectorCreate.Raw,
     Corti.CommonAgentConnectorCreate
-> = core.serialization.object({
-    type: core.serialization.stringLiteral("agent"),
-    agentId: CommonAgentIdValue,
-    enabled: core.serialization.boolean().optional(),
-});
+> = core.serialization.undiscriminatedUnion([core.serialization.unknown()]);
 
 export declare namespace CommonAgentConnectorCreate {
-    export interface Raw {
-        type: "agent";
-        agentId: CommonAgentIdValue.Raw;
-        enabled?: boolean | null;
-    }
+    export type Raw = unknown;
 }

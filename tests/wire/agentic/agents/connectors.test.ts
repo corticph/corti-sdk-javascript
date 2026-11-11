@@ -22,10 +22,15 @@ describe("ConnectorsClient", () => {
             connectors: [
                 {
                     id: "con.0192f4c8-7baf-7083-a46f-81d2bd70cf95",
-                    type: "registry",
+                    type: "mcp",
                     enabled: true,
-                    name: "pubmed-expert",
-                    config: { key: "value" },
+                    auth: [
+                        { type: "none", name: "medical-literature" },
+                        { type: "bearer", requiredHeaders: ["X-Api-Key"], name: "drug-reference" },
+                    ],
+                    name: "name",
+                    url: "url",
+                    registry: { id: "@corti/pubmed-expert", version: "1.4.2" },
                 },
             ],
         };
@@ -43,11 +48,24 @@ describe("ConnectorsClient", () => {
             connectors: [
                 {
                     id: "con.0192f4c8-7baf-7083-a46f-81d2bd70cf95",
-                    type: "registry",
+                    type: "mcp",
                     enabled: true,
-                    name: "pubmed-expert",
-                    config: {
-                        key: "value",
+                    auth: [
+                        {
+                            type: "none",
+                            name: "medical-literature",
+                        },
+                        {
+                            type: "bearer",
+                            requiredHeaders: ["X-Api-Key"],
+                            name: "drug-reference",
+                        },
+                    ],
+                    name: "name",
+                    url: "url",
+                    registry: {
+                        id: "@corti/pubmed-expert",
+                        version: "1.4.2",
                     },
                 },
             ],
@@ -119,13 +137,34 @@ describe("ConnectorsClient", () => {
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
-        const rawRequestBody = { type: "registry", name: "pubmed-expert" };
+        const rawRequestBody = { type: "agent", registry: { id: "@corti/pubmed-expert", version: "1.4.2" } };
         const rawResponseBody = {
             id: "con.0192f4c8-7baf-7083-a46f-81d2bd70cf95",
-            type: "registry",
+            type: "mcp",
             enabled: true,
-            name: "pubmed-expert",
-            config: { key: "value" },
+            auth: [
+                {
+                    type: "none",
+                    scope: "scope",
+                    tokenUrl: "tokenUrl",
+                    ref: "ref",
+                    requiredHeaders: ["requiredHeaders"],
+                    optionalHeaders: ["optionalHeaders"],
+                    name: "medical-literature",
+                },
+                {
+                    type: "bearer",
+                    scope: "scope",
+                    tokenUrl: "tokenUrl",
+                    ref: "ref",
+                    requiredHeaders: ["X-Api-Key"],
+                    optionalHeaders: ["optionalHeaders"],
+                    name: "drug-reference",
+                },
+            ],
+            name: "name",
+            url: "url",
+            registry: { id: "@corti/pubmed-expert", version: "1.4.2" },
         };
 
         server
@@ -138,16 +177,41 @@ describe("ConnectorsClient", () => {
             .build();
 
         const response = await client.agentic.agents.connectors.create("agt.0192f4c8-2c5a-7b3e-9f1a-3c8d6e2b7a40", {
-            type: "registry",
-            name: "pubmed-expert",
+            type: "agent",
+            registry: {
+                id: "@corti/pubmed-expert",
+                version: "1.4.2",
+            },
         });
         expect(response).toEqual({
             id: "con.0192f4c8-7baf-7083-a46f-81d2bd70cf95",
-            type: "registry",
+            type: "mcp",
             enabled: true,
-            name: "pubmed-expert",
-            config: {
-                key: "value",
+            auth: [
+                {
+                    type: "none",
+                    scope: "scope",
+                    tokenUrl: "tokenUrl",
+                    ref: "ref",
+                    requiredHeaders: ["requiredHeaders"],
+                    optionalHeaders: ["optionalHeaders"],
+                    name: "medical-literature",
+                },
+                {
+                    type: "bearer",
+                    scope: "scope",
+                    tokenUrl: "tokenUrl",
+                    ref: "ref",
+                    requiredHeaders: ["X-Api-Key"],
+                    optionalHeaders: ["optionalHeaders"],
+                    name: "drug-reference",
+                },
+            ],
+            name: "name",
+            url: "url",
+            registry: {
+                id: "@corti/pubmed-expert",
+                version: "1.4.2",
             },
         });
     });
@@ -163,7 +227,7 @@ describe("ConnectorsClient", () => {
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
-        const rawRequestBody = { type: "registry", name: "name" };
+        const rawRequestBody = { key: "value" };
         const rawResponseBody = { key: "value" };
 
         server
@@ -177,8 +241,7 @@ describe("ConnectorsClient", () => {
 
         await expect(async () => {
             return await client.agentic.agents.connectors.create("agentId", {
-                type: "registry",
-                name: "name",
+                key: "value",
             });
         }).rejects.toThrow(Corti.BadRequestError);
     });
@@ -194,7 +257,7 @@ describe("ConnectorsClient", () => {
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
-        const rawRequestBody = { type: "registry", name: "name" };
+        const rawRequestBody = { key: "value" };
         const rawResponseBody = { key: "value" };
 
         server
@@ -208,8 +271,7 @@ describe("ConnectorsClient", () => {
 
         await expect(async () => {
             return await client.agentic.agents.connectors.create("agentId", {
-                type: "registry",
-                name: "name",
+                key: "value",
             });
         }).rejects.toThrow(Corti.UnauthorizedError);
     });
@@ -225,7 +287,7 @@ describe("ConnectorsClient", () => {
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
-        const rawRequestBody = { type: "registry", name: "name" };
+        const rawRequestBody = { key: "value" };
         const rawResponseBody = { key: "value" };
 
         server
@@ -239,8 +301,7 @@ describe("ConnectorsClient", () => {
 
         await expect(async () => {
             return await client.agentic.agents.connectors.create("agentId", {
-                type: "registry",
-                name: "name",
+                key: "value",
             });
         }).rejects.toThrow(Corti.NotFoundError);
     });
@@ -256,7 +317,7 @@ describe("ConnectorsClient", () => {
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
-        const rawRequestBody = { type: "registry", name: "name" };
+        const rawRequestBody = { key: "value" };
         const rawResponseBody = { key: "value" };
 
         server
@@ -270,8 +331,7 @@ describe("ConnectorsClient", () => {
 
         await expect(async () => {
             return await client.agentic.agents.connectors.create("agentId", {
-                type: "registry",
-                name: "name",
+                key: "value",
             });
         }).rejects.toThrow(Corti.ConflictError);
     });
@@ -290,10 +350,31 @@ describe("ConnectorsClient", () => {
 
         const rawResponseBody = {
             id: "con.0192f4c8-7baf-7083-a46f-81d2bd70cf95",
-            type: "registry",
+            type: "mcp",
             enabled: true,
-            name: "pubmed-expert",
-            config: { key: "value" },
+            auth: [
+                {
+                    type: "none",
+                    scope: "scope",
+                    tokenUrl: "tokenUrl",
+                    ref: "ref",
+                    requiredHeaders: ["requiredHeaders"],
+                    optionalHeaders: ["optionalHeaders"],
+                    name: "medical-literature",
+                },
+                {
+                    type: "bearer",
+                    scope: "scope",
+                    tokenUrl: "tokenUrl",
+                    ref: "ref",
+                    requiredHeaders: ["X-Api-Key"],
+                    optionalHeaders: ["optionalHeaders"],
+                    name: "drug-reference",
+                },
+            ],
+            name: "name",
+            url: "url",
+            registry: { id: "@corti/pubmed-expert", version: "1.4.2" },
         };
 
         server
@@ -312,11 +393,33 @@ describe("ConnectorsClient", () => {
         );
         expect(response).toEqual({
             id: "con.0192f4c8-7baf-7083-a46f-81d2bd70cf95",
-            type: "registry",
+            type: "mcp",
             enabled: true,
-            name: "pubmed-expert",
-            config: {
-                key: "value",
+            auth: [
+                {
+                    type: "none",
+                    scope: "scope",
+                    tokenUrl: "tokenUrl",
+                    ref: "ref",
+                    requiredHeaders: ["requiredHeaders"],
+                    optionalHeaders: ["optionalHeaders"],
+                    name: "medical-literature",
+                },
+                {
+                    type: "bearer",
+                    scope: "scope",
+                    tokenUrl: "tokenUrl",
+                    ref: "ref",
+                    requiredHeaders: ["X-Api-Key"],
+                    optionalHeaders: ["optionalHeaders"],
+                    name: "drug-reference",
+                },
+            ],
+            name: "name",
+            url: "url",
+            registry: {
+                id: "@corti/pubmed-expert",
+                version: "1.4.2",
             },
         });
     });
@@ -471,10 +574,22 @@ describe("ConnectorsClient", () => {
         const rawRequestBody = { enabled: false };
         const rawResponseBody = {
             id: "con.0192f4c8-7baf-7083-a46f-81d2bd70cf95",
-            type: "registry",
+            type: "mcp",
             enabled: true,
-            name: "pubmed-expert",
-            config: { key: "value" },
+            auth: [
+                {
+                    type: "oauth2",
+                    scope: "read:policies",
+                    tokenUrl: "https://app.corti.ai/oauth/token",
+                    ref: "ref",
+                    requiredHeaders: ["requiredHeaders"],
+                    optionalHeaders: ["optionalHeaders"],
+                    name: "name",
+                },
+            ],
+            name: "name",
+            url: "url",
+            registry: { id: "@corti/pubmed-expert", version: "1.4.2" },
         };
 
         server
@@ -497,11 +612,24 @@ describe("ConnectorsClient", () => {
         );
         expect(response).toEqual({
             id: "con.0192f4c8-7baf-7083-a46f-81d2bd70cf95",
-            type: "registry",
+            type: "mcp",
             enabled: true,
-            name: "pubmed-expert",
-            config: {
-                key: "value",
+            auth: [
+                {
+                    type: "oauth2",
+                    scope: "read:policies",
+                    tokenUrl: "https://app.corti.ai/oauth/token",
+                    ref: "ref",
+                    requiredHeaders: ["requiredHeaders"],
+                    optionalHeaders: ["optionalHeaders"],
+                    name: "name",
+                },
+            ],
+            name: "name",
+            url: "url",
+            registry: {
+                id: "@corti/pubmed-expert",
+                version: "1.4.2",
             },
         });
     });

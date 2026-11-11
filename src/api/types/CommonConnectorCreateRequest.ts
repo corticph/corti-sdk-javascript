@@ -6,7 +6,6 @@ import type * as Corti from "../index.js";
  * Same envelope as `Connector` but without the server-generated `id`.
  */
 export type CommonConnectorCreateRequest =
-    | Corti.CommonRegistryConnectorCreate
     | Corti.CommonMcpConnectorCreate
     | Corti.CommonAgentConnectorCreate
     | Corti.CommonA2AConnectorCreate

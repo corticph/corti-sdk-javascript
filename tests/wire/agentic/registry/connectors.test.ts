@@ -21,22 +21,47 @@ describe("ConnectorsClient", () => {
         const rawResponseBody = {
             connectors: [
                 {
-                    id: "pubmed-expert",
-                    type: "registry",
+                    id: "@corti/pubmed-expert",
                     name: "pubmed-expert",
-                    title: "ICD-10 Coding Expert",
+                    type: "agent",
+                    latest: "1.4.2",
+                    status: "public",
+                    publisher: "corti",
+                    title: "PubMed Expert",
+                    summary: "Search PubMed for scientific articles and citations.",
+                    capabilityStatement: "Searches PubMed and returns articles, abstracts, and citations on demand.",
                     description: "description",
-                    version: "1.4.2",
-                    icons: [{ src: "src", mimeType: "image/svg+xml", sizes: ["48x48"] }],
-                    provider: "Corti",
-                    websiteUrl: "websiteUrl",
-                    documentationUrl: "documentationUrl",
-                    tags: ["tags"],
-                    configSchema: { key: "value" },
+                    category: "literature",
+                    tags: ["pubmed", "literature"],
+                    media: {
+                        icon: "https://cdn.corti.app/registry/corti/pubmed-expert/icon.svg",
+                        cover: "https://cdn.corti.app/registry/corti/pubmed-expert/cover.png",
+                    },
+                    createdAt: "2024-01-15T09:30:00Z",
+                    updatedAt: "2024-01-15T09:30:00Z",
+                },
+                {
+                    id: "@corti/icd10-coder",
+                    name: "icd10-coder",
+                    type: "schema",
+                    latest: "0.3.1",
+                    status: "public",
+                    publisher: "corti",
+                    title: "ICD-10 Coder",
+                    summary: "Code clinical encounters against ICD-10.",
+                    capabilityStatement: "Searches PubMed and returns articles, abstracts, and citations on demand.",
+                    description: "description",
+                    category: "coding",
+                    tags: ["icd10", "coding"],
+                    media: {
+                        icon: "https://cdn.corti.app/registry/corti/pubmed-expert/icon.svg",
+                        cover: "https://cdn.corti.app/registry/corti/pubmed-expert/cover.png",
+                    },
+                    createdAt: "2024-01-15T09:30:00Z",
+                    updatedAt: "2024-01-15T09:30:00Z",
                 },
             ],
-            nextPageToken: "nextPageToken",
-            totalSize: 42,
+            nextPageToken: "eyJvIjoxMH0",
         };
 
         server
@@ -50,30 +75,47 @@ describe("ConnectorsClient", () => {
         const expected = {
             connectors: [
                 {
-                    id: "pubmed-expert",
-                    type: "registry",
+                    id: "@corti/pubmed-expert",
                     name: "pubmed-expert",
-                    title: "ICD-10 Coding Expert",
+                    type: "agent",
+                    latest: "1.4.2",
+                    status: "public",
+                    publisher: "corti",
+                    title: "PubMed Expert",
+                    summary: "Search PubMed for scientific articles and citations.",
+                    capabilityStatement: "Searches PubMed and returns articles, abstracts, and citations on demand.",
                     description: "description",
-                    version: "1.4.2",
-                    icons: [
-                        {
-                            src: "src",
-                            mimeType: "image/svg+xml",
-                            sizes: ["48x48"],
-                        },
-                    ],
-                    provider: "Corti",
-                    websiteUrl: "websiteUrl",
-                    documentationUrl: "documentationUrl",
-                    tags: ["tags"],
-                    configSchema: {
-                        key: "value",
+                    category: "literature",
+                    tags: ["pubmed", "literature"],
+                    media: {
+                        icon: "https://cdn.corti.app/registry/corti/pubmed-expert/icon.svg",
+                        cover: "https://cdn.corti.app/registry/corti/pubmed-expert/cover.png",
                     },
+                    createdAt: new Date("2024-01-15T09:30:00.000Z"),
+                    updatedAt: new Date("2024-01-15T09:30:00.000Z"),
+                },
+                {
+                    id: "@corti/icd10-coder",
+                    name: "icd10-coder",
+                    type: "schema",
+                    latest: "0.3.1",
+                    status: "public",
+                    publisher: "corti",
+                    title: "ICD-10 Coder",
+                    summary: "Code clinical encounters against ICD-10.",
+                    capabilityStatement: "Searches PubMed and returns articles, abstracts, and citations on demand.",
+                    description: "description",
+                    category: "coding",
+                    tags: ["icd10", "coding"],
+                    media: {
+                        icon: "https://cdn.corti.app/registry/corti/pubmed-expert/icon.svg",
+                        cover: "https://cdn.corti.app/registry/corti/pubmed-expert/cover.png",
+                    },
+                    createdAt: new Date("2024-01-15T09:30:00.000Z"),
+                    updatedAt: new Date("2024-01-15T09:30:00.000Z"),
                 },
             ],
-            nextPageToken: "nextPageToken",
-            totalSize: 42,
+            nextPageToken: "eyJvIjoxMH0",
         };
         const page = await client.agentic.registry.connectors.list();
 
@@ -123,30 +165,62 @@ describe("ConnectorsClient", () => {
         });
 
         const rawResponseBody = {
-            id: "pubmed-expert",
-            type: "registry",
+            id: "@corti/pubmed-expert",
             name: "pubmed-expert",
-            title: "PubMed",
-            description: "Search PubMed for scientific articles, abstracts, and citations.",
-            version: "1.0.0",
-            icons: [
+            type: "agent",
+            latest: "1.4.2",
+            status: "public",
+            publisher: "corti",
+            title: "PubMed Expert",
+            summary: "Search PubMed for scientific articles and citations.",
+            capabilityStatement: "Searches PubMed and returns articles, abstracts, and citations on demand.",
+            description:
+                "A clinical-literature expert that searches **PubMed** for scientific articles, abstracts, and citations.",
+            category: "literature",
+            tags: ["pubmed", "literature"],
+            media: {
+                icon: "https://cdn.corti.app/registry/corti/pubmed-expert/icon.svg",
+                cover: "https://cdn.corti.app/registry/corti/pubmed-expert/cover.png",
+                animation: "animation",
+            },
+            links: {
+                documentation: "https://docs.corti.app/registry/corti/pubmed-expert",
+                website: "https://corti.app/registry/corti/pubmed-expert",
+                video: "video",
+                license: "https://corti.app/licenses/registry",
+            },
+            createdAt: "2026-03-15T09:00:00Z",
+            updatedAt: "2026-05-01T09:00:00Z",
+            versions: [
                 {
-                    src: "https://cdn.corti.ai/registry/corti/pubmed-expert.svg",
-                    mimeType: "image/svg+xml",
-                    sizes: ["any"],
+                    version: "1.4.2",
+                    configSchema: {
+                        type: "object",
+                        properties: { resultCount: { type: "integer", minimum: 1, maximum: 50 } },
+                        required: ["resultCount"],
+                    },
+                    payload: {
+                        systemPrompt: "You are a PubMed search expert. Return citations in AMA format.",
+                        mcpServers: [
+                            {
+                                name: "medical-literature",
+                                description: "PubMed literature search server.",
+                                url: "https://mcp.example.com/pubmed",
+                            },
+                        ],
+                    },
+                    createdAt: "2026-05-01T09:00:00Z",
+                },
+                {
+                    version: "1.3.0",
+                    configSchema: { type: "object", properties: {} },
+                    payload: {
+                        systemPrompt: "You are a PubMed search expert.",
+                        mcpServers: [{ name: "medical-literature", description: "PubMed literature search server." }],
+                    },
+                    createdAt: "2026-03-15T09:00:00Z",
                 },
             ],
-            provider: "Corti",
-            websiteUrl: "https://corti.example.com/pubmed-expert",
-            documentationUrl: "https://docs.corti.example.com/pubmed-expert",
-            capabilities: {
-                streaming: false,
-                inputModes: ["text/plain"],
-                outputModes: ["text/plain", "application/json"],
-                tools: ["search_pubmed", "get_pubmed_abstract"],
-            },
-            tags: ["pubmed", "literature", "expert"],
-            configSchema: { key: "value" },
         };
 
         server
@@ -159,32 +233,76 @@ describe("ConnectorsClient", () => {
 
         const response = await client.agentic.registry.connectors.get("connectorId");
         expect(response).toEqual({
-            id: "pubmed-expert",
-            type: "registry",
+            id: "@corti/pubmed-expert",
             name: "pubmed-expert",
-            title: "PubMed",
-            description: "Search PubMed for scientific articles, abstracts, and citations.",
-            version: "1.0.0",
-            icons: [
+            type: "agent",
+            latest: "1.4.2",
+            status: "public",
+            publisher: "corti",
+            title: "PubMed Expert",
+            summary: "Search PubMed for scientific articles and citations.",
+            capabilityStatement: "Searches PubMed and returns articles, abstracts, and citations on demand.",
+            description:
+                "A clinical-literature expert that searches **PubMed** for scientific articles, abstracts, and citations.",
+            category: "literature",
+            tags: ["pubmed", "literature"],
+            media: {
+                icon: "https://cdn.corti.app/registry/corti/pubmed-expert/icon.svg",
+                cover: "https://cdn.corti.app/registry/corti/pubmed-expert/cover.png",
+                animation: "animation",
+            },
+            links: {
+                documentation: "https://docs.corti.app/registry/corti/pubmed-expert",
+                website: "https://corti.app/registry/corti/pubmed-expert",
+                video: "video",
+                license: "https://corti.app/licenses/registry",
+            },
+            createdAt: new Date("2026-03-15T09:00:00.000Z"),
+            updatedAt: new Date("2026-05-01T09:00:00.000Z"),
+            versions: [
                 {
-                    src: "https://cdn.corti.ai/registry/corti/pubmed-expert.svg",
-                    mimeType: "image/svg+xml",
-                    sizes: ["any"],
+                    version: "1.4.2",
+                    configSchema: {
+                        type: "object",
+                        properties: {
+                            resultCount: {
+                                type: "integer",
+                                minimum: 1,
+                                maximum: 50,
+                            },
+                        },
+                        required: ["resultCount"],
+                    },
+                    payload: {
+                        systemPrompt: "You are a PubMed search expert. Return citations in AMA format.",
+                        mcpServers: [
+                            {
+                                name: "medical-literature",
+                                description: "PubMed literature search server.",
+                                url: "https://mcp.example.com/pubmed",
+                            },
+                        ],
+                    },
+                    createdAt: new Date("2026-05-01T09:00:00.000Z"),
+                },
+                {
+                    version: "1.3.0",
+                    configSchema: {
+                        type: "object",
+                        properties: {},
+                    },
+                    payload: {
+                        systemPrompt: "You are a PubMed search expert.",
+                        mcpServers: [
+                            {
+                                name: "medical-literature",
+                                description: "PubMed literature search server.",
+                            },
+                        ],
+                    },
+                    createdAt: new Date("2026-03-15T09:00:00.000Z"),
                 },
             ],
-            provider: "Corti",
-            websiteUrl: "https://corti.example.com/pubmed-expert",
-            documentationUrl: "https://docs.corti.example.com/pubmed-expert",
-            capabilities: {
-                streaming: false,
-                inputModes: ["text/plain"],
-                outputModes: ["text/plain", "application/json"],
-                tools: ["search_pubmed", "get_pubmed_abstract"],
-            },
-            tags: ["pubmed", "literature", "expert"],
-            configSchema: {
-                key: "value",
-            },
         });
     });
 

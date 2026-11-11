@@ -3,6 +3,8 @@
 import type * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
 import type * as serializers from "../index.js";
+import { AgenticRegistryConnectorReferenceResolved } from "./AgenticRegistryConnectorReferenceResolved.js";
+import { CommonConnectorAuthEntry } from "./CommonConnectorAuthEntry.js";
 import { CommonConnectorIdValue } from "./CommonConnectorIdValue.js";
 
 export const CommonA2AConnector: core.serialization.ObjectSchema<
@@ -11,17 +13,21 @@ export const CommonA2AConnector: core.serialization.ObjectSchema<
 > = core.serialization.object({
     type: core.serialization.stringLiteral("a2a"),
     name: core.serialization.string().optional(),
-    url: core.serialization.string(),
+    url: core.serialization.string().optional(),
+    registry: AgenticRegistryConnectorReferenceResolved.optional(),
     id: CommonConnectorIdValue.optional(),
     enabled: core.serialization.boolean().optional(),
+    auth: core.serialization.list(CommonConnectorAuthEntry).optional(),
 });
 
 export declare namespace CommonA2AConnector {
     export interface Raw {
         type: "a2a";
         name?: string | null;
-        url: string;
+        url?: string | null;
+        registry?: AgenticRegistryConnectorReferenceResolved.Raw | null;
         id?: CommonConnectorIdValue.Raw | null;
         enabled?: boolean | null;
+        auth?: CommonConnectorAuthEntry.Raw[] | null;
     }
 }

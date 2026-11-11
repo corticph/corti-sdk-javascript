@@ -6,14 +6,12 @@ import type * as serializers from "../index.js";
 import { CommonA2AConnector } from "./CommonA2AConnector.js";
 import { CommonAgentConnector } from "./CommonAgentConnector.js";
 import { CommonMcpConnector } from "./CommonMcpConnector.js";
-import { CommonRegistryConnectorProvisioned } from "./CommonRegistryConnectorProvisioned.js";
 import { CommonSchemaConnector } from "./CommonSchemaConnector.js";
 
 export const CommonConnectorResponse: core.serialization.Schema<
     serializers.CommonConnectorResponse.Raw,
     Corti.CommonConnectorResponse
 > = core.serialization.undiscriminatedUnion([
-    CommonRegistryConnectorProvisioned,
     CommonMcpConnector,
     CommonAgentConnector,
     CommonA2AConnector,
@@ -22,7 +20,6 @@ export const CommonConnectorResponse: core.serialization.Schema<
 
 export declare namespace CommonConnectorResponse {
     export type Raw =
-        | CommonRegistryConnectorProvisioned.Raw
         | CommonMcpConnector.Raw
         | CommonAgentConnector.Raw
         | CommonA2AConnector.Raw

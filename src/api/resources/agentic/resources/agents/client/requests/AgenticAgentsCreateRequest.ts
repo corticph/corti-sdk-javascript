@@ -12,22 +12,25 @@ import type * as Corti from "../../../../../../index.js";
  *         visibility: "private",
  *         lifecycle: "persistent",
  *         connectors: [{
- *                 type: "registry",
- *                 name: "pubmed-expert"
- *             }, {
- *                 type: "mcp",
- *                 name: "policybot",
- *                 url: "https://mcp.example.com",
- *                 auth: {
- *                     type: "oauth2",
- *                     scope: "read:policies",
- *                     tokenUrl: "https://app.corti.ai/oauth/token"
+ *                 "type": "agent",
+ *                 "registry": {
+ *                     "id": "@corti/pubmed-expert"
  *                 }
  *             }, {
- *                 type: "schema",
- *                 name: "submit_code",
- *                 description: "Submit the final ICD-10 code for the encounter along with a confidence score.",
- *                 schema: {
+ *                 "type": "mcp",
+ *                 "name": "policybot",
+ *                 "url": "https://mcp.example.com",
+ *                 "auth": {
+ *                     "type": "oauth2",
+ *                     "scope": "read:policies",
+ *                     "tokenUrl": "https://app.corti.ai/oauth/token"
+ *                 }
+ *             }, {
+ *                 "type": "schema",
+ *                 "name": "submit_code",
+ *                 "description": "Submit the final ICD-10 code for the encounter along with a confidence score.",
+ *                 "transition": "complete",
+ *                 "schema": {
  *                     "type": "object",
  *                     "properties": {
  *                         "code": {
@@ -43,8 +46,7 @@ import type * as Corti from "../../../../../../index.js";
  *                     "required": [
  *                         "code"
  *                     ]
- *                 },
- *                 transition: "complete"
+ *                 }
  *             }],
  *         labels: {
  *             "team": "coding",

@@ -28,6 +28,8 @@ export class ConnectorsClient {
     /**
      * @beta This endpoint is in pre-release and may change.
      *
+     * Lists registry connector records (identity, lifecycle, and presentation metadata) with cursor pagination. Per-version configuration records are returned only by the detail endpoint.
+     *
      * @param {Corti.agentic.registry.AgenticRegistryConnectorsListRequest} request
      * @param {ConnectorsClient.RequestOptions} requestOptions - Request-specific configuration.
      *
@@ -44,9 +46,26 @@ export class ConnectorsClient {
             async (
                 request: Corti.agentic.registry.AgenticRegistryConnectorsListRequest,
             ): Promise<core.WithRawResponse<Corti.AgenticRegistryConnectorsListResponse>> => {
-                const { q, pageSize, pageToken } = request;
+                const { q, type: type_, publisher, category, tags, status, pageSize, pageToken } = request;
                 const _queryParams: Record<string, unknown> = {
                     q,
+                    type:
+                        type_ != null
+                            ? serializers.CommonConnectorType.jsonOrThrow(type_, {
+                                  unrecognizedObjectKeys: "strip",
+                                  omitUndefined: true,
+                              })
+                            : undefined,
+                    publisher,
+                    category,
+                    tags,
+                    status:
+                        status != null
+                            ? serializers.AgenticRegistryConnectorStatus.jsonOrThrow(status, {
+                                  unrecognizedObjectKeys: "strip",
+                                  omitUndefined: true,
+                              })
+                            : undefined,
                     pageSize,
                     pageToken,
                 };
@@ -121,7 +140,9 @@ export class ConnectorsClient {
     /**
      * @beta This endpoint is in pre-release and may change.
      *
-     * @param {string} connectorId - Registry connector identifier (e.g. `pubmed-expert`).
+     * Returns the full connector record — identity, lifecycle, and presentation metadata — plus the immutable per-version configuration records in `versions`, ordered newest first. Each version carries its own `configSchema` and `payload` (including `systemPrompt` and bundled MCP server definitions). The latest version is also addressable via the `latest` field.
+     *
+     * @param {string} connectorId - Registry connector identifier: the scoped slug `@namespace/name` (e.g. `@corti/pubmed-expert`). URL-encode the slug when used in a path (`%40corti%2Fpubmed-expert`).
      * @param {ConnectorsClient.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Corti.UnauthorizedError}
@@ -133,14 +154,14 @@ export class ConnectorsClient {
     public get(
         connectorId: string,
         requestOptions?: ConnectorsClient.RequestOptions,
-    ): core.HttpResponsePromise<Corti.AgenticRegistryConnector> {
+    ): core.HttpResponsePromise<Corti.AgenticRegistryConnectorDetail> {
         return core.HttpResponsePromise.fromPromise(this.__get(connectorId, requestOptions));
     }
 
     private async __get(
         connectorId: string,
         requestOptions?: ConnectorsClient.RequestOptions,
-    ): Promise<core.WithRawResponse<Corti.AgenticRegistryConnector>> {
+    ): Promise<core.WithRawResponse<Corti.AgenticRegistryConnectorDetail>> {
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
@@ -165,7 +186,7 @@ export class ConnectorsClient {
         });
         if (_response.ok) {
             return {
-                data: serializers.AgenticRegistryConnector.parseOrThrow(_response.body, {
+                data: serializers.AgenticRegistryConnectorDetail.parseOrThrow(_response.body, {
                     unrecognizedObjectKeys: "passthrough",
                     allowUnrecognizedUnionMembers: true,
                     allowUnrecognizedEnumValues: true,

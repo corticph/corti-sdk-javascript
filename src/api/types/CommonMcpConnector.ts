@@ -3,21 +3,24 @@
 import type * as Corti from "../index.js";
 
 /**
- * A connector backed by a remote MCP server.
+ * A connector backed by a remote MCP server, either inline or provisioned from a registry entry.
  */
 export interface CommonMcpConnector {
     type: "mcp";
-    /** Display name for the MCP connector. */
-    name: string;
-    /** MCP server endpoint URL. */
-    url: string;
-    auth?: Corti.CommonConnectorAuth;
+    /** Display name for the MCP connector. Present on inline connectors; registry-sourced connectors take presentation metadata from the registry entry. */
+    name?: string;
+    /** MCP server endpoint URL. Present on inline connectors; registry-sourced connectors bundle their servers in the registry payload instead. */
+    url?: string;
+    /** Registry source of the connector. Present only on registry-sourced connectors; inline connectors omit `registry` entirely. */
+    registry?: Corti.AgenticRegistryConnectorReferenceResolved;
     /**
      * Server-generated connector identifier (prefixed UUIDv7). Stable across PATCH
      * replacements where the underlying spec is unchanged. Used by
      * observability/HITL to reference a connector unambiguously.
      */
     id?: Corti.CommonConnectorIdValue;
-    /** Whether the connector is active for invocations. Only `schema` connectors return this field today; `mcp`, `registry`, `agent`, and `a2a` connectors omit it (treat as enabled). */
+    /** Whether the connector is active for invocations. Only `schema` connectors return this field today; `mcp`, `agent`, and `a2a` connectors omit it (treat as enabled). */
     enabled?: boolean;
+    /** Authentication configuration */
+    auth?: Corti.CommonConnectorAuthEntry[];
 }

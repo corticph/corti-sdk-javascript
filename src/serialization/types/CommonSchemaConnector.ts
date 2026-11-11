@@ -3,6 +3,8 @@
 import type * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
 import type * as serializers from "../index.js";
+import { AgenticRegistryConnectorReferenceResolved } from "./AgenticRegistryConnectorReferenceResolved.js";
+import { CommonConnectorAuthEntry } from "./CommonConnectorAuthEntry.js";
 import { CommonConnectorIdValue } from "./CommonConnectorIdValue.js";
 import { CommonSchemaConnectorTransition } from "./CommonSchemaConnectorTransition.js";
 
@@ -11,22 +13,26 @@ export const CommonSchemaConnector: core.serialization.ObjectSchema<
     Corti.CommonSchemaConnector
 > = core.serialization.object({
     type: core.serialization.stringLiteral("schema"),
-    name: core.serialization.string(),
+    name: core.serialization.string().optional(),
     description: core.serialization.string().optional(),
-    schema: core.serialization.record(core.serialization.string(), core.serialization.unknown()),
+    schema: core.serialization.record(core.serialization.string(), core.serialization.unknown()).optional(),
     transition: CommonSchemaConnectorTransition.optional(),
+    registry: AgenticRegistryConnectorReferenceResolved.optional(),
     id: CommonConnectorIdValue.optional(),
     enabled: core.serialization.boolean().optional(),
+    auth: core.serialization.list(CommonConnectorAuthEntry).optional(),
 });
 
 export declare namespace CommonSchemaConnector {
     export interface Raw {
         type: "schema";
-        name: string;
+        name?: string | null;
         description?: string | null;
-        schema: Record<string, unknown>;
+        schema?: Record<string, unknown> | null;
         transition?: CommonSchemaConnectorTransition.Raw | null;
+        registry?: AgenticRegistryConnectorReferenceResolved.Raw | null;
         id?: CommonConnectorIdValue.Raw | null;
         enabled?: boolean | null;
+        auth?: CommonConnectorAuthEntry.Raw[] | null;
     }
 }

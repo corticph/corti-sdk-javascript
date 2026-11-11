@@ -4,21 +4,11 @@ import type * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
 import type * as serializers from "../index.js";
 
-export const CommonA2AConnectorCreate: core.serialization.ObjectSchema<
+export const CommonA2AConnectorCreate: core.serialization.Schema<
     serializers.CommonA2AConnectorCreate.Raw,
     Corti.CommonA2AConnectorCreate
-> = core.serialization.object({
-    type: core.serialization.stringLiteral("a2a"),
-    name: core.serialization.string().optional(),
-    url: core.serialization.string(),
-    enabled: core.serialization.boolean().optional(),
-});
+> = core.serialization.undiscriminatedUnion([core.serialization.unknown()]);
 
 export declare namespace CommonA2AConnectorCreate {
-    export interface Raw {
-        type: "a2a";
-        name?: string | null;
-        url: string;
-        enabled?: boolean | null;
-    }
+    export type Raw = unknown;
 }
