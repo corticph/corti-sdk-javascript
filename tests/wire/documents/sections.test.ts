@@ -516,4 +516,81 @@ describe("SectionsClient", () => {
             return await client.documents.sections.update("sectionID");
         }).rejects.toThrow(Corti.NotFoundError);
     });
+
+    test("impact (1)", async () => {
+        const server = mockServerPool.createServer();
+        mockOAuth(server);
+
+        const client = new CortiClient({
+            maxRetries: 0,
+            clientId: "client_id",
+            clientSecret: "client_secret",
+            tenantName: "test",
+            environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
+        });
+
+        const rawResponseBody = {
+            templates: { truncated: true, items: [{ id: "id", name: "name", via: "direct" }] },
+            sections: { truncated: true, items: [{ id: "id", name: "name", depth: 1 }] },
+        };
+
+        server
+            .mockEndpoint()
+            .get("/documents/sections/sectionID/impact")
+            .respondWith()
+            .statusCode(200)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        const response = await client.documents.sections.impact("sectionID");
+        expect(response).toEqual({
+            templates: {
+                truncated: true,
+                items: [
+                    {
+                        id: "id",
+                        name: "name",
+                        via: "direct",
+                    },
+                ],
+            },
+            sections: {
+                truncated: true,
+                items: [
+                    {
+                        id: "id",
+                        name: "name",
+                        depth: 1,
+                    },
+                ],
+            },
+        });
+    });
+
+    test("impact (2)", async () => {
+        const server = mockServerPool.createServer();
+        mockOAuth(server);
+
+        const client = new CortiClient({
+            maxRetries: 0,
+            clientId: "client_id",
+            clientSecret: "client_secret",
+            tenantName: "test",
+            environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
+        });
+
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .get("/documents/sections/sectionID/impact")
+            .respondWith()
+            .statusCode(404)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.documents.sections.impact("sectionID");
+        }).rejects.toThrow(Corti.NotFoundError);
+    });
 });

@@ -7,8 +7,8 @@ import type * as serializers from "../index.js";
 export const CommonSchemaConnectorTransition: core.serialization.Schema<
     serializers.CommonSchemaConnectorTransition.Raw,
     Corti.CommonSchemaConnectorTransition
-> = core.serialization.enum_(["complete", "input_required"]);
+> = core.serialization.enum_(["complete", "input_required", "send"]);
 
 export declare namespace CommonSchemaConnectorTransition {
-    export type Raw = "complete" | "input_required";
+    export type Raw = "complete" | "input_required" | "send";
 }
