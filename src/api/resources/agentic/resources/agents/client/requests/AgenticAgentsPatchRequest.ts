@@ -7,9 +7,9 @@ import type * as Corti from "../../../../../../index.js";
  *     {
  *         name: "coder-v2",
  *         connectors: [{
- *                 type: "agent",
- *                 registry: {
- *                     id: "@corti/pubmed-expert"
+ *                 "type": "agent",
+ *                 "registry": {
+ *                     "id": "@corti/pubmed-expert"
  *                 }
  *             }]
  *     }

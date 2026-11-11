@@ -3,28 +3,12 @@
 import type * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
 import type * as serializers from "../index.js";
-import { AgenticRegistryConnectorReference } from "./AgenticRegistryConnectorReference.js";
-import { CommonConnectorAuth } from "./CommonConnectorAuth.js";
 
-export const CommonMcpConnectorCreate: core.serialization.ObjectSchema<
+export const CommonMcpConnectorCreate: core.serialization.Schema<
     serializers.CommonMcpConnectorCreate.Raw,
     Corti.CommonMcpConnectorCreate
-> = core.serialization.object({
-    type: core.serialization.stringLiteral("mcp"),
-    name: core.serialization.string().optional(),
-    url: core.serialization.string().optional(),
-    registry: AgenticRegistryConnectorReference.optional(),
-    enabled: core.serialization.boolean().optional(),
-    auth: CommonConnectorAuth.optional(),
-});
+> = core.serialization.undiscriminatedUnion([core.serialization.unknown()]);
 
 export declare namespace CommonMcpConnectorCreate {
-    export interface Raw {
-        type: "mcp";
-        name?: string | null;
-        url?: string | null;
-        registry?: AgenticRegistryConnectorReference.Raw | null;
-        enabled?: boolean | null;
-        auth?: CommonConnectorAuth.Raw | null;
-    }
+    export type Raw = unknown;
 }

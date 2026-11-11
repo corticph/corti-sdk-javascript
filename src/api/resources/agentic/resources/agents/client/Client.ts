@@ -177,24 +177,25 @@ export class AgentsClient {
      *         visibility: "private",
      *         lifecycle: "persistent",
      *         connectors: [{
-     *                 type: "agent",
-     *                 registry: {
-     *                     id: "@corti/pubmed-expert"
+     *                 "type": "agent",
+     *                 "registry": {
+     *                     "id": "@corti/pubmed-expert"
      *                 }
      *             }, {
-     *                 type: "mcp",
-     *                 name: "policybot",
-     *                 url: "https://mcp.example.com",
-     *                 auth: {
-     *                     type: "oauth2",
-     *                     scope: "read:policies",
-     *                     tokenUrl: "https://app.corti.ai/oauth/token"
+     *                 "type": "mcp",
+     *                 "name": "policybot",
+     *                 "url": "https://mcp.example.com",
+     *                 "auth": {
+     *                     "type": "oauth2",
+     *                     "scope": "read:policies",
+     *                     "tokenUrl": "https://app.corti.ai/oauth/token"
      *                 }
      *             }, {
-     *                 type: "schema",
-     *                 name: "submit_code",
-     *                 description: "Submit the final ICD-10 code for the encounter along with a confidence score.",
-     *                 schema: {
+     *                 "type": "schema",
+     *                 "name": "submit_code",
+     *                 "description": "Submit the final ICD-10 code for the encounter along with a confidence score.",
+     *                 "transition": "complete",
+     *                 "schema": {
      *                     "type": "object",
      *                     "properties": {
      *                         "code": {
@@ -210,8 +211,7 @@ export class AgentsClient {
      *                     "required": [
      *                         "code"
      *                     ]
-     *                 },
-     *                 transition: "complete"
+     *                 }
      *             }],
      *         labels: {
      *             "team": "coding",
@@ -467,9 +467,9 @@ export class AgentsClient {
      *     await client.agentic.agents.update("agt.0192f4c8-2c5a-7b3e-9f1a-3c8d6e2b7a40", {
      *         name: "coder-v2",
      *         connectors: [{
-     *                 type: "agent",
-     *                 registry: {
-     *                     id: "@corti/pubmed-expert"
+     *                 "type": "agent",
+     *                 "registry": {
+     *                     "id": "@corti/pubmed-expert"
      *                 }
      *             }]
      *     })

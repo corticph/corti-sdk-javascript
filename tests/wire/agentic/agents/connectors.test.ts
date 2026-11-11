@@ -227,7 +227,7 @@ describe("ConnectorsClient", () => {
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
-        const rawRequestBody = { type: "mcp" };
+        const rawRequestBody = { key: "value" };
         const rawResponseBody = { key: "value" };
 
         server
@@ -241,7 +241,7 @@ describe("ConnectorsClient", () => {
 
         await expect(async () => {
             return await client.agentic.agents.connectors.create("agentId", {
-                type: "mcp",
+                key: "value",
             });
         }).rejects.toThrow(Corti.BadRequestError);
     });
@@ -257,7 +257,7 @@ describe("ConnectorsClient", () => {
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
-        const rawRequestBody = { type: "mcp" };
+        const rawRequestBody = { key: "value" };
         const rawResponseBody = { key: "value" };
 
         server
@@ -271,7 +271,7 @@ describe("ConnectorsClient", () => {
 
         await expect(async () => {
             return await client.agentic.agents.connectors.create("agentId", {
-                type: "mcp",
+                key: "value",
             });
         }).rejects.toThrow(Corti.UnauthorizedError);
     });
@@ -287,7 +287,7 @@ describe("ConnectorsClient", () => {
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
-        const rawRequestBody = { type: "mcp" };
+        const rawRequestBody = { key: "value" };
         const rawResponseBody = { key: "value" };
 
         server
@@ -301,7 +301,7 @@ describe("ConnectorsClient", () => {
 
         await expect(async () => {
             return await client.agentic.agents.connectors.create("agentId", {
-                type: "mcp",
+                key: "value",
             });
         }).rejects.toThrow(Corti.NotFoundError);
     });
@@ -317,7 +317,7 @@ describe("ConnectorsClient", () => {
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
-        const rawRequestBody = { type: "mcp" };
+        const rawRequestBody = { key: "value" };
         const rawResponseBody = { key: "value" };
 
         server
@@ -331,7 +331,7 @@ describe("ConnectorsClient", () => {
 
         await expect(async () => {
             return await client.agentic.agents.connectors.create("agentId", {
-                type: "mcp",
+                key: "value",
             });
         }).rejects.toThrow(Corti.ConflictError);
     });

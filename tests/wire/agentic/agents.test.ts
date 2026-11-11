@@ -185,6 +185,7 @@ describe("AgentsClient", () => {
                     type: "schema",
                     name: "submit_code",
                     description: "Submit the final ICD-10 code for the encounter along with a confidence score.",
+                    transition: "complete",
                     schema: {
                         type: "object",
                         properties: {
@@ -193,7 +194,6 @@ describe("AgentsClient", () => {
                         },
                         required: ["code"],
                     },
-                    transition: "complete",
                 },
             ],
             labels: { team: "coding", env: "prod" },
@@ -260,6 +260,7 @@ describe("AgentsClient", () => {
                     type: "schema",
                     name: "submit_code",
                     description: "Submit the final ICD-10 code for the encounter along with a confidence score.",
+                    transition: "complete",
                     schema: {
                         type: "object",
                         properties: {
@@ -275,7 +276,6 @@ describe("AgentsClient", () => {
                         },
                         required: ["code"],
                     },
-                    transition: "complete",
                 },
             ],
             labels: {
