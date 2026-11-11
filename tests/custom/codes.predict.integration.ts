@@ -449,6 +449,19 @@ describe("cortiClient.codes.predict", () => {
             ).rejects.toThrow();
         });
 
+        it("should throw error when a filters condition group has no conditions", async () => {
+            expect.assertions(1);
+
+            await expect(
+                cortiClient.codes.predict({
+                    system: ["icd10cm-outpatient"],
+                    context: [{ type: "text", text: faker.lorem.sentence() }],
+                    // @ts-expect-error conditions is required in a condition group
+                    filters: [{ systemId: "icd10cm-outpatient", include: {} }],
+                }),
+            ).rejects.toThrow('Missing required key "conditions"');
+        });
+
         // FIXME: doesn't throw error when context is empty array, but it should
         it.skip("should throw error when context is missing", async () => {
             expect.assertions(1);
