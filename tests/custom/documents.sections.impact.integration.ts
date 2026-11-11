@@ -19,7 +19,9 @@ describe("cortiClient.documents.sections.impact", () => {
     });
 
     describe("should get section impact with only required values", () => {
-        it("should return empty templates and sections for a new section without errors or warnings", async () => {
+        // FIXME: gateway returns 403 (empty body) — `GET /documents/sections/:sectionID/impact` is missing from the
+        // `guided_templates_sections:read` endpoints in deployments authorization-service config. Re-enable once added.
+        it.skip("should return empty templates and sections for a new section without errors or warnings", async () => {
             expect.assertions(5);
 
             const section = await cortiClient.documents.sections.create({
@@ -46,7 +48,9 @@ describe("cortiClient.documents.sections.impact", () => {
     });
 
     describe("should throw error when invalid parameters are provided", () => {
-        it("should throw error when section ID does not exist", async () => {
+        // FIXME: gateway returns 403 (empty body) — `GET /documents/sections/:sectionID/impact` is missing from the
+        // `guided_templates_sections:read` endpoints in deployments authorization-service config. Re-enable once added.
+        it.skip("should throw error when section ID does not exist", async () => {
             expect.assertions(1);
 
             await expect(cortiClient.documents.sections.impact(faker.string.uuid())).rejects.toThrow(
