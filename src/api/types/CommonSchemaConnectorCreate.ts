@@ -13,7 +13,7 @@ export interface CommonSchemaConnectorCreate {
     description?: string;
     /** JSON Schema defining the tool's output shape. */
     schema: Record<string, unknown>;
-    /** If set, calling this tool terminates the loop in the given state. */
+    /** If set, `complete`/`input_required` terminate the loop in that state after validating and storing the data part (no further LLM call). `send` is non-terminal: it validates and stores the data part, delivers it to the user as a data part, and continues the loop. */
     transition?: Corti.CommonSchemaConnectorCreateTransition;
     /** Whether the connector is active for invocations. */
     enabled?: boolean;
