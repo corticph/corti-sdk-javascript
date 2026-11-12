@@ -24,10 +24,6 @@ describe("ConnectorsClient", () => {
                     id: "con.0192f4c8-7baf-7083-a46f-81d2bd70cf95",
                     type: "registry",
                     enabled: true,
-                    auth: [
-                        { type: "none", name: "medical-literature" },
-                        { type: "bearer", requiredHeaders: ["X-Api-Key"], name: "drug-reference" },
-                    ],
                     name: "pubmed-expert",
                     config: { key: "value" },
                 },
@@ -49,17 +45,6 @@ describe("ConnectorsClient", () => {
                     id: "con.0192f4c8-7baf-7083-a46f-81d2bd70cf95",
                     type: "registry",
                     enabled: true,
-                    auth: [
-                        {
-                            type: "none",
-                            name: "medical-literature",
-                        },
-                        {
-                            type: "bearer",
-                            requiredHeaders: ["X-Api-Key"],
-                            name: "drug-reference",
-                        },
-                    ],
                     name: "pubmed-expert",
                     config: {
                         key: "value",
@@ -139,26 +124,6 @@ describe("ConnectorsClient", () => {
             id: "con.0192f4c8-7baf-7083-a46f-81d2bd70cf95",
             type: "registry",
             enabled: true,
-            auth: [
-                {
-                    type: "none",
-                    scope: "scope",
-                    tokenUrl: "tokenUrl",
-                    ref: "ref",
-                    requiredHeaders: ["requiredHeaders"],
-                    optionalHeaders: ["optionalHeaders"],
-                    name: "medical-literature",
-                },
-                {
-                    type: "bearer",
-                    scope: "scope",
-                    tokenUrl: "tokenUrl",
-                    ref: "ref",
-                    requiredHeaders: ["X-Api-Key"],
-                    optionalHeaders: ["optionalHeaders"],
-                    name: "drug-reference",
-                },
-            ],
             name: "pubmed-expert",
             config: { key: "value" },
         };
@@ -180,26 +145,6 @@ describe("ConnectorsClient", () => {
             id: "con.0192f4c8-7baf-7083-a46f-81d2bd70cf95",
             type: "registry",
             enabled: true,
-            auth: [
-                {
-                    type: "none",
-                    scope: "scope",
-                    tokenUrl: "tokenUrl",
-                    ref: "ref",
-                    requiredHeaders: ["requiredHeaders"],
-                    optionalHeaders: ["optionalHeaders"],
-                    name: "medical-literature",
-                },
-                {
-                    type: "bearer",
-                    scope: "scope",
-                    tokenUrl: "tokenUrl",
-                    ref: "ref",
-                    requiredHeaders: ["X-Api-Key"],
-                    optionalHeaders: ["optionalHeaders"],
-                    name: "drug-reference",
-                },
-            ],
             name: "pubmed-expert",
             config: {
                 key: "value",
@@ -347,26 +292,6 @@ describe("ConnectorsClient", () => {
             id: "con.0192f4c8-7baf-7083-a46f-81d2bd70cf95",
             type: "registry",
             enabled: true,
-            auth: [
-                {
-                    type: "none",
-                    scope: "scope",
-                    tokenUrl: "tokenUrl",
-                    ref: "ref",
-                    requiredHeaders: ["requiredHeaders"],
-                    optionalHeaders: ["optionalHeaders"],
-                    name: "medical-literature",
-                },
-                {
-                    type: "bearer",
-                    scope: "scope",
-                    tokenUrl: "tokenUrl",
-                    ref: "ref",
-                    requiredHeaders: ["X-Api-Key"],
-                    optionalHeaders: ["optionalHeaders"],
-                    name: "drug-reference",
-                },
-            ],
             name: "pubmed-expert",
             config: { key: "value" },
         };
@@ -389,26 +314,6 @@ describe("ConnectorsClient", () => {
             id: "con.0192f4c8-7baf-7083-a46f-81d2bd70cf95",
             type: "registry",
             enabled: true,
-            auth: [
-                {
-                    type: "none",
-                    scope: "scope",
-                    tokenUrl: "tokenUrl",
-                    ref: "ref",
-                    requiredHeaders: ["requiredHeaders"],
-                    optionalHeaders: ["optionalHeaders"],
-                    name: "medical-literature",
-                },
-                {
-                    type: "bearer",
-                    scope: "scope",
-                    tokenUrl: "tokenUrl",
-                    ref: "ref",
-                    requiredHeaders: ["X-Api-Key"],
-                    optionalHeaders: ["optionalHeaders"],
-                    name: "drug-reference",
-                },
-            ],
             name: "pubmed-expert",
             config: {
                 key: "value",
@@ -568,17 +473,6 @@ describe("ConnectorsClient", () => {
             id: "con.0192f4c8-7baf-7083-a46f-81d2bd70cf95",
             type: "registry",
             enabled: true,
-            auth: [
-                {
-                    type: "oauth2",
-                    scope: "read:policies",
-                    tokenUrl: "https://app.corti.ai/oauth/token",
-                    ref: "ref",
-                    requiredHeaders: ["requiredHeaders"],
-                    optionalHeaders: ["optionalHeaders"],
-                    name: "name",
-                },
-            ],
             name: "pubmed-expert",
             config: { key: "value" },
         };
@@ -605,17 +499,6 @@ describe("ConnectorsClient", () => {
             id: "con.0192f4c8-7baf-7083-a46f-81d2bd70cf95",
             type: "registry",
             enabled: true,
-            auth: [
-                {
-                    type: "oauth2",
-                    scope: "read:policies",
-                    tokenUrl: "https://app.corti.ai/oauth/token",
-                    ref: "ref",
-                    requiredHeaders: ["requiredHeaders"],
-                    optionalHeaders: ["optionalHeaders"],
-                    name: "name",
-                },
-            ],
             name: "pubmed-expert",
             config: {
                 key: "value",

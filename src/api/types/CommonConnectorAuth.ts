@@ -23,6 +23,4 @@ export interface CommonConnectorAuth {
     requiredHeaders?: string[];
     /** Header names the client may optionally send. Headers not in requiredHeaders or optionalHeaders are rejected as undeclared. */
     optionalHeaders?: string[];
-    /** Name of the underlying resource to authenticate to. Set on connector responses that may be backed by multiple underlying resources. Never required on input and ignored when attaching connectors. */
-    name?: string;
 }

@@ -3,7 +3,6 @@
 import type * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
 import type * as serializers from "../index.js";
-import { CommonConnectorAuthEntry } from "./CommonConnectorAuthEntry.js";
 import { CommonConnectorIdValue } from "./CommonConnectorIdValue.js";
 import { CommonSchemaConnectorTransition } from "./CommonSchemaConnectorTransition.js";
 
@@ -18,7 +17,6 @@ export const CommonSchemaConnector: core.serialization.ObjectSchema<
     transition: CommonSchemaConnectorTransition.optional(),
     id: CommonConnectorIdValue.optional(),
     enabled: core.serialization.boolean().optional(),
-    auth: core.serialization.list(CommonConnectorAuthEntry).optional(),
 });
 
 export declare namespace CommonSchemaConnector {
@@ -30,6 +28,5 @@ export declare namespace CommonSchemaConnector {
         transition?: CommonSchemaConnectorTransition.Raw | null;
         id?: CommonConnectorIdValue.Raw | null;
         enabled?: boolean | null;
-        auth?: CommonConnectorAuthEntry.Raw[] | null;
     }
 }

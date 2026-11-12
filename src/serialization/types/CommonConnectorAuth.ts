@@ -15,7 +15,6 @@ export const CommonConnectorAuth: core.serialization.ObjectSchema<
     ref: core.serialization.string().optional(),
     requiredHeaders: core.serialization.list(core.serialization.string()).optional(),
     optionalHeaders: core.serialization.list(core.serialization.string()).optional(),
-    name: core.serialization.string().optional(),
 });
 
 export declare namespace CommonConnectorAuth {
@@ -26,6 +25,5 @@ export declare namespace CommonConnectorAuth {
         ref?: string | null;
         requiredHeaders?: string[] | null;
         optionalHeaders?: string[] | null;
-        name?: string | null;
     }
 }
