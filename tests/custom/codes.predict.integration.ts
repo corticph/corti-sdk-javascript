@@ -85,6 +85,76 @@ describe("cortiClient.codes.predict", () => {
         });
     });
 
+    describe("should predict codes with system-scoped filters", () => {
+        it("should predict codes with filters include and exclude combined without errors or warnings", async () => {
+            expect.assertions(2);
+
+            const result = await cortiClient.codes.predict({
+                system: ["icd10cm-outpatient"],
+                context: [{ type: "text", text: faker.lorem.sentence() }],
+                filters: [
+                    {
+                        systemId: "icd10cm-outpatient",
+                        include: { conditions: [{ property: "code", op: "is-a", value: ["E11"] }] },
+                        exclude: { conditions: [{ property: "code", op: "in", value: ["E11.9"] }] },
+                    },
+                ],
+            });
+
+            expect(result).toBeDefined();
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
+
+        it("should predict codes with filters match any and nested group without errors or warnings", async () => {
+            expect.assertions(2);
+
+            const result = await cortiClient.codes.predict({
+                system: ["icd10cm-outpatient"],
+                context: [{ type: "text", text: faker.lorem.sentence() }],
+                filters: [
+                    {
+                        systemId: "icd10cm-outpatient",
+                        include: {
+                            match: "any",
+                            conditions: [
+                                { property: "code", op: "is-a", value: ["E11"] },
+                                {
+                                    match: "all",
+                                    conditions: [{ property: "code", op: "is-a", value: ["I10"] }],
+                                },
+                            ],
+                        },
+                    },
+                ],
+            });
+
+            expect(result).toBeDefined();
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
+
+        it("should predict codes with one filter per system without errors or warnings", async () => {
+            expect.assertions(2);
+
+            const result = await cortiClient.codes.predict({
+                system: ["icd10cm-outpatient", "cpt"],
+                context: [{ type: "text", text: faker.lorem.sentence() }],
+                filters: [
+                    {
+                        systemId: "icd10cm-outpatient",
+                        include: { conditions: [{ property: "code", op: "is-a", value: ["E11"] }] },
+                    },
+                    {
+                        systemId: "cpt",
+                        exclude: { conditions: [{ property: "code", op: "in", value: ["99213"] }] },
+                    },
+                ],
+            });
+
+            expect(result).toBeDefined();
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
+    });
+
     describe("should predict codes with all system enum values", () => {
         it("should predict codes with system icd10cm-outpatient without errors or warnings", async () => {
             expect.assertions(2);
@@ -290,6 +360,25 @@ describe("cortiClient.codes.predict", () => {
             expect(consoleWarnSpy).not.toHaveBeenCalled();
         });
 
+        it.each([
+            "snomedctno",
+            "snomedctat",
+            "snomedctnl",
+            "icdo3int",
+            "icdo3fr",
+            "icdo3de",
+        ] as const)("should predict codes with system %s without errors or warnings", async (system) => {
+            expect.assertions(2);
+
+            const result = await cortiClient.codes.predict({
+                system: [system],
+                context: [{ type: "text", text: faker.lorem.sentence() }],
+            });
+
+            expect(result).toBeDefined();
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
+
         it("should predict codes with max allowed system enum values without errors or warnings", async () => {
             expect.assertions(2);
 
@@ -358,6 +447,19 @@ describe("cortiClient.codes.predict", () => {
                     context: [{ type: "text", text: faker.lorem.sentence() }],
                 } as any),
             ).rejects.toThrow();
+        });
+
+        it("should throw error when a filters condition group has no conditions", async () => {
+            expect.assertions(1);
+
+            await expect(
+                cortiClient.codes.predict({
+                    system: ["icd10cm-outpatient"],
+                    context: [{ type: "text", text: faker.lorem.sentence() }],
+                    // @ts-expect-error conditions is required in a condition group
+                    filters: [{ systemId: "icd10cm-outpatient", include: {} }],
+                }),
+            ).rejects.toThrow('Missing required key "conditions"');
         });
 
         // FIXME: doesn't throw error when context is empty array, but it should
