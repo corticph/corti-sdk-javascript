@@ -15,4 +15,6 @@ export interface TranscriptsFormatting {
     numericRanges?: Corti.TranscriptsFormattingNumericRanges;
     /** Formatting for ordinals. */
     ordinals?: Corti.TranscriptsFormattingOrdinals;
+    /** Formatting for roman numerals. */
+    romanNumerals?: Corti.TranscriptsFormattingRomanNumerals;
 }

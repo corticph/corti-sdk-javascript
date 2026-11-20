@@ -8,6 +8,7 @@ import { TranscriptsFormattingMeasurements } from "./TranscriptsFormattingMeasur
 import { TranscriptsFormattingNumbers } from "./TranscriptsFormattingNumbers.js";
 import { TranscriptsFormattingNumericRanges } from "./TranscriptsFormattingNumericRanges.js";
 import { TranscriptsFormattingOrdinals } from "./TranscriptsFormattingOrdinals.js";
+import { TranscriptsFormattingRomanNumerals } from "./TranscriptsFormattingRomanNumerals.js";
 import { TranscriptsFormattingTimes } from "./TranscriptsFormattingTimes.js";
 
 export const TranscriptsFormatting: core.serialization.ObjectSchema<
@@ -20,6 +21,7 @@ export const TranscriptsFormatting: core.serialization.ObjectSchema<
     measurements: TranscriptsFormattingMeasurements.optional(),
     numericRanges: TranscriptsFormattingNumericRanges.optional(),
     ordinals: TranscriptsFormattingOrdinals.optional(),
+    romanNumerals: TranscriptsFormattingRomanNumerals.optional(),
 });
 
 export declare namespace TranscriptsFormatting {
@@ -30,5 +32,6 @@ export declare namespace TranscriptsFormatting {
         measurements?: TranscriptsFormattingMeasurements.Raw | null;
         numericRanges?: TranscriptsFormattingNumericRanges.Raw | null;
         ordinals?: TranscriptsFormattingOrdinals.Raw | null;
+        romanNumerals?: TranscriptsFormattingRomanNumerals.Raw | null;
     }
 }
