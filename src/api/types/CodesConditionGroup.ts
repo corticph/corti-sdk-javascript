@@ -9,5 +9,5 @@ export interface CodesConditionGroup {
     /** `all` ANDs conditions (every condition must match). `any` ORs them (at least one must match). Omit when `conditions` has a single element. */
     match?: Corti.CodesConditionGroupMatch;
     /** Conditions or nested groups combined per `match`. Maximum nesting depth: 3. */
-    conditions?: Corti.CodesConditionGroupConditionsItem[];
+    conditions: Corti.CodesConditionGroupConditionsItem[];
 }

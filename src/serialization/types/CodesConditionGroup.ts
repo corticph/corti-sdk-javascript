@@ -10,14 +10,12 @@ export const CodesConditionGroup: core.serialization.ObjectSchema<
     Corti.CodesConditionGroup
 > = core.serialization.object({
     match: CodesConditionGroupMatch.optional(),
-    conditions: core.serialization
-        .list(core.serialization.lazy(() => serializers.CodesConditionGroupConditionsItem))
-        .optional(),
+    conditions: core.serialization.list(core.serialization.lazy(() => serializers.CodesConditionGroupConditionsItem)),
 });
 
 export declare namespace CodesConditionGroup {
     export interface Raw {
         match?: CodesConditionGroupMatch.Raw | null;
-        conditions?: serializers.CodesConditionGroupConditionsItem.Raw[] | null;
+        conditions: serializers.CodesConditionGroupConditionsItem.Raw[];
     }
 }

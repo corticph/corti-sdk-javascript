@@ -197,7 +197,7 @@ export class TemplatesClient {
     /**
      * Returns the template with its published version fully resolved (inheritance walked,
      * sections expanded with their own inheritance applied). To see raw authored
-     * values without inheritance, use GET /documents/templates/{templateID}/versions/{versionID}.
+     * values without inheritance, use GET /documents/templates/:id/versions/:id .
      *
      * @param {string} templateID
      * @param {TemplatesClient.RequestOptions} requestOptions - Request-specific configuration.
@@ -275,7 +275,7 @@ export class TemplatesClient {
     }
 
     /**
-     * Deletes a template and its versions. Returns 409 if other templates or sections inherit from this template.
+     * Deletes a template and its versions. Returns `409` if other templates or sections inherit from this template.
      *
      * @param {string} templateID
      * @param {TemplatesClient.RequestOptions} requestOptions - Request-specific configuration.

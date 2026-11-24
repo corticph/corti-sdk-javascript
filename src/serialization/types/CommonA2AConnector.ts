@@ -3,7 +3,7 @@
 import type * as Corti from "../../api/index.js";
 import * as core from "../../core/index.js";
 import type * as serializers from "../index.js";
-import { CommonConnectorAuth } from "./CommonConnectorAuth.js";
+import { CommonConnectorAuthEntry } from "./CommonConnectorAuthEntry.js";
 import { CommonConnectorIdValue } from "./CommonConnectorIdValue.js";
 
 export const CommonA2AConnector: core.serialization.ObjectSchema<
@@ -15,7 +15,7 @@ export const CommonA2AConnector: core.serialization.ObjectSchema<
     url: core.serialization.string(),
     id: CommonConnectorIdValue.optional(),
     enabled: core.serialization.boolean().optional(),
-    auth: CommonConnectorAuth.optional(),
+    auth: core.serialization.list(CommonConnectorAuthEntry).optional(),
 });
 
 export declare namespace CommonA2AConnector {
@@ -25,6 +25,6 @@ export declare namespace CommonA2AConnector {
         url: string;
         id?: CommonConnectorIdValue.Raw | null;
         enabled?: boolean | null;
-        auth?: CommonConnectorAuth.Raw | null;
+        auth?: CommonConnectorAuthEntry.Raw[] | null;
     }
 }
