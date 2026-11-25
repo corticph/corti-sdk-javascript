@@ -30,7 +30,7 @@ describe("ConnectorsClient", () => {
                     ],
                     name: "name",
                     url: "url",
-                    registry: { id: "@corti/pubmed-expert", version: "1.4.2" },
+                    registry: { id: "pubmed-expert", version: "1.0.0" },
                 },
             ],
         };
@@ -64,8 +64,8 @@ describe("ConnectorsClient", () => {
                     name: "name",
                     url: "url",
                     registry: {
-                        id: "@corti/pubmed-expert",
-                        version: "1.4.2",
+                        id: "pubmed-expert",
+                        version: "1.0.0",
                     },
                 },
             ],
@@ -137,7 +137,7 @@ describe("ConnectorsClient", () => {
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
-        const rawRequestBody = { type: "agent", registry: { id: "@corti/pubmed-expert", version: "1.4.2" } };
+        const rawRequestBody = { type: "agent", registry: { id: "pubmed-expert", version: "1.0.0" } };
         const rawResponseBody = {
             id: "con.0192f4c8-7baf-7083-a46f-81d2bd70cf95",
             type: "mcp",
@@ -164,7 +164,7 @@ describe("ConnectorsClient", () => {
             ],
             name: "name",
             url: "url",
-            registry: { id: "@corti/pubmed-expert", version: "1.4.2" },
+            registry: { id: "pubmed-expert", version: "1.0.0" },
         };
 
         server
@@ -179,8 +179,8 @@ describe("ConnectorsClient", () => {
         const response = await client.agentic.agents.connectors.create("agt.0192f4c8-2c5a-7b3e-9f1a-3c8d6e2b7a40", {
             type: "agent",
             registry: {
-                id: "@corti/pubmed-expert",
-                version: "1.4.2",
+                id: "pubmed-expert",
+                version: "1.0.0",
             },
         });
         expect(response).toEqual({
@@ -210,8 +210,8 @@ describe("ConnectorsClient", () => {
             name: "name",
             url: "url",
             registry: {
-                id: "@corti/pubmed-expert",
-                version: "1.4.2",
+                id: "pubmed-expert",
+                version: "1.0.0",
             },
         });
     });
@@ -374,7 +374,7 @@ describe("ConnectorsClient", () => {
             ],
             name: "name",
             url: "url",
-            registry: { id: "@corti/pubmed-expert", version: "1.4.2" },
+            registry: { id: "pubmed-expert", version: "1.0.0" },
         };
 
         server
@@ -418,8 +418,8 @@ describe("ConnectorsClient", () => {
             name: "name",
             url: "url",
             registry: {
-                id: "@corti/pubmed-expert",
-                version: "1.4.2",
+                id: "pubmed-expert",
+                version: "1.0.0",
             },
         });
     });
@@ -589,7 +589,7 @@ describe("ConnectorsClient", () => {
             ],
             name: "name",
             url: "url",
-            registry: { id: "@corti/pubmed-expert", version: "1.4.2" },
+            registry: { id: "pubmed-expert", version: "1.0.0" },
         };
 
         server
@@ -628,8 +628,8 @@ describe("ConnectorsClient", () => {
             name: "name",
             url: "url",
             registry: {
-                id: "@corti/pubmed-expert",
-                version: "1.4.2",
+                id: "pubmed-expert",
+                version: "1.0.0",
             },
         });
     });

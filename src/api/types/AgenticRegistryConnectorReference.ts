@@ -4,7 +4,7 @@
  * Reference to a registry connector version in an attach request. Presence of the `registry` object marks the connector as registry-sourced: the inline definition fields and `registry` are mutually exclusive — exactly one of them must be present per connector, otherwise the request is rejected with `400`. An omitted `version` resolves to the latest version at attach time; the resolved version is recorded on attach and never re-synced afterwards.
  */
 export interface AgenticRegistryConnectorReference {
-    /** Scoped slug of the registry connector. */
+    /** Name of the registry connector. */
     id: string;
     /** Pins a specific configuration version; omitted means the latest version at attach time. */
     version?: string;

@@ -125,7 +125,7 @@ export class ConnectorsClient {
      *
      * Returns the full connector record — identity, lifecycle, and presentation metadata — plus the immutable per-version configuration records in `versions`, ordered newest first. Each version carries its own `configSchema` and `payload` (including `systemPrompt` and bundled MCP server definitions). The latest version is also addressable via the `latest` field.
      *
-     * @param {string} connectorId - Registry connector identifier: the scoped slug `@namespace/name` (e.g. `@corti/pubmed-expert`). URL-encode the slug when used in a path (`%40corti%2Fpubmed-expert`).
+     * @param {string} connectorId - Registry connector identifier (e.g. `pubmed-expert`).
      * @param {ConnectorsClient.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Corti.UnauthorizedError}

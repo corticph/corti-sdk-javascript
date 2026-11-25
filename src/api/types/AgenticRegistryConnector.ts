@@ -6,7 +6,7 @@ import type * as Corti from "../index.js";
  * A registry connector record: identity, lifecycle, and presentation metadata. This is the mutable view returned by the list endpoint; the immutable per-version configuration records (`versions`) are included by the detail endpoint.
  */
 export interface AgenticRegistryConnector {
-    /** Scoped slug `@namespace/name` uniquely identifying the registry connector. */
+    /** Registry connector name uniquely identifying the connector. */
     id: string;
     /** Unscoped connector name. */
     name: string;

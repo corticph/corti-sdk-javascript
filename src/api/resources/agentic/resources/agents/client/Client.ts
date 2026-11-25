@@ -179,7 +179,7 @@ export class AgentsClient {
      *         connectors: [{
      *                 "type": "agent",
      *                 "registry": {
-     *                     "id": "@corti/pubmed-expert"
+     *                     "id": "pubmed-expert"
      *                 }
      *             }, {
      *                 "type": "mcp",
@@ -469,7 +469,7 @@ export class AgentsClient {
      *         connectors: [{
      *                 "type": "agent",
      *                 "registry": {
-     *                     "id": "@corti/pubmed-expert"
+     *                     "id": "pubmed-expert"
      *                 }
      *             }]
      *     })

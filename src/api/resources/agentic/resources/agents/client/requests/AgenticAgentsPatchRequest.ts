@@ -9,7 +9,7 @@ import type * as Corti from "../../../../../../index.js";
  *         connectors: [{
  *                 "type": "agent",
  *                 "registry": {
- *                     "id": "@corti/pubmed-expert"
+ *                     "id": "pubmed-expert"
  *                 }
  *             }]
  *     }

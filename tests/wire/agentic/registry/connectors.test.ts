@@ -21,10 +21,10 @@ describe("ConnectorsClient", () => {
         const rawResponseBody = {
             connectors: [
                 {
-                    id: "@corti/pubmed-expert",
+                    id: "pubmed-expert",
                     name: "pubmed-expert",
                     type: "agent",
-                    latest: "1.4.2",
+                    latest: "1.0.0",
                     status: "public",
                     publisher: "corti",
                     title: "PubMed Expert",
@@ -41,10 +41,10 @@ describe("ConnectorsClient", () => {
                     updatedAt: "2024-01-15T09:30:00Z",
                 },
                 {
-                    id: "@corti/icd10-coder",
+                    id: "icd10-coder",
                     name: "icd10-coder",
                     type: "schema",
-                    latest: "0.3.1",
+                    latest: "1.0.0",
                     status: "public",
                     publisher: "corti",
                     title: "ICD-10 Coder",
@@ -75,10 +75,10 @@ describe("ConnectorsClient", () => {
         const expected = {
             connectors: [
                 {
-                    id: "@corti/pubmed-expert",
+                    id: "pubmed-expert",
                     name: "pubmed-expert",
                     type: "agent",
-                    latest: "1.4.2",
+                    latest: "1.0.0",
                     status: "public",
                     publisher: "corti",
                     title: "PubMed Expert",
@@ -95,10 +95,10 @@ describe("ConnectorsClient", () => {
                     updatedAt: new Date("2024-01-15T09:30:00.000Z"),
                 },
                 {
-                    id: "@corti/icd10-coder",
+                    id: "icd10-coder",
                     name: "icd10-coder",
                     type: "schema",
-                    latest: "0.3.1",
+                    latest: "1.0.0",
                     status: "public",
                     publisher: "corti",
                     title: "ICD-10 Coder",
@@ -165,10 +165,10 @@ describe("ConnectorsClient", () => {
         });
 
         const rawResponseBody = {
-            id: "@corti/pubmed-expert",
+            id: "pubmed-expert",
             name: "pubmed-expert",
             type: "agent",
-            latest: "1.4.2",
+            latest: "1.0.0",
             status: "public",
             publisher: "corti",
             title: "PubMed Expert",
@@ -193,7 +193,7 @@ describe("ConnectorsClient", () => {
             updatedAt: "2026-05-01T09:00:00Z",
             versions: [
                 {
-                    version: "1.4.2",
+                    version: "1.0.0",
                     configSchema: {
                         type: "object",
                         properties: { resultCount: { type: "integer", minimum: 1, maximum: 50 } },
@@ -233,10 +233,10 @@ describe("ConnectorsClient", () => {
 
         const response = await client.agentic.registry.connectors.get("connectorId");
         expect(response).toEqual({
-            id: "@corti/pubmed-expert",
+            id: "pubmed-expert",
             name: "pubmed-expert",
             type: "agent",
-            latest: "1.4.2",
+            latest: "1.0.0",
             status: "public",
             publisher: "corti",
             title: "PubMed Expert",
@@ -261,7 +261,7 @@ describe("ConnectorsClient", () => {
             updatedAt: new Date("2026-05-01T09:00:00.000Z"),
             versions: [
                 {
-                    version: "1.4.2",
+                    version: "1.0.0",
                     configSchema: {
                         type: "object",
                         properties: {

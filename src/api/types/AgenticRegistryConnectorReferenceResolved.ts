@@ -4,7 +4,7 @@
  * The registry source of an attached connector. Present only on registry-sourced connectors; inline connectors omit `registry` entirely. `version` is the version resolved at attach time (the latest at that moment unless pinned); it is never re-synced.
  */
 export interface AgenticRegistryConnectorReferenceResolved {
-    /** Scoped slug of the registry connector. */
+    /** Name of the registry connector. */
     id: string;
     /** Configuration version resolved at attach time; not re-synced when the registry publishes newer versions. */
     version: string;
