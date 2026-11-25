@@ -157,13 +157,13 @@ export class InteractionsClient {
      *
      * @throws {@link Corti.BadRequestError}
      * @throws {@link Corti.ForbiddenError}
+     * @throws {@link Corti.ConflictError}
      * @throws {@link Corti.InternalServerError}
      * @throws {@link Corti.GatewayTimeoutError}
      *
      * @example
      *     await client.interactions.create({
      *         encounter: {
-     *             identifier: "identifier",
      *             status: "planned",
      *             type: "first_consultation"
      *         }
@@ -227,6 +227,8 @@ export class InteractionsClient {
                     throw new Corti.BadRequestError(_response.error.body, _response.rawResponse);
                 case 403:
                     throw new Corti.ForbiddenError(_response.error.body, _response.rawResponse);
+                case 409:
+                    throw new Corti.ConflictError(_response.error.body, _response.rawResponse);
                 case 500:
                     throw new Corti.InternalServerError(
                         serializers.ErrorResponse.parseOrThrow(_response.error.body, {
@@ -427,6 +429,7 @@ export class InteractionsClient {
      * @param {InteractionsClient.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Corti.ForbiddenError}
+     * @throws {@link Corti.ConflictError}
      * @throws {@link Corti.GatewayTimeoutError}
      *
      * @example
@@ -490,6 +493,8 @@ export class InteractionsClient {
             switch (_response.error.statusCode) {
                 case 403:
                     throw new Corti.ForbiddenError(_response.error.body, _response.rawResponse);
+                case 409:
+                    throw new Corti.ConflictError(_response.error.body, _response.rawResponse);
                 case 504:
                     throw new Corti.GatewayTimeoutError(
                         serializers.ErrorResponse.parseOrThrow(_response.error.body, {

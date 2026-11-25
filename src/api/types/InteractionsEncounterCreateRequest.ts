@@ -3,8 +3,8 @@
 import type * as Corti from "../index.js";
 
 export interface InteractionsEncounterCreateRequest {
-    /** A unique identifier for the encounter, essential for tracking and referencing specific patient interactions. */
-    identifier: string;
+    /** An optional identifier for the encounter, used to track and reference specific patient interactions. Must be unique among the creator's non-deleted interactions. When omitted, the interaction is created without one. */
+    identifier?: string | null;
     /** Indicates the current state of the encounter, crucial for understanding the progression and current state of care. */
     status: Corti.InteractionsEncounterStatusEnum;
     /** The specific type of encounter, providing context about the nature and setting of the patient interaction. */
