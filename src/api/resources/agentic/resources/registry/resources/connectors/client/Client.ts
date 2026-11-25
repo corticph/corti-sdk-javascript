@@ -46,26 +46,9 @@ export class ConnectorsClient {
             async (
                 request: Corti.agentic.registry.AgenticRegistryConnectorsListRequest,
             ): Promise<core.WithRawResponse<Corti.AgenticRegistryConnectorsListResponse>> => {
-                const { q, type: type_, publisher, category, tags, status, pageSize, pageToken } = request;
+                const { q, pageSize, pageToken } = request;
                 const _queryParams: Record<string, unknown> = {
                     q,
-                    type:
-                        type_ != null
-                            ? serializers.CommonConnectorType.jsonOrThrow(type_, {
-                                  unrecognizedObjectKeys: "strip",
-                                  omitUndefined: true,
-                              })
-                            : undefined,
-                    publisher,
-                    category,
-                    tags,
-                    status:
-                        status != null
-                            ? serializers.AgenticRegistryConnectorStatus.jsonOrThrow(status, {
-                                  unrecognizedObjectKeys: "strip",
-                                  omitUndefined: true,
-                              })
-                            : undefined,
                     pageSize,
                     pageToken,
                 };
