@@ -2,7 +2,6 @@
 
 export const RecordingsListRequestSort = {
     Id: "id",
-    StartedAt: "startedAt",
-    StoppedAt: "stoppedAt",
+    CreatedAt: "createdAt",
 } as const;
 export type RecordingsListRequestSort = (typeof RecordingsListRequestSort)[keyof typeof RecordingsListRequestSort];

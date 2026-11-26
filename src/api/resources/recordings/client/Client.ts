@@ -23,7 +23,7 @@ export class RecordingsClient {
     }
 
     /**
-     * Retrieve a list of recordings for a given interaction. Recordings are ordered by their start time by default. Default ordering (desc) will return the most recently started recording first in the list. Use query parameter `sort` to choose the field and `direction` to define the order of the list (`asc` for ascending and `desc` for descending).
+     * Retrieve a list of recordings for a given interaction. Recordings are ordered based on their creation time by default. Default ordering (desc) will return the most recent recording first in the list. Use query parameter `sort` to choose the field and `direction` to define the order of the list (`asc` for ascending and `desc` for descending). Use query parameter `full` to return recording objects with metadata instead of IDs.
      *
      * @param {Corti.Uuid} id - The unique identifier of the interaction. Must be a valid UUID.
      * @param {Corti.RecordingsListRequest} request
@@ -41,7 +41,7 @@ export class RecordingsClient {
         id: Corti.Uuid,
         request: Corti.RecordingsListRequest = {},
         requestOptions?: RecordingsClient.RequestOptions,
-    ): core.HttpResponsePromise<Corti.RecordingsListResponse> {
+    ): core.HttpResponsePromise<Corti.RecordingsListUnionResponse> {
         return core.HttpResponsePromise.fromPromise(this.__list(id, request, requestOptions));
     }
 
@@ -49,9 +49,10 @@ export class RecordingsClient {
         id: Corti.Uuid,
         request: Corti.RecordingsListRequest = {},
         requestOptions?: RecordingsClient.RequestOptions,
-    ): Promise<core.WithRawResponse<Corti.RecordingsListResponse>> {
-        const { sort, direction } = request;
+    ): Promise<core.WithRawResponse<Corti.RecordingsListUnionResponse>> {
+        const { full, sort, direction } = request;
         const _queryParams: Record<string, unknown> = {
+            full,
             sort:
                 sort != null
                     ? serializers.RecordingsListRequestSort.jsonOrThrow(sort, {
@@ -91,7 +92,7 @@ export class RecordingsClient {
         });
         if (_response.ok) {
             return {
-                data: serializers.RecordingsListResponse.parseOrThrow(_response.body, {
+                data: serializers.RecordingsListUnionResponse.parseOrThrow(_response.body, {
                     unrecognizedObjectKeys: "passthrough",
                     allowUnrecognizedUnionMembers: true,
                     allowUnrecognizedEnumValues: true,

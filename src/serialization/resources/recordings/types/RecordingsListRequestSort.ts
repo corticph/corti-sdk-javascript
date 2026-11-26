@@ -7,8 +7,8 @@ import type * as serializers from "../../../index.js";
 export const RecordingsListRequestSort: core.serialization.Schema<
     serializers.RecordingsListRequestSort.Raw,
     Corti.RecordingsListRequestSort
-> = core.serialization.enum_(["id", "startedAt", "stoppedAt"]);
+> = core.serialization.enum_(["id", "createdAt"]);
 
 export declare namespace RecordingsListRequestSort {
-    export type Raw = "id" | "startedAt" | "stoppedAt";
+    export type Raw = "id" | "createdAt";
 }

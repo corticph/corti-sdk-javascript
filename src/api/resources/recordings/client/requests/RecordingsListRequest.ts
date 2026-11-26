@@ -7,7 +7,9 @@ import type * as Corti from "../../../../index.js";
  *     {}
  */
 export interface RecordingsListRequest {
-    /** Field used to sort recordings. Default is startedAt. */
+    /** Return recording objects with metadata instead of IDs. Default is false. */
+    full?: boolean;
+    /** Field used to sort recordings. Default is createdAt. */
     sort?: Corti.RecordingsListRequestSort;
     /** Sorting order. Allowed values: [asc, desc]. Default is desc. */
     direction?: Corti.CommonSortingDirectionEnum;

@@ -6,5 +6,6 @@ import type * as Corti from "../index.js";
  * Key terms echoed from the create request. Not persisted; may be omitted on subsequent GETs.
  */
 export interface TranscriptsResponseKeyTerms {
+    /** The key terms used to bias speech recognition for this transcript. */
     terms: Corti.TranscriptsResponseKeyTermsTermsItem[];
 }
