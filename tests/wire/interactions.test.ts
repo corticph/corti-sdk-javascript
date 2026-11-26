@@ -24,7 +24,6 @@ describe("InteractionsClient", () => {
                     id: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
                     assignedUserId: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
                     encounter: {
-                        identifier: "identifier",
                         status: "planned",
                         type: "first_consultation",
                         period: { startedAt: "2024-01-15T09:30:00Z" },
@@ -56,7 +55,6 @@ describe("InteractionsClient", () => {
                     id: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
                     assignedUserId: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
                     encounter: {
-                        identifier: "identifier",
                         status: "planned",
                         type: "first_consultation",
                         period: {
@@ -150,9 +148,7 @@ describe("InteractionsClient", () => {
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
-        const rawRequestBody = {
-            encounter: { identifier: "identifier", status: "planned", type: "first_consultation" },
-        };
+        const rawRequestBody = { encounter: { status: "planned", type: "first_consultation" } };
         const rawResponseBody = { interactionId: "f47ac10b-58cc-4372-a567-0e02b2c3d479", websocketUrl: "websocketUrl" };
 
         server
@@ -166,7 +162,6 @@ describe("InteractionsClient", () => {
 
         const response = await client.interactions.create({
             encounter: {
-                identifier: "identifier",
                 status: "planned",
                 type: "first_consultation",
             },
@@ -188,9 +183,7 @@ describe("InteractionsClient", () => {
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
-        const rawRequestBody = {
-            encounter: { identifier: "identifier", status: "planned", type: "first_consultation" },
-        };
+        const rawRequestBody = { encounter: { status: "planned", type: "first_consultation" } };
         const rawResponseBody = { key: "value" };
 
         server
@@ -205,7 +198,6 @@ describe("InteractionsClient", () => {
         await expect(async () => {
             return await client.interactions.create({
                 encounter: {
-                    identifier: "identifier",
                     status: "planned",
                     type: "first_consultation",
                 },
@@ -224,9 +216,7 @@ describe("InteractionsClient", () => {
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
-        const rawRequestBody = {
-            encounter: { identifier: "identifier", status: "planned", type: "first_consultation" },
-        };
+        const rawRequestBody = { encounter: { status: "planned", type: "first_consultation" } };
         const rawResponseBody = { key: "value" };
 
         server
@@ -241,7 +231,6 @@ describe("InteractionsClient", () => {
         await expect(async () => {
             return await client.interactions.create({
                 encounter: {
-                    identifier: "identifier",
                     status: "planned",
                     type: "first_consultation",
                 },
@@ -260,9 +249,40 @@ describe("InteractionsClient", () => {
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
-        const rawRequestBody = {
-            encounter: { identifier: "identifier", status: "planned", type: "first_consultation" },
-        };
+        const rawRequestBody = { encounter: { status: "planned", type: "first_consultation" } };
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .post("/interactions/")
+            .jsonBody(rawRequestBody)
+            .respondWith()
+            .statusCode(409)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.interactions.create({
+                encounter: {
+                    status: "planned",
+                    type: "first_consultation",
+                },
+            });
+        }).rejects.toThrow(Corti.ConflictError);
+    });
+
+    test("create (5)", async () => {
+        const server = mockServerPool.createServer();
+        mockOAuth(server);
+
+        const client = new CortiClient({
+            maxRetries: 0,
+            clientId: "client_id",
+            clientSecret: "client_secret",
+            tenantName: "test",
+            environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
+        });
+        const rawRequestBody = { encounter: { status: "planned", type: "first_consultation" } };
         const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
 
         server
@@ -277,7 +297,6 @@ describe("InteractionsClient", () => {
         await expect(async () => {
             return await client.interactions.create({
                 encounter: {
-                    identifier: "identifier",
                     status: "planned",
                     type: "first_consultation",
                 },
@@ -285,7 +304,7 @@ describe("InteractionsClient", () => {
         }).rejects.toThrow(Corti.InternalServerError);
     });
 
-    test("create (5)", async () => {
+    test("create (6)", async () => {
         const server = mockServerPool.createServer();
         mockOAuth(server);
 
@@ -296,9 +315,7 @@ describe("InteractionsClient", () => {
             tenantName: "test",
             environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
         });
-        const rawRequestBody = {
-            encounter: { identifier: "identifier", status: "planned", type: "first_consultation" },
-        };
+        const rawRequestBody = { encounter: { status: "planned", type: "first_consultation" } };
         const rawResponseBody = { requestid: "requestid", status: 1, type: "type", detail: "detail" };
 
         server
@@ -313,7 +330,6 @@ describe("InteractionsClient", () => {
         await expect(async () => {
             return await client.interactions.create({
                 encounter: {
-                    identifier: "identifier",
                     status: "planned",
                     type: "first_consultation",
                 },
@@ -628,6 +644,34 @@ describe("InteractionsClient", () => {
     });
 
     test("update (3)", async () => {
+        const server = mockServerPool.createServer();
+        mockOAuth(server);
+
+        const client = new CortiClient({
+            maxRetries: 0,
+            clientId: "client_id",
+            clientSecret: "client_secret",
+            tenantName: "test",
+            environment: { base: server.baseUrl, wss: server.baseUrl, login: server.baseUrl, agents: server.baseUrl },
+        });
+        const rawRequestBody = {};
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .patch("/interactions/id")
+            .jsonBody(rawRequestBody)
+            .respondWith()
+            .statusCode(409)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.interactions.update("id");
+        }).rejects.toThrow(Corti.ConflictError);
+    });
+
+    test("update (4)", async () => {
         const server = mockServerPool.createServer();
         mockOAuth(server);
 

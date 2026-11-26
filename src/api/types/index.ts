@@ -127,6 +127,7 @@ export * from "./CommonArtifactIdValue.js";
 export * from "./CommonArtifactResponse.js";
 export * from "./CommonCodingSystemEnum.js";
 export * from "./CommonConnectorAuth.js";
+export * from "./CommonConnectorAuthEntry.js";
 export * from "./CommonConnectorAuthType.js";
 export * from "./CommonConnectorCreateRequest.js";
 export * from "./CommonConnectorIdValue.js";
