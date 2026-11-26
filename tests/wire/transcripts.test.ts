@@ -223,7 +223,6 @@ describe("TranscriptsClient", () => {
             usageInfo: { creditsConsumed: 1.1 },
             recordingId: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
             status: "completed",
-            keyTerms: { terms: [{ term: "Nexium" }, { term: "Dr. Lindqvist" }] },
         };
 
         server
@@ -264,16 +263,6 @@ describe("TranscriptsClient", () => {
             },
             recordingId: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
             status: "completed",
-            keyTerms: {
-                terms: [
-                    {
-                        term: "Nexium",
-                    },
-                    {
-                        term: "Dr. Lindqvist",
-                    },
-                ],
-            },
         });
     });
 
@@ -451,7 +440,6 @@ describe("TranscriptsClient", () => {
             usageInfo: { creditsConsumed: 1.1 },
             recordingId: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
             status: "completed",
-            keyTerms: { terms: [{ term: "Nexium" }, { term: "Dr. Lindqvist" }] },
         };
 
         server
@@ -491,16 +479,6 @@ describe("TranscriptsClient", () => {
             },
             recordingId: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
             status: "completed",
-            keyTerms: {
-                terms: [
-                    {
-                        term: "Nexium",
-                    },
-                    {
-                        term: "Dr. Lindqvist",
-                    },
-                ],
-            },
         });
     });
 

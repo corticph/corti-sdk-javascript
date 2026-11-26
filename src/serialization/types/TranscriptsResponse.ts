@@ -6,7 +6,6 @@ import type * as serializers from "../index.js";
 import { CommonTranscriptResponse } from "./CommonTranscriptResponse.js";
 import { CommonUsageInfo } from "./CommonUsageInfo.js";
 import { TranscriptsMetadata } from "./TranscriptsMetadata.js";
-import { TranscriptsResponseKeyTerms } from "./TranscriptsResponseKeyTerms.js";
 import { TranscriptsStatusEnum } from "./TranscriptsStatusEnum.js";
 import { Uuid } from "./Uuid.js";
 
@@ -20,7 +19,6 @@ export const TranscriptsResponse: core.serialization.ObjectSchema<
     usageInfo: CommonUsageInfo,
     recordingId: Uuid,
     status: TranscriptsStatusEnum,
-    keyTerms: TranscriptsResponseKeyTerms.optional(),
 });
 
 export declare namespace TranscriptsResponse {
@@ -31,6 +29,5 @@ export declare namespace TranscriptsResponse {
         usageInfo: CommonUsageInfo.Raw;
         recordingId: Uuid.Raw;
         status: TranscriptsStatusEnum.Raw;
-        keyTerms?: TranscriptsResponseKeyTerms.Raw | null;
     }
 }

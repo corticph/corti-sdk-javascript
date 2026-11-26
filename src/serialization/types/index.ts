@@ -392,8 +392,6 @@ export * from "./TranscriptsListResponse.js";
 export * from "./TranscriptsMetadata.js";
 export * from "./TranscriptsParticipant.js";
 export * from "./TranscriptsResponse.js";
-export * from "./TranscriptsResponseKeyTerms.js";
-export * from "./TranscriptsResponseKeyTermsTermsItem.js";
 export * from "./TranscriptsStatusEnum.js";
 export * from "./TranscriptsStatusResponse.js";
 export * from "./Uuid.js";
