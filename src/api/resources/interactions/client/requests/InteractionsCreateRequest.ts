@@ -6,7 +6,6 @@ import type * as Corti from "../../../../index.js";
  * @example
  *     {
  *         encounter: {
- *             identifier: "identifier",
  *             status: "planned",
  *             type: "first_consultation"
  *         }
