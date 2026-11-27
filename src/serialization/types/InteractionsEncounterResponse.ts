@@ -11,7 +11,7 @@ export const InteractionsEncounterResponse: core.serialization.ObjectSchema<
     serializers.InteractionsEncounterResponse.Raw,
     Corti.InteractionsEncounterResponse
 > = core.serialization.object({
-    identifier: core.serialization.string(),
+    identifier: core.serialization.string().nullable(),
     status: InteractionsEncounterStatusEnum,
     type: InteractionsEncounterTypeEnum,
     period: InteractionsEncounterPeriod,
@@ -20,7 +20,7 @@ export const InteractionsEncounterResponse: core.serialization.ObjectSchema<
 
 export declare namespace InteractionsEncounterResponse {
     export interface Raw {
-        identifier: string;
+        identifier?: string | null;
         status: InteractionsEncounterStatusEnum.Raw;
         type: InteractionsEncounterTypeEnum.Raw;
         period: InteractionsEncounterPeriod.Raw;

@@ -11,7 +11,7 @@ export const InteractionsEncounterCreateRequest: core.serialization.ObjectSchema
     serializers.InteractionsEncounterCreateRequest.Raw,
     Corti.InteractionsEncounterCreateRequest
 > = core.serialization.object({
-    identifier: core.serialization.string(),
+    identifier: core.serialization.string().optionalNullable(),
     status: InteractionsEncounterStatusEnum,
     type: InteractionsEncounterTypeEnum,
     period: InteractionsEncounterPeriod.optional(),
@@ -20,7 +20,7 @@ export const InteractionsEncounterCreateRequest: core.serialization.ObjectSchema
 
 export declare namespace InteractionsEncounterCreateRequest {
     export interface Raw {
-        identifier: string;
+        identifier?: (string | null | undefined) | null;
         status: InteractionsEncounterStatusEnum.Raw;
         type: InteractionsEncounterTypeEnum.Raw;
         period?: InteractionsEncounterPeriod.Raw | null;
